@@ -1,6 +1,8 @@
 # Don't change this file!
 # Configure your app in config/environment.rb and config/environments/*.rb
 
+require 'thread' # adding this to solve the "uninitialized constant ActiveSupport::Dependencies::Mutex" bug
+
 RAILS_ROOT = "#{File.dirname(__FILE__)}/.." unless defined?(RAILS_ROOT)
 
 module Rails
