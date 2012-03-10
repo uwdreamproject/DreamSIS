@@ -9,6 +9,7 @@ gem "will_paginate", '~> 2.3.11'
 gem 'nokogiri'
 gem 'json'
 gem 'exceptional'
+gem 'rdoc'
 
 # bundler requires these gems in all environments
 # gem "nokogiri", "1.4.2"
