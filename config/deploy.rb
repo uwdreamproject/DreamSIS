@@ -2,16 +2,27 @@ require 'mongrel_cluster/recipes'
 require 'bundler/capistrano'
 
 set :application, "dreamsis"
-set :repository,  "svn+ssh://mharris2@isidore.ued.washington.edu/usr/local/svn/dreamsisrepo/trunk"
+# set :repository,  "svn+ssh://mharris2@isidore.ued.washington.edu/usr/local/svn/dreamsisrepo/trunk"
 set :deploy_to, "/usr/local/apps/#{application}"
 set :user, "mharris2"
-set :deploy_via, :export
+# set :deploy_via, :export
 set :runner, "root"
-# set :mongrel_conf, "#{deploy_to}/current/config/mongrel_cluster.yml"
+
 default_run_options[:pty] = true
-role :app, "isidore.ued.washington.edu"
-role :web, "isidore.ued.washington.edu"
-role :db,  "isidore.ued.washington.edu", :primary => true
+set :repository, "git@github.com:mattharris5/DreamSIS.git"  # Your clone URL
+set :scm, "git"
+# set :scm_passphrase, "p@ssw0rd"  # The deploy user's password
+
+ssh_options[:forward_agent] = true
+set :branch, "master"
+set :deploy_via, :remote_cache
+
+
+
+
+role :app, "expo.uaa.washington.edu"
+role :web, "expo.uaa.washington.edu"
+role :db,  "expo.uaa.washington.edu", :primary => true
 
 namespace :deploy do
   task :start, :roles => :app do
