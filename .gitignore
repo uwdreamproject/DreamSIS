@@ -1,2 +1,8 @@
 
 .DS_Store
+
+config/certs
+
+config/database.yml
+
+config/exceptional.yml

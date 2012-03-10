@@ -75,4 +75,17 @@ namespace :deploy do
     commit_msg = STDIN.gets
     system "svn ci -m \"#{commit_msg}\""
   end
+    
+  desc "[internal] Updates the symlink for database.yml file to the just deployed release."
+  task :config_symlink, :except => { :no_release => true } do
+    run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml" 
+    run "ln -nfs #{shared_path}/config/exceptional.yml #{release_path}/config/exceptional.yml" 
+    run "ln -nfs #{shared_path}/config/certs #{release_path}/config/certs" 
+  end
+  
 end
+
+after "deploy:finalize_update", "deploy:config_symlink"
+
+
+
