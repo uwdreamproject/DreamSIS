@@ -1,0 +1,14 @@
+<h1>Editing participant</h1>
+
+<% form_for(@participant, :html => {:id => "participant_form"}) do |f| %>
+  <%= f.error_messages %>
+
+	<%= render :partial => "fields", :locals => { :f => f } %>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @participant %> |
+<%= link_to 'Back', participants_path %>

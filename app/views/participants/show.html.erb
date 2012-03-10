@@ -1,0 +1,31 @@
+<div id="column1">
+	<%= render :partial => "details" %>
+</div>
+
+<div id="column2">
+	
+	<div class="info-section" id="college_applications">
+		<h2>College Applications</h2>
+		<%= render :partial => 'college_applications' %>
+		<br>
+		<%= link_to 'New college application', 
+					new_participant_college_application_path(@participant),
+					:class => "add button" %>
+	</div>
+
+	<div class="info-section" id="scholarship_applications">
+		<h2>Scholarship Applications</h2>
+		<%= render :partial => 'scholarship_applications' %>
+		<br>
+		<%= link_to 'New scholarship application', 
+					new_participant_scholarship_application_path(@participant),
+					:class => "add button" %>
+	</div>
+
+	<div class="info-section" id="paperwork">
+		<%= render :partial => 'paperwork_status' %>
+	</div>
+
+</div>
+
+<%= render :partial => "sidebar" %>

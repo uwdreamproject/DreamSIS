@@ -1,0 +1,33 @@
+<%- if @high_school -%>
+	<div class="content-block">
+		<h3 class="pre-title">High School Lead Panel</h3>
+		<% @sidebar_rendered = true %>
+		<%= render :file => "high_schools/show" %>
+	</div>
+<% end -%>
+
+<div class="content-block">
+	<h1 class="mentees">My Current Mentees</h1>
+	<p>This section shows the mentees that you're currently assigned to work with. 
+		If you start working with another Dream Scholar as well, just tell your 
+		high school lead and he or she will add the student to your list.</p>
+
+	<%= render :partial => 'mentors/mentees' %>
+	
+	<p>
+	<%- for high_school in @high_schools -%>
+		<%= link_to "See all #{high_school.name} mentees", high_school_cohort_path(high_school, Participant.current_cohort), :class => "list button" %>
+	<% end -%>
+	</p>
+</div>
+
+<div class="content-block">
+	<h1 class="participation">My Participation</h1>
+	<p>This section shows you the quarters in which you've participated in the Dream 
+		Project as a UW student. If you want to change your high-school group for the
+		current quarter, you can click the link on the right.</p>
+	
+	<%= render :partial => 'mentors/participation' %>
+</div>
+
+<%= render :partial => "mentor_sidebar" %>

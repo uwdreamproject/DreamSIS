@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  min_level: 1.5
+  max_level: 1.5
+
+two:
+  min_level: 1.5
+  max_level: 1.5

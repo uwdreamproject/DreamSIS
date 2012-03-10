@@ -1,0 +1,30 @@
+<% f.inputs do %>
+	<%= f.input :name, :hint => "Leave blank if this is a regular high school visit." %>
+	
+	<%= f.input :location, :label => "High School/Location", :hint => "Leave blank if this is a program-wide event. Program-wide events show up on everyone's attendance sheets." %>
+
+	<%= f.input :location_text, :label => "Location Detail", :hint => "Specify the location here if the event is happening at a location that's not in the list, or if you want to add extra location information, like room number." %>
+	
+	<%= f.input :event_type %>
+	<%= f.input :event_group %>
+	
+	<%= f.input :date %>
+
+	<li class="time">
+		<%= f.label :start_time %>
+		<%= f.time_select :start_time, :minute_step => 15, :twelve_hour => true %>
+	</li>
+	<li class="time">
+		<%= f.label :end_time %>
+		<%= f.time_select :end_time, :minute_step => 15, :twelve_hour => true %>
+	</li>
+	<%= f.input :description, :input_html => { :rows => 3 } %>
+	<%= f.input :capacity, :hint => "Leave capacity blank or 0 for no limit.", :input_html => {:size => 3} %>
+
+<% end -%>
+
+<% f.inputs(:name => "Attendees") do %>
+	<%= f.input :allow_rsvps, :label => "Allow people to RSVP before this event" %>
+	<%= f.input :show_for_participants, :label => "Show on participant attendance sheets" %>
+	<%= f.input :show_for_mentors, :label => "Show on mentor attendance sheets" %>
+<% end -%>

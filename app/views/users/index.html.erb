@@ -1,0 +1,22 @@
+<h1>Users</h1>
+
+<%= will_paginate @users %>
+
+<table>
+	<thead>
+		<tr>
+			<th>Login</th>
+			<th>Type</th>
+			<th>Admin?</th>
+			<th>Functions</th>
+		</tr>
+	</thead>
+
+	<tbody id="original_users">
+		<%= render :partial => "user", :collection => @users %>
+	</tbody>
+	
+	<tbody id="user_search_results"></tbody>
+</table>
+
+<%= render :partial => 'sidebar' %>

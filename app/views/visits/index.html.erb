@@ -1,0 +1,43 @@
+<h1>High School Visits
+	<span class="light">&raquo; <%=h @high_school.name %></span> <%= @quarter.title %></h1>
+
+<table>
+	<tr>
+		<th>Date</th>
+		<th>Start Time</th>
+		<th>End Time</th>
+		<th>Show for Participants</th>
+		<th>Show for Mentors</th>
+		<th>Attendance</th>
+		<th>Functions</th>
+	</tr>
+
+<% for visit in @visits %>
+<tr>
+	<td><%=h visit.date %></td>
+	<td><%=h visit.start_time.to_s(:time12) if visit.start_time %></td>
+	<td><%=h visit.end_time.to_s(:time12) if visit.end_time %></td>
+	<td><%=h visit.show_for_participants? ? "Yes" : "No" %></td>
+	<td><%=h visit.show_for_mentors? ? "Yes" : "No" %></td>
+	<td><%=h visit.attended_count %></td>
+	<td><%= link_to 'Show', high_school_visit_path(@high_school, @quarter, visit) %>
+		| <%= link_to 'Edit', edit_high_school_visit_path(@high_school, @quarter, visit) %>
+		| <%= link_to 'Delete', high_school_visit_path(@high_school, @quarter, visit), :confirm => 'Are you sure?', :method => :delete %>
+	</td>
+</tr>
+<% end %>
+
+<% if @visits.empty? %>
+<tr class="empty">
+	<td colspan=10>
+		You haven't created any visits. 
+		<%= link_to "Add a new high school visit.", new_high_school_visit_path(@high_school, @quarter) %>
+	</td>
+</tr>
+<% end -%>
+
+</table>
+
+<p><%= link_to "Add new high school visit", new_high_school_visit_path(@high_school, @quarter), :class => 'add button' %></p>
+
+<%= render :partial => "sidebar" %>

@@ -1,0 +1,46 @@
+<h1>Mentor On-boarding <%= @quarter.title %></h1>
+
+<%#= will_paginate @mentors %>
+
+<table>
+	
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>NetID</th>
+			<th class="centered">Gender</th>
+			<th>Date of Birth</th>
+			<th class="centered">Aliases</th>
+			<th class="centered">AOR Signed?</th>
+			<th class="centered">BG Check Cleared?</th>
+			<th class="centered">Attended Mentor Workshop?</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+		<%- for mentor in @mentors -%>
+			<tr>
+				<td><%= link_to h(mentor.fullname), mentor %></td>
+				<td><%=h mentor.uw_net_id %></td>
+				<td class="centered"><%=h mentor.sex %></td>
+				<td><%=h mentor.birthdate.to_s %></td>
+				<td class="centered"><%= mentor.has_aliases? ? content_tag(:span, "Y", :class => 'red tag') : "-" %></td>
+				<td class="centered"><%= mentor.signed_risk_form? ? content_tag(:span, "Y", :class => 'approved tag') : "-" %></td>
+				<td class="centered">
+					<%- if mentor.background_check_result.blank? -%>
+						<% if mentor.has_background_check_form_responses? || mentor.has_aliases? %>
+							<%= link_to("Check form responses", background_check_form_responses_mentor_path(mentor), :target => "_blank") %>
+						<%- else -%>
+							-
+						<%- end -%>
+					<%- elsif mentor.passed_background_check? -%>
+						<%= content_tag(:span, "Y", :class => 'approved tag') %>
+					<%- else -%>
+						<%= content_tag(:span, "N", :class => 'red tag') %>
+					<% end -%>
+					</td>
+				<td class="centered"><%= mentor.attended_mentor_workshop? ? content_tag(:span, "Y", :class => 'approved tag') : "-" %></td>
+			</tr>
+		<% end -%>
+	</tbody>
+</table>

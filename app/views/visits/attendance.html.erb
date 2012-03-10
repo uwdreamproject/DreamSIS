@@ -1,0 +1,210 @@
+<div class="right">
+	<%= link_to "Show mentors", {:show => "mentors"}, :class => "list button" unless @showing.include?(:mentors) %>
+	<%= link_to "Show participants", {:show => "participants"}, :class => "list button" unless @showing.include?(:participants) %>
+</div>
+
+<h1>Attendance: <%= @showing.collect{|s| s.to_s.titleize }.to_sentence %></h1>
+<h2><%= @high_school.name %> &bull; <%= @quarter.title %></h2>
+
+<% form_for :attendance, :url => update_attendance_high_school_visits_path(@high_school) do |f| %>
+
+	<table>
+		<tr>
+			<th rowspan=2>Name</th>
+			<%- if @showing.include?(:participants) -%>
+				<th rowspan=2 class="centered">Workbook?<br>
+					<%= link_to_function "(change date)", "Element.toggle('change_override_binder_date')", :class => "small" %>
+					<small id="change_override_binder_date" style="display:none">
+						<br>
+						<%= text_field_tag :override_binder_date, Date.today.to_s(:db) ,:size => 12 %>
+					</small>
+					</th>
+				<th rowspan=2 class="centered">FAFSA?<br>
+					<%= link_to_function "(change date)", "Element.toggle('change_override_fafsa_date')", :class => "small" %>
+					<small id="change_override_fafsa_date" style="display:none">
+						<br>
+						<%= text_field_tag :override_fafsa_date, Date.today.to_s(:db), :size => 12 %>
+					</small>
+					</th>
+			<% end -%>
+			<% for visit in @visits %>
+				<% l = link_to h(visit.short_title), edit_event_path(visit), :popup => true %>
+				<% if visit.allow_rsvps? %>
+					<th colspan=2 class="centered borderless"><%= l %></th>
+				<% else %>
+					<th rowspan=2 class="centered"><%= l %></th>
+				<% end -%>
+			<% end -%>
+			<!-- <th rowspan=2>Name</th> -->
+		</tr>
+		<tr>
+			<% for visit in @visits %>
+				<% if visit.allow_rsvps? %>
+					<th class="centered small">RSVP'd?</th>
+					<th class="centered small">Attended?</th>
+				<% end -%>
+			<% end -%>
+		</tr>
+			
+
+	
+		<% for participant in @participants %>
+
+		<% section ||= nil %>
+		<% if section != :inactive && participant.inactive? %>
+			<% section = :inactive %>
+			<tr class="rowset-header">
+				<th colspan="<%= @visits.size + 3 %>">Inactive Students</th>
+			</tr>
+		<% end -%>
+
+		<tr <%= "class='deselected'" if participant.inactive? %>>
+		    <td><%= link_to participant.lastname_first, participant, :popup => true %>
+				<small class="inactive-note">(inactive)</small>
+				</td>
+				
+			<%- if @showing.include?(:participants) -%>
+				<!-- Workbook checkbox -->
+				<td class="centered">
+					<%- if participant.is_a?(Participant) -%>
+						<%= check_box_tag "participant[#{participant.id}][received_binder]", 
+											"1",
+											participant.received_binder?,
+											:id => "participant_#{participant.id}_received_binder",
+											:tabindex => 1,
+											:onFocus => "this.up('tr').toggleClassName('highlight')",
+											:onBlur => "this.up('tr').toggleClassName('highlight')",
+											:onClick => "this.focus()" %>
+						<%= hidden_field_tag "participant[#{participant.id}][received_binder]", "0", :id => nil %>
+						<%= content_tag(:small, 
+										(participant.binder_date.to_s(:db) if participant.received_binder?), 
+										:class => "light",
+										:id => "participant_#{participant.id}_binder_date") %>
+			
+						<%= observe_field "participant_#{participant.id}_received_binder",
+											:url => participant,
+											:with => "'participant[received_binder]=' + $('participant_#{participant.id}_received_binder').checked +
+														'&override_binder_date=' + $F('override_binder_date')",
+											:method => :put %>
+						<%= content_tag('span', '', :id => "status_#{participant.id}_received_binder", 
+													:class => 'absolute-note success-marker') %>
+					<% end -%>
+				</td>
+
+				<!-- FAFSA checkbox -->
+				<td class="centered">
+					<%- if participant.is_a?(Participant) -%>
+						<%= check_box_tag "participant[#{participant.id}][submitted_fafsa]", 
+											"1",
+											participant.submitted_fafsa?,
+											:id => "participant_#{participant.id}_submitted_fafsa",
+											:tabindex => 2,
+											:onFocus => "this.up('tr').toggleClassName('highlight')",
+											:onBlur => "this.up('tr').toggleClassName('highlight')",
+											:onClick => "this.focus()" %>
+						<%= hidden_field_tag "participant[#{participant.id}][submitted_fafsa]", "0", :id => nil %>
+						<%= content_tag(:small, 
+										(participant.fafsa_submitted_date.to_s(:db) if participant.submitted_fafsa?), 
+										:class => "light",
+										:id => "participant_#{participant.id}_fafsa_submitted_date") %>
+			
+						<%= observe_field "participant_#{participant.id}_submitted_fafsa",
+											:url => participant,
+											:with => "'participant[submitted_fafsa]=' + $('participant_#{participant.id}_submitted_fafsa').checked +
+														'&override_fafsa_date=' + $F('override_fafsa_date')",
+											:method => :put %>
+						<%= content_tag('span', '', :id => "status_#{participant.id}_submitted_fafsa", 
+													:class => 'absolute-note success-marker') %>
+					<% end -%>
+				</td>
+			<% end -%>
+
+			<!-- Visit dates checkboxes -->
+			<% @visits.each_with_index do |visit, i| %>
+
+				<% if visit.allow_rsvps? %>
+				<!-- RSVP Checkbox -->
+				<td id="<%= "td_#{participant.id}_#{visit.id}_rsvp" %>" class="centered">
+					<% if (participant.created_at <= visit.date rescue true) %>
+						<%= check_box_tag "rsvp[#{participant.id}][#{visit.id}]", 
+											"1",
+											participant.attending?(visit),
+											:id => "rsvp_#{participant.id}_#{visit.id}",
+											:disabled => visit.past?,
+											:tabindex => (i+2)*10+1,
+											:onFocus => "this.up('tr').toggleClassName('highlight')",
+											:onBlur => "this.up('tr').toggleClassName('highlight')",
+											:onClick => "this.focus()" %>
+						<%= hidden_field_tag "rsvp[#{participant.id}][#{visit.id}]", "0", :id => nil %>
+					
+						<%= observe_field "rsvp_#{participant.id}_#{visit.id}",
+											:url => update_attendance_high_school_visits_path(@high_school),
+											:with => "rsvp[#{participant.id}][#{visit.id}]" %>
+						<%= content_tag('span', '', :id => "status_#{participant.id}_#{visit.id}_rsvp", 
+													:class => 'absolute-note success-marker') %>
+					<% end -%>
+				</td>
+				<% end -%>
+			
+				<!-- Attended Checkbox -->
+				<td id="<%= "td_#{participant.id}_#{visit.id}" %>" class="centered">
+					<% if true #(participant.created_at <= visit.date rescue true) %>
+						<%= check_box_tag "attendance[#{participant.id}][#{visit.id}]", 
+											"1",
+											participant.attended?(visit),
+											:id => "attendance_#{participant.id}_#{visit.id}",
+											:disabled => (visit.allow_rsvps? && !visit.past?),
+											:tabindex => (i+2)*10+2,
+											:onFocus => "this.up('tr').toggleClassName('highlight')",
+											:onBlur => "this.up('tr').toggleClassName('highlight')",
+											:onClick => "this.focus()" %>
+						<%= hidden_field_tag "attendance[#{participant.id}][#{visit.id}]", "0", :id => nil %>
+					
+						<%= observe_field "attendance_#{participant.id}_#{visit.id}",
+											:url => update_attendance_high_school_visits_path(@high_school),
+											:with => "attendance[#{participant.id}][#{visit.id}]" %>
+						<%= content_tag('span', '', :id => "status_#{participant.id}_#{visit.id}", 
+													:class => 'absolute-note success-marker') %>
+					<% end -%>
+				</td>
+			<% end -%>
+		
+		<!-- <td><%= link_to participant.lastname_first, participant, :popup => true %>
+			<small class="inactive-note">(inactive)</small>
+			</td> -->
+
+		</tr>		
+		<% end -%>
+	  
+	</table>
+
+	<%#= f.submit "Submit", :disable_with => 'Submiting...' %>
+
+<% end -%>
+
+<div id="sidebar">
+	<%= render :partial => "shared/quarter_select", 
+				:locals => { :form_url => attendance_high_school_visits_path(@high_school, "new")},
+				:object => @quarter %>
+				
+	<p>This page allows you to track attendance for your <%= @showing.to_sentence %> at various events.
+		Only events that are pertinent to this group of people are shown (e.g., Dream Project class doesn't
+		show up when taking attendance for high-school participants).</p>
+	<p>To mark someone as present, click the checkbox. You can also use the "tab" key and your spacebar 
+		to quickly mark the boxes without using your mouse.</p>
+	
+	<p><%= link_to "Add new high school visit", 
+					new_high_school_visit_path(@high_school, @quarter), 
+					:class => 'add button' %></p>
+	
+	<%- unless @participants.empty? -%>
+		<p><%= link_to "Return to #{@high_school.name} #{@participants.first.grad_year} list", 
+						high_school_cohort_path(@high_school, @participants.first.grad_year),
+						:class => "back button" %></p>
+	<% end -%>
+					
+	<p><%= link_to "Return to visits list",
+	 				high_school_visits_path(@high_school),
+	 				:class => "back button" %></p>
+		
+</div>

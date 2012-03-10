@@ -1,0 +1,15 @@
+<p>
+	<%= f.label :title %><br>
+	<%= f.text_field :title, :size => 40 %>
+</p>
+
+<p>
+	<%= f.label :object_class %><br>
+	<%= f.select :object_class, ["Participant"], :include_blank => true %>
+</p>
+
+<p>
+	<%= f.label :criteria %><br>
+	<%= f.text_area :criteria, :cols => 40, :rows => 5 %>
+</p>
+	

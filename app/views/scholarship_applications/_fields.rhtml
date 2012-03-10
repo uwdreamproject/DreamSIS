@@ -1,0 +1,12 @@
+<li>
+  <%= f.label :scholarship_application_title %>
+  <%= text_field_with_auto_complete :scholarship_application, :title %>
+</li>
+
+	<%= f.input :amount, :input_html => {:size => 5} %>
+	<%= f.input :date_applied, :include_blank => true %>
+	<%= f.input :awarded %>
+	<%= f.input :accepted %>
+	<%= f.input :renewable %>
+	<%= f.input :restrictions, :input_html => {:rows => 5} %>
+	<%= f.input :notes, :input_html => {:rows => 5} %>

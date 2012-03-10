@@ -1,0 +1,6 @@
+if params[:person][:fullname].blank?
+  page.hide("new_participant_form_container")
+else
+  page.replace_html 'person_search_results', :partial => 'event_attendances/person', :collection => @people
+  page.show("new_participant_form_container") if @audience.to_s == "Participant"
+end

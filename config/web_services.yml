@@ -1,0 +1,17 @@
+development:
+    # host: ucswseval1.cac.washington.edu
+    # cert: mharris2.ued.washington.edu.pem
+    # key: mharris2.ued.washington.edu.pem
+    # ca_file: uwca.pem
+    host: ws.admin.washington.edu
+    cert: isidore.crt
+    key: isidore.key
+    ca_file: uwca.pem
+    act_as_user: dreamsis
+
+production:
+    host: ws.admin.washington.edu
+    cert: isidore.crt
+    key: isidore.key
+    ca_file: uwca.pem
+    act_as_user: dreamsis

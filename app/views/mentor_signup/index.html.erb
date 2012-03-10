@@ -1,0 +1,34 @@
+<h1>Sign up for <%= @quarter.title %></h1>
+<p>Welcome to the Dream Project! To get signed up for the quarter, choose the high school visit you'd like to attend below:</p>
+
+<table class="mentor_quarter_group signup">
+	<thead>
+		<tr>
+			<th>Section</th>
+			<th>Location</th>
+			<th colspan=2>Enrollment</th>
+			<th>Capacity</th>
+			<th></th>
+		</tr>
+	</thead>
+	
+	<tbody>
+		<%= render :partial => 'mentor_quarter_group', :collection => @quarter.mentor_quarter_groups %>
+
+		<%- if @quarter.mentor_quarter_groups.empty? -%>
+		<tr class="empty">
+			<td colspan=10>
+				Hmm. There aren't any sections defined for <%= @quarter.title %> yet. Try back later.
+				<p><%= link_to "Back", :back, :class => 'back button' rescue nil %></p>
+			</td>
+		</tr>
+		<% end -%>
+	</tbody>
+	
+</table>
+
+<div id="sidebar">
+	<h2>Sign up</h2>
+	<p>Use this page to sign up for a high school visit. If you've already signed up on MyUW, it will appear in the list.</p>
+	<%= link_to "Back to Welcome", root_url, :class => "back button" %>
+</div>

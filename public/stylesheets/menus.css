@@ -1,0 +1,161 @@
+/* @override http://dreamsis.dev/stylesheets/menus.css */
+
+/* ================================================================ 
+This copyright notice must be untouched at all times.
+
+The original version of this stylesheet and the associated (x)html
+is available at http://www.cssplay.co.uk/menus/final_drop.html
+Copyright (c) 2005-2007 Stu Nicholls. All rights reserved.
+This stylesheet and the associated (x)html may be modified in any 
+way to fit your requirements.
+=================================================================== */
+
+.menu {
+	height: 35px;
+	font-size: 100%;
+	position: relative;
+	z-index: 100;
+	background: rgb(125,125,127);
+	border: 1px solid #fff;
+	border-width: 1px 0 1px 0;
+	text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+}
+
+/* style the links for the top level */
+
+.menu a, .menu a:visited {
+	display: block;
+	font-size: 100%;
+	font-weight: bold;
+	text-decoration: none;
+	color: #fff;
+	border-left: 1px groove #fff;
+	padding-left: 5px;
+	padding-right: 5px;
+	line-height: 20px;
+}
+
+
+/*style the top level hover*/ 
+.menu a:hover, .menu ul ul a:hover, .menu :hover > a, .menu ul ul :hover > a {
+	color: #fc0;
+	background: rgb(227,222,205);
+	border-radius: 2px;
+	border: none;
+	color: black;
+	text-shadow: none;
+	padding-right: 6px;
+	box-shadow: 0 0 5px rgba(0,0,0,0.2) inset;
+	z-index: 25;
+}
+
+.menu ul ul :hover > a {
+	box-shadow: none;
+}
+
+.menu ul li:hover {
+	background: url(../images/mainNav_notch.gif) no-repeat 40% 18px;
+	z-index: 21;
+}
+
+.menu ul ul li:hover {
+	background: none;
+}
+
+ /*style the second level links*/ 
+
+.menu ul ul a, .menu ul ul a:visited {
+	color: rgb(95,95,95);
+	font-weight: normal;
+	height: auto;
+	line-height: 1em;
+	padding: 5px 10px;
+	width: 100%;
+	border-bottom: 1px dotted #dadada;
+	border-left: none;
+	text-shadow: none;
+}
+
+.menu ul ul a:hover {
+	background: url(../images/bullets/gold_arrow_small.gif) no-repeat left center;
+	border: none;
+	border-bottom: 1px dotted #dadada;
+	color: rgb(53,94,170);
+}
+
+.menu ul ul {
+	background: white;
+	padding: 10px;
+	display: block;
+	z-index: 10;
+	border: 1px solid #999;
+	border-radius: 5px;
+	box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+	border-top: none;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	float: left;
+	margin-top: 10px;
+}
+
+.menu ul li div {
+	visibility: hidden;
+	position: absolute;
+	top: 20px;
+	left: 0;
+	width: 200px;
+}
+
+/* make the second level visible when hover on first level list OR link */
+
+.menu ul li:hover div,
+.menu ul a:hover div {
+	visibility: visible;
+}
+
+/* remove all the bullets, borders and padding from the default list styling */
+
+.menu ul {
+	padding: 0;
+	padding-left: 10px;
+	margin: 5px;
+	list-style-type: none;
+	margin-left: 10px;
+	margin-top: 7px;
+}
+
+.menu ul ul {
+	
+}
+
+/* float the list to make it horizontal and a relative positon so that you can control the dropdown menu positon */
+
+.menu li {
+	float: left;
+	position: relative;
+	padding-right: 15px;
+	height: 30px;
+}
+
+.menu ul ul li {
+	width: 90%;
+	height: auto;
+}
+
+/* @group iphone */
+
+.menu_view .menu li {
+	float: none;
+	position: relative;
+	padding: 0;
+}
+
+.menu_view .menu ul ul {
+	float: none;
+}
+
+
+/* @end */
+
+

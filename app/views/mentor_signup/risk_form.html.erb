@@ -1,0 +1,33 @@
+<h1>Acknowledgment of Risk and Consent For Treatment for ADULT Dream Project Participants</h1>
+
+<p><em>If you are under 18, please contact <%= auto_link "mharris@uw.edu" %> for more information.</em></p>
+
+<% semantic_form_for @mentor, :url => { :action => 'risk_form' } do |f| %>
+
+	<%= f.error_messages %>
+
+<h2>Section 1. Potential Risks </h2>
+<p>Participation in the University of Washington Dream Project may involve some risk. As a participant of the program, you need to be aware of these risks. While the Dream Project is an official course of study at the UW, it involves additional work outside of the classroom where these risks may be more prevalent. </p>
+
+<h4>Activities outside the UW campus may involve risks to your personal safety.</h4>
+<p>Weekly high school visits and some other Dream Project activities involve driving to and from the school site, which could result in serious injury and even death. If you are the driver of one of these vehicles, you could be held personally liable for situations that involve negligence. Additionally, UW cannot control the environment and surroundings once you leave the University of Washington campus, including but not limited to the high school premises. Additional unforeseen risks could pose a threat to you or your safety at these off-site locations.</p>
+
+<h4>You are legally responsible to identify and avert risks to minors.</h4>
+<p>Working with minors also involves an additional level of risk because adults working with minors are expected to identify and avert risks to minors, and may be held legally responsible if they fail to do so. Also, adults working with minors are held to a higher standard of behavior regarding relationships with minors. It’s important for your protection and that of any minors you work with to limit unsupervised or solo contacts, be courteous and respectful in all written and spoken communications and conduct Dream Project activities in public places, such as cafés, libraries and public school communal areas as much as possible in order to avoid allegations of improper or illegal conduct with minors.  </p>
+
+<h2>Section 2. Acknowledgment of Risk and Consent to Medical Treatment</h2>
+<p>I acknowledge that there are certain risks inherent in participating in the University of Washington Dream Project, including but not limited to those indicated in Section 1. I acknowledge that all risks cannot be prevented and I assume those risks beyond the control of the University staff. I represent that I am able, with or without accommodation, to participate in the activities of the Dream Project, am able to use the equipment and/or supplies described above, and have obtained the required immunizations. I also agree to assume all risks of Dream Project activities or activities undertaken at my own initiative during travel to and from or during the course of the activities.</p>
+
+<p>Should I require emergency medical treatment as a result of accident or illness arising during any Dream Project activity, I consent to such treatment. I acknowledge that the University of Washington does not provide health and accident insurance for Dream Project participants and I agree to be financially responsible for any medical bills incurred as a result of emergency medical treatment. I will notify the Dream Project leader in writing if I have medical conditions about which emergency medical personnel should be informed.  </p>
+
+<hr>
+    
+	<% f.inputs do %>
+		<%= f.input :risk_form_signature, :label => "Enter your full legal name as signature" %>
+		<%= f.input :risk_form_signed_at, :as => :boolean, :label => "I understand the statements above." %>
+	<% end -%>
+
+	<% f.buttons do %>
+		<%= f.submit %>
+	<% end -%>
+<% end -%>

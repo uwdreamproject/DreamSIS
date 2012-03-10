@@ -1,0 +1,12 @@
+<p>
+  <%= f.label :date %><br />
+  <%= f.date_select :date %>
+</p>
+<p>
+	<%= f.label :start_time %>
+	<%= f.time_select :start_time, :minute_step => 15, :twelve_hour => true %>
+</p>
+<p>
+	<%= f.label :end_time %>
+	<%= f.time_select :end_time, :minute_step => 15, :twelve_hour => true %>
+</p>

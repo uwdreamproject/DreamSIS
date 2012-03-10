@@ -1,0 +1,28 @@
+<p>
+  <b>Participant:</b>
+  <%= link_to @college_application.participant.fullname, @college_application.participant %>
+</p>
+
+<p>
+  <b>Institution:</b>
+  <%=h @college_application.institution.name %>
+</p>
+
+<p>
+  <b>Date applied:</b>
+  <%=h @college_application.date_applied %>
+</p>
+
+<p>
+  <b>Date notified:</b>
+  <%=h @college_application.date_notified %>
+</p>
+
+<p>
+  <b>Decision:</b>
+  <%=h @college_application.decision %>
+</p>
+
+
+<%= link_to 'Edit', edit_participant_college_application_path(@participant, @college_application) %> |
+<%= link_to 'Back', participant_college_applications_path %>

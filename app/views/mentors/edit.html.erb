@@ -1,0 +1,23 @@
+<h1>Editing <%= @mentor.fullname %></h1>
+
+<% semantic_form_for @mentor do |f| %>
+	<%= f.error_messages %>
+	
+	<%- f.inputs do -%>
+		<%= f.input :background_check_run_at, :hint => link_to_now("mentor_background_check_run_at") %>
+		<%= f.input :background_check_result, 
+						:hint => "Enter #{link_to_function('NO RECORD FOUND', 
+										"$('mentor_background_check_result').value='NO RECORD FOUND [#{@current_user.login}]'")} 
+									or #{link_to_function('OK', 
+										"$('mentor_background_check_result').value='OK  [#{@current_user.login}]'")}
+									(include an explanation) if the mentor passed the check." %>
+		<%= f.input :van_driver_training_completed_at, :hint => link_to_now("mentor_van_driver_training_completed_at") %>
+		<%= f.input :husky_card_rfid, :hint => "Scan a Husky Card to link it to this mentor record.", :input_html => { :id => :tag_id } %>
+	<% end -%>
+	
+	<%- f.buttons do -%>
+		<%= f.submit %>
+		<%= link_to "Cancel", @mentor, :class => 'cancel button' %>
+	<% end -%>
+
+<% end %>

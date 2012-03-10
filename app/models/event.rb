@@ -1,0 +1,128 @@
+class Event < ActiveRecord::Base
+  include Comparable
+  has_many :attendees, :class_name => "EventAttendance" do
+    def all(audience = nil)
+      conditions = {}
+      conditions.merge!({ :people => { :type => audience.to_s.classify }}) if audience
+      find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+    end
+    def rsvpd(audience = nil)
+      conditions = { :rsvp => true }
+      conditions.merge!({ :people => { :type => audience.to_s.classify }}) if audience
+      find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+    end
+    def attended(audience = nil)
+      conditions = { :attended => true }
+      conditions.merge!({ :people => { :type => audience.to_s.classify }}) if audience
+      find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+    end
+  end
+  has_many :people, :through => :attendees
+  has_one :location
+  belongs_to :event_type
+  belongs_to :event_group
+  
+  validates_presence_of :date
+  
+  default_scope :order => "date, start_time"
+  
+  # Returns the number of attended
+  def attended_count
+    attendees.attended.size
+  end
+
+  # Returns true if the number of RSVP'd attendees is greater than or equal to the capacity defined.
+  # If capacity is 0 or nil, this method always returns false.
+  def full?
+    return false if capacity.nil? || capacity <= 0
+    attendees.rsvpd.size >= capacity
+  end
+  
+  # How full is this event in percentage.
+  def percent_full
+    return false if capacity.nil? || capacity <= 0
+    attendees.rsvpd.size.to_f / capacity.to_f * 100
+  end
+  
+  def <=>(o)
+    date <=> o.date
+  end
+
+  # Returns true if there's no Location assigned to this event.
+  def program_wide?
+    location_id.nil?
+  end
+  
+  def past?
+    date < Date.today
+  end
+  
+  def short_title
+    short_date = date.strftime('%b %d')
+    if name.blank?
+      "#{short_date}"
+    else
+      "#{name} (#{short_date})"
+    end
+  end
+  
+  # If this event is attached to a location, use that location name. Otherwise use location_text. If both
+  # exist, concatenate them together with a comma. This is useful for displaying something like "Foster
+  # High School, Room 223".
+  def location_string
+    if location
+      str = location.name
+      str += ", " + location_text unless location_text.blank?
+    else
+      str = location_text
+    end
+    str
+  end
+ 
+  # Convenience method for +time_detail(:time_only => true)+
+  def time_only
+  time_detail(:time_only => true)
+  end
+
+  # Returns a human-readable bit of text describing the start and end times of this event, as follows:
+  # 
+  # * If no +end_time+ is defined, then simply state the date and start time: <tt>(date) at (start_time)</tt>
+  # * If an +end_time+ is defined and the dates for both the start and end are the same: <tt>(date) from (start_time) to (end_time)</tt>
+  # * If +end_time+ is on a different date than +start_time+: <tt>(start_date) at (start_time) to (end_date) at (end_time)</tt>
+  # 
+  # *Options*
+  # 
+  # Allowable options include:
+  # 
+  # * +use_words+: Use words like "from" and "at" instead of a hyphen or a space. Defaults to true.
+  # * +date_format+: Format to use for date portions. Defaults to +date_with_day_of_week+.
+  # * +time_format+: Format to use for time portions. Defaults to +time12+.
+  # * +time_only+: Don't show the date, just the time(s).
+  # * +date_only+: Don't show the times, just the date.
+  # * +use_relative_dates+: Use "today" and "tomorrow" where applicable. Defaults to +true+.
+  def time_detail(options = {})
+    default_options = {
+     :use_words => true,
+     :date_format => :date_with_day_of_week,
+     :time_format => :time12,
+     :use_relative_dates => true
+    }
+    options = default_options.merge(options)
+    separator = options[:use_words] ? { :to => " to", :from => " from", :at => " at" } : { :to => " -", :from => "", :at => "" }
+    _start_date = date.to_date.to_s(options[:date_format]).strip if start_time
+    _start_date = "Today" if date.to_date == Time.now.to_date && start_time && options[:use_relative_dates]
+    _start_date = "Tomorrow" if date.to_date == 1.day.from_now.to_date && start_time && options[:use_relative_dates]
+    _start_time = start_time.to_time.to_s(options[:time_format]).strip if start_time
+    _end_date = end_time.to_date.to_s(options[:date_format]).strip if end_time
+    _end_date = "today" if end_time && end_time.to_date == Time.now.to_date && options[:use_relative_dates]
+    _end_date = "tomorrow" if end_time && end_time.to_date == 1.day.from_now.to_date && options[:use_relative_dates]
+    _end_time = end_time.to_time.to_s(options[:time_format]).strip if end_time
+    return "#{_start_date}" if options[:date_only] && (end_time.blank? || start_time.to_date == end_time.to_date)
+    return "#{_start_time}" if options[:time_only] && !end_time
+    return "#{_start_time}#{separator[:to]} #{_end_time}" if options[:time_only] && start_time.to_date == end_time.to_date
+    return "#{_start_date}#{separator[:at]} #{_start_time}" if end_time.nil?
+    return "#{_start_date}#{separator[:from]} #{_start_time}#{separator[:to]} #{_end_time}" if start_time.to_date == end_time.to_date
+    return "#{_start_date}#{separator[:at]} #{_start_time}#{separator[:to]} #{_end_date}#{separator[:at]} #{_end_time}"
+  end
+
+end

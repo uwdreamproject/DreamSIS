@@ -1,0 +1,12 @@
+<h1>Edit Filter</h1>
+
+<% form_for :object_filter, @object_filter, :url => object_filter_path(@object_filter), :html => { :method => :put } do |f| %>
+
+	<%= f.error_messages %>
+
+	<%= render :partial => "fields", :locals => { :f => f } %>
+	
+	<%= f.submit "Update", :disable_with => 'Updating...' %> - or -
+	<%= link_to 'Cancel', object_filter_path(@object_filter) %>
+
+<% end %>

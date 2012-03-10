@@ -1,0 +1,63 @@
+
+<%= javascript_include_tag("http://api.maps.yahoo.com/v3.0/fl/javascript/apiloader.js?appid=cJQymQ3V34GSIOHHoSSgF0z1c8mHScAuzm.pneRk8QwY7eRT6rWpa305tYyRca19PQ--") %>
+
+<ul class="tabselector" id="tabcontrol1">
+
+  <li class="tab-unselected" id="colleges_tab">
+    <%= link_to_function('Colleges', 
+						"loadPane($('colleges_pane'), '" + participant_college_applications_url(@p) + 
+						"'), tabselect($('colleges_tab')); paneselect($('colleges_pane'))") %></li>
+
+  <li class="tab-unselected" id="activities_tab">
+    <%= link_to_function('Activities', 
+						"loadPane($('activities_pane'), '" + url_for(:action => 'activities', :id => @p) + 
+						"'), tabselect($('activities_tab')); paneselect($('activities_pane'))") %></li>
+
+<li class="tab-unselected" id="comments_tab">
+    <%= link_to_function('Notes', 
+						"loadPane($('comments_pane'), '" + url_for(:action => 'comments', :id => @p) + 
+						"'), tabselect($('comments_tab')); paneselect($('comments_pane'))") %></li>
+
+<li class="tab-unselected" id="scholarships_tab">
+    <%= link_to_function('Scholarships', 
+						"loadPane($('scholarships_pane'), '" + url_for(:action => 'scholarships', :id => @p) + 
+						"'), tabselect($('scholarships_tab')); paneselect($('scholarships_pane'))") %></li>
+
+  <li class="tab-unselected" id="parents_tab">
+    <%= link_to_function('Parents/Guardians', 
+						"loadPane($('parents_pane'), '" + url_for(:action => 'parents', :id => @p) + 
+						"'), tabselect($('parents_tab')); paneselect($('parents_pane'))") %></li>
+
+<li class="tab-unselected" id="demographics_tab">
+    <%= link_to_function('Demographics', 
+						"loadPane($('demographics_pane'), '" + url_for(:action => 'demographics', :id => @p) + 
+						"'), tabselect($('demographics_tab')); paneselect($('demographics_pane'))") %></li>
+
+<li class="tab-unselected" id="scores_tab">
+    <%= link_to_function('Test Scores', 
+						"loadPane($('scores_pane'), '" + url_for(:action => 'scores', :id => @p) + 
+						"'), tabselect($('scores_tab')); paneselect($('scores_pane'))") %></li>
+
+<li class="tab-unselected" id="events_tab">
+    <%= link_to_function('Attendance', 
+						"loadPane($('events_pane'), '" + url_for(:action => 'events', :id => @p) + 
+						"'), tabselect($('events_tab')); paneselect($('events_pane'))") %></li>
+
+<li class="tab-unselected" id="files_tab">
+    <%= link_to_function('Files', 
+						"loadPane($('files_pane'), '" + url_for(:action => 'files', :id => @p) + 
+						"'), tabselect($('files_tab')); paneselect($('files_pane'))") %></li>
+
+</ul>
+
+<ul class="panes" id="panecontrol1">
+	<li id="colleges_pane" class="pane-selected"></li>
+	<li id="activities_pane" class="pane-unselected"></li>
+	<li id="comments_pane" class="pane-unselected"></li>
+	<li id="scholarships_pane" class="pane-unselected"></li>
+	<li id="parents_pane" class="pane-unselected"></li>
+	<li id="demographics_pane" class="pane-unselected"></li>
+	<li id="scores_pane" class="pane-unselected"></li>
+	<li id="events_pane" class="pane-unselected"></li>
+	<li id="files_pane" class="pane-unselected"></li>	
+<ul>

@@ -1,0 +1,97 @@
+<h1>Conviction/Criminal History Information</h1>
+<p>The University of Washington Dream Project will use the use the information on this form to conduct a criminal conviction background check. <strong>You are required to submit this form before attending a high school visit or working directly with a high-school student.</strong> Please note that a conviction or criminal history does not necessarily disqualify you from participation in the Dream Project. All results are handled on a case-by-case basis.</p>
+
+<% semantic_form_for @mentor, :url => { :action => 'background_check_form' } do |f| %>
+
+	<%= f.error_messages %>
+    
+	<% f.inputs do %>
+		<%= f.input :fullname, :label => "Name", :input_html => { :disabled => true } %>
+		<%= f.input :aliases, :label => "Maiden Name/Aliases", :input_html => { :rows => 2 } %>
+	<% end -%>
+		
+		<p><strong>1. Crimes Against Persons and Crimes Relating to Financial Exploitation:</strong></p>
+		<p>Have you ever been convicted of any of the crimes listed below?</p>
+	<% f.inputs do %>
+		<%= f.input :crimes_against_persons_or_financial, :label => "", :as => :radio %>
+	<% end -%>
+		<ul style="text-indent: 10em">
+			<li>Arson (1st degree)</li>
+			<li>Assault, Custodial</li>
+			<li>Assault, Simple (or 4th Degree Assault) </li>
+			<li>Assault (1st/2nd/3rd Degree)</li>
+			<li>Assault of a Child (1st/2nd/3rd Degree) </li>
+			<li>Burglary (1st Degree)</li>
+			<li>Child Abandonment</li>
+			<li>Child Abuse or Neglect (RCW 26.44.020) </li>
+			<li>Child Buying or Selling</li>
+			<li>Child Molestation (1st,2nd,3rd Degree) </li>
+			<li>Communication with a Minor</li>
+			<li>Criminal Abandonment</li>
+			<li>Criminal Mistreatment (1st/2nd Degree)</li>
+			<li>Custodial Interference (1st/2nd Degree) </li>
+			<li>Extortion (1st/2nd/3rd* Degree) </li>
+			<li>Forgery*</li>
+			<li>Incest</li>
+			<li>Indecent Exposure - Felony Indecent Liberties</li>
+			<li>Kidnapping (1st/2nd Degree) </li>
+			<li>Malicious Harassment </li>
+			<li>Manslaughter (1st/2nd Degree) </li>
+			<li>Murder, Aggravated</li>
+			<li>Murder (1st/2nd Degree) </li>
+			<li>Patronizing a Juvenile Prostitute </li>
+			<li>Promoting Pornography</li>
+			<li>Promoting Prostitution (1st Degree) </li>
+			<li>Prostitution</li>
+			<li>Robbery (1st/2nd Degree)</li>
+			<li>Rape (1st/2nd/3rd Degree)</li>
+			<li>Rape of a Child (1st/2nd/3rd Degree) </li>
+			<li>Selling/Distributing Erotic Material to a Minor </li>
+			<li>Sexual Exploitation of a Minor</li>
+			<li>Sexual Misconduct with a Minor (1st/2nd Degree) </li>
+			<li>Theft (1st/2nd/3rd* Degree)</li>
+			<li>Unlawful Imprisonment</li>
+			<li>Vehicular Homicide</li>
+			<li>Violation of Child Abuse Restraining Order</li>
+		</ul>
+		
+		<p><strong>2. Drug-Related Crimes</strong></p>
+		<p>Have you ever been convicted of a crime related to the manufacture of, delivery of, or possession with intent to manufacture or deliver a controlled substance?</p>
+		<% f.inputs do %>
+			<%= f.input :drug_related_crimes, :label => "", :as => :radio %>
+		<% end -%>
+		
+		<p><strong>3. Related Proceedings</strong></p>
+		<p>Have you ever been found in a dependency action, domestic relations proceeding, disciplinary board hearing, or protection proceeding to have: sexually assaulted or exploited, sexually or physically abused, a minor or developmentally disabled person OR to have financially exploited or abused a vulnerable adult?</p>
+		<% f.inputs do %>
+			<%= f.input :related_proceedings_crimes, :label => "", :as => :radio %>
+		<% end -%>
+		
+		<p><strong>4. Medicare&ndash;Medicaid/Healthcare-related Crimes.</strong></p>
+		<p>Have you ever been convicted of any crime related to the delivery of service under Medicare/Medicaid or any state or federal healthcare program, or convicted of any crime connected with the delivery of a healthcare item or service? Have you ever been judged liable for civil monetary penalties for conduct related to the delivery of services, supplies or other participation in Medicare/Medicaid or any other state or federal healthcare program? Have you ever been excluded from providing services or supplies under Medicare, Medicaid or any other federal funded healthcare program?</p>
+		<% f.inputs do %>
+			<%= f.input :medicare_healthcare_crimes, :label => "", :as => :radio %>
+		<% end -%>
+		
+		<p>5. For all items checked in 1, 2, 3 and 4 above, specify the conviction or action date(s), sentence(s) or penalty(ies), imposed, prison release date(s) and current standing (e.g., parole, work release). For all items with an asterisk (*) above, provide a description of the victim including the victim's age.</p>
+		<% f.inputs do %>
+			<%= f.input :victim_crimes_explanation, :label => "", :input_html => { :rows => 5 } %>
+		<% end -%>
+			
+		<p><strong>6. General Conviction Information</strong></p>
+		<p>Aside from those crimes listed above, within the past 10 years have you ever been convicted of or released from prison for any crimes, excluding parking tickets/traffic citations?</p>
+		<% f.inputs do %>
+			<%= f.input :general_convictions, :label => "", :as => :radio %>
+			<%= f.input :general_convictions_explanation, :label => "If Yes, indicate all conviction dates, prison release date(s) and the nature of the offense(s)", :input_html => { :rows => 3 } %>
+		<% end -%>
+			
+		<p>I certify that the information contained in the above-stated information is true, correct, and complete to the best of my knowledge. I understand that consideration for participation in the Dream Project and the continuation of subsequent participation depend on true, accurate and complete representation of these facts as stated or implied in all application-related materials. I authorize the University of Washington to make inquiries regarding my education, work experience, references, unless otherwise stated, and criminal conviction history. I understand that participation may be conditioned on the University’s receipt of a satisfactory Criminal Conviction Report from the Washington State Patrol or other law-enforcement related agency.</p>
+
+		<% f.inputs do %>
+			<%= f.input :background_check_authorized_at, :as => :boolean, :label => "I understand the statement above.", :input_html => { :value => Time.now } %>
+		<% end -%>
+		
+	<% f.buttons do %>
+		<%= f.submit %>
+	<% end -%>
+<% end -%>

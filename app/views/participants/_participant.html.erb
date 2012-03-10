@@ -1,0 +1,24 @@
+	<% dom_id = "participant_#{participant.id}" %>
+	<tr class="<%= "deselected" if participant.inactive? %> filterable" id="<%= dom_id %>">
+		<td class="name"><%= link_to participant.lastname_first, participant %>
+			<small class="inactive-note">(inactive)</small>
+
+			<% Participant.object_filters.each do |object_filter| %>
+				<%= javascript_tag "filterable('#{dom_id}', #{object_filter.id}, #{object_filter.passes?(participant)})" %>
+			<% end -%>
+
+		</td>
+		<td class="email"><%= mail_to participant.email %></td>
+		<td class="high-school"><%= link_to truncate(participant.high_school.name, :length => 30), 
+						{:action => "high_school", :id => participant.high_school.id }, 
+						:class => 'redirect-link' unless participant.high_school.nil? %></td>
+		<td class="cohort"><%= link_to participant.grad_year, 
+						{:action => "cohort", :id => participant.grad_year }, 
+						:class => 'redirect-link' unless participant.grad_year.nil? %></td>
+						
+		<td class="college-application-count"><%= participant.college_applications.size %></td>
+		<td class="scholarship-application-count"><%= participant.scholarship_applications.size %></td>
+		
+		<td class="functions"><%= link_to 'Show', participant %></td>
+		<td class="functions"><%= link_to 'Edit', edit_participant_path(participant) %></td>
+	</tr>

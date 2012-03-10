@@ -1,0 +1,18 @@
+<h1>Listing college applications
+	<font color="grey">for <%= link_to @participant.fullname, @participant %></font>
+	</h1>
+
+<table>
+  <tr>
+    <th>Institution</th>
+    <th>Decision</th>
+	<th>Functions</th>
+  </tr>
+
+	<%= render :partial => "college_application", :collection => @college_applications %>
+
+</table>
+
+<br />
+
+<%= link_to 'New college application', new_participant_college_application_path, :class => 'add button' %>

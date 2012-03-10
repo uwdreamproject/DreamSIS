@@ -1,0 +1,12 @@
+<table id="scholarship_applications">
+	<tr>
+		<th>Scholarship</th>
+		<th>Amount</th>
+		<th>Awarded?</th>
+		<th>Functions</th>
+	</tr>
+
+	<%= render :partial => "scholarship_applications/scholarship_application", 
+				:collection => @participant.scholarship_applications %>
+
+</table>	

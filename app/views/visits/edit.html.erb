@@ -1,0 +1,13 @@
+<h1>Edit High School Visit for <%= @high_school.name %></h1>
+
+<% semantic_form_for :visit, @visit, :url => high_school_visit_path(@high_school), :html => { :method => :put } do |f| %>
+
+	<%= f.error_messages %>
+
+	<%= render :partial => "events/fields", :locals => { :f => f } %>
+	
+	<%= f.submit "Update", :disable_with => 'Updating...' %>
+	<%= separator %>
+	<%= link_to 'Cancel', high_school_visits_path(@high_school) %>
+
+<% end %>

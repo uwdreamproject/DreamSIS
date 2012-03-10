@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  scholarship_id: 1
+  awarded: false
+  renewable: false
+  accepted: false
+  amount: 9.99
+  date_applied: 2010-11-30
+  restrictions: MyText
+
+two:
+  scholarship_id: 1
+  awarded: false
+  renewable: false
+  accepted: false
+  amount: 9.99
+  date_applied: 2010-11-30
+  restrictions: MyText

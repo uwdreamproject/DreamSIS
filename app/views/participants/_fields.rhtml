@@ -1,0 +1,483 @@
+<fieldset>
+<legend>Name and Personal Information</legend>
+
+	<ul class="inline">
+		<li>
+			<%= f.label :lastname %><br />
+			<%= f.text_field :lastname, :size => 20 %>
+		</li>
+		<li>
+			<%= f.label :firstname %><br />
+			<%= f.text_field :firstname, :size => 15 %>
+		</li>
+		<li>
+			<%= f.label :middlename %><br />
+			<%= f.text_field :middlename, :size => 15 %>
+		</li>
+		<li>	
+			<%= f.label :suffix %><br />
+			<%= f.text_field :suffix, :size => 5 %>
+		</li>
+		<li>	
+			<%= f.label :nickname %><br />
+			<%= f.text_field :nickname %>
+		</li>
+		<li>
+		  <%= f.label :sex %><br />
+		  <%= f.select :sex, {"Male" => "M", "Female" => "F"}, :include_blank => true %>
+		</li>
+	</ul>
+	
+	<%= observe_field 'participant_lastname', 
+						:url => check_duplicate_participants_path, 
+						:with => "Form.serialize($('participant_form'))",
+						:condition => "$F('participant_firstname') != '' && F$('participant_lastname') != ''" %>
+						
+	<%= observe_field 'participant_firstname', 
+						:url => check_duplicate_participants_path, 
+						:with => "Form.serialize($('participant_form'))",
+						:condition => "$F('participant_firstname') != '' && $F('participant_lastname') != ''" %>
+
+<div class="error-message" id="participant_duplicate_warning" style="clear:both"></div>
+</fieldset>
+
+<fieldset>
+<legend>Contact Information</legend>
+
+	<ul class="inline">
+		<li>
+		  <%= f.label :street, "Mailing Address" %><br />
+		  <%= f.text_field :street %>
+		</li>
+		<li>
+		  <%= f.label :city %><br />
+		  <%= f.text_field :city, :size => 15 %>
+		</li>
+		<li>
+		  <%= f.label :state %><br />
+		  <%= f.text_field :state, :size => 2 %>
+		</li>
+		<li>
+		  <%= f.label :zip %><br />
+		  <%= f.text_field :zip %>
+		</li>
+		<li>
+			<%= f.label :bad_address %><br>
+			<%= f.check_box :bad_address %>
+		</li>
+	</ul>
+	<ul class="inline">
+		<li>
+		  <%= f.label :phone_home %><br />
+		  <%= f.text_field :phone_home, :size => 13 %>
+		</li>
+		<li>
+		  <%= f.label :phone_mobile %><br />
+		  <%= f.text_field :phone_mobile, :size => 13 %>
+		</li>
+		<li>
+			<%= f.label :bad_phone %><br>
+			<%= f.check_box :bad_phone %>
+		</li>
+
+	</ul>
+
+	<ul class="inline">
+		<li>
+		  <%= f.label :email %><br />
+		  <%= f.text_field :email %>
+		</li>
+		<li>
+			<%= f.label :bad_email %><br>
+			<%= f.check_box :bad_email %>
+		</li>
+	</ul>
+	
+	<ul class="inline">
+		<li>
+		  <%= f.label :birthdate %><br />
+		  <%= f.date_select :birthdate, :include_blank => true, 
+							:start_year => 1985, :end_year => Time.now.year-10,
+							:order => [:month, :day, :year] %>
+		</li>
+		
+	</ul>
+
+
+</fieldset>
+	
+<fieldset>
+<legend>High School</legend>
+
+	<ul class="inline">
+		<li>
+		  <%= f.label :grad_year %><br />
+		  <%= f.select :grad_year, 2004..Date.current.year+5, :include_blank => true %>
+		</li>
+		<li>
+		  <%= f.label :high_school_id %><br />
+		  <%= f.collection_select :high_school_id, HighSchool.all, :id, :name, :include_blank => true %>		
+		
+		
+			<small>
+				or
+				<%= link_to_function "add a new high school", "Effect.toggle('new_high_school_form', 'blind', {duration:0.25})" %>
+				<div id="new_high_school_form" style="display:none">
+					New high school name: <%= text_field_tag "high_school[name]", "",  :id => "high_school_name" %>
+					<%= button_to_remote "Create", 
+											:url => high_schools_path, 
+											:submit => "new_high_school_form",
+											:method => :post %>
+				</div>
+			</small>
+		
+		</li>
+
+	</ul>
+	<ul class="inline">
+		<li>
+		  <%= f.label :gpa %><br />
+		  <%= f.text_field :gpa, :size => 4 %>
+		</li>
+		<li>
+		  <%= f.label :gpa_date %><br />
+		  <%= f.date_select :gpa_date, :include_blank => true %>
+		</li>
+	</ul>
+
+	<ul class="inline">
+		<li>
+		  <%= f.label :other_location_id %><br />
+		  <%= f.collection_select :other_location_id, Location.all, :id, :name, :include_blank => true %>		
+		</li>
+
+	</ul>
+
+
+</fieldset>
+
+<fieldset>
+<legend>Background Information</legend>
+
+	<ul>
+		<li>
+			How did you hear about the Dream Project? (Check all that apply)
+			<% for how_did_you_hear_option in HowDidYouHearOption.for_participants %>
+			<div>
+				<%= check_box_tag "participant[how_did_you_hear_option_ids][]", 
+									how_did_you_hear_option.id, 
+									@participant.how_did_you_hear_options.include?(how_did_you_hear_option),
+									:id => "participant_how_did_you_hear_option_ids_#{how_did_you_hear_option.id}" %>
+				<label for="participant_how_did_you_hear_option_ids_<%= how_did_you_hear_option.id %>">
+					<%= how_did_you_hear_option.name %>
+				</label>
+			</div>
+			<% end -%>
+			
+			<div>
+				<%= f.label :other_how_did_you_hear, "Other:" %>
+				<%= f.text_field :other_how_did_you_hear %>
+			</div>
+		</li>
+	</ul>
+
+	<ul>
+		<li>If you have a cell phone, what type of texting can you do?
+			<div>
+				<%= f.check_box :can_send_texts %>
+				<%= f.label :can_send_texts %>
+			</div>
+			<div>
+				<%= f.check_box :can_receive_texts %>
+				<%= f.label :can_receive_texts %>
+			</div>
+			<div>
+				<%= f.check_box :unlimited_texting %>
+				<%= f.label :unlimitied_texting, "Unlimited (or near-unlimited) texting" %>
+			</div>
+		</li>
+	</ul>
+
+	<ul>
+		<li>
+			<%= f.check_box :computer_at_home %>
+		 	<%= f.label :computer_at_home, "Reliable access to a computer and email in your home" %>
+		</li>
+	</ul>
+
+	<ul class="inline">
+		<li>Dietary Restrictions:
+			<%= f.check_box :vegetarian %>
+			<%= f.label :vegetarian %>
+
+			<%= f.check_box :vegan %>
+			<%= f.label :vegan %>
+
+			<%= f.check_box :kosher %>
+			<%= f.label :kosher %>
+
+			<%= f.check_box :halal %>
+			<%= f.label :halal %>
+		</li>
+
+		<li>
+		  <%= f.label :dietary_restrictions, "Other:" %><br />
+		  <%= f.text_field :dietary_restrictions %>
+		</li>
+	</ul>
+	
+	<ul>
+		<li>
+			<%= f.label :other_college_programs, "Other college-access or college-readiness programs:" %><br />
+		  	<%= f.text_field :other_college_programs %>
+		</li>
+		
+		<li>
+			<%= f.check_box :college_bound_scholarship %>
+			<%= f.label :college_bound_scholarship, "Signed up for Washington College Bound Scholarship" %>
+		</li>
+	</ul>
+
+	<ul class="inline">
+		<li>
+			<%= f.label :plans_after_high_school %>
+			<%= f.select :plans_after_high_school, ["Vocational school", "Military service", "Community College",
+													"4-year college/university", "Job (not attend college)", "Job",
+													"Not attend college", "Don't know"],
+													:include_blank => true %>
+		</li>
+	</ul>
+
+</fieldset>	
+
+
+<fieldset>
+<legend>Race/Ethnicity</legend>
+
+	<%= f.check_box :african_american %>
+	<%= f.label :african_american, "African American:" %>
+	<%= f.text_field :african_american_heritage %>
+	<br>
+
+	<%= f.check_box :african %>
+	<%= f.label :african, "African:" %>
+	<%= f.text_field :african_heritage %>
+	<br>
+
+	<%= f.check_box :american_indian %>
+	<%= f.label :american_indian, "Alaska Native or American Indian:" %>
+	<%= f.text_field :american_indian_heritage %>
+	<br>
+
+	<%= f.check_box :asian %>
+	<%= f.label :asian, "Asian American:" %>
+	<%= f.text_field :asian_heritage %>
+	<br>
+
+	<%= f.check_box :hispanic %>
+	<%= f.label :hispanic, "Hispanic:" %>
+	<%= f.text_field :hispanic_heritage %>
+	<br>
+
+	<%= f.check_box :latino %>
+	<%= f.label :latino, "Latino:" %>
+	<%= f.text_field :latino_heritage %>
+	<br>
+
+	<%= f.check_box :middle_eastern %>
+	<%= f.label :middle_eastern, "Middle Eastern:" %>
+	<%= f.text_field :middle_eastern_heritage %>
+	<br>
+
+	<%= f.check_box :pacific_islander %>
+	<%= f.label :pacific_islander, "Pacific Islander:" %>
+	<%= f.text_field :pacific_islander_heritage %>
+	<br>
+
+	<%= f.check_box :caucasian %>
+	<%= f.label :caucasian, "Caucasian or White:" %>
+	<%= f.text_field :caucasian_heritage %>
+	<br>
+
+	<%= f.check_box :other_ethnicity %>
+	<%= f.label :other_ethnicity, "Other ethnicity:" %>
+	<%= f.text_field :other_heritage %>
+
+</fieldset>
+
+
+<fieldset>
+<legend>Family History Information</legend>
+
+	<ul>
+		<li>
+			<%= f.check_box :first_generation %>
+			<%= f.label :first_generation, "First in immediate family to go to college/university" %>
+			
+			<ul class="inline">
+				<li>
+					<%= f.label :family_members_who_went_to_college %><br>
+					<%= f.text_field :family_members_who_went_to_college %>
+				</li>
+				<li>
+					<%= f.check_box :family_members_graduated %>
+					<%= f.label :family_members_graduated, "Did any of them graduate?" %>
+				</li>
+			</ul>
+		</li>
+	</ul>
+
+
+	<ul class="inline">
+		<li>
+			<%= f.check_box :attended_school_outside_usa %>
+			<%= f.label :attended_school_outside_usa, "Student attended school outside the USA?" %>
+		</li>
+		<li>
+			<%= f.label :countries_attended_school_outside_usa, "In what countries?" %>
+			<%= f.text_field :countries_attended_school_outside_usa %>
+		</li>
+	</ul>
+	
+	<br><br>
+	Grades student attended outside USA:<br>
+	<ul class="inline">
+		<li><%= f.check_box :attended_grade_1_outside_usa %><%= f.label :attended_grade_1_outside_usa, "1" %></li>
+		<li><%= f.check_box :attended_grade_2_outside_usa %><%= f.label :attended_grade_2_outside_usa, "2" %></li>
+		<li><%= f.check_box :attended_grade_3_outside_usa %><%= f.label :attended_grade_3_outside_usa, "3" %></li>
+		<li><%= f.check_box :attended_grade_4_outside_usa %><%= f.label :attended_grade_4_outside_usa, "4" %></li>
+		<li><%= f.check_box :attended_grade_5_outside_usa %><%= f.label :attended_grade_5_outside_usa, "5" %></li>
+		<li><%= f.check_box :attended_grade_6_outside_usa %><%= f.label :attended_grade_6_outside_usa, "6" %></li>
+		<li><%= f.check_box :attended_grade_7_outside_usa %><%= f.label :attended_grade_7_outside_usa, "7" %></li>
+		<li><%= f.check_box :attended_grade_8_outside_usa %><%= f.label :attended_grade_8_outside_usa, "8" %></li>
+		<li><%= f.check_box :attended_grade_9_outside_usa %><%= f.label :attended_grade_9_outside_usa, "9" %></li>
+		<li><%= f.check_box :attended_grade_10_outside_usa %><%= f.label :attended_grade_10_outside_usa, "10" %></li>
+		<li><%= f.check_box :attended_grade_11_outside_usa %><%= f.label :attended_grade_11_outside_usa, "11" %></li>
+		<li><%= f.check_box :attended_grade_12_outside_usa %><%= f.label :attended_grade_12_outside_usa, "12" %></li>
+	</ul>
+
+</fieldset>
+
+
+
+<fieldset>
+<legend>Parent/Guardian Information</legend>
+
+	<ul>
+		<li>
+			<%= f.check_box :english_not_primary_at_home, {:checked => true}, "0", "1" %>
+		 	<%= f.label :english_not_primary_at_home, "English is primary language spoken in the home" %>
+		
+			<ul>
+				<li>
+				 	<%= f.label :parent_only_speaks_language, "One parent/guardian <strong>only</strong> speaks this language:" %>
+					<%= f.text_field :parent_only_speaks_language %>
+				</li>			
+				<li>
+				 	<%= f.label :other_languages, "Other languages spoken in home" %>
+					<%= f.text_field :other_languages %>
+				</li>
+			</ul>	
+		</li>
+		<li>
+		  <%= f.check_box :single_parent_household %>
+		  <%= f.label :single_parent_household %>
+		</li>
+
+		<li>
+		  <%= f.check_box :foster_youth %>
+		  <%= f.label :foster_youth, "Foster care youth" %>
+		</li>
+		
+	</ul>
+
+	<ul class="inline">
+		<li>
+		  <%= f.label :mother_education_level_id, "Mother/Guardian 1 Education Level" %><br />
+		  <%= f.collection_select :mother_education_level_id, EducationLevel.all, :id, :title, :include_blank => true %>
+		</li>
+		<li>
+			<%= f.label :mother_education_country %>
+			<%= f.text_field :mother_education_country %>			
+		</li>
+		<li>
+			<%= f.check_box :live_with_mother %>
+		  	<%= f.label :live_with_mother %>
+		</li>
+	</ul>
+
+	<ul class="inline">
+		<li>
+		  <%= f.label :father_education_level_id, "Father/Guardian 2 Education Level" %><br />
+		  <%= f.collection_select :father_education_level_id, EducationLevel.all, :id, :title, :include_blank => true %>
+		</li>
+		<li>
+			<%= f.label :father_education_country %>
+			<%= f.text_field :father_education_country %>			
+		</li>
+		<li>
+			<%= f.check_box :live_with_father %>
+		  	<%= f.label :live_with_father %>
+		</li>
+	</ul>
+</fieldset>
+
+
+<fieldset>
+<legend>Family Financial Information</legend>
+
+	<ul>
+		<li>
+		  <%= f.check_box :free_reduced_lunch %>
+		  <%= f.label :free_reduced_lunch, "Qualifies for free- or reduced-price lunch" %>
+		</li>
+		<li>
+		  <%= f.label :household_size, "Number of persons in household" %><br />
+		  <%= f.select :household_size, 1..20, :include_blank => true %>
+		</li>		
+	</ul>
+
+</fieldset>
+
+
+<fieldset>
+<legend>Administrative Information</legend>
+
+	<ul class="inline">
+
+		<li>
+		  <%= f.label :fafsa_submitted_date %><br />
+		  <%= f.date_select :fafsa_submitted_date, :include_blank => true %>
+		</li>
+		<li>
+		  <%= f.label :binder_date, "Workbook Date" %><br />
+		  <%= f.date_select :binder_date, :include_blank => true %>
+		</li>
+		<li>
+		  <%= f.label :inactive %><br />
+		  <%= f.check_box :inactive %>
+		</li>
+	</ul>
+	
+	<ul>
+		<li>
+			<%= f.label :survey_id, "Survey ID:" %>
+			<%= f.text_field :survey_id, :size => 8 %>			
+		</li>
+	</ul>
+			
+			
+
+</fieldset>
+
+
+<fieldset>
+<legend>Post-Dream Project Information</legend>
+
+	<%= f.label :college_attending_id %>
+	<%= f.collection_select :college_attending_id, 
+							f.object.college_applications, 
+							:institution_id, :name, 
+							:include_blank => "None" %>
+			
+</fieldset>

@@ -1,0 +1,22 @@
+<h1>Mentors</h1>
+
+<%= will_paginate @mentors %>
+
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>UW NetID</th>
+			<th>Current High School Group</th>
+			<th>Functions</th>
+		</tr>
+	</thead>
+
+	<tbody id="original_mentors">
+		<%= render @mentors %>
+	</tbody>
+	
+	<tbody id="mentor_search_results"></tbody>
+</table>
+
+<%= render :partial => 'sidebar' %>

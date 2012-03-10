@@ -1,0 +1,24 @@
+<table class="participants">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Email</th>
+			<th>High school</th>
+			<th>Cohort</th>
+			<th>Colleges</th>
+			<th>Scholarships</th>
+			<th colspan=3></th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<%= render :partial => 'participants/participant', :collection => @my_mentees || @participants %>
+	
+		<%- if (@my_mentees || @participants).empty? -%>
+			<tr class="empty">
+				<td colspan=10>You don't currently have any mentees assigned to you.</td>
+			</tr>
+		<% end -%>
+	</tbody>
+	
+</table>

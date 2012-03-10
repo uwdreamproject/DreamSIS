@@ -1,0 +1,23 @@
+<h1>High Schools</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+	<th colspan=5></th>
+  </tr>
+
+<% for high_school in @high_schools %>
+  <tr>
+    <td><%=h high_school.name %></td>
+	<td><%= high_school.partner_school? ? "[Partner School]" : "" %></td>
+    <td><%= link_to 'Show', high_school %></td>
+	<td><%= link_to "#{Quarter.current_quarter.title} Visits", high_school_visits_path(high_school, Quarter.current_quarter) if Quarter.current_quarter %>
+    <td><%= link_to 'Edit', edit_high_school_path(high_school) %></td>
+    <td><%= link_to 'Destroy', high_school, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New high school', new_high_school_path, :class => 'add button' %>

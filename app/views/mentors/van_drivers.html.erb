@@ -1,0 +1,37 @@
+<h1>Current Valid Van Drivers</h1>
+
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>UW NetID</th>
+			<th>Van Training Date</th>
+			<th>Husky Card Registered?</th>
+			<th colspan=4>Functions</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<%- for mentor in @mentors -%>
+			<tr id="mentor_<%= mentor.id %>">
+				<td><%= link_to h(mentor.fullname), mentor %></td>
+				<td><%=h mentor.uw_net_id %></td>
+				<td><%= mentor.van_driver_training_completed_at.to_s(:short_date) rescue nil %></td>
+				<td><%- if mentor.husky_card_registered? -%>
+						<span class="success-message">Yes</span>
+						<span class="light">(<%=h mentor.husky_card_rfid %>)</span>
+					<% else %>
+					  	<em class="light">No</em>
+					<% end -%></td>
+				<td><%= link_to 'Details', mentor %></td>
+				<td><%= link_to 'Edit', edit_mentor_path(mentor) %></td>
+			</tr>
+		<% end -%>
+		
+		<%- if @mentors.empty? -%>
+			<tr class="empty">
+				<td colspan=10>No mentors are currently trained to drive vans.</td>
+			</tr>
+		<% end -%>
+	</tbody>
+</table>

@@ -1,0 +1,7 @@
+<h1><%=h @object_filter.title %>
+	<span class="light right"><%= link_to "edit", edit_object_filter_path(@object_filter) %></span></h1>
+
+<p>Object Type: <%= @object_filter.object_class %></p>
+<p>Criteria: <tt><%= @object_filter.criteria %></tt></p>
+
+<p><%= link_to "Back", object_filters_path %></p>

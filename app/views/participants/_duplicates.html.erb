@@ -1,0 +1,7 @@
+<p>There are some other participants with that name. Are you looking for one of these students?</p>
+
+<ul>
+	<% for participant in @duplicates %>
+		<li><%= link_to participant.lastname_first, participant %> at <%= participant.high_school.try(:name) %></li>
+	<% end -%>
+</ul>

@@ -1,0 +1,257 @@
+<thead>
+	<tr>
+		<th>id</th>
+		<th>firstname</th>
+		<th>middlename</th>
+		<th>lastname</th>
+		<th>suffix</th>
+		<th>nickname</th>
+		<th>street</th>
+		<th>city</th>
+		<th>state</th>
+		<th>zip</th>
+		<th>email</th>
+		<th>phone_home</th>
+		<th>phone_mobile</th>
+		<th>phone_work</th>
+		<th>screen_name</th>
+		<th>screen_name_type</th>
+		<th>birthdate</th>
+		<th>sex</th>
+		<th>free_reduced_lunch</th>
+		<th>no_internet_at_home</th>
+		<th>english_not_primary_at_home</th>
+		<th>other_languages</th>
+		<th>english_second_language</th>
+		<th>grad_year</th>
+		<th>gpa</th>
+		<th>gpa_date</th>
+		<th>after_school_activities</th>
+		<th>time_conflicts</th>
+		<th>fafsa_submitted_date</th>
+		<th>binder_date</th>
+		<th>photo_release_date</th>
+		<th>photo_release_no_fullname</th>
+		<th>relationship</th>
+		<th>type</th>
+		<th>high_school</th>
+		<th>first_generation</th>
+		<th>computer_at_home</th>
+		<th>dietary_restrictions</th>
+		<th>vegetarian</th>
+		<th>vegan</th>
+		<th>hispanic</th>
+		<th>african_american</th>
+		<th>american_indian</th>
+		<th>asian</th>
+		<th>pacific_islander</th>
+		<th>caucasian</th>
+		<th>african</th>
+		<th>latino</th>
+		<th>middle_eastern</th>
+		<th>other_ethnicity</th>
+		<th>african_american_heritage</th>
+		<th>african_heritage</th>
+		<th>american_indian_heritage</th>
+		<th>asian_heritage</th>
+		<th>hispanic_heritage</th>
+		<th>latino_heritage</th>
+		<th>middle_eastern_heritage</th>
+		<th>pacific_islander_heritage</th>
+		<th>caucasian_heritage</th>
+		<th>other_heritage</th>
+		<th>ethnicity_details</th>
+		<th>multiracial</th>
+		<th>no_ethnicity_response</th>
+		<th>inactive</th>
+		<th>mother_education_level</th>
+		<th>father_education_level</th>
+		<th>mother_education_country</th>
+		<th>father_education_country</th>
+		<th>family_income_level</th>
+		<th>college_attending</th>
+		<th>household_size</th>
+		<th>single_parent_household</th>
+		<th>clearinghouse_record_found?</th>
+		<th>survey_id</th>
+		<th>not_attending_college</th>
+		<th>intake_survey_date</th>
+		<th>received_binder</th>
+		<th>live_the_dream_recipient</th>
+		<th>live_the_dream_nominee</th>
+		<th>address_is_invalid</th>
+		<th>email_is_invalid</th>
+		<th>other_programs</th>
+		<th>college_graduation_date</th>
+		<th>target_participant</th>
+		<th>not_target_participant</th>
+		<th>inactive_explanation</th>
+		<th>inactive_date</th>
+		<th>parent_only_speaks_language</th>
+		<th>kosher</th>
+		<th>halal</th>
+		<th>foster_youth</th>
+		<th>plans_after_high_school</th>
+		<th>live_with_mother</th>
+		<th>live_with_father</th>
+		<th>parent_graduated_college</th>
+		<th>family_members_who_went_to_college</th>
+		<th>family_members_graduated</th>
+		<th>attended_school_outside_usa</th>
+		<th>countries_attended_school_outside_usa</th>
+		<th>attended_grade_1_outside_usa</th>
+		<th>attended_grade_2_outside_usa</th>
+		<th>attended_grade_3_outside_usa</th>
+		<th>attended_grade_4_outside_usa</th>
+		<th>attended_grade_5_outside_usa</th>
+		<th>attended_grade_6_outside_usa</th>
+		<th>attended_grade_7_outside_usa</th>
+		<th>attended_grade_8_outside_usa</th>
+		<th>attended_grade_9_outside_usa</th>
+		<th>attended_grade_10_outside_usa</th>
+		<th>attended_grade_11_outside_usa</th>
+		<th>attended_grade_12_outside_usa</th>
+		<th>bad_address</th>
+		<th>bad_phone</th>
+		<th>bad_email</th>
+		<th>other_how_did_you_hear</th>
+		<th>can_send_texts</th>
+		<th>can_receive_texts</th>
+		<th>unlimited_texting</th>
+		<th>college_bound_scholarship</th>
+		<th>other_college_programs</th>
+		<th>other_location_id</th>
+		<th>created_at</th>
+		<th>updated_at</th>
+	</tr>
+</thead>
+
+<tbody>
+<% @participants.each do |participant| %>
+	<tr>
+	<td><%=h participant.id %></td>
+	<td><%=h participant.firstname %></td>
+	<td><%=h participant.middlename %></td>
+	<td><%=h participant.lastname %></td>
+	<td><%=h participant.suffix %></td>
+	<td><%=h participant.nickname %></td>
+	<td><%=h participant.street %></td>
+	<td><%=h participant.city %></td>
+	<td><%=h participant.state %></td>
+	<td><%=h participant.zip %></td>
+	<td><%=h participant.email %></td>
+	<td><%=h participant.phone_home %></td>
+	<td><%=h participant.phone_mobile %></td>
+	<td><%=h participant.phone_work %></td>
+	<td><%=h participant.screen_name %></td>
+	<td><%=h participant.screen_name_type %></td>
+	<td><%=h participant.birthdate %></td>
+	<td><%=h participant.sex %></td>
+	<td><%=h participant.free_reduced_lunch %></td>
+	<td><%=h participant.no_internet_at_home %></td>
+	<td><%=h participant.english_not_primary_at_home %></td>
+	<td><%=h participant.other_languages %></td>
+	<td><%=h participant.english_second_language %></td>
+	<td><%=h participant.grad_year %></td>
+	<td><%=h participant.gpa %></td>
+	<td><%=h participant.gpa_date %></td>
+	<td><%=h participant.after_school_activities %></td>
+	<td><%=h participant.time_conflicts %></td>
+	<td><%=h participant.fafsa_submitted_date %></td>
+	<td><%=h participant.binder_date %></td>
+	<td><%=h participant.photo_release_date %></td>
+	<td><%=h participant.photo_release_no_fullname %></td>
+	<td><%=h participant.relationship %></td>
+	<td><%=h participant.type %></td>
+	<td><%=h participant.high_school.name rescue nil %></td>
+	<td><%=h participant.first_generation %></td>
+	<td><%=h participant.computer_at_home %></td>
+	<td><%=h participant.dietary_restrictions %></td>
+	<td><%=h participant.vegetarian %></td>
+	<td><%=h participant.vegan %></td>
+	<td><%=h participant.hispanic %></td>
+	<td><%=h participant.african_american %></td>
+	<td><%=h participant.american_indian %></td>
+	<td><%=h participant.asian %></td>
+	<td><%=h participant.pacific_islander %></td>
+	<td><%=h participant.caucasian %></td>
+	<td><%=h participant.african %></td>
+	<td><%=h participant.latino %></td>
+	<td><%=h participant.middle_eastern %></td>
+	<td><%=h participant.other_ethnicity %></td>
+	<td><%=h participant.african_american_heritage %></td>
+	<td><%=h participant.african_heritage %></td>
+	<td><%=h participant.american_indian_heritage %></td>
+	<td><%=h participant.asian_heritage %></td>
+	<td><%=h participant.hispanic_heritage %></td>
+	<td><%=h participant.latino_heritage %></td>
+	<td><%=h participant.middle_eastern_heritage %></td>
+	<td><%=h participant.pacific_islander_heritage %></td>
+	<td><%=h participant.caucasian_heritage %></td>
+	<td><%=h participant.other_heritage %></td>
+	<td><%=h participant.ethnicity_details %></td>
+	<td><%=h participant.multiracial? %></td>
+	<td><%=h participant.no_ethnicity_response? %></td>
+	<td><%=h participant.inactive %></td>
+	<td><%=h participant.mother_education_level.title if participant.mother_education_level %></td>
+	<td><%=h participant.father_education_level.title if participant.father_education_level %></td>
+	<td><%=h participant.mother_education_country %></td>
+	<td><%=h participant.father_education_country %></td>
+	<td><%=h participant.family_income_level.title if participant.family_income_level %></td>
+	<td><%=h participant.college_attending.name if participant.college_attending %></td>
+	<td><%=h participant.household_size %></td>
+	<td><%=h participant.single_parent_household %></td>
+	<td><%=h participant.clearinghouse_record_found? %></td>
+	<td><%=h participant.read_attribute(:survey_id) %></td>
+	<td><%=h participant.not_attending_college %></td>
+	<td><%=h participant.intake_survey_date %></td>
+	<td><%=h participant.received_binder %></td>
+	<td><%=h participant.live_the_dream_recipient %></td>
+	<td><%=h participant.live_the_dream_nominee %></td>
+	<td><%=h participant.address_is_invalid %></td>
+	<td><%=h participant.email_is_invalid %></td>
+	<td><%=h participant.other_programs %></td>
+	<td><%=h participant.college_graduation_date %></td>
+	<td><%=h participant.target_participant %></td>
+	<td><%=h participant.not_target_participant %></td>
+	<td><%=h participant.inactive_explanation %></td>
+	<td><%=h participant.inactive_date %></td>
+	<td><%=h participant.parent_only_speaks_language %></td>
+	<td><%=h participant.kosher %></td>
+	<td><%=h participant.halal %></td>
+	<td><%=h participant.foster_youth %></td>
+	<td><%=h participant.plans_after_high_school %></td>
+	<td><%=h participant.live_with_mother %></td>
+	<td><%=h participant.live_with_father %></td>
+	<td><%=h participant.parent_graduated_college %></td>
+	<td><%=h participant.family_members_who_went_to_college %></td>
+	<td><%=h participant.family_members_graduated %></td>
+	<td><%=h participant.attended_school_outside_usa %></td>
+	<td><%=h participant.countries_attended_school_outside_usa %></td>
+	<td><%=h participant.attended_grade_1_outside_usa %></td>
+	<td><%=h participant.attended_grade_2_outside_usa %></td>
+	<td><%=h participant.attended_grade_3_outside_usa %></td>
+	<td><%=h participant.attended_grade_4_outside_usa %></td>
+	<td><%=h participant.attended_grade_5_outside_usa %></td>
+	<td><%=h participant.attended_grade_6_outside_usa %></td>
+	<td><%=h participant.attended_grade_7_outside_usa %></td>
+	<td><%=h participant.attended_grade_8_outside_usa %></td>
+	<td><%=h participant.attended_grade_9_outside_usa %></td>
+	<td><%=h participant.attended_grade_10_outside_usa %></td>
+	<td><%=h participant.attended_grade_11_outside_usa %></td>
+	<td><%=h participant.attended_grade_12_outside_usa %></td>
+	<td><%=h participant.bad_address %></td>
+	<td><%=h participant.bad_phone %></td>
+	<td><%=h participant.bad_email %></td>
+	<td><%=h participant.other_how_did_you_hear %></td>
+	<td><%=h participant.can_send_texts %></td>
+	<td><%=h participant.can_receive_texts %></td>
+	<td><%=h participant.unlimited_texting %></td>
+	<td><%=h participant.college_bound_scholarship %></td>
+	<td><%=h participant.other_college_programs %></td>
+	<td><%=h participant.other_location_id %></td>
+	<td><%=h participant.created_at %></td>
+	<td><%=h participant.updated_at %></td>
+	</tr>
+<% end %>
+</tbody>

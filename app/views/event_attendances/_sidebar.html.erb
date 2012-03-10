@@ -1,0 +1,7 @@
+<div id="sidebar">
+	<% if @audience.to_s == "Participant" %>
+		<%= link_to 'Check-in Mentors', checkin_event_event_attendances_path(@event, :audience => "Mentor"), :class => 'sync button' %>
+	<% else %>
+		<%= link_to 'Check-in Participants', checkin_event_event_attendances_path(@event, :audience => "Participant"), :class => 'sync button' %>
+	<% end -%>
+</div>

@@ -1,0 +1,19 @@
+<h1>Listing scholarship applications
+	<font color="grey">for <%= link_to @participant.fullname, @participant %></font>
+	</h1>
+
+<table>
+  <tr>
+		<th>Scholarship</th>
+		<th>Amount</th>
+		<th>Awarded?</th>
+		<th>Functions</th>
+  </tr>
+
+	<%= render :partial => "scholarship_application", :collection => @scholarship_applications %>
+
+</table>
+
+<br />
+
+<%= link_to 'New scholarship application', new_participant_scholarship_application_path, :class => 'add button' %>

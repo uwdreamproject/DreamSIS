@@ -1,0 +1,87 @@
+/* @override 
+	http://localhost:3000/stylesheets/print.css?1294775854
+	http://dreamsis.dev/stylesheets/print.css
+*/
+
+body {
+	background: none;
+	padding: 0 0.25in 0.25in 0.25in;
+}
+
+#header {
+	background: none;
+	border-bottom: 1px solid #999;
+	height: 30px;
+	box-shadow: none;
+	padding: 3px 0;
+}
+
+#sidebar-header {
+	display: none;
+}
+
+#header h1 {
+	background: none;
+	margin-top: 0;
+}
+
+#header h1 a {
+	text-decoration: none;
+	font-size: 100%;
+}
+
+#header h1 a strong {
+	display: inline;
+	color: black;
+	font-weight: normal;
+}
+
+.menu, #header .menu {
+	display: none;
+}
+
+#main-nav {
+	display: none;
+}
+
+#menu-shadow {
+	display: none;
+}
+
+#login_logout {
+	position: absolute;
+	right: 0.25in;
+	top: 15px;
+	color: black;
+}
+
+#login_logout .outline.tag {
+	background: none;
+	border: 1px solid rgba(0,0,0,0.3);
+	color: black;
+	font-size: 70%;
+}
+
+#content {
+	margin: 0;
+	background: none;
+	padding: 0;
+}
+
+#content-wrap {
+	padding: 0;
+	background: none;
+	
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	-moz-box-shadow: none;
+
+}
+
+#sidebar {
+	display: none;
+}
+
+.noprint, .no-print {
+	display: none;
+}

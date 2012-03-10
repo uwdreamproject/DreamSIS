@@ -1,0 +1,20 @@
+<h1>Events</h1>
+
+<%= will_paginate @events %>
+
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Date</th>
+		<th>Invited</th>
+		<th>RSVP'd</th>
+		<th>Attended</th>
+		<th colspan=3>Functions</th>
+	</tr>
+
+	<%= render :partial => 'event', :collection => @events %>
+</table>
+
+<div id="sidebar">
+	<%= link_to 'Create new event', new_event_path, :class => 'add button' %>
+</div>

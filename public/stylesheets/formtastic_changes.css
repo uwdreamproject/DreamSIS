@@ -1,0 +1,25 @@
+/* @override 
+	http://localhost:3000/stylesheets/formtastic_changes.css?1300007220
+	http://dreamsis.dev/stylesheets/formtastic_changes.css
+*/
+
+/* -------------------------------------------------------------------------------------------------
+
+Load this stylesheet after formtastic.css in your layouts to override the CSS to suit your needs.
+This will allow you to update formtastic.css with new releases without clobbering your own changes.
+
+For example, to make the inline hint paragraphs a little darker in color than the standard #666:
+
+form.formtastic fieldset > ol > li p.inline-hints { color:#333; }
+
+HINT:
+The following style may be *conditionally* included for improved support on older versions of IE(<8)
+form.formtastic fieldset ol li fieldset legend { margin-left: -6px;}
+
+--------------------------------------------------------------------------------------------------*/
+
+.inline-errors {
+	background: url(../images/error-arrow.gif) no-repeat;
+	padding-left: 20px;
+	background-color: yellow;
+}

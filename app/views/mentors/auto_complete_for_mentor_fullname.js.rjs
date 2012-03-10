@@ -1,0 +1,5 @@
+unless params[:mentor][:fullname].blank?
+  page.hide 'original_mentors'
+  page << "$$('.pagination').invoke('hide')"
+  page.replace_html 'mentor_search_results', :partial => @mentors
+end

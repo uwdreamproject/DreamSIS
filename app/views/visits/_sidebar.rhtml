@@ -1,0 +1,11 @@
+<div id="sidebar">
+	
+	<h1><%= link_to 'Take Attendance', attendance_high_school_visits_path(@high_school, @quarter), :class => 'edit button' %></h1>
+
+	<p><%= link_to "Add new high school visit", new_high_school_visit_path(@high_school, @quarter), :class => 'add button' %></p>
+
+	<%= render :partial => "shared/quarter_select", 
+				:locals => { :form_url => high_school_visits_path(@high_school, "new")},
+				:object => @quarter %>
+	
+</div>

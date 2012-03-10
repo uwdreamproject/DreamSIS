@@ -1,0 +1,13 @@
+<%= "</div><div class='page-break-note noprint'><span>page break</span></div><div class='survey_code_cards' style='page-break-after:always'>" if i%15==0 %>
+	
+<div class="survey_code_card">
+	<span class="name">
+		<%= participant.try(:lastname_first) || "&nbsp;" %>
+		<small><%= participant.try(:id) %></small>
+		</span>
+	<ol>
+		<li>Go to <span class="url">http://dreamproject.org/survey</span></li>
+		<li>Enter your survey ID code:</li>
+	</ol>
+	<span class="code"><%= code %></span>
+</div>

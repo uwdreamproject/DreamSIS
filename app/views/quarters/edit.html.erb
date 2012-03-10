@@ -1,0 +1,21 @@
+<h1><%= @quarter.title %></h1>
+
+<% semantic_form_for @quarter, :html => { :method => :put } do |f| %>
+
+	<%= f.error_messages %>
+
+	<%= render :partial => "fields", :locals => { :f => f } %>
+	
+	<%= f.submit "Save", :disable_with => 'Saving...' %>
+	<span class="separator">&mdash; or &mdash;</span>
+	<%= link_to 'Cancel', quarters_path %>
+
+<% end %>
+
+<div id="sidebar">
+	
+	<%= link_to "Sync with UW Calendar", 
+				sync_quarter_path(@quarter), 
+				:method => :put, 
+				:confirm => "Are you sure you want to sync this quarter with the UW calendar?",
+				:class => "sync button" %>

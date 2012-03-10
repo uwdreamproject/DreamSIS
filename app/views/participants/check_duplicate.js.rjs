@@ -1,0 +1,5 @@
+if @duplicates.empty?
+  page.replace_html :participant_duplicate_warning, nil
+else
+  page.replace_html :participant_duplicate_warning, :partial => "duplicates"
+end

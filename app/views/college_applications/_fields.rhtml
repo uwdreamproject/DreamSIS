@@ -1,0 +1,15 @@
+<div style="float:right; display:none">
+  <strong>OR</strong> choose from the top 15 institutions:
+  <br>
+  <ul>
+  <%# for institution in CollegeApplication.top_institutions(15) %>
+	<li><%#= link_to_function institution.name, "$('college_application_institution_id').value=#{institution.id}" %></li>
+  <%# end -%>
+  </ul>
+</div>
+
+  <%= f.input :institution_id, :collection => Institution.all, :include_blank => true %>
+  <%= f.input :choice, :as => :radio, :collection => ["Reach", "Solid", "Safety"], :include_blank => true %>
+  <%= f.input :date_applied, :include_blank => true, :hint => link_to_now('college_application_date_applied') %>
+  <%= f.input :date_notified, :include_blank => true, :hint => link_to_now('college_application_date_notified') %>
+  <%= f.input :decision, :as => :radio, :collection => ["Accepted", "Denied", "Waitlisted"], :include_blank => true %>

@@ -1,0 +1,17 @@
+<tr>
+	<td class="status_tag"><%- if mentor_quarter.volunteer? -%>
+			<span class="orange tag">Volunteer</span>
+		<%- else -%>
+			<span class="green tag">Enrolled</span>
+		<% end -%>
+	</td>
+	
+	<td class="section_id"><%= content_tag :span, 
+			mentor_quarter.mentor_quarter_group.try(:section_id), 
+			:class => 'section_id tag' %></td>
+			
+	<td class="mentor_quarter_group_title">
+		<%= mentor_quarter.mentor_quarter_group.try(:title) %>
+		<%= content_tag :div, mentor_quarter.mentor_quarter_group.try(:times), :class => 'light' unless mentor_quarter.mentor_quarter_group.try(:times).blank? %>
+		</td>
+</tr>

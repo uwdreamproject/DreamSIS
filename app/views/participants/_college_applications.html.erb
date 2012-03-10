@@ -1,0 +1,12 @@
+<table id="college_applications">
+	<tr>
+		<th>Institution</th>
+		<th>Choice</th>
+		<th>Decision</th>
+		<th>Functions</th>
+	</tr>
+
+	<%= render :partial => "college_applications/college_application", 
+				:collection => @participant.college_applications %>
+
+</table>	

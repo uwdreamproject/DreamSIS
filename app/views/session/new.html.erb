@@ -1,0 +1,57 @@
+<h1>Login</h1>
+
+<!-- <table class="login">
+	<tr>
+		<% form_tag session_path do -%>
+
+		<td id="uwnetid">
+			
+			<div>
+				<h2>UW Students, Faculty &amp; Staff</h2>			
+				<%= link_to image_tag('app/weblogin-logo.gif'), session_path(:uwnetid_button => true), :method => :put %>
+				<p><%= submit_tag 'Log in with UW NetID', :name => 'uwnetid_button' %></p>
+			</div>
+
+		</td>
+		
+		<%= hidden_field_tag "referer", request.env['HTTP_REFERER'] %>
+		<% end -%>		
+		
+-->		<% form_tag session_path do -%>
+
+		<!-- <td id="other"> -->
+
+			
+			<p><label for="login">Username</label><br/>
+				<%= text_field_tag 'login', params[:login] %></p>
+
+			<p><label for="password">Password</label><br/>
+				<%= password_field_tag 'password', params[:password] %>
+				
+				<!-- <br/><small><%= link_to "Forgot your password?", :action => 'forgot' %></small> -->
+				</p>
+
+			<!-- <p><label for="remember_me">Remember me:</label>
+				<%= check_box_tag 'remember_me' %></p>
+ -->
+			<p><%= submit_tag 'Log in' %></p>
+
+			<!-- <p id="separator">&mdash; or &mdash;</p>
+
+			<p>
+				<label for="openid_url"><b>OpenID URL</b></label><br />
+				<%= text_field_tag "openid_url" %></p>
+
+			<p><%= submit_tag 'Log in' %></p> -->
+
+			<!-- <p id="separator">&mdash; or &mdash;</p>
+
+			<p><%= link_to "Click here to quickly create a new account", signup_path %></p> -->
+
+		<!-- </td>
+	</tr>
+</table> -->
+
+ <%= hidden_field_tag "referer", request.env['HTTP_REFERER'] %>
+
+<% end -%>

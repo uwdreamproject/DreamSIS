@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	"http://www.w3.org/TR/xhtml11/DTD/xhtml11/dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8"/>
+</head>
+<body>
+	<div class="group">
+		Regid: <span class="regid"><%= regid %></span>
+		<br/>
+		<ul class="members">
+			<% for member in @members %>
+			<li>
+				<a rel="memberlink" class="member" type="uwnetid" href="<%= constructed_path %>/member/<%= member %>"><%= member %></a>
+			</li>
+			<% end %>
+		</ul>
+	</div>
+</body>
+</html>

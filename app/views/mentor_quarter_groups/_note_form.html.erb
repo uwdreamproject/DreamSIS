@@ -1,0 +1,24 @@
+<div id="note_form_container_<%= mentor_quarter.id %>">
+
+	<% if mentor_quarter.notes.blank? %>
+		<%= link_to_function "Add note", 
+							"this.hide(); Element.toggle('note_form_#{mentor_quarter.id}')", 
+							:class => 'add notes button show_on_hover',
+							:id => "add_note_button_#{mentor_quarter.id}" %>
+	<%- else -%>
+		<div class="notes" onClick="Element.toggle(this); Element.toggle('note_form_<%= mentor_quarter.id %>'); $('mentor_quarter_notes_<%= mentor_quarter.id %>').select();" id="notes_<%= mentor_quarter.id %>">
+			<%= simple_format(h(mentor_quarter.notes)) %>
+		</div>
+	<% end -%>
+
+	<div class="notes" id="note_form_<%= mentor_quarter.id %>" style="display:none">
+		<% remote_form_for [@mentor_quarter_group, mentor_quarter] do |f| %>
+			<%= f.text_area :notes, :rows => 3, :id => "mentor_quarter_notes_#{mentor_quarter.id}" %>
+			<br />
+			<%= f.submit "Save", :disable_with => "Saving..." %>
+			<%= separator %>
+			<%= link_to_function "Cancel", "if($('notes_#{mentor_quarter.id}')) { Element.toggle('notes_#{mentor_quarter.id}') } else { $('add_note_button_#{mentor_quarter.id}').show(); }; Element.toggle('note_form_#{mentor_quarter.id}')" %>
+		<% end -%>
+	</div>
+	
+</div>

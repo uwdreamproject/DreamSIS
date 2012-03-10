@@ -1,0 +1,13 @@
+<h1><%= @mentor_quarter.fullname %></h1>
+
+<% semantic_form_for [@mentor_quarter_group, @mentor_quarter], :html => { :method => :put } do |f| %>
+
+	<%= f.error_messages %>
+
+	<%= render :partial => "fields", :locals => { :f => f } %>
+	
+	<%= f.submit "Save", :disable_with => 'Saving...' %>
+	<span class="separator">&mdash; or &mdash;</span>
+	<%= link_to 'Cancel', @mentor_quarter_group %>
+
+<% end %>

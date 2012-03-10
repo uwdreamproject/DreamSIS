@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11/dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+ <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8"/>
+</head>
+<body>
+  <div class="group">
+    Desc: <span class="description"><%= @options[:description] %></span>
+	Title: <span class="title"><%= options[:name] %></span>
+    <ul class="names">
+     <li class="name"><%= @group_identifier %></li>
+    </ul>
+
+
+     <!-- version v2 and greater -->
+       Authn factor: <span class="authnfactor">1</span>
+       <br/>
+       Classification: <span class="classification">u</span>
+       <br/>
+    <!-- end v2 -->
+
+
+   <!-- The enabled flag is "UWExchange" or "disabled" -->
+    Email Enabled: <span class="emailenabled">disabled</span>
+
+    Published email address: <span class="publishemail">uwdrmprj@uw.edu</span>
+
+    Allowed senders:
+    <ul class="authorigs">
+       <li class="authorig">uwdrmprj@uw.edu</li>
+    </ul>
+    Report to originator: <span class="reporttoorig">1</span>
+
+    Group contact: <span class="contact">uwdrmprj</span>
+
+    Admins:
+    <ul class="admins">
+    <li class="admin" type="group">u_uwdrmprj_staff</li>
+	<li class="admin" type="uwnetid">mharris2</li>
+	<li class="admin" type="dns">isidore.ued.washington.edu</li>
+	<li class="admin" type="dns">mharris2.ued.washington.edu</li>
+    </ul>
+    <br/>
+
+    Allowed updaters:
+    <ul class="updaters">
+    <!-- <li class="updater" type="(type)">identifier</li> -->
+     <!-- More (li) if the group has multiple updaters -->
+    </ul>
+    <br/>
+
+    Allowed creators:
+    <ul class="creators">
+    <!-- <li class="creator" type="(type)">identifier</li> -->
+     <!-- More (li) if the group has multiple creators -->
+    </ul>
+    <br/>
+
+    Allowed readers
+    <ul class="readers">
+    <!-- <li class="reader" type="(type)">identifier</li> -->
+     <!-- More (li) if the group has multiple readers -->
+    </ul>
+    <br/>
+
+
+    Allowed viewers:
+    <ul class="viewers">
+    <!-- <li class="viewer" type="(type)">identifier</li> -->
+     <!-- More (li) if the group has multiple viewers -->
+    </ul>
+    <br/>
+
+    <!-- version v2 and greater -->
+      Allowed optin:
+      <ul class="optins">
+       <!-- <li class="optin" type="(type)">identifier</li> -->
+       <!-- More (li) if the group has multiple optins -->
+      </ul>
+      <br/>
+      Allowed optout:
+      <ul class="optouts">
+       <!-- <li class="optout" type="(type)">identifier</li> -->
+       <!-- More (li) if the group has multiple optouts -->
+      </ul>
+      <br/>
+    <!-- end v2 -->
+
+
+    <!-- <a rel="members" href="(root)/group/{regid}/member">members</a> -->
+
+   </div>
+</body>
+</html>

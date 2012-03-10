@@ -1,0 +1,2 @@
+page.replace "event_#{@event.id}", :partial => 'event', :object => @event
+page.visual_effect :highlight, "event_#{@event.id}"

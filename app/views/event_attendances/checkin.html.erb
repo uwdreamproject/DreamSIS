@@ -1,0 +1,35 @@
+<h1><%=h @audience.to_s %> Check-in
+	<small class="light">&raquo; <%= @event.name %></small></h1>
+
+<% form_for :person, :html => { :onSubmit => "return false;" } do |f| %>
+	<h4>Search for a <%=h @audience.to_s %>:</h4>
+	<input id="person_fullname" name="person[fullname]" size="30" type="search" results="5" autosave="person_fullname_search" placeholder="Search" />
+	<div class="auto_complete" id="person_fullname_auto_complete"></div>
+	
+	<%= javascript_tag "var person_fullname_auto_completer = new Ajax.Autocompleter('person_fullname', 'person_fullname_auto_complete', '#{auto_complete_for_person_fullname_event_event_attendances_path(:audience => @audience.to_s)}', { minChars: 3 })" %>
+		
+	<%#= observe_field('person_fullname', 
+		:frequency => 0.25,
+		:function => "if($F('person_fullname')=='') { $('original_mentors').show(); $$('.pagination').invoke('show'); $('person_search_results').update(); return true; }") %>
+
+<% end %>
+
+
+<table>
+	<tbody id="person_search_results"></tbody>
+</table>
+
+<div id="new_participant_form_container" style="display:none">
+	<h5>Quick Add New Participant</h5>
+	<span class="error-message" id="new_participant_error"></span>
+	<% remote_form_for(:new_participant, :url => checkin_new_participant_event_event_attendances_path(@event), :method => :put, :html => { :id => 'new_participant_form' }) do |f| %>
+		First Name: <%= f.text_field :firstname %>
+		Last Name: <%= f.text_field :lastname %>
+		High School: <%= f.collection_select :high_school_id, HighSchool.all, :id, :name, :prompt => true %>
+		<%= f.submit "Check-in" %>
+	<% end -%>
+</div>
+
+<%= render :partial => 'sidebar' %>
+
+<%= javascript_tag "window.onload = function() { $('person_fullname').select() }" %>

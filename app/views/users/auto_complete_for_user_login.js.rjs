@@ -1,0 +1,5 @@
+unless params[:user][:login].blank?
+  page.hide 'original_users'
+  page << "$$('.pagination').invoke('hide')"
+  page.replace_html 'user_search_results', :partial => "user", :collection => @users
+end

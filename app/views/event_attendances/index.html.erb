@@ -1,0 +1,42 @@
+<h1><%=h @audience.to_s %> Attendance
+	<small class="light">&raquo; <%= @event.name %></small></h1>
+	
+<table class="attendees">
+	<thead>
+		<tr>
+			<th>Attendee</th>
+			<%= "<th>High School</th>" if @audience.to_s.downcase == "participant" %>
+			<th class="centered">RSVP'd?
+				<%= link_to "E-mail",
+				 				"mailto:#{@event.attendees.rsvpd(@audience).collect{|a| a.email rescue nil }.compact.join(",")}",
+								:class => 'email button' %>
+				</th>
+			<th class="centered">Attended?
+				<%= link_to "E-mail",
+				 				"mailto:#{@event.attendees.attended(@audience).collect{|a| a.email rescue nil }.compact.join(",")}",
+								:class => 'email button' %>
+				</th>
+			<th colspan=3>Functions</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<%= render :partial => 'event_attendance', :collection => @event.attendees.all(@audience), :locals => { :audience => @audience } %>
+
+		<%- if @event.attendees.empty? -%>
+			<tr class="empty">
+				<td colspan=10>No event attendees yet.</td>
+			</tr>
+		<% end -%>
+	</tbody>
+</table>
+
+<div id="sidebar">
+	<p><%= link_to "Back to Event", event_path(@event), :class => 'back button' %></p>
+	
+	<p><% if @audience.to_s == "Participant" %>
+		<%= link_to 'See Mentor Attendees', event_event_attendances_path(@event, :audience => "Mentor"), :class => 'sync button' %>
+	<% else %>
+		<%= link_to 'See Participant Attendees', event_event_attendances_path(@event, :audience => "Participant"), :class => 'sync button' %>
+	<% end -%></p>
+</div>

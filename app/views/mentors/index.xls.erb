@@ -1,0 +1,51 @@
+<thead>
+	<tr>
+		<th>id</th>
+		<th>firstname</th>
+		<th>middlename</th>
+		<th>lastname</th>
+		<th>nickname</th>
+		<th>display_name</th>
+		<th>email</th>
+		<th>birthdate</th>
+		<th>sex</th>
+		<th>type</th>
+		<th>previous_participant_id</th>
+		<th>ferpa_agreement_signed_at</th>
+		<th>passed_background_check?</th>
+		<th>risk_form_signed_at</th>
+		<th>reg_id</th>
+		<th>uw_student_no</th>
+		<th>uw_net_id</th>
+		<th>quarters_count</th>
+		<th>created_at</th>
+		<th>updated_at</th>
+	</tr>
+</thead>
+
+<tbody>
+<% @mentors.each do |mentor| %>
+	<tr>
+		<td><%=h mentor.id %></td>
+		<td><%=h mentor.firstname %></td>
+		<td><%=h mentor.middlename %></td>
+		<td><%=h mentor.lastname %></td>
+		<td><%=h mentor.nickname %></td>
+		<td><%=h mentor.display_name %></td>
+		<td><%=h mentor.email %></td>
+		<td><%=h mentor.birthdate %></td>
+		<td><%=h mentor.sex %></td>
+		<td><%=h mentor.type %></td>
+		<td><%=h mentor.previous_participant_id %></td>
+		<td><%=h mentor.ferpa_agreement_signed_at %></td>
+		<td><%=h mentor.passed_background_check? %></td>
+		<td><%=h mentor.risk_form_signed_at %></td>
+		<td><%=h mentor.reg_id %></td>
+		<td><%=h mentor.uw_student_no %></td>
+		<td><%=h mentor.uw_net_id %></td>
+		<td><%=h mentor.mentor_quarter_groups.collect(&:quarter_id).flatten.uniq.size %></td>
+		<td><%=h mentor.created_at %></td>
+		<td><%=h mentor.updated_at %></td>
+	</tr>
+<% end %>
+</tbody>

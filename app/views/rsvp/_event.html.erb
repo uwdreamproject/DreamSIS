@@ -1,0 +1,45 @@
+<tr id="event_<%= event.id %>" class="<%= @current_user.person.attending?(event) ? "attending" : "not_attending" %>">
+	<td>
+		<h2 class="event name"><%=h event.name %></h2>
+		<p class="date"><%= event.time_detail %></p>
+		<p class="location"><%=h event.location_text %></p>
+	</td>
+	
+	<td>
+		<%- if event.capacity && event.capacity > 0 -%>
+			<div class="signup-meter <%= "full" if event.full? %>">
+				<div class="capacity" 
+					 style="width: 100%;"
+					 title="<%= number_to_percentage event.percent_full, :precision => 0 %> full">
+
+					<div class="size" style="width: <%= event.percent_full %>%">
+						<%= event.full? ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
+					</div>					
+				</div>
+			</div>
+			<div class="signup-numbers">
+				<%= content_tag :span, event.attendees.rsvpd.size %>
+				of
+				<%= content_tag :span, event.capacity %>
+			</div>
+		<% end %>
+	</td>
+	
+	<td>
+		<%- if event.allow_rsvps? && event.date.to_time >= Time.now.midnight -%>
+		
+			<%- if @current_user.person.attending?(event) -%>
+				<%= link_to_remote "Cancel <span class='hide_when_small'>my RSVP</span>",
+					 			:url => rsvp_path(event, :rsvp => false),
+								:method => :delete,
+								:html => { :class => 'cancel button' } %>
+			<%- elsif !event.full? -%>
+				<%= link_to_remote "RSVP <span class='hide_when_small'>for this event</span>",
+				 				:url => rsvp_path(event, :rsvp => true),
+								:method => :put,
+								:html => { :class => 'add button' } %>
+			<% end -%>
+			
+		<% end -%>
+	</td>
+</tr>

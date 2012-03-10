@@ -1,0 +1,61 @@
+<div align="right" style="float:right" class="photo">
+	<%= image_tag photo_mentor_path(@mentor, :size => :large), 
+			:class => 'student_photo', 
+			:size => "100x130", 
+			:alt => "" %>
+</div>
+
+<h1><%= @mentor.fullname %></h1>
+<%= link_to "Back to mentor details", mentor_path(@mentor), :class => 'back button' %>
+
+<dl class="inline-definitions">
+
+	<dt>Aliases</dt>
+	<dd><%= @mentor.has_aliases? ? h(@mentor.aliases) : content_tag(:em, "None", :class => 'light') %></dd>
+
+	<dt>Victim Crimes</dt>
+	<dd>
+		<ul class="bulletless">
+			<li>
+				<%= @mentor.crimes_against_persons_or_financial? ? content_tag(:span, "Y", :class => 'red tag') : content_tag(:span, "N", :class => 'outline tag') %>
+				Crimes Against Persons and Crimes Relating to Financial Exploitation
+			</li>
+			<li>
+				<%= @mentor.drug_related_crimes? ? content_tag(:span, "Y", :class => 'red tag') : content_tag(:span, "N", :class => 'outline tag') %>
+				Drug-Related Crimes
+			</li>
+			<li>
+				<%= @mentor.related_proceedings_crimes? ? content_tag(:span, "Y", :class => 'red tag') : content_tag(:span, "N", :class => 'outline tag') %>
+				Related Proceedings Crimes
+			</li>
+			<li>
+				<%= @mentor.medicare_healthcare_crimes? ? content_tag(:span, "Y", :class => 'red tag') : content_tag(:span, "N", :class => 'outline tag') %>
+				Medicare&ndash;Medicaid/Healthcare-related Crimes
+			</li>			
+		</ul>
+	</dd>
+	
+	<dt>Explanation</dt>
+	<dd><%= @mentor.victim_crimes_explanation.blank? ? content_tag(:em, "None", :class => 'light') : simple_format(@mentor.victim_crimes_explanation) %></dd>
+
+	<dt>Other Crimes</dt>
+	<dd>
+		<ul class="bulletless">
+			<li>
+				<%= @mentor.general_convictions? ? content_tag(:span, "Y", :class => 'red tag') : content_tag(:span, "N", :class => 'outline tag') %>
+				Other Convictions
+			</li>
+		</ul>
+	</dd>
+	
+	<dt>Explanation</dt>
+	<dd><%= @mentor.general_convictions_explanation.blank? ? content_tag(:em, "None", :class => 'light') : simple_format(@mentor.general_convictions_explanation) %></dd>
+
+	<dt>Authorized At</dt>
+	<dd><%=h @mentor.background_check_authorized_at.to_s %></dd>
+	
+</dl>
+
+<div id="sidebar">
+	<%= link_to "View your Background Check Form", mentor_signup_background_check_form_path %>
+</div>

@@ -1,0 +1,3 @@
+page.replace "person_#{@attendee.person_id}", :partial => 'event_attendances/person', :object => @attendee.person
+page.visual_effect :highlight, "person_#{@attendee.person_id}"
+page << "$('person_fullname').select()"

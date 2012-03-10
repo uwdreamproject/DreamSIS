@@ -1,0 +1,70 @@
+.tabselector, .tab-selector {
+  width: 220px;
+  position: absolute;
+  right: 138px;
+}
+
+
+.tab-unselected, .tab-selected {
+  list-style-type: none;
+  padding: 0;
+  margin: 5px 10px;
+}
+
+.tab-selected {
+  background: #fff url('../images/backgrounds/right-shadow.gif') top right repeat-y;
+}
+
+.tab-unselected {
+  color: #c0c0c0;
+  background: #f2f2f2 url('../images/backgrounds/left-inner-shadow-shallow.gif') top left repeat-y;
+  margin-right: 16px;
+}
+
+
+
+.tab-selected a, .tab-unselected a {
+  display: block; 
+  padding: 9px 20px;
+  padding-bottom: 18px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+
+
+.tab-selected a {
+  color: #069;
+  background: url('../images/backgrounds/inner-corner-shadow.gif') bottom left no-repeat;
+}
+
+
+.tab-unselected a {
+  color: #a0a0a0;
+  background: url('../images/backgrounds/inner-corner-shadow-shallow.gif') bottom left no-repeat;
+  border-right: 2px solid #dfdfdf;
+}
+
+.tab-unselected a:hover {
+	color: #069;
+}
+
+.panes, .pane-selector {
+  width: 97%;
+  padding-left: 0px;
+  margin: 2%;
+  min-height: 300px;
+  overflow: auto;
+}
+
+.pane-selected {
+  list-style-type: none;
+  display: block;
+  padding: 10px;
+}
+
+.pane-unselected {
+  list-style-type: none;
+  display: none;
+}
+

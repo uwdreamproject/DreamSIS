@@ -1,0 +1,23 @@
+<div id="participant_form_container_<%= mentor_quarter.id %>">
+
+	<%= link_to_function "Add mentee", 
+						"this.hide(); Element.toggle('participant_form_#{mentor_quarter.id}')", 
+						:class => 'add mentee button show_on_hover',
+						:id => "add_participant_button_#{mentor_quarter.id}" %>
+
+
+	<div class="participants" id="participant_form_<%= mentor_quarter.id %>" style="display:none">
+		<% remote_form_for [@mentor_quarter_group, mentor_quarter] do |f| %>
+			<%= f.collection_select :new_participant_id, 
+									mentor_quarter.try(:location).try(:participants),
+									:id, :lastname_first,
+									:prompt => true,
+									:id => "mentor_quarter_new_participant_#{mentor_quarter.id}" %>
+			<br />
+			<%= f.submit "Save", :disable_with => "Saving..." %>
+			<%= separator %>
+			<%= link_to_function "Cancel", "$('add_participant_button_#{mentor_quarter.id}').show(); Element.toggle('participant_form_#{mentor_quarter.id}')" %>
+		<% end -%>
+	</div>
+	
+</div>

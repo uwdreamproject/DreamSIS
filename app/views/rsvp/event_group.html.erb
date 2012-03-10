@@ -1,0 +1,8 @@
+<h1>RSVP for <%=h @event_group.name %></h1>
+<p><%= simple_format @event_group.description %></p>
+
+<table class="highlightless rsvp">
+	<%= render :partial => 'event', :collection => @event_group.events.future %>
+</table>
+
+<%= render :partial => 'sidebar' %>

@@ -1,0 +1,18 @@
+<%= f.inputs :location, :quarter, :title, :times, :depart_time, :return_time, :capacity, :none_option %>
+
+<%- if f.object.quarter -%>
+	<% f.inputs do %>
+		<% 
+			section_ids = f.object.quarter.courses.collect(&:linked_section_ids).flatten
+			section_ids = f.object.quarter.course_ids.split.to_a if section_ids.empty?
+		 %>
+		<%= f.input :course_id, :as => :select, :collection => section_ids %>
+		
+		<% 
+			linked_groups = {} # :title => :id
+			linked_groups_array = f.object.quarter.mentor_quarter_groups.select{|g| f.object != g }
+			linked_groups_array.each{|g| linked_groups["#{g.title} (#{g.section_id rescue nil})"] = g.id }
+		 %>
+		<%= f.input :linked_group_id, :as => :select, :collection => linked_groups.sort_by{|k,v| k} %>
+	<% end -%>
+<% end -%>

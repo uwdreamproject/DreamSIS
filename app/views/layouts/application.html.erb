@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>DreamSIS</title>
+
+	<meta name="viewport" content="width=device-width">
+
+    <%= formtastic_stylesheet_link_tag %>
+
+	<%= stylesheet_link_tag 'style', :media => "all" %>
+	<%= stylesheet_link_tag 'tabs' %>
+	<%= stylesheet_link_tag 'print', :media => "print" %>
+
+	<%= javascript_include_tag :defaults %>
+	<%= javascript_include_tag "card_reader" %>
+
+</head>
+
+<body class="<%= "admin" if @current_user.try(:admin?) %> <%= controller.action_name %> <%= controller.controller_name %>">
+
+	<div id="header">
+		<h1><%= link_to "<strong>DreamSIS</strong>", root_url %></h1>
+		<%#= breadcrumbs("&raquo;")  %>
+
+		<div id="login_logout">
+			<% unless @current_user.blank? || @current_user == :false %>
+				Logged in as <strong><%= @current_user.fullname %></strong>
+				<%= content_tag :span, @current_user.person_id, :class => "outline tag" %>
+				<!-- <em><%= link_to "(Logout)" %></em> -->
+			<% else %>
+				<em>Not logged in.</em>
+				<%= link_to 'Login' %>
+			<% end %>
+		</div>
+
+	</div>
+
+	<%= render :partial => "shared/nav" if @current_user.try(:admin?) %>
+	
+	<div id="sidebar-header">
+		<%= link_to_function "<span>Show Sidebar</span>", "$$('body').first().toggleClassName('sidebar_view')", :id => "sidebar_expander_link" %>
+	</div>
+
+	<div id="content">	
+
+		<% flash.each do |key,value| -%>
+		<div id="notification" class="alert <%= key %>">
+			<span><%= value %></span>
+		</div>
+		<% end -%>
+
+		<div id="content-wrap" class="<%= "blocked" if @layout_in_blocks %>">
+			<%= yield %>
+		</div>
+
+		<div id="footer">
+			Copyright &copy; 2006&ndash;<%= Time.now.year %> 
+			<%= link_to "University of Washington Dream Project", "http://www.dreamproject.uw.edu", :target => "_blank" %>.
+
+			Student data provided in this system are protected by 
+			<%= link_to "FERPA", "http://www.washington.edu/students/reg/ferpafac.html", :target => "_blank" %>.
+			You are expected to understand and abide by these protections.
+
+			Errors &amp; Exceptions tracked by <%= link_to "Exceptional", "http://exceptional.io/", :target	=> "_blank" %>. 
+		</div>
+
+	</div>
+
+</body>
+</html>

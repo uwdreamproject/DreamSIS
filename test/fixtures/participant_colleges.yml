@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  participant_id: 1
+  institution_id: 1
+  date_applied: 2008-12-14 15:45:46
+  date_notified: 2008-12-14 15:45:46
+  decision: MyString
+
+two:
+  participant_id: 1
+  institution_id: 1
+  date_applied: 2008-12-14 15:45:46
+  date_notified: 2008-12-14 15:45:46
+  decision: MyString

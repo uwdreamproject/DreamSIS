@@ -1,0 +1,43 @@
+<h1><%=h @event_type.name %></h1>
+
+<dl class="inline-definitions">
+
+	<%- unless @event_type.description.blank? -%>
+		<dt>Description</dt>
+		<dd><%= simple_format h(@event_type.description) %></dd>
+	<% end -%>
+
+	<dt>RSVP URL</dt>
+	<dd><%= link_to url_for(:controller => 'rsvp', :action => 'event_type', :id => @event_type.id, :only_path => false),
+	 						:controller => 'rsvp', :action => 'event_type', :id => @event_type.id %></dd>
+
+</dl>
+
+<h2>Linked Events</h2>
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Date</th>
+		<th>Invited</th>
+		<th>RSVP'd</th>
+		<th>Attended</th>
+		<th colspan=3>Functions</th>
+	</tr>
+
+	<tbody>
+		<%= render :partial => 'events/event', :collection => @event_type.events %>
+		
+		<%- if @event_type.events.empty? -%>
+			<tr class="empty">
+				<td colspan=10>No events yet.</td>
+			</tr>
+		<% end -%>		
+	</tbody>
+	
+</table>
+
+
+<div id="sidebar">
+	<p><%= link_to "Edit this event type", edit_event_type_path(@event_type), :class => 'edit button' %></p>
+	<p><%= link_to "Back to event types", event_types_path, :class => 'back button' %></p>
+</div>

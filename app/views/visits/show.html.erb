@@ -1,0 +1,11 @@
+<h1><%=h @high_school.name %></h1>
+<h2><%=h @visit.date %> Visit</h2>
+
+<p>Date: <%=h @visit.date %></p>
+<p>Quarter <%=@quarter.title %></p>
+<p>Start Time: <%=h @visit.start_time.to_s(:time12) if @visit.start_time %></p>
+<p>End Time: <%=h @visit.end_time.to_s(:time12) if @visit.end_time %></p>
+<p>Attendance Count: <%=h @visit.attended_count %>.
+	<%= link_to "Take Attendance", attendance_high_school_visits_path(@high_school, @quarter) %></p>
+
+<p><%= link_to "Back", high_school_visits_path(@high_school, @quarter) %></p>

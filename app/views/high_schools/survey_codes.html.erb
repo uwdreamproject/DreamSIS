@@ -1,0 +1,47 @@
+<div class="right">
+	<%= link_to "Print Cards", survey_code_cards_high_school_path(@high_school, :n => @n, :mentor_id => @mentor.try(:id)), :class => "photo-tile button" %>
+</div>
+
+<h1>Survey Codes
+	<span class="light">&raquo; <%= @high_school.name %></span>
+	<%= content_tag(:span, "(#{@mentor.fullname})", :class => 'light') if @mentor %></h1>
+	
+<table>
+	<tr>
+		<th>Code</th>
+		<th>Name</th>
+		<th>Code</th>
+		<th>Name</th>
+		<th>Code</th>
+		<th>Name</th>
+	</tr>
+	
+	<% @participants.each_with_index do |participant, i| %>
+		<%= "<tr id=\"participant_#{participant.id.to_s}\">" if i%3==0 %>
+			<td class="survey_code"><%=h participant.survey_id %></td>
+			<td><%=h participant.lastname_first %></td>
+		<%= "</tr>" if i%3==2 %>
+	<% end -%>
+	
+</table>
+
+<h2>Unassigned Survey Codes</h2>
+<table>
+	<% @unassigned_codes.each_with_index do |code, i| %>
+		<%= "<tr>" if i%3==0 %>
+			<td><%= code %></td>
+			<td>_____________________________</td>
+		<%= "</tr>" if i%3==2 %>
+	<% end -%>
+</table>
+
+
+<div id="sidebar">
+	<form>
+		How many extra codes would you like to generate? (0&ndash;1000)
+		<br>
+		<%= text_field_tag :n, @n, :size => 4 %>
+		<%= hidden_field_tag :mentor_id, @mentor.try(:id) if @mentor %>
+		<%= submit_tag "Generate" %>
+	</form>
+</div>

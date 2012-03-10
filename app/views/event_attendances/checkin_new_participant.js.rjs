@@ -1,0 +1,10 @@
+if @person && @attendee && @person.valid? && @attendee.valid?
+  page << "$('new_participant_form').reset()"
+  page.replace_html "person_search_results", :partial => 'event_attendances/person', :object => @person
+  page.visual_effect :highlight, "person_#{@person.id}"
+  page << "$('person_fullname').value = \"#{@person.fullname}\""
+  page << "$('person_fullname').select()"
+  page.replace_html :new_participant_error, ""
+else
+  page.replace_html :new_participant_error, "Error creating new participant. Please try again."
+end

@@ -1,0 +1,33 @@
+<div id="sidebar">
+
+	<p><%= render :partial => "shared/quarter_select", 
+				:locals => { :form_url => mentor_quarter_groups_quarter_path(:search) },
+				:object => (@quarter || Quarter.current_quarter || Quarter.allowing_signups.try(:first) || Quarter.last) %></p>
+
+	<% if @quarter %>
+		<p><%= link_to "Add a new mentor group", 
+						new_mentor_quarter_group_path(:quarter_id => @quarter.to_param), 
+						:class => 'add button' %></p>
+		
+		<% unless @quarter.course_ids.blank? %>
+		<p><%= link_to "Match Time Schedule",
+		 				create_from_linked_sections_mentor_quarter_groups_path(:quarter_id => @quarter.to_param),
+						:method => :put,
+		 				:class => "sync button",
+						:confirm => "Are you sure? This will create new groups for any linked section that doesn't already have a group.",
+		 				:disable_with => "Syncing..." %></p>
+		
+		<p><%= link_to "Sync course enrollees",
+		 				sync_mentor_quarter_groups_path(:quarter_id => @quarter.to_param),
+						:method => :put,
+		 				:class => "sync button",
+						:confirm => "Are you sure? This will sync the enrollees from the student database in each section.",
+		 				:disable_with => "Syncing..." %></p>
+		
+		<% end -%>
+		
+	<%- else -%>
+		<p><%= link_to "Add a new mentor group", new_mentor_quarter_group_path, :class => 'add button' %></p>
+	<% end -%>
+
+</div>

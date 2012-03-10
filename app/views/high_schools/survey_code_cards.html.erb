@@ -1,0 +1,28 @@
+<h1 class="noprint">Survey Code Cards
+	<span class="light">&raquo; <%= @high_school.name %></span>
+	<%= content_tag(:span, "(#{@mentor.fullname})", :class => 'light') if @mentor %></h1>
+	
+<div>
+	<% @participants.each_with_index do |participant, i| %>
+		<%= render :partial => "survey_code_card", :locals => { :participant => participant, :code => participant.survey_id, :i => i } %>
+	<% end -%>
+</div>
+
+<br class="clear">
+<div>
+	<h2>Unassigned Survey Codes</h2>
+	<% @unassigned_codes.each_with_index do |code, u| %>
+		<%= render :partial => "survey_code_card", :locals => { :participant => nil, :code => code, :i => u } %>
+	<% end -%>
+</div>
+
+<br class="clear">
+
+<div id="sidebar">
+	<form>
+		How many extra codes would you like to generate? (0&ndash;1000)
+		<br>
+		<%= text_field_tag :n, @n, :size => 4 %>
+		<%= submit_tag "Generate" %>
+	</form>
+</div>

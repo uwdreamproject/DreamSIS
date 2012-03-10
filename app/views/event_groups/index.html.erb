@@ -1,0 +1,26 @@
+<h1>Event Groups</h1>
+
+<%= will_paginate @event_groups %>
+
+<table>
+  <tr>
+    <th>Name</th>
+	<th>Events</th>
+	<th colspan=3>Functions</th>
+
+  </tr>
+
+<% for event_group in @event_groups %>
+  <tr>
+    <td><%= link_to h(event_group.name), event_group %></td>
+	<td><ul><%= event_group.events.collect{|e| content_tag(:li, link_to(h(e.name), event_path(e)))} %></ul></td>
+    <td><%= link_to 'Show', event_group_path(event_group) %></td>
+    <td><%= link_to 'Edit', edit_event_group_path(event_group) %></td>
+    <td><%= link_to 'Destroy', event_group_path(event_group), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<div id="sidebar">
+	<%= link_to 'Create new event group', new_event_group_path, :class => 'add button' %>
+</div>

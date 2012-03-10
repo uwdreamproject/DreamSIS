@@ -1,0 +1,2 @@
+module ParticipantCollegesHelper
+end

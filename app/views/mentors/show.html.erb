@@ -1,0 +1,95 @@
+<div class="content-block">
+
+	<div align="right" style="float:right" class="photo">
+		<%= image_tag photo_mentor_path(@mentor, :size => :large), 
+				:class => 'student_photo', 
+				:size => "100x130", 
+				:alt => "" %>
+	</div>
+
+	<h1><%= @mentor.fullname %></h1>
+	<%= link_to "Edit this mentor", edit_mentor_path(@mentor), :class => 'edit button' %>
+
+	<dl class="inline-definitions">
+
+		<dt>User Accounts</dt>
+		<dd><% if @mentor.users.empty? -%>
+				<em class="light">None</em>
+			<% else %>
+			  	<%= @mentor.users.collect{|u| link_to u.login, user_path(u)}.join(", ") %>
+			<% end -%>
+			</dd>
+		
+		<dt>Aliases</dt>
+		<dd><%= @mentor.has_aliases? ? h(@mentor.aliases) : content_tag(:em, "None", :class => 'light') %></dd>
+			
+		<dt>Gender</dt>
+		<dd><%= @mentor.sex %></dd>
+
+		<dt>Date of Birth</dt>
+		<dd><%= @mentor.birthdate.to_s %></dd>
+		
+		<dt>Husky Card</dt>
+		<dd><%- if @mentor.husky_card_registered? -%>
+				<span class="success-message">Yes</span>
+				<span class="light">(<%=h @mentor.husky_card_rfid %>)</span>
+			<% else %>
+			  	<em class="light">No</em>
+			<% end -%>
+		</dd>
+			
+		<dt>Van Trained?</dt>
+		<dd><%- if @mentor.valid_van_driver? -%>
+				<span class="success-message">Yes</span> - on <%= @mentor.van_driver_training_completed_at.to_s(:short_date) %>
+			<% else %>
+			  	<em class="light">No</em>
+			<% end -%>
+		</dd>
+
+	</dl>
+	<br class="clear">
+</div>
+
+<div class="content-block">
+	<h1 class="mentees">Mentees</h2>
+	<%= render :partial => 'mentors/mentees' %>
+</div>
+
+<div class="content-block">
+	<h1 class="participation">Participation</h2>
+	<%= render :partial => 'mentors/participation' %>
+</div>
+
+
+<div id="sidebar">
+	<h3>Contact Info</h3>
+
+	<dl class="sidebar">
+		<dt>Email</dt>
+		<dd><%= auto_link @mentor.email %></dd>
+	</dl>
+
+
+	<h3>Administrative</h3>
+
+	<dl class="sidebar">
+		<dt>Background Check</dt>
+		<dd>
+			<% if @mentor.passed_background_check? %>
+				Passed on <%= @mentor.background_check_run_at.to_s(:short_date) %>
+			<%- else -%>
+				<span class="error-message">Not passed</span>
+			<% end -%>
+			<br /><%= link_to "View responses", background_check_form_responses_mentor_path(@mentor), :class => 'small' %>
+		</dd>
+
+		<dt>Acknowledgment of Risk Form</dt>
+		<dd>
+			<% if @mentor.signed_risk_form? %>
+				Signed on <%= @mentor.risk_form_signed_at.to_s(:short_date) %>
+			<%- else -%>
+				<span class="error-message">Not signed</span>
+			<% end -%>
+		</dd>
+	</dl>
+</div>

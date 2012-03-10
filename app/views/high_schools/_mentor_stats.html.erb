@@ -1,0 +1,33 @@
+<% for quarter in Quarter.allowing_signups %>
+
+	<h2><%= quarter.title %> Mentors</h2>
+
+	<ul class="mentor_stats_summary">
+
+	<% for mentor_quarter_group in @high_school.mentor_quarter_groups.for(quarter) %>
+		<li><%= content_tag :span, h(mentor_quarter_group.section_id), :class => 'section_id tag', :align => 'left' %>
+			<%= link_to h(mentor_quarter_group.title), mentor_quarter_group, :title => mentor_quarter_group.course_id %>
+			<br><%= mentor_quarter_group.times %>
+			
+			<div class="signup-meter <%= "full" if mentor_quarter_group.full? %>">
+				<div class="capacity" 
+					 style="width: 100%;"
+					 title="<%= number_to_percentage mentor_quarter_group.percent_full, :precision => 0 %> full">
+
+					<div class="size" style="width: <%= mentor_quarter_group.percent_full %>%">
+						<%= mentor_quarter_group.full? ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
+					</div>						
+				</div>
+			</div>
+			<div class="signup-numbers">
+				<%= content_tag :span, mentor_quarter_group.mentor_quarters.size %>
+				of
+				<%= content_tag :span, mentor_quarter_group.capacity %>
+			</div>
+			
+		</li>
+	<% end %>
+	
+	</ul>
+	
+<% end -%>

@@ -1,0 +1,13 @@
+<h1>New event group</h1>
+
+<% semantic_form_for(@event_group) do |f| %>
+
+	<%= f.error_messages %>
+
+	<%= render :partial => "fields", :locals => { :f => f } %>
+
+	<%= f.submit "Create", :disable_with => 'Creating...' %>
+	<%= separator %>
+	<%= link_to 'Cancel', event_groups_path, :class => '' %>
+
+<% end %>

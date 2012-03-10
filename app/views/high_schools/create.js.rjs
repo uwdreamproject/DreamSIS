@@ -1,0 +1,19 @@
+page.if "$('new_high_school_form')" do
+  page.hide 'new_high_school_form'
+  
+  page << "
+    var elOptNew = document.createElement('option');
+    elOptNew.text = '#{@high_school.name}';
+    elOptNew.value = '#{@high_school.id}';
+    var elSel = $('participant_high_school_id')
+
+    try {
+      elSel.add(elOptNew, null); // standards compliant; doesn't work in IE
+    }
+    catch(ex) {
+      elSel.add(elOptNew); // IE only
+    }
+    
+    elOptNew.selected = '1'
+  "
+end

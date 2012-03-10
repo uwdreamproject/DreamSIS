@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  title: MyString
+  organization_name: MyString
+  description: MyText
+  default_amount: 9.99
+
+two:
+  title: MyString
+  organization_name: MyString
+  description: MyText
+  default_amount: 9.99
