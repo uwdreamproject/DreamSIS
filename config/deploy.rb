@@ -7,6 +7,7 @@ set :deploy_to, "/usr/local/apps/#{application}"
 set :user, "mharris2"
 # set :deploy_via, :export
 set :runner, "root"
+set :use_sudo, true
 
 default_run_options[:pty] = true
 set :repository, "git@github.com:mattharris5/DreamSIS.git"  # Your clone URL
