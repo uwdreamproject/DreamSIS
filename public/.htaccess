@@ -1,4 +1,4 @@
-AuthType UWNetID
-require group u_uwdrmprj_dreamsis_users
-PubcookieAppID "DreamSIS"
+#AuthType UWNetID
+#require group u_uwdrmprj_dreamsis_users
+#PubcookieAppID "DreamSIS"
 
