@@ -181,7 +181,7 @@ module AuthenticatedSystem
     #   return auth_data && auth_data[0] == 'Basic' ? Base64.decode64(auth_data[1]).split(':')[0..1] : [nil, nil] 
     # end
     def get_auth_data
-      [request.env["HTTP_REMOTE_USER"].split("@").first, nil] rescue [nil, nil]
+      [request.env["eppn"].split("@").first, nil] rescue [nil, nil]
     end
     
 end
