@@ -2,10 +2,8 @@ require 'mongrel_cluster/recipes'
 require 'bundler/capistrano'
 
 set :application, "dreamsis"
-# set :repository,  "svn+ssh://mharris2@isidore.ued.washington.edu/usr/local/svn/dreamsisrepo/trunk"
 set :deploy_to, "/usr/local/apps/#{application}"
 set :user, "mharris2"
-# set :deploy_via, :export
 set :runner, "root"
 set :use_sudo, true
 
@@ -13,18 +11,13 @@ $:.unshift(File.expand_path('./lib', ENV['rvm_path'])) # Add RVM's lib directory
 require "rvm/capistrano"                  # Load RVM's capistrano plugin.
 set :rvm_ruby_string, '1.8.7@rails235'        # Or whatever env you want it to run in.
 
-
 default_run_options[:pty] = true
-set :repository, "git@github.com:mattharris5/DreamSIS.git"  # Your clone URL
+set :repository, "git@github.com:uwdreamproject/DreamSIS.git"  # Your clone URL
 set :scm, "git"
-# set :scm_passphrase, "p@ssw0rd"  # The deploy user's password
 
 ssh_options[:forward_agent] = true
 set :branch, "master"
 set :deploy_via, :remote_cache
-
-
-
 
 role :app, "expo.uaa.washington.edu"
 role :web, "expo.uaa.washington.edu"
@@ -86,6 +79,3 @@ namespace :deploy do
 end
 
 after "deploy:finalize_update", "deploy:config_symlink"
-
-
-
