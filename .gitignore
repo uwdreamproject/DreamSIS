@@ -9,6 +9,6 @@ config/exceptional.yml
 
 config/.DS_Store
 
-db/
+db/development.sqlite3
 
 log/
