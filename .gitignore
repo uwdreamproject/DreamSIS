@@ -12,3 +12,5 @@ config/.DS_Store
 db/development.sqlite3
 
 log/
+
+tmp/
