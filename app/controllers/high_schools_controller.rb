@@ -89,7 +89,8 @@ class HighSchoolsController < ApplicationController
   def survey_codes
     @n = (params[:n] || 100).to_i
     @high_school = HighSchool.find(params[:id])
-    @participants = Participant.in_cohort(Participant.current_cohort).in_high_school(@high_school.try(:id))
+    @current_cohort = params[:cohort] || Participant.current_cohort
+    @participants = Participant.in_cohort(@current_cohort).in_high_school(@high_school.try(:id))
     if params[:mentor_id]
       @mentor = Mentor.find params[:mentor_id]
       @participants = @participants.select{|p| p.mentor_ids.include?(params[:mentor_id].to_i)}
@@ -100,7 +101,8 @@ class HighSchoolsController < ApplicationController
   def survey_code_cards
     @n = (params[:n] || 100).to_i
     @high_school = HighSchool.find(params[:id])
-    @participants = Participant.in_cohort(Participant.current_cohort).in_high_school(@high_school.try(:id))
+    @current_cohort = params[:cohort] || Participant.current_cohort
+    @participants = Participant.in_cohort(@current_cohort).in_high_school(@high_school.try(:id))
     if params[:mentor_id]
       @mentor = Mentor.find params[:mentor_id]
       @participants = @participants.select{|p| p.mentor_ids.include?(params[:mentor_id].to_i)}
