@@ -1,5 +1,5 @@
 <h1>RSVP for <%=h @event.name %></h1>
-<p><%= simple_format @event.description %></p>
+<p><%= sanitize textilize(@event.description) %></p>
 
 <table class="highlightless rsvp">
 	<%= render :partial => 'event', :object => @event %>
