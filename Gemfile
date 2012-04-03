@@ -10,6 +10,7 @@ gem 'nokogiri'
 gem 'json'
 gem 'exceptional'
 gem 'rdoc'
+gem 'RedCloth'
 
 # bundler requires these gems in all environments
 # gem "nokogiri", "1.4.2"

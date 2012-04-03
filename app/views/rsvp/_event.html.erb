@@ -1,8 +1,13 @@
 <tr id="event_<%= event.id %>" class="<%= @current_user.person.attending?(event) ? "attending" : "not_attending" %>">
 	<td>
-		<h2 class="event name"><%=h event.name %></h2>
+		<h2 class="event name"><%= link_to h(event.name), event_rsvp_path(event) %></h2>
 		<p class="date"><%= event.time_detail %></p>
 		<p class="location"><%=h event.location_text %></p>
+
+		<%- unless event.description.blank? || @hide_description_link -%>
+			<p class="description_link"><%= link_to_function "More details", "Effect.toggle('event_#{event.id}_description', 'blind', {duration:0.25})" %></p>
+			<div class="description" id="event_<%= event.id %>_description" style="display: none;"><%= sanitize textilize(event.description) %></div>
+		<% end -%>
 	</td>
 	
 	<td>

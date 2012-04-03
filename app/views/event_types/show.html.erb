@@ -4,12 +4,11 @@
 
 	<%- unless @event_type.description.blank? -%>
 		<dt>Description</dt>
-		<dd><%= simple_format h(@event_type.description) %></dd>
+		<dd><%= sanitize textilize(@event_type.description) %></dd>
 	<% end -%>
 
 	<dt>RSVP URL</dt>
-	<dd><%= link_to url_for(:controller => 'rsvp', :action => 'event_type', :id => @event_type.id, :only_path => false),
-	 						:controller => 'rsvp', :action => 'event_type', :id => @event_type.id %></dd>
+	<dd><%= link_to event_type_rsvp_url(@event_type), event_type_rsvp_path(@event_type) %></dd>
 
 </dl>
 
@@ -21,7 +20,7 @@
 		<th>Invited</th>
 		<th>RSVP'd</th>
 		<th>Attended</th>
-		<th colspan=3>Functions</th>
+		<th colspan=4>Functions</th>
 	</tr>
 
 	<tbody>

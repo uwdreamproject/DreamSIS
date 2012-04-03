@@ -1486,6 +1486,10 @@ table.rsvp h2 {
 	margin: 3px 0;
 }
 
+table.rsvp .description {
+	padding: 1em;
+}
+
 tr.attending td {
 	background: #bec !important;
 }

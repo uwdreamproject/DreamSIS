@@ -18,7 +18,7 @@
 		<%= f.label :end_time %>
 		<%= f.time_select :end_time, :minute_step => 15, :twelve_hour => true %>
 	</li>
-	<%= f.input :description, :input_html => { :rows => 3 } %>
+	<%= f.input :description, :input_html => { :rows => 3 }, :hint => "Use Textile markup for formatting." %>
 	<%= f.input :capacity, :hint => "Leave capacity blank or 0 for no limit.", :input_html => {:size => 3} %>
 
 <% end -%>

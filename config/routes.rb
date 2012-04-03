@@ -39,6 +39,9 @@ ActionController::Routing::Routes.draw do |map|
   map.mentor_signup 'mentor_signup/', :controller => 'mentor_signup', :action => 'index'
 
   map.rsvp 'rsvp/rsvp/:id', :controller => 'rsvp', :action => 'rsvp', :method => 'put'
+  map.event_rsvp 'rsvp/event/:id', :controller => 'rsvp', :action => 'event', :method => :get
+  map.event_group_rsvp 'rsvp/event_group/:id', :controller => 'rsvp', :action => 'event_group', :method => :get
+  map.event_type_rsvp 'rsvp/event_type/:id', :controller => 'rsvp', :action => 'event_type', :method => :get
 
   map.high_school_cohort '/participants/high_school/:high_school_id/cohort/:year.:format', 
     :controller => 'participants', 

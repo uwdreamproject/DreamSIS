@@ -3,6 +3,7 @@ class RsvpController < ApplicationController
   
   def event
     @event = Event.find(params[:id])
+    @hide_description_link = true
   end
   
   def event_group
