@@ -85,6 +85,7 @@ class ParticipantsController < ApplicationController
   # GET /participants/new.xml
   def new
     @participant = Participant.new
+    @participant.intake_survey_date = Time.now  # only default to setting this field if we're manually creating a new record.
 
     respond_to do |format|
       format.html # new.html.erb

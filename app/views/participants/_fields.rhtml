@@ -454,9 +454,18 @@
 		  <%= f.date_select :binder_date, :include_blank => true %>
 		</li>
 		<li>
+		  <%= f.label :intake_survey_date %><br />
+		  <%= f.date_select :intake_survey_date, :include_blank => true %>
+		</li>
+		<li>
 		  <%= f.label :inactive %><br />
 		  <%= f.check_box :inactive %>
 		</li>
+		<li>
+		  <%= f.label :inactive_explanation %><br />
+		  <%= f.text_field :inactive_explanation %>
+		</li>
+		
 	</ul>
 	
 	<ul>

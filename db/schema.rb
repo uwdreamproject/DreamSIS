@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120219025615) do
+ActiveRecord::Schema.define(:version => 20120408210023) do
 
   create_table "college_applications", :force => true do |t|
     t.integer  "participant_id"
@@ -146,6 +146,14 @@ ActiveRecord::Schema.define(:version => 20120219025615) do
     t.string   "object_class"
     t.string   "title"
     t.text     "criteria"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "participant_groups", :force => true do |t|
+    t.string   "title"
+    t.integer  "grad_year"
+    t.integer  "location_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -294,6 +302,7 @@ ActiveRecord::Schema.define(:version => 20120219025615) do
     t.datetime "background_check_authorized_at"
     t.datetime "van_driver_training_completed_at"
     t.string   "husky_card_rfid"
+    t.integer  "participant_group_id"
   end
 
   add_index "people", ["display_name"], :name => "index_people_on_display_name"
