@@ -24,3 +24,9 @@ doc/app/created.rid
 doc/app/index.html
 
 config/.DS_Store
+
+public/.DS_Store
+
+public/images/.DS_Store
+
+public/images/icons/.DS_Store

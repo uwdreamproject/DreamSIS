@@ -21,6 +21,17 @@
 	</p>
 </div>
 
+<%- unless @events.empty? -%>
+	<div class="content-block">
+		<h1 class="events">My Events</h1>
+		<p>You've signed up for the following upcoming events:</p>
+		
+		<table class="highlightless rsvp">
+			<%= render :partial => 'rsvp/event', :collection => @events %>
+		</table>
+	</div>
+<% end -%>
+
 <div class="content-block">
 	<h1 class="participation">My Participation</h1>
 	<p>This section shows you the quarters in which you've participated in the Dream 

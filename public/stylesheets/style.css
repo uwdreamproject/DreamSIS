@@ -1490,8 +1490,29 @@ table.rsvp .description {
 	padding: 1em;
 }
 
+body.mentor.welcome table.rsvp {
+	width: 100%;
+	margin: 0;
+}
+
+body.mentor.welcome table.rsvp td {
+	padding: 1em 0;
+}
+
 tr.attending td {
 	background: #bec !important;
+}
+
+body.mentor.welcome table.rsvp tr {
+	background: url(../images/backgrounds/unavailable-xtile.gif) repeat-x;
+}
+
+body.mentor.welcome table.rsvp tr.attending {
+	background: none;
+}
+
+body.mentor.welcome table.rsvp tr.attending td {
+	background: none !important;
 }
 
 /* @group Menus */

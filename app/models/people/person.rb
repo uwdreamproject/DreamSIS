@@ -1,7 +1,15 @@
 class Person < ActiveRecord::Base
   include Comparable
-  has_many :event_attendances
-  has_many :events, :through => :event_attendances
+  has_many :event_attendances do
+    def future_attending
+      find :all, :joins => [:event], :conditions => ["events.date >= ? AND rsvp = ?", Time.now.midnight, true]
+    end
+  end
+  has_many :events, :through => :event_attendances do
+    def future
+      find :all, :conditions => ["date >= ?", Time.now.midnight]
+    end
+  end
   # has_many :how_did_you_hear_people
   # has_many :how_did_you_hear_options, :through => :how_did_you_hear_people
   has_and_belongs_to_many :how_did_you_hear_options
