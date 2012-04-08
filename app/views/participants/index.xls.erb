@@ -121,6 +121,7 @@
 		<th>college_bound_scholarship</th>
 		<th>other_college_programs</th>
 		<th>other_location_id</th>
+		<th>participant_group</th>
 		<th>created_at</th>
 		<th>updated_at</th>
 	</tr>
@@ -250,6 +251,7 @@
 	<td><%=h participant.college_bound_scholarship %></td>
 	<td><%=h participant.other_college_programs %></td>
 	<td><%=h participant.other_location_id %></td>
+	<td><%=h participant.participant_group.try(:title) %></td>
 	<td><%=h participant.created_at %></td>
 	<td><%=h participant.updated_at %></td>
 	</tr>
