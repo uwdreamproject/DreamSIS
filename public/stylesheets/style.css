@@ -1496,7 +1496,11 @@ body.mentor.welcome table.rsvp {
 }
 
 body.mentor.welcome table.rsvp td {
-	padding: 1em 0;
+	padding: 1em;
+}
+
+body.mentor.welcome table.rsvp td:first-child {
+	padding-left: 0;
 }
 
 tr.attending td {
