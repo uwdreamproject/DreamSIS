@@ -1,5 +1,5 @@
 <h1>RSVP for <%=h @event_group.name %></h1>
-<p><%= sanitize textilize(@event_group.description), :tags => %w(table tr td h2 p a), :attributes => %w(id class style) %></p>
+<p><%= sanitize textilize(@event_group.description), :tags => %w(table tr td h2 p a), :attributes => %w(id class style href) %></p>
 
 <table class="highlightless rsvp">
 	<%= render :partial => 'event', :collection => @event_group.events.future %>
