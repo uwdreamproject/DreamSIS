@@ -1,4 +1,7 @@
 class EventsController < ApplicationController
+  skip_before_filter :check_authorization, :only => :show
+  before_filter :redirect_to_rsvp_if_not_admin, :only => :show
+
   # GET /events
   # GET /events.xml
   def index
@@ -82,5 +85,19 @@ class EventsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  protected
+
+  def redirect_to_rsvp_if_not_admin
+    @event = Event.find params[:id]
+    unless @current_user && (@current_user.admin? || @current_user.person.current_lead?)
+      if @event.allow_rsvps?
+        redirect_to event_rsvp_url(@event)
+      else
+        render_error("You are not allowed to access that page.")
+      end
+    end
+  end
+
 
 end
