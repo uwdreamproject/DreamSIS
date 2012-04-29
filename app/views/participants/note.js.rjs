@@ -1,0 +1,2 @@
+page.replace_html 'notes', :partial => 'notes'
+page.visual_effect :highlight, "note_#{@note.id}"

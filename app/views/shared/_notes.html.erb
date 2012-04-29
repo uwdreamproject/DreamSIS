@@ -1,0 +1,36 @@
+<% full ||= false %>
+<% include_other ||= [] %>
+<% 
+objects = []
+objects << notes.notes
+if include_other
+	include_other.each do |other|
+		objects << notes.send(other) if notes.respond_to?(other)
+	end
+	objects.flatten!
+end
+
+ %>
+
+
+<div class="<%= "full" if full %>">
+	<table class="" id="notes_<%= notes.id %>">
+		<%- current_date = nil -%>
+		<% for note in objects.sort_by(&:created_at).reverse %>
+			<% if note.allows?(@current_user) %>
+				<%= render :partial => "shared/note_rowset_header", 
+							:object => note if note.created_at.to_date != current_date  %>
+				<%= render :partial => "/shared/note", :object => note  %>
+				<%- current_date = note.created_at.to_date if note.created_at.to_date != current_date -%>
+			<% end -%>
+		<% end -%>
+	</table>	
+</div>
+
+<% if notes.notes.empty? %>
+<table>
+	<tr class="empty">
+		<td colspan=4>No notes yet.</td>
+	</tr>
+</table>
+<% end -%>

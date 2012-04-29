@@ -1,0 +1,11 @@
+<tr class="rowset-header">
+
+	<td colspan=3>
+		<%- if note_rowset_header.created_at.to_date == Time.now.to_date -%>
+			Today
+		<%- else -%>
+			<%= relative_timestamp(note_rowset_header.created_at, :date_only => true) rescue "unknown" %>
+		<% end -%>
+	</td>
+
+</tr>

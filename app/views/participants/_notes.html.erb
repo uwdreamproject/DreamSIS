@@ -1,0 +1,11 @@
+<h2>Notes (<%= @participant.notes.size %>)</h2>
+	
+<% remote_form_for @participant.notes.new, :url => note_participant_path(@participant) do |f| -%>
+	<h4 style="margin-bottom: 2px">Add New Note</h4>
+	<%= f.text_area :note, :style => "width:99%", :rows => 4 %>
+	<%= f.submit "Add Note", :disable_with => 'Adding note...', :class => 'add notes' %>
+<% end -%>
+
+<div>
+	<%= render :partial => "shared/notes", :object => @participant %>
+</div>

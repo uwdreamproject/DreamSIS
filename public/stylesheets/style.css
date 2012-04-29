@@ -401,6 +401,10 @@ a.redirect-link:hover {
 	background-image: url(../images/icons/silk/page_edit.png);
 }
 
+.info-section#notes h2 {
+	background-image: url(../images/icons/silk/note.png);
+}
+
 #errorExplanation {
 	background: url("../images/caution.png") 10px 10px no-repeat;
 	padding-left: 80px;
@@ -1292,7 +1296,7 @@ td.signup-meter {
 	padding: 0 5px;
 }
 
-div.notes, p.notes {
+div.notes.editable, p.notes.editable {
 	background: #fffde7 url(../images/icons/silk/note.png) no-repeat 3px 3px;
 	padding: 3px;
 	padding-left: 26px;
@@ -1302,16 +1306,32 @@ div.notes, p.notes {
 	color: #4c4c4c;
 }
 
-.notes:hover {
+.notes.editable:hover {
 	background-image: url(../images/icons/silk/note_edit.png);
 }
 
-.notes p {
+.notes.editable p {
 	margin-top: 1px;
 }
 
-.notes p:last-child {
+.notes.editable p:last-child {
 	margin-bottom: 2px;
+}
+
+#notes .metadata {
+	vertical-align: top;
+	font-size: 90%;
+	color: #656565;
+	padding-right: 1em;
+	min-width: 13em;
+}
+
+#notes table {
+	margin-top: 1em;
+}
+
+#notes .metadata .username {
+	font-weight: bold;
 }
 
 .hoverable .show_on_hover {

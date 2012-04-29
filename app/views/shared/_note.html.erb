@@ -1,0 +1,33 @@
+<tr id="note_<%= note.id %>">
+
+	<td class="metadata">
+		<div class="timestamp">
+			<span class="username"><%= note.fullname rescue nil %></span>
+			<br>
+			<%= note.created_at.strftime("%I:%M") %> <%= note.created_at.ampm %>
+			
+			<%- if note.user == @current_user -%>
+				<br>
+				<span class="note_edit_buttons">
+					<%= link_to "edit", edit_note_path(note, :return_to => params[:return_to] || request.request_uri), :class => 'light' %>
+					| <%= link_to_remote "delete", 
+								:url => note_path(note, :return_to => params[:return_to] || request.request_uri),
+								:indicator => true, 
+								:method => :delete, 
+								:confirm => "Are you sure you want to delete this note?", :class => 'light' %>
+				</span>
+			<% end -%>
+		</div>
+	</td>
+
+	<td class="note-body">
+		<%= auto_link textilize_without_paragraph(note.note) %>
+		
+		<% if note.restricted? %>
+			<p class="privacy_note <%= note.access_level %>">
+				<%= note.restriction_in_words %>
+			</p>
+		<% end -%>
+	</td>
+	
+</tr>

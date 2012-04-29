@@ -1,4 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :notes
   map.resources :object_filters
   map.resources :locations
   map.resources :quarters, :member => { :sync => :put }
@@ -15,7 +16,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :participants, 
     :has_many => [:college_applications, :scholarship_applications], 
-    :collection => { :check_duplicate => :any }
+    :collection => { :check_duplicate => :any },
+    :member => { :note => [ :post, :put ] }
 
   map.resources :users, :collection => { :auto_complete_for_user_login => :any }
 

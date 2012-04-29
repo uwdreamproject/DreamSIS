@@ -1,0 +1,23 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  note: MyText
+  creator_id: 1
+  updater_id: 1
+  deleter_id: 1
+  notable_id: 1
+  notable_type: MyString
+  creator_name: MyString
+  category: MyString
+  access_level: MyString
+
+two:
+  note: MyText
+  creator_id: 1
+  updater_id: 1
+  deleter_id: 1
+  notable_id: 1
+  notable_type: MyString
+  creator_name: MyString
+  category: MyString
+  access_level: MyString

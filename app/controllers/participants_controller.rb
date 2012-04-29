@@ -162,6 +162,16 @@ class ParticipantsController < ApplicationController
     end
   end
   
+  def note
+    @participant = Participant.find(params[:id])
+    @note = @participant.notes.create(params[:note])
+    
+    respond_to do |format|
+      format.html { redirect_to @participant }
+      format.js
+    end    
+  end
+  
   # Checks for a duplicate participant based on the parameters passed. Used in an AJAX query on the participant form.
   def check_duplicate
     @duplicates = Participant.possible_duplicates(params[:participant], 10)

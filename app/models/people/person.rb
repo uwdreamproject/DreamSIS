@@ -19,6 +19,8 @@ class Person < ActiveRecord::Base
   validates_presence_of :lastname, :firstname, :if => :validate_name?
   validates_uniqueness_of :survey_id, :allow_nil => true
 
+  has_many :notes, :as => :notable
+
   after_create :generate_survey_id
 
   attr_accessor :validate_name

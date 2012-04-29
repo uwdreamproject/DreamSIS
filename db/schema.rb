@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120408210023) do
+ActiveRecord::Schema.define(:version => 20120427013410) do
 
   create_table "college_applications", :force => true do |t|
     t.integer  "participant_id"
@@ -140,6 +140,20 @@ ActiveRecord::Schema.define(:version => 20120408210023) do
     t.boolean  "volunteer"
     t.boolean  "driver"
     t.text     "notes"
+  end
+
+  create_table "notes", :force => true do |t|
+    t.text     "note"
+    t.integer  "creator_id"
+    t.integer  "updater_id"
+    t.integer  "deleter_id"
+    t.integer  "notable_id"
+    t.string   "notable_type"
+    t.string   "creator_name"
+    t.string   "category"
+    t.string   "access_level"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "object_filters", :force => true do |t|
