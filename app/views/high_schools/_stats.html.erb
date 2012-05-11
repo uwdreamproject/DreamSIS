@@ -1,4 +1,9 @@
-<% participants ||= @participants %>
+<% 
+participants ||= @participants
+active_participants = participants.select{|p| !p.inactive? }
+hide_title ||= false
+
+ %>
 
 <%- unless hide_title -%>
 	<h2><%= Participant.current_cohort %> Participants</h2>
@@ -15,15 +20,15 @@
 	
 	<tr>
 		<td class="title">Active Students</td>
-		<td class="number"><%= participants.select{|p| !p.inactive? }.size %></td>
+		<td class="number"><%= active_participants.size %></td>
 		<td></td>
-		<td class="percentage"><%= number_to_percentage(participants.select{|p| !p.inactive? }.size.to_f / participants.size.to_f * 100, :precision => 0) rescue 0.0/0.0 %></td>
+		<td class="percentage"><%= number_to_percentage(active_participants.size.to_f / participants.size.to_f * 100, :precision => 0) rescue 0.0/0.0 %></td>
 	</tr>
 	
 	<% for object_filter in Participant.object_filters %>
 		<% 
-		filtered_participants = participants.select{|p| object_filter.passes?(p)} 
-		my_percentage = filtered_participants.size.to_f / participants.size.to_f * 100
+		filtered_participants = active_participants.select{|p| object_filter.passes?(p)} 
+		my_percentage = filtered_participants.size.to_f / active_participants.size.to_f * 100
 		%>
 		<tr>
 			<td class="title"><%= object_filter.title %></td>
@@ -42,3 +47,5 @@
 	<% end -%>
 	
 </table>
+
+<small class="light">Counts and percentages above are compared against <strong>active</strong> participants only.</small>
