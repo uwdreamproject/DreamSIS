@@ -6,7 +6,7 @@ class Participant < Person
   belongs_to :mother_education_level, :class_name => "EducationLevel"
   belongs_to :father_education_level, :class_name => "EducationLevel"
   belongs_to :family_income_level, :class_name => "IncomeLevel"
-  belongs_to :participant_group
+  belongs_to :participant_group, :counter_cache => true
 
   has_many :mentor_participants
   has_many :mentors, :through => :mentor_participants

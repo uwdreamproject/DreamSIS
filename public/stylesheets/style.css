@@ -558,6 +558,10 @@ form:not(.formtastic) legend {
 	background: url('../images/icons/work_bw.gif') center left no-repeat;
 }
 
+.dropzone {
+	background: rgba(10,255,10,0.5) !important;
+}
+
 .button {
 	display: inline-block;
 	padding: 4px 10px 4px 25px;
@@ -1609,6 +1613,10 @@ body.mentor.welcome table.rsvp tr.attending td {
 	border-bottom: 1px dotted #dadada;
 	border-left: none;
 	text-shadow: none;
+}
+
+.menu ul ul li.primary a {
+	font-weight: bold !important;
 }
 
 .menu ul ul a:hover {

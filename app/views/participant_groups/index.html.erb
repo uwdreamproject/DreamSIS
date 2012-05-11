@@ -1,0 +1,18 @@
+<h1>Participant Groups
+	<%= content_tag :span, "&raquo; #{@high_school.try(:name)}", :class => 'light' if @high_school %></h1>
+
+<table>
+	<tr>
+		<th>Title</th>
+		<th>High School</th>
+		<th>Cohort</th>
+		<th>Size</th>
+		<th colspan=3>Functions</th>
+	</tr>
+
+	<%= render :partial => 'participant_group', :collection => @participant_groups %>
+</table>
+
+<div id="sidebar">
+	<%= link_to 'Create new group', new_participant_group_path(:participant_group => { :location_id => @high_school.try(:id)}), :class => 'add button' %>
+</div>

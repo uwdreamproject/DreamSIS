@@ -6,13 +6,18 @@
 <%= link_to 'Edit this Student', edit_participant_path(@participant), :class => 'edit button' %>
 
 <h4>High School</h4>
-<%= link_to @participant.high_school.name, 
-			{:action => "high_school", :id => @participant.high_school.id }, 
+<%= link_to h(@participant.high_school.name), 
+			high_school_cohort_path(@participant.high_school, @participant.grad_year), 
 			:class => 'redirect-link' unless @participant.high_school.nil? %>
 <%= link_to "<br />Class of #{@participant.grad_year}",
- 			{:action => "cohort", :id => @participant.grad_year },
+ 			high_school_cohort_path(@participant.high_school, @participant.grad_year),
 			:class => 'redirect-link' unless @participant.grad_year.blank? %>
 <%= "<br />GPA: #{@participant.gpa}" unless @participant.gpa.blank? %>
+
+<%- if @participant.participant_group -%>
+	<h4>Group</h4>
+	<%= link_to @participant.participant_group.try(:title), participant_group_path(@participant.participant_group.try(:id)), :class => 'redirect-link' %>
+<% end -%>
 
 <% if @participant.college_attending %>
 	<h4>College</h4>

@@ -59,7 +59,7 @@ class Person < ActiveRecord::Base
   # If we have a valid +person_resource+, then pass back +person_resource.DisplayName+ instead.
   def fullname(options = { :middlename => true })
     if person_resource?
-      update_resource_cache!
+      update_resource_cache! rescue nil
       return display_name
     end
     if options[:middlename]

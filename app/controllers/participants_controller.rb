@@ -50,12 +50,43 @@ class ParticipantsController < ApplicationController
     end
     
     @participants = Participant.in_cohort(@grad_year).in_high_school(@high_school.try(:id))
+    @participant_groups = ParticipantGroup.find(:all, :conditions => { :location_id => @high_school, :grad_year => @grad_year })
 
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
       format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
     end    
+  end
+  
+  def group
+    @participant_group = ParticipantGroup.find(params[:id])
+    @grad_year = @participant_group.grad_year
+    @high_school = @participant_group.location
+
+    unless @current_user && @current_user.can_view?(@high_school)
+      return render_error("You are not allowed to view that participant group.")
+    end
+    
+    @participants = @participant_group.participants
+    @participant_groups = ParticipantGroup.find(:all, :conditions => { :location_id => @high_school, :grad_year => @grad_year })
+    
+    respond_to do |format|
+      format.html { render :action => 'index' }
+      format.xml  { render :xml => @participants }
+      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+    end    
+  end
+  
+  def add_to_group
+    @participant_group = ParticipantGroup.find(params[:participant_group_id])
+    @participant = Participant.find(params[:id].split("_")[1])
+    @participant_groups = ParticipantGroup.find(:all, :conditions => { :location_id => @participant_group.location_id, :grad_year => @participant_group.grad_year })
+    @participant.update_attribute(:participant_group_id, @participant_group.id)
+    
+    respond_to do |format|
+      format.js
+    end
   end
 
   # GET /participants/1
@@ -86,6 +117,7 @@ class ParticipantsController < ApplicationController
   def new
     @participant = Participant.new
     @participant.intake_survey_date = Time.now  # only default to setting this field if we're manually creating a new record.
+    @participant_groups = []
 
     respond_to do |format|
       format.html # new.html.erb
@@ -96,6 +128,10 @@ class ParticipantsController < ApplicationController
   # GET /participants/1/edit
   def edit
     @participant = Participant.find(params[:id])
+    @participant_groups = ParticipantGroup.find(:all, :conditions => { 
+        :location_id => @participant.high_school_id, 
+        :grad_year => @participant.grad_year
+      })
 
     unless @current_user && @current_user.can_edit?(@participant)
       return render_error("You are not allowed to edit that participant.")
@@ -176,6 +212,18 @@ class ParticipantsController < ApplicationController
   def check_duplicate
     @duplicates = Participant.possible_duplicates(params[:participant], 10)
     
+    respond_to do |format|
+      format.js
+    end
+  end
+  
+  def fetch_participant_group_options
+    @participant = Participant.find(params[:id])
+    @participant_groups = ParticipantGroup.find(:all, :conditions => { 
+        :location_id => params[:participant][:high_school_id], 
+        :grad_year => params[:participant][:grad_year] 
+      })
+      
     respond_to do |format|
       format.js
     end

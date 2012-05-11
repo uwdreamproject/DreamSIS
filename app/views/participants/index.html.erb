@@ -1,8 +1,14 @@
 <h1>Listing <span id="filtered_record_count"></span> <%= pluralize @participants.size, "participant" %>
 	<%= "<font color=grey> at #{@high_school.name}</font>" if @high_school %>
 	<%= "<font color=grey> in #{@grad_year} class</font>" if @grad_year %>
-	<%= "<small>#{link_to("view all", participants_url)}</small>" if @high_school or @grad_year %>
 </h1>
+
+<%- if @participant_group -%>
+	<h2>
+		Group: <%= @participant_group.try(:title) %>
+		<span class="light">(<%= link_to "view all", high_school_cohort_path(@high_school, @grad_year) %>)</span>
+	</h2>
+<% end -%>
 
 <%= javascript_tag "initFilters([#{Participant.object_filters.collect(&:id).join(",")}]);" %>	
 
@@ -11,8 +17,8 @@
 		<tr>
 			<th>Name</th>
 			<th>Email</th>
-			<th>High school</th>
 			<th>Cohort</th>
+			<%= content_tag(:th, "Group") if @participant_groups %>
 			<th>Colleges</th>
 			<th>Scholarships</th>
 			<th colspan=3></th>

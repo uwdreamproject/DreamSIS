@@ -1,5 +1,5 @@
 	<% dom_id = "participant_#{participant.id}" %>
-	<tr class="<%= "deselected" if participant.inactive? %> filterable" id="<%= dom_id %>">
+	<tr class="<%= "deselected" if participant.inactive? %> filterable participant" id="<%= dom_id %>">
 		<td class="name"><%= link_to participant.lastname_first, participant %>
 			<small class="inactive-note">(inactive)</small>
 
@@ -9,16 +9,21 @@
 
 		</td>
 		<td class="email"><%= mail_to participant.email %></td>
-		<td class="high-school"><%= link_to truncate(participant.high_school.name, :length => 30), 
-						{:action => "high_school", :id => participant.high_school.id }, 
+		<td class="cohort"><%= link_to "#{truncate(participant.high_school.name, :length => 30)} #{participant.grad_year}", 
+						high_school_cohort_path(participant.high_school, participant.grad_year), 
 						:class => 'redirect-link' unless participant.high_school.nil? %></td>
-		<td class="cohort"><%= link_to participant.grad_year, 
-						{:action => "cohort", :id => participant.grad_year }, 
-						:class => 'redirect-link' unless participant.grad_year.nil? %></td>
-						
+		
+		<%- if @participant_groups -%>
+			<td class="group-title"><%= link_to truncate(h(participant.participant_group.try(:title)), :length => 30), 
+						participant.participant_group, 
+						:class => 'redirect-link' if participant.participant_group %></td>
+		<% end -%>
+			
 		<td class="college-application-count"><%= participant.college_applications.size %></td>
 		<td class="scholarship-application-count"><%= participant.scholarship_applications.size %></td>
 		
 		<td class="functions"><%= link_to 'Show', participant %></td>
 		<td class="functions"><%= link_to 'Edit', edit_participant_path(participant) %></td>
 	</tr>
+
+<%= draggable_element dom_id, :ghosting => true %>

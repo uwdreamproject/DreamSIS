@@ -109,5 +109,9 @@ class HighSchoolsController < ApplicationController
     end
     @unassigned_codes = @high_school.unassigned_survey_ids[0..(@n-1)]
   end
+
+  def stats
+    @high_schools = params[:id].nil? ? HighSchool.partners : [HighSchool.find(params[:id])]
+  end
   
 end

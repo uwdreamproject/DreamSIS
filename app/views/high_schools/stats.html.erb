@@ -1,0 +1,12 @@
+<h1><%= Participant.current_cohort %> Participant Stats</h1>
+
+<%- for high_school in @high_schools -%>
+	<div style="margin-bottom: 2em">
+		<h2><%=h high_school.name %></h2>
+		<%= render :partial => "stats", 
+					:locals => { 
+						:participants => Participant.in_cohort(Participant.current_cohort).in_high_school(high_school.try(:id)),
+						:hide_title => true 
+					} %>
+	</div>
+<% end -%>

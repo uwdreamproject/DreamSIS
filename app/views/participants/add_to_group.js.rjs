@@ -1,0 +1,2 @@
+page.replace "participant_#{@participant.id}", :partial => 'participant'
+page.visual_effect :highlight, "participant_#{@participant.id}"

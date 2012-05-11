@@ -113,10 +113,18 @@
 		<li>
 		  <%= f.label :grad_year %><br />
 		  <%= f.select :grad_year, 2004..Date.current.year+5, :include_blank => true %>
+		  <%= observe_field 'participant_grad_year', 
+							:url => fetch_participant_group_options_participant_path(@participant), 
+							:with => "Form.serialize($('participant_form'))" %>		
 		</li>
 		<li>
 		  <%= f.label :high_school_id %><br />
 		  <%= f.collection_select :high_school_id, HighSchool.all, :id, :name, :include_blank => true %>		
+		
+		  <%= observe_field 'participant_high_school_id', 
+							:url => fetch_participant_group_options_participant_path(@participant), 
+							:with => "Form.serialize($('participant_form'))" %>
+		
 		
 		
 			<small>
@@ -474,8 +482,13 @@
 			<%= f.text_field :survey_id, :size => 8 %>			
 		</li>
 	</ul>
-			
-			
+	
+	<ul>
+		<li>
+			<%= f.label :participant_group_id %>
+			<%= render :partial => 'participant_group_select' %>
+		</li>
+	</ul>
 
 </fieldset>
 

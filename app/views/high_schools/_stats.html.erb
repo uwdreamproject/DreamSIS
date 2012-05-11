@@ -1,25 +1,43 @@
-<h2><%= Participant.current_cohort %> Participants</h2>
+<% participants ||= @participants %>
+
+<%- unless hide_title -%>
+	<h2><%= Participant.current_cohort %> Participants</h2>
+<% end -%>
 
 <table class="stats">
 
 	<tr>
 		<td class="title">Total Students</td>
-		<td class="number"><%= @participants.size %></td>
+		<td class="number"><%= participants.size %></td>
+		<td></td>
 		<td class="percentage"></td>
 	</tr>
 	
 	<tr>
 		<td class="title">Active Students</td>
-		<td class="number"><%= @participants.select{|p| !p.inactive? }.size %></td>
-		<td class="percentage"><%= number_to_percentage(@participants.select{|p| !p.inactive? }.size.to_f / @participants.size.to_f * 100, :precision => 0) rescue 0.0/0.0 %></td>
+		<td class="number"><%= participants.select{|p| !p.inactive? }.size %></td>
+		<td></td>
+		<td class="percentage"><%= number_to_percentage(participants.select{|p| !p.inactive? }.size.to_f / participants.size.to_f * 100, :precision => 0) rescue 0.0/0.0 %></td>
 	</tr>
 	
 	<% for object_filter in Participant.object_filters %>
-		<% filtered_participants = @participants.select{|p| object_filter.passes?(p)} %>
+		<% 
+		filtered_participants = participants.select{|p| object_filter.passes?(p)} 
+		my_percentage = filtered_participants.size.to_f / participants.size.to_f * 100
+		%>
 		<tr>
 			<td class="title"><%= object_filter.title %></td>
 			<td class="number"><%= filtered_participants.size %></td>
-			<td class="percentage"><%= number_to_percentage(filtered_participants.size.to_f / @participants.size.to_f * 100, :precision => 0) rescue 0.0/0.0 %>
+			<td class="percentage-meter" style="min-width:3em;"><div class="signup-meter">
+					<div class="capacity" style="width: 100%;" title="<%= number_to_percentage my_percentage, :precision => 0 %>">
+						<div class="size" style="width: <%= my_percentage %>%">
+							<%#= mentor_quarter_group.full? ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
+							&nbsp;
+						</div>
+					</div>
+				</div>
+				</td>
+			<td class="percentage signup-numbers"><%= number_to_percentage(my_percentage, :precision => 0) rescue 0.0/0.0 %>
 		</tr>
 	<% end -%>
 	

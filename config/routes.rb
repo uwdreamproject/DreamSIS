@@ -8,7 +8,7 @@ ActionController::Routing::Routes.draw do |map|
   end
   map.resources :event_types
   map.resources :event_groups
-  map.resources :high_schools, :member => { :survey_codes => :get, :survey_code_cards => :get } do |high_schools|
+  map.resources :high_schools, :member => { :survey_codes => :get, :survey_code_cards => :get, :stats => :get }, :collection => { :stats => :get } do |high_schools|
     high_schools.resources :visits, 
       :collection => { :attendance => :get, :update_attendance => :post }, 
       :path_prefix  => "/high_schools/:high_school_id/:quarter_id"
@@ -16,8 +16,11 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :participants, 
     :has_many => [:college_applications, :scholarship_applications], 
-    :collection => { :check_duplicate => :any },
-    :member => { :note => [ :post, :put ] }
+    :collection => { :check_duplicate => :any, :add_to_group => :post },
+    :member => { :note => [ :post, :put ], :fetch_participant_group_options => :any }
+
+  map.resources :participant_groups,
+    :collection => { :high_school_cohort => :get, :high_school => :get }
 
   map.resources :users, :collection => { :auto_complete_for_user_login => :any }
 
@@ -49,6 +52,7 @@ ActionController::Routing::Routes.draw do |map|
     :controller => 'participants', 
     :action => 'high_school_cohort'
   map.cohort '/participants/cohort/:id.:format', :controller => 'participants', :action => 'cohort'
+  map.participant_group_participants '/participants/groups/:id.:format', :controller => 'participants', :action => 'group'
 
   # Users and Sessions
   map.signup 'signup', :controller => 'users', :action => 'new'

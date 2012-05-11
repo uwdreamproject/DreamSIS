@@ -11,7 +11,7 @@ task :generate_participants => :environment do
     HighSchool.find_or_create_by_name_and_partner_school(high_school + " High School", true)
   end
   
-  grad_years = (2006..Time.now.year+1).to_a
+  grad_years = (2011..Time.now.year+1).to_a
   n = ENV['N'].to_i
   n.times do |i|
     Participant.create(

@@ -1,0 +1,9 @@
+<% f.inputs do %>
+	<%= f.input :title, :hint => "Give the group a name. You can use anything you want, 
+								like the group lead's name, or the room number this group
+								 meets in, or anything else that works for you." %>
+								
+	<%= f.input :location %>
+	
+	<%= f.input :grad_year, :as => :select, :collection => 2005..Time.now.year+5 %>
+<% end -%>
