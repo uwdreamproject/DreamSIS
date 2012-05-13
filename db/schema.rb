@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120510032914) do
+ActiveRecord::Schema.define(:version => 20120512080625) do
 
   create_table "college_applications", :force => true do |t|
     t.integer  "participant_id"
@@ -162,6 +162,9 @@ ActiveRecord::Schema.define(:version => 20120510032914) do
     t.text     "criteria"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "opposite_title"
+    t.integer  "target_percentage"
+    t.integer  "warning_threshold"
   end
 
   create_table "participant_groups", :force => true do |t|

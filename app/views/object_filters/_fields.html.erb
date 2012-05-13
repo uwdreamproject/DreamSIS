@@ -1,15 +1,17 @@
-<p>
-	<%= f.label :title %><br>
-	<%= f.text_field :title, :size => 40 %>
-</p>
+<%- f.inputs do -%>
 
-<p>
-	<%= f.label :object_class %><br>
-	<%= f.select :object_class, ["Participant"], :include_blank => true %>
-</p>
+	<%= f.input :title, :title => "Title", :hint => "A quick phrase identifying this filter. For example, \"applied to 3 colleges.\"" %>
+	<%= f.input :object_class, :as => :select, :collection => ["Participant"], :include_blank => true, :hint => "Choose the object type that this filter relates to." %>
+	<%= f.input :criteria, :input_html => {:rows => 3, :class => "code"}, :hint => "Use Ruby code that evaluates to either true or false." %>
+	<%= f.input :target_percentage, :hint => "What is the target that you're trying to achieve?", :input_html => { :size => 3 } %>
+	<%= f.input :warning_threshold, :hint => "Completion rates below this threshold will be displayed in red.", :input_html => { :size => 3 } %>
 
-<p>
-	<%= f.label :criteria %><br>
-	<%= f.text_area :criteria, :cols => 40, :rows => 5 %>
-</p>
+<% end -%>
+
+<%- f.inputs(:title => "Opposite Display") do %>
 	
+	<%= f.input :opposite_title, :hint => "If you want this to show as an opposite filter in participant lists, enter a title here so that
+											the semantics will make sense. This might be useful so that you can filter for the people who 
+											have NOT completed this stat." %>
+
+<% end -%>

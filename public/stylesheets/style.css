@@ -495,6 +495,14 @@ input:focus, textarea:focus {
 	color: #000;
 }
 
+textarea, form.formtastic textarea {
+	padding: 0.25em;
+}
+
+textarea.code {
+	font-family: "Courier New", Courier, mono !important;
+}
+
 input[type=submit], input[type=button], form.formtastic input[type=submit], form.formtastic input[type=button] {
 	padding: 4px 10px 4px 10px;
 	text-decoration: none;
@@ -525,18 +533,22 @@ input#mentor_fullname {
 	text-shadow: 0 1px 1px rgba(0,0,0,0.3);
 }
 
-form:not(.formtastic) fieldset {
+/*form:not(.formtastic) fieldset {*/
+fieldset, form.formtastic fieldset {
 	border: none;
+	margin-bottom: 25px;
+	padding: 0.5em;
 	padding-top: 10px;
-	margin-bottom: 20px;
 }
 
-form:not(.formtastic) legend {
+legend, form.formtastic legend {
 	display: block;
 	border-bottom: 1px solid #047391;
 	background-color: #edf5fe;
-	width: 100%;
-	padding: 5px;
+	width: 99%;
+	padding: 0.5em 0.75em;
+	margin: -0.5em;
+	margin-bottom: 1em;
 	font-weight: bold;
 	color: #036;
 }
@@ -1201,6 +1213,10 @@ td.signup-meter {
 	min-width: 3em;
 }
 
+.signup-meter {
+	position: relative;
+}
+
 .signup-meter div.capacity {
 	background: rgb(230,230,230);
 	z-index: 10;
@@ -1213,6 +1229,14 @@ td.signup-meter {
 	float: left;
 }
 
+.signup-meter div.target {
+	z-index: 12;
+	float: left;
+	/*background: rgba(0,255,0,0.25);*/
+	border-right: 1px dashed #999;
+	position: absolute;
+}
+
 .signup-meter.full div.size {
 	background: rgba(255,0,0,0.25);
 }
@@ -1223,6 +1247,17 @@ td.signup-meter {
 	font: regular 80% "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
 }
 
+.signup-meter.warning div.capacity {
+	background: rgba(255,0,0,0.25);
+}
+
+.signup-meter.warning div.size {
+	background: red;
+}
+
+.signup-meter.not_achieved div.size {
+	background: #ffcd19;
+}
 
 
 /* @group Pagination */

@@ -1,7 +1,28 @@
-<h1><%=h @object_filter.title %>
-	<span class="light right"><%= link_to "edit", edit_object_filter_path(@object_filter) %></span></h1>
+<h1><%= @object_filter.object_class %> <%=h @object_filter.title %></h1>
 
-<p>Object Type: <%= @object_filter.object_class %></p>
-<p>Criteria: <tt><%= @object_filter.criteria %></tt></p>
+<dl class="inline-definitions">
 
-<p><%= link_to "Back", object_filters_path %></p>
+	<%- unless @object_filter.opposite_title.blank? -%>
+		<dt>Opposite Title</dt>
+		<dd><%=h @object_filter.opposite_title %></dd>
+	<% end -%>
+
+	<dt>Criteria</dt>
+	<dd><tt><%=h @object_filter.criteria %></tt></dd>
+	
+	<%- unless @object_filter.target_percentage.blank? -%>
+		<dt>Target</dt>
+		<dd><%= number_to_percentage @object_filter.target_percentage, :precision => 0 %></dd>
+	<% end -%>
+
+	<%- unless @object_filter.warning_threshold.blank? -%>
+		<dt>Warning Threshold</dt>
+		<dd><%= number_to_percentage @object_filter.warning_threshold, :precision => 0 %></dd>
+	<% end -%>
+
+</dl>
+
+<div id="sidebar">
+	<p><%= link_to "Back to filters", object_filters_path, :class => "back button" %></p>
+	<p><%= link_to "Edit this filter", edit_object_filter_path(@object_filter), :class => 'edit button' %></p>
+</div>

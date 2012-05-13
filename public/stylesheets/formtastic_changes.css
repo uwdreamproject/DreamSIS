@@ -23,3 +23,14 @@ form.formtastic fieldset ol li fieldset legend { margin-left: -6px;}
 	padding-left: 20px;
 	background-color: yellow;
 }
+
+li.boolean label {
+	display: block;
+	float: none;
+	padding-right: 1em;
+}
+
+form.formtastic label {
+	font-weight: bold;
+	color: #656565;
+}

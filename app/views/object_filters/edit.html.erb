@@ -1,6 +1,6 @@
-<h1>Edit Filter</h1>
+<h1>Edit Stat Filter</h1>
 
-<% form_for :object_filter, @object_filter, :url => object_filter_path(@object_filter), :html => { :method => :put } do |f| %>
+<% semantic_form_for :object_filter, @object_filter, :url => object_filter_path(@object_filter), :html => { :method => :put } do |f| %>
 
 	<%= f.error_messages %>
 

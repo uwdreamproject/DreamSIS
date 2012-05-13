@@ -66,7 +66,7 @@ class ObjectFiltersController < ApplicationController
     @object_filter.destroy
 
     respond_to do |format|
-      format.html { redirect_to(admin_object_filters_url) }
+      format.html { redirect_to(object_filters_url) }
       format.xml  { head :ok }
     end
   end

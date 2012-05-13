@@ -4,7 +4,7 @@
 			<small class="inactive-note">(inactive)</small>
 
 			<% Participant.object_filters.each do |object_filter| %>
-				<%= javascript_tag "filterable('#{dom_id}', #{object_filter.id}, #{object_filter.passes?(participant)})" %>
+				<%= javascript_tag "filterable('#{dom_id}', #{object_filter.id}, #{object_filter.passes?(participant, :purpose => :filter)})" %>
 			<% end -%>
 
 		</td>

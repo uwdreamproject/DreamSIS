@@ -1,19 +1,23 @@
-<h1>Filters</h1>
+<h1>Stat Filters</h1>
 <p>Filters are used to dynamically limit the students displayed on list pages, based on certain criteria defined here.</p>
 
 <table>
   <tr>
+    <th>Object</th>
     <th>Title</th>
-    <th>Object Type</th>
 	<th>Criteria</th>
+	<th>Target</th>
+	<th>Warning Threshold</th>
 	<th colspan=3>Functions</th>
   </tr>
 
 <% for object_filter in @object_filters %>
   <tr>
-    <td><%=h object_filter.title %></td>
     <td><%=h object_filter.object_class %></td>
+    <td><%=h object_filter.title %></td>
 	<td><tt><%=h object_filter.criteria %></tt></td>
+	<td><%=h number_to_percentage object_filter.target_percentage, :precision => 0 %></td>
+	<td><%=h number_to_percentage object_filter.warning_threshold, :precision => 0 %></td>
     <td><%= link_to 'Show', object_filter_path(object_filter) %></td>
     <td><%= link_to 'Edit', edit_object_filter_path(object_filter) %></td>
     <td><%= link_to 'Destroy', object_filter_path(object_filter), :confirm => 'Are you sure?', :method => :delete %></td>
@@ -21,6 +25,6 @@
 <% end %>
 </table>
 
-<br />
-
-<%= link_to 'New filter', new_object_filter_path, :class => "add button" %>
+<div id="sidebar">
+	<p><%= link_to 'New stat filter', new_object_filter_path, :class => "add button" %></p>
+</div>
