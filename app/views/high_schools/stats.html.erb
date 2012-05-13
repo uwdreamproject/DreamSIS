@@ -1,12 +1,21 @@
-<h1><%= Participant.current_cohort %> Participant Stats</h1>
+<h1><%= @cohort.to_s %> Participant Stats</h1>
 
 <%- for high_school in @high_schools -%>
 	<div style="margin-bottom: 2em">
 		<h2><%=h high_school.name %></h2>
 		<%= render :partial => "stats", 
 					:locals => { 
-						:participants => Participant.in_cohort(Participant.current_cohort).in_high_school(high_school.try(:id)),
+						:participants => Participant.in_cohort(@cohort).in_high_school(high_school.try(:id)),
 						:hide_title => true 
 					} %>
 	</div>
 <% end -%>
+
+<div id="sidebar">
+	<h3>Other Cohorts</h3>
+	<ul class="quick_nav">
+	<%- for cohort in 2006..Time.now.year -%>
+		<li><%= link_to cohort.to_s, url_for(:cohort => cohort) %></li>
+	<% end -%>
+	</ul>
+</div>

@@ -112,6 +112,7 @@ class HighSchoolsController < ApplicationController
 
   def stats
     @high_schools = params[:id].nil? ? HighSchool.partners : [HighSchool.find(params[:id])]
+    @cohort = params[:cohort] || Participant.current_cohort
   end
   
 end
