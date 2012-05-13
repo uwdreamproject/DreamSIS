@@ -35,9 +35,9 @@ hide_title ||= false
 		# Figure out what CSS class to use
 		if object_filter.target_percentage.blank? && object_filter.warning_threshold.blank?
 			meter_class = "no_target"
-		elsif active_percentage >= object_filter.target_percentage
+		elsif !object_filter.target_percentage.blank? && active_percentage >= object_filter.target_percentage
 			meter_class = "achieved"
-		elsif active_percentage < object_filter.warning_threshold
+		elsif !object_filter.warning_threshold.blank? && active_percentage < object_filter.warning_threshold
 			meter_class = "warning"
 		else
 			meter_class = "not_achieved"
