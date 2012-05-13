@@ -16,7 +16,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :participants, 
     :has_many => [:college_applications, :scholarship_applications], 
-    :collection => { :check_duplicate => :any, :add_to_group => :post },
+    :collection => { :check_duplicate => :any, :add_to_group => :post, :fetch_participant_group_options => :any },
     :member => { :note => [ :post, :put ], :fetch_participant_group_options => :any }
 
   map.resources :participant_groups,

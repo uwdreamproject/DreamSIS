@@ -218,7 +218,7 @@ class ParticipantsController < ApplicationController
   end
   
   def fetch_participant_group_options
-    @participant = Participant.find(params[:id])
+    # @participant = Participant.find(params[:id])
     @participant_groups = ParticipantGroup.find(:all, :conditions => { 
         :location_id => params[:participant][:high_school_id], 
         :grad_year => params[:participant][:grad_year] 
