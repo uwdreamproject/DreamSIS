@@ -20,7 +20,7 @@
 
 </head>
 
-<body class="<%= "admin" if @current_user.try(:admin?) %> <%= controller.action_name %> <%= controller.controller_name %>">
+<body class="<%= "admin" if @current_user.try(:admin?) %> <%= controller.action_name %> <%= controller.controller_name %> <%= @body_class %>">
 
 	<div id="header">
 		<h1><%= link_to "<strong>DreamSIS</strong>", root_url %></h1>

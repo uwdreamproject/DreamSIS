@@ -52,6 +52,34 @@ class MentorQuarterGroup < ActiveRecord::Base
     mentor_quarters_count.to_f / capacity.to_f * 100
   end
   
+  # Returns the length of this visit in minutes. Returns +NaN+ if +return_time+ and +depart_time+ are both nil.
+  def length
+    return 0.0/0.0 unless depart_time && return_time
+    (return_time - depart_time)/60
+  end
+  
+  # Returns the number of spots left in this group, or nil if no capacity is defined.
+  def spots_left
+    return nil if capacity.nil?
+    spots_left = capacity - mentor_quarters_count
+    spots_left < 0 ? 0 : spots_left
+  end
+  
+  # Given an array of other MentorQuarterGroup objects, this method returns an array of matching objects whose times overlap on a schedule.
+  def overlaps_with(other_groups)
+    return [] if other_groups.nil?
+    matching_groups = []
+    for group in other_groups
+      next if group == self
+      next if group.day_of_week != day_of_week
+      next if group.depart_time.nil? || group.return_time.nil?
+      match = true if group.depart_time >= depart_time && group.depart_time < return_time
+      match = true if group.return_time >= depart_time && group.return_time < return_time
+      matching_groups << group if match
+    end
+    matching_groups
+  end
+
   # Syncs this MentorQuarterGroup with the UW course it is linked with (if +course_id+ is not nil).
   # Creates a MentorQuarter record for each active registration in the section and removes MentorQuarter
   # records for mentors who have dropped the class.

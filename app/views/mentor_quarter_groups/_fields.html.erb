@@ -1,4 +1,10 @@
-<%= f.inputs :location, :quarter, :title, :times, :depart_time, :return_time, :capacity, :none_option %>
+<%= f.inputs :location, :quarter, :title, :times %>
+
+<%- f.inputs do -%>
+	<%= f.input :day_of_week, :as => :select, :collection => %w(Monday Tuesday Wednesday Thursday Friday Saturday) %>
+<% end -%>
+
+<%= f.inputs :depart_time, :return_time, :capacity, :none_option %>
 
 <%- if f.object.quarter -%>
 	<% f.inputs do %>

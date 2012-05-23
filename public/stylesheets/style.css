@@ -211,6 +211,18 @@ h4 {
 	top: 40px;
 }
 
+body.full #content {
+	margin-right: 0;
+}
+
+body.full #sidebar {
+	display: none;
+}
+
+body.full #sidebar-header {
+	display: none;
+}
+
 #content-wrap {
 	margin: -00px;
 	margin-bottom: -13px;
@@ -631,6 +643,190 @@ a.button:active {
 .button.email {
 	background-image: url(../images/icons/silk/email.png);
 }
+
+/*table.schedule {
+	position: absolute;
+}*/
+
+.schedule li, .schedule ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.schedule tr:hover {
+	background: inherit;
+}
+
+.schedule td {
+	border: 1px solid #d8d8d8;
+	width: 15%;
+	vertical-align: top;
+	padding: 0;
+}
+
+.schedule td.times {
+	width: 60px;
+	font-size: 85%;
+	color: #b2b2b2;
+}
+
+.schedule td.times .hour {
+	color: #7f7f7f;
+}
+
+.schedule th {
+	text-align: center;
+}
+
+.schedule ul.times li, .schedule ul.time-blocks li {
+	height: 30px;
+	border-top: 1px solid #f7f7f7;
+}
+
+.schedule ul.times li:first-child, .schedule ul.time-blocks li:first-child {
+	border-top: none;
+	padding-top: 1px;
+}
+
+.schedule ul.times li span {
+	padding: 3px;
+}
+
+.schedule ul.times li.hour, .schedule ul.time-blocks li.hour {
+	border-color: #cbcbcb;
+}
+
+.schedule ul.time-blocks li span {
+	display: none;
+}
+
+.schedule ul.meetings li {
+	background: rgba(229,242,255,0.75);
+	border: 1px solid rgba(75,158,211,0.4);
+	border-radius: 5px;
+	float: left;
+	position: relative;
+	margin: 1px;
+	margin-top: 6px;
+	overflow: hidden;
+	z-index: 10;
+	text-shadow: white 0 -1px 1px;
+	width: 97%;
+}
+
+.schedule ul.meetings li.full {
+	background: rgba(178,178,178,0.75) url(../images/backgrounds/unavailable-xtile.gif);
+	border: 1px solid rgba(0,0,0,0.4);
+	opacity: 0.5;
+	z-index: 1;
+}
+
+.schedule ul.meetings li.volunteer, .schedule ul.meetings li.enrolled {
+	background: rgba(204,255,204,0.75);
+	border: 1px solid rgba(0,255,0,0.4);
+	opacity: 1;
+}
+
+.schedule ul.meetings li p {
+	padding: 0 5px;
+	margin: 0;
+	-webkit-transition: all 0.5s ease-in;
+	font-size: 95%;
+}
+
+.schedule ul.meetings li h5 {
+	padding: 0 5px;
+	margin: 3px 0;
+	font-weight: bold;
+	font-family: Helvetica, sans-serif;
+}
+
+.schedule ul.meetings li p:first-child {
+	padding-top: 5px;
+}
+
+.schedule ul.meetings li p.spots_left {
+	font-size: 85%;
+	font-weight: bold;
+}
+
+.schedule ul.meetings li.split {
+	font-size: 90%;
+}
+
+.schedule ul.meetings li.split2 {
+	width: 45%;
+}
+
+.schedule ul.meetings li.split3 {
+	width: 32%;
+}
+
+.schedule ul.meetings li.split4 {
+	width: 23%;
+}
+
+.schedule ul.meetings li p.signup-link a {
+	display: none;
+}
+
+.schedule ul.meetings li:hover p.signup-link a {
+	display: block;
+}
+
+/*.schedule ul.meetings li:hover p {
+	display: none;
+}*/
+
+.schedule ul.meetings li p.signup-link a {
+	-webkit-transition: all 0.5s ease-in;
+	opacity: 0;
+}
+
+.schedule ul.meetings li:hover p.signup-link a {
+	opacity: 1;
+}
+
+.schedule ul.meetings li a.add {
+	background: url(../images/icons/silk/add.png) no-repeat center top;
+	padding-top: 22px;
+	margin: 0.5em 0;
+	text-align: center;
+}
+
+.schedule ul.meetings li a.cancel {
+	background: url(../images/icons/silk/delete.png) no-repeat center top;
+	padding-top: 22px;
+	margin: 0.5em 0;
+	text-align: center;
+}
+
+
+/*.splitpos2.split2 {
+	left: 44.5%;
+}
+
+.splitpos2.split3 {
+	left: 33%;
+}
+
+.splitpos3.split3 {
+	left: 66%;
+}
+
+.splitpos2.split4 {
+	left: 24%;
+}
+
+.splitpos3.split4 {
+	left: 49%;
+}
+
+.splitpos4.split4 {
+	left: 74%;
+}*/
+
 
 ul.filters {
 	list-style: none;

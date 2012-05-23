@@ -19,5 +19,12 @@ class StudentPersonResource < UwWebResource
   def photo
     @photo ||= StudentPhoto.new(id)
   end
+
+  def active_registrations(quarter)
+    params = { :reg_id => self.RegID, :is_active => "on" }
+    params[:year] = quarter.year if quarter
+    params[:quarter] = quarter.quarter_title if quarter
+    @active_registrations ||= RegistrationResource.find("registration", :params => params)
+  end
   
 end

@@ -26,6 +26,12 @@ class Quarter < ActiveRecord::Base
     abbrevs = %w( WIN SPR SUM AUT )
     abbrevs[quarter_code - 1]
   end
+  
+  # Returns the quarter title of just the quarter part. Useful for the UW web services.
+  def quarter_title
+    titles = %w( winter spring summer autumn )
+    titles[quarter_code-1]
+  end
 
   # Determines the next Quarter in the calendar
   def next

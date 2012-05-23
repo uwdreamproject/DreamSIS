@@ -1,0 +1,41 @@
+<%- 
+mentor_quarter_group = mentor_quarter_group_schedule 
+overlaps = mentor_quarter_group.overlaps_with(mentor_quarter_groups)
+reset_cycle "overlap" if overlaps.nil? || overlaps.size < 0
+mentor_quarter = @mentor_quarters.select{ |mq| mq.mentor_quarter_group_id == mentor_quarter_group.id }.try(:first)
+@start_time ||= Time.parse("7:00") 
+-%>
+
+<li style=" height: <%= mentor_quarter_group.length.to_i %>px;
+			top: <%= (Time.parse(mentor_quarter_group.depart_time.to_s(:time)) - @start_time)/60 %>px;"
+		class="<%= "full" if mentor_quarter_group.full? %> 
+				<%= "split split#{overlaps.size} splitpos#{cycle(1,2,3,4,5, :name => 'overlap')}" if overlaps.size > 0 %>
+				<%= (mentor_quarter.volunteer? ? "volunteer" : "enrolled") unless mentor_quarter.nil? %>"
+		id="mentor_quarter_group_<%= mentor_quarter_group.id %>">
+	<h5><%=h mentor_quarter_group.title %></h5>
+
+	<p class="signup-link">
+		<%- if mentor_quarter.nil? -%>
+			<%= link_to_remote "Sign up as a volunteer", 
+								:url => mentor_signup_quarter_volunteer_path(@quarter, mentor_quarter_group), 
+								:html => { :class => "add" }, 
+								:method => :put unless mentor_quarter_group.full? %>
+								
+		<%- elsif mentor_quarter.volunteer? -%>
+			<span class="orange tag">Volunteer</span>
+			<%= link_to_remote "Leave this group", 
+								:url => mentor_signup_quarter_drop_path(@quarter, mentor_quarter), 
+								:method => :delete, 
+								:html => { :class => "cancel" },
+								:confirm => "Are you sure you want to leave this group?" %>
+					
+		<%- else -%>
+			<span class="green tag">Enrolled through MyUW</span>
+			
+		<% end -%>
+	</p>
+
+
+	<p class="light"><%= mentor_quarter_group.times %></p>
+	<p class="spots_left"><%= "#{pluralize(mentor_quarter_group.spots_left, "spot")} left" if mentor_quarter_group.spots_left %></p>
+</li>

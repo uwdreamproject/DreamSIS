@@ -1,0 +1,43 @@
+<%- 
+@start_time = Time.parse("7:00") 
+@days = %w(Monday Tuesday Wednesday Thursday Friday Saturday) 
+-%>
+
+<h1>Sign up for <%= @quarter.title %></h1>
+<p>Welcome to the Dream Project! To get signed up for the quarter, choose the high school visit you'd like to attend below:</p>
+
+<table class="schedule">
+	<tr>
+		<th>Time</th>
+		<%- for day in @days -%>
+			<th><%= day %></th>
+		<% end -%>
+	</tr>
+	
+	<tr>
+		<td class="times">
+			<ul class="times">
+				<%- for time in (Array.new(11.hours / 30.minutes)).each_with_index.collect{|t,i| (Time.parse("7:00") + (i*30.minutes)).strftime("%I:%M %p")} -%>
+					<li class="<%= cycle('hour', 'half-hour') %>"><span><%= time %></span></li>
+				<% end -%>
+			</ul>
+		</td>
+
+		<%- for day in @days -%>
+		<td>
+			<ul class="meetings">
+				<%- mentor_quarter_groups = @mentor_quarter_groups.select{|g| g.day_of_week == day} -%>
+				<%= render :partial => 'mentor_quarter_group_schedule', 
+							:collection => mentor_quarter_groups, 
+							:locals => { :mentor_quarter_groups => mentor_quarter_groups } %>
+			</ul>
+			<ul class="time-blocks">
+				<%- for time in (Array.new(11.hours / 30.minutes)).each_with_index.collect{|t,i| (Time.parse("7:00") + (i*30.minutes)).strftime("%I:%M %p")} -%>
+					<li class="<%= cycle('hour', 'half-hour') %>"><span><%= time %></span></li>
+				<% end -%>
+			</ul>
+		</td>
+		<% end -%>
+	
+	</tr>
+</table>

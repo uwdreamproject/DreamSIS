@@ -7,9 +7,9 @@ class MentorQuarterGroupsController < ApplicationController
     @mentor_quarter_groups = @quarter.mentor_quarter_groups
     @max_quarter_cap = @mentor_quarter_groups.collect(&:capacity).numeric_items.max
     @max_quarter_size = @mentor_quarter_groups.collect(&:mentor_quarters_count).numeric_items.max
-    render :action => "index"
+    render :action => (params[:show] == 'schedule' ? "schedule" : "index")
   end
-
+  
   def index
     @mentor_quarter_groups = @quarter.mentor_quarter_groups
     @max_quarter_cap = @mentor_quarter_groups.collect(&:capacity).numeric_items.max

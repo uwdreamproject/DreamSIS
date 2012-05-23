@@ -1,0 +1,3 @@
+mentor_quarter_groups = @mentor_quarter_groups.select{|g| g.day_of_week == @mentor_quarter_group.day_of_week}
+
+page.replace "mentor_quarter_group_#{@mentor_quarter_group.id}", :partial => 'mentor_quarter_group_schedule', :object => @mentor_quarter_group, :locals => { :mentor_quarter_groups => mentor_quarter_groups }

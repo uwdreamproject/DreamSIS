@@ -8,9 +8,16 @@ class MentorSignupController < ApplicationController
     @mentor_quarter_groups = @quarter.mentor_quarter_groups
     @max_quarter_cap = @mentor_quarter_groups.collect(&:capacity).numeric_items.max
     @max_quarter_size = @mentor_quarter_groups.collect(&:mentor_quarters_count).numeric_items.max
+    if params[:display] == 'schedule'
+      @body_class = 'full'
+      render :action => 'schedule'
+    end
   end
 
   def basics
+  end
+  
+  def schedule
   end
   
   def background_check_form
@@ -55,7 +62,14 @@ class MentorSignupController < ApplicationController
     else
       flash[:error] = "Could not add you to the group, or you're already in that group."
     end
-    redirect_to root_url
+    
+    respond_to do |format|
+      format.html { redirect_to root_url }
+      format.js   { 
+        @mentor_quarter_groups = @quarter.mentor_quarter_groups 
+        @mentor_quarters = @mentor.mentor_quarters.for_quarter(@quarter.id)
+      }
+    end
   end
   
   def drop
@@ -63,7 +77,24 @@ class MentorSignupController < ApplicationController
     @mentor_quarter.destroy
     
     flash[:notice] = "Successfully removed you from the group."
-    redirect_to mentor_signup_quarter_url(@quarter)
+    
+    respond_to do |format|
+      format.html { redirect_to mentor_signup_quarter_url(@quarter) }
+      format.js   { 
+        @mentor_quarter_group = @mentor_quarter.mentor_quarter_group
+        @mentor_quarter_groups = @quarter.mentor_quarter_groups
+        @mentor_quarters = @mentor.mentor_quarters.for_quarter(@quarter.id)
+      }
+    end
+  end
+  
+  def add_my_courses
+    @courses = @mentor.student_person_resource
+    
+    
+    respond_to do |format|
+      format.js
+    end
   end
 
   protected
