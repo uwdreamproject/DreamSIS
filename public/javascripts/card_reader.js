@@ -1,11 +1,18 @@
+// BUG: Even when card reader is disabled, this script still hijacks the user input!
+// NEED TO FIX BEFORE USING AGAIN
+
 document.onkeypress = function(e) { return captureCardReader(e); }
 
 var keyQueue = "";
-var cardReaderEnabled = true;
+var cardReaderEnabled = false;
 var debug = true;
 
 // Captures input that starts with a "&;" and ends with a ";"
 function captureCardReader(e) {
+	if (!cardReaderEnabled) {
+		return true
+	}
+	
 	var k
 	if (!e) e = window.event
 	document.all ? k = e.keyCode : k = e.which

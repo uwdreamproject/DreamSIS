@@ -1,5 +1,7 @@
 <h1>Editing <%= @mentor.fullname %></h1>
 
+<%= javascript_tag "enableCardReader();" %>
+
 <% semantic_form_for @mentor do |f| %>
 	<%= f.error_messages %>
 	
