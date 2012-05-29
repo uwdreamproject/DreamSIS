@@ -1,0 +1,12 @@
+<%- 
+@start_time ||= Time.parse("7:00") 
+start_time = Time.parse(course_meeting[:start_time])
+end_time = Time.parse(course_meeting[:end_time])
+style_top = (start_time - @start_time)/60
+style_height = (end_time - start_time).to_i/60
+-%>
+
+<li style=" height: <%= style_height %>px; top: <%= style_top %>px;" class="course_meeting">
+	<h5><%=h course_meeting[:course].abbreviation %></h5>
+	<p class="light"><%= start_time.to_s(:time12) %>&ndash;<%= end_time.to_s(:time12) %></p>
+</li>

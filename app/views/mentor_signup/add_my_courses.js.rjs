@@ -1,0 +1,5 @@
+@course_meetings.each do |day, meetings|
+  for meeting in meetings
+    page.insert_html :bottom, "course_meetings_#{day}", :partial => 'course_meeting', :object => meeting
+  end
+end

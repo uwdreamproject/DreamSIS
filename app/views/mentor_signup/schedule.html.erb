@@ -25,10 +25,11 @@
 
 		<%- for day in @days -%>
 		<td>
+			<ul class="course meetings" id="course_meetings_<%=h day %>"></ul>
 			<ul class="meetings">
 				<%- mentor_quarter_groups = @mentor_quarter_groups.select{|g| g.day_of_week == day} -%>
 				<%= render :partial => 'mentor_quarter_group_schedule', 
-							:collection => mentor_quarter_groups, 
+							:collection => mentor_quarter_groups.sort_by(&:depart_time), 
 							:locals => { :mentor_quarter_groups => mentor_quarter_groups } %>
 			</ul>
 			<ul class="time-blocks">
@@ -41,3 +42,5 @@
 	
 	</tr>
 </table>
+
+<%= javascript_tag remote_function(:url => mentor_signup_schedule_add_my_courses_path(:quarter_id => @quarter.to_param)) %>

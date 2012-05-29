@@ -66,6 +66,7 @@ class MentorSignupController < ApplicationController
     respond_to do |format|
       format.html { redirect_to root_url }
       format.js   { 
+        @mentor_quarter_group.reload
         @mentor_quarter_groups = @quarter.mentor_quarter_groups 
         @mentor_quarters = @mentor.mentor_quarters.for_quarter(@quarter.id)
       }
@@ -82,6 +83,7 @@ class MentorSignupController < ApplicationController
       format.html { redirect_to mentor_signup_quarter_url(@quarter) }
       format.js   { 
         @mentor_quarter_group = @mentor_quarter.mentor_quarter_group
+        @mentor_quarter_group.reload
         @mentor_quarter_groups = @quarter.mentor_quarter_groups
         @mentor_quarters = @mentor.mentor_quarters.for_quarter(@quarter.id)
       }
@@ -89,8 +91,7 @@ class MentorSignupController < ApplicationController
   end
   
   def add_my_courses
-    @courses = @mentor.student_person_resource
-    
+    @course_meetings = @mentor.student_person_resource.course_meetings(@quarter)
     
     respond_to do |format|
       format.js

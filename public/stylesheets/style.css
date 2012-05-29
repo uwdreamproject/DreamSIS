@@ -660,6 +660,7 @@ a.button:active {
 
 .schedule td {
 	border: 1px solid #d8d8d8;
+	/*min-*/
 	width: 15%;
 	vertical-align: top;
 	padding: 0;
@@ -701,30 +702,48 @@ a.button:active {
 	display: none;
 }
 
+.schedule ul.meetings {
+	position: relative;
+}
+
 .schedule ul.meetings li {
-	background: rgba(229,242,255,0.75);
+	background: rgb(229,242,255);
 	border: 1px solid rgba(75,158,211,0.4);
 	border-radius: 5px;
-	float: left;
-	position: relative;
+	position: absolute;
 	margin: 1px;
+	clear: none;
 	margin-top: 6px;
 	overflow: hidden;
 	z-index: 10;
 	text-shadow: white 0 -1px 1px;
 	width: 97%;
+	float: left;
+	-webkit-transition: all 0.1s ease-in-out;
+	opacity: 0.9;
 }
 
 .schedule ul.meetings li.full {
-	background: rgba(178,178,178,0.75) url(../images/backgrounds/unavailable-xtile.gif);
+	background: rgb(178,178,178) url(../images/backgrounds/unavailable-xtile.gif);
 	border: 1px solid rgba(0,0,0,0.4);
 	opacity: 0.5;
 	z-index: 1;
 }
 
+.schedule ul.course.meetings li {
+	border: 2px dashed #b2b2b2;
+	background: #e5e5e5;
+	z-index: 20;
+	opacity: 0.4;
+}
+
+.schedule ul.course.meetings li h5 {
+	color: #656565;
+}
+
 .schedule ul.meetings li.volunteer, .schedule ul.meetings li.enrolled {
-	background: rgba(204,255,204,0.75);
-	border: 1px solid rgba(0,255,0,0.4);
+	background: rgb(204,255,204);
+	border: 1px solid rgb(0,255,0);
 	opacity: 1;
 }
 
@@ -760,15 +779,26 @@ a.button:active {
 }
 
 .schedule ul.meetings li.split3 {
-	width: 32%;
+	width: 31%;
 }
 
 .schedule ul.meetings li.split4 {
-	width: 23%;
+	width: 22%;
+}
+
+.schedule ul.meetings li.split5 {
+	width: 20%;
 }
 
 .schedule ul.meetings li p.signup-link a {
 	display: none;
+}
+
+.schedule ul.meetings li:hover {
+	z-index: 20;
+	width: 97%;
+	left: 0;
+	opacity: 0.95 !important;
 }
 
 .schedule ul.meetings li:hover p.signup-link a {
@@ -803,29 +833,29 @@ a.button:active {
 }
 
 
-/*.splitpos2.split2 {
-	left: 44.5%;
-}
-
-.splitpos2.split3 {
-	left: 33%;
-}
-
-.splitpos3.split3 {
-	left: 66%;
-}
-
-.splitpos2.split4 {
-	left: 24%;
-}
-
-.splitpos3.split4 {
+.split2.splitpos2 {
 	left: 49%;
 }
 
-.splitpos4.split4 {
+.split3.splitpos2 {
+	left: 33%;
+}
+
+.split3.splitpos3 {
+	left: 66%;
+}
+
+.split4.splitpos2 {
+	left: 24%;
+}
+
+.split4.splitpos3 {
+	left: 49%;
+}
+
+.split4.splitpos4 {
 	left: 74%;
-}*/
+}
 
 
 ul.filters {

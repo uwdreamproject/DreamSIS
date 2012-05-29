@@ -62,5 +62,17 @@ class DateTime
   def ampm
     hour < 12 ? "am" : "pm"
   end
+
+  def to_time  
+    return Time.mktime( year, month, day, hour, min, sec )  
+  end
   
+end
+
+class Range  
+  def intersection(range)  
+    res = self.to_a & range.to_a  
+    res.empty? ? nil : (res.first..res.last)  
+  end  
+  alias_method :&, :intersection  
 end

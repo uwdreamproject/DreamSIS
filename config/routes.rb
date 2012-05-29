@@ -35,6 +35,7 @@ ActionController::Routing::Routes.draw do |map|
     :controller => 'mentor_quarter_groups', 
     :action => 'quarter'
 
+  map.mentor_signup_schedule_add_my_courses 'mentor_signup/add_my_courses', :controller => 'mentor_signup', :action => 'add_my_courses'
   map.mentor_signup_basics 'mentor_signup/basics', :controller => 'mentor_signup', :action => 'basics'
   map.mentor_signup_risk_form 'mentor_signup/risk_form', :controller => 'mentor_signup', :action => 'risk_form'
   map.mentor_signup_background_check_form 'mentor_signup/background_check_form', :controller => 'mentor_signup', :action => 'background_check_form'

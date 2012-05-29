@@ -66,16 +66,19 @@ class MentorQuarterGroup < ActiveRecord::Base
   end
   
   # Given an array of other MentorQuarterGroup objects, this method returns an array of matching objects whose times overlap on a schedule.
-  def overlaps_with(other_groups)
+  def overlaps_with(other_groups, options = {})
     return [] if other_groups.nil?
     matching_groups = []
-    for group in other_groups
-      next if group == self
-      next if group.day_of_week != day_of_week
-      next if group.depart_time.nil? || group.return_time.nil?
-      match = true if group.depart_time >= depart_time && group.depart_time < return_time
-      match = true if group.return_time >= depart_time && group.return_time < return_time
-      matching_groups << group if match
+    for other in other_groups
+      match = false
+      matching_groups << other if other == self && options[:include_self]
+      next if other == self
+      next if other.day_of_week != day_of_week
+      next if other.depart_time.nil? || other.return_time.nil?
+      self_range = (depart_time.to_time.to_i..return_time.to_time.to_i)  
+      other_range = (other.depart_time.to_time.to_i..other.return_time.to_time.to_i)  
+      match = self_range.intersection(other_range)
+      matching_groups << other if match
     end
     matching_groups
   end
@@ -90,7 +93,7 @@ class MentorQuarterGroup < ActiveRecord::Base
     return false if skip_sync_after_create
     begin
       course = CourseResource.find(course_id)
-      active_reg_ids = Array(course.active_registrations.Registrations.Registration).collect(&:RegID) rescue []
+      active_reg_ids = course.active_registrations.collect(&:RegID) rescue []
       # Destroy the ones that shouldn't be in there anymore
       mentor_quarters.each{|mq|
         next if mq.volunteer?

@@ -20,11 +20,27 @@ class StudentPersonResource < UwWebResource
     @photo ||= StudentPhoto.new(id)
   end
 
+  # Returns a hash of course meetings for the specified Quarter in the same format as CourseResource#meetings.
+  def course_meetings(quarter)
+    @course_meetings ||= {}
+    return @course_meetings[quarter] if @course_meetings[quarter]
+    cm = {}
+    for meetings in active_registrations(quarter).collect{|reg| reg.course_resource.meetings }
+      meetings.each do |day,meets|
+        cm[day] ||= []
+        cm[day] << meets
+        cm[day].flatten!
+      end
+    end
+    @course_meetings[quarter] = cm
+  end
+
+  # Returns the active RegistrationResource objects for this student for the specified Quarter.
   def active_registrations(quarter)
     params = { :reg_id => self.RegID, :is_active => "on" }
     params[:year] = quarter.year if quarter
     params[:quarter] = quarter.quarter_title if quarter
-    @active_registrations ||= RegistrationResource.find("registration", :params => params)
+    registrations = RegistrationResource.find(:all, :params => params)
   end
   
 end
