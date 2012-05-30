@@ -4,14 +4,14 @@ development:
     # key: mharris2.ued.washington.edu.pem
     # ca_file: uwca.pem
     host: ws.admin.washington.edu
-    cert: isidore.crt
-    key: isidore.key
+    cert: expo.uaa.washington.edu.uwca.crt
+    key: expo.uaa.washington.edu.key
     ca_file: uwca.pem
     act_as_user: dreamsis
 
 production:
     host: ws.admin.washington.edu
-    cert: isidore.crt
-    key: isidore.key
+    cert: expo.uaa.washington.edu.uwca.crt
+    key: expo.uaa.washington.edu.key
     ca_file: uwca.pem
     act_as_user: dreamsis
