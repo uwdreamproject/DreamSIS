@@ -3,3 +3,5 @@
     page.insert_html :bottom, "course_meetings_#{day}", :partial => 'course_meeting', :object => meeting
   end
 end
+
+page.show 'show_my_courses_switch'

@@ -644,6 +644,10 @@ a.button:active {
 	background-image: url(../images/icons/silk/email.png);
 }
 
+.button.calendar {
+	background-image: url(../images/icons/silk/calendar.png);
+}
+
 /*table.schedule {
 	position: absolute;
 }*/
@@ -734,7 +738,7 @@ a.button:active {
 	border: 2px dashed #b2b2b2;
 	background: #e5e5e5;
 	z-index: 20;
-	opacity: 0.4;
+	opacity: 0.5;
 }
 
 .schedule ul.course.meetings li h5 {

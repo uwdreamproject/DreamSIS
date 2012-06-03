@@ -3,8 +3,21 @@
 @days = %w(Monday Tuesday Wednesday Thursday Friday Saturday) 
 -%>
 
+<div class="right">
+	<p><%= link_to "Switch to <strong>list view</strong>", { :display => 'list' }, :class => "list button" %></p>
+	<p id="show_my_courses_switch" style="display:none">
+		<label for="show_my_courses"><%= check_box_tag "show_my_courses", true, true %> Show my class schedule</label>
+	</p>
+	
+	<%= observe_field "show_my_courses", :function => "$$('.course_meeting').invoke('toggle')" %>
+</div>
+
 <h1>Sign up for <%= @quarter.title %></h1>
-<p>Welcome to the Dream Project! To get signed up for the quarter, choose the high school visit you'd like to attend below:</p>
+<p>Welcome to the Dream Project! To get signed up for the quarter, choose the high school visit you'd like to attend below.</p>
+
+<p><strong>Registering for credit?</strong>
+	You can earn two credits per quarter by
+	<%= link_to "registering for the Dream Project on MyUW", "http://www.washington.edu/students/timeschd/#{@quarter.to_param}/indsrf.html", :target => "_blank" %></p>
 
 <table class="schedule">
 	<tr>

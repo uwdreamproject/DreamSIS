@@ -3,14 +3,14 @@ mentor_quarter_group = mentor_quarter_group_schedule
 overlaps = mentor_quarter_group.overlaps_with(mentor_quarter_groups, :include_self => true)
 # reset_cycle "overlap" if overlaps.nil? || overlaps.empty?
 mentor_quarter = @mentor_quarters.select{ |mq| mq.mentor_quarter_group_id == mentor_quarter_group.id }.try(:first)
-splitpos = cycle(1,2,3,4,5,6,7,8, :name => "overlap" + overlaps.hash.to_s) if overlaps.size > 0
+splitpos = cycle(1,2,3,4,5,6,7,8, :name => "overlap" + overlaps.first.id.to_s) if overlaps.size > 0
 splitpos = params[:splitpos] if params[:splitpos]
 @start_time ||= Time.parse("7:00") 
 
 css_class = []
 css_class << "full" if mentor_quarter_group.full?
 css_class << "split split#{overlaps.size}" if overlaps.size > 1
-css_class << "splitpos#{splitpos} overlap#{overlaps.hash.to_s}" if overlaps.size > 0
+css_class << "splitpos#{splitpos} overlap#{overlaps.first.id.to_s}" if overlaps.size > 0
 css_class << (mentor_quarter.volunteer? ? "volunteer" : "enrolled") unless mentor_quarter.nil?
 
 style_top = (Time.parse(mentor_quarter_group.depart_time.to_s(:time)) - @start_time)/60
@@ -42,5 +42,7 @@ style_height = mentor_quarter_group.length.to_i
 	</p>
 
 	<p class="light"><%= mentor_quarter_group.times %></p>
+	<p class="light"><%= "Section #{h(mentor_quarter_group.section_id)}" unless mentor_quarter_group.section_id.blank? %></p>
 	<p class="spots_left"><%= "#{pluralize(mentor_quarter_group.spots_left, "spot")} left" if mentor_quarter_group.spots_left %></p>
+	
 </li>
