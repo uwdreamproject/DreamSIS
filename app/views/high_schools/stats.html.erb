@@ -14,7 +14,7 @@
 <div id="sidebar">
 	<h3>Other Cohorts</h3>
 	<ul class="quick_nav">
-	<%- for cohort in 2006..Time.now.year -%>
+	<%- for cohort in Participant.cohorts.reverse -%>
 		<li><%= link_to cohort.to_s, url_for(:cohort => cohort) %></li>
 	<% end -%>
 	</ul>
