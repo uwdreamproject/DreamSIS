@@ -18,6 +18,23 @@
 	<%= javascript_include_tag :defaults %>
 	<%= javascript_include_tag "card_reader" %>
 
+
+	<%- if @google_api_tracking_id && RAILS_ENV == 'production' -%>
+		<script type="text/javascript">
+
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', '<%= @@google_api_tracking_id %>']);
+		  _gaq.push(['_trackPageview']);
+
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+
+		</script>
+	<%- end -%>
+
 </head>
 
 <body class="<%= "admin" if @current_user.try(:admin?) %> <%= controller.action_name %> <%= controller.controller_name %> <%= @body_class %>">
