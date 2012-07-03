@@ -1978,6 +1978,10 @@ body.mentor.welcome table.rsvp tr.attending td {
 	width: 200px;
 }
 
+.menu ul li div.double-wide {
+	width: 350px;
+}
+
 /* make the second level visible when hover on first level list OR link */
 
 .menu ul li:hover div,
