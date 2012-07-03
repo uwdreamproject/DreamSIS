@@ -4,8 +4,8 @@
 	<td><%= event.attendees.size %></td>
 	<td><%= event.attendees.rsvpd.size %></td>
 	<td><%= event.attendees.attended.size %></td>
-    <td><%= link_to 'Show', event_path(event) %></td>
-    <td><%= link_to 'Edit', edit_event_path(event) %></td>
-    <td><%= link_to 'RSVP', event_rsvp_path(event) %></td>
-    <td><%= link_to 'Destroy', event_path(event), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td class="functions"><%= link_to 'Show', event_path(event) %></td>
+    <td class="functions"><%= link_to 'Edit', edit_event_path(event) %></td>
+    <td class="functions"><%= link_to 'RSVP', event_rsvp_path(event) %></td>
+    <td class="functions"><%= link_to 'Destroy', event_path(event), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

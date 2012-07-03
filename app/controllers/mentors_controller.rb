@@ -18,7 +18,11 @@ class MentorsController < ApplicationController
   def show
     @mentor = Mentor.find(params[:id])
     @participants = @mentor.try(:participants)
-    @event_attendances = @mentor.event_attendances.find(:all, :include => :event, :joins => :event, :conditions => { :events => { :type => nil }})
+    @event_attendances = @mentor.event_attendances.find(:all, 
+                            :include => :event, 
+                            :joins => :event, 
+                            :conditions => ["events.type IS NULL AND (rsvp = ? OR attended = ?)", true, true]
+                          )
     @layout_in_blocks = true
 
     respond_to do |format|
