@@ -18,12 +18,11 @@
 	<%= javascript_include_tag :defaults %>
 	<%= javascript_include_tag "card_reader" %>
 
-
-	<%- if @google_api_tracking_id && RAILS_ENV == 'production' -%>
+	<%- if GOOGLE_ANALYTICS_TRACKING_ID && RAILS_ENV == 'production' -%>
 		<script type="text/javascript">
 
 		  var _gaq = _gaq || [];
-		  _gaq.push(['_setAccount', '<%= @@google_api_tracking_id %>']);
+		  _gaq.push(['_setAccount', '<%= GOOGLE_ANALYTICS_TRACKING_ID %>']);
 		  _gaq.push(['_trackPageview']);
 
 		  (function() {
