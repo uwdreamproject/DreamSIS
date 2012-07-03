@@ -1912,7 +1912,7 @@ body.mentor.welcome table.rsvp tr.attending td {
 	color: black;
 	text-shadow: none;
 	padding-right: 6px;
-	box-shadow: 0 0 5px rgba(0,0,0,0.2) inset;
+	box-shadow: 0 3px 4px rgba(0,0,0,0.2) inset;
 	z-index: 25;
 }
 
@@ -1920,9 +1920,15 @@ body.mentor.welcome table.rsvp tr.attending td {
 	box-shadow: none;
 }
 
+.menu ul li {
+	-webkit-transition: background 0.25s ease-in-out;
+	background-position: 40% 10px;
+}
+
 .menu ul li:hover {
 	background: url(../images/mainNav_notch.gif) no-repeat 40% 18px;
 	z-index: 21;
+	opacity: 0.98;
 }
 
 .menu ul ul li:hover {
