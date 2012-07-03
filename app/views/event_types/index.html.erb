@@ -3,16 +3,17 @@
 <table>
   <tr>
     <th>Name</th>
-	<th colspan=3>Functions</th>
+	<th colspan=4>Functions</th>
 
   </tr>
 
 <% for event_type in @event_types %>
   <tr>
     <td><%=h event_type.name %></td>
-    <td><%= link_to 'Show', event_type_path(event_type) %></td>
-    <td><%= link_to 'Edit', edit_event_type_path(event_type) %></td>
-    <td><%= link_to 'Destroy', event_type_path(event_type), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td class="functions"><%= link_to 'Show', event_type_path(event_type) %></td>
+	<td class="functions"><%= link_to 'RSVP', event_type_rsvp_path(event_type) %></td>
+    <td class="functions"><%= link_to 'Edit', edit_event_type_path(event_type) %></td>
+    <td class="functions"><%= link_to 'Destroy', event_type_path(event_type), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
