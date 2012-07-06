@@ -24,7 +24,8 @@ class HighSchool < Location
   
   # Returns an array of unique graudation years
   def cohorts
-    participants.find(:all, :select => [:grad_year]).collect(&:grad_year).uniq.compact.sort.reverse
+    # participants.find(:all, :select => [:grad_year]).collect(&:grad_year).uniq.compact.sort.reverse
+    @cohorts ||= participants.find(:all, :select => "DISTINCT grad_year").collect(&:grad_year).compact.sort.reverse
   end
   
 end
