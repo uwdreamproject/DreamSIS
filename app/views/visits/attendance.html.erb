@@ -85,6 +85,7 @@
 											:url => participant,
 											:with => "'participant[received_binder]=' + $('participant_#{participant.id}_received_binder').checked +
 														'&override_binder_date=' + $F('override_binder_date')",
+											:failure => "alert('Could not save. Please try again or contact support.')",
 											:method => :put %>
 						<%= content_tag('span', '', :id => "status_#{participant.id}_received_binder", 
 													:class => 'absolute-note success-marker') %>
@@ -112,6 +113,7 @@
 											:url => participant,
 											:with => "'participant[submitted_fafsa]=' + $('participant_#{participant.id}_submitted_fafsa').checked +
 														'&override_fafsa_date=' + $F('override_fafsa_date')",
+											:failure => "alert('Could not save. Please try again or contact support.')",
 											:method => :put %>
 						<%= content_tag('span', '', :id => "status_#{participant.id}_submitted_fafsa", 
 													:class => 'absolute-note success-marker') %>
@@ -138,8 +140,9 @@
 						<%= hidden_field_tag "rsvp[#{participant.id}][#{visit.id}]", "0", :id => nil %>
 					
 						<%= observe_field "rsvp_#{participant.id}_#{visit.id}",
-											:url => update_attendance_high_school_visits_path(@high_school),
-											:with => "rsvp[#{participant.id}][#{visit.id}]" %>
+											:url => update_attendance_high_school_visits_path(@high_school, @quarter),
+											:with => "rsvp[#{participant.id}][#{visit.id}]",
+											:failure => "alert('Could not save. Please try again or contact support.')" %>
 						<%= content_tag('span', '', :id => "status_#{participant.id}_#{visit.id}_rsvp", 
 													:class => 'absolute-note success-marker') %>
 					<% end -%>
@@ -161,8 +164,9 @@
 						<%= hidden_field_tag "attendance[#{participant.id}][#{visit.id}]", "0", :id => nil %>
 					
 						<%= observe_field "attendance_#{participant.id}_#{visit.id}",
-											:url => update_attendance_high_school_visits_path(@high_school),
-											:with => "attendance[#{participant.id}][#{visit.id}]" %>
+											:url => update_attendance_high_school_visits_path(@high_school, @quarter),
+											:with => "attendance[#{participant.id}][#{visit.id}]",
+											:failure => "alert('Could not save. Please try again or contact support.')" %>
 						<%= content_tag('span', '', :id => "status_#{participant.id}_#{visit.id}", 
 													:class => 'absolute-note success-marker') %>
 					<% end -%>

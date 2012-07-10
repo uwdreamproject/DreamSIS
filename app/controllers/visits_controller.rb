@@ -35,6 +35,7 @@ class VisitsController < ApplicationController
   end
   
   def attendance
+    return redirect_to attendance_high_school_visits_path(@high_school, @quarter) if params[:quarter_id] == "new"
     @participants = []
     @showing = []
     if !params[:show] || params[:show].include?("participants")
@@ -130,7 +131,15 @@ class VisitsController < ApplicationController
   end
   
   def fetch_quarter
-    abbrev = params[:new_quarter_id] ? "#{params[:new_quarter_id][:quarter_code_abbreviation]}#{params[:new_quarter_id][:year]}" : params[:quarter_id]
+    if params[:new_quarter_id]
+      if params[:new_quarter_id].is_a?(String)
+        abbrev = params[:new_quarter_id]
+      else
+        abbrev = "#{params[:new_quarter_id][:quarter_code_abbreviation]}#{params[:new_quarter_id][:year]}"
+      end
+    else
+      abbrev = params[:quarter_id]
+    end
     @quarter = Quarter.find_or_create_by_abbrev(abbrev)
   end
   
