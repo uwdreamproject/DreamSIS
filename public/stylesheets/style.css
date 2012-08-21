@@ -29,6 +29,7 @@ h1, h2, h3, h4, h5 {
 	color: #39275B;
 	font-style: normal;
 	font-weight: normal;
+	line-height: 130%;
 }
 
 h1 {
@@ -588,6 +589,59 @@ div#notification.error {
 .error-message {
 	color: red;
 	font-weight: bold;
+}
+
+
+body.error #content-wrap p {
+	font-size: 120%;
+	font-weight: bold;
+}
+
+body.error #header {
+	display: none;
+}
+
+body.error #sidebar-header {
+	display: none;
+}
+
+body.error #content {
+	padding: 2em;
+	margin: 2em auto;
+	width: 50%;
+	min-width: 450px;
+}
+
+body.error #content-wrap {
+	padding: 2em 4em 1em 4em;
+	background: white url(../images/backgrounds/uw-purple-header.jpg) repeat-x;
+	border-radius: 10px;
+}
+
+body.error h1 {
+	background: url(../images/dreamsis-logo-transparent.png) no-repeat;
+	padding-top: 280px;
+	line-height: 130%;
+}
+
+body.error #footer {
+	text-align: center;
+}
+
+body.error .big.emoticon {
+	float: left;
+	top: 75px;
+	position: relative;
+	margin: 0 auto;
+	text-align: center;
+	width: 100%;
+	font: normal normal 150px "Lucida Grande", Lucida, Verdana, sans-serif;
+	letter-spacing: -6px;
+}
+
+body.error #content-wrap p {
+	font-weight: normal;
+	font-size: inherit;
 }
 
 .inline {
@@ -2260,6 +2314,44 @@ body.new.session #content-wrap {
 body.new.session h1 {
 	margin-bottom: 0;
 }
+
+body.new.session h1:before {
+	display: none;
+}
+
+.login-links {
+	border: none;
+	text-align: center;
+	padding: 0;
+	margin-bottom: 2em;
+}
+
+a.login-link {
+	margin: 0 0.75em;
+}
+
+
+body.error #content {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border: none;
+	min-width: inherit;
+}
+
+body.error #content-wrap {
+	margin: 0;
+	padding: 1em;
+	border-radius: 0;
+	border: none;
+	background-position: 0 -20px;
+}
+
+body.error h1 {
+	margin-bottom: 0;
+}
+
+
 
 #notification {
 	margin: 0;
