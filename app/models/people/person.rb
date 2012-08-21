@@ -18,6 +18,7 @@ class Person < ActiveRecord::Base
   
   validates_presence_of :lastname, :firstname, :if => :validate_name?
   validates_uniqueness_of :survey_id, :allow_nil => true
+  validates_format_of :email, :with => /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i, :allow_blank => true
 
   has_many :notes, :as => :notable
 
@@ -62,6 +63,7 @@ class Person < ActiveRecord::Base
       update_resource_cache! rescue nil
       return display_name
     end
+    return display_name if firstname.blank? && lastname.blank?
     if options[:middlename]
       middlename_string = middlename.length == 1 ? " #{middlename.to_s.strip}." : " #{middlename.to_s.strip}" unless middlename.blank?
     end

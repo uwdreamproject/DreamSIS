@@ -5,17 +5,17 @@ class User < ActiveRecord::Base
   # model_stamper
   
   # Virtual attribute for the unencrypted password
-  attr_accessor :password
+  # attr_accessor :password
 
   validates_presence_of     :login
-  validates_presence_of     :password,                   :if => :password_required?
-  validates_presence_of     :password_confirmation,      :if => :password_required?
-  validates_length_of       :password, :within => 6..40, :if => :password_required?
-  validates_confirmation_of :password,                   :if => :password_required?
+  # validates_presence_of     :password,                   :if => :password_required?
+  # validates_presence_of     :password_confirmation,      :if => :password_required?
+  # validates_length_of       :password, :within => 6..40, :if => :password_required?
+  # validates_confirmation_of :password,                   :if => :password_required?
   # validates_presence_of     :person
-  validates_length_of       :login,    :within => 3..40
-  validates_uniqueness_of   :login, :scope => :type, :case_sensitive => false
-  before_save               :encrypt_password
+  # validates_length_of       :login,    :within => 3..40
+  # validates_uniqueness_of   :login, :scope => :type, :case_sensitive => false
+  # before_save               :encrypt_password
 
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
@@ -49,6 +49,31 @@ class User < ActiveRecord::Base
     u = find_by_login(login) # need to get the salt
     u && u.authenticated?(password) ? u : nil
   end
+
+
+  # Creates a new user based on the auth data passed from OmniAuth.
+  def self.create_with_omniauth(auth)
+    create! do |user|
+      user.provider = auth["provider"]
+      user.uid = auth["uid"]
+      user.login = (auth["info"]["nickname"] || auth["uid"]) + "@" + auth["provider"]
+      user.person = Person.create!
+    end
+  end
+
+  # Updates this user's information based on the information in the auth data passed from OmniAuth.
+  def update_from_provider!(auth)
+    return nil if auth["extra"]["raw_info"]["updated_at"] && Time.parse(auth["extra"]["raw_info"]["updated_at"]) < person.resource_cache_updated_at
+    person.update_attributes({
+      :display_name => auth["info"]["name"],
+      :firstname => auth["info"]["first_name"],
+      :lastname => auth["info"]["last_name"],
+      :email => auth["info"]["email"],
+      :avatar_image_url => auth["info"]["image"] || auth["extra"]["raw_info"]["profile_image_url_https"],
+      :resource_cache_updated_at => Time.now
+    })
+  end
+
 
   # Encrypts some data with the salt.
   def self.encrypt(password, salt)

@@ -12,6 +12,14 @@ gem 'exceptional'
 gem 'rdoc'
 gem 'RedCloth'
 
+gem 'bcrypt-ruby', '~> 3.0.0'
+
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-shibboleth'
+gem 'omniauth-identity'
+
 # bundler requires these gems in all environments
 # gem "nokogiri", "1.4.2"
 # gem "geokit"

@@ -40,3 +40,5 @@ app/.DS_Store
 app/views/.DS_Store
 
 config/google_analytics.yml
+
+config/omniauth_keys.yml

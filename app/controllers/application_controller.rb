@@ -53,7 +53,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_if_enrolled
-    unless @current_user.admin? || @current_user.person.currently_enrolled?
+    unless @current_user.admin? || !@current_user.is_a?(Mentor) || @current_user.person.currently_enrolled?
       if Quarter.allowing_signups.empty?
         render_error("You aren't signed up for the Dream Project and sign ups are disabled for now. Please come back later.")
       else

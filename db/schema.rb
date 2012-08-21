@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120519203103) do
+ActiveRecord::Schema.define(:version => 20120821055640) do
 
   create_table "college_applications", :force => true do |t|
     t.integer  "participant_id"
@@ -84,6 +84,14 @@ ActiveRecord::Schema.define(:version => 20120519203103) do
   create_table "how_did_you_hear_options_people", :id => false, :force => true do |t|
     t.integer "person_id"
     t.integer "how_did_you_hear_option_id"
+  end
+
+  create_table "identities", :force => true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "password_digest"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "income_levels", :force => true do |t|
@@ -322,10 +330,12 @@ ActiveRecord::Schema.define(:version => 20120519203103) do
     t.datetime "van_driver_training_completed_at"
     t.string   "husky_card_rfid"
     t.integer  "participant_group_id"
+    t.string   "avatar_image_url"
   end
 
   add_index "people", ["display_name"], :name => "index_people_on_display_name"
   add_index "people", ["firstname"], :name => "index_people_on_firstname"
+  add_index "people", ["grad_year"], :name => "index_people_on_grad_year"
   add_index "people", ["lastname"], :name => "index_people_on_lastname"
   add_index "people", ["uw_net_id"], :name => "index_people_on_uw_net_id"
 
@@ -376,6 +386,8 @@ ActiveRecord::Schema.define(:version => 20120519203103) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "admin"
+    t.string   "provider"
+    t.string   "uid"
   end
 
 end

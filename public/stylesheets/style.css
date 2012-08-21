@@ -357,6 +357,104 @@ body.full #sidebar-header {
 	font-weight: bold;
 }
 
+body.new.session #login_logout {
+	display: none;
+}
+
+#login_logout img.avatar {
+	float: right;
+	margin-left: 1em;
+	top: -18px;
+	position: relative;
+	border: 1px solid #919191;
+	border-radius: 2px;
+}
+
+a.login-link {
+	display: inline-block;
+	padding-top: 70px;
+	background-repeat: no-repeat;
+	background-position: center top;
+	font-size: 130%;
+	margin: 0.25em 1em;
+	min-width: 64px;
+	text-align: center;
+	text-decoration: none;
+	-webkit-transition: all 0.25s ease-out;
+}
+
+a.login-link:hover {
+	-webkit-transform: scale(1.1);
+}
+
+.login-link.facebook {
+	background-image: url(../images/icons/facebook_64.png);
+}
+
+.login-link.twitter {
+	background-image: url(../images/icons/twitter_64.png);
+}
+
+.login-link.google {
+	background-image: url(../images/icons/google_64.png);
+}
+
+.login-link.uwnetid {
+	background-image: url(../images/icons/weblogin.gif);
+	min-width: 198px;
+	padding-top: 60px;
+}
+
+.login-links {
+	border-left: 4px solid #f4f4f4;
+	padding-left: 1em;
+	margin-bottom: 3em;
+}
+
+body.new.session #content-wrap p {
+	font-size: 120%;
+	font-weight: bold;
+}
+
+body.new.session #header {
+	display: none;
+}
+
+body.new.session #sidebar-header {
+	display: none;
+}
+
+body.new.session #content {
+	padding: 2em;
+	margin: 2em auto;
+	width: 50%;
+	min-width: 450px;
+}
+
+body.new.session #content-wrap {
+	padding: 2em 4em 1em 4em;
+	background: white url(../images/backgrounds/uw-purple-header.jpg) repeat-x;
+	border-radius: 10px;
+}
+
+body.new.session h1 {
+	height: 50px;
+	background: url(../images/dreamsis-logo-transparent.png) no-repeat;
+	padding-left: 240px;
+	padding-top: 16px;
+	color: #e0e0e0;
+	font: normal 160% Helvetica, Arial, Geneva, sans-serif;
+	margin-bottom: 1.5em;
+}
+
+body.new.session h1:before {
+	content: '» ';
+}
+
+body.new.session #footer {
+	text-align: center;
+}
+
 .right {
 	float: right;
 }
@@ -2141,6 +2239,34 @@ way to fit your requirements.
 	overflow: hidden;
 	padding-bottom: 9px;
 	z-index: 2;
+}
+
+body.new.session #content {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border: none;
+	min-width: inherit;
+}
+
+body.new.session #content-wrap {
+	margin: 0;
+	padding: 1em;
+	border-radius: 0;
+	border: none;
+	background-position: 0 -20px;
+}
+
+body.new.session h1 {
+	margin-bottom: 0;
+}
+
+#notification {
+	margin: 0;
+	border-radius: 0;
+	border-left-width: 0;
+	border-right-width: 0;
+	border-top-width: 0;
 }
 
 #main-nav {

@@ -1,16 +1,2 @@
 <h1>Welcome to DreamSIS!</h1>
-<p>This system is used to track and manage participants in the Dream Project.</p>
-
-<h3>Participants</h3>
-	<ul>
-		<% for cohort in Participant.cohorts %>
-			<li><%= link_to "#{cohort.to_s} Cohort", cohort_url(cohort) %></li>
-		<% end -%>
-	</ul>
-
-<h3>High Schools</h3>
-	<ul>
-		<% for high_school in HighSchool.all %>
-			<li><%= link_to "#{high_school.name}", high_school_url(high_school) %></li>
-		<% end -%>
-	</ul>
+<p>At this point, nothing is available for your user type.</p>

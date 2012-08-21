@@ -40,13 +40,12 @@
 
 	<div id="header">
 		<h1><%= link_to "<strong>DreamSIS</strong>", root_url %></h1>
-		<%#= breadcrumbs("&raquo;")  %>
 
 		<div id="login_logout">
 			<% unless @current_user.blank? || @current_user == :false %>
+				<%= image_tag(@current_user.person.avatar_image_url, :height => 30, :class => "avatar") if @current_user.person.avatar_image_url %>
 				Logged in as <strong><%= @current_user.fullname %></strong>
-				<%= content_tag :span, @current_user.person_id, :class => "outline tag" %>
-				<!-- <em><%= link_to "(Logout)" %></em> -->
+				<%= link_to "(Logout)", logout_path, :class => "logout" %>
 			<% else %>
 				<em>Not logged in.</em>
 				<%= link_to 'Login' %>

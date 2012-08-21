@@ -56,13 +56,14 @@ ActionController::Routing::Routes.draw do |map|
   map.participant_group_participants '/participants/groups/:id.:format', :controller => 'participants', :action => 'group'
 
   # Users and Sessions
-  map.signup 'signup', :controller => 'users', :action => 'new'
+  map.signup 'signup', :controller => 'session', :action => 'signup'
   map.login 'login', :controller => 'session', :action => 'new'
   map.logout 'logout', :controller => 'session', :action => 'destroy'
   map.profile 'profile', :controller => 'users', :action => 'profile'
-  map.reset_password 'session/reset/:user_id/:token', :controller => 'session', :action => 'reset_password'
-  map.open_id_complete 'session', :controller => "session", :action => "create", :requirements => { :method => :get }
+  # map.reset_password 'session/reset/:user_id/:token', :controller => 'session', :action => 'reset_password'
+  # map.open_id_complete 'session', :controller => "session", :action => "create", :requirements => { :method => :get }
   map.resource :session
+  map.omniauth_callback "/auth/:provider/callback", :controller => 'session', :action => 'create'  
 
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
   map.root :controller => "welcome"
