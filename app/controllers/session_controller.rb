@@ -30,7 +30,7 @@ class SessionController < ApplicationController
   def create
     auth = request.env["omniauth.auth"]
     # raise auth.to_yaml
-    if auth["provider"] = "shibboleth"
+    if auth["provider"] == "shibboleth"
       user = PubcookieUser.authenticate(auth["uid"])
       return redirect_to login_url, :error => "Could not login. Please try again." unless user
     else
