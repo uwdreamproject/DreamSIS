@@ -74,6 +74,7 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml" 
     run "ln -nfs #{shared_path}/config/exceptional.yml #{release_path}/config/exceptional.yml" 
     run "ln -nfs #{shared_path}/config/google_analytics.yml #{release_path}/config/google_analytics.yml" 
+    run "ln -nfs #{shared_path}/config/omniauth_keys.yml #{release_path}/config/omniauth_keys.yml" 
     run "ln -nfs #{shared_path}/config/certs #{release_path}/config/certs" 
   end
   
