@@ -373,37 +373,50 @@ body.new.session #login_logout {
 
 a.login-link {
 	display: inline-block;
-	padding-top: 70px;
-	background-repeat: no-repeat;
-	background-position: center top;
 	font-size: 130%;
-	margin: 0.25em 1em;
+	margin: 0.25em 1em 1em;
 	min-width: 64px;
 	text-align: center;
 	text-decoration: none;
+}
+
+a.login-link span {
+	display: block;
+	padding-top: 50px;
+	background-repeat: no-repeat;
+	background-position: center top;
 	-webkit-transition: all 0.25s ease-out;
 }
 
-a.login-link:hover {
+a.login-link:hover span {
 	-webkit-transform: scale(1.1);
 }
 
-.login-link.facebook {
+.login-link.facebook span {
 	background-image: url(../images/icons/facebook_64.png);
 }
 
-.login-link.twitter {
+.login-link.twitter span {
 	background-image: url(../images/icons/twitter_64.png);
 }
 
-.login-link.google {
+.login-link.google span {
 	background-image: url(../images/icons/google_64.png);
 }
 
-.login-link.uwnetid {
+.login-link.windowslive span {
+	background-image: url(../images/icons/windowslive_64.png);
+}
+
+.login-link.linkedin span {
+	background-image: url(../images/icons/linkedin_64.png);
+}
+
+
+.login-link.uwnetid span {
 	background-image: url(../images/icons/weblogin.gif);
 	min-width: 198px;
-	padding-top: 60px;
+	padding-top: 40px;
 }
 
 .login-links {

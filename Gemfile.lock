@@ -76,6 +76,8 @@ GEM
     omniauth-identity (1.1.0)
       bcrypt-ruby (~> 3.0)
       omniauth (~> 1.0)
+    omniauth-linkedin (0.0.8)
+      omniauth-oauth (~> 1.0)
     omniauth-oauth (1.0.1)
       oauth
       omniauth (~> 1.0)
@@ -87,6 +89,9 @@ GEM
     omniauth-twitter (0.0.12)
       multi_json (~> 1.3)
       omniauth-oauth (~> 1.0)
+    omniauth-windowslive (0.0.8.1)
+      multi_json (>= 1.0.3)
+      omniauth-oauth2 (~> 1.0)
     rack (1.0.1)
     rails (2.3.5)
       actionmailer (= 2.3.5)
@@ -121,8 +126,10 @@ DEPENDENCIES
   omniauth-facebook
   omniauth-google-oauth2
   omniauth-identity
+  omniauth-linkedin
   omniauth-shibboleth
   omniauth-twitter
+  omniauth-windowslive
   rails (= 2.3.5)
   rdoc
   sqlite3-ruby

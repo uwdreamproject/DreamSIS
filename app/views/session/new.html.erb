@@ -2,15 +2,17 @@
 
 <p>UW students, staff, faculty and alumni:
 <div class="login-links">
-	<%= link_to "Login with your UW NetID", "auth/shibboleth", :class => "uwnetid login-link" %>
+	<%= link_to "<span>&nbsp;</span>Login with your UW NetID", "auth/shibboleth", :class => "uwnetid login-link" %>
 </div>
 
 <p>All other users, log in using one of the following services:</p>
 
 <div class="login-links">
-	<%= link_to "Facebook", "auth/facebook", :class => "facebook login-link" %>
-	<%= link_to "Twitter", "auth/twitter", :class => "twitter login-link" %>
-	<%= link_to "Google", "auth/google_oauth2", :class => "google login-link" %>
+	<%= link_to "<span>&nbsp;</span>Facebook", "auth/facebook", :class => "facebook login-link" %>
+	<%= link_to "<span>&nbsp;</span>Twitter", "auth/twitter", :class => "twitter login-link" %>
+	<%= link_to "<span>&nbsp;</span>LinkedIn", "auth/linkedin", :class => "linkedin login-link" %>
+	<%= link_to "<span>&nbsp;</span>Google", "auth/google_oauth2", :class => "google login-link" %>
+	<%= link_to "<span>&nbsp;</span>Live", "auth/windowslive", :class => "windowslive login-link" %>
 </div>
 
 <!-- <% form_tag "/auth/identity/callback" do %>

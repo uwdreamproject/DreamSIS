@@ -7,4 +7,6 @@ ActionController::Dispatcher.middleware.use OmniAuth::Builder do
   provider :google_oauth2, omniauth_keys["google"]["key"], omniauth_keys["google"]["secret"]
   provider :shibboleth, :extra_fields => [:"unscoped-affiliation", :entitlement, :gws_groups, :uwNetID, :uwRegID]
   # provider :identity #, :on_failed_registration => SessionController.call("signup")
+  provider :windowslive, omniauth_keys["windowslive"]["key"], omniauth_keys["windowslive"]["secret"], :scope => 'wl.basic'
+  provider :linkedin, omniauth_keys["linkedin"]["key"], omniauth_keys["linkedin"]["secret"]  
 end
