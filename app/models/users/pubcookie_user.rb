@@ -6,7 +6,7 @@ class PubcookieUser < User
   # If we don't find a user record, we create one. If we can't find a valid person in the Person
   # resource, then return false.
   def self.authenticate(uwnetid, password = nil, require_identity = nil)
-    uwnetid = uwnetid.match(/^(\w+)(@.+)?$/).try(:[], 1) # strip out the '@uw.edu' if someone tries that
+    uwnetid = uwnetid.to_s.match(/^(\w+)(@.+)?$/).try(:[], 1) # strip out the '@uw.edu' if someone tries that
     return false if uwnetid.nil?
     u = self.find_by_login uwnetid
     if u.nil?
