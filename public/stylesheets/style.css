@@ -798,8 +798,8 @@ input:focus, form.formtastic input:focus, textarea:focus, form.formtastic textar
 	background: #edf5fe;
 	color: #000;
 	outline: 0;
-border-color: #036;
-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),0 0 8px rgba(82, 168, 236, 0.4);
+	border-color: #036;
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),0 0 8px rgba(82, 168, 236, 0.4);
 }
 
 input, textarea {
@@ -890,6 +890,46 @@ form.formtastic fieldset fieldset legend {
 
 form.formtastic fieldset fieldset {
 	margin: 0;
+}
+
+.choose_identity p.intro {
+	font-size: 150%;
+	margin-bottom: 0;
+	text-align: center;
+}
+
+ul.big.choice {
+	list-style: none;
+	margin: 0 auto;
+	padding: 0;
+	text-align: center;
+}
+
+ul.big.choice li {
+	margin: 2em;
+	display: inline-block;
+	width: 35%;
+	vertical-align: top;
+}
+
+.big.choice a {
+	border: 1px solid #dadada;
+	padding: 2em 1em;
+	border-radius: 3px;
+	border: 1px solid #7f7f7f;
+	box-shadow: rgba(0, 0, 0, 0.117188) 0px 1px 2px 0px inset;
+	background-color: #fcfcfc;
+	-webkit-transition: 0.25s all ease-in-out;
+	display: inline-block;
+	text-align: center;
+	text-decoration: none;
+	font: normal 250% "Lucida Grande", Lucida, Verdana, sans-serif;
+}
+
+.big.choice a:hover {
+	border-color: #036;
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),0 0 8px rgba(82, 168, 236, 0.4);
+	background: rgba(82, 168, 236, 0.1);
 }
 
 .phone {
@@ -2381,9 +2421,13 @@ way to fit your requirements.
 	display: block;
 	float: none;
 	position: relative;
-	top: 0;
-	left: 5em;
+	top: 5px;
+	right: 5px;
 	font-size: 90%;
+}
+
+#login_logout ul {
+	float: left;
 }
 
 #header h1 {
@@ -2397,14 +2441,14 @@ way to fit your requirements.
 	left: 10px;
 	height: 30px;
 	width: 210px;
-	margin-bottom: 7px;
+	margin-bottom: 2px;
 }
 
 #header {
 	position: absolute;
 	width: 95%;
 	overflow: hidden;
-	padding-bottom: 9px;
+	padding-bottom: 0;
 	z-index: 2;
 }
 
@@ -2652,6 +2696,18 @@ table.mentors td {
 fieldset {
 	padding-left: 0;
 	padding-right: 0;
+}
+
+ul.big.choice li {
+	margin: 2em;
+	display: block;
+	width: 90%;
+	vertical-align: top;
+}
+
+ul.big.choice a {
+	font-size: 200%;
+	padding: 1em;
 }
 
 table.participants thead {
