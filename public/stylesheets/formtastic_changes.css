@@ -18,7 +18,7 @@ form.formtastic fieldset ol li fieldset legend { margin-left: -6px;}
 
 --------------------------------------------------------------------------------------------------*/
 
-.inline-errors {
+/*.inline-errors {
 	background: url(../images/error-arrow.gif) no-repeat;
 	padding-left: 20px;
 	background-color: yellow;
@@ -33,4 +33,4 @@ li.boolean label {
 form.formtastic label {
 	font-weight: bold;
 	color: #656565;
-}
+}*/

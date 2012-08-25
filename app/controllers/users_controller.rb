@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  
   def index
     @users = User.paginate :all, :page => params[:page]
 
@@ -15,6 +16,35 @@ class UsersController < ApplicationController
       format.html # show.html.erb
       format.xml  { render :xml => @user }
     end
+  end
+
+  def profile
+    return redirect_to choose_identity_path if @current_user.person.class == Person
+    @person = @current_user.person
+  end
+
+  def update_profile
+    @person = @current_user.person
+    @person.validate_ready_to_rsvp = true if session[:profile_validations_required].to_s.include?("ready_to_rsvp")
+    
+    respond_to do |format|
+      if @person.update_attributes(params[:person])
+        flash[:notice] = "Thanks! We updated your profile."
+        format.html { redirect_to(session[:return_to_after_profile] || root_path) && session[:return_to_after_profile] = nil }
+      else
+        format.html { render :action => "profile" }
+      end
+    end
+
+  end
+
+  def choose_identity
+  end
+  
+  def update_identity
+    new_identity = h(params[:identity].to_s)
+    return redirect_to choose_identity_path unless %w(Student Volunteer).include?(new_identity)
+    redirect_to @current_user.person.update_attribute(:type, new_identity) ? profile_path : choose_identity_path
   end
 
   def new

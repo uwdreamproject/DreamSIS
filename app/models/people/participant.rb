@@ -10,6 +10,8 @@ class Participant < Person
 
   has_many :mentor_participants
   has_many :mentors, :through => :mentor_participants
+  
+  validates_presence_of :birthdate, :if => :validate_ready_to_rsvp?
 
   attr_accessor :override_binder_date, :override_fafsa_date
   

@@ -38,3 +38,7 @@
 <h4>E-mail</h4>
 <%= content_tag(:div, "** BAD E-MAIL **", :class => 'error-message') if @participant.bad_email? %>
 <%= auto_link @participant.email %>
+
+<h4>Date of Birth</h4>
+<%= @participant.birthdate.try(:to_s, :long) rescue nil %>
+<%= "<br /><small>Age #{@participant.age}</small>" if @participant.age %>

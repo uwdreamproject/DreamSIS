@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120821055640) do
+ActiveRecord::Schema.define(:version => 20120824181629) do
 
   create_table "college_applications", :force => true do |t|
     t.integer  "participant_id"
@@ -45,6 +45,8 @@ ActiveRecord::Schema.define(:version => 20120821055640) do
     t.integer  "event_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "allow_external_students"
+    t.boolean  "allow_external_volunteers"
   end
 
   create_table "event_types", :force => true do |t|
@@ -201,7 +203,7 @@ ActiveRecord::Schema.define(:version => 20120821055640) do
     t.string   "phone_work"
     t.string   "screen_name"
     t.string   "screen_name_type"
-    t.string   "birthdate"
+    t.date     "birthdate",                             :limit => 255
     t.string   "sex"
     t.boolean  "free_reduced_lunch"
     t.boolean  "no_internet_at_home"
@@ -331,6 +333,8 @@ ActiveRecord::Schema.define(:version => 20120821055640) do
     t.string   "husky_card_rfid"
     t.integer  "participant_group_id"
     t.string   "avatar_image_url"
+    t.string   "organization"
+    t.string   "shirt_size"
   end
 
   add_index "people", ["display_name"], :name => "index_people_on_display_name"

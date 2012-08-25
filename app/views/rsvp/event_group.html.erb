@@ -3,6 +3,13 @@
 
 <table class="highlightless rsvp">
 	<%= render :partial => 'event', :collection => @event_group.events.future %>
+	
+	<%- if @event_group.events.future.empty? -%>
+	<tr class="empty">
+		<td colspan=10>There aren't any events available for RSVP right now.</td>
+	</tr>
+	<% end -%>
+	
 </table>
 
 <%= render :partial => 'sidebar' %>

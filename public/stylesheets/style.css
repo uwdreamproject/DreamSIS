@@ -211,7 +211,7 @@ h4 {
 	background: #036 url('../images/dreamsis-logo.png') 2px center no-repeat;
 	height: 55px;
 	position: fixed;
-	top: 15px;
+	top: 1px;
 	right: 10px;
 	width: 213px;
 	z-index: -1;
@@ -318,7 +318,7 @@ body.full #sidebar-header {
 
 #sidebar {
 	position: fixed;
-	top: 72px;
+	top: 60px;
 	right: 10px;
 	width: 200px;
 	/*background: #e7e7e7;*/
@@ -333,7 +333,7 @@ body.full #sidebar-header {
 }
 
 .admin #sidebar {
-	top: 107px;
+	top: 94px;
 }
 
 #sidebar h3 {
@@ -356,6 +356,27 @@ body.full #sidebar-header {
 #login_logout a {
 	color: #999;
 	font-weight: bold;
+}
+
+#login_logout ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	float: right;
+}
+
+#login_logout ul > li {
+	margin: 0;
+	margin-right: 0.5em;
+	padding: 0;
+	padding-left: 0.5em;
+	float: left;
+	border-left: 1px solid rgba(255,255,255,0.5);
+}
+
+#login_logout ul > li:first-child {
+	list-style: none;
+	border: none;
 }
 
 body.new.session #login_logout {
@@ -447,7 +468,7 @@ body.new.session #content {
 
 body.new.session #content-wrap {
 	padding: 2em 4em 1em 4em;
-	background: white url(../images/backgrounds/uw-purple-header.jpg) repeat-x;
+	background: white url(../images/backgrounds/uw-purple-header.jpg) repeat-x 0 -1px;
 	border-radius: 10px;
 }
 
@@ -563,12 +584,60 @@ a.redirect-link:hover {
 	background-image: url(../images/icons/silk/note.png);
 }
 
-#errorExplanation {
+.errorExplanation {
 	background: url("../images/caution.png") 10px 10px no-repeat;
-	padding-left: 80px;
-	color: red;
+	padding: 1em;
+	padding-left: 90px;
 	border: 1px dashed red;
 	margin: 10px 0;
+}
+
+.errorExplanation h2 {
+	margin: 0;
+}
+
+.errorExplanation p {
+	margin: 1em 0 !important;
+}
+
+.errorExplanation li {
+	list-style: disc !important;
+	margin-left: 2em !important;
+}
+
+form.formtastic fieldset > ol > li p.inline-errors {
+	display: block;
+	background: url(../images/icons/silk/exclamation.png) no-repeat;
+	padding-left: 20px;
+	padding-top: 1px;
+	margin-top: 0;
+	clear: left;
+}
+
+p.inline-errors:before {
+	content: "This field ";
+}
+
+form.formtastic fieldset > ol > li.boolean p.inline-errors {
+	clear: left;
+	float: left;
+	margin-top: 0.5em;
+}
+
+li.boolean label {
+	display: block;
+	float: none;
+	padding-right: 1em;
+}
+
+form.formtastic label {
+	font-weight: bold;
+	color: #656565;
+}
+
+.required abbr {
+	padding-left: 0.25em;
+	font-weight: normal;
 }
 
 .fieldWithErrors {
@@ -577,6 +646,26 @@ a.redirect-link:hover {
 
 .fieldWithErrors input, .fieldWithErrors select, .fieldWithErrors textarea {
 	border: 1px solid red;
+}
+
+form li.error input, form li.error select, form li.error textarea {
+	border: 1px solid red;
+	box-shadow: rgba(255, 0, 0, 0.5) 0px 1px 2px 0px inset;
+}
+
+form li.error label {
+	color: red;
+}
+
+ul.crimes-list {
+	list-style: square !important;
+	margin-left: 2em !important;
+	font-size: 90%;
+}
+
+ul.crimes-list li {
+	float: left;
+	margin-right: 30px;
 }
 
 #notification {
@@ -705,7 +794,7 @@ input, form.formtastic input, select, form.formtastic select, textarea {
 	background-color: #fcfcfc;
 }
 
-input:focus, textarea:focus {
+input:focus, form.formtastic input:focus, textarea:focus, form.formtastic textarea:focus {
 	background: #edf5fe;
 	color: #000;
 	outline: 0;
@@ -790,6 +879,17 @@ legend, form.formtastic legend {
 	margin-bottom: 1em;
 	font-weight: bold;
 	color: #036;
+}
+
+form.formtastic fieldset fieldset legend {
+	border: inherit;
+	background: inherit;
+	padding: 0;
+	margin: 0;
+}
+
+form.formtastic fieldset fieldset {
+	margin: 0;
 }
 
 .phone {

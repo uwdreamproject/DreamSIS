@@ -44,10 +44,10 @@ ActionController::Routing::Routes.draw do |map|
   map.mentor_signup_quarter 'mentor_signup/:quarter_id', :controller => 'mentor_signup', :action => 'index'
   map.mentor_signup 'mentor_signup/', :controller => 'mentor_signup', :action => 'index'
 
-  map.rsvp 'rsvp/rsvp/:id', :controller => 'rsvp', :action => 'rsvp', :method => 'put'
-  map.event_rsvp 'rsvp/event/:id', :controller => 'rsvp', :action => 'event', :method => :get
-  map.event_group_rsvp 'rsvp/event_group/:id', :controller => 'rsvp', :action => 'event_group', :method => :get
-  map.event_type_rsvp 'rsvp/event_type/:id', :controller => 'rsvp', :action => 'event_type', :method => :get
+  map.rsvp 'rsvp/rsvp/:id', :controller => 'rsvp', :action => 'rsvp', :conditions => { :method => :put }
+  map.event_rsvp 'rsvp/event/:id', :controller => 'rsvp', :action => 'event', :conditions => { :method => :get }
+  map.event_group_rsvp 'rsvp/event_group/:id', :controller => 'rsvp', :action => 'event_group', :conditions => { :method => :get }
+  map.event_type_rsvp 'rsvp/event_type/:id', :controller => 'rsvp', :action => 'event_type', :conditions => { :method => :get }
 
   map.high_school_cohort '/participants/high_school/:high_school_id/cohort/:year.:format', 
     :controller => 'participants', 
@@ -60,6 +60,9 @@ ActionController::Routing::Routes.draw do |map|
   map.login 'login', :controller => 'session', :action => 'new'
   map.logout 'logout', :controller => 'session', :action => 'destroy'
   map.profile 'profile', :controller => 'users', :action => 'profile'
+  map.choose_identity 'profile/choose_identity', :controller => 'users', :action => 'choose_identity'
+  map.update_profile 'profile/update', :controller => 'users', :action => 'update_profile', :conditions => { :method => :post }
+  map.update_identity 'profile/update_identity', :controller => 'users', :action => 'update_identity', :conditions => { :method => :post }
   # map.reset_password 'session/reset/:user_id/:token', :controller => 'session', :action => 'reset_password'
   # map.open_id_complete 'session', :controller => "session", :action => "create", :requirements => { :method => :get }
   map.resource :session

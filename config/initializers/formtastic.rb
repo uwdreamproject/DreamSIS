@@ -58,3 +58,8 @@
 
 Formtastic::SemanticFormBuilder.escape_html_entities_in_hints_and_labels = false
 
+# class PhoneInput < Formtastic::Inputs::StringInput
+#   def input_html_options
+#     super.merge(:type => "phone", :class => "phone")
+#   end
+# end

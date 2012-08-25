@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
   include AuthenticatedSystem #, ExceptionNotifiable
   require 'array_math'
   
+  before_filter :authenticated?
   before_filter :login_required, :except => [ 'remove_vicarious_login' ]
   before_filter :save_user_in_current_thread
   before_filter :configure_exceptional
@@ -23,20 +24,27 @@ class ApplicationController < ActionController::Base
   before_filter :save_return_to
   before_filter :check_authorization
   before_filter :check_if_enrolled
+  
+  helper_method :current_user
 
   def forbidden
-    
   end
 
   # Add return_to to session if it's been requested
   def save_return_to
-    session[:return_to] = params[:return_to] unless params[:return_to].blank?    
+    session[:return_to] = params[:return_to] unless params[:return_to].blank?
+    session[:return_to_after_profile] = params[:return_to_after_profile] unless params[:return_to_after_profile].blank?
   end
 
   def redirect_to_path
     new_path = session[:return_to]
     session[:return_to] = nil
     new_path || root_url
+  end
+  
+  def redirect_back_or_default(default)
+    redirect_to(session[:return_to] || default)
+    session[:return_to] = nil
   end
 
   def local_request?
@@ -45,6 +53,18 @@ class ApplicationController < ActionController::Base
   # consider_local "172.28.99.10"
 
   protected
+  
+  def authenticated?
+    @current_user ||= User.find session[:user_id] if session[:user_id]
+    !@current_user.nil?
+  end
+  
+  def login_required
+    unless authenticated?
+      session[:return_to] = request.request_uri
+      redirect_to login_path
+    end
+  end
 
   def check_authorization
     unless @current_user && (@current_user.admin? || @current_user.person.current_lead?)
@@ -64,7 +84,8 @@ class ApplicationController < ActionController::Base
 
   def render_error(error_message)
     @error_message = error_message
-    render :template => "application/forbidden", :status => 500 and return
+    @body_class = "error 403"
+    render :template => "application/forbidden", :status => 403 and return
   end
 
 

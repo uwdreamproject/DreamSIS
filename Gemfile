@@ -1,7 +1,7 @@
 source :gemcutter
 gem "rails", "2.3.5"
 gem "i18n", '0.4.2'
-gem 'formtastic', '~> 1.1.0'
+gem 'formtastic', '~> 1.2.5'
 gem "mongrel"
 gem "capistrano"
 gem "mongrel_cluster"

@@ -19,15 +19,21 @@ class Person < ActiveRecord::Base
   validates_presence_of :lastname, :firstname, :if => :validate_name?
   validates_uniqueness_of :survey_id, :allow_nil => true
   validates_format_of :email, :with => /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i, :allow_blank => true
+  validates_presence_of :firstname, :lastname, :email, :sex, :phone_mobile, :birthdate, :if => :validate_ready_to_rsvp?
 
   has_many :notes, :as => :notable
 
   after_create :generate_survey_id
 
   attr_accessor :validate_name
+  attr_accessor :validate_ready_to_rsvp
   
   def validate_name?
     validate_name
+  end
+
+  def validate_ready_to_rsvp?
+    validate_ready_to_rsvp
   end
 
   PERSON_RESOURCE_CACHE_LIFETIME = 1.day
@@ -123,6 +129,14 @@ class Person < ActiveRecord::Base
   def lastname=(new_lastname)
     write_attribute(:lastname, uppercase_first_letter(new_lastname))
   end
+  
+  # Calculates the person's age. Returns nil if we don't know the birthdate.
+  def age
+    return nil unless birthdate
+    dob = birthdate.is_a?(Date) ? birthdate : Date.parse(birthdate)
+    now = Time.now.utc.to_date
+    now.year - dob.year - ((now.month > dob.month || (now.month == dob.month && now.day >= dob.day)) ? 0 : 1)
+  end
 
   # Pulls in contact info from the Person Web Service and updates our local cache if it hasn't been
   # updated in the amount of time specified in +PERSON_RESOURCE_CACHE_LIFETIME+. Pass +true+ to force a
@@ -183,6 +197,38 @@ class Person < ActiveRecord::Base
   # this method in subclasses.
   def can_edit?(object)
     false
+  end
+  
+  # People are considered "ready to RSVP" if certain aspects of their profile are complete. Generic "Person" resources
+  # are _never_ considered ready to RSVP because they need to be classified as a more specific type of Person first.
+  # 
+  # For all people:
+  # * name
+  # * email
+  # * gender
+  # * phone number
+  # * birthdate
+  # 
+  # For Students and Participants:
+  # * affiliated programs
+  #
+  # For Volunteers:
+  # * background check authorized at
+  # * crimes against persons
+  # * employer/organization
+  # * t-shirt size
+  def ready_to_rsvp?(event = nil)
+    return false if self.class == Person
+    self.validate_ready_to_rsvp = true
+    self.valid?
+  end
+  
+  def background_check_authorized
+    !background_check_authorized_at.nil?
+  end
+  
+  def background_check_authorized=(boolean)
+    self.background_check_authorized_at = boolean == true || boolean == "1" ? Time.now : nil
   end
   
   protected

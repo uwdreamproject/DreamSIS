@@ -37,9 +37,10 @@ class SessionController < ApplicationController
       user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.create_with_omniauth(auth)
       user.update_from_provider!(auth)
     end
-    self.current_user = user
+    # self.current_user = user
     session[:user_id] = user.id
-    redirect_to root_url, :notice => "Signed in!"
+    flash[:notice] = "Signed in!"
+    redirect_back_or_default(root_url)
   end
 
   def destroy

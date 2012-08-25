@@ -3,3 +3,9 @@
 	<%= f.input :description, :input_html => { :rows => 3 } %>
 	<%= f.input :event_type %>
 <% end -%>
+
+<% f.inputs "Access to the Public" do %>
+	<p>Use these options to allow events in this group to be open to members of the public.</p>
+	<%= f.input :allow_external_students, :label => "Allow external students to RSVP" %>
+	<%= f.input :allow_external_volunteers, :label => "Allow external volunteers to sign up" %>
+<% end -%>

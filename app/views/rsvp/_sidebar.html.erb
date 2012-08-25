@@ -1,5 +1,6 @@
 <div id="sidebar">
+	<h3>RSVP</h3>
 	<p>Use this page to RSVP for an event. If you can't attend, please come back to change your RSVP.</p>
 	
-	<%= link_to "Edit this event", edit_event_path(@event), :class => "edit button" if @current_user.admin? && @event %>
+	<%= link_to "Edit this event", edit_event_path(@event), :class => "edit button" if @current_user.try(:admin?) && @event %>
 </div>

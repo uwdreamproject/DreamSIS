@@ -5,8 +5,12 @@ class EventGroup < ActiveRecord::Base
     end
   end
   
-  belongs_to :event_type
-  
+  belongs_to :event_type  
   validates_presence_of :name
+  
+  # Returns true if either +allow_external_students+ or +allow_external_volunteers+ is true.
+  def open_to_public?
+    allow_external_students? || allow_external_volunteers?
+  end
   
 end

@@ -1,0 +1,15 @@
+<%- if event.allow_rsvps? && event.date.to_time >= Time.now.midnight -%>
+
+	<%- if @current_user && @current_user.person.attending?(event) -%>
+		<%= link_to_remote "Cancel <span class='hide_when_small'>my RSVP</span>",
+			 			:url => rsvp_path(event, :rsvp => false),
+						:method => :delete,
+						:html => { :class => 'cancel button' } %>
+	<%- elsif !event.full? -%>
+		<%= link_to_remote "RSVP <span class='hide_when_small'>for this event</span>",
+		 				:url => rsvp_path(event, :rsvp => true),
+						:method => :put,
+						:html => { :class => 'add button' } %>
+	<% end -%>
+
+<% end -%>

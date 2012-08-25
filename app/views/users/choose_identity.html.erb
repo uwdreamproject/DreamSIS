@@ -1,0 +1,8 @@
+<h1>Tell us about yourself...</h1>
+
+<p class="intro">I am a...</p>
+
+<ul class="big choice">
+	<li><%= link_to "high-school student", update_identity_path(:identity => "Student"), :method => :post %></li>
+	<li><%= link_to "community volunteer", update_identity_path(:identity => "Volunteer"), :method => :post %></li>
+</ul>
