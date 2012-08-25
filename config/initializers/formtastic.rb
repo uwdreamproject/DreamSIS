@@ -7,7 +7,7 @@
 # Should all fields be considered "required" by default?
 # Rails 2 only, ignored by Rails 3 because it will never fall back to this default.
 # Defaults to true.
-# Formtastic::SemanticFormBuilder.all_fields_required_by_default = true
+Formtastic::SemanticFormBuilder.all_fields_required_by_default = false
 
 # Should select fields have a blank option/prompt by default?
 # Defaults to true.

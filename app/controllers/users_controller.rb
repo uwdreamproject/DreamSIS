@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  skip_before_filter :check_authorization, :only => [:profile, :update_profile, :choose_identity, :update_identity]
   
   def index
     @users = User.paginate :all, :page => params[:page]
