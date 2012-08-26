@@ -1,5 +1,6 @@
 class Person < ActiveRecord::Base
   include Comparable
+
   has_many :event_attendances do
     def future_attending
       find :all, :joins => [:event], :conditions => ["events.date >= ? AND rsvp = ?", Time.now.midnight, true]

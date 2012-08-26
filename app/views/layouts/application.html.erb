@@ -86,11 +86,13 @@
 			Errors &amp; Exceptions tracked by <%= link_to "Exceptional", "http://exceptional.io/", :target	=> "_blank" %>. 
 		</div>
 
-	</div>
+		<%- if RAILS_ENV == 'development' -%>
+			<pre><%= session.to_yaml %></pre>
+		<%- end -%>
 
-<%- if RAILS_ENV == 'development' -%>
-	<pre><%= session.to_yaml %></pre>
-<%- end -%>
+	</div>
+	
+	<div id="indicator">Loading...</div>
 
 </body>
 </html>

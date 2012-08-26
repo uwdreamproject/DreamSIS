@@ -9,7 +9,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120824181629) do
+ActiveRecord::Schema.define(:version => 20120826201311) do
+
+  create_table "changes", :force => true do |t|
+    t.integer  "change_loggable_id"
+    t.string   "change_loggable_type"
+    t.text     "changes"
+    t.integer  "user_id"
+    t.string   "action_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "changes", ["change_loggable_id", "change_loggable_type"], :name => "index_changes_on_changable"
 
   create_table "college_applications", :force => true do |t|
     t.integer  "participant_id"

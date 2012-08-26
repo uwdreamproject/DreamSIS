@@ -1,3 +1,18 @@
+Ajax.Responders.register({
+	onCreate: function() {
+		if (Ajax.activeRequestCount > 0)
+		// Element.show('indicator');
+		$('indicator').toggleClassName("visible")
+	},
+	onComplete: function() {
+		if (Ajax.activeRequestCount == 0)
+		$('indicator').toggleClassName("visible")
+		// Element.hide('indicator');
+	}
+});
+
+
+
 // Handles filtering lists in place
 function initFilters(filter_keys) {
 	filters = new Hash;  // filters are the things to filter on, like status and assigned_to
