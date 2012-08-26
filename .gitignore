@@ -44,3 +44,5 @@ config/google_analytics.yml
 config/omniauth_keys.yml
 
 public/images/icons/silk/.DS_Store
+
+config/initializers/action_mailer.rb

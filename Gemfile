@@ -22,6 +22,8 @@ gem 'omniauth-identity'
 gem 'omniauth-windowslive'
 gem 'omniauth-linkedin'
 
+gem 'mail_style'
+
 # bundler requires these gems in all environments
 # gem "nokogiri", "1.4.2"
 # gem "geokit"

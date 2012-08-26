@@ -1,0 +1,3 @@
+RsvpMailer#cancel
+
+Find me in app/views/rsvp_mailer/cancel.erb

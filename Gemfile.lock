@@ -12,6 +12,7 @@ GEM
     activeresource (2.3.5)
       activesupport (= 2.3.5)
     activesupport (2.3.5)
+    addressable (2.3.2)
     bcrypt-ruby (3.0.1)
     capistrano (2.5.20)
       highline
@@ -25,6 +26,9 @@ GEM
       net-ssh-gateway
       net-ssh-gateway (>= 1.0.0)
     cgi_multipart_eof_fix (2.5.0)
+    css_parser (1.2.6)
+      addressable
+      rdoc
     daemons (1.1.0)
     exceptional (2.0.32)
       rack
@@ -39,6 +43,10 @@ GEM
     httpauth (0.1)
     i18n (0.4.2)
     json (1.6.3)
+    mail_style (0.1.6)
+      actionmailer (>= 1.2.3)
+      css_parser (>= 1.0.0)
+      nokogiri (>= 1.0.0)
     mongrel (1.1.5)
       cgi_multipart_eof_fix (>= 2.4)
       daemons (>= 1.0.3)
@@ -117,6 +125,7 @@ DEPENDENCIES
   formtastic (~> 1.2.5)
   i18n (= 0.4.2)
   json
+  mail_style
   mongrel
   mongrel_cluster
   mysql

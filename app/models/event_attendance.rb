@@ -7,4 +7,17 @@ class EventAttendance < ActiveRecord::Base
   
   delegate :fullname, :email, :to => :person
   
+  after_save :send_email
+  
+  # Sends the rsvp email or cancel email if the RSVP has changed.
+  def send_email
+    if rsvp_changed?
+      if rsvp?
+        RsvpMailer.deliver_rsvp!(self)
+      else
+        RsvpMailer.deliver_cancel!(self)
+      end
+    end
+  end
+  
 end
