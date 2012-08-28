@@ -18,7 +18,7 @@ class Change < ActiveRecord::Base
       :change_loggable_id => obj.id, 
       :change_loggable_type => obj.class.to_s,
       :action_type => 'create',
-      :user_id => Thread.current['user'],
+      :user_id => Thread.current['user'].try(:id),
       :changes => cleanup_changes(obj.changes)
     )
   end
@@ -30,7 +30,7 @@ class Change < ActiveRecord::Base
       :change_loggable_id => obj.id, 
       :change_loggable_type => obj.class.to_s,
       :action_type => 'update',
-      :user_id => Thread.current['user'],
+      :user_id => Thread.current['user'].try(:id),
       :changes => cleanup_changes(obj.changes)
     ) if obj.changed?
   end
@@ -43,7 +43,7 @@ class Change < ActiveRecord::Base
       :change_loggable_id => obj.id, 
       :change_loggable_type => obj.class.to_s,
       :action_type => 'delete',
-      :user_id => Thread.current['user']
+      :user_id => Thread.current['user'].try(:id)
     )
       # c.update_attribute(:change_loggable_type, obj.class.deleted_class.to_s)
     # end
