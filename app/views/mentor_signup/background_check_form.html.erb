@@ -88,7 +88,7 @@
 		<p>I certify that the information contained in the above-stated information is true, correct, and complete to the best of my knowledge. I understand that consideration for participation in the Dream Project and the continuation of subsequent participation depend on true, accurate and complete representation of these facts as stated or implied in all application-related materials. I authorize the University of Washington to make inquiries regarding my education, work experience, references, unless otherwise stated, and criminal conviction history. I understand that participation may be conditioned on the University’s receipt of a satisfactory Criminal Conviction Report from the Washington State Patrol or other law-enforcement related agency.</p>
 
 		<% f.inputs do %>
-			<%= f.input :background_check_authorized_at, :as => :boolean, :label => "I understand the statement above.", :input_html => { :value => Time.now } %>
+			<%= f.input :background_check_authorized, :as => :boolean, :label => "I understand the statement above." %>
 		<% end -%>
 		
 	<% f.buttons do %>

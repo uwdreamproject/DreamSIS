@@ -7,9 +7,9 @@
 	<%- f.inputs do -%>
 		<%= f.input :firstname, :label => "First Name", :disabled => @person.is_a?(Mentor) %>
 		<%= f.input :lastname, :label => "Last Name", :disabled => @person.is_a?(Mentor) %>
-		<%= f.input :email, :label => "E-mail Address", :disabled => @person.is_a?(Mentor), :as => :email %>
+		<%= f.input :email, :label => "E-mail Address", :disabled => @person.is_a?(Mentor) %>
 		<%= f.input :sex, :label => "Gender", :as => :select, :collection => {"Male" => "M", "Female" => "F", "No Response" => "NR"} %>
-		<%= f.input :phone_mobile, :label => "Phone", :as => :phone %>
+		<%= f.input :phone_mobile, :label => "Phone" %>
 		<%= f.input :birthdate, :label => "Birth Date", :start_year => Time.now.year-13, :end_year => 1930 %>
 	
 		<%- if @person.is_a?(Student) || @person.is_a?(Participant) -%>
@@ -33,38 +33,16 @@
 			<%= f.input :crimes_against_persons_or_financial, :label => "", :as => :radio %>
 			<%= f.input :aliases, :label => "Aliases/Maiden Name", :as => :string %>
 		<% end -%>
-		
-		<p>Before you can volunteer at one of our events, we need to run a criminal conviction history report.
-			Do we have your permission to execute this background check?</p>
+
+
+		<p>I certify that the information contained in the above-stated information is true, correct, and complete to the best of my knowledge. I understand that consideration for participation in Dream Project activities and the continuation of subsequent participation depend on true, accurate and complete representation of these facts as stated or implied in all application-related materials. I authorize the University of Washington to make inquiries regarding my criminal conviction history. I understand that participation may be conditioned on the University’s receipt of a satisfactory Criminal Conviction Report from the Washington State Patrol or other law-enforcement related agency.</p>
+
 		<% f.inputs do %>
-			<%= f.input :background_check_authorized, 
-						:label => "Yes, I authorize you to conduct a criminal background check using the information provided above.", 
-						:as => :boolean %>
+			<%= f.input :background_check_authorized, :as => :boolean, :label => "I understand the statement above." %>
 		<% end -%>
-		
 			
 	<% end -%>
 
 	<%= f.submit "Save", :disable_with => 'Saving...' %>	
 
 <% end -%>
-
-
-	<!-- # For all people:
-# * name
-# * email
-# * gender
-# * phone number
-# * birthdate
-# 
-# For Students and Participants:
-# * affiliated programs
-#
-# For Volunteers:
-# * background check authorized at
-# * crimes against persons
-# * employer/organization
-# * t-shirt size 
-aliases
-
--->
