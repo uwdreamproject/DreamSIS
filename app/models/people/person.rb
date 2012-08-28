@@ -232,6 +232,22 @@ class Person < ActiveRecord::Base
     self.background_check_authorized_at = boolean == true || boolean == "1" ? Time.now : nil
   end
   
+  # Strips all non digits from the phone number before storing it
+  def phone_mobile=(new_number)
+    write_attribute :phone_mobile, new_number.gsub(/[^0-9]/i, '')
+  end
+
+  # Strips all non digits from the phone number before storing it
+  def phone_home=(new_number)
+    write_attribute :phone_home, new_number.gsub(/[^0-9]/i, '')
+  end
+
+  # Strips all non digits from the phone number before storing it
+  def phone_work=(new_number)
+    write_attribute :phone_work, new_number.gsub(/[^0-9]/i, '')
+  end
+  
+  
   protected
   
   # Uppercases the first letter of the string and does nothing else.

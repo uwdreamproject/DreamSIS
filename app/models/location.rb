@@ -27,5 +27,11 @@ class Location < ActiveRecord::Base
     all_survey_ids = Person.find(:all, :select => :survey_id).collect(&:survey_id)
     (0..999).collect{|n| "M#{Date.today.year.to_s[2,2]}#{id.to_s.rjust(2,"0")}#{n.to_s.rjust(2,"0")}"} - all_survey_ids
   end
+
+  # Strips all non digits from the phone number before storing it
+  def phone=(new_number)
+    write_attribute :phone, new_number.gsub(/[^0-9]/i, '')
+  end
+
     
 end

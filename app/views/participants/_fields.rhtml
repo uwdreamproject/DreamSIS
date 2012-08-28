@@ -69,11 +69,11 @@
 	<ul class="inline">
 		<li>
 		  <%= f.label :phone_home %><br />
-		  <%= f.text_field :phone_home, :size => 13 %>
+		  <%= f.text_field :phone_home, :size => 13, :value => number_to_phone(f.object.phone_home) %>
 		</li>
 		<li>
 		  <%= f.label :phone_mobile %><br />
-		  <%= f.text_field :phone_mobile, :size => 13 %>
+		  <%= f.text_field :phone_mobile, :size => 13, :value => number_to_phone(f.object.phone_mobile) %>
 		</li>
 		<li>
 			<%= f.label :bad_phone %><br>

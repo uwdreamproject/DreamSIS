@@ -2236,7 +2236,7 @@ table.rsvp tr td:first-child {
 
 table.rsvp tr.attending td:first-child {
 	background: -webkit-linear-gradient(bottom, rgba(0,255,0,0.1), rgba(0,255,0,0) 40%) 0 0,  url(../images/icons/green-check-with-shadow.png) no-repeat 10px 2em;
-	border-left: 10px solid rgba(0,255,0,0.25);
+	/*border-left: 10px solid rgba(0,255,0,0.25);*/
 }
 
 body.mentor.welcome table.rsvp tr {

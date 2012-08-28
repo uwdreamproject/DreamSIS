@@ -1,4 +1,8 @@
-<%= f.inputs :name, :address, :phone %>
+<%- f.inputs do -%>
+	<%= f.input :name %>
+	<%= f.input :address %>
+	<%= f.input :phone, :input_html => { :value => number_to_phone(f.object.phone) } %>
+<% end -%>
 
 <%- if f.object.is_a?(HighSchool) -%>
 	<%- f.inputs "High Schools" do -%>

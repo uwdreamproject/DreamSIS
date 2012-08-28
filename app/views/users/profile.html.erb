@@ -9,7 +9,7 @@
 		<%= f.input :lastname, :label => "Last Name", :disabled => @person.is_a?(Mentor) %>
 		<%= f.input :email, :label => "E-mail Address", :disabled => @person.is_a?(Mentor) %>
 		<%= f.input :sex, :label => "Gender", :as => :select, :collection => {"Male" => "M", "Female" => "F", "No Response" => "NR"} %>
-		<%= f.input :phone_mobile, :label => "Phone" %>
+		<%= f.input :phone_mobile, :label => "Phone", :input_html => { :value => number_to_phone(f.object.phone_mobile) } %>
 		<%= f.input :birthdate, :label => "Birth Date", :start_year => Time.now.year-13, :end_year => 1930 %>
 	
 		<%- if @person.is_a?(Student) || @person.is_a?(Participant) -%>
