@@ -3,6 +3,9 @@ class WelcomeController < ApplicationController
   
   def index
     redirect_to :action => "mentor" if @current_user.person.is_a?(Mentor)
+    @person = @current_user.person
+    @events = @person.event_attendances.future_attending.collect(&:event)
+    @layout_in_blocks = true
   end
 
   def mentor
