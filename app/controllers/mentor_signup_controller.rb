@@ -23,7 +23,6 @@ class MentorSignupController < ApplicationController
   def background_check_form
     if request.put?
       @mentor.validate_background_check_form = true
-      params[:mentor][:background_check_authorized_at] = params[:mentor][:background_check_authorized_at]=="1" ? Time.now : nil
       if @mentor.update_attributes(params[:mentor])
         flash[:notice] = "Your background check form was successfully received. Thank you."
         redirect_to root_url
