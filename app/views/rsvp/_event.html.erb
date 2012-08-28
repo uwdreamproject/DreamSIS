@@ -14,7 +14,7 @@
 			<div class="description" id="event_<%= event.id %>_description" style="display: none;"><%= sanitize textilize(event.description) %></div>
 		<% end -%>
 		
-		<%= render :partial => 'shifts', 
+		<%= render :partial => 'rsvp/shifts', 
 					:locals => { :event => event, :event_attendance => event_attendance } %>
 	</td>
 	
@@ -39,7 +39,7 @@
 	</td>
 	
 	<td>
-		<%= render :partial => 'rsvp_button', :locals => { :event => event, :event_attendance => event_attendance } %>
+		<%= render :partial => 'rsvp/rsvp_button', :locals => { :event => event, :event_attendance => event_attendance } %>
 		<em class="rsvp_status"><%= "Attending" if event_attendance.try(:rsvp?) %></em>
 	</td>
 </tr>
