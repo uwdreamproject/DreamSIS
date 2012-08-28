@@ -686,24 +686,51 @@ ul.crimes-list li {
 	margin-right: 30px;
 }
 
-#notification {
+#notifications {
+	position: fixed;
+	top: 10px;
+	width: 50%;
+	left: 50%;
+	margin-left: -25%;
+	text-align: center;
+}
+
+#notifications .alert {
 	background: #bec url(../images/icons/silk/accept.png) no-repeat 10px center;
 	color: #031;
 	border: 1px solid #031;
 	padding: 10px 20px;
 	padding-left: 35px;
-	display: block;
 	border-color: green;
 	border-radius: 3px;
-	-webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 	margin-bottom: 20px;
+	opacity: 0.2;
+	-webkit-transition: all 0.5s ease-in-out;
+	z-index: -100;
+	display: none;
 }
 
-div#notification.error {
+#notifications .visible {
+	opacity: 1;
+	z-index: 100;
+	display: inline-block;
+	width: auto;
+	margin: 0 auto;
+}
+
+#notifications .error {
 	background-image: url(../images/icons/silk/exclamation.png);
 	background-color: #FFEBEB;
 	color: #b11;
 	border-color: #b11;
+}
+
+#notifications .info {
+	background-image: url(../images/icons/silk/information.png);
+	color: #07b;
+	background-color: #e5f4ff;
+	border-color: #07b;
 }
 
 .error-message {
@@ -849,7 +876,7 @@ textarea.code {
 	font-family: "Courier New", Courier, mono !important;
 }
 
-input[type=submit], input[type=button], form.formtastic input[type=submit], form.formtastic input[type=button] {
+input[type=submit], input[type=button], form.formtastic input[type=submit], form.formtastic input[type=button], a.submit {
 	padding: 4px 10px 4px 10px;
 	text-decoration: none;
 	background-position: 5px center;
@@ -861,12 +888,12 @@ input[type=submit], input[type=button], form.formtastic input[type=submit], form
 	color: #222;
 }
 
-input[type=submit]:active, input[type=button]:active, form.formtastic input[type=submit]:active, form.formtastic input[type=button]:active {
+input[type=submit]:active, input[type=button]:active, form.formtastic input[type=submit]:active, form.formtastic input[type=button]:active, a.submit:active {
 	border-style: inset;
 	background-color: #f2f2f2;
 }
 
-input[type=submit], form.formtastic input[type=submit] {
+input[type=submit], form.formtastic input[type=submit], a.submit {
 	background-image: url(../images/icons/silk/tick.png);
 	padding-left: 25px;
 	font-weight: bold;
@@ -2144,20 +2171,40 @@ ul.mentor_stats_summary .signup-meter {
 }
 
 table.rsvp {
-	width: 80%;
+	width: 100%;
 	margin: 2em auto;
 }
 
 table.rsvp td {
-	padding: 2em 1em;
+	padding: 2em 0.5em;
+	vertical-align: top;
+	border-color: rgba(0,0,0,0.1);
 }
+
+table.rsvp td.map {
+	padding-right: 1.5em;
+	width: 120px;
+}
+
+table.rsvp td.map img {
+	border: 1px solid #dadada;
+	border-radius: 5px;
+}
+
+table.rsvp td.map a img {
+	-webkit-transition: all 0.25s ease-out;
+}
+
+/*table.rsvp td.map a:hover img {
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),0 0 8px rgba(82, 168, 236, 0.4);
+}*/
 
 table.rsvp p {
 	margin: 0;
 }
 
 table.rsvp h2 {
-	margin: 3px 0;
+	margin: 0 0 3px;
 }
 
 table.rsvp .description {
@@ -2177,8 +2224,19 @@ body.mentor.welcome table.rsvp td:first-child {
 	padding-left: 0;
 }
 
-tr.attending td {
-	background: #bec !important;
+table.rsvp tr.attending td {
+	background: -webkit-linear-gradient(bottom, rgba(0,255,0,0.1), rgba(0,255,0,0) 40%);
+}
+
+table.rsvp tr td:first-child {
+	background: url(../images/icons/grey-check-with-shadow.png) no-repeat 10px 2em;
+	padding-left: 60px;
+	/*border-left: 10px solid rgba(0,0,0,0.1);*/
+}
+
+table.rsvp tr.attending td:first-child {
+	background: -webkit-linear-gradient(bottom, rgba(0,255,0,0.1), rgba(0,255,0,0) 40%) 0 0,  url(../images/icons/green-check-with-shadow.png) no-repeat 10px 2em;
+	border-left: 10px solid rgba(0,255,0,0.25);
 }
 
 body.mentor.welcome table.rsvp tr {
@@ -2191,6 +2249,42 @@ body.mentor.welcome table.rsvp tr.attending {
 
 body.mentor.welcome table.rsvp tr.attending td {
 	background: none !important;
+}
+
+.rsvp_status {
+	display: block;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-style: normal;
+	padding: 1em 0;
+}
+
+.attending .rsvp_status {
+	background: url(../images/check-mini.gif) no-repeat 0;
+	padding-left: 15px;
+}
+
+.rsvp_extras {
+	padding-top: 1em;
+	margin-left: 2em;
+}
+
+.rsvp_extras label {
+	font-weight: bold;
+	display: list-item;
+}
+
+.rsvp_extras select {
+	font-size: 90%;
+	padding: 3px;
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+
+.rsvp_extras .fieldWithErrors {
+	width: auto;
+	background-position: right center;
+	display: inline-block;
+	padding-right: 20px;
 }
 
 /* @group Menus */

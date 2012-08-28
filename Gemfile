@@ -1,7 +1,7 @@
 source :gemcutter
 gem "rails", "2.3.5"
 gem "i18n", '0.4.2'
-gem 'formtastic', '~> 1.2.5'
+gem 'formtastic', '~> 1.1.0'
 gem "mongrel"
 gem "capistrano"
 gem "mongrel_cluster"
@@ -23,6 +23,7 @@ gem 'omniauth-windowslive'
 gem 'omniauth-linkedin'
 
 gem 'mail_style'
+gem 'geocoder'
 
 # bundler requires these gems in all environments
 # gem "nokogiri", "1.4.2"

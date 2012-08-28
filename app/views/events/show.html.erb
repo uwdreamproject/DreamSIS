@@ -37,6 +37,9 @@
 		<% end -%>
 	</dd>
 	
+	<dt>Shifts</dt>
+	<dd><%= link_to pluralize(@event.shifts.size, "shift"), event_event_shifts_path(@event) %></dd>
+
 	<%- if @event.event_group -%>
 		<dt>Event Group</dt>
 		<dd><%= link_to @event.event_group.try(:name), @event.event_group %></dd>

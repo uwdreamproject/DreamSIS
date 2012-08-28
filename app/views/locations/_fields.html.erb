@@ -1,0 +1,7 @@
+<%= f.inputs :name, :address, :phone %>
+
+<%- if f.object.is_a?(HighSchool) -%>
+	<%- f.inputs "High Schools" do -%>
+		<%= f.input :partner_school, :hint => "Mark this school as a partner school to make it appear in the \"High Schools\" drop down menu." %>
+	<% end -%>
+<% end -%>

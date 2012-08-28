@@ -1,35 +1,13 @@
-<h1>New location</h1>
+<h1>New Location</h1>
 
-<% form_for(@location) do |f| %>
-  <%= f.error_messages %>
+<% semantic_form_for @location do |f| %>
 
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :street %><br />
-    <%= f.text_field :street %>
-  </p>
-  <p>
-    <%= f.label :city %><br />
-    <%= f.text_field :city %>
-  </p>
-  <p>
-    <%= f.label :state %><br />
-    <%= f.text_field :state %>
-  </p>
-  <p>
-    <%= f.label :zip %><br />
-    <%= f.text_field :zip %>
-  </p>
-  <p>
-    <%= f.label :phone %><br />
-    <%= f.text_field :phone %>
-  </p>
-  <p>
-    <%= f.submit "Create" %>
-  </p>
+	<%= f.error_messages %>
+
+	<%= render :partial => "fields", :locals => { :f => f } %>
+	
+	<%= f.submit "Create", :disable_with => 'Creating...' %>
+	<span class="separator">&mdash; or &mdash;</span>
+	<%= link_to 'Cancel', locations_path %>
+
 <% end %>
-
-<%= link_to 'Back', locations_path %>

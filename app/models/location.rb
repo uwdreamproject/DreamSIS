@@ -2,6 +2,9 @@ class Location < ActiveRecord::Base
 
   validates_presence_of :name
   validates_uniqueness_of :name
+  
+  geocoded_by :address
+  after_validation :geocode, :if => :address_changed?
 
   default_scope :order => "name"
 

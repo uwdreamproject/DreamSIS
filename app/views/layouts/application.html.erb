@@ -65,11 +65,11 @@
 
 	<div id="content">	
 
-		<% flash.each do |key,value| -%>
-		<div id="notification" class="alert <%= key %>">
-			<span><%= value %></span>
+		<div id="notifications">
+			<% %w(error notice info).each do |key| -%>
+				<div id="<%= key %>_notification" class="alert <%= key %> <%= "visible" unless flash[key.to_sym].blank? %>"><%= flash[key.to_sym] %></div>
+			<% end -%>
 		</div>
-		<% end -%>
 
 		<div id="content-wrap" class="<%= "blocked" if @layout_in_blocks %>">
 			<%= yield %>

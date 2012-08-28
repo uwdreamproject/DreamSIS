@@ -1,26 +1,13 @@
-<h1>Editing high_school</h1>
+<h1>Editing High School</h1>
 
-<% form_for(@high_school) do |f| %>
-  <%= f.error_messages %>
+<% semantic_form_for @location, :html => { :method => :put } do |f| %>
 
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
+	<%= f.error_messages %>
 
-  <p>
-	<%= f.label :partner_school %><br>
-	<%= f.check_box :partner_school %>
-  </p>
-  <p class="caption">
-	Mark this school as a partner school to make it appear in the "High Schools" drop down menu.
-  </p>
+	<%= render :partial => "locations/fields", :locals => { :f => f } %>
 	
+	<%= f.submit "Save", :disable_with => 'Saving...' %>
+	<span class="separator">&mdash; or &mdash;</span>
+	<%= link_to 'Cancel', @location %>
 
-  <p>
-    <%= f.submit "Update" %>
-  </p>
 <% end %>
-
-<%= link_to 'Show', @high_school %> |
-<%= link_to 'Back', high_schools_path %>
