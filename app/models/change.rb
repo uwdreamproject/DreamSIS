@@ -26,13 +26,14 @@ class Change < ActiveRecord::Base
   # Gets called after_update
   def self.log_update(obj)
     return false if obj.is_a?(Change)
+    my_changes = cleanup_changes(obj.changes)
     Change.create(
       :change_loggable_id => obj.id, 
       :change_loggable_type => obj.class.to_s,
       :action_type => 'update',
       :user_id => Thread.current['user'].try(:id),
-      :changes => cleanup_changes(obj.changes)
-    ) if obj.changed?
+      :changes => my_changes
+    ) unless my_changes.empty?
   end
   
   # Gets called after_delete
