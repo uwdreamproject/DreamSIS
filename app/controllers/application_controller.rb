@@ -24,6 +24,8 @@ class ApplicationController < ActionController::Base
   before_filter :save_return_to
   before_filter :check_authorization
   before_filter :check_if_enrolled
+
+  after_filter :flash_to_headers
   
   helper_method :current_user
 
@@ -88,6 +90,13 @@ class ApplicationController < ActionController::Base
     render :template => "application/forbidden", :status => 403 and return
   end
 
+  def flash_to_headers
+    if request.xhr?
+      flash_json = Hash[flash.map{|k,v| [k,ERB::Util.h(v)] }].to_json
+      response.headers['X-Flash-Messages'] = flash_json
+      flash.discard
+    end
+  end
 
   private
 
@@ -111,6 +120,5 @@ class ApplicationController < ActionController::Base
     request.user_agent =~ /(Mobile\/.+Safari)/
   end
   helper_method :iphone_request?
-
   
 end

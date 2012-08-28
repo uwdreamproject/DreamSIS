@@ -4,14 +4,33 @@ Ajax.Responders.register({
 		// Element.show('indicator');
 		$('indicator').toggleClassName("visible")
 	},
-	onComplete: function() {
+	onComplete: function(event, request) {
 		if (Ajax.activeRequestCount == 0)
 		$('indicator').toggleClassName("visible")
 		// Element.hide('indicator');
+
+		// Update the flash messages
+		clearFlashes()
+		var flash = request.getResponseHeader('X-Flash-Messages').evalJSON();
+		if(!flash) return;
+		updateFlashes(flash)
 	}
 });
 
+function clearFlashes() {
+	$('notice_notification').removeClassName('visible')
+	$('error_notification').removeClassName('visible')
+	$('info_notification').removeClassName('visible')
+	$('notice_notification').innerHTML = ''
+	$('error_notification').innerHTML = ''
+	$('info_notification').innerHTML = ''
+}
 
+function updateFlashes(flash) {
+	if(flash.notice) { $('notice_notification').innerHTML = flash.notice; $('notice_notification').addClassName('visible') }
+	if(flash.error) { $('error_notification').innerHTML = flash.error; $('error_notification').addClassName('visible') }
+	if(flash.info) { $('info_notification').innerHTML = flash.info; $('info_notification').addClassName('visible') }
+}
 
 // Handles filtering lists in place
 function initFilters(filter_keys) {
