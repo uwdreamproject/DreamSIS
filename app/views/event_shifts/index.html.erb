@@ -1,0 +1,21 @@
+<h1>Shifts</h1>
+<h2><%= @event.name %></h2>
+
+<table>
+	<tr>
+		<th>Title</th>
+		<th>Start Time</th>
+		<th>End Time</th>
+		<th>Mentors</th>
+		<th>Volunteers</th>
+		<th colspan=4>Functions</th>
+	</tr>
+
+	<%= render :partial => @event.shifts %>
+	
+</table>
+
+<div id="sidebar">
+	<p><%= link_to 'Add another shift', new_event_event_shift_path(@event), :class => 'add button' %></p>
+	<p><%= link_to "Back to event", @event, :class => 'back button' %></p>
+</div>

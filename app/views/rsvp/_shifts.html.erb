@@ -1,0 +1,18 @@
+<div class="rsvp_extras" <%= "style='display:none'" unless @current_user && event.has_shifts?(@current_user.person.class) %>>
+
+	<%= label_tag "event_attendance_event_shift_id_#{event.id}", "Choose a shift/role:" %>
+	<%= collection_select :event_attendance,
+							:event_shift_id, 
+							event.shifts.for(@current_user.try(:person).try(:class)),
+							:id,
+							:details_string,
+							{ 
+								:prompt => "-- Choose a shift/role --",
+								:selected => event_attendance.try(:event_shift_id)
+							 },
+							{ 
+								:id => "event_attendance_event_shift_id_#{event.id}",
+								:onchange => "if($('save_button_#{event.id}')){$('save_button_#{event.id}').show(); $('cancel_button_#{event.id}').hide()}"
+							} %>
+
+</div>

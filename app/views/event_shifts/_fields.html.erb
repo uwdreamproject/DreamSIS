@@ -1,0 +1,6 @@
+<%= f.inputs :title, :description, :start_time, :end_time %>
+
+<% f.inputs(:name => "Display Preferences") do %>
+	<%= f.input :show_for_mentors, :label => "Show on mentor RSVP pages" %>
+	<%= f.input :show_for_volunteers, :label => "Show on volunteer RSVP pages" %>
+<% end -%>

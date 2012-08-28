@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  title: MyString
+  description: MyText
+  event_id: 1
+  start_time: 2012-08-26 21:29:50
+  end_time: 2012-08-26 21:29:50
+  show_for_volunteers: false
+  show_for_mentors: false
+
+two:
+  title: MyString
+  description: MyText
+  event_id: 1
+  start_time: 2012-08-26 21:29:50
+  end_time: 2012-08-26 21:29:50
+  show_for_volunteers: false
+  show_for_mentors: false

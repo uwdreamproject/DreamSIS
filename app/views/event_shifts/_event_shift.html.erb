@@ -1,0 +1,10 @@
+<tr>
+	<td><%=h event_shift.title %></td>
+	<td><%=h event_shift.start_time.to_s(:time12) %></td>
+	<td><%=h event_shift.end_time.to_s(:time12) %></td>
+	<td><%=h event_shift.show_for_mentors %></td>
+	<td><%=h event_shift.show_for_volunteers %></td>
+	<td class="functions"><%= link_to 'Show', event_event_shift_path(@event, event_shift) %></td>
+    <td class="functions"><%= link_to 'Edit', edit_event_event_shift_path(@event, event_shift) %></td>
+    <td class="functions"><%= link_to 'Destroy', event_event_shift_path(@event, event_shift), :confirm => 'Are you sure?', :method => :delete %></td>    
+</tr>

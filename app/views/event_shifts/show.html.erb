@@ -1,0 +1,24 @@
+<h1><%=h @event_shift.title %></h1>
+<h2><%=h @event.name %></h2>
+
+<dl class="inline-definitions">
+
+	<dt>Name</dt>
+	<dd><%= @event_shift.title %></dd>
+
+	<dt>Description</dt>
+	<dd><%= @event_shift.description %></dd>
+
+	<dt>Start Time</dt>
+	<dd><%= @event_shift.start_time.to_s(:time12) %></dd>
+
+	<dt>End Time</dt>
+	<dd><%= @event_shift.end_time.to_s(:time12) %></dd>
+
+</dl>
+
+
+<div id="sidebar">
+	<p><%= link_to "Edit this shift", edit_event_event_shift_path(@event, @event_shift), :class => 'edit button' %></p>
+	<p><%= link_to "Back to event", @event, :class => 'back button' %></p>
+</div>

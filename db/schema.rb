@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120826201311) do
+ActiveRecord::Schema.define(:version => 20120827042950) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(:version => 20120826201311) do
     t.boolean  "attended"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "event_shift_id"
   end
 
   create_table "event_groups", :force => true do |t|
@@ -59,6 +60,18 @@ ActiveRecord::Schema.define(:version => 20120826201311) do
     t.datetime "updated_at"
     t.boolean  "allow_external_students"
     t.boolean  "allow_external_volunteers"
+  end
+
+  create_table "event_shifts", :force => true do |t|
+    t.string   "title"
+    t.string   "description"
+    t.integer  "event_id"
+    t.time     "start_time"
+    t.time     "end_time"
+    t.boolean  "show_for_volunteers"
+    t.boolean  "show_for_mentors"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "event_types", :force => true do |t|
@@ -126,6 +139,9 @@ ActiveRecord::Schema.define(:version => 20120826201311) do
     t.datetime "updated_at"
     t.string   "type"
     t.boolean  "partner_school"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.string   "address"
   end
 
   create_table "mentor_participants", :force => true do |t|

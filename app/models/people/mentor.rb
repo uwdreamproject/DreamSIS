@@ -10,7 +10,7 @@ class Mentor < Person
   has_many :mentor_participants, :conditions => { :deleted_at => nil }
   has_many :participants, :through => :mentor_participants
   
-  validates_uniqueness_of :reg_id
+  validates_uniqueness_of :reg_id, :allow_blank => true
 
   attr_accessor :validate_background_check_form, :validate_risk_form
 
@@ -68,7 +68,7 @@ class Mentor < Person
   # as allowing signups.
   def current_mentor_quarter_groups
     quarters = Quarter.allowing_signups.collect(&:id)
-    quarters << Quarter.current_quarter.id
+    quarters << Quarter.current_quarter.id if Quarter.current_quarter
     quarters = quarters.flatten.uniq
     mentor_quarters.find :all, :joins => [:mentor_quarter_group], 
       :conditions => { :mentor_quarter_groups => { :quarter_id => quarters }, :deleted_at => nil }
