@@ -1,13 +1,21 @@
+<%- event_attendance = @event_attendance || @current_user.person.event_attendances.find_or_create_by_event_id(event.id) rescue nil -%>
+
 <tr id="event_<%= event.id %>" class="<%= @current_user.try(:person).try(:attending?, event) ? "attending" : "not_attending" %>">
+	<td class="map">
+		<%= link_to image_tag( "http://maps.google.com/maps/api/staticmap?size=120x120&sensor=false&zoom=9&markers=#{event.location.try(:latitude)}%2C#{event.location.try(:longitude)}"), event_rsvp_path(event) if event.location.try(:geocoded?) %>
+	</td>
 	<td>
 		<h2 class="event name"><%= link_to h(event.name), event_rsvp_path(event) %></h2>
 		<p class="date"><%= event.time_detail %></p>
-		<p class="location"><%=h event.location_text %></p>
+		<p class="location"><%=h event.location_string %></p>
 
 		<%- unless event.description.blank? || @hide_description_link -%>
 			<p class="description_link"><%= link_to_function "More details", "Effect.toggle('event_#{event.id}_description', 'blind', {duration:0.25})" %></p>
 			<div class="description" id="event_<%= event.id %>_description" style="display: none;"><%= sanitize textilize(event.description) %></div>
 		<% end -%>
+		
+		<%= render :partial => 'shifts', 
+					:locals => { :event => event, :event_attendance => event_attendance } %>
 	</td>
 	
 	<td>
@@ -31,6 +39,7 @@
 	</td>
 	
 	<td>
-		<%= render :partial => 'rsvp_button', :locals => { :event => event } %>
+		<%= render :partial => 'rsvp_button', :locals => { :event => event, :event_attendance => event_attendance } %>
+		<em class="rsvp_status"><%= "Attending" if event_attendance.try(:rsvp?) %></em>
 	</td>
 </tr>

@@ -18,9 +18,16 @@ class Event < ActiveRecord::Base
     end
   end
   has_many :people, :through => :attendees
-  has_one :location
+  belongs_to :location
   belongs_to :event_type
   belongs_to :event_group
+  
+  has_many :shifts, :class_name => "EventShift" do
+    def for(audience)
+      return [] if audience.nil?
+      find(:all, :conditions => { "show_for_#{h(audience.to_s.pluralize)}" => true })
+    end
+  end
   
   validates_presence_of :date
   
@@ -77,6 +84,11 @@ class Event < ActiveRecord::Base
       str = location_text
     end
     str
+  end
+  
+  
+  def has_shifts?(audience)
+    audience ? !shifts.for(audience).empty? : !shifts.empty?
   end
  
   # Convenience method for +time_detail(:time_only => true)+

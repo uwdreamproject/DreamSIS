@@ -1,5 +1,18 @@
 <h1>RSVP for <%=h @event.name %></h1>
-<p><%= sanitize textilize(@event.description) %></p>
+
+<div class="location">
+	<h3>Location</h3>
+	<%= image_tag "http://maps.google.com/maps/api/staticmap?size=300x300&sensor=false&zoom=12&markers=#{@event.location.try(:latitude)}%2C#{@event.location.try(:longitude)}" if @event.location.try(:geocoded?) %>	
+</div>
+	
+
+<p class="date"><%= @event.time_detail %></p>
+<p class="location"><%=h @event.location_string %></p>
+
+<%- unless @event.description.blank? -%>
+	<h3>About the Event</h3>
+	<p><%= sanitize textilize(@event.description) %></p>
+<% end -%>
 
 <table class="highlightless rsvp">
 	<%= render :partial => 'event', :object => @event %>

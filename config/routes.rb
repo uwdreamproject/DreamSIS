@@ -5,6 +5,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :quarters, :member => { :sync => :put }
   map.resources :events do |events|
     events.resources :event_attendances, :as => :attendees, :collection => { :checkin => :get, :auto_complete_for_person_fullname => :any, :checkin_new_participant => :put }
+    events.resources :event_shifts, :as => :shifts
   end
   map.resources :event_types
   map.resources :event_groups

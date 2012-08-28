@@ -1,11 +1,15 @@
 class EventAttendance < ActiveRecord::Base
   belongs_to :event
   belongs_to :person
+  belongs_to :event_shift
   
   validates_presence_of :person_id, :event_id
   validates_uniqueness_of :person_id, :scope => :event_id, :message => "already has an event attendance record for this event"
+
+  validate :validate_event_shift
   
   delegate :fullname, :email, :to => :person
+  delegate :has_shifts?, :to => :event
   
   after_save :send_email
   
@@ -17,6 +21,12 @@ class EventAttendance < ActiveRecord::Base
       else
         RsvpMailer.deliver_cancel!(self)
       end
+    end
+  end
+  
+  def validate_event_shift
+    if event.has_shifts?(person.class) && rsvp_changed? && rsvp? && event_shift_id.nil?
+      errors.add :event_shift_id, :message => "must choose a shift from the list"
     end
   end
   

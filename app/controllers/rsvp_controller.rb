@@ -34,18 +34,29 @@ class RsvpController < ApplicationController
       end
     end
     @event_attendance = @current_user.person.event_attendances.find_or_create_by_event_id(@event.id)
+    @event_attendance.event_shift_id = params[:event_attendance].try(:[], :event_shift_id)
     if request.put? || (request.get? && (params[:rsvp] == true || params[:rsvp] == "true"))
       @event_attendance.rsvp = true
     elsif request.delete?
       @event_attendance.rsvp = false
     end
-    if @event_attendance.save && @event_attendance.rsvp?
-      flash[:notice] = "Thanks for signing up."
-    end
     
     respond_to do |format|
-      format.html { redirect_to(session[:return_to_after_rsvp] || event_rsvp_path(@event)) && session[:return_to_after_rsvp] = nil }
-      format.js
+      if @event_attendance.save
+        if @event_attendance.rsvp?
+          flash[:notice] = "Thanks for signing up."
+          format.html { redirect_to(session[:return_to_after_rsvp] || event_rsvp_path(@event)) && session[:return_to_after_rsvp] = nil }
+          format.js
+        elsif !@event_attendance.rsvp?
+          flash[:info] = "Cancellation received. Sorry you can't join us."
+          format.html { redirect_to(event_rsvp_path(@event)) }
+          format.js
+        end
+      else
+        flash[:error] = "Couldn't save your RSVP."
+        format.html { redirect_to(event_rsvp_path(@event)) }
+        format.js
+      end
     end
     
   end
