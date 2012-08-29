@@ -53,7 +53,7 @@ class RsvpController < ApplicationController
           format.js
         end
       else
-        flash[:error] = "Couldn't save your RSVP."
+        flash[:error] = "We couldn't save your RSVP. Please complete the required information."
         format.html { redirect_to(event_rsvp_path(@event)) }
         format.js
       end
