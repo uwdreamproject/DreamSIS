@@ -21,6 +21,7 @@ class Event < ActiveRecord::Base
   belongs_to :location
   belongs_to :event_type
   belongs_to :event_group
+  belongs_to :event_coordinator, :class_name => "Person", :foreign_key => "event_coordinator_id"
   
   has_many :shifts, :class_name => "EventShift" do
     def for(audience)

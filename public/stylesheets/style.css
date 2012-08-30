@@ -59,6 +59,11 @@ h4, h5 {
 	font-size: 100%;
 }
 
+h5 {
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight: bold;
+}
+
 a {
 	text-decoration: underline;
 	color: #036;
@@ -2309,6 +2314,10 @@ body.rsvp.event h2.date {
 	font-weight: lighter;
 }
 
+body.rsvp.event h5 {
+	margin-bottom: 0;
+}
+
 body.rsvp .when-and-where {
 	float: right;
 	margin-left: 1em;
@@ -2356,6 +2365,114 @@ body.rsvp.event .details .rsvp_status {
 body.rsvp.event table.rsvp td {
 	border-top: 1px solid rgba(0,0,0,0.1);
 }
+
+/* @group Autocomplete */
+
+div.auto_complete {
+  width: 350px;
+  background: #fff;
+}
+
+
+div.auto_complete ul {
+  border: 1px solid #9aa4ab;
+  border-top: none;
+  margin:0;
+  margin-top: -1px;
+  padding:0;
+  width: 200px;
+  list-style-type:none;
+  background: #fff;
+  position: absolute;
+  left: 0;
+}
+
+div.auto_complete.right ul {
+	right: 0;
+	left: auto;
+}
+
+div.auto_complete ul li {
+  margin:0;
+  padding: 6px;
+  line-height: 100%;
+  border-top: 1px solid #dadada;
+}
+
+div.auto_complete ul li.icon-left {
+	padding-left: 30px !important;
+	background-position: 5px;
+}
+
+.apply div.auto_complete ul li {
+	padding-left: 30px;
+	background: url(../images/icons/silk/page_white_text.png) no-repeat 6px 6px;
+}
+
+div#organization_name_auto_complete ul li {
+	padding-left: 30px;
+	background: url(../images/icons/silk/building.png) no-repeat 6px 6px;
+}
+
+div.auto_complete ul strong.highlight {
+  margin:0;
+  padding:0;
+  background: #d8dfea;
+}
+
+div.auto_complete .primary {
+	color: #000;
+	margin-bottom: 0;
+	display: block;
+}
+
+div.auto_complete .secondary {
+	font-weight: normal;
+	font-size: 90%;
+	color: #808080;
+	display: block;
+	margin-bottom: 0;
+}
+
+div.auto_complete .tertiary {
+	font-weight: normal;
+	font-size: 80%;
+	color: #808080;
+	display: block;
+	margin-bottom: 0;
+}
+
+div.auto_complete ul li.selected,
+div#organization_name_auto_complete ul li.selected {
+  background-color: #415994;
+  color: #fff;
+}
+
+div.auto_complete ul li.selected .primary {
+	color: #fff;
+}
+
+div.auto_complete ul li.selected .secondary, div.auto_complete ul li.selected .tertiary {
+	color: #d9d9d9;
+}
+
+div.auto_complete ul li.selected strong.highlight {
+	background-color: #5670a6;
+}
+
+div.auto_complete .new {
+	padding-top: 10px;
+	font-size: 95%;
+	background: url(../images/icons/silk/add.png) no-repeat 6px center;
+	padding-left: 30px;
+	background-color: #d8dfea;
+}
+
+li.input div.auto_complete.after_select {
+	margin-left: 25%;
+}
+
+/* @end */
 
 /* @group Menus */
 
@@ -3009,7 +3126,6 @@ table.rsvp h2 {
 }
 
 /* @end */
-
 
 
 

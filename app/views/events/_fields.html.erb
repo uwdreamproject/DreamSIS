@@ -20,6 +20,49 @@
 	</li>
 	<%= f.input :description, :input_html => { :rows => 3 }, :hint => "Use #{link_to("Textile", "http://redcloth.org/", :popup => true)} markup for formatting." %>
 	<%= f.input :capacity, :hint => "Leave capacity blank or 0 for no limit.", :input_html => {:size => 3} %>
+	
+	<li class="input">
+		<%= f.label :event_coordinator_id %>
+		
+		<div>
+			<%= model_auto_completer "person[fullname]", (@event.event_coordinator.fullname if @event.event_coordinator), 
+									"event[event_coordinator_id]", 
+									(@event.event_coordinator_id || nil), 
+									{ 
+										:append_random_suffix => false,
+										:after_update_element => "function(text_field, selection, hidden, id) { 
+																	person_lookup(text_field, selection, hidden, id) 
+																  }",
+										:regexp_for_id => '(-?\d+)$' },
+									{ :autocomplete => false, :style => ('display:none' if @event.event_coordinator), :size => 50 },
+									{ :skip_style => true } %>
+			
+			<% javascript_tag do -%>	
+				function person_lookup(text_field, selection, hidden, id) {
+					Element.update('event_coordinator_details_content', selection.innerHTML)
+					Element.show('event_coordinator_details')
+					Element.hide(text_field)
+				}
+			<% end -%>
+
+			<div id="event_coordinator_details" class="auto_complete after_select" <%= "style='display:none'" unless @event.event_coordinator %>>
+				<div id="event_coordinator_details_content">
+					<% if @event.event_coordinator %>
+						<span class="primary"><%= @event.event_coordinator.fullname %>
+						<small class="light">(#<%= @event.event_coordinator_id %>)</small></span>
+						<span class="secondary"><%= @event.event_coordinator.email || "(no email)" %></span>
+						<span class="tertiary"><%= @event.event_coordinator.class.to_s %></span>
+					<% end -%>
+				</div>
+				<small><%= link_to_function "Change to a different person", 
+										"Element.show('event_coordinator_details');
+										 Element.show('model_auto_completer_tf');
+										 $('model_auto_completer_tf').value = '';
+										 $('model_auto_completer_tf').focus()" %></small>
+
+			</div>
+		</div>
+	</li>
 
 <% end -%>
 

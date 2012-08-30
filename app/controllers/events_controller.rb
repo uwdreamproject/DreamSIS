@@ -86,6 +86,19 @@ class EventsController < ApplicationController
     end
   end
 
+  def auto_complete_model_for_person_fullname
+    @people = Person.find(
+      :all,
+      :conditions => ['LOWER(lastname) LIKE :q', 
+                        {:q => "%#{params[:person][:fullname].downcase}%"}],
+      :limit => 10
+    )
+    render :partial => "shared/auto_complete_person_fullname", 
+            :object => @people, 
+            :locals => { :highlight_phrase => params[:person][:fullname] }
+  end
+  
+
   protected
 
   def redirect_to_rsvp_if_not_admin

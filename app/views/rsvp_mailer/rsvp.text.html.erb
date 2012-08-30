@@ -8,6 +8,7 @@
 	
 	<tr>
 		<td class="details">
+			
 			<h3>Date &amp; Time</h3>
 			<p class="date"><%= @event.time_detail %></p>
 
@@ -34,7 +35,7 @@
 					<em class="rsvp_status not_attending">Not Attending</em>
 				<% end -%>
 				<br />
-				<p><%= link_to "Change your RSVP", event_rsvp_url(@event), :class => "edit button" %></p>
+				<p style="margin-top: 1em"><%= link_to "Change your RSVP", event_rsvp_url(@event), :class => "edit button" %></p>
 			<% end -%>
 		</td>		
 

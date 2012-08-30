@@ -1,0 +1,10 @@
+<% content_tag('ul') do %>
+	<% for result in auto_complete_person_fullname %>
+		<li id="<%= result.class.to_s.underscore %>_<%= result.id %>" class="icon-left <%= result.class.to_s.underscore %>">
+			<span class="primary"><%= highlight(result.fullname(:skip_update => true), highlight_phrase) %>
+				<small class="light">(#<%= result.id %>)</small></span>
+			<span class="secondary"><%= result.email %></span>
+			<span class="tertiary"><%= result.class.to_s %></span>
+		</li>
+	<% end -%>	
+<% end -%>
