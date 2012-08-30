@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120830040901) do
+ActiveRecord::Schema.define(:version => 20120830070816) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -60,6 +60,8 @@ ActiveRecord::Schema.define(:version => 20120830040901) do
     t.datetime "updated_at"
     t.boolean  "allow_external_students"
     t.boolean  "allow_external_volunteers"
+    t.integer  "volunteer_training_id"
+    t.integer  "mentor_training_id"
   end
 
   create_table "event_shifts", :force => true do |t|
@@ -405,6 +407,23 @@ ActiveRecord::Schema.define(:version => 20120830040901) do
     t.decimal  "default_amount"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "training_completions", :force => true do |t|
+    t.integer  "training_id"
+    t.integer  "person_id"
+    t.datetime "completed_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "trainings", :force => true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.string   "video_url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "chapters_url"
   end
 
   create_table "users", :force => true do |t|

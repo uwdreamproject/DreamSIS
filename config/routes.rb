@@ -1,4 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :trainings, :member => { :take => :get }
   map.resources :notes
   map.resources :object_filters
   map.resources :locations

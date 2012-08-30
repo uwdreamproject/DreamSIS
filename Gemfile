@@ -25,6 +25,7 @@ gem 'omniauth-linkedin'
 gem 'mail_style'
 gem 'geocoder'
 
+
 # bundler requires these gems in all environments
 # gem "nokogiri", "1.4.2"
 # gem "geokit"

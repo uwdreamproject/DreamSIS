@@ -1,0 +1,32 @@
+<h3 class="pre-title">Training:</h3>
+<h1><%=h @training.title %></h1>
+
+
+<video width="640" height="360" style="width: 100%; height: 100%;" id="player1">
+	<source src="<%=h @training.video_url %>" type="video/mp4" title="mp4">
+	<track kind="chapters" src="<%=h @training.chapters_url %>" srclang="en" />
+</video>
+
+<div id="output" style="display:none">
+</div>
+
+
+<span id="player1-mode"></span>
+
+<script>
+$j('video').mediaelementplayer({
+	success: function(media, node, player) {
+		var events = ['loadstart', 'play','pause', 'ended'];
+		
+		for (var i=0, il=events.length; i<il; i++) {
+			
+			var eventName = events[i];
+			
+			media.addEventListener(events[i], function(e) {
+				$j('#output').append( $j('<div>' + e.type + '</div>') );
+			});
+			
+		}
+	}
+});
+</script>

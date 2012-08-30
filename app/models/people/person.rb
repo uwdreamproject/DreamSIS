@@ -24,6 +24,9 @@ class Person < ActiveRecord::Base
 
   has_many :notes, :as => :notable
 
+  has_many :training_completions
+  has_many :trainings, :through => :training_completions, :source => :training
+
   after_create :generate_survey_id
 
   attr_accessor :validate_name
@@ -248,6 +251,12 @@ class Person < ActiveRecord::Base
     write_attribute :phone_work, new_number.gsub(/[^0-9]/i, '')
   end
   
+  # Returns true if this person has completed the specified training
+  def completed_training?(training)
+    return false if training.nil?
+    c = training_completions.find(:first, :conditions => { :training_id => training.id })
+    c.nil? ? false : c.completed?
+  end
   
   protected
   

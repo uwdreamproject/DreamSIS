@@ -1,0 +1,23 @@
+<h1>Trainings</h1>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Completions</th>
+	<th colspan=3></th>
+  </tr>
+
+<% for training in @trainings %>
+  <tr>
+    <td><%=h training.title %></td>
+    <td><%=h training.completions.count %></td>
+    <td><%= link_to 'Show', training %></td>
+    <td><%= link_to 'Edit', edit_training_path(training) %></td>
+    <td><%= link_to 'Destroy', training, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New training', new_training_path, :class => "add button" %>

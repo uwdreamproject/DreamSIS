@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  training_id: 1
+  person_id: 1
+  completed_at: 2012-08-29 22:58:39
+
+two:
+  training_id: 1
+  person_id: 1
+  completed_at: 2012-08-29 22:58:39

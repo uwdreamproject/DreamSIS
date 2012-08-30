@@ -9,3 +9,8 @@
 	<%= f.input :allow_external_students, :label => "Allow external students to RSVP" %>
 	<%= f.input :allow_external_volunteers, :label => "Allow external volunteers to sign up" %>
 <% end -%>
+
+<% f.inputs "Training" do %>
+	<%= f.input :mentor_training_id, :as => :select, :collection => Training.all %>
+	<%= f.input :volunteer_training_id, :as => :select, :collection => Training.all %>
+<% end -%>

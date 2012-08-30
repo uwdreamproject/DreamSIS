@@ -1,3 +1,5 @@
+
+
 Ajax.Responders.register({
 	onCreate: function() {
 		if (Ajax.activeRequestCount > 0)

@@ -1,0 +1,21 @@
+<h1><%=h @training.title %></h1>
+
+<dl class="inline-definitions">
+
+	<dt>Description</dt>
+	<dd><%= @training.description %></dd>
+
+	<dt>Video URL</dt>
+	<dd><%= auto_link @training.video_url %></dd>
+
+	<dt>Chapters URL</dt>
+	<dd><%= auto_link @training.chapters_url %></dd>
+
+	<dt>Completions</dt>
+	<dd><%= @training.completions.count %></dd>
+
+</dl>
+
+<div id="sidebar">
+	<p><%= link_to "Edit this training", edit_training_path(@training), :class => "edit button" %></p>
+</div>
