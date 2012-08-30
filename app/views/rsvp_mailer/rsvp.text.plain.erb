@@ -1,4 +1,31 @@
 Thank you for registering!
 <%= @event.name %>
 
-Thanks for signing up for this event.
+Date & Time:
+<%= @event.time_detail %>
+
+Location:
+<%=h @event.location_string %>
+<%= @event.location.address if @event.location %>
+
+<%- unless @event.description.blank? -%>
+About the Event:
+<%= sanitize textilize_without_paragraph(@event.description) %>
+<% end -%>
+
+<%- if @event.event_group && !@event.event_group.description.blank? -%>
+About <%=h @event.event_group.name %>:
+<%= sanitize textilize_without_paragraph(@event.event_group.description) %>
+<% end -%>
+			
+Your RSVP:
+<%- if @event_attendance.rsvp.nil? -%>
+	No Response
+<%- elsif @event_attendance.rsvp? -%>
+	Attending
+<%- else -%>
+	Not Attending
+<% end -%>
+
+Change your RSVP:
+<%= event_rsvp_url(@event) %>

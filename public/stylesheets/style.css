@@ -3,6 +3,8 @@
 	https://dreamsis.org/stylesheets/style.css?1338689516
 */
 
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700);
+
 html {
 	/*width: 100%;
 	height: 100%;
@@ -14,18 +16,14 @@ html {
 
 body {
 	background: rgb(235,231,220);
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 13px;
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	/*top: 0;
-	left: 0;
-	width: 100%;*/
+	font: 13px/130% "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 h1, h2, h3, h4, h5 {
-	font-family: 'Lucida Grande', 'Lucida Sans Unicode', Arial, san-serif;
+	font-family: 'Open Sans', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
 	color: #39275B;
 	font-style: normal;
 	font-weight: normal;
@@ -52,8 +50,9 @@ h3.pre-title {
 	margin: 0;
 	margin-bottom: 0.25em;
 	font-weight: bold;
-	letter-spacing: 0;
+	letter-spacing: 1px;
 	font-size: 90%;
+	font-weight: normal;
 }
 
 h4, h5 {
@@ -2259,9 +2258,20 @@ body.mentor.welcome table.rsvp tr.attending td {
 	padding: 1em 0;
 }
 
-.attending .rsvp_status {
+.attending .rsvp_status, .rsvp_status.attending {
 	background: url(../images/check-mini.gif) no-repeat 0;
 	padding-left: 15px;
+}
+
+.rsvp_status.not_attending {
+	background: url(../images/icons/occupied.png) no-repeat 0;
+	padding-left: 20px;
+}
+
+.rsvp_status.no_response {
+	font-style: italic;
+	text-transform: capitalize;
+	font-weight: normal;
 }
 
 .rsvp_extras {
@@ -2285,6 +2295,66 @@ body.mentor.welcome table.rsvp tr.attending td {
 	background-position: right center;
 	display: inline-block;
 	padding-right: 20px;
+}
+
+body.rsvp.event h1 {
+	margin-bottom: 0.3em;
+}
+
+body.rsvp.event h2.date {
+	margin-top: 0;
+	padding-bottom: 0.5em;
+	border-bottom: 1px solid rgba(0,51,102,0.1);
+	margin-bottom: 1.5em;
+	font-weight: lighter;
+}
+
+body.rsvp .when-and-where {
+	float: right;
+	margin-left: 1em;
+	margin-bottom: 2em;
+	padding: 1em;
+	box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+	border-radius: 3px;
+	width: 250px;
+}
+
+body.rsvp .when-and-where h3 {
+	margin-top: 0;
+}
+
+body.rsvp .when-and-where p {
+	margin: 0;
+	padding: 0;
+}
+
+body.rsvp .when-and-where p.time {
+	margin-top: 1em;
+}
+
+body.rsvp .when-and-where img {
+	border: 1px solid #dadada;
+	margin-bottom: 1em;
+}
+
+body.rsvp.event .details h3 {
+	margin-bottom: 3px;
+	margin-top: 1em;
+}
+
+body.rsvp.event .details p {
+	margin-top: 0;
+} 
+
+body.rsvp.event .details .rsvp_status {
+	margin: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+body.rsvp.event table.rsvp td {
+	border-top: 1px solid rgba(0,0,0,0.1);
 }
 
 /* @group Menus */

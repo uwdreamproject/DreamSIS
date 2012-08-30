@@ -1,18 +1,47 @@
-<h1>RSVP for <%=h @event.name %></h1>
+<h3 class="pre-title">RSVP for</h3>
+<h1><%=h @event.name %></h1>
+<h2 class="date"><%= @event.time_detail %></h2>
 
-<div class="location">
-	<h3>Location</h3>
-	<%= image_tag "http://maps.google.com/maps/api/staticmap?size=300x300&sensor=false&zoom=12&markers=#{@event.location.try(:latitude)}%2C#{@event.location.try(:longitude)}" if @event.location.try(:geocoded?) %>	
-</div>
+<div class="when-and-where">
+	<h3>When &amp; Where</h3>
+	<%= image_tag "http://maps.google.com/maps/api/staticmap?size=250x250&sensor=false&zoom=12&markers=#{@event.location.try(:latitude)}%2C#{@event.location.try(:longitude)}" if @event.location.try(:geocoded?) %>
 	
+	<%- if @event.location -%>
+		<p class="location"><strong><%= @event.location.name %></strong></p>
+		<p class="address"><%= @event.location.address %></p>
+	<% end -%>
+	<p class="location_text"><%= @event.location_text %></p>
+	<p class="time"><%= @event.time_detail %></p>
+</div>
 
-<p class="date"><%= @event.time_detail %></p>
-<p class="location"><%=h @event.location_string %></p>
+<div class="details">
+	<h3>Date &amp; Time</h3>
+	<p class="date"><%= @event.time_detail %></p>
 
-<%- unless @event.description.blank? -%>
-	<h3>About the Event</h3>
-	<p><%= sanitize textilize(@event.description) %></p>
-<% end -%>
+	<h3>Location</h3>
+	<p class="location"><%=h @event.location_string %></p>
+
+	<%- unless @event.description.blank? -%>
+		<h3>About the Event</h3>
+		<p class="description"><%= sanitize textilize_without_paragraph(@event.description) %></p>
+	<% end -%>
+
+	<%- if @event.event_group && !@event.event_group.description.blank? -%>
+		<h3>About <%=h @event.event_group.name %></h3>
+		<p class="event_group description"><%= sanitize textilize_without_paragraph(@event.event_group.description) %></p>
+	<% end -%>
+	
+	<%- if @event_attendance -%>
+		<h3>Your RSVP</h3>
+		<%- if @event_attendance.rsvp.nil? -%>
+			<em class="rsvp_status no_response">No Response</em>
+		<%- elsif @event_attendance.rsvp? -%>
+			<em class="rsvp_status attending">Attending</em>
+		<%- else -%>
+			<em class="rsvp_status not_attending">Not Attending</em>
+		<% end -%>
+	<% end -%>
+</div>
 
 <table class="highlightless rsvp">
 	<%= render :partial => 'event', :object => @event %>

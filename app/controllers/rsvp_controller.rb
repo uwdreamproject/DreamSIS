@@ -7,6 +7,7 @@ class RsvpController < ApplicationController
     login_required unless @event.event_group && @event.event_group.open_to_public?
     check_if_external_users_allowed(@event)
     @hide_description_link = true
+    @event_attendance = @current_user.person.event_attendances.find_or_initialize_by_event_id(@event.id) if @current_user
   end
   
   def event_group
@@ -33,7 +34,7 @@ class RsvpController < ApplicationController
         format.js   { return render(:js => "window.location.href = '#{profile_path}'") }
       end
     end
-    @event_attendance = @current_user.person.event_attendances.find_or_create_by_event_id(@event.id)
+    @event_attendance = @current_user.person.event_attendances.find_or_initialize_by_event_id(@event.id)
     @event_attendance.event_shift_id = params[:event_attendance].try(:[], :event_shift_id)
     if request.put? || (request.get? && (params[:rsvp] == true || params[:rsvp] == "true"))
       @event_attendance.rsvp = true

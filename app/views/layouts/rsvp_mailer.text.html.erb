@@ -2,15 +2,78 @@
 <html>
 <head>
 	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+	<style data-immutable="true">
+	@font-face {
+	  font-family: 'Open Sans';
+	  font-style: normal;
+	  font-weight: 700;
+	  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/k3k702ZOKiLJc3WVjuplzKRDOzjiPcYnFooOUGCOsRk.woff) format('woff');
+	}
+	@font-face {
+	  font-family: 'Open Sans';
+	  font-style: normal;
+	  font-weight: 300;
+	  src: local('Open Sans Light'), local('OpenSans-Light'), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/DXI1ORHCpsQm3Vp6mXoaTaRDOzjiPcYnFooOUGCOsRk.woff) format('woff');
+	}
+	@font-face {
+	  font-family: 'Open Sans';
+	  font-style: italic;
+	  font-weight: 700;
+	  src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/PRmiXeptR36kaC0GEAetxhbnBKKEOwRKgsHDreGcocg.woff) format('woff');
+	}
+	@font-face {
+	  font-family: 'Open Sans';
+	  font-style: italic;
+	  font-weight: 300;
+	  src: local('Open Sans Light Italic'), local('OpenSansLight-Italic'), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/PRmiXeptR36kaC0GEAetxvR_54zmj3SbGZQh3vCOwvY.woff) format('woff');
+	}
+	@font-face {
+	  font-family: 'Open Sans';
+	  font-style: normal;
+	  font-weight: 600;
+	  src: local('Open Sans Semibold'), local('OpenSans-Semibold'), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/MTP_ySUJH_bn48VBG8sNSqRDOzjiPcYnFooOUGCOsRk.woff) format('woff');
+	}
+	@font-face {
+	  font-family: 'Open Sans';
+	  font-style: italic;
+	  font-weight: 400;
+	  src: local('Open Sans Italic'), local('OpenSans-Italic'), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/xjAJXh38I15wypJXxuGMBrrIa-7acMAeDBVuclsi6Gc.woff) format('woff');
+	}
+	@font-face {
+	  font-family: 'Open Sans';
+	  font-style: normal;
+	  font-weight: 400;
+	  src: local('Open Sans'), local('OpenSans'), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+	}
+	
+	
+	
+	@media only screen and (max-device-width: 480px) {
+	     body {
+			-webkit-text-size-adjust: none;
+			padding: 10px !important;
+	     }
+		
+/*		#map {
+			width: 275px;
+			height: 190px;
+		}*/
+	}
+	
+	
+	
+	</style>
 </head>
-<body>
+<body class="rsvp event email">
 
 <table border=0>
 	<tr>
 		<td class="content"><%= yield %></td>
 	</tr>
 	<tr>
-		<td class="footer">Sent to you by DreamSIS.</td>
+		<td class="footer">Sent to you by DreamSIS. You are receiving this message because you registered for the event mentioned above.
+			Send questions to uwdreamproject@uw.edu.</td>
 	</tr>
 </table>
 

@@ -1,6 +1,8 @@
 # Send emails for event RSVP's.
 class RsvpMailer < ActionMailer::Base  
 
+  ActionMailer::Base.default_url_options[:host] = "dreamsis.org"
+
   def rsvp(event_attendance, sent_at = Time.now)
     css :email
     
