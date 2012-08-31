@@ -3943,6 +3943,18 @@ if (typeof jQuery != 'undefined') {
 						'</div>' +
 					'</div>'));
 				usedPercent += percent;
+				
+				// Added by mharris2
+				if($j('#chapters_sidebar')) {
+					$j('#chapters_sidebar').append( $j(
+						'<div class="mejs-chapter" rel="' + chapters.entries.times[i].start + '">' + 
+							'<div class="mejs-chapter-block' + ((i==chapters.entries.times.length-1) ? ' mejs-chapter-block-last' : '') + '">' + 
+								'<span class="ch-title">' + chapters.entries.text[i] + '</span>' + 
+								'<span class="ch-time">' + mejs.Utility.secondsToTimeCode(chapters.entries.times[i].start) + '&ndash;' + mejs.Utility.secondsToTimeCode(chapters.entries.times[i].stop) + '</span>' + 
+							'</div>' +
+						'</div>')
+					)	
+				}
 			}
 
 			t.chapters.find('div.mejs-chapter').click(function() {
@@ -3951,6 +3963,17 @@ if (typeof jQuery != 'undefined') {
 					t.media.play(); 
 				}
 			});
+			
+			// Added by mharris2
+			if($j('#chapters_sidebar')) {
+				$j('#sidebar div.mejs-chapter').click(function() {
+					t.media.setCurrentTime( parseFloat( $j(this).attr('rel') ) );
+					if (t.media.paused) {
+						t.media.play(); 
+					}
+					t.chapters.hide();
+				});
+			}
 
 			t.chapters.show();
 		}

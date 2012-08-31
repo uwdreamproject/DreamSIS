@@ -1,0 +1,17 @@
+<%- if @current_user && event_or_group.training_required?(@current_user.person) -%>
+	<%- completed = @current_user.person.completed_training?(event_or_group.training_for(@current_user.person)) -%>
+
+	<div class="training_required_note <%= "completed" if completed %>">
+		<h3>Training <%= completed ? "Completed" : "Required" %></h3>
+	
+		<%- if completed -%>
+			<p>You've already completed the necessary training for this event. Thank you!</p>
+			<p><%= link_to "Watch the training again", take_training_path(event_or_group.training_for(@current_user.person)), :class => "view button", :target => "_blank" %></p>
+		<% else %>	  
+			<p>Participating in one of the events below requires that you watch a training video before the event.
+				You can RSVP before you watch the training, but you need to watch it before the event.</p>
+			<p><%= link_to "Take the training now", take_training_path(event_or_group.training_for(@current_user.person)), :class => "view button", :target => "_blank" %></p>
+		<% end -%>
+
+	</div>
+<% end -%>

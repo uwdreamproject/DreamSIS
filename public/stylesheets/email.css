@@ -1001,6 +1001,10 @@ a.button:active {
 	background-image: url(../images/icons/silk/calendar.png);
 }
 
+.button.view {
+	background-image: url(../images/icons/silk/television.png);
+}
+
 /*table.schedule {
 	position: absolute;
 }*/
@@ -2113,7 +2117,7 @@ ul.mentor_stats_summary .signup-meter {
 
 table.rsvp {
 	width: 100%;
-	margin: 2em auto;
+	/*margin: 2em auto;*/
 }
 
 table.rsvp td {
@@ -2289,4 +2293,48 @@ body.rsvp.event .details .rsvp_status {
 	margin: 0;
 	padding-top: 0;
 	padding-bottom: 0;
+}
+
+.training_required_note {
+	background: #fffde7;
+	padding: 1em;
+	padding-left: 35px;
+	margin: 1em 0;
+	border: 1px solid #fc0;
+	border-radius: 5px;
+	color: #4c4c4c;
+	clear: both;
+}
+
+#sidebar .training_required_note {
+	background: inherit;
+	padding: 0;
+	margin: inherit;
+	border: inherit;
+	color: inherit;
+}
+
+.training_required_note h3 {
+	margin: 0;
+}
+
+#sidebar .training_required_note h3 {
+	font-size: inherit;
+	margin-top: 2em;
+}
+
+.training_required_note p {
+	margin-top: 3px;
+}
+
+.training_required_note.completed {
+	border: none;
+	padding: 0;
+	background: none;
+	/*padding-left: 25px;*/
+	/*display: none;*/
+}
+
+#sidebar .training_required_note.completed {
+	display: inherit;
 }

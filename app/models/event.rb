@@ -87,10 +87,30 @@ class Event < ActiveRecord::Base
     str
   end
   
-  
+  # Returns true if shifts have been defined for this event.
   def has_shifts?(audience)
     audience ? !shifts.for(audience).empty? : !shifts.empty?
   end
+  
+  # Returns true if training is required for this event's EventGroup for the specified person or person type.
+  def training_required?(person_or_type)
+    return false if event_group.nil?
+    !event_group.training_for(person_or_type).nil?
+  end
+
+  # Returns the training for this event's EventGroup for the specified person or person type.
+  def training_for(person_or_type)
+    return false if event_group.nil?
+    klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type.constantize
+    if klass == Volunteer
+      event_group.volunteer_training
+    elsif klass == Mentor
+      event_group.mentor_training
+    else
+      nil
+    end
+  end
+  
  
   # Convenience method for +time_detail(:time_only => true)+
   def time_only

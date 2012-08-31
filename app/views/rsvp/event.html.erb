@@ -63,6 +63,8 @@
 
 </div>
 
+<%= render :partial => 'training_required_note', :locals => { :event_or_group => @event } %>
+
 <table class="highlightless rsvp">
 	<%= render :partial => 'event', :object => @event %>
 </table>

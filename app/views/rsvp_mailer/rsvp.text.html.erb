@@ -34,10 +34,28 @@
 				<%- else -%>
 					<em class="rsvp_status not_attending">Not Attending</em>
 				<% end -%>
-				<br />
+				<br /><br />
 				<p style="margin-top: 1em"><%= link_to "Change your RSVP", event_rsvp_url(@event), :class => "edit button" %></p>
 			<% end -%>
-		</td>		
+			
+			<%- if @event.training_required?(@event_attendance.person) -%>
+				<%- completed = @event_attendance.person.completed_training?(@event.training_for(@event_attendance.person)) -%>
+
+				<div class="training_required_note <%= "completed" if completed %>">
+					<h3>Training <%= completed ? "Completed" : "Required" %></h3>
+
+					<%- if completed -%>
+						<p>You've already completed the necessary training for this event. Thank you!</p>
+						<p><%= link_to "Watch the training again", take_training_path(@event.training_for(@event_attendance.person)), :class => "view button", :target => "_blank" %></p>
+					<% else %>	  
+						<p>Participating in this event requires that you watch a training video before the event.</p>
+						<p><%= link_to "Take the training now", take_training_path(@event.training_for(@event_attendance.person)), :class => "view button", :target => "_blank" %></p>
+					<% end -%>
+
+				</div>
+			<% end -%>
+			
+		</td>	
 
 		<td class="when-and-where">
 			<h3>When &amp; Where</h3>

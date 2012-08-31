@@ -2,7 +2,7 @@
 <h1><%=h @training.title %></h1>
 
 
-<video width="640" height="360" style="width: 100%; height: 100%;" id="player1">
+<video width="640" height="360" style="width:100%; height:100%" id="player1">
 	<source src="<%=h @training.video_url %>" type="video/mp4" title="mp4">
 	<track kind="chapters" src="<%=h @training.chapters_url %>" srclang="en" />
 </video>
@@ -24,9 +24,20 @@ $j('video').mediaelementplayer({
 			
 			media.addEventListener(events[i], function(e) {
 				$j('#output').append( $j('<div>' + e.type + '</div>') );
+				
+				if(e.type == 'ended') {
+					<%= remote_function :url => complete_training_path(@training), :method => :post %>
+				}
 			});
 			
 		}
+		
+		player.chapters.css('visibility','hidden');
 	}
 });
 </script>
+
+<div id="sidebar">
+	<h3>Chapters</h3>
+	<div id="chapters_sidebar"></div>
+</div>

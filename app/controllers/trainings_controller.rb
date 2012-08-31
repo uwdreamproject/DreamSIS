@@ -23,6 +23,20 @@ class TrainingsController < ApplicationController
     @training = Training.find(params[:id])
     @include_mediaelement = true
   end
+  
+  def complete
+    @training = Training.find(params[:id])
+    @training_completion = @current_user.person.training_completions.find_or_initialize_by_training_id(@training.id)
+    @training_completion.completed_at = Time.now
+    
+    respond_to do |format|
+      if @training_completion.save
+        flash[:notice] = "Thanks for completing the training!"
+        format.js { head :ok }
+      end
+    end
+      
+  end
 
   def new
     @training = Training.new

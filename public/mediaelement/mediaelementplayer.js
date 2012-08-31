@@ -2395,6 +2395,7 @@ if (typeof jQuery != 'undefined') {
 						'</div>' +
 					'</div>'));
 				usedPercent += percent;
+				
 			}
 
 			t.chapters.find('div.mejs-chapter').click(function() {

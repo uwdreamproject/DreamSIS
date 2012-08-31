@@ -27,5 +27,18 @@ Your RSVP:
 	Not Attending
 <% end -%>
 
+<%- if @event.training_required?(@event_attendance.person) -%>
+<%- completed = @event_attendance.person.completed_training?(@event.training_for(@event_attendance.person)) -%>
+Training <%= completed ? "Completed" : "Required" %>
+<%- if completed -%>
+You've already completed the necessary training for this event. Thank you!
+Watch the training again: <%= take_training_path(@event.training_for(@event_attendance.person)) %>
+<% else %>	  
+Participating in one of the events below requires that you watch a training video before the event.
+You can RSVP before you watch the training, but you need to watch it before the event.
+Take the training now: <%= take_training_path(@event.training_for(@event_attendance.person)) %>
+<% end -%>
+<% end -%>
+
 Change your RSVP:
 <%= event_rsvp_url(@event) %>
