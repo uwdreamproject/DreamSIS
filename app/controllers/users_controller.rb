@@ -49,7 +49,7 @@ class UsersController < ApplicationController
       @current_user.attach_person_record
       redirect_to profile_path
     else
-      @current_user.person = Person.create unless @current_user.person
+      @current_user.person = Person.create && @current_user.save unless @current_user.person
       redirect_to @current_user.person.update_attribute(:type, new_identity) ? profile_path : choose_identity_path
     end
   end
