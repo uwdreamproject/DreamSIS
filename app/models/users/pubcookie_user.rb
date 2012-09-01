@@ -30,9 +30,19 @@ class PubcookieUser < User
           :firstname      => pr.attributes["RegisteredFirstMiddleName"],
           :lastname       => pr.attributes["RegisteredSurname"]
         )
-        update_attribute(:person_id, p.id)
-        p.update_resource_cache!(true)
-        return true
+        if p.valid?
+          update_attribute(:person_id, p.id)
+          p.update_resource_cache!(true)
+          return true
+        elsif p.errors.on(:reg_id)
+          existing_p = Mentor.find_by_reg_id(p.reg_id)
+          if existing_p
+            update_attribute(:person_id, existing_p.id)
+            return true
+          end
+        else
+          return false
+        end
       else
         self.errors.add_to_base "Could not find a valid person resource."
         return false
