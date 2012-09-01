@@ -1,6 +1,6 @@
 class PubcookieUser < User
 
-  after_create :attach_person_record
+  # after_create :attach_person_record
 
   # Authenticates a user by their login name without a password.  Returns the user if found.  
   # If we don't find a user record, we create one. If we can't find a valid person in the Person
@@ -17,8 +17,6 @@ class PubcookieUser < User
     u
   end
   
-  protected
-
   def attach_person_record
     p = Mentor.find_by_uw_net_id(login)
     if p
@@ -42,6 +40,8 @@ class PubcookieUser < User
     end
     false
   end
+
+  protected
 
   # Pubcookie users do not store passwords in our DB because weblogin contains all authentication data
   def password_required?
