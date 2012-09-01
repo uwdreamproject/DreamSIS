@@ -24,7 +24,7 @@ class WelcomeController < ApplicationController
   protected
   
   def check_identity
-    redirect_to choose_identity_path if @current_user.person.class == Person
+    redirect_to choose_identity_path if @current_user.person.class == Person || @current_user.person.nil?
   end
 
 end
