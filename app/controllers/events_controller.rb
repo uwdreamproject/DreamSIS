@@ -103,12 +103,19 @@ class EventsController < ApplicationController
 
   def redirect_to_rsvp_if_not_admin
     @event = Event.find params[:id]
-    unless @current_user && (@current_user.admin? || @current_user.person.current_lead?)
+    unless @current_user && (@current_user.admin? || @current_user.person.current_lead? || @current_user.person == @event.try(:event_coordinator))
       if @event.allow_rsvps?
         redirect_to event_rsvp_url(@event)
       else
         render_error("You are not allowed to access that page.")
       end
+    end
+  end
+
+  def check_authorization
+    @event = Event.find params[:id] rescue nil
+    unless @current_user && (@current_user.admin? || @current_user.person.current_lead? || @current_user.person == @event.try(:event_coordinator))
+      render_error("You are not allowed to access that page.")
     end
   end
 
