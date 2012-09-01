@@ -51,7 +51,7 @@
 
 		<div id="login_logout">
 			<% unless @current_user.blank? || @current_user == :false %>
-				<%= image_tag(@current_user.person.avatar_image_url, :height => 30, :class => "avatar") if @current_user.person.avatar_image_url %>
+				<%= image_tag(@current_user.person.avatar_image_url, :height => 30, :class => "avatar") if @current_user.person && @current_user.person.avatar_image_url %>
 				<ul>
 					<li>Logged in as <strong><%= @current_user.fullname %></strong></li>
 					<li><%= link_to "Profile", profile_path(:return_to_after_profile => request.request_uri) %></li>
