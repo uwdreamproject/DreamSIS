@@ -27,6 +27,7 @@ class UsersController < ApplicationController
   def update_profile
     @person = @current_user.person
     @person.validate_ready_to_rsvp = true if session[:profile_validations_required].to_s.include?("ready_to_rsvp")
+    @person.validate_name = true
     
     respond_to do |format|
       if @person.update_attributes(params[:person])
