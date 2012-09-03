@@ -8,6 +8,8 @@ class RegistrationResource < UwWebResource
   def self.find(*args)
     sws_log args.inspect, "Find"
     super
+  rescue NoMethodError
+    return [] # we didn't get a valid collection of Registration resources.
   end
 
   attr_accessor :full_record
