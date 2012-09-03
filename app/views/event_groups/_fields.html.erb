@@ -12,5 +12,7 @@
 
 <% f.inputs "Training" do %>
 	<%= f.input :mentor_training_id, :as => :select, :collection => Training.all %>
+	<%= f.input :mentor_training_optional %>
 	<%= f.input :volunteer_training_id, :as => :select, :collection => Training.all %>
+	<%= f.input :volunteer_training_optional %>
 <% end -%>

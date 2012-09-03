@@ -18,6 +18,8 @@ class EventGroup < ActiveRecord::Base
   
   # Returns true if training is required for the specified person or person type.
   def training_required?(person_or_type)
+    klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type.constantize
+    return false if self[klass.to_s.downcase + "_training_optional"]
     !training_for(person_or_type).nil?
   end
 

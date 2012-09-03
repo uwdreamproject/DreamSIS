@@ -21,6 +21,18 @@
 		<dd><%= pa.join(", ") %></dd>
 	<% end -%>
 
+	<% if @event_group.volunteer_training || @event_group.mentor_training %>
+		<dt>Training</dt>
+		<dd>
+			Mentors: 	<%= link_to @event_group.mentor_training.title, @event_group.mentor_training %>
+						<%= content_tag(:span, "optional", :class => 'tag') if @event_group.mentor_training_optional? %>
+			<br />
+			Volunteers: <%= link_to @event_group.volunteer_training.title, @event_group.volunteer_training %>
+						<%= content_tag(:span, "optional", :class => 'tag') if @event_group.volunteer_training_optional? %>
+		</dd>
+	<% end -%>
+
+
 </dl>
 
 <h2>Linked Events</h2>
