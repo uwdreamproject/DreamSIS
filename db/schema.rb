@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120903205125) do
+ActiveRecord::Schema.define(:version => 20120903232308) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -103,6 +103,7 @@ ActiveRecord::Schema.define(:version => 20120903205125) do
     t.string   "location_text"
     t.integer  "capacity"
     t.integer  "event_coordinator_id"
+    t.boolean  "time_tba"
   end
 
   create_table "how_did_you_hear_options", :force => true do |t|

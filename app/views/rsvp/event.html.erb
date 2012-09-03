@@ -11,14 +11,15 @@
 		<p class="address"><%= @event.location.address %></p>
 	<% end -%>
 	<p class="location_text"><%= @event.location_text %></p>
-	<p class="time"><%= @event.time_detail %></p>
+	<p class="time"><%= @event.time_detail %>
+		<%= content_tag(:p, content_tag(:span, "Time TBA", :class => 'outline tag')) if @event.time_tba? %></p>
 </div>
 
 <div class="details">
 	<dl class="inline-definitions">
 
 		<dt>Date &amp; Time</dt>
-		<dd class="date"><%= @event.time_detail %></dd>
+		<dd class="date"><%= @event.time_detail %> <%= content_tag(:span, "Time TBA", :class => 'outline tag') if @event.time_tba? %></dd>
 
 		<dt>Location</dt>
 		<dd class="location"><%=h @event.location_string %></dd>

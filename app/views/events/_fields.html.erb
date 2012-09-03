@@ -1,7 +1,7 @@
 <% f.inputs do %>
 	<%= f.input :name, :hint => "Leave blank if this is a regular high school visit." %>
 	
-	<%= f.input :location, :label => "High School/Location", :hint => "Leave blank if this is a program-wide event. Program-wide events show up on everyone's attendance sheets." %>
+	<%= f.input :location, :label => "High School/Location", :hint => "Leave blank if this is a program-wide event. Program-wide events show up on everyone's attendance sheets.", :collection => Location.all %>
 
 	<%= f.input :location_text, :label => "Location Detail", :hint => "Specify the location here if the event is happening at a location that's not in the list, or if you want to add extra location information, like room number." %>
 	
@@ -9,9 +9,20 @@
 	<%= f.input :event_group %>
 	
 	<%= f.input :date %>
+	
+	<%= f.input :time_tba, :label => "Time TBA", :input_html => { :onChange => "
+					if($('event_time_tba').checked) {
+						$('event_start_time_input').hide(); $('event_end_time_input').hide()
+					} else {
+						$('event_start_time_input').show(); $('event_end_time_input').show()
+					}
+				"} %>
+
 	<%= f.input :start_time, :as => :string, :input_html => { :value => f.object.try(:start_time).try(:to_s, :time12), :size => 10 } %>
 	<%= f.input :end_time, :as => :string, :input_html => { :value => f.object.try(:end_time).try(:to_s, :time12), :size => 10 } %>
 
+	<%= javascript_tag "$('event_time_tba').onchange()" %>
+	
 	<%= f.input :description, :input_html => { :rows => 3 }, :hint => "Use #{link_to("Textile", "http://redcloth.org/", :popup => true)} markup for formatting." %>
 	<%= f.input :capacity, :hint => "Leave capacity blank or 0 for no limit.", :input_html => {:size => 3} %>
 	

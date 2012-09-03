@@ -3,7 +3,8 @@
 <dl class="inline-definitions">
 
 	<dt>Date/Time</dt>
-	<dd><%= @event.time_detail %></dd>
+	<dd><%= @event.time_detail %>
+		<%= content_tag(:span, "Time TBA", :class => 'outline tag') if @event.time_tba? %></dd>
 
 	<dt>Location</dt>
 	<dd><%=h @event.location_text %></dd>

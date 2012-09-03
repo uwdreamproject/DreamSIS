@@ -151,7 +151,8 @@ class Event < ActiveRecord::Base
     _end_date = "today" if end_time && end_time.to_date == Time.now.to_date && options[:use_relative_dates]
     _end_date = "tomorrow" if end_time && end_time.to_date == 1.day.from_now.to_date && options[:use_relative_dates]
     _end_time = end_time.to_time.to_s(options[:time_format]).strip if end_time
-    return "#{_start_date}" if (options[:date_only] && (end_time.blank? || start_time.to_date == end_time.to_date)) || start_time.blank?
+    return "Time TBA" if options[:time_only] && time_tba?
+    return "#{_start_date}" if (options[:date_only] && (end_time.blank? || start_time.to_date == end_time.to_date)) || start_time.blank? || time_tba?
     return "#{_start_time}" if options[:time_only] && !end_time
     return "#{_start_time}#{separator[:to]} #{_end_time}" if options[:time_only] && start_time.to_date == end_time.to_date
     return "#{_start_date}#{separator[:at]} #{_start_time}" if start_time && end_time.nil?

@@ -6,7 +6,8 @@
 	</td>
 	<td>
 		<h2 class="event name"><%= link_to_unless_current h(event.name), event_rsvp_path(event) %></h2>
-		<p class="date"><%= event.time_detail %></p>
+		<p class="date"><%= event.time_detail %>
+			<%= content_tag(:span, "Time TBA", :class => 'outline tag') if event.time_tba? %></p>
 		<p class="location"><%=h event.location_string %></p>
 
 		<%- unless event.description.blank? || @hide_description_link -%>
