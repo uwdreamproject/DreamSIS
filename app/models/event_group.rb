@@ -10,6 +10,8 @@ class EventGroup < ActiveRecord::Base
   
   belongs_to :volunteer_training, :class_name => "Training"
   belongs_to :mentor_training, :class_name => "Training"
+
+  default_scope :order => "id DESC"
   
   # Returns true if either +allow_external_students+ or +allow_external_volunteers+ is true.
   def open_to_public?
