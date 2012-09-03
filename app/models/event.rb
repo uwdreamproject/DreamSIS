@@ -95,6 +95,8 @@ class Event < ActiveRecord::Base
   # Returns true if training is required for this event's EventGroup for the specified person or person type.
   def training_required?(person_or_type)
     return false if event_group.nil?
+    klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type.constantize
+    return false if event_group[klass.to_s.downcase + "_training_optional"]
     !event_group.training_for(person_or_type).nil?
   end
 
@@ -111,7 +113,6 @@ class Event < ActiveRecord::Base
     end
   end
   
- 
   # Convenience method for +time_detail(:time_only => true)+
   def time_only
   time_detail(:time_only => true)
@@ -142,18 +143,18 @@ class Event < ActiveRecord::Base
     }
     options = default_options.merge(options)
     separator = options[:use_words] ? { :to => " to", :from => " from", :at => " at" } : { :to => " -", :from => "", :at => "" }
-    _start_date = date.to_date.to_s(options[:date_format]).strip if start_time
-    _start_date = "Today" if date.to_date == Time.now.to_date && start_time && options[:use_relative_dates]
-    _start_date = "Tomorrow" if date.to_date == 1.day.from_now.to_date && start_time && options[:use_relative_dates]
+    _start_date = date.to_date.to_s(options[:date_format]).strip
+    _start_date = "Today" if date.to_date == Time.now.to_date && options[:use_relative_dates]
+    _start_date = "Tomorrow" if date.to_date == 1.day.from_now.to_date && options[:use_relative_dates]
     _start_time = start_time.to_time.to_s(options[:time_format]).strip if start_time
     _end_date = end_time.to_date.to_s(options[:date_format]).strip if end_time
     _end_date = "today" if end_time && end_time.to_date == Time.now.to_date && options[:use_relative_dates]
     _end_date = "tomorrow" if end_time && end_time.to_date == 1.day.from_now.to_date && options[:use_relative_dates]
     _end_time = end_time.to_time.to_s(options[:time_format]).strip if end_time
-    return "#{_start_date}" if options[:date_only] && (end_time.blank? || start_time.to_date == end_time.to_date)
+    return "#{_start_date}" if (options[:date_only] && (end_time.blank? || start_time.to_date == end_time.to_date)) || start_time.blank?
     return "#{_start_time}" if options[:time_only] && !end_time
     return "#{_start_time}#{separator[:to]} #{_end_time}" if options[:time_only] && start_time.to_date == end_time.to_date
-    return "#{_start_date}#{separator[:at]} #{_start_time}" if end_time.nil?
+    return "#{_start_date}#{separator[:at]} #{_start_time}" if start_time && end_time.nil?
     return "#{_start_date}#{separator[:from]} #{_start_time}#{separator[:to]} #{_end_time}" if start_time.to_date == end_time.to_date
     return "#{_start_date}#{separator[:at]} #{_start_time}#{separator[:to]} #{_end_date}#{separator[:at]} #{_end_time}"
   end

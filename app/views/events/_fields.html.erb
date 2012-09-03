@@ -9,15 +9,9 @@
 	<%= f.input :event_group %>
 	
 	<%= f.input :date %>
+	<%= f.input :start_time, :as => :string, :input_html => { :value => f.object.try(:start_time).try(:to_s, :time12), :size => 10 } %>
+	<%= f.input :end_time, :as => :string, :input_html => { :value => f.object.try(:end_time).try(:to_s, :time12), :size => 10 } %>
 
-	<li class="time">
-		<%= f.label :start_time %>
-		<%= f.time_select :start_time, :minute_step => 15, :twelve_hour => true %>
-	</li>
-	<li class="time">
-		<%= f.label :end_time %>
-		<%= f.time_select :end_time, :minute_step => 15, :twelve_hour => true %>
-	</li>
 	<%= f.input :description, :input_html => { :rows => 3 }, :hint => "Use #{link_to("Textile", "http://redcloth.org/", :popup => true)} markup for formatting." %>
 	<%= f.input :capacity, :hint => "Leave capacity blank or 0 for no limit.", :input_html => {:size => 3} %>
 	
