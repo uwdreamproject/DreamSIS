@@ -27,6 +27,8 @@ class Person < ActiveRecord::Base
   has_many :training_completions
   has_many :trainings, :through => :training_completions, :source => :training
 
+  has_and_belongs_to_many :programs
+
   after_create :generate_survey_id
 
   attr_accessor :validate_name

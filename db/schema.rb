@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120903202343) do
+ActiveRecord::Schema.define(:version => 20120903205125) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -375,6 +375,22 @@ ActiveRecord::Schema.define(:version => 20120903202343) do
   add_index "people", ["grad_year"], :name => "index_people_on_grad_year"
   add_index "people", ["lastname"], :name => "index_people_on_lastname"
   add_index "people", ["uw_net_id"], :name => "index_people_on_uw_net_id"
+
+  create_table "people_programs", :id => false, :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "program_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "people_programs", ["person_id", "program_id"], :name => "index_people_programs_on_person_id_and_program_id"
+
+  create_table "programs", :force => true do |t|
+    t.string   "title"
+    t.string   "abbreviation"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "quarters", :force => true do |t|
     t.integer  "year"

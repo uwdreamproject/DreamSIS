@@ -1,6 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :trainings, :member => { :take => :get, :complete => :post }
   map.resources :notes
+  map.resources :programs
   map.resources :object_filters
   map.resources :locations
   map.resources :quarters, :member => { :sync => :put }

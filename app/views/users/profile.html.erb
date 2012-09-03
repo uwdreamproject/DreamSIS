@@ -22,8 +22,13 @@
 		<% end -%>
 	<% end -%>
 	
+	<%- f.inputs("Program Affiliations") do -%>
+		<p>Which of the following programs are you affiliated with or participate in?</p>
+		<%= f.input :programs, :as => :check_boxes %>
+	<% end -%>
+	
 	<%- if @person.is_a?(Volunteer) -%>
-		<% f.inputs do %>
+		<% f.inputs("Criminal Conviction History") do %>
 			<label>Have you ever been convicted of any crimes against persons?</label>
 			<!-- <ul class="crimes-list">
 				<li>Arson (1st degree)</li><li>Assault, Custodial</li><li>Assault, Simple (or 4th Degree Assault) </li><li>Assault (1st/2nd/3rd Degree)</li><li>Assault of a Child (1st/2nd/3rd Degree) </li><li>Burglary (1st Degree)</li><li>Child Abandonment</li><li>Child Abuse or Neglect (RCW 26.44.020) </li><li>Child Buying or Selling</li><li>Child Molestation (1st,2nd,3rd Degree) </li><li>Communication with a Minor</li><li>Criminal Abandonment</li><li>Criminal Mistreatment (1st/2nd Degree)</li><li>Custodial Interference (1st/2nd Degree) </li><li>Extortion (1st/2nd/3rd* Degree) </li><li>Forgery*</li><li>Incest</li><li>Indecent Exposure - Felony Indecent Liberties</li><li>Kidnapping (1st/2nd Degree) </li><li>Malicious Harassment </li><li>Manslaughter (1st/2nd Degree) </li><li>Murder, Aggravated</li><li>Murder (1st/2nd Degree) </li><li>Patronizing a Juvenile Prostitute </li><li>Promoting Pornography</li><li>Promoting Prostitution (1st Degree) </li><li>Prostitution</li><li>Robbery (1st/2nd Degree)</li><li>Rape (1st/2nd/3rd Degree)</li><li>Rape of a Child (1st/2nd/3rd Degree) </li><li>Selling/Distributing Erotic Material to a Minor </li><li>Sexual Exploitation of a Minor</li><li>Sexual Misconduct with a Minor (1st/2nd Degree) </li><li>Theft (1st/2nd/3rd* Degree)</li><li>Unlawful Imprisonment</li><li>Vehicular Homicide</li><li>Violation of Child Abuse Restraining Order</li>
