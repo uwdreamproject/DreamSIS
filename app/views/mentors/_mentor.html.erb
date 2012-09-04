@@ -1,5 +1,5 @@
 <tr>
-	<td><%= link_to h(mentor.fullname), mentor %></td>
+	<td><%= link_to highlight(h(mentor.fullname(:skip_update => true)), (params[:mentor][:fullname] rescue nil)), mentor %></td>
 	<td><%=h mentor.uw_net_id %></td>
 	<td></td>
 	<td class="functions">
