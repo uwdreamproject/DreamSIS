@@ -46,10 +46,10 @@
 
 					<%- if completed -%>
 						<p>You've already completed the necessary training for this event. Thank you!</p>
-						<p><%= link_to "Watch the training again", take_training_path(@event.training_for(@event_attendance.person)), :class => "view button", :target => "_blank" %></p>
+						<p><%= link_to "Watch the training again", take_training_url(@event.training_for(@event_attendance.person)), :class => "view button", :target => "_blank" %></p>
 					<% else %>	  
 						<p>Participating in this event requires that you watch a training video before the event.</p>
-						<p><%= link_to "Take the training now", take_training_path(@event.training_for(@event_attendance.person)), :class => "view button", :target => "_blank" %></p>
+						<p><%= link_to "Watch the training now", take_training_url(@event.training_for(@event_attendance.person)), :class => "view button", :target => "_blank" %></p>
 					<% end -%>
 
 				</div>
