@@ -13,7 +13,7 @@
 		<%= f.input :birthdate, :label => "Birth Date", :start_year => Time.now.year-13, :end_year => 1930 %>
 	
 		<%- if @person.is_a?(Student) || @person.is_a?(Participant) -%>
-			<%= f.input :other_college_programs, :label => "Program Affiliations", :required => false %>
+			<%= f.input :high_school_id, :collection => HighSchool.all %>
 		<% end -%>
 	
 		<%- if @person.is_a?(Volunteer) -%>
