@@ -35,7 +35,7 @@ class SessionController < ApplicationController
       return redirect_to login_url, :error => "Could not login. Please try again." unless user
     else
       user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.create_with_omniauth(auth)
-      user.update_from_provider!(auth)
+      user.update_avatar_from_provider!(auth)
     end
     # self.current_user = user
     session[:user_id] = user.id

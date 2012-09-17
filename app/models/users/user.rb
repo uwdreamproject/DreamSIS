@@ -53,12 +53,14 @@ class User < ActiveRecord::Base
 
   # Creates a new user based on the auth data passed from OmniAuth.
   def self.create_with_omniauth(auth)
-    create! do |user|
+    u = create! do |user|
       user.provider = auth["provider"]
       user.uid = auth["uid"]
       user.login = (auth["info"]["nickname"] || auth["uid"]) + "@" + auth["provider"]
       user.person = Person.create!
     end
+    u.update_from_provider!(auth)
+    return u
   end
 
   # Updates this user's information based on the information in the auth data passed from OmniAuth.
@@ -73,7 +75,13 @@ class User < ActiveRecord::Base
       :resource_cache_updated_at => Time.now
     })
   end
-
+  
+  # Only update the avatar image from the OmniAuth data.
+  def update_avatar_from_provider!(auth)
+    person.update_attributes({
+      :avatar_image_url => auth["info"]["image"] || auth["extra"]["raw_info"]["profile_image_url_https"],
+    })
+  end
 
   # Encrypts some data with the salt.
   def self.encrypt(password, salt)

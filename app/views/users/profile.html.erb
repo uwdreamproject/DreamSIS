@@ -1,4 +1,5 @@
 <h1>About You</h1>
+<p class="intro">Tell us about yourself so that we can communicate with you effectively. We promise we won't sell your information or send you spam.</p>
 
 <% semantic_form_for :person, @person, :url => update_profile_path, :html => { :method => :post } do |f| %>
 
@@ -7,9 +8,9 @@
 	<%- f.inputs do -%>
 		<%= f.input :firstname, :label => "First Name", :disabled => @person.is_a?(Mentor) %>
 		<%= f.input :lastname, :label => "Last Name", :disabled => @person.is_a?(Mentor) %>
-		<%= f.input :email, :label => "E-mail Address", :disabled => @person.is_a?(Mentor) %>
+		<%= f.input :email, :label => "E-mail Address", :disabled => @person.is_a?(Mentor), :hint => "We've pulled your email address from the login service that you used (if it was provided). You can change the email address here if you'd like to use a different address instead." %>
 		<%= f.input :sex, :label => "Gender", :as => :select, :collection => {"Male" => "M", "Female" => "F", "No Response" => "NR"} %>
-		<%= f.input :phone_mobile, :label => "Phone", :input_html => { :value => number_to_phone(f.object.phone_mobile) } %>
+		<%= f.input :phone_mobile, :label => "Phone", :input_html => { :value => number_to_phone(f.object.phone_mobile) }, :hint => "We only use your phone number to get ahold of you about events and activities that you've signed up for on this site." %>
 		<%= f.input :birthdate, :label => "Birth Date", :start_year => Time.now.year-13, :end_year => 1930 %>
 	
 		<%- if @person.is_a?(Student) || @person.is_a?(Participant) -%>
