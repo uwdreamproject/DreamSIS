@@ -67,7 +67,7 @@ class EventShiftsController < ApplicationController
     @event_shift.destroy
 
     respond_to do |format|
-      format.html { redirect_to(admin_event_shift_url) }
+      format.html { redirect_to(event_shifts_url(@event)) }
       format.xml  { head :ok }
     end
   end
