@@ -11,7 +11,7 @@ class MentorQuarterGroup < ActiveRecord::Base
   has_many :deleted_mentor_quarters, :class_name => "MentorQuarter", :conditions => "deleted_at IS NOT NULL"
 
   validates_presence_of :quarter_id
-  validates_uniqueness_of :course_id, :scope => :quarter_id, :allow_nil => true
+  validates_uniqueness_of :course_id, :scope => :quarter_id, :allow_nil => true, :allow_blank => true
   
   belongs_to :linked_group, :class_name => "MentorQuarterGroup"
 
