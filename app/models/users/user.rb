@@ -135,6 +135,13 @@ class User < ActiveRecord::Base
     person.can_view?(object)
   end
 
+  # Returns true if this User's Person is an external user (either a Volunteer or a Student).
+  # It also will default to returning true if there is no person record attached to this User yet.
+  def external?
+    return true unless person
+    (person.is_a?(Volunteer) || person.is_a?(Student)) ? true : false
+  end
+
   protected
   
   def encrypt_password
