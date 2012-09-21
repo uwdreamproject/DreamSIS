@@ -65,7 +65,7 @@ class RsvpController < ApplicationController
   private
   
   def check_if_external_users_allowed(event_or_group)
-    return true if !@current_user.external?
+    return true if @current_user && !@current_user.external?
     @event_group = event_or_group.respond_to?(:event_group) ? event_or_group.event_group : event_or_group
     return render_error("External users are not allowed to access that event.") if @event_group.nil? || !@event_group.open_to_public?
   end
