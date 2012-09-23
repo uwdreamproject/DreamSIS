@@ -14,6 +14,7 @@ class Change < ActiveRecord::Base
   # Gets called after_create
   def self.log_create(obj)
     return false if obj.is_a?(Change)
+    return false if obj.is_a?(ActiveRecord::SessionStore::Session)
     Change.create(
       :change_loggable_id => obj.id, 
       :change_loggable_type => obj.class.to_s,
@@ -26,6 +27,7 @@ class Change < ActiveRecord::Base
   # Gets called after_update
   def self.log_update(obj)
     return false if obj.is_a?(Change)
+    return false if obj.is_a?(ActiveRecord::SessionStore::Session)
     my_changes = cleanup_changes(obj.changes)
     Change.create(
       :change_loggable_id => obj.id, 
@@ -39,6 +41,7 @@ class Change < ActiveRecord::Base
   # Gets called after_delete
   def self.log_delete(obj)
     return false if obj.is_a?(Change)
+    return false if obj.is_a?(ActiveRecord::SessionStore::Session)
     # if obj.class.respond_to?(:deleted_class)
     c = Change.create(
       :change_loggable_id => obj.id, 
