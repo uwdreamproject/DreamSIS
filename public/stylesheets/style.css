@@ -2794,7 +2794,12 @@ way to fit your requirements.
 
 #login_logout ul {
 	float: left;
-}
+/*	position: relative;
+	left: 5em;
+	top: 0;
+	background: red;
+	margin-right: 50px;
+*/}
 
 #header h1 {
 	background-size: 80%;
