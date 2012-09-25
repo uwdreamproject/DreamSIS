@@ -64,7 +64,7 @@ class ApplicationController < ActionController::Base
   def login_required
     unless authenticated?
       session[:return_to] = request.request_uri
-      redirect_to login_path
+      return redirect_to(login_path)
     end
   end
 
@@ -79,7 +79,7 @@ class ApplicationController < ActionController::Base
       if Quarter.allowing_signups.empty?
         render_error("You aren't signed up for the Dream Project and sign ups are disabled for now. Please come back later.")
       else
-        redirect_to mentor_signup_path and return
+        return redirect_to(mentor_signup_path)
       end
     end
   end
@@ -87,7 +87,7 @@ class ApplicationController < ActionController::Base
   def render_error(error_message)
     @error_message = error_message
     @body_class = "error 403"
-    render :template => "application/forbidden", :status => 403 and return
+    return render(:template => "application/forbidden", :status => 403) unless performed?
   end
 
   def flash_to_headers
