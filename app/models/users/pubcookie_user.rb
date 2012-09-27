@@ -16,7 +16,7 @@ class PubcookieUser < User
       if attach_mentor_record
         u.attach_person_record 
       else
-        u.person_id = Person.create
+        u.person = Person.create
         u.save
       end
     end

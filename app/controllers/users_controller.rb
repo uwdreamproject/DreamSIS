@@ -20,7 +20,7 @@ class UsersController < ApplicationController
   end
 
   def profile
-    return redirect_to choose_identity_path if @current_user.person.class == Person
+    return redirect_to choose_identity_path if @current_user.person.class == Person || @current_user.person.nil?
     @person = @current_user.person
   end
 
