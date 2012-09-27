@@ -74,7 +74,7 @@
 	</thead>
 	
 	<tbody>
-		<%- for audience in [:participant, :mentor, nil] -%>
+		<%- for audience in [:participant, :student, :mentor, :volunteer, nil] -%>
 			<tr <%= "class='total'" if audience.nil? %>>
 				<td><%= audience.nil? ? "Total" : audience.to_s.titleize.pluralize %></td>
 				<td><%=h @event.attendees.rsvpd(audience).count %></td>

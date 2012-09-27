@@ -606,6 +606,20 @@ a.redirect-link:hover {
 	background-image: url(../images/icons/silk/note.png);
 }
 
+abbr.initialism {
+	font-size: 90%;
+	text-transform: uppercase;
+}
+
+abbr[title] {
+	cursor: help;
+	border-bottom: 1px dotted #999;
+}
+
+abbr[title]:hover {
+	border-bottom-style: solid;
+}
+
 .errorExplanation {
 	background: url("../images/caution.png") 10px 10px no-repeat;
 	padding: 1em;

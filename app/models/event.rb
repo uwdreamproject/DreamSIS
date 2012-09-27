@@ -38,6 +38,11 @@ class Event < ActiveRecord::Base
   def attended_count
     attendees.attended.size
   end
+  
+  # Returns the number of RSVP'd (for the given audience, if provided)
+  def rsvpd_count(audience)
+    attendees.rsvpd(audience).size
+  end
 
   # Returns true if the number of RSVP'd attendees is greater than or equal to the capacity defined.
   # If capacity is 0 or nil, this method always returns false.

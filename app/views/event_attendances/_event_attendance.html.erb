@@ -1,6 +1,19 @@
 <tr id="event_attendance_<%= event_attendance.id %>">
-	<td><%= link_to h(event_attendance.fullname), event_attendance.person rescue nil %></td>
-	<%= "<td>#{event_attendance.try(:person).try(:high_school).try(:name)}</td>" if audience.to_s.downcase == "participant" %>
+	
+	<td><%= event_attendance.person.is_a?(Participant) ? link_to(h(event_attendance.fullname), event_attendance.person) : h(event_attendance.fullname) %></td>
+	
+	<%= "<td>#{event_attendance.try(:person).try(:high_school).try(:name)}</td>" if audience.to_s.downcase == "participant" || audience.to_s.downcase == "student" %>
+	
+	<td><%= event_attendance.person.try(:programs).to_a.collect{|p| content_tag(:abbr, h(p.abbreviation), :title => h(p.title), :class => 'initialism')}.join(", ") %></td>
+	
+	<td><%=h event_attendance.shift.try(:title) %></td>
+	
+	<%- if @event.training_required?(@audience.to_s) -%>
+		<td class="centered"><%= event_attendance.completed_training? ? content_tag(:span, "Y", :class => 'green tag') : content_tag(:span, "-", :class => 'light') %></td>
+	<% end -%>
+	
 	<td class="centered"><%= event_attendance.rsvp? ? content_tag(:span, "Y", :class => 'green tag') : content_tag(:span, "-", :class => 'light') %></td>
+	
 	<td class="centered"><%= event_attendance.attended? ? content_tag(:span, "Y", :class => 'green tag') : content_tag(:span, "-", :class => 'light') %></td>
+	
 </tr>

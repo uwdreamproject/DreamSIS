@@ -13,6 +13,8 @@ class EventAttendance < ActiveRecord::Base
   
   after_save :send_email
   
+  alias :shift :event_shift
+  
   # Sends the rsvp email or cancel email if the RSVP has changed.
   def send_email
     if rsvp_changed?
@@ -28,6 +30,10 @@ class EventAttendance < ActiveRecord::Base
     if event.has_shifts?(person.class) && rsvp_changed? && rsvp? && event_shift_id.nil?
       errors.add :event_shift_id, :message => "must choose a shift from the list"
     end
+  end
+
+  def completed_training?
+    person.completed_training?(event.training_for(person))
   end
   
 end
