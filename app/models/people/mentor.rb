@@ -30,23 +30,7 @@ class Mentor < Person
   def passed_basics?
     passed_background_check? && signed_risk_form? && currently_enrolled?
   end
-  
-  # Returns true if the text of the +background_check_result+ attribute includes either "OK" or "NO 
-  # RECORD FOUND". This allows staff to allow a student to participate even if a conviction history has
-  # been found but the school has approved that student's participation. In that case, the background
-  # check result text will include these details but also include to the text "OK".
-  def passed_background_check?
-    return false if background_check_result.nil?
-    return false if background_check_run_at.nil?
-    background_check_result.include?("OK") || background_check_result.include?("NO RECORD FOUND")
-  end
-  
-  # Returns true if the +background_check_authorized_at+ is not nil but the person hasn't passed the background
-  # check yet. This means that a staff person hasn't yet run the check and entered it into the system yet.
-  def background_check_pending?
-    !background_check_authorized_at.nil? && !passed_background_check?
-  end
-  
+    
   # Returns true if there is a valid date in the +risk_form_signed_at+ attribute and any value in the 
   # +risk_form_signature+ attribute.
   def signed_risk_form?
@@ -103,13 +87,6 @@ class Mentor < Person
     return false if aliases.blank? || aliases.nil?
     return false if aliases.downcase == "none" || aliases.downcase == "n/a" || aliases.downcase == "no"
     true
-  end
-  
-  # Returns true if there are any responses "Yes" on the background check form from mentor signup.
-  def has_background_check_form_responses?
-    return true if crimes_against_persons_or_financial? || drug_related_crimes?
-    return true if related_proceedings_crimes? || medicare_healthcare_crimes? || general_convictions?
-    false
   end
   
   # Returns all mentors who are valid van drivers.
