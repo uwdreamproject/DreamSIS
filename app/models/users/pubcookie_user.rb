@@ -5,7 +5,7 @@ class PubcookieUser < User
   # Authenticates a user by their login name without a password.  Returns the user if found.  
   # If we don't find a user record, we create one. If we can't find a valid person in the Person
   # resource, then return false.
-  def self.authenticate(uwnetid, password = nil, require_identity = nil)
+  def self.authenticate(uwnetid, password = nil, require_identity = nil, attach_person_record = true)
     uwnetid = uwnetid.to_s.match(/^(\w+)(@.+)?$/).try(:[], 1) # strip out the '@uw.edu' if someone tries that
     return false if uwnetid.nil?
     u = self.find_by_login uwnetid
@@ -13,6 +13,7 @@ class PubcookieUser < User
       pr = PersonResource.find_by_uwnetid(uwnetid)
       return false if pr.nil?
       u = PubcookieUser.create :login => uwnetid
+      u.attach_person_record if attach_person_record
     end
     u
   end
