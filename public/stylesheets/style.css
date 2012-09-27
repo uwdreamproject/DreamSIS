@@ -931,6 +931,7 @@ fieldset, form.formtastic fieldset {
 	margin-bottom: 25px;
 	padding: 0.5em;
 	padding-top: 10px;
+	overflow: hidden;
 }
 
 legend, form.formtastic legend {
