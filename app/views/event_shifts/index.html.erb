@@ -17,5 +17,5 @@
 
 <div id="sidebar">
 	<p><%= link_to 'Add another shift', new_event_event_shift_path(@event), :class => 'add button' %></p>
-	<p><%= link_to "Back to event", @event, :class => 'back button' %></p>
+	<p><%= link_to "Back to event", event_path(@event), :class => 'back button' %></p>
 </div>
