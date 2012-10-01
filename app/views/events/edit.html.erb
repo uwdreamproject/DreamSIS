@@ -8,6 +8,6 @@
 
 	<%= f.submit "Update", :disable_with => 'Updating...' %>
 	<%= separator %>
-	<%= link_to 'Cancel', @event, :class => '' %>
+	<%= link_to 'Cancel', event_path(@event), :class => '' %>
 
 <% end -%>
