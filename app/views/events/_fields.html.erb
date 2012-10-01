@@ -30,16 +30,17 @@
 		<%= f.label :event_coordinator_id %>
 		
 		<div>
-			<%= model_auto_completer "person[fullname]", (@event.event_coordinator.fullname if @event.event_coordinator), 
+			<%= model_auto_completer "person[fullname]", (@event.try(:event_coordinator).try(:fullname) if @event.try(:event_coordinator)), 
 									"event[event_coordinator_id]", 
-									(@event.event_coordinator_id || nil), 
+									(@event.try(:event_coordinator_id) || nil), 
 									{ 
+										:url => { :controller => 'events', :action => 'auto_complete_model_for_person_fullname' },
 										:append_random_suffix => false,
 										:after_update_element => "function(text_field, selection, hidden, id) { 
 																	person_lookup(text_field, selection, hidden, id) 
 																  }",
 										:regexp_for_id => '(-?\d+)$' },
-									{ :autocomplete => false, :style => ('display:none' if @event.event_coordinator), :size => 50 },
+									{ :autocomplete => false, :style => ('display:none' if @event.try(:event_coordinator)), :size => 50 },
 									{ :skip_style => true } %>
 			
 			<% javascript_tag do -%>	
@@ -50,9 +51,9 @@
 				}
 			<% end -%>
 
-			<div id="event_coordinator_details" class="auto_complete after_select" <%= "style='display:none'" unless @event.event_coordinator %>>
+			<div id="event_coordinator_details" class="auto_complete after_select" <%= "style='display:none'" unless @event.try(:event_coordinator) %>>
 				<div id="event_coordinator_details_content">
-					<% if @event.event_coordinator %>
+					<% if @event.try(:event_coordinator) %>
 						<span class="primary"><%= @event.event_coordinator.fullname %>
 						<small class="light">(#<%= @event.event_coordinator_id %>)</small></span>
 						<span class="secondary"><%= @event.event_coordinator.email || "(no email)" %></span>
