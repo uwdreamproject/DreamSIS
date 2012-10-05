@@ -15,11 +15,12 @@ html {
 }
 
 body {
-	background: rgb(235,231,220);
+	background: white url(../images/backgrounds/bg-stripe.gif);
 	margin: 0;
 	padding: 0;
 	text-align: left;
 	font: 13px/130% "Helvetica Neue", Helvetica, Arial, sans-serif;
+	color: rgb(51,51,51);
 }
 
 h1, h2, h3, h4, h5 {
