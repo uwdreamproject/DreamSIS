@@ -6,7 +6,6 @@
 </div>
 
 <p>All other users, log in using one of the following services:</p>
-
 <div class="login-links">
 	<%= link_to "<span>&nbsp;</span>Facebook", "auth/facebook", :class => "facebook login-link" %>
 	<%= link_to "<span>&nbsp;</span>Twitter", "auth/twitter", :class => "twitter login-link" %>
@@ -14,6 +13,13 @@
 	<%= link_to "<span>&nbsp;</span>Google", "auth/google_oauth2", :class => "google login-link" %>
 	<%= link_to "<span>&nbsp;</span>Live", "auth/windowslive", :class => "windowslive login-link" %>
 </div>
+
+<%- if session[:external_login_context] == :rsvp -%>
+	<p>I don't have one of these accounts.</p>
+	<div class="anonymous login-links">
+		<%= link_to "Continue without logging in", anonymous_login_callback_path, :class => 'anonymous button' %>
+	</div>
+<% end -%>
 
 <!-- <% form_tag "/auth/identity/callback" do %>
 	<%= link_to "Create an account", signup_path %> or login below.

@@ -69,6 +69,7 @@ ActionController::Routing::Routes.draw do |map|
   # map.reset_password 'session/reset/:user_id/:token', :controller => 'session', :action => 'reset_password'
   # map.open_id_complete 'session', :controller => "session", :action => "create", :requirements => { :method => :get }
   map.resource :session
+  map.anonymous_login_callback "/auth/anonymous/", :controller => 'session', :action => 'create_anonymous'
   map.omniauth_callback "/auth/:provider/callback", :controller => 'session', :action => 'create'  
 
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.

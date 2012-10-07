@@ -43,6 +43,13 @@ class SessionController < ApplicationController
     flash[:notice] = "Signed in!"
     redirect_back_or_default(root_url)
   end
+  
+  def create_anonymous
+    user = AnonymousUser.create_random
+    session[:user_id] = user.id
+    # flash[:notice] = "Signed in!"
+    redirect_back_or_default(root_url)
+  end
 
   def destroy
     session[:user_id] = nil

@@ -1085,6 +1085,10 @@ a.button:active {
 	background-image: url(../images/icons/silk/television.png);
 }
 
+.button.anonymous {
+	background-image: url(../images/icons/silk/key_go.png);
+}
+
 /*table.schedule {
 	position: absolute;
 }*/
