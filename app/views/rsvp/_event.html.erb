@@ -4,7 +4,7 @@
 	<td class="map">
 		<%= link_to image_tag( "https://maps.google.com/maps/api/staticmap?size=120x120&sensor=false&zoom=10&markers=#{event.location.try(:latitude)}%2C#{event.location.try(:longitude)}"), event_rsvp_path(event) if event.location.try(:geocoded?) %>
 	</td>
-	<td>
+	<td class="event-details">
 		<h2 class="event name"><%= link_to_unless_current h(event.name), event_rsvp_path(event) %></h2>
 		<p class="date"><%= event.time_detail %>
 			<%= content_tag(:span, "Time TBA", :class => 'outline tag') if event.time_tba? %></p>
@@ -19,7 +19,7 @@
 					:locals => { :event => event, :event_attendance => event_attendance } %>
 	</td>
 	
-	<td>
+	<td class="event-capacity">
 		<%- if event.capacity && event.capacity > 0 -%>
 			<div class="signup-meter <%= "full" if event.full? %>">
 				<div class="capacity" 
@@ -39,7 +39,7 @@
 		<% end %>
 	</td>
 	
-	<td>
+	<td class="event-functions">
 		<%= render :partial => 'rsvp/rsvp_button', :locals => { :event => event, :event_attendance => event_attendance } %>
 		<em class="rsvp_status"><%= "Attending" if event_attendance.try(:rsvp?) %></em>
 	</td>

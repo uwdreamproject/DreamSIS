@@ -1,6 +1,7 @@
 /* @override 
 	http://dreamsis.dev/stylesheets/style.css
 	https://dreamsis.org/stylesheets/style.css?1338689516
+	https://dreamsis.org/stylesheets/style.css?1349862127
 */
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700);
@@ -3192,12 +3193,38 @@ h2 {
 	padding: 3px 10px;
 }
 
+dl.inline-definitions dt {
+	float: none;
+	margin: 0;
+	
+}
+
+dl.inline-definitions dd {
+	padding: 0;
+	
+}
+
+.hide_when_small {
+	display: none;
+}
+
+table.rsvp, table.rsvp td, table.rsvp tr {
+	display: block;
+}
+
+table.rsvp tr {
+	margin-top: 1em;
+	border-bottom: 1px solid #dadada;
+}
+
 table.rsvp {
 	width: inherit;
 }
 
 table.rsvp td {
-	padding: 0.5em;
+	padding: 1em;
+	border: 0 !important;
+	background: none !important;
 }
 
 table.rsvp p {
@@ -3211,8 +3238,60 @@ table.rsvp h2 {
 	padding: 0;
 }
 
-.hide_when_small {
+table.rsvp tr td:first-child {
 	display: none;
+}
+
+table.rsvp tr td.event-capacity {
+	display: inline;
+}
+
+table.rsvp td.event-functions {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+table.rsvp td.event-functions:after {
+	content: ".";
+	clear: both;
+	opacity: 0;
+	padding: 0;
+	margin: 0;
+	display: block;
+	
+}
+
+table.rsvp td.event-functions .button {
+	float: right;
+}
+
+table.rsvp td.event-functions .rsvp_status {
+	float: left;
+	padding-top: 7px;
+	padding-bottom: 7px;
+	background-position: 0 9px;
+}
+
+
+/*table.rsvp td.map {
+	padding-right: 0.5em;
+	width: 50px;
+	padding-left: 0 !important;
+}*/
+
+/*table.rsvp td.map img {
+	border: 1px solid #dadada;
+	border-radius: 5px;
+	width: 50px;
+}*/
+
+
+
+
+body.rsvp .when-and-where {
+	float: none;
+	width: auto;
+	margin: auto;
 }
 
 }
