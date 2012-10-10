@@ -32,6 +32,10 @@
 		</dd>
 	<% end -%>
 
+	<%- unless @event_group.stylesheet_url.blank? -%>
+		<dt>Stylesheet</dt>
+		<dd><%= auto_link h(@event_group.stylesheet_url) %></dd>
+	<% end -%>
 
 </dl>
 

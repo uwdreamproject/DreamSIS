@@ -103,6 +103,15 @@ class ApplicationController < ActionController::Base
   def save_user_in_current_thread
     Thread.current['user'] = @current_user
   end
+
+  def apply_extra_stylesheet(extra_stylesheet = nil)
+    if extra_stylesheet
+      @extra_stylesheet = extra_stylesheet
+      session[:extra_stylesheet] = @extra_stylesheet
+    else
+      @extra_stylesheet = session[:extra_stylesheet] unless session[:extra_stylesheet].blank?
+    end
+  end
   
   def configure_exceptional
     # Exceptional.context( :user => @current_user.try(:login) )

@@ -6,6 +6,7 @@ class RsvpController < ApplicationController
     @event = Event.find(params[:id])
     login_required unless @event.event_group && @event.event_group.open_to_public?
     check_if_external_users_allowed(@event)
+    apply_extra_stylesheet(@event)
     @hide_description_link = true
     @event_attendance = @current_user.person.event_attendances.find_or_initialize_by_event_id(@event.id) if @current_user
   end
@@ -14,24 +15,28 @@ class RsvpController < ApplicationController
     @event_group = EventGroup.find(params[:id])
     login_required unless @event_group.open_to_public?
     check_if_external_users_allowed(@event_group)
+    apply_extra_stylesheet(@event_group)
   end
   
   def event_type
     @event_type = EventType.find(params[:id])
     check_if_external_users_allowed(@event_type)
+    apply_extra_stylesheet(@event_type)
   end
   
   def rsvp
     @event = Event.find(params[:id])
     check_if_external_users_allowed(@event)
+    apply_extra_stylesheet(@event)
+    
     if !@current_user || !@current_user.person.ready_to_rsvp?(@event)
       session[:return_to_after_rsvp] = request.env["HTTP_REFERER"]
       session[:return_to_after_profile] = request.request_uri
       session[:profile_validations_required] = "ready_to_rsvp"
       flash[:notice] = "Before you can RSVP for events, please login and complete your profile."
       respond_to do |format|
-        format.html { return redirect_to(profile_path) }
-        format.js   { return render(:js => "window.location.href = '#{profile_path}'") }
+        format.html { return redirect_to(profile_path(:apply_extra_styles => true)) }
+        format.js   { return render(:js => "window.location.href = '#{profile_path(:apply_extra_styles => true)}'") }
       end
     end
     @event_attendance = @current_user.person.event_attendances.find_or_initialize_by_event_id(@event.id)
@@ -72,6 +77,11 @@ class RsvpController < ApplicationController
     else
       session[:external_login_context] = :rsvp
     end
+  end
+  
+  def apply_extra_stylesheet(event_or_group)
+    @event_group = event_or_group.respond_to?(:event_group) ? event_or_group.event_group : event_or_group
+    super(@event_group.stylesheet_url) if @event_group && !@event_group.stylesheet_url.blank?
   end
   
 end

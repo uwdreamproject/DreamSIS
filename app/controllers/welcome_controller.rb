@@ -7,6 +7,7 @@ class WelcomeController < ApplicationController
     @person = @current_user.person
     @events = @person.event_attendances.future_attending.collect(&:event)
     @layout_in_blocks = true
+    apply_extra_stylesheet
   end
 
   def mentor

@@ -15,8 +15,13 @@
 	<%= stylesheet_link_tag 'tabs' %>
 	<%= stylesheet_link_tag 'print', :media => "print" %>
 
+	<%= stylesheet_link_tag @extra_stylesheet if @extra_stylesheet %>
+
 	<%= javascript_include_tag :defaults %>
 	<%= javascript_include_tag "card_reader" %>
+
+	<script type="text/javascript" src="//use.typekit.net/vjh2nav.js"></script>
+	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 
 	<%- if @include_mediaelement -%>
 		<%= javascript_include_tag "//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js" %>
@@ -54,7 +59,12 @@
 				<%= image_tag(@current_user.person.avatar_image_url, :height => 30, :class => "avatar") if @current_user.person && @current_user.person.avatar_image_url %>
 				<ul>
 					<li>Logged in as <strong><%= @current_user.fullname %></strong></li>
-					<li><%= link_to "Profile", profile_path(:return_to_after_profile => request.request_uri) %></li>
+					<%- 
+						path_hash = {}
+						path_hash[:return_to_after_profile] = request.request_uri
+						path_hash[:apply_extra_styles] = true if @extra_stylesheet
+					 -%>
+					<li><%= link_to "Profile", profile_path(path_hash) %></li>
 					<li><%= link_to "Logout", logout_path, :class => "logout" unless @current_user.is_a?(PubcookieUser) %></li>
 				</ul>
 			<% else %>

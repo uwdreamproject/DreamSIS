@@ -22,6 +22,7 @@ class TrainingsController < ApplicationController
   def take
     @training = Training.find(params[:id])
     @include_mediaelement = true
+    apply_extra_stylesheet(@training.stylesheet_url) unless @training.stylesheet_url.blank?
   end
   
   def complete

@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   skip_before_filter :check_authorization, :only => [:profile, :update_profile, :choose_identity, :update_identity]
+  before_filter :apply_extra_styles_if_requested
   
   def index
     @users = User.paginate :all, :page => params[:page]
@@ -32,7 +33,11 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @person.update_attributes(params[:person])
         flash[:notice] = "Thanks! We updated your profile."
-        format.html { redirect_to(session[:return_to_after_profile] || root_path) && session[:return_to_after_profile] = nil }
+        format.html { 
+          redirect_to(session[:return_to_after_profile] || root_path)
+          session[:return_to_after_profile] = nil 
+          session[:apply_extra_styles] = nil
+        }
       else
         format.html { render :action => "profile" }
       end
@@ -118,6 +123,11 @@ class UsersController < ApplicationController
     unless @current_user && @current_user.admin?
       render_error("You are not allowed to access that page.")
     end
+  end
+
+  def apply_extra_styles_if_requested
+    session[:apply_extra_styles] = params[:apply_extra_styles] if params[:apply_extra_styles]
+    apply_extra_stylesheet if params[:apply_extra_styles] || session[:apply_extra_styles]
   end
 
 end

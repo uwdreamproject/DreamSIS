@@ -14,6 +14,11 @@
 	<dt>Completions</dt>
 	<dd><%= @training.completions.count %></dd>
 
+	<%- unless @training.stylesheet_url.blank? -%>
+		<dt>Stylesheet</dt>
+		<dd><%= auto_link h(@training.stylesheet_url) %></dd>
+	<% end -%>
+
 </dl>
 
 <div id="sidebar">
