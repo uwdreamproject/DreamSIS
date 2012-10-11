@@ -21,7 +21,6 @@ class RsvpController < ApplicationController
   def event_type
     @event_type = EventType.find(params[:id])
     check_if_external_users_allowed(@event_type)
-    apply_extra_stylesheet(@event_type)
   end
   
   def rsvp

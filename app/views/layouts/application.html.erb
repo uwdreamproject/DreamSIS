@@ -58,7 +58,7 @@
 			<% unless @current_user.blank? || @current_user == :false %>
 				<%= image_tag(@current_user.person.avatar_image_url, :height => 30, :class => "avatar") if @current_user.person && @current_user.person.avatar_image_url %>
 				<ul>
-					<li>Logged in as <strong><%= @current_user.fullname %></strong></li>
+					<li>Logged in as <strong title="You are logged in as a <%= @current_user.person.type || "generic person" %>"><%= @current_user.fullname %></strong></li>
 					<%- 
 						path_hash = {}
 						path_hash[:return_to_after_profile] = request.request_uri
