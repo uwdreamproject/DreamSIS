@@ -15,4 +15,12 @@
 	
 </table>
 
+<%- unless @event_group.footer_content.blank? -%>
+	<div class="event-footer-content">
+		<%= sanitize textilize(@event_group.footer_content), 
+								:tags => %w(table tr td h2 p a ul li strong em img), 
+								:attributes => %w(id class style href src) %>
+	</div>
+<% end -%>
+
 <%= render :partial => 'sidebar' %>
