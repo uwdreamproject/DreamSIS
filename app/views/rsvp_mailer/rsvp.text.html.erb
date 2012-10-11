@@ -15,9 +15,9 @@
 			<h3>Location</h3>
 			<p class="location"><%=h @event.location_string %></p>
 
-			<%- unless @event.description.blank? -%>
+			<%- unless @event_description.blank? -%>
 				<h3>About the Event</h3>
-				<p class="description"><%= sanitize textilize_without_paragraph(@event.description) %></p>
+				<p class="description"><%= sanitize textilize_without_paragraph(@event_description) %></p>
 			<% end -%>
 
 			<%- if @event.event_group && !@event_group_description.blank? -%>

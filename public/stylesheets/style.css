@@ -1091,6 +1091,10 @@ a.button:active {
 	background-image: url(../images/icons/silk/key_go.png);
 }
 
+.button.lock {
+	background-image: url(../images/icons/silk/lock.png);
+}
+
 /*table.schedule {
 	position: absolute;
 }*/

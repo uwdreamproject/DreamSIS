@@ -118,6 +118,21 @@ class Event < ActiveRecord::Base
     end
   end
   
+  # See EventGroup#description for details.
+  def description(person_or_type = nil)
+    generic_description = read_attribute(:description)
+    return generic_description if person_or_type.nil?
+    klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type
+    if klass == Student || klass == Participant
+      custom_description = student_description
+    elsif klass == Volunteer
+      custom_description = volunteer_description
+    elsif klass == Mentor
+      custom_description = mentor_description
+    end
+    custom_description.blank? ? generic_description : custom_description
+  end
+  
   # Convenience method for +time_detail(:time_only => true)+
   def time_only
   time_detail(:time_only => true)

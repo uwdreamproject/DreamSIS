@@ -8,14 +8,14 @@ Location:
 <%=h @event.location_string %>
 <%= @event.location.address if @event.location %>
 
-<%- unless @event.description.blank? -%>
+<%- unless @event_description.blank? -%>
 About the Event:
-<%= sanitize textilize_without_paragraph(@event.description) %>
+<%= sanitize textilize_without_paragraph(@event_description) %>
 <% end -%>
 
-<%- if @event.event_group && !@event.event_group.description.blank? -%>
+<%- if @event.event_group && !@event_group_description.blank? -%>
 About <%=h @event.event_group.name %>:
-<%= sanitize textilize_without_paragraph(@event.event_group.description) %>
+<%= sanitize textilize_without_paragraph(@event_group_description) %>
 <% end -%>
 			
 Your RSVP:

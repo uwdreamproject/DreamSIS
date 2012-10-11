@@ -24,14 +24,14 @@
 		<dt>Location</dt>
 		<dd class="location"><%=h @event.location_string %></dd>
 
-		<%- unless @event.description.blank? -%>
-			<dt>About the Event</dt>
+		<%- unless @event.description(@current_user.try(:person)).blank? -%>
+			<dt>About</dt>
 			<dd class="description">
-				<%= sanitize textilize_without_paragraph(@event.description) %>
+				<%= sanitize textilize_without_paragraph(@event.description(@current_user.try(:person))) %>
 			</dd>
 		<% end -%>
 
-		<%- if @event.event_group && !@event.event_group.description.blank? -%>
+		<%- if @event.event_group && !@event.event_group.description(@current_user.try(:person)).blank? -%>
 			<dt>More Info</dt>
 			<dd class="event_group description"><%= sanitize textilize_without_paragraph(@event.event_group.description(@current_user.try(:person))) %></dd>
 		<% end -%>

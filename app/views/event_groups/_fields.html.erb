@@ -13,7 +13,7 @@
 
 <% f.inputs "Audience-Specific Descriptions" do %>
 	<p>Descriptions entered here will be used instead of the description above for members of the specified audience. Otherwise, the default from above will be displayed.</p>
-	<%= f.input :student_description, :input_html => { :rows => 6 }, :hint => "Note: The student description is shown for Students and Participants." %>
+	<%= f.input :student_description, :input_html => { :rows => 6 }, :hint => "Note: The student description is shown for both Students and Participants." %>
 	<%= f.input :volunteer_description, :input_html => { :rows => 6 } %>
 	<%= f.input :mentor_description, :input_html => { :rows => 6 } %>
 <% end -%>
