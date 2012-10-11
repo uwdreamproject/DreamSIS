@@ -726,16 +726,17 @@ ul.crimes-list li {
 	border-radius: 3px;
 	-webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 	margin-bottom: 20px;
-	opacity: 0.2;
+	opacity: 0;
 	-webkit-transition: all 0.5s ease-in-out;
 	z-index: -100;
-	display: none;
+	display: inline-block;
+	/*display: none;*/
 }
 
 #notifications .visible {
 	opacity: 1;
 	z-index: 100;
-	display: inline-block;
+	/*display: inline-block;*/
 	width: auto;
 	margin: 0 auto;
 }

@@ -28,15 +28,13 @@
 			<dt>About the Event</dt>
 			<dd class="description">
 				<%= sanitize textilize_without_paragraph(@event.description) %>
-				
-				<%- if @event.event_group && !@event.event_group.description.blank? -%>
-					<h5>About <%=h @event.event_group.name %></h5>
-					<p class="event_group description"><%= sanitize textilize_without_paragraph(@event.event_group.description) %></p>
-				<% end -%>
-				
 			</dd>
 		<% end -%>
 
+		<%- if @event.event_group && !@event.event_group.description.blank? -%>
+			<dt>More Info</dt>
+			<dd class="event_group description"><%= sanitize textilize_without_paragraph(@event.event_group.description(@current_user.try(:person))) %></dd>
+		<% end -%>
 	
 		<%- if @event.event_coordinator -%>
 			<dt>Event Coordinator</dt>

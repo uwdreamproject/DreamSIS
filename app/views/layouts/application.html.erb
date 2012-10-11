@@ -85,7 +85,7 @@
 
 		<div id="notifications">
 			<% %w(error notice info).each do |key| -%>
-				<div id="<%= key %>_notification" class="alert <%= key %> <%= "visible" unless flash[key.to_sym].blank? %>"><%= flash[key.to_sym] %></div>
+				<div id="<%= key %>_notification" class="alert <%= key %> <%= "visible" unless flash[key.to_sym].blank? %>" onClick="this.toggleClassName('visible')"><%= flash[key.to_sym] %></div>
 			<% end -%>
 		</div>
 

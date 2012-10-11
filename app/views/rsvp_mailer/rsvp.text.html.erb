@@ -20,9 +20,9 @@
 				<p class="description"><%= sanitize textilize_without_paragraph(@event.description) %></p>
 			<% end -%>
 
-			<%- if @event.event_group && !@event.event_group.description.blank? -%>
+			<%- if @event.event_group && !@event_group_description.blank? -%>
 				<h3>About <%=h @event.event_group.name %></h3>
-				<p class="event_group description"><%= sanitize textilize_without_paragraph(@event.event_group.description) %></p>
+				<p class="event_group description"><%= sanitize textilize_without_paragraph(@event_group_description) %></p>
 			<% end -%>
 
 			<%- if @event_attendance -%>

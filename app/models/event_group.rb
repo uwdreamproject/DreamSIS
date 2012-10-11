@@ -13,6 +13,24 @@ class EventGroup < ActiveRecord::Base
 
   default_scope :order => "id DESC"
   
+  # Returns the description based on the type of person provided as a parameter (or a class name).
+  # If no parameter is given (or it is nil), the generic description (the original +description+
+  # attribute in EventGroup) is returned. This is also the case if a specialized description does
+  # not exist for the specified person.
+  def description(person_or_type = nil)
+    generic_description = read_attribute(:description)
+    return generic_description if person_or_type.nil?
+    klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type
+    if klass == Student || klass == Participant
+      custom_description = student_description
+    elsif klass == Volunteer
+      custom_description = volunteer_description
+    elsif klass == Mentor
+      custom_description = mentor_description
+    end
+    custom_description.blank? ? generic_description : custom_description
+  end
+  
   # Returns true if either +allow_external_students+ or +allow_external_volunteers+ is true.
   def open_to_public?
     allow_external_students? || allow_external_volunteers?
