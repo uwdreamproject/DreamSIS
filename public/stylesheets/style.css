@@ -2809,8 +2809,19 @@ way to fit your requirements.
 	display: block;
 	padding: 5px 8px 6px;
 	border-radius: 4px;
-	z-index: 2;
+	z-index: 10;
 	background-image: -webkit-linear-gradient(top, #f4f4f4, #f8f8f8);
+	position: fixed;
+	top: 15px;
+	right: -4px;
+}
+
+.sidebar_view #sidebar_expander_link {
+	
+}
+
+.sidebar_view #login_logout img.avatar {
+	opacity: 0;
 }
 
 .menu_view #sidebar-header {
@@ -2839,7 +2850,7 @@ way to fit your requirements.
 	right: 35px;
 	border: 1px solid #919191;
 	border-radius: 2px;
-
+	-webkit-transition: all 0.25s ease-in-out;
 }
 
 #header h1 {
@@ -3071,6 +3082,7 @@ body.error h1 {
 
 .sidebar_view #header {
 	left: -220px;
+	margin-left: -220px;
 }
 
 .sidebar_view #sidebar-header {
