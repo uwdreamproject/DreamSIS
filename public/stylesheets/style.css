@@ -2739,7 +2739,7 @@ way to fit your requirements.
 
 @media screen and (max-width: 640px) {
 
-#content, #sidebar, #header, #sidebar-header, #main-nav, #menu_expander_link {
+#content, #sidebar, #header, #sidebar-header, #main-nav, #main-nav ul, #menu_expander_link {
 	-webkit-transition: all 0.3s ease-in-out;
 }
 
@@ -2762,7 +2762,7 @@ way to fit your requirements.
 	overflow: hidden;
 	top: 50px;
 	padding: 0;
-	padding-top: 68px;
+	padding-top: 1em;
 }
 
 #footer {
@@ -2778,14 +2778,18 @@ way to fit your requirements.
 	right: -5px;
 	background: #999;
 	z-index: 100;
-	opacity: 0.8;
+	opacity: 1;
 }
 
 #sidebar-header a {
 	padding: 0 5px;
-	padding-right: 10px;
+	padding-right: 12px;
 	text-decoration: none;
 	font: 190% "Courier New", Courier, mono;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.075);
+	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.075);
+	text-shadow: 1px 0 1px rgba(0, 0, 0, 0.75);
+	color: #f5f5f5;
 }
 
 #sidebar-header a:after {
@@ -2803,6 +2807,10 @@ way to fit your requirements.
 
 #sidebar_expander_link {
 	display: block;
+	padding: 5px 8px 6px;
+	border-radius: 4px;
+	z-index: 2;
+	background-image: -webkit-linear-gradient(top, #f4f4f4, #f8f8f8);
 }
 
 .menu_view #sidebar-header {
@@ -2810,26 +2818,34 @@ way to fit your requirements.
 }
 
 #login_logout {
-	display: block;
-	float: none;
-	position: relative;
-	top: 5px;
-	right: 5px;
-	font-size: 90%;
+	font-size: 100%;
+	position: static;
+	display: inline-block;
+}
+
+.admin #login_logout {
+	/*margin-left: 60px;*/
 }
 
 #login_logout ul {
-	float: left;
-/*	position: relative;
-	left: 5em;
-	top: 0;
-	background: red;
-	margin-right: 50px;
-*/}
+
+}
+
+#login_logout img.avatar {
+	float: none;
+	margin-left: 1em;
+	position: absolute;
+	top: 14px;
+	right: 35px;
+	border: 1px solid #919191;
+	border-radius: 2px;
+
+}
 
 #header h1 {
 	background-size: 80%;
 	margin-top: 0;
+	margin-bottom: 10px;
 }
 
 #header h1 a {
@@ -2842,10 +2858,8 @@ way to fit your requirements.
 }
 
 #header {
-	position: absolute;
 	width: 95%;
-	overflow: hidden;
-	padding-bottom: 0;
+	padding-bottom: 5px;
 	z-index: 2;
 }
 
@@ -2919,16 +2933,25 @@ body.error h1 {
 	margin: 0;
 	z-index: 1;
 	position: absolute;
-	top: -500px;
-	height: 0;
+	height: auto;
 	overflow: hidden;
 	width: 100%;
+	top: -500px;
+}
+
+#main-nav ul {
+	/*position: absolute;
+	height: 200px;
+	width: 100%;
+	top: 0;
+	left: -500px;
+	background: rgb(125,125,127);
+	z-index: -1;*/
 }
 
 .menu_view #main-nav {
-	top: 68px;
-	height: auto;
-	overflow: auto;
+	left: 0;
+	top: 78px;
 }
 
 .menu li {
@@ -3011,15 +3034,34 @@ body.error h1 {
 }
 
 #menu_expander_link {
-	display: block;
-	background: rgba(255,255,255,0.5);
-	position: absolute;
-	top: 43px;
-	left: 10px;
-	padding: 5px 7px;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
+	display: inline-block;
+	position: relative;
+	padding: 5px 8px 6px;
+	border-radius: 4px;
 	z-index: 2;
+	background-image: -webkit-linear-gradient(top, #f4f4f4, #f8f8f8);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.075);
+	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.075);
+	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+	-webkit-transition: all 0.5s ease-in;
+}
+
+#menu_expander_link .icon-bar {
+	-webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+	display: block;
+	width: 18px;
+	height: 2px;
+	border-radius: 1px;
+	margin: 2px;
+	-webkit-transition: all 0.25s ease-in;
+}
+
+.menu_view #menu_expander_link {
+	background-image: -webkit-linear-gradient(top, #f8f8f8, #999);
+}
+
+.menu_view #menu_expander_link .icon-bar {
+	-webkit-box-shadow: 0 1px 0 rgba(255,255,255, 0.8);
 }
 
 .sidebar_view #content {
@@ -3049,6 +3091,14 @@ body.error h1 {
 	padding: 15px 10px 15px 10px;
 	margin: 0;
 	overflow: auto;
+}
+
+select {
+	max-width: 240px;
+}
+
+table {
+	max-width: 100%;
 }
 
 table.mentors td {
@@ -3107,16 +3157,21 @@ ul.big.choice a {
 	padding: 1em;
 }
 
+table.participants, table.participants tr, table.participants td,
+table.participants tbody {
+	display: block;
+}
+
 table.participants thead {
 	display: none;
 }
 
 table.participants td {
 	display: block;
-	float: left;
+	/*float: left;*/
 	border: none;
 	padding: 2px 0;
-	padding-right: 0.5em;
+	padding-right: 8em;
 }
 
 table.participants td.name {
@@ -3136,11 +3191,11 @@ table.participants td.high-school {
 table.participants td.college-application-count, table.participants td.scholarship-application-count {
 	font-size: 85%;
 	color: #999;
+	display: inline-block;
+	margin-bottom: 0.5em;
 }
 
 table.participants td.college-application-count {
-	clear: left;
-	margin-bottom: 0.5em;
 }
 
 table.participants td.college-application-count:after {
@@ -3152,10 +3207,10 @@ table.participants td.scholarship-application-count:after {
 }
 
 table.participants td.functions {
-	float: right;
-	padding: 0 5px;
-	position: relative;
-	top: -1em;
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 0;
 }
 
 table.participants tr {
@@ -3220,6 +3275,7 @@ table.rsvp, table.rsvp td, table.rsvp tr {
 table.rsvp tr {
 	margin-top: 1em;
 	border-bottom: 1px solid #dadada;
+	margin: 0;
 }
 
 table.rsvp {
@@ -3230,6 +3286,9 @@ table.rsvp td {
 	padding: 1em;
 	border: 0 !important;
 	background: none !important;
+	padding: 1em 0 !important;
+	margin: 0;
+
 }
 
 table.rsvp p {
@@ -3254,6 +3313,7 @@ table.rsvp tr td.event-capacity {
 table.rsvp td.event-functions {
 	padding-top: 0;
 	padding-bottom: 0;
+	padding: 0 !important;
 }
 
 table.rsvp td.event-functions:after {

@@ -71,10 +71,10 @@ class Person < ActiveRecord::Base
   # Returns the person's fullname in the form: Firstname Middlename Lastname
   # If we have a valid +person_resource+, then pass back +person_resource.DisplayName+ instead.
   def fullname(opt = {})
-    options = { :middlename => true, :skip_update => false }.merge(opt)
+    options = { :middlename => true, :skip_update => false, :override_with_local => true }.merge(opt)
     if person_resource? && !options[:skip_update]
       update_resource_cache! rescue nil
-      return display_name
+      return display_name unless options[:override_with_local]
     end
     return display_name if firstname.blank? && lastname.blank?
     if options[:middlename]

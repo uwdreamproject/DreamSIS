@@ -53,12 +53,15 @@
 
 	<div id="header">
 		<h1><%= link_to "<strong>DreamSIS</strong>", root_url %></h1>
+		
+		<%= link_to_function "<span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></span>",
+		 	"$$('body').first().toggleClassName('menu_view')", :id => "menu_expander_link" %>
 
 		<div id="login_logout">
 			<% unless @current_user.blank? || @current_user == :false %>
 				<%= image_tag(@current_user.person.avatar_image_url, :height => 30, :class => "avatar") if @current_user.person && @current_user.person.avatar_image_url %>
 				<ul>
-					<li>Logged in as <strong title="You are logged in as a <%= @current_user.person.type || "generic person" %>"><%= @current_user.fullname %></strong></li>
+					<li><span class="hide_when_small">Logged in as </span><strong title="You are logged in as a <%= @current_user.person.type || "generic person" %>"><%= @current_user.fullname %></strong></li>
 					<%- 
 						path_hash = {}
 						path_hash[:return_to_after_profile] = request.request_uri
@@ -85,7 +88,7 @@
 
 		<div id="notifications">
 			<% %w(error notice info).each do |key| -%>
-				<div id="<%= key %>_notification" class="alert <%= key %> <%= "visible" unless flash[key.to_sym].blank? %>" onClick="this.toggleClassName('visible')"><%= flash[key.to_sym] %></div>
+				<div id="<%= key %>_notification" class="alert <%= key %> <%= "visible" unless flash[key.to_sym].blank? %>" onClick="if(this.hasClassName('visible')) { this.toggleClassName('visible'); }"><%= flash[key.to_sym] %></div>
 			<% end -%>
 		</div>
 

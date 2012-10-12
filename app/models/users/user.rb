@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
 
   # Returns the associated person's fullname, or +login+ if there's no person record.
   def fullname
-    person.nil? ? login : (person.fullname.nil? ? login : person.fullname)
+    person.nil? ? login : (person.fullname.blank? ? login : person.fullname)
   end
     
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil. Note that this method is

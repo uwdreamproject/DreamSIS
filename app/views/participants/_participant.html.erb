@@ -22,8 +22,11 @@
 		<td class="college-application-count"><%= participant.college_applications.size %></td>
 		<td class="scholarship-application-count"><%= participant.scholarship_applications.size %></td>
 		
-		<td class="functions"><%= link_to 'Show', participant %></td>
-		<td class="functions"><%= link_to 'Edit', edit_participant_path(participant) %></td>
+		<td class="functions"></td>
+		<td class="functions">
+			<%= link_to 'Show', participant %>
+			<%= link_to 'Edit', edit_participant_path(participant) %>
+		</td>
 	</tr>
 
 <%= draggable_element dom_id, :ghosting => true %>
