@@ -3183,7 +3183,7 @@ table.participants td {
 	/*float: left;*/
 	border: none;
 	padding: 2px 0;
-	padding-right: 8em;
+	/*padding-right: 8em;*/
 }
 
 table.participants td.name {
@@ -3205,6 +3205,7 @@ table.participants td.college-application-count, table.participants td.scholarsh
 	color: #999;
 	display: inline-block;
 	margin-bottom: 0.5em;
+	padding: 0;
 }
 
 table.participants td.college-application-count {

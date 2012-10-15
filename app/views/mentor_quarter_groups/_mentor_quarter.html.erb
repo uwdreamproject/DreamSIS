@@ -5,7 +5,7 @@
 						:alt => "" %>
 		</td>
 		
-	<td><strong class="mentor name"><%= mentor_quarter.fullname %></strong>
+	<td><strong class="mentor name"><%= link_to mentor_quarter.fullname, mentor_quarter.mentor %></strong>
 		<small class="outline tag"><%= mentor_quarter.mentor_id %></small>
 		<br><%= auto_link mentor_quarter.email %>
 		<div>
