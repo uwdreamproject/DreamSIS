@@ -10,7 +10,7 @@
 						:with => "'event_attendance[event_shift_id]=' + $F('event_attendance_event_shift_id_#{event.id}')",
 						:method => :post,
 						:html => { :class => 'submit button', :id => "save_button_#{event.id}", :style => "display:none" } %>
-	<%- elsif !event.full? -%>
+	<%- elsif !event.full?(@current_user.try(:person)) -%>
 		<%= link_to_remote "RSVP <span class='hide_when_small'>for this event</span>",
 		 				:url => rsvp_path(event, :rsvp => true),
 						:with => "'event_attendance[event_shift_id]=' + $F('event_attendance_event_shift_id_#{event.id}')",

@@ -10,31 +10,31 @@
 			<%= content_tag(:span, "Time TBA", :class => 'outline tag') if event.time_tba? %></p>
 		<p class="location"><%=h event.location_string %></p>
 
-		<%- unless event.description.blank? || @hide_description_link -%>
+		<!-- <%- unless event.description.blank? || @hide_description_link -%>
 			<p class="description_link"><%= link_to_function "More details", "Effect.toggle('event_#{event.id}_description', 'blind', {duration:0.25})" %></p>
 			<div class="description" id="event_<%= event.id %>_description" style="display: none;"><%= sanitize textilize(event.description) %></div>
-		<% end -%>
+		<% end -%> -->
 		
 		<%= render :partial => 'rsvp/shifts', 
 					:locals => { :event => event, :event_attendance => event_attendance } %>
 	</td>
 	
 	<td class="event-capacity">
-		<%- if event.capacity && event.capacity > 0 -%>
-			<div class="signup-meter <%= "full" if event.full? %>">
+		<%- if event.capacity(@current_user.try(:person)) && event.capacity(@current_user.try(:person)) > 0 -%>
+			<div class="signup-meter <%= "full" if event.full?(@current_user.try(:person)) %>">
 				<div class="capacity" 
 					 style="width: 100%;"
-					 title="<%= number_to_percentage event.percent_full, :precision => 0 %> full">
+					 title="<%= number_to_percentage event.percent_full(@current_user.try(:person)), :precision => 0 %> full">
 
-					<div class="size" style="width: <%= event.percent_full %>%">
-						<%= event.full? ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
+					<div class="size" style="width: <%= event.percent_full(@current_user.try(:person)) %>%">
+						<%= event.full?(@current_user.try(:person)) ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
 					</div>					
 				</div>
 			</div>
 			<div class="signup-numbers">
-				<%= content_tag :span, event.attendees.rsvpd.size %>
+				<%= content_tag :span, event.attendees.rsvpd(@current_user.try(:person)).size %>
 				of
-				<%= content_tag :span, event.capacity %>
+				<%= content_tag :span, event.capacity(@current_user.try(:person)) %>
 			</div>
 		<% end %>
 	</td>

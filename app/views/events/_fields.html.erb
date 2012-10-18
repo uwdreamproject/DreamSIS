@@ -24,7 +24,6 @@
 	<%= javascript_tag "$('event_time_tba').onchange()" %>
 	
 	<%= f.input :description, :input_html => { :rows => 3 }, :hint => "Use #{link_to("Textile", "http://redcloth.org/", :popup => true)} markup for formatting." %>
-	<%= f.input :capacity, :hint => "Leave capacity blank or 0 for no limit.", :input_html => {:size => 3} %>
 	
 	<li class="input">
 		<%= f.label :event_coordinator_id %>
@@ -76,6 +75,14 @@
 	<%= f.input :allow_rsvps, :label => "Allow people to RSVP before this event" %>
 	<%= f.input :show_for_participants, :label => "Show on participant attendance sheets" %>
 	<%= f.input :show_for_mentors, :label => "Show on mentor attendance sheets" %>
+<% end -%>
+
+<% f.inputs(:name => "Capacity Limits") do %>
+<p>Leave capacity limits blank or 0 for no limit.</p>
+	<%= f.input :capacity, :hint => "Use this to set a combined limit regardless of audience type.", :input_html => {:size => 3}, :label => "Overall Capacity" %>
+	<%= f.input :student_capacity, :hint => "Student capacity applies to Students and Participants.", :input_html => {:size => 3} %>
+	<%= f.input :mentor_capacity, :input_html => {:size => 3} %>
+	<%= f.input :volunteer_capacity, :input_html => {:size => 3} %>
 <% end -%>
 
 <% f.inputs "Audience-Specific Descriptions" do %>

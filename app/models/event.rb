@@ -2,16 +2,19 @@ class Event < ActiveRecord::Base
   include Comparable
   has_many :attendees, :class_name => "EventAttendance" do
     def all(audience = nil)
+      audience = audience.class if audience.is_a?(Person)
       conditions = {}
       conditions.merge!({ :people => { :type => audience.to_s.classify }}) if audience
       find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
     end
     def rsvpd(audience = nil)
+      audience = audience.class if audience.is_a?(Person)
       conditions = { :rsvp => true }
       conditions.merge!({ :people => { :type => audience.to_s.classify }}) if audience
       find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
     end
     def attended(audience = nil)
+      audience = audience.class if audience.is_a?(Person)
       conditions = { :attended => true }
       conditions.merge!({ :people => { :type => audience.to_s.classify }}) if audience
       find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
@@ -44,17 +47,35 @@ class Event < ActiveRecord::Base
     attendees.rsvpd(audience).size
   end
 
+  # Return the capacity for this event. If no audience person or type is provided, return the overall capacity
+  # for the event (defined by the generic +capacity+ attribute). Otherwise, return the capacity for this audience.
+  def capacity(person_or_type = nil)
+    overall_capacity = read_attribute(:capacity)
+    return overall_capacity if person_or_type.nil?
+
+    klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type
+    if klass == Student || klass == Participant
+      custom_capacity = student_capacity
+    elsif klass == Volunteer
+      custom_capacity = volunteer_capacity
+    elsif klass == Mentor
+      custom_capacity = mentor_capacity
+    end    
+    (custom_capacity.nil? || custom_capacity <= 0) ? overall_capacity : custom_capacity
+  end
+
+
   # Returns true if the number of RSVP'd attendees is greater than or equal to the capacity defined.
   # If capacity is 0 or nil, this method always returns false.
-  def full?
-    return false if capacity.nil? || capacity <= 0
-    attendees.rsvpd.size >= capacity
+  def full?(person_or_type = nil)
+    return false if capacity(person_or_type).nil? || capacity(person_or_type) <= 0
+    attendees.rsvpd(person_or_type).size >= capacity(person_or_type)
   end
   
   # How full is this event in percentage.
-  def percent_full
-    return false if capacity.nil? || capacity <= 0
-    attendees.rsvpd.size.to_f / capacity.to_f * 100
+  def percent_full(person_or_type = nil)
+    return false if capacity(person_or_type).nil? || capacity(person_or_type) <= 0
+    attendees.rsvpd(person_or_type).size.to_f / capacity(person_or_type).to_f * 100
   end
   
   def <=>(o)
