@@ -92,19 +92,21 @@ class ParticipantsController < ApplicationController
   # GET /participants/1
   # GET /participants/1.xml
   def show
-    @participant = Participant.find(params[:id])
+    @participant = Participant.find(params[:id]) rescue Student.find(params[:id])
     
     unless @current_user && @current_user.can_view?(@participant)
       return render_error("You are not allowed to view that participant.")
     end
     
-    participants = Participant.in_cohort(@participant.grad_year).in_high_school(@participant.high_school_id)
-    my_index = participants.index(@participant)
-    start_index = my_index - 5
-    start_index = 0 if start_index < 0
-    end_index = my_index + 5
-    end_index = participants.size-1 if end_index > participants.size
-    @participants_for_nav = participants[start_index..end_index]    
+    if @participant.is_a?(Participant)
+      participants = Participant.in_cohort(@participant.grad_year).in_high_school(@participant.high_school_id)
+      my_index = participants.index(@participant)
+      start_index = my_index - 5
+      start_index = 0 if start_index < 0
+      end_index = my_index + 5
+      end_index = participants.size-1 if end_index > participants.size
+      @participants_for_nav = participants[start_index..end_index]
+    end
 
     respond_to do |format|
       format.html # show.html.erb

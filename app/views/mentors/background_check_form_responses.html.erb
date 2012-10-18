@@ -5,6 +5,7 @@
 			:alt => "" %>
 </div>
 
+<h3 class="pre-title"><%= @mentor.class.to_s %></h3>
 <h1><%= @mentor.fullname %></h1>
 <%= link_to "Back to mentor details", mentor_path(@mentor), :class => 'back button' %>
 

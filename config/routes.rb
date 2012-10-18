@@ -6,7 +6,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :locations
   map.resources :quarters, :member => { :sync => :put }
   map.resources :events do |events|
-    events.resources :event_attendances, :as => :attendees, :collection => { :checkin => :get, :auto_complete_for_person_fullname => :any, :checkin_new_participant => :put }
+    events.resources :event_attendances, :as => :attendees, :collection => { 
+      :checkin => :get, :auto_complete_for_person_fullname => :any, :checkin_new_participant => :put, :checkin_new_volunteer => :put
+    }
     events.resources :event_shifts, :as => :shifts
   end
   map.resources :event_types
@@ -21,6 +23,7 @@ ActionController::Routing::Routes.draw do |map|
     :has_many => [:college_applications, :scholarship_applications], 
     :collection => { :check_duplicate => :any, :add_to_group => :post, :fetch_participant_group_options => :any },
     :member => { :note => [ :post, :put ], :fetch_participant_group_options => :any }
+  map.resources :students, :controller => :participants, :only => [:show]
 
   map.resources :participant_groups,
     :collection => { :high_school_cohort => :get, :high_school => :get }
@@ -37,6 +40,7 @@ ActionController::Routing::Routes.draw do |map|
   map.mentor_quarter_groups_quarter 'mentor_quarter_groups/quarter/:quarter_id', 
     :controller => 'mentor_quarter_groups', 
     :action => 'quarter'
+  map.resources :volunteers, :controller => :mentors, :only => [:show, :background_check_responses]
 
   map.mentor_signup_schedule_add_my_courses 'mentor_signup/add_my_courses', :controller => 'mentor_signup', :action => 'add_my_courses'
   map.mentor_signup_basics 'mentor_signup/basics', :controller => 'mentor_signup', :action => 'basics'

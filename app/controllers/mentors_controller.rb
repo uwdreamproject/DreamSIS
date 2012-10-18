@@ -16,8 +16,8 @@ class MentorsController < ApplicationController
   end
 
   def show
-    @mentor = Mentor.find(params[:id])
-    @participants = @mentor.try(:participants)
+    @mentor = Mentor.find(params[:id]) rescue Volunteer.find(params[:id])
+    @participants = @mentor.try(:participants) if @mentor.respond_to?(:participants)
     @event_attendances = @mentor.event_attendances.find(:all, 
                             :include => :event, 
                             :joins => :event, 
@@ -32,7 +32,7 @@ class MentorsController < ApplicationController
   end
 
   def background_check_form_responses
-    @mentor = Mentor.find(params[:id])
+    @mentor = Mentor.find(params[:id]) rescue Volunteer.find(params[:id])
 
     respond_to do |format|
       format.html

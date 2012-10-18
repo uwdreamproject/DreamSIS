@@ -7,14 +7,16 @@
 	<p><%= link_to "Return to #{@participant.high_school.try(:name)} #{@participant.grad_year} list",
 	 				high_school_cohort_path(@participant.high_school, @participant.grad_year),
 	 				:class => 'back button' %></p>
-	
-	<ul class="quick_nav">
-		<% for participant in @participants_for_nav %>
-			<li class="<%= "current" if current_page?(participant) %> i<%= cycle(1,2,3,4,5,6,7,8,9,10,11) %>">
-				<%= link_to_unless_current participant.lastname_first, participant %>
-			</li>
-		<% end -%>
-	</ul>
+
+	<%- if @participants_for_nav -%>
+		<ul class="quick_nav">
+			<% for participant in @participants_for_nav %>
+				<li class="<%= "current" if current_page?(participant) %> i<%= cycle(1,2,3,4,5,6,7,8,9,10,11) %>">
+					<%= link_to_unless_current participant.lastname_first, participant %>
+				</li>
+			<% end -%>
+		</ul>
+	<% end -%>
 	
 <% end -%>
 

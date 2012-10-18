@@ -1,6 +1,6 @@
 <tr id="event_attendance_<%= event_attendance.id %>">
 	
-	<td><%= event_attendance.person.is_a?(Participant) ? link_to(h(event_attendance.fullname), event_attendance.person) : h(event_attendance.fullname) %></td>
+	<td><%= link_to h(event_attendance.try(:person).try(:fullname)), event_attendance.try(:person), :target => "_blank" %></td>
 	
 	<%= "<td>#{event_attendance.try(:person).try(:high_school).try(:name)}</td>" if audience.to_s.downcase == "participant" || audience.to_s.downcase == "student" %>
 	

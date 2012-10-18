@@ -4,7 +4,7 @@
 	
 	<td><%= link_to h(person.fullname), person, :target => "_blank" %></td>
 	
-	<td><%= person.try(:high_school).try(:name) if person.is_a?(Participant) %></td>
+	<td><%= person.try(:high_school).try(:name) if person.is_a?(Participant) || person.is_a?(Student) %></td>
 	
 	<td><% e = person.event_attendances.find_by_event_id(@event.id) %>
 		<% if e && e.attended? %>

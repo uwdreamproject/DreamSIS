@@ -7,6 +7,7 @@
 				:alt => "" %>
 	</div>
 
+	<h3 class="pre-title"><%= @mentor.class.to_s %></h3>
 	<h1><%= @mentor.fullname %></h1>
 	<%= link_to "Edit this mentor", edit_mentor_path(@mentor), :class => 'edit button' %>
 
@@ -29,42 +30,49 @@
 		<dt>Date of Birth</dt>
 		<dd><%= @mentor.birthdate.to_s %></dd>
 		
-		<dt>Husky Card</dt>
-		<dd><%- if @mentor.husky_card_registered? -%>
-				<span class="success-message">Yes</span>
-				<span class="light">(<%=h @mentor.husky_card_rfid %>)</span>
-			<% else %>
-			  	<em class="light">No</em>
-			<% end -%>
-		</dd>
+		<%- if @mentor.respond_to?(:husky_card_registered?) -%>
+			<dt>Husky Card</dt>
+			<dd><%- if @mentor.husky_card_registered? -%>
+					<span class="success-message">Yes</span>
+					<span class="light">(<%=h @mentor.husky_card_rfid %>)</span>
+				<% else %>
+				  	<em class="light">No</em>
+				<% end -%>
+			</dd>
+		<% end -%>
 			
-		<dt>Van Trained?</dt>
-		<dd><%- if @mentor.valid_van_driver? -%>
-				<span class="success-message">Yes</span> - on <%= @mentor.van_driver_training_completed_at.to_s(:short_date) %>
-			<% else %>
-			  	<em class="light">No</em>
-			<% end -%>
-		</dd>
+		<%- if @mentor.respond_to?(:valid_van_driver?) -%>
+			<dt>Van Trained?</dt>
+			<dd><%- if @mentor.valid_van_driver? -%>
+					<span class="success-message">Yes</span> - on <%= @mentor.van_driver_training_completed_at.to_s(:short_date) %>
+				<% else %>
+				  	<em class="light">No</em>
+				<% end -%>
+			</dd>
+		<% end -%>
 
 	</dl>
 	<br class="clear">
 </div>
 
-<div class="content-block">
-	<h1 class="mentees">Mentees</h1>
-	<%= render :partial => 'mentors/mentees' %>
-</div>
+<%- if @participants -%>
+	<div class="content-block">
+		<h1 class="mentees">Mentees</h1>
+		<%= render :partial => 'mentors/mentees' %>
+	</div>
+<% end -%>
 
 <div class="content-block">
 	<h1 class="events">Events</h1>
 	<%= render :partial => 'mentors/events' %>
 </div>
 
-<div class="content-block">
-	<h1 class="participation">Participation</h1>
-	<%= render :partial => 'mentors/participation' %>
-</div>
-
+<%- if @mentor.respond_to?(:mentor_quarters) -%>
+	<div class="content-block">
+		<h1 class="participation">Participation</h1>
+		<%= render :partial => 'mentors/participation' %>
+	</div>
+<% end -%>
 
 <div id="sidebar">
 	<h3>Contact Info</h3>
@@ -88,13 +96,16 @@
 			<br /><%= link_to "View responses", background_check_form_responses_mentor_path(@mentor), :class => 'small' %>
 		</dd>
 
-		<dt>Acknowledgment of Risk Form</dt>
-		<dd>
-			<% if @mentor.signed_risk_form? %>
-				Signed on <%= @mentor.risk_form_signed_at.to_s(:short_date) %>
-			<%- else -%>
-				<span class="error-message">Not signed</span>
-			<% end -%>
-		</dd>
+		<%- if @mentor.respond_to?(:signed_risk_form?) -%>
+			<dt>Acknowledgment of Risk Form</dt>
+			<dd>
+				<% if @mentor.signed_risk_form? %>
+					Signed on <%= @mentor.risk_form_signed_at.to_s(:short_date) %>
+				<%- else -%>
+					<span class="error-message">Not signed</span>
+				<% end -%>
+			</dd>
+		<% end -%>
+
 	</dl>
 </div>

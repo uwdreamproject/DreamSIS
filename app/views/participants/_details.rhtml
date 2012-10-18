@@ -1,3 +1,4 @@
+<h3 class="pre-title"><%= @participant.class.to_s %></h3>
 <h1><%= @participant.fullname(:middlename => false) %></h1>
 <% if @participant.inactive? %>
 	<h2><font color=red>** INACTIVE **</font></h2>
@@ -14,12 +15,12 @@
 			:class => 'redirect-link' unless @participant.grad_year.blank? %>
 <%= "<br />GPA: #{@participant.gpa}" unless @participant.gpa.blank? %>
 
-<%- if @participant.participant_group -%>
+<%- if @participant.respond_to?(:participant_group) && @participant.participant_group -%>
 	<h4>Group</h4>
 	<%= link_to @participant.participant_group.try(:title), participant_group_path(@participant.participant_group.try(:id)), :class => 'redirect-link' %>
 <% end -%>
 
-<% if @participant.college_attending %>
+<% if @participant.respond_to?(:college_attending) && @participant.college_attending %>
 	<h4>College</h4>
 	<%= @participant.college_attending.name %>
 <% end -%>

@@ -1,0 +1,10 @@
+if @person && @attendee && @person.valid? && @attendee.valid?
+  page << "$('new_volunteer_form').reset()"
+  page.replace_html "person_search_results", :partial => 'event_attendances/person', :object => @person
+  page.visual_effect :highlight, "person_#{@person.id}"
+  page << "$('person_fullname').value = \"#{@person.fullname}\""
+  page << "$('person_fullname').select()"
+  page.replace_html :new_volunteer_error, ""
+else
+  page.replace_html :new_volunteer_error, "Error creating new volunteer record. Please try again."
+end

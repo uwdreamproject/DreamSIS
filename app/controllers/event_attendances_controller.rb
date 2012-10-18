@@ -24,9 +24,21 @@ class EventAttendancesController < ApplicationController
   end
   
   def checkin_new_participant
-    @person = Participant.new(params[:new_participant])
+    @person = Student.new(params[:new_participant])
     @person.validate_name = true
     if !@person.high_school.nil? && @person.save
+      @attendee = @event.attendees.create(:person_id => @person.try(:id), :attended => true)
+    end
+    respond_to do |format|
+      format.html { redirect_to :action => 'checkin' }
+      format.js
+    end
+  end
+
+  def checkin_new_volunteer
+    @person = Volunteer.new(params[:new_volunteer])
+    @person.validate_name = true
+    if @person.save
       @attendee = @event.attendees.create(:person_id => @person.try(:id), :attended => true)
     end
     respond_to do |format|
@@ -110,10 +122,10 @@ class EventAttendancesController < ApplicationController
               ]
     conditions << "LOWER(#{db_concat(:firstname, ' ', :lastname)}) LIKE :fullname" if fullname.include?(" ")
     conditions << "LOWER(#{db_concat(:lastname, ',', :firstname)}) LIKE :fullname" if fullname.include?(",")
-              
-    @people = @audience.find(:all, 
-                          :conditions => [conditions.join(" OR "), {:fullname => "%#{fullname}%"}])
-                                          
+    @people = []
+    
+    @audiences.each{|audience| @people << audience.find(:all, :conditions => [conditions.join(" OR "), {:fullname => "%#{fullname}%"}]) }
+    @people.flatten!                            
                                           
     respond_to do |format|
       format.js
@@ -129,6 +141,11 @@ class EventAttendancesController < ApplicationController
   
   def declare_audience
     @audience = params[:audience].try(:classify).try(:constantize) || Participant
+    if @audience == Mentor || @audience == Volunteer
+      @audiences = [Mentor, Volunteer]
+    else
+      @audiences = [Participant, Student]
+    end 
   end
   
 end
