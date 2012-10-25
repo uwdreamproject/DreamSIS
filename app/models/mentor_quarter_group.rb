@@ -7,7 +7,7 @@ class MentorQuarterGroup < ActiveRecord::Base
       find(:all, :conditions => { :lead => true })
     end
   end
-  has_many :mentors, :through => :mentor_quarters, :conditions => "mentor_quarters.deleted_at IS NULL"  
+  has_many :mentors, :through => :mentor_quarters, :conditions => "mentor_quarters.deleted_at IS NULL", :order => "lastname, firstname"
   has_many :deleted_mentor_quarters, :class_name => "MentorQuarter", :conditions => "deleted_at IS NOT NULL"
 
   validates_presence_of :quarter_id

@@ -32,7 +32,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :mentors, 
     :member => { :photo => :any, :remove_participant => :delete, :background_check_form_responses => :get }, 
-    :collection => { :auto_complete_for_mentor_fullname => :any, :onboarding => :any, :leads => :any, :van_drivers => :any, :check_if_valid_van_driver => :get }
+    :collection => { :auto_complete_for_mentor_fullname => :any, :onboarding => :any, :event_status => :any, :leads => :any, :van_drivers => :any, :check_if_valid_van_driver => :get }
   map.resources :mentor_quarter_groups, 
     :member => { :sync => :put, :photo_tile => :get }, 
     :collection => { :create_from_linked_sections => :put, :sync => :put },

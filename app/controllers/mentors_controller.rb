@@ -134,6 +134,11 @@ class MentorsController < ApplicationController
     @quarter = Quarter.find(params[:quarter_id])
     @mentors = @quarter.mentors
   end
+
+  def event_status
+    @quarter = Quarter.find(params[:quarter_id])
+    @mentors = @quarter.mentors
+  end
   
   def leads
     @quarter = Quarter.find(params[:quarter_id])

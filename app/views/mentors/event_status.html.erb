@@ -1,0 +1,67 @@
+<%- @rsvp_counts = [0]; @attended_counts = [0]; -%>
+
+<h3 class="pre-title"><%= @quarter.title %></h3>
+<h1>Mentor Event Status</h1>
+
+<table id="event_status">
+	
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>E-mail</th>
+			<th>Mentor Group(s)</th>
+			<th class="centered">RSVP'd</th>
+			<th class="centered">Attended</th>
+			<th>Events</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+		<%- for mentor in @mentors -%>
+		<%- event_attendances = mentor.event_attendances.find(
+									:all, 
+									:joins => "LEFT OUTER JOIN events ON event_attendances.event_id = events.id
+												LEFT OUTER JOIN event_types ON events.event_type_id = event_types.id", 
+									:conditions => ["events.date >= ? 
+										AND events.date <= ? 
+										AND (rsvp = ? OR attended = ?) 
+										AND (event_type_id IS NULL OR event_types.name != ?)", 
+										@quarter.start_date, @quarter.end_date, true, true, "Mentor Workshop"]
+								)
+			rsvp_count = event_attendances.select(&:rsvp?).size
+			attended_count = event_attendances.select(&:attended?).size
+			@rsvp_counts << rsvp_count
+			@attended_counts << attended_count
+			
+			 -%>
+			<tr data-rsvp-count="<%= rsvp_count %>" data-attended-count="<%= attended_count %>">
+				<td><%= link_to h(mentor.fullname), mentor %></td>
+				<td class="email"><%= auto_link h(mentor.email) %></td>
+				<td></td>
+				<td class="centered"><%= rsvp_count %></td>
+				<td class="centered"><%= attended_count %></td>
+				<td><%= event_attendances.collect{|ea| link_to(ea.event.name, ea.event)}.join(", ") %></td>
+			</tr>
+		<% end -%>
+	</tbody>
+</table>
+
+<div id="sidebar">
+	<h3>Filters</h3>
+	
+	<p>Show mentors who RSVP'd for fewer than <span id="current_rsvp_limit"><%= @rsvp_counts.max+2 %></span> event(s):
+		<br>
+		<input type="range" min="0" max="<%= @rsvp_counts.max+2 %>" value="<%= @rsvp_counts.max+2 %>" onChange="$('current_rsvp_limit').innerHTML = this.value; $$('table#event_status tbody tr').each(function(elem){elem.show(); elem.addClassName('visible')}); $$('table#event_status tbody tr').findAll(function(elem){ return !(parseInt(elem.readAttribute('data-rsvp-count')) < parseInt($('current_rsvp_limit').innerHTML))}).each(function(elem){elem.hide(); elem.removeClassName('visible')}); $('rsvp_email_link').show().writeAttribute('href', 'mailto:' + $$('table#event_status tbody tr.visible td.email a').collect(function(e){return e.text}).join(', '));">
+		<br>
+		<a href="mailto:nil" id="rsvp_email_link" class="email button" style="display:none">Email these mentors</a>
+	</p>
+
+
+	<p>Show mentors who attended fewer than <span id="current_attended_limit"><%= @attended_counts.max+2 %></span> event(s):
+		<br>
+		<input type="range" min="0" max="<%= @attended_counts.max+2 %>" value="<%= @attended_counts.max+2 %>" onChange="$('current_attended_limit').innerHTML = this.value; $$('table#event_status tbody tr').each(function(elem){elem.show(); elem.addClassName('visible')}); $$('table#event_status tbody tr').findAll(function(elem){ return !(parseInt(elem.readAttribute('data-attended-count')) < parseInt($('current_attended_limit').innerHTML))}).each(function(elem){elem.hide(); elem.removeClassName('visible')}); $('attended_email_link').show().writeAttribute('href', 'mailto:' + $$('table#event_status tbody tr.visible td.email a').collect(function(e){return e.text}).join(', '));">
+		<br>
+		<a href="mailto:nil" id="attended_email_link" class="email button" style="display:none">Email these mentors</a>
+	</p>
+	
+</div>
