@@ -42,7 +42,7 @@
 				<td></td>
 				<td class="centered"><%= rsvp_count %></td>
 				<td class="centered"><%= attended_count %></td>
-				<td><%= event_attendances.collect{|ea| event_name = ea.event_shift_id.nil? ? ea.event.name : "#{ea.event.name} (#{ea.event_shift.name})"; link_to(ea.event.name, event_name)}.join(", ") %></td>
+				<td><%= event_attendances.collect{|ea| event_name = ea.event_shift_id.nil? ? ea.event.name : "#{ea.event.name} (#{ea.event_shift.name})"; link_to(event_name, ea.event)}.join(", ") %></td>
 			</tr>
 		<% end -%>
 	</tbody>
