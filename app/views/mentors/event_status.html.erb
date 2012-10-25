@@ -42,7 +42,7 @@
 				<td></td>
 				<td class="centered"><%= rsvp_count %></td>
 				<td class="centered"><%= attended_count %></td>
-				<td><%= event_attendances.collect{|ea| link_to(ea.name_with_shift_title, ea.event)}.join(", ") %></td>
+				<td><%= event_attendances.collect{|ea| link_to(ea.name_with_shift_title, ea.event)}.join("<br>") %></td>
 			</tr>
 		<% end -%>
 	</tbody>
