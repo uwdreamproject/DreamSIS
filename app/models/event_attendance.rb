@@ -35,5 +35,11 @@ class EventAttendance < ActiveRecord::Base
   def completed_training?
     person.completed_training?(event.training_for(person))
   end
+
+  def name_with_shift_title
+    str = event.name
+    str << " (#{event_shift.title})" if event_shift
+    str
+  end
   
 end
