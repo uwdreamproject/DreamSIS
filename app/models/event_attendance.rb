@@ -8,12 +8,20 @@ class EventAttendance < ActiveRecord::Base
 
   validate :validate_event_shift
   
+  validate :validate_rsvp_limits, :if => :enforce_rsvp_limits?
+  
   delegate :fullname, :email, :to => :person
   delegate :has_shifts?, :to => :event
   
   after_save :send_email
   
   alias :shift :event_shift
+  
+  attr_accessor :enforce_rsvp_limits
+  
+  def enforce_rsvp_limits?
+    enforce_rsvp_limits
+  end
   
   # Sends the rsvp email or cancel email if the RSVP has changed.
   def send_email
@@ -29,6 +37,13 @@ class EventAttendance < ActiveRecord::Base
   def validate_event_shift
     if event.has_shifts?(person.class) && rsvp_changed? && rsvp? && event_shift_id.nil?
       errors.add :event_shift_id, :message => "must choose a shift from the list"
+    end
+  end
+
+  def validate_rsvp_limits
+    if event.full?(person) && rsvp_changed? && rsvp?
+      errors.add :rsvp, :message => "can't be saved because the capacity limit for this event has been reached"
+      errors.add :enforce_rsvp_limits
     end
   end
 
