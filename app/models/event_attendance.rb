@@ -37,9 +37,7 @@ class EventAttendance < ActiveRecord::Base
   end
 
   def name_with_shift_title
-    str = event.name
-    str << " (#{event_shift.title})" if event_shift
-    str
+    event_shift.nil? ? event.name : "#{event.name} (#{event_shift.title})"
   end
   
 end
