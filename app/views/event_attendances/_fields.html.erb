@@ -1,0 +1,24 @@
+<% f.inputs("Attendance") do %>
+	<%= f.input :rsvp, :label => "Attending" %>
+	<%= f.input :attended, :label => "Attended" %>
+<% end -%>
+
+<div <%= "style='display:none'" unless f.object.event.has_shifts?(f.object.try(:person).try(:class)) %>>
+	<% f.inputs("Shift Signup") do %>
+
+		<%= label_tag "event_attendance_event_shift_id_#{@event.id}", "Choose a shift/role:" %>
+		<%= collection_select :event_attendance,
+								:event_shift_id, 
+								@event.shifts.for(f.object.try(:person).try(:class)),
+								:id,
+								:details_string,
+								{ 
+									:prompt => "-- Choose a shift/role --",
+									:selected => f.object.try(:event_shift_id)
+								 },
+								{ 
+									:id => "event_attendance_event_shift_id_#{@event.id}"
+								} %>
+	<% end -%>
+</div>
+

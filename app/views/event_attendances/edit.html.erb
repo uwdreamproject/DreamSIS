@@ -1,0 +1,14 @@
+<h3 class="pre-title">Editing RSVP</h3>
+<h1><%= @attendee.fullname %></h1>
+
+<% semantic_form_for(@attendee, :url => event_event_attendance_path(@event, @attendee)) do |f| %>
+
+	<%= f.error_messages %>
+
+	<%= render :partial => "fields", :locals => { :f => f } %>
+
+	<%= f.submit "Update", :disable_with => 'Updating...' %>
+	<%= separator %>
+	<%= link_to 'Cancel', event_event_attendances_path(@event, :audience => @attendee.try(:person).try(:class)), :class => '' %>
+
+<% end -%>

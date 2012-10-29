@@ -65,9 +65,9 @@ class EventAttendancesController < ApplicationController
   #   end
   # end
   
-  # def edit
-  #   @attendee = @event.attendees.find(params[:id])
-  # end
+  def edit
+    @attendee = @event.attendees.find(params[:id])
+  end
 
   def create
     @attendee = @event.attendees.new(params[:attendee])
@@ -89,9 +89,9 @@ class EventAttendancesController < ApplicationController
     @attendee = @event.attendees.find(params[:id])
 
     respond_to do |format|
-      if @attendee.update_attributes(params[:attendee])
-        flash[:notice] = "#{@attendee.fullname} was successfully checked in."
-        format.html { redirect_to(@attendee) }
+      if @attendee.update_attributes(params[:attendee] || params[:event_attendance])
+        flash[:notice] = "#{@attendee.fullname} was successfully #{ @attendee.attended_changed? ? "checked in" : "updated" }."
+        format.html { redirect_to(event_event_attendances_path(@event, :audience => @attendee.try(:person).try(:class))) }
         format.js
         format.xml  { head :ok }
       else

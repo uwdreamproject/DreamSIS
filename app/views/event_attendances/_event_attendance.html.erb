@@ -1,4 +1,4 @@
-<tr id="event_attendance_<%= event_attendance.id %>">
+<tr class="event_attendance" id="event_attendance_<%= event_attendance.id %>" data-shift-id="<%= event_attendance.event_shift_id %>" data-email="<%=h event_attendance.email rescue nil %>" data-attending="<%= event_attendance.rsvp? %>" data-attended="<%= event_attendance.attended? %>">
 	
 	<td><%= link_to h(event_attendance.try(:person).try(:fullname)), event_attendance.try(:person), :target => "_blank" %></td>
 	
@@ -15,5 +15,7 @@
 	<td class="centered"><%= event_attendance.rsvp? ? content_tag(:span, "Y", :class => 'green tag') : content_tag(:span, "-", :class => 'light') %></td>
 	
 	<td class="centered"><%= event_attendance.attended? ? content_tag(:span, "Y", :class => 'green tag') : content_tag(:span, "-", :class => 'light') %></td>
+	
+	<td class="functions"><%= link_to "Edit", edit_event_event_attendance_path(event_attendance.event, event_attendance), :class => "button" %></td>
 	
 </tr>
