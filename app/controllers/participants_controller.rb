@@ -83,6 +83,7 @@ class ParticipantsController < ApplicationController
     @participant = Participant.find(params[:id].split("_")[1])
     @participant_groups = ParticipantGroup.find(:all, :conditions => { :location_id => @participant_group.location_id, :grad_year => @participant_group.grad_year })
     @participant.update_attribute(:participant_group_id, @participant_group.id)
+    ParticipantGroup.update_counters @participant_group.id, :participants_count => @participant_group.participants.length    
     
     respond_to do |format|
       format.js

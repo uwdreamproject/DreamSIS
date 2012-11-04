@@ -1,4 +1,6 @@
 class ParticipantGroupsController < ApplicationController
+  skip_before_filter :check_authorization, :only => [:show]
+  
   def index
     @participant_groups = ParticipantGroup.find :all, :include => [ :location ]
 
