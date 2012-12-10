@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   skip_before_filter :check_authorization, :only => [:profile, :update_profile, :choose_identity, :update_identity]
   before_filter :apply_extra_styles_if_requested
+  before_filter :apply_extra_footer_content_if_requested
   
   def index
     @users = User.paginate :all, :page => params[:page]
@@ -128,6 +129,11 @@ class UsersController < ApplicationController
   def apply_extra_styles_if_requested
     session[:apply_extra_styles] = params[:apply_extra_styles] if params[:apply_extra_styles]
     apply_extra_stylesheet if params[:apply_extra_styles] || session[:apply_extra_styles]
+  end
+
+  def apply_extra_footer_content_if_requested
+    session[:apply_extra_footer_content] = params[:apply_extra_footer_content] if params[:apply_extra_footer_content]
+    apply_extra_footer_content if params[:apply_extra_footer_content] || session[:apply_extra_footer_content]
   end
 
 end

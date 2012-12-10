@@ -113,6 +113,15 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def apply_extra_footer_content(extra_footer_content = nil)
+    if extra_footer_content
+      @extra_footer_content = extra_footer_content
+      session[:extra_footer_content] = @extra_footer_content
+    else
+      @extra_footer_content = session[:extra_footer_content] unless session[:extra_footer_content].blank?
+    end
+  end
+  
   def configure_exceptional
     # Exceptional.context( :user => @current_user.try(:login) )
   end

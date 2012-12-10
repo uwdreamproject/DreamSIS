@@ -49,7 +49,7 @@
 
 </head>
 
-<body class="<%= "admin" if @current_user.try(:admin?) %> <%= controller.action_name %> <%= controller.controller_name %> <%= @body_class %>">
+<body class="<%= "admin" if @current_user.try(:admin?) %> <%= controller.action_name %> <%= controller.controller_name %> <%= @current_user.try(:person).try(:type) %> <%= @body_class %>">
 
 	<div id="header">
 		<h1><%= link_to "<strong>DreamSIS</strong>", root_url %></h1>
@@ -66,6 +66,7 @@
 						path_hash = {}
 						path_hash[:return_to_after_profile] = request.request_uri
 						path_hash[:apply_extra_styles] = true if @extra_stylesheet
+						path_hash[:apply_extra_footer_content] = true if @extra_footer_content
 					 -%>
 					<li><%= link_to "Profile", profile_path(path_hash) %></li>
 					<li><%= link_to "Logout", logout_path, :class => "logout" unless @current_user.is_a?(PubcookieUser) %></li>
@@ -94,6 +95,14 @@
 
 		<div id="content-wrap" class="<%= "blocked" if @layout_in_blocks %>">
 			<%= yield %>
+			
+			<%- unless @extra_footer_content.blank? -%>
+				<div class="event-footer-content extra-footer-content">
+					<%= sanitize textilize(@extra_footer_content), 
+											:tags => %w(table tr td h2 p a ul li strong em img), 
+											:attributes => %w(id class style href src) %>
+				</div>
+			<% end -%>
 		</div>
 
 		<div id="footer">
