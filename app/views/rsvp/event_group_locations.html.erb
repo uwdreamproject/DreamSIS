@@ -10,7 +10,7 @@
 						 %>
 	</p>
 	
-	<%= observe_field :county_filter, :function => "if($('county_filter').value == 'reset') { $$('.filterable-by-county').invoke('show');} else { $$('.filterable-by-county').invoke('hide'); $$('.filterable-by-county.county-' + $('county_filter').value).invoke('show') }" %>
+	<%= observe_field :county_filter, :function => "filterByCounty($F('county_filter'))" %>
 </div>
 
 <table class="highlightless rsvp">
@@ -43,3 +43,13 @@
 <div id="sidebar">
 	<p><%= link_to "Back to event listing", event_group_rsvp_path(@event_group), :class => "back button" if @event_group %></p>
 </div>
+
+<script>
+document.observe("dom:loaded", function() {
+	if (window.location.hash.slice(1) != "" && window.location.hash.slice(1).split("=")[0] == "filter-county") {
+		var filter_value = window.location.hash.slice(1).split("=")[1]
+		filterByCounty(filter_value)
+		$('county_filter').value = filter_value
+	}
+});
+</script>

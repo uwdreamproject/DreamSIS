@@ -1,3 +1,9 @@
+<%- event_attendance = @event_attendance || @current_user.person.event_attendances.find_or_initialize_by_event_id(event_mini.id) rescue nil -%>
+
 <td class="date"><span><%= event_mini.time_detail(:date_only => true) %></span></td>
 <td class="time"><%= event_mini.time_tba? ? content_tag(:span, "Time TBA", :class => 'outline tag') : event_mini.time_detail(:time_only => true) %></td>
-<td class="details-link"><%= link_to "Event Details", event_rsvp_path(event_mini), :class => 'info button' %></td>
+
+<td class="event-functions details-link">
+	<%= link_to "Event Details", event_rsvp_path(event_mini), :class => 'info button' %>
+	<em class="rsvp_status"><%= "Attending" if event_attendance.try(:rsvp?) %></em>
+</td>
