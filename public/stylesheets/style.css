@@ -1063,6 +1063,14 @@ a.button:active {
 	background-image: url(../images/icons/silk/arrow_left.png);
 }
 
+.button.forward {
+	background-image: url(../images/icons/silk/arrow_right.png);
+}
+
+.button.info {
+	background-image: url(../images/icons/silk/information.png);
+}
+
 .button.edit {
 	background-image: url(../images/icons/silk/pencil.png);
 }

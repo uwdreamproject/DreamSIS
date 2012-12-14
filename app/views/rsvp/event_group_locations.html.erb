@@ -24,7 +24,7 @@
 				<td class="map" rowspan="<%= events.size %>">
 					<%= image_tag( "https://maps.google.com/maps/api/staticmap?size=60x60&sensor=false&zoom=10&markers=#{location.try(:latitude)}%2C#{location.try(:longitude)}") if location.try(:geocoded?) %>
 				</td>
-				<td class="location name" rowspan="<%= events.size %>"><%=h location.name %></td>
+				<td class="location name" rowspan="<%= events.size %>"><%=h location.nil? ? events.first.location_string : location.name %></td>
 				<%= render :partial => "event_mini", :object => events.first %>
 			</tr>
 			
