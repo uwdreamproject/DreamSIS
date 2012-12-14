@@ -18,6 +18,14 @@
 	<%= f.input :mentor_description, :input_html => { :rows => 6 } %>
 <% end -%>
 
+<% f.inputs "Registration Confirmation Messages" do %>
+	<p>By default, the group description is displayed in the registration confirmation message/e-mail. To add extra messaging to your confirmation messages, add them here.</p>
+	<%= f.input :hide_description_in_confirmation_message, :hint => "Set this option to suppress the descriptions above in your confirmation message. That way only the text below will be included in the confirmation message." %>
+	<%= f.input :student_confirmation_message, :input_html => { :rows => 6 }, :hint => "Note: The student confirmation message is shown for both Students and Participants." %>
+	<%= f.input :volunteer_confirmation_message, :input_html => { :rows => 6 } %>
+	<%= f.input :mentor_confirmation_message, :input_html => { :rows => 6 } %>
+<% end -%>
+
 <% f.inputs "Training" do %>
 	<%= f.input :mentor_training_id, :as => :select, :collection => Training.all %>
 	<%= f.input :mentor_training_optional %>

@@ -31,6 +31,23 @@ class EventGroup < ActiveRecord::Base
     custom_description.blank? ? generic_description : custom_description
   end
   
+  # Returns the confirmation message that should be displayed for this person (similar to #description).
+  # Based on the value of the +hide_description_in_confirmation_message+ attribute, this
+  # method will combine the appropriate description and confirmation message content into
+  # a single block of rendered text.
+  def confirmation_message(person_or_type = nil)
+    custom_description = hide_description_in_confirmation_message? ? "" : description(person_or_type)
+    klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type
+    if klass == Student || klass == Participant
+      custom_confirmation_message = student_confirmation_message
+    elsif klass == Volunteer
+      custom_confirmation_message = volunteer_confirmation_message
+    elsif klass == Mentor
+      custom_confirmation_message = mentor_confirmation_message
+    end
+    custom_description.to_s + custom_confirmation_message.to_s
+  end
+  
   # Returns true if either +allow_external_students+ or +allow_external_volunteers+ is true.
   def open_to_public?
     allow_external_students? || allow_external_volunteers?

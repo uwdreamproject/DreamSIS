@@ -13,10 +13,11 @@ About the Event:
 <%= sanitize textilize_without_paragraph(@event_description) %>
 <% end -%>
 
-<%- if @event.event_group && !@event_group_description.blank? -%>
-About <%=h @event.event_group.name %>:
-<%= sanitize textilize_without_paragraph(@event_group_description) %>
+<%- unless @confirmation_message.blank? -%>
+<%= "About #{h(@event.event_group.name)}" unless @event.event_group && @event.event_group.hide_description_in_confirmation_message? %>
+<%= sanitize textilize_without_paragraph(@confirmation_message) %>
 <% end -%>
+
 			
 Your RSVP:
 <%- if @event_attendance.rsvp.nil? -%>

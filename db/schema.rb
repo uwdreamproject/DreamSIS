@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121214064449) do
+ActiveRecord::Schema.define(:version => 20121214195900) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -69,6 +69,10 @@ ActiveRecord::Schema.define(:version => 20121214064449) do
     t.text     "volunteer_description"
     t.text     "mentor_description"
     t.text     "footer_content"
+    t.text     "student_confirmation_message"
+    t.text     "volunteer_confirmation_message"
+    t.text     "mentor_confirmation_message"
+    t.boolean  "hide_description_in_confirmation_message"
   end
 
   create_table "event_shifts", :force => true do |t|
