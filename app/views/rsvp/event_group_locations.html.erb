@@ -1,0 +1,45 @@
+<h3 class="pre-title"><%=h @event_group.name %></h3>
+<h1>Event Locations</h1>
+<p>Below is a list of events. Find the event nearest to you and register to attend. (Pre-registration is recommended, but not required to attend an event.)</p>
+
+<div class="event-filters">
+	<p>
+		Only show events for 
+		<%= select_tag :county_filter, 
+						options_for_select([["-- Choose a county --", "reset"]] + @counties.collect{|k,v| [k || "Other", k.to_s.parameterize.to_s]}) 
+						 %>
+	</p>
+	
+	<%= observe_field :county_filter, :function => "if($('county_filter').value == 'reset') { $$('.filterable-by-county').invoke('show');} else { $$('.filterable-by-county').invoke('hide'); $$('.filterable-by-county.county-' + $('county_filter').value).invoke('show') }" %>
+</div>
+
+<table class="highlightless rsvp">
+	<%- @counties.each do |county, locations| -%>
+		<tr class="rowspan-header filterable-by-county county-<%= county.to_s.parameterize.to_s %>">
+			<th colspan=5 class="county"><%= county.nil? ? "Other" : "#{county} County" %></th>
+		</tr>
+	
+		<%- locations.each do |location, events| -%>
+			<tr class="location filterable-by-county county-<%= county.to_s.parameterize.to_s %>">
+				<td class="map" rowspan="<%= events.size %>">
+					<%= image_tag( "https://maps.google.com/maps/api/staticmap?size=60x60&sensor=false&zoom=10&markers=#{location.try(:latitude)}%2C#{location.try(:longitude)}") if location.try(:geocoded?) %>
+				</td>
+				<td class="location name" rowspan="<%= events.size %>"><%=h location.name %></td>
+				<%= render :partial => "event_mini", :object => events.first %>
+			</tr>
+			
+			<%- if events.size > 1 -%>
+				<%- for event in events -%>
+					<tr class="filterable-by-county county-<%= county.to_s.parameterize.to_s %>">
+						<%= render :partial => "event_mini", :object => event %>
+					</tr>
+				<% end -%>
+			<% end -%>
+		<% end -%>
+		
+	<% end -%>
+</table>
+
+<div id="sidebar">
+	<p><%= link_to "Back to event listing", event_group_rsvp_path(@event_group), :class => "back button" if @event_group %></p>
+</div>

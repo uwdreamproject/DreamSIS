@@ -3,7 +3,15 @@ class Location < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :name
   
-  geocoded_by :address
+  geocoded_by :address do |obj, results|
+    if geo = results.first
+      obj.latitude = geo.latitude
+      obj.longitude = geo.longitude
+      obj.county = geo.county # added through class_eval in initializers
+      obj.city = geo.city
+    end
+    [geo.latitude, geo.longitude]
+  end  
   after_validation :geocode, :if => :address_changed?
 
   default_scope :order => "name"

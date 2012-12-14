@@ -20,6 +20,22 @@ class RsvpController < ApplicationController
     apply_extra_footer_content(@event_group)
   end
   
+  def event_group_locations
+    @event_group = EventGroup.find(params[:id])
+    login_required unless @event_group.open_to_public?
+    check_if_external_users_allowed(@event_group)
+    apply_extra_stylesheet(@event_group)
+    apply_extra_footer_content(@event_group)
+    
+    @counties = {}
+    for event in @event_group.events.future
+      @counties[event.location.try(:county)] ||= {}
+      @counties[event.location.try(:county)][event.location] ||= []
+      @counties[event.location.try(:county)][event.location] << event
+    end
+    @counties = @counties.sort_by{ |k,v| k.nil? ? "ZZZZZ" : k.to_s }
+  end
+  
   def event_type
     @event_type = EventType.find(params[:id])
     check_if_external_users_allowed(@event_type)

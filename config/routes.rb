@@ -53,6 +53,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.rsvp 'rsvp/rsvp/:id', :controller => 'rsvp', :action => 'rsvp', :conditions => { :method => :put }
   map.event_rsvp 'rsvp/event/:id', :controller => 'rsvp', :action => 'event', :conditions => { :method => :get }
+  map.event_group_locations 'rsvp/event_group/:id/locations', :controller => 'rsvp', :action => 'event_group_locations', :conditions => { :method => :get }
   map.event_group_rsvp 'rsvp/event_group/:id', :controller => 'rsvp', :action => 'event_group', :conditions => { :method => :get }
   map.event_type_rsvp 'rsvp/event_type/:id', :controller => 'rsvp', :action => 'event_type', :conditions => { :method => :get }
 
