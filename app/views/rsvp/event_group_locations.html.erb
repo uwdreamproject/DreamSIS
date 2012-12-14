@@ -6,7 +6,7 @@
 	<p>
 		Only show events for 
 		<%= select_tag :county_filter, 
-						options_for_select([["-- Choose a county --", "reset"]] + @counties.collect{|k,v| [k || "Other", k.to_s.parameterize.to_s]}) 
+						options_for_select([["All Counties", "reset"]] + @counties.collect{|k,v| [(k ? "#{h(k)} County" : "Other"), k.to_s.parameterize.to_s]}) 
 						 %>
 	</p>
 	
@@ -29,7 +29,7 @@
 			</tr>
 			
 			<%- if events.size > 1 -%>
-				<%- for event in events -%>
+				<%- for event in events[1..99] -%>
 					<tr class="filterable-by-county county-<%= county.to_s.parameterize.to_s %>">
 						<%= render :partial => "event_mini", :object => event %>
 					</tr>
