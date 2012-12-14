@@ -5,7 +5,7 @@
 	<%- if @event -%>
 		<p><%= link_to "Edit this event", edit_event_path(@event), :class => "edit button" if @current_user && (@current_user.try(:admin?) || @event.event_coordinator == @current_user.person) %></p>
 		<p><%= link_to "See admin view", event_path(@event), :class => "lock button" if @current_user && (@current_user.try(:admin?) || @event.event_coordinator == @current_user.person) %></p>
-		<p><%= link_to "Back to event listing", event_group_rsvp_path(@event.event_group), :class => "back button" if @event.event_group %></p>
+		<p><%= link_to "Back to event listing", event_group_rsvp_path(@event.event_group, :audience => @audience), :class => "back button" if @event.event_group %></p>
 	<% end -%>
 	
 	<%= render :partial => 'training_required_note', :locals => { :event_or_group => @event || @event_group } if @event || @event_group %>

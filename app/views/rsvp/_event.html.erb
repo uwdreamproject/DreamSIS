@@ -5,36 +5,31 @@
 		<%= link_to image_tag( "https://maps.google.com/maps/api/staticmap?size=120x120&sensor=false&zoom=10&markers=#{event.location.try(:latitude)}%2C#{event.location.try(:longitude)}"), event_rsvp_path(event) if event.location.try(:geocoded?) %>
 	</td>
 	<td class="event-details">
-		<h2 class="event name"><%= link_to_unless_current h(event.name), event_rsvp_path(event) %></h2>
+		<h2 class="event name"><%= link_to_unless_current h(event.name), event_rsvp_path(event, :audience => @audience) %></h2>
 		<p class="date"><%= event.time_detail %>
 			<%= content_tag(:span, "Time TBA", :class => 'outline tag') if event.time_tba? %></p>
 		<p class="location"><%=h event.location_string %></p>
-
-		<!-- <%- unless event.description.blank? || @hide_description_link -%>
-			<p class="description_link"><%= link_to_function "More details", "Effect.toggle('event_#{event.id}_description', 'blind', {duration:0.25})" %></p>
-			<div class="description" id="event_<%= event.id %>_description" style="display: none;"><%= sanitize textilize(event.description) %></div>
-		<% end -%> -->
 		
 		<%= render :partial => 'rsvp/shifts', 
 					:locals => { :event => event, :event_attendance => event_attendance } %>
 	</td>
 	
 	<td class="event-capacity">
-		<%- if event.capacity(@current_user.try(:person)) && event.capacity(@current_user.try(:person)) > 0 -%>
-			<div class="signup-meter <%= "full" if event.full?(@current_user.try(:person)) %>">
+		<%- if event.capacity(@current_user.try(:person) || @audience) && event.capacity(@current_user.try(:person) || @audience) > 0 -%>
+			<div class="signup-meter <%= "full" if event.full?(@current_user.try(:person) || @audience) %>">
 				<div class="capacity" 
 					 style="width: 100%;"
-					 title="<%= number_to_percentage event.percent_full(@current_user.try(:person)), :precision => 0 %> full">
+					 title="<%= number_to_percentage event.percent_full(@current_user.try(:person) || @audience), :precision => 0 %> full">
 
-					<div class="size" style="width: <%= event.percent_full(@current_user.try(:person)) %>%">
-						<%= event.full?(@current_user.try(:person)) ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
+					<div class="size" style="width: <%= event.percent_full(@current_user.try(:person) || @audience) %>%">
+						<%= event.full?(@current_user.try(:person) || @audience) ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
 					</div>					
 				</div>
 			</div>
 			<div class="signup-numbers">
-				<%= content_tag :span, event.attendees.rsvpd(@current_user.try(:person)).size %>
+				<%= content_tag :span, event.attendees.rsvpd(@current_user.try(:person) || @audience).size %>
 				of
-				<%= content_tag :span, event.capacity(@current_user.try(:person)) %>
+				<%= content_tag :span, event.capacity(@current_user.try(:person) || @audience) %>
 			</div>
 		<% end %>
 	</td>

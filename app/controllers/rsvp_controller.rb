@@ -1,6 +1,7 @@
 class RsvpController < ApplicationController
   skip_before_filter :check_authorization, :check_if_enrolled
   skip_before_filter :login_required, :except => [:event_type]
+  before_filter :load_audience
   
   def event
     @event = Event.find(params[:id])
@@ -112,6 +113,10 @@ class RsvpController < ApplicationController
   def apply_extra_footer_content(event_or_group)
     @event_group = event_or_group.respond_to?(:event_group) ? event_or_group.event_group : event_or_group
     super(@event_group.footer_content) if @event_group && !@event_group.footer_content.blank?
+  end
+  
+  def load_audience
+    @audience = params[:audience].constantize if %w(Student Participant Mentor Volunteer).include?(params[:audience])
   end
   
 end
