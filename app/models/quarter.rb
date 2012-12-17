@@ -98,7 +98,7 @@ class Quarter < ActiveRecord::Base
   
   # Includes the current quarter AND the quarters allowing signups.
   def self.current_and_allowing_signups
-    [Quarter.current_quarter, Quarter.allowing_signups].flatten.uniq
+    [Quarter.current_quarter, Quarter.allowing_signups].flatten.uniq.compact
   end
   
   # Returns true if specified date falls between this Quarter's start and end dates.

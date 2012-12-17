@@ -50,3 +50,5 @@ config/initializers/action_mailer.rb
 vendor/.DS_Store
 
 db/development.sqlite3-journal
+
+lib/uaavpn.scpt
