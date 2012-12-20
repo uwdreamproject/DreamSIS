@@ -27,5 +27,16 @@ class HighSchool < Location
     # participants.find(:all, :select => [:grad_year]).collect(&:grad_year).uniq.compact.sort.reverse
     @cohorts ||= participants.find(:all, :select => "DISTINCT grad_year").collect(&:grad_year).compact.sort.reverse
   end
+
+  # Returns all high schools in a Hash with district name for keys and an array of schools for values.
+  def self.all_by_district(options = {})
+    @all_by_district = {}
+    @all_by_district[options[:prompt]] = [] if options[:prompt]
+    for hs in self.all
+      @all_by_district[hs.district.to_s] ||= []
+      @all_by_district[hs.district.to_s] << hs
+    end
+    @all_by_district
+  end
   
 end

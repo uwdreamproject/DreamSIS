@@ -1,4 +1,6 @@
 class HighSchoolsController < ApplicationController
+  skip_before_filter :login_required, :check_authorization, :only => [:in_district]
+  
   # GET /high_schools
   # GET /high_schools.xml
   def index
@@ -113,6 +115,15 @@ class HighSchoolsController < ApplicationController
   def stats
     @high_schools = params[:id].nil? ? HighSchool.partners : [HighSchool.find(params[:id])]
     @cohort = params[:cohort] || Participant.current_cohort
+  end
+  
+  def in_district
+    @district = params[:district]
+    @high_schools = HighSchool.find_all_by_district(@district) || []
+    
+    respond_to do |format|
+      format.js
+    end
   end
   
 end

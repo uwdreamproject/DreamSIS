@@ -1,0 +1,10 @@
+page.if "$('person_high_school_id')" do
+  page.replace :person_high_school_id, :text => collection_select(
+    :person,
+    :high_school_id, 
+    @high_schools, 
+    :id, 
+    :name, 
+    :prompt => "-- Choose school --"
+  )
+end

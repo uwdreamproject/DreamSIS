@@ -10,7 +10,7 @@ class Location < ActiveRecord::Base
       obj.county = geo.county # added through class_eval in initializers
       obj.city = geo.city
     end
-    [geo.latitude, geo.longitude]
+    [geo.latitude, geo.longitude] if geo
   end  
   after_validation :geocode, :if => :address_changed?
 

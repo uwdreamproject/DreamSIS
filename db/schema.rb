@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121214195900) do
+ActiveRecord::Schema.define(:version => 20121217223140) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(:version => 20121214195900) do
     t.float    "longitude"
     t.string   "address"
     t.string   "county"
+    t.string   "district"
   end
 
   create_table "mentor_participants", :force => true do |t|

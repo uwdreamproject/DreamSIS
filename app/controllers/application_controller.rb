@@ -69,7 +69,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_authorization
-    unless @current_user && (@current_user.admin? || @current_user.person.current_lead?)
+    unless @current_user && (@current_user.admin? || (@current_user.person.try(:respond_to?, :current_lead?) && @current_user.person.try(:current_lead?)))
       render_error("You are not allowed to access that page.")
     end
   end
@@ -120,6 +120,16 @@ class ApplicationController < ActionController::Base
     else
       @extra_footer_content = session[:extra_footer_content] unless session[:extra_footer_content].blank?
     end
+  end
+
+  def apply_extra_styles_if_requested
+    session[:apply_extra_styles] = params[:apply_extra_styles] if params[:apply_extra_styles]
+    apply_extra_stylesheet if params[:apply_extra_styles] || session[:apply_extra_styles]
+  end
+
+  def apply_extra_footer_content_if_requested
+    session[:apply_extra_footer_content] = params[:apply_extra_footer_content] if params[:apply_extra_footer_content]
+    apply_extra_footer_content if params[:apply_extra_footer_content] || session[:apply_extra_footer_content]
   end
   
   def configure_exceptional

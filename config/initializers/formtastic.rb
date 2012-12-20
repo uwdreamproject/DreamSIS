@@ -52,7 +52,7 @@ Formtastic::SemanticFormBuilder.all_fields_required_by_default = false
 
 # You can add custom inputs or override parts of Formtastic by subclassing SemanticFormBuilder and
 # specifying that class here.  Defaults to SemanticFormBuilder.
-# Formtastic::SemanticFormHelper.builder = MyCustomBuilder
+# Formtastic::SemanticFormHelper.builder = DreamSisFormtasticBuilder
 
 # By default formtastic escapes html entities in both labels and hints unless a string is marked as html_safe. If you are using an older rails version which doesn’t know html_safe, or you want to globally turn this feature off, you can set the following in your initializer:
 

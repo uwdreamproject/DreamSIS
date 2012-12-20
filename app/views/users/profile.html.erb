@@ -14,7 +14,18 @@
 		<%= f.input :birthdate, :label => "Birth Date", :start_year => Time.now.year-13, :end_year => 1930 %>
 	
 		<%- if @person.is_a?(Student) || @person.is_a?(Participant) -%>
-			<%= f.input :high_school_id, :collection => HighSchool.all %>
+			<li class="select optional <%= "error" if @person.errors.on(:high_school_id) %>" id="person_high_school_id_input">
+				<label>High School</label>
+				<%= select_tag :high_school_district, 
+								options_for_select(HighSchool.all_by_district(
+									:prompt => "-- Choose District --").keys.sort, 
+									:selected => (@person.try(:high_school_id).nil? ? "-- Choose District --" : @person.try(:high_school).try(:district))
+								) %>
+				<%= f.collection_select :high_school_id, (HighSchool.all_by_district[f.object.try(:high_school).try(:district)] || []), :id, :name, :selected => f.object.try(:high_school).try(:id) %>
+				<%= content_tag(:p, @person.errors.on(:high_school_id), :class => "inline-errors") if @person.errors.on(:high_school_id) %>
+				
+				<%= observe_field :high_school_district, :url => in_district_high_schools_path, :with => "'district=' + $F('high_school_district')" %>
+			</li>			
 		<% end -%>
 	
 		<%- if @person.is_a?(Volunteer) -%>

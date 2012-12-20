@@ -7,5 +7,6 @@
 <%- if f.object.is_a?(HighSchool) -%>
 	<%- f.inputs "High Schools" do -%>
 		<%= f.input :partner_school, :hint => "Mark this school as a partner school to make it appear in the \"High Schools\" drop down menu." %>
+		<%= f.input :district, :hint => "Enter the full district name, e.g., \"Tukwila School District\"" %>
 	<% end -%>
 <% end -%>

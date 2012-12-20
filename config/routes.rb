@@ -13,7 +13,9 @@ ActionController::Routing::Routes.draw do |map|
   end
   map.resources :event_types
   map.resources :event_groups
-  map.resources :high_schools, :member => { :survey_codes => :get, :survey_code_cards => :get, :stats => :get }, :collection => { :stats => :get } do |high_schools|
+  map.resources :high_schools, 
+    :member => { :survey_codes => :get, :survey_code_cards => :get, :stats => :get }, 
+    :collection => { :stats => :get, :in_district => :get } do |high_schools|
     high_schools.resources :visits, 
       :collection => { :attendance => :get, :update_attendance => :post }, 
       :path_prefix  => "/high_schools/:high_school_id/:quarter_id"
