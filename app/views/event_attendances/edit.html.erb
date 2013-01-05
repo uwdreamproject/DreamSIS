@@ -1,5 +1,7 @@
 <h3 class="pre-title">Editing RSVP</h3>
-<h1><%= @attendee.fullname %></h1>
+<h1><%= @attendee.fullname %>
+	<%= content_tag(:span, "Anonymous User", :class => 'outline tag') if @attendee.try(:person).try(:is_anonymous_user?) %>
+	</h1>
 
 <% semantic_form_for(@attendee, :url => event_event_attendance_path(@event, @attendee)) do |f| %>
 

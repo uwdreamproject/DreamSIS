@@ -118,6 +118,26 @@ class Event < ActiveRecord::Base
     audience ? !shifts.for(audience).empty? : !shifts.empty?
   end
   
+  # Returns true if the supplied User or Person has admin access to this event. This includes:
+  # 
+  # * system-wide admins
+  # * current mentor group leads
+  # * event coordinator
+  # * any event attendee with the +admin+ flag set
+  def allows_admin_access_for?(user_or_person)
+    if user_or_person.is_a?(User)
+      return true if user_or_person.admin?
+      person = user_or_person.person
+    elsif user_or_person.is_a?(Person)
+      person = user_or_person
+    end
+    return false if person.nil?
+    return true if person.current_lead?
+    return true if event_coordinator == person
+    return true if person.event_attendances.find_by_event_id(id).try(:admin?)
+    return false
+  end
+  
   # Returns true if training is required for this event's EventGroup for the specified person or person type.
   def training_required?(person_or_type)
     return false if event_group.nil?

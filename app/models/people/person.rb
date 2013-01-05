@@ -284,6 +284,22 @@ class Person < ActiveRecord::Base
     false
   end
   
+  # Returns false by default. This method is overridden in subclasses.
+  def current_lead_at
+    []
+  end
+  
+  # Returns false by default. This method is overridden in subclasses.
+  def current_lead?
+    false
+  end
+  
+  # Returns true if this Person's first (or only) User record is an AnonymousUser. 
+  # Anonymous users can never be admins.
+  def is_anonymous_user?
+    users.first.is_a?(AnonymousUser)
+  end
+  
   protected
   
   # Uppercases the first letter of the string and does nothing else.

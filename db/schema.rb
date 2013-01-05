@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121220211726) do
+ActiveRecord::Schema.define(:version => 20121230080621) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(:version => 20121220211726) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "event_shift_id"
+    t.boolean  "admin"
   end
 
   create_table "event_groups", :force => true do |t|

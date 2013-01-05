@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  skip_before_filter :check_authorization, :only => :show
+  skip_before_filter :check_authorization, :only => :show # only skip this because we use #redirect_to_rsvp_if_not_admin instead for the #show action
   before_filter :redirect_to_rsvp_if_not_admin, :only => :show
 
   # GET /events
@@ -103,7 +103,7 @@ class EventsController < ApplicationController
 
   def redirect_to_rsvp_if_not_admin
     @event = Event.find params[:id]
-    unless @current_user && (@current_user.admin? || @current_user.person.current_lead? || @current_user.person == @event.try(:event_coordinator))
+    unless @current_user && @event.allows_admin_access_for?(@current_user)
       if @event.allow_rsvps?
         redirect_to event_rsvp_url(@event)
       else
@@ -113,9 +113,12 @@ class EventsController < ApplicationController
   end
 
   def check_authorization
-    @event = Event.find params[:id] rescue nil
-    unless @current_user && (@current_user.admin? || @current_user.person.current_lead? || @current_user.person == @event.try(:event_coordinator))
-      render_error("You are not allowed to access that page.")
+    @event = Event.find(params[:event_id] || params[:id]) rescue nil
+    if @event
+      return render_error("You are not allowed to access that page.") unless @current_user && @event.allows_admin_access_for?(@current_user)
+    else
+      return render_error("You must be logged in.") unless @current_user
+      return render_error("You must be an admin to view the event list.") unless @current_user.admin? || @current_user.try(:person).try(:current_lead?)
     end
   end
 

@@ -16,8 +16,9 @@ class EventAttendance < ActiveRecord::Base
   after_save :send_email
   
   alias :shift :event_shift
-  
   attr_accessor :enforce_rsvp_limits
+  
+  attr_protected :admin
   
   def enforce_rsvp_limits?
     enforce_rsvp_limits

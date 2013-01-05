@@ -1,11 +1,8 @@
-class EventAttendancesController < ApplicationController
-  
+class EventAttendancesController < EventsController
   before_filter :fetch_event
   before_filter :declare_audience, :only => [:index, :checkin, :auto_complete_for_person_fullname]
+  skip_before_filter :redirect_to_rsvp_if_not_admin
 
-  skip_before_filter :check_authorization
-
-  
   # def index
   #   @attendees = @event.attendees
   # 
@@ -87,6 +84,7 @@ class EventAttendancesController < ApplicationController
 
   def update
     @attendee = @event.attendees.find(params[:id])
+    @attendee.admin = params[:event_attendance].try(:[], :admin) if params[:event_attendance].try(:[], :admin)
 
     respond_to do |format|
       if @attendee.update_attributes(params[:attendee] || params[:event_attendance])

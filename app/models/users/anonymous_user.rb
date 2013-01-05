@@ -9,16 +9,23 @@ class AnonymousUser < User
     end
   end
   
+  # Always returns nil. You can never authenticate against an AnonyousUser.
   def self.authenticate(login, password)
     nil
   end
   
+  # Always returns nil. You can never authenticate against an AnonyousUser.
   def self.find(*attrs)
     nil
   end
   
-  def fullname
-    person.nil? ? "Anonymous" : (person.fullname.nil? ? "Anonymous" : person.fullname)
+  def fullname(options = {})
+    person.nil? ? "Anonymous" : (person.fullname(options).nil? ? "Anonymous" : person.fullname(options))
+  end
+  
+  # Always returns false. Anonymous users can never be admins.
+  def admin?
+    false
   end
   
   
