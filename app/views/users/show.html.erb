@@ -2,9 +2,7 @@
 <%= content_tag :span, @user.type, :class => 'outline tag' if @user.type %>
 <%= content_tag :span, "admin", :class => 'admin tag' if @user.admin? %>
 
-<%- if %w[Mentor Participant].include?(@user.person.class) -%>
-	<p>Linked to <%= link_to @user.person.fullname, @user.person %></p>
-<% end -%>
+<p>Linked to <%= link_to_unless @user.person.class == Person, h(@user.person.fullname), @user.person rescue nil %></p>
 
 <div id="sidebar">
 	<p><%= link_to "Edit this user", edit_user_path(@user), :class => 'edit button' %></p>

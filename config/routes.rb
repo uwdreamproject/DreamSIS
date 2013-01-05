@@ -30,7 +30,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :participant_groups,
     :collection => { :high_school_cohort => :get, :high_school => :get }
 
-  map.resources :users, :collection => { :auto_complete_for_user_login => :any }
+  map.resources :users, :collection => { :auto_complete_for_user_login => :any, :admin => :get }
 
   map.resources :mentors, 
     :member => { :photo => :any, :remove_participant => :delete, :background_check_form_responses => :get }, 

@@ -86,7 +86,7 @@ class LocationsController < ApplicationController
   protected 
   
   def check_authorization
-    unless @current_user && @current_user.admin?
+    unless @current_user && (@current_user.admin? || @current_user.try(:person).try(:current_lead?))
       render_error("You are not allowed to access that page.")
     end
   end

@@ -111,11 +111,27 @@ class UsersController < ApplicationController
 
   def auto_complete_for_user_login
     @users = User.find(:all, 
-                          :conditions => ["LOWER(login) LIKE :login", 
-                                          {:login => "%#{params[:user][:login].downcase}%"}])
+                          :joins => [:person],
+                          :conditions => ["LOWER(login) LIKE :login
+                                              OR LOWER(people.firstname) LIKE :fullname 
+                                              OR LOWER(people.lastname) LIKE :fullname
+                                              OR LOWER(people.display_name) LIKE :fullname
+                                              OR LOWER(people.uw_net_id) LIKE :fullname", 
+                                          {:login => "%#{params[:user][:login].downcase}%",
+                                          :fullname => "%#{params[:user][:login].downcase}%"}])                                          
     respond_to do |format|
       format.js
     end
+  end
+  
+  def admin
+    @users = User.paginate :all, :conditions => { :admin => true }, :page => params[:page], :per_page => 100
+    
+    respond_to do |format|
+      format.html { render :action => 'index' }
+      format.xml  { render :xml => @users }
+    end
+    
   end
   
   protected 

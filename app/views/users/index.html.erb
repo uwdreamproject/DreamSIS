@@ -1,11 +1,14 @@
-<h1>Users</h1>
+<h1><%= content_tag :span, "Admin", :class => 'admin tag' if controller.action_name == 'admin' %>
+	Users</h1>
 
 <%= will_paginate @users %>
 
-<table>
+<table class="users">
 	<thead>
 		<tr>
 			<th>Login</th>
+			<th>Type</th>
+			<th>Person</th>
 			<th>Type</th>
 			<th>Admin?</th>
 			<th>Functions</th>

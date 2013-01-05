@@ -11,4 +11,14 @@
 			:function => "if($F('user_login')=='') { $('original_users').show(); $$('.pagination').invoke('show'); $('user_search_results').update(); return true; }") %>
 
 	<% end %>	
+	
+	<p>
+		<%- if controller.action_name == 'admin' -%>
+			<%= link_to "All Users", users_path, :class => 'list button' %>
+		<% else %>
+			<%= link_to "<span class='admin tag'>Admin</span> Users", admin_users_path, :class => "list button" %>
+		<% end -%>
+	</p>
+	
+	
 </div>

@@ -130,6 +130,14 @@ table.participants td.name {
 	font-weight: bold;
 }
 
+table.users td.login {
+	font-weight: bold;
+}
+
+table.users td.login a {
+	text-decoration: none;
+}
+
 table td.functions a {
 	font-size: 90%;
 	display: inline-block;
@@ -1679,6 +1687,17 @@ span.result.highlight, .result.highlight {
 .admin.tag {
 	background-color: #fce01e;
 	color: #656565;
+}
+
+a .tag {
+	margin: 0;
+	top: 0;
+}
+
+h1 .tag {
+	font-weight: lighter !important;
+	margin: 0;
+	letter-spacing: 1px;
 }
 
 .outline.tag {
