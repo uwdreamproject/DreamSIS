@@ -3,19 +3,25 @@
 Ajax.Responders.register({
 	onCreate: function() {
 		if (Ajax.activeRequestCount > 0)
-		// Element.show('indicator');
-		$('indicator').toggleClassName("visible")
+			$('indicator').addClassName("visible")
 	},
-	onComplete: function(event, request) {
+	onException: function(request, exception) {
+		$('indicator').removeClassName("visible")
+		updateFlashes( { "error" : "There was a problem processing your request. Your data was not saved." })
+	},
+	onComplete: function(event, request) {	
 		if (Ajax.activeRequestCount == 0)
-		$('indicator').toggleClassName("visible")
-		// Element.hide('indicator');
-
+			$('indicator').removeClassName("visible")
+		
 		// Update the flash messages
-		clearFlashes()
-		var flash = request.getResponseHeader('X-Flash-Messages').evalJSON();
-		if(!flash) return;
-		updateFlashes(flash)
+		if (request.status == 500) {
+			updateFlashes({ "error" : "The server encountered a fatal error processing your request." })
+		} else {
+			clearFlashes()
+			var flash = request.getResponseHeader('X-Flash-Messages').evalJSON();
+			if(!flash) return;
+			updateFlashes(flash)
+		}
 	}
 });
 
@@ -23,9 +29,13 @@ function clearFlashes() {
 	$('notice_notification').removeClassName('visible')
 	$('error_notification').removeClassName('visible')
 	$('info_notification').removeClassName('visible')
-	$('notice_notification').innerHTML = ''
-	$('error_notification').innerHTML = ''
-	$('info_notification').innerHTML = ''
+	
+	// Wait for a second to clear the text, if it's hidden.
+	setTimeout(function() {
+		if(!$('notice_notification').hasClassName('visible')) $('notice_notification').innerHTML = ''
+		if(!$('error_notification').hasClassName('visible')) $('error_notification').innerHTML = ''
+		if(!$('info_notification').hasClassName('visible')) $('info_notification').innerHTML = ''
+	}, 1000)
 }
 
 function updateFlashes(flash) {
@@ -194,6 +204,3 @@ function filterByCounty(filter_value) {
 		window.location.hash = "filter-county=" + filter_value
 	}
 }
-
-
-

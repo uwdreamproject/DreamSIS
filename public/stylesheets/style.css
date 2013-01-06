@@ -717,11 +717,11 @@ ul.crimes-list li {
 #notifications {
 	position: fixed;
 	top: 10px;
-	width: 50%;
-	left: 50%;
-	margin-left: -25%;
 	text-align: center;
 	z-index: 100;
+	width: 30%;
+	left: 50%;
+	margin-left: -15%;
 }
 
 #notifications .alert {
@@ -738,16 +738,23 @@ ul.crimes-list li {
 	-webkit-transition: all 0.5s ease-in-out;
 	z-index: -100;
 	display: inline-block;
-	/*display: none;*/
+	top: -50px !important;
+	position: absolute;	
+	width: auto;
 }
 
 #notifications .visible {
 	opacity: 1;
 	z-index: 100;
-	/*display: inline-block;*/
-	width: auto;
 	margin: 0 auto;
+	height: auto;
 }
+
+#notifications .alert.visible {
+	top: 0 !important;
+}
+
+
 
 #notifications .error {
 	background-image: url(../images/icons/silk/exclamation.png);
@@ -2972,6 +2979,13 @@ body.error h1 {
 	border-right-width: 0;
 	border-top-width: 0;
 }
+
+#notifications {
+	width: 70%;
+	left: 5%;
+	margin-left: 0;
+}
+
 
 #main-nav {
 	margin: 0;

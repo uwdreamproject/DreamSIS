@@ -118,6 +118,12 @@
 
 		<%- if RAILS_ENV == 'development' -%>
 			<pre><%= session.to_yaml %></pre>
+
+			<%#= javascript_tag "updateFlashes({
+				'info' : 'This is an info test.',
+				'error' : 'An error was received.',
+				'notice' : 'You should be aware of this.'
+			})" %>
 		<%- end -%>
 
 	</div>
