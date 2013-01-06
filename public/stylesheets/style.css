@@ -964,6 +964,12 @@ form.formtastic fieldset fieldset legend {
 	margin: 0;
 }
 
+form.formtastic fieldset p:first-child {
+	margin: -10px -2px 2em -7px;
+	padding: 7px;
+	background: rgba(0,0,0,0.03);
+}
+
 form.formtastic fieldset fieldset {
 	margin: 0;
 }

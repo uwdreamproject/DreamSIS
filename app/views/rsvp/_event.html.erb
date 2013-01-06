@@ -6,7 +6,7 @@
 	</td>
 	<td class="event-details">
 		<h2 class="event name"><%= link_to_unless_current h(event.name), event_rsvp_path(event, :audience => @audience) %></h2>
-		<p class="date"><%= event.time_detail %>
+		<p class="date"><%= event.time_detail(:audience => @current_user.try(:person) || @audience) %>
 			<%= content_tag(:span, "Time TBA", :class => 'outline tag') if event.time_tba? %></p>
 		<p class="location"><%=h event.location_string %></p>
 		

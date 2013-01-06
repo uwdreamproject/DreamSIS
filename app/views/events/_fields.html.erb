@@ -7,23 +7,29 @@
 	
 	<%= f.input :event_type %>
 	<%= f.input :event_group %>
-	
+		
 	<%= f.input :date %>
-	
 	<%= f.input :time_tba, :label => "Time TBA", :input_html => { :onChange => "
 					if($('event_time_tba').checked) {
-						$('event_start_time_input').hide(); $('event_end_time_input').hide()
+						$('event_times_input').hide(); $('audience_specific_times').hide();
 					} else {
-						$('event_start_time_input').show(); $('event_end_time_input').show()
+						$('event_times_input').show(); $('audience_specific_times').show();
 					}
 				"} %>
-
-	<%= f.input :start_time, :as => :string, :input_html => { :value => f.object.try(:start_time).try(:to_s, :time12), :size => 10 } %>
-	<%= f.input :end_time, :as => :string, :input_html => { :value => f.object.try(:end_time).try(:to_s, :time12), :size => 10 } %>
-
+	
+	<li class="string optional" id="event_times_input">
+		<%= label_tag "event_start_time", "Times" %>
+		From <%= text_field_tag "event[start_time]", f.object.try("start_time").try(:to_s, :time12), :size => 10 %>
+		to <%= text_field_tag "event[end_time]", f.object.try("end_time").try(:to_s, :time12), :size => 10 %>
+		<p class="inline-hints">Enter times like "11:30 AM" or "5:00 PM". You can enter audience-specific times below.</p>
+	</li>
+	
 	<%= javascript_tag "$('event_time_tba').onchange()" %>
 	
-	<%= f.input :description, :input_html => { :rows => 3 }, :hint => "Use #{link_to("Textile", "http://redcloth.org/", :popup => true)} markup for formatting." %>
+	<%= f.input :description, 
+				:input_html => { :rows => 3 }, 
+				:hint => "Use #{link_to("Textile", "http://redcloth.org/", :popup => true)} markup for formatting. You can enter
+						  audience-specific descriptions below." %>
 	
 	<li class="input">
 		<%= f.label :event_coordinator_id %>
@@ -91,3 +97,15 @@
 	<%= f.input :volunteer_description, :input_html => { :rows => 6 } %>
 	<%= f.input :mentor_description, :input_html => { :rows => 6 } %>
 <% end -%>
+
+<% f.inputs(:name => "Audience-Specific Times", :id => "audience_specific_times") do %>
+	<p>These times will be used instead of the event and start times above for members of the specific audience. Otherwise, the default from above will be displayed.</p>
+	<%- for audience in %w(student volunteer mentor) -%>
+	<li class="string optional">
+		<%= label_tag "event_#{audience}_start_time", audience.titleize.pluralize %>
+		From <%= text_field_tag "event[#{audience}_start_time]", f.object.try("#{audience}_start_time").try(:to_s, :time12), :size => 10 %>
+		to <%= text_field_tag "event[#{audience}_end_time]", f.object.try("#{audience}_end_time").try(:to_s, :time12), :size => 10 %>
+	</li>
+	<% end -%>
+<% end -%>
+

@@ -1,6 +1,6 @@
 <h3 class="pre-title">RSVP for</h3>
 <h1><%=h @event.name %></h1>
-<h2 class="date"><%= @event.time_detail %></h2>
+<h2 class="date"><%= @event.time_detail(:audience => @current_user.try(:person) || @audience) %></h2>
 
 <div class="when-and-where">
 	<h3>When &amp; Where</h3>
@@ -11,7 +11,7 @@
 		<p class="address"><%= @event.location.address %></p>
 	<% end -%>
 	<p class="location_text"><%= @event.location_text %></p>
-	<p class="time"><%= @event.time_detail %>
+	<p class="time"><%= @event.time_detail(:audience => @current_user.try(:person) || @audience) %>
 		<%= content_tag(:p, content_tag(:span, "Time TBA", :class => 'outline tag')) if @event.time_tba? %></p>
 </div>
 
@@ -19,7 +19,18 @@
 	<dl class="inline-definitions">
 
 		<dt>Date &amp; Time</dt>
-		<dd class="date"><%= @event.time_detail %> <%= content_tag(:span, "Time TBA", :class => 'outline tag') if @event.time_tba? %></dd>
+		<dd class="date">
+			<%= @event.time_detail(:audience => @current_user.try(:person) || @audience) %> 
+			<%= content_tag(:span, "Time TBA", :class => 'outline tag') if @event.time_tba? %>
+			
+			<%- if @event.time_is_audience_specific?(@current_user.try(:person) || @audience) -%>
+				<br><small class="light">
+					Note: This is the time for <%= (@current_user.try(:person).try(:class) || @audience).to_s.downcase.pluralize %>.
+					The event time is listed publicly as <%= @event.time_detail %>.
+				</small>
+			<% end -%>
+			
+		</dd>
 
 		<dt>Location</dt>
 		<dd class="location"><%=h @event.location_string %></dd>

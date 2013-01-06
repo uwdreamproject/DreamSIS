@@ -173,10 +173,45 @@ class Event < ActiveRecord::Base
     end
     custom_description.blank? ? generic_description : custom_description
   end
+
+  # See EventGroup#description for details.
+  def start_time(person_or_type = nil)
+    generic_start_time = read_attribute(:start_time)
+    return generic_start_time if person_or_type.nil?
+    klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type
+    if klass == Student || klass == Participant
+      custom_start_time = student_start_time
+    elsif klass == Volunteer
+      custom_start_time = volunteer_start_time
+    elsif klass == Mentor
+      custom_start_time = mentor_start_time
+    end
+    custom_start_time.blank? ? generic_start_time : custom_start_time
+  end
+
+  # See EventGroup#description for details.
+  def end_time(person_or_type = nil)
+    generic_end_time = read_attribute(:end_time)
+    return generic_end_time if person_or_type.nil?
+    klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type
+    if klass == Student || klass == Participant
+      custom_end_time = student_end_time
+    elsif klass == Volunteer
+      custom_end_time = volunteer_end_time
+    elsif klass == Mentor
+      custom_end_time = mentor_end_time
+    end
+    custom_end_time.blank? ? generic_end_time : custom_end_time
+  end
+  
+  # Returns true if there is an audience-specific time for the specified audience that is different from the generic event times.
+  def time_is_audience_specific?(person_or_type = nil)
+    start_time(person_or_type) != start_time || end_time(person_or_type) != end_time
+  end
   
   # Convenience method for +time_detail(:time_only => true)+
-  def time_only
-  time_detail(:time_only => true)
+  def time_only(person_or_type = nil)
+    time_detail(:time_only => true, :audience => person_or_type)
   end
 
   # Returns a human-readable bit of text describing the start and end times of this event, as follows:
@@ -195,29 +230,32 @@ class Event < ActiveRecord::Base
   # * +time_only+: Don't show the date, just the time(s).
   # * +date_only+: Don't show the times, just the date.
   # * +use_relative_dates+: Use "today" and "tomorrow" where applicable. Defaults to +true+.
+  # * +audience+: Pass a person object or subclass of Person to use audience-specific times (if they exist).
   def time_detail(options = {})
     default_options = {
      :use_words => true,
      :date_format => :date_with_day_of_week,
      :time_format => :time12,
-     :use_relative_dates => true
+     :use_relative_dates => true,
+     :audience => nil
     }
     options = default_options.merge(options)
+    audience = options[:audience]
     separator = options[:use_words] ? { :to => " to", :from => " from", :at => " at" } : { :to => " -", :from => "", :at => "" }
     _start_date = date.to_date.to_s(options[:date_format]).strip
     _start_date = "Today" if date.to_date == Time.now.to_date && options[:use_relative_dates]
     _start_date = "Tomorrow" if date.to_date == 1.day.from_now.to_date && options[:use_relative_dates]
-    _start_time = start_time.to_time.to_s(options[:time_format]).strip if start_time
-    _end_date = end_time.to_date.to_s(options[:date_format]).strip if end_time
-    _end_date = "today" if end_time && end_time.to_date == Time.now.to_date && options[:use_relative_dates]
-    _end_date = "tomorrow" if end_time && end_time.to_date == 1.day.from_now.to_date && options[:use_relative_dates]
-    _end_time = end_time.to_time.to_s(options[:time_format]).strip if end_time
+    _start_time = start_time(audience).to_time.to_s(options[:time_format]).strip if start_time(audience)
+    _end_date = end_time(audience).to_date.to_s(options[:date_format]).strip if end_time(audience)
+    _end_date = "today" if end_time(audience) && end_time(audience).to_date == Time.now.to_date && options[:use_relative_dates]
+    _end_date = "tomorrow" if end_time(audience) && end_time(audience).to_date == 1.day.from_now.to_date && options[:use_relative_dates]
+    _end_time = end_time(audience).to_time.to_s(options[:time_format]).strip if end_time(audience)
     return "Time TBA" if options[:time_only] && time_tba?
-    return "#{_start_date}" if (options[:date_only] && (end_time.blank? || start_time.to_date == end_time.to_date)) || start_time.blank? || time_tba?
-    return "#{_start_time}" if options[:time_only] && !end_time
-    return "#{_start_time}#{separator[:to]} #{_end_time}" if options[:time_only] && start_time.to_date == end_time.to_date
-    return "#{_start_date}#{separator[:at]} #{_start_time}" if start_time && end_time.nil?
-    return "#{_start_date}#{separator[:from]} #{_start_time}#{separator[:to]} #{_end_time}" if start_time.to_date == end_time.to_date
+    return "#{_start_date}" if (options[:date_only] && (end_time(audience).blank? || start_time(audience).to_date == end_time(audience).to_date)) || start_time(audience).blank? || time_tba?
+    return "#{_start_time}" if options[:time_only] && !end_time(audience)
+    return "#{_start_time}#{separator[:to]} #{_end_time}" if options[:time_only] && start_time(audience).to_date == end_time(audience).to_date
+    return "#{_start_date}#{separator[:at]} #{_start_time}" if start_time(audience) && end_time(audience).nil?
+    return "#{_start_date}#{separator[:from]} #{_start_time}#{separator[:to]} #{_end_time}" if start_time(audience).to_date == end_time(audience).to_date
     return "#{_start_date}#{separator[:at]} #{_start_time}#{separator[:to]} #{_end_date}#{separator[:at]} #{_end_time}"
   end
 
