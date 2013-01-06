@@ -79,8 +79,10 @@
 
 <% f.inputs(:name => "Attendees") do %>
 	<%= f.input :allow_rsvps, :label => "Allow people to RSVP before this event" %>
-	<%= f.input :show_for_participants, :label => "Show on participant attendance sheets" %>
-	<%= f.input :show_for_mentors, :label => "Show on mentor attendance sheets" %>
+	<%= f.input :show_for_students %>
+	<%= f.input :show_for_participants %>
+	<%= f.input :show_for_volunteers %>
+	<%= f.input :show_for_mentors %>
 <% end -%>
 
 <% f.inputs(:name => "Capacity Limits") do %>

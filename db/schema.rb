@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130105230055) do
+ActiveRecord::Schema.define(:version => 20130106050940) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -126,6 +126,8 @@ ActiveRecord::Schema.define(:version => 20130105230055) do
     t.time     "volunteer_end_time"
     t.time     "mentor_start_time"
     t.time     "mentor_end_time"
+    t.boolean  "show_for_students",     :default => true
+    t.boolean  "show_for_volunteers",   :default => true
   end
 
   create_table "how_did_you_hear_options", :force => true do |t|

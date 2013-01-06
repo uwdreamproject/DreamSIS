@@ -29,7 +29,7 @@ class RsvpController < ApplicationController
     apply_extra_footer_content(@event_group)
     
     @counties = {}
-    for event in @event_group.events.future
+    for event in @event_group.future_events(@current_user.try(:person) || @audience)
       @counties[event.location.try(:county)] ||= {}
       @counties[event.location.try(:county)][event.location] ||= []
       @counties[event.location.try(:county)][event.location] << event

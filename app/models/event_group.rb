@@ -13,6 +13,19 @@ class EventGroup < ActiveRecord::Base
 
   default_scope :order => "id DESC"
   
+  # Returns future events that should be displayed for the particular person or audience type.
+  def future_events(person_or_type = nil)
+    klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type
+    klass = nil unless %w(Student Participant Volunteer Mentor).include?(klass.to_s)
+    conditions_filters = { :date_filter => Time.now.midnight }
+    conditions_string = "date >= :date_filter "
+    if klass
+      conditions_string << "AND show_for_#{klass.to_s.downcase.pluralize} = :audience_filter"
+      conditions_filters[:audience_filter] = true
+    end
+    events.find(:all, :conditions => [conditions_string, conditions_filters])
+  end
+  
   # Returns the description based on the type of person provided as a parameter (or a class name).
   # If no parameter is given (or it is nil), the generic description (the original +description+
   # attribute in EventGroup) is returned. This is also the case if a specialized description does

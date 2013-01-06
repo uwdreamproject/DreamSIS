@@ -5,9 +5,9 @@
 <%= render :partial => 'training_required_note', :locals => { :event_or_group => @event_group } %>
 
 <table class="highlightless rsvp">
-	<%= render :partial => 'event', :collection => @event_group.events.future %>
+	<%= render :partial => 'event', :collection => @event_group.future_events(@current_user.try(:person) || @audience) %>
 	
-	<%- if @event_group.events.future.empty? -%>
+	<%- if @event_group.future_events(@current_user.try(:person) || @audience).empty? -%>
 	<tr class="empty">
 		<td colspan=10>There aren't any events available for RSVP right now.</td>
 	</tr>
