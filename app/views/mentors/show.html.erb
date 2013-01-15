@@ -26,6 +26,9 @@
 			
 		<dt>Gender</dt>
 		<dd><%= @mentor.sex %></dd>
+		
+		<dt>Phone</dt>
+		<dd><%= number_to_phone @mentor.phone_mobile %></dd>
 
 		<dt>Date of Birth</dt>
 		<dd><%= @mentor.birthdate.to_s %></dd>
