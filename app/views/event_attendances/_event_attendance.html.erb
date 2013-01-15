@@ -9,6 +9,8 @@
 	
 	<td><%= event_attendance.person.try(:programs).to_a.collect{|p| content_tag(:abbr, h(p.abbreviation), :title => h(p.title), :class => 'initialism')}.join(", ") %></td>
 	
+	<td><%= number_to_phone event_attendance.person.try(:phone_mobile) %></td>
+	
 	<td><%=h event_attendance.shift.try(:title) %></td>
 	
 	<%- if @event.training_required?(@audience.to_s) -%>

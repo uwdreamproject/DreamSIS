@@ -7,6 +7,7 @@
 			<th>Attendee</th>
 			<%= "<th>High School</th>" if @audience.to_s.downcase == "participant" || @audience.to_s.downcase == "student" %>
 			<th>Program(s)</th>
+			<th>Phone</th>
 			<th>Shift</th>
 			<%= "<th class='centered'>Trained?</th>" if @event.training_required?(@audience.to_s) %>
 			<th class="centered">RSVP'd?
