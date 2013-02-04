@@ -11,6 +11,7 @@ gem 'json'
 gem 'exceptional'
 gem 'rdoc'
 gem 'RedCloth'
+gem 'country_select'
 
 gem 'bcrypt-ruby', '~> 3.0.0'
 

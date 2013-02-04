@@ -3,7 +3,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :notes
   map.resources :programs
   map.resources :object_filters
-  map.resources :locations
+  map.resources :locations, :collection => { :auto_complete_for_location_name => :any }
+  map.resources :colleges, :controller => "locations"
   map.resources :quarters, :member => { :sync => :put }
   map.resources :events do |events|
     events.resources :event_attendances, :as => :attendees, :collection => { 
@@ -24,7 +25,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :participants, 
     :has_many => [:college_applications, :scholarship_applications], 
     :collection => { :check_duplicate => :any, :add_to_group => :post, :fetch_participant_group_options => :any },
-    :member => { :note => [ :post, :put ], :fetch_participant_group_options => :any }
+    :member => { :note => [ :post, :put ], :fetch_participant_group_options => :any } do |participant|
+    participant.resources :college_applications, :collection => { :auto_complete_for_institution_name => :any }
+  end  
+    
   map.resources :students, :controller => :participants, :only => [:show]
 
   map.resources :participant_groups,

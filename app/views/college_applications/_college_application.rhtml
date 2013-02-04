@@ -1,5 +1,31 @@
 <tr id="college_application_<%= college_application.id %>">
-  <td><%=h college_application.institution.name %></td>
+	<td class="college-logo">
+		<img src="http://g.etfv.co/<%= Addressable::URI.heuristic_parse(h(college_application.institution.try(:webaddr))).to_s %>">
+	</td>
+  <td>
+	<span class="primary">  <%=h college_application.institution.try(:name) %>
+	<small class="light"> (#<%=h college_application.institution.try(:id) %>)</small></span>
+	<span class="tertiary">
+		<span class="location"><%=h college_application.institution.try(:location_detail) %></span> 
+
+		<%- unless college_application.institution.try(:webaddr).nil? %>
+			<span class="url">
+				<%= link_to h(college_application.institution.try(:webaddr)), 
+							Addressable::URI.heuristic_parse(h(college_application.institution.try(:webaddr))).to_s, 
+							:target => "_blank" %>
+				</span>
+		<% end -%>
+		
+		<%- unless college_application.institution.try(:college_navigator_url).nil? %>
+			<span class="ipeds">
+				<%= link_to "Open in CollegeNavigator", 
+							college_application.institution.try(:college_navigator_url), 
+							:target => "_blank", 
+							:class => "offsite" %>
+				</span>
+		<% end -%>
+	</span>
+  </td>
   <td><%=h college_application.choice %></td>
   <td>
 	<% remote_form_for([@participant, college_application], 
@@ -13,10 +39,10 @@
 
 	<%= "<font color=green>Attending</font>" if college_application.attending? %></td>
 	
-  <td><%= link_to 'Details', [@participant, college_application] %>
-  	| <%= link_to 'Edit', edit_participant_college_application_path(@participant, college_application) %>
-  	| <%= link_to 'Remove', [@participant, college_application], :confirm => 'Are you sure?', :method => :delete %>
-	| <%= link_to_remote 'Attending', 
+  <td class="functions">
+  	<%= link_to 'Edit', edit_participant_college_application_path(@participant, college_application) %>
+  	<%= link_to 'Remove', [@participant, college_application], :confirm => 'Are you sure?', :method => :delete %>
+	<%= link_to_remote 'Attending', 
 						:url => participant_url(@participant, 
 							:participant => { :college_attending_id => college_application.institution_id },
 							:college_application_id => college_application.id), 

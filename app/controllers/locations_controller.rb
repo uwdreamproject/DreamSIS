@@ -2,7 +2,7 @@ class LocationsController < ApplicationController
   # GET /locations
   # GET /locations.xml
   def index
-    @locations = Location.find(:all)
+    @locations = Location.paginate(:all, :page => params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -24,7 +24,9 @@ class LocationsController < ApplicationController
   # GET /locations/new
   # GET /locations/new.xml
   def new
-    @location = Location.new
+    klass = (params[:type] || "Location").constantize
+    klass = Location unless klass.new.is_a?(Location)
+    @location = klass.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -40,7 +42,9 @@ class LocationsController < ApplicationController
   # POST /locations
   # POST /locations.xml
   def create
-    @location = Location.new(params[:location])
+    klass = (params[:type] || "Location").constantize
+    klass = Location unless klass.new.is_a?(Location)
+    @location = klass.new(params[:location] || params[:college] || params[:high_school])
 
     respond_to do |format|
       if @location.save
@@ -60,7 +64,7 @@ class LocationsController < ApplicationController
     @location = Location.find(params[:id])
 
     respond_to do |format|
-      if @location.update_attributes(params[:location])
+      if @location.update_attributes(params[:location] || params[:college] || params[:high_school])
         flash[:notice] = 'Location was successfully updated.'
         format.html { redirect_to(@location) }
         format.xml  { head :ok }
@@ -80,6 +84,13 @@ class LocationsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(locations_url) }
       format.xml  { head :ok }
+    end
+  end
+
+  def auto_complete_for_location_name
+    @locations = Location.find(:all, :conditions => ["LOWER(name) LIKE ?", "%#{params[:location][:name].to_s.downcase}%"])
+    respond_to do |format|
+      format.js
     end
   end
   

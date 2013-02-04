@@ -85,6 +85,14 @@ class CollegeApplicationsController < ParticipantsController
       format.xml  { head :ok }
     end
   end
+
+  def auto_complete_for_institution_name
+    @institutions = Institution.find_all_by_name(params[:college_application][:institution_name].to_s.downcase)[0..10]
+    render :partial => "shared/auto_complete_institution_name", 
+            :object => @institutions, 
+            :locals => { :highlight_phrase => params[:college_application][:institution_name].to_s }
+  end
+
   
   protected
   

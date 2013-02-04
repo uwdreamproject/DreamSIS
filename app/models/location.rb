@@ -2,6 +2,7 @@ class Location < ActiveRecord::Base
 
   validates_presence_of :name
   validates_uniqueness_of :name
+  validates_format_of :website_url, :with => Addressable::URI::URIREGEX
   
   geocoded_by :address do |obj, results|
     if geo = results.first
@@ -40,6 +41,5 @@ class Location < ActiveRecord::Base
   def phone=(new_number)
     write_attribute :phone, new_number.gsub(/[^0-9]/i, '')
   end
-
-    
+  
 end

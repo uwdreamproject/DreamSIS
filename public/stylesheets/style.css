@@ -138,6 +138,14 @@ table.users td.login a {
 	text-decoration: none;
 }
 
+table.locations td.name {
+	font-weight: bold;
+}
+
+table.locations td.name a {
+	text-decoration: none;
+}
+
 table td.functions a {
 	font-size: 90%;
 	display: inline-block;
@@ -604,6 +612,31 @@ a.redirect-link:hover {
 	background-image: url(../images/icons/silk/building.png);
 }
 
+.info-section#college_applications td {
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+
+.info-section#college_applications .location {
+	/*background: url(../images/icons/silk/map.png) no-repeat 2px 0;
+	padding-left: 20px;
+	background-size: 12px;*/
+
+}
+
+.info-section#college_applications .tertiary a {
+	color: inherit;
+	/*background: url(../images/icons/silk/world_go.png) no-repeat 2px 0;*/
+	padding-left: 0.6em;
+	margin-left: 0.5em;
+	background-size: 12px;
+	border-left: 1px solid #dadada;
+}
+
+td.college-logo {
+	vertical-align: top;
+}
+
 .info-section#scholarship_applications h2 {
 	background-image: url(../images/icons/silk/money.png);
 }
@@ -712,6 +745,11 @@ ul.crimes-list {
 ul.crimes-list li {
 	float: left;
 	margin-right: 30px;
+}
+
+#institution_details.after_select small {
+	display: inline-block;
+	margin-top: 0.5em;
 }
 
 #notifications {
@@ -1040,6 +1078,11 @@ ul.big.choice li {
 
 .dropzone {
 	background: rgba(10,255,10,0.5) !important;
+}
+
+a.offsite {
+	background: url(../images/offsite.png) no-repeat right center;
+	padding-right: 16px;
 }
 
 .button {
@@ -2389,7 +2432,7 @@ body.rsvp.event h5 {
 	margin-bottom: 0;
 }
 
-body.rsvp .when-and-where {
+body.rsvp .when-and-where, .when-and-where {
 	float: right;
 	margin-left: 1em;
 	margin-bottom: 2em;
@@ -2504,6 +2547,11 @@ body.rsvp.event table.rsvp td {
 div.auto_complete {
   width: 350px;
   background: #fff;
+  z-index: 100;
+}
+
+div#institution_name_auto_complete ul {
+	width: 300px;
 }
 
 
@@ -2547,19 +2595,25 @@ div#organization_name_auto_complete ul li {
 	background: url(../images/icons/silk/building.png) no-repeat 6px 6px;
 }
 
+div#institution_name_auto_complete ul li {
+	background-image: url(../images/icons/silk/building.png);
+	background-repeat: no-repeat;
+	background-position: 6px 6px;
+}
+
 div.auto_complete ul strong.highlight {
   margin:0;
   padding:0;
   background: #d8dfea;
 }
 
-div.auto_complete .primary {
+div.auto_complete .primary, .primary {
 	color: #000;
 	margin-bottom: 0;
 	display: block;
 }
 
-div.auto_complete .secondary {
+div.auto_complete .secondary, .secondary {
 	font-weight: normal;
 	font-size: 90%;
 	color: #808080;
@@ -2567,7 +2621,7 @@ div.auto_complete .secondary {
 	margin-bottom: 0;
 }
 
-div.auto_complete .tertiary {
+div.auto_complete .tertiary, .tertiary {
 	font-weight: normal;
 	font-size: 80%;
 	color: #808080;

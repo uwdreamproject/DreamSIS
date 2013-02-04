@@ -69,3 +69,4 @@ Rails::Initializer.run do |config|
 end
 
 load "#{RAILS_ROOT}/lib/date_helper.rb"
+load "#{RAILS_ROOT}/lib/string_helper.rb"
