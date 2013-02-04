@@ -1,6 +1,6 @@
 
 class String
   def html_safe
-    h(self)
+    ActionController::Base.helpers.sanitize(self)
   end
 end
