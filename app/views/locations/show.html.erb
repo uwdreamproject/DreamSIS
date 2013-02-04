@@ -1,33 +1,26 @@
-<p>
-  <b>Name:</b>
-  <%=h @location.name %>
-</p>
+<h3 class="pre-title"><%=h @location.type.to_s.titleize %></h3>
+<h1><%=h @location.name %></h1>
 
-<p>
-  <b>Street:</b>
-  <%=h @location.street %>
-</p>
+<div class="when-and-where">
+  <%= image_tag "https://maps.google.com/maps/api/staticmap?size=250x250&sensor=false&zoom=12&markers=#{@location.try(:latitude)}%2C#{@location.try(:longitude)}" if @location.try(:geocoded?) %>
+  <p class="address"><%= @location.address %></p>
+</div>
 
-<p>
-  <b>City:</b>
-  <%=h @location.city %>
-</p>
+<dl class="inline-definitions">
 
-<p>
-  <b>State:</b>
-  <%=h @location.state %>
-</p>
+  <dt>Address</dt>
+  <dd><%=h @location.address %></dd>
 
-<p>
-  <b>Zip:</b>
-  <%=h @location.zip %>
-</p>
+  <dt>Phone</dt>
+  <dd><%= number_to_phone @location.phone %></dd>
 
-<p>
-  <b>Phone:</b>
-  <%=h @location.phone %>
-</p>
+  <dt>Website URL</dt>
+  <dd><%= link_to Addressable::URI.heuristic_parse(@location.website_url).to_s, 
+                  Addressable::URI.heuristic_parse(@location.website_url).to_s %></dd>
 
+</dl>
 
-<%= link_to 'Edit', edit_location_path(@location) %> |
-<%= link_to 'Back', locations_path %>
+<div id="sidebar">
+  <p><%= link_to 'Edit this location', edit_location_path(@location), :class => 'edit button' %></p>
+  <p><%= link_to 'Back to all locations', locations_path, :class => 'back button' %></p>
+</div>

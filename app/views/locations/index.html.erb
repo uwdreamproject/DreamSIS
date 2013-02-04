@@ -1,29 +1,44 @@
 <h1>Locations</h1>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Address</th>
-    <th>Coordinates</th>
-	<th>County</th>
-    <th>Phone</th>
-	<th colspan=3></th>
-  </tr>
+<%= will_paginate @locations %>
 
-<% for location in @locations %>
-  <tr>
-    <td><%=h location.name %></td>
-    <td><%=h location.address %></td>
-    <td><%=h location.to_coordinates.join(", ") if location.geocoded? %></td>
-	<td><%=h location.county %></td>
-    <td><%=h number_to_phone location.phone %></td>
-    <td><%= link_to 'Show', location %></td>
-    <td><%= link_to 'Edit', edit_location_path(location) %></td>
-    <td><%= link_to 'Destroy', location, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
+<table class="locations">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Address</th>
+      <th>Coordinates</th>
+      <th>County</th>
+      <th>Phone</th>
+      <th colspan=3></th>
+    </tr>
+  </thead>
+
+  <tbody id="original_locations">
+    <%= render :partial => 'location', :collection => @locations %>
+  </tbody>
+
+  <tbody id="location_search_results"></tbody>
+
 </table>
 
-<br />
+<div id="sidebar">
+  <p><%= link_to 'New location', new_location_path, :class => "add button" %></p>
+  <p><%= link_to 'New high school', new_location_path(:type => "HighSchool"), :class => "add button" %></p>
+  <p><%= link_to 'New college', new_location_path(:type => "College"), :class => "add button" %></p>
 
-<%= link_to 'New location', new_location_path, :class => "add button" %>
+  <% form_for :location, :html => { :onSubmit => "return false;" } do |f| %>
+    <h4>Search for a location:</h4>
+    <input id="location_name" name="location[name]" size="30" type="search" results="5" autosave="location_name_search" placeholder="Search" />
+    <div class="auto_complete" id="location_name_auto_complete"></div>
+    
+    <%= javascript_tag "var location_name_auto_completer = new Ajax.Autocompleter('location_name', 'location_name_auto_complete', '#{auto_complete_for_location_name_locations_path}', { minChars: 3 })" %>
+      
+    <%= observe_field('location_name', 
+      :frequency => 0.25,
+      :function => "if($F('location_name')=='') { $('original_locations').show(); $$('.pagination').invoke('show'); $('location_search_results').update(); return true; }") %>
+
+  <% end %> 
+  
+</div>

@@ -1,0 +1,9 @@
+<% content_tag('ul') do %>
+	<% for result in auto_complete_institution_name %>
+		<li id="<%= result.class.to_s.underscore %>_<%= result.id %>" class="icon-left <%= result.class.to_s.underscore %>">
+			<span class="primary"><%= highlight(h(result.name), h(highlight_phrase)) %>
+				<small class="light">(#<%=h result.id %>)</small></span>
+			<span class="secondary"><%=h result.location_detail %></span>
+		</li>
+	<% end -%>	
+<% end -%>
