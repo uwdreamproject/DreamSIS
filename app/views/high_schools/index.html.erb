@@ -1,23 +1,25 @@
-<h1>High Schools</h1>
+<h1>Partner High Schools</h1>
 
-<table>
+<table class="locations">
   <tr>
     <th>Name</th>
-	<th colspan=5></th>
+    <th>District</th>
+	<th colspan=5>Functions</th>
   </tr>
 
 <% for high_school in @high_schools %>
   <tr>
-    <td><%=h high_school.name %></td>
-	<td><%= high_school.partner_school? ? "[Partner School]" : "" %></td>
-    <td><%= link_to 'Show', high_school %></td>
-	<td><%= link_to "#{Quarter.current_quarter.title} Visits", high_school_visits_path(high_school, Quarter.current_quarter) if Quarter.current_quarter %>
-    <td><%= link_to 'Edit', edit_high_school_path(high_school) %></td>
-    <td><%= link_to 'Destroy', high_school, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td class="name"><%= link_to h(high_school.name), high_school %></td>
+    <td><%=h high_school.district %></td>
+	  <td class="functions"><%= link_to 'Show', high_school %></td>
+	<td class="functions"><%= link_to "#{Quarter.current_quarter.title} Visits", high_school_visits_path(high_school, Quarter.current_quarter) if Quarter.current_quarter %>
+    <td class="functions"><%= link_to 'Edit', edit_high_school_path(high_school) %></td>
+    <td class="functions"><%= link_to 'Destroy', high_school, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
-<br />
-
-<%= link_to 'New high school', new_high_school_path, :class => 'add button' %>
+<div id="sidebar">
+  <p><%= link_to 'New high school', new_high_school_path, :class => 'add button' %></p>
+  <p><%= link_to "All locations", locations_path, :class => 'list button' %></p>
+</div>

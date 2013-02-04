@@ -4,7 +4,7 @@ class HighSchoolsController < ApplicationController
   # GET /high_schools
   # GET /high_schools.xml
   def index
-    @high_schools = HighSchool.find(:all)
+    @high_schools = HighSchool.partners
 
     respond_to do |format|
       format.html # index.html.erb
