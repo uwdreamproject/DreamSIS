@@ -42,7 +42,7 @@ class Institution
   def aliases(options = { :include_institution_name => true })
     aliases = []
     aliases << self[:name] if options[:include_institution_name]
-    aliases << self[:ialias].split(",").split("|").collect(&:strip)
+    aliases << self[:ialias].split(",").split("|").flatten.collect(&:strip)
     aliases.flatten.compact
   end
 
