@@ -2,7 +2,6 @@ class Participant < Person
   belongs_to :high_school
   has_many :college_applications
   has_many :scholarship_applications
-  belongs_to :college_attending, :class_name => "Institution"
   belongs_to :mother_education_level, :class_name => "EducationLevel"
   belongs_to :father_education_level, :class_name => "EducationLevel"
   belongs_to :family_income_level, :class_name => "IncomeLevel"
@@ -101,6 +100,12 @@ class Participant < Person
   # Returns true if there is a value in the fafsa_submitted_date field
   def submitted_fafsa?
     !fafsa_submitted_date.nil?
+  end
+
+  # Returns the Institution or College record for this Participant.
+  def college_attending
+    return nil unless college_attending_id
+    Institution.find(college_attending_id)
   end
   
 end
