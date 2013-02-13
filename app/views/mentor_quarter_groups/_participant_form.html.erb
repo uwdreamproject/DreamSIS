@@ -7,7 +7,7 @@
 
 
 	<div class="participants" id="participant_form_<%= mentor_quarter.id %>" style="display:none">
-		<% remote_form_for [@mentor_quarter_group, mentor_quarter] do |f| %>
+		<% remote_form_for [mentor_quarter.mentor_quarter_group, mentor_quarter] do |f| %>
 			<%= f.collection_select :new_participant_id, 
 									mentor_quarter.try(:location).try(:participants),
 									:id, :lastname_first,

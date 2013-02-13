@@ -32,24 +32,24 @@
 	<td>
 		<%- if mentor_quarter.deleted? -%>
 			<%= link_to "Undelete",
-						mentor_quarter_group_mentor_quarter_path(@mentor_quarter_group, mentor_quarter,
+						mentor_quarter_group_mentor_quarter_path(mentor_quarter.mentor_quarter_group, mentor_quarter,
 							:mentor_quarter => { :deleted_at => nil, :volunteer => true },
 							:increment_counter => true), 
 						:method => :put,
 						:confirm => "Are you sure you want to undelete this mentor?" %>
 		<% else -%>
 
-			<%= link_to "Edit", edit_mentor_quarter_group_mentor_quarter_path(@mentor_quarter_group, mentor_quarter) %>
+			<%= link_to "Edit", edit_mentor_quarter_group_mentor_quarter_path(mentor_quarter.mentor_quarter_group, mentor_quarter) %>
 		
 			<%- if @current_user.admin? -%> |
 				<%- if mentor_quarter.lead? -%>
 					<%= link_to "Remove as high school lead", 
-								mentor_quarter_group_mentor_quarter_path(@mentor_quarter_group, mentor_quarter, 
+								mentor_quarter_group_mentor_quarter_path(mentor_quarter.mentor_quarter_group, mentor_quarter, 
 																		:mentor_quarter => { :lead => false }), 
 								:method => :put %>
 				<%- else -%>
 					<%= link_to "Make high school lead", 
-								mentor_quarter_group_mentor_quarter_path(@mentor_quarter_group, mentor_quarter, 
+								mentor_quarter_group_mentor_quarter_path(mentor_quarter.mentor_quarter_group, mentor_quarter, 
 																		:mentor_quarter => { :lead => true }), 
 								:method => :put %>
 				<% end -%>
@@ -58,7 +58,7 @@
 			<br>
 			<%- if mentor_quarter.volunteer? -%>
 				<%= link_to "Delete", 
-							mentor_quarter_group_mentor_quarter_path(@mentor_quarter_group, mentor_quarter), 
+							mentor_quarter_group_mentor_quarter_path(mentor_quarter.mentor_quarter_group, mentor_quarter), 
 							:method => :delete,
 							:confirm => "Are you sure you want to remove this volunteer?" %>
 			<% end -%>
