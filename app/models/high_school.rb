@@ -28,6 +28,51 @@ class HighSchool < Location
     @cohorts ||= participants.find(:all, :select => "DISTINCT grad_year").collect(&:grad_year).compact.sort.reverse
   end
 
+  # Attempts to fetch the CEEB code form the College Board website for this school.
+  # Returns nil if College Board returns no results. Returns a hash of CEEB codes and high school 
+  # names as they are returned by College Board. Unfortunately, the College Board only lets you 
+  # limit high school code searches to city (not school name), so this best guess will often return 
+  # many guesses. This method differs from Institution#ceeb_code_guess in that it always returns the 
+  # hash of results, even if there's only one result.
+  # 
+  # If needed, pass a different +name_value+ to try a slightly different version of the name in the
+  # search.
+  def ceeb_code_guess(name_value = self.name, try_again_on_failure = false)
+    uri = Addressable::URI.parse("http://sat.collegeboard.org/register/sat-code-search-schools")
+    uri.query_values = {
+      "decorator" => "none",
+      "submissionMode" => "ajax",
+      "pageId" => "registerCodeSearch",
+      "codeType" => "high-school-code",
+      "country" => "US",
+      "state" => self.state || "WA",
+      "city" => self.city
+    }
+    url = uri.normalize.to_s
+    puts "Fetching CEEB code results from #{url}"
+    response = open(url).read
+    document = Nokogiri::HTML(response)
+    results = nil
+    if document.xpath("//h3").text == "No Results"
+      results = self.ceeb_code_guess(self.f1sysnam, false) if try_again_on_failure
+      return results
+    else
+      results = {}
+      codes = document.xpath("//tr[@class!='headerRow']/td[@class='codeResultCell']").collect(&:text).collect(&:to_i)
+      names = document.xpath("//tr[@class!='headerRow']/td[@class='schoolResultCell']").collect(&:text)
+      codes.each_with_index do |code, i|
+        results[codes[i]] = names[i].strip
+      end
+      if results.empty?
+        return nil
+      elsif results.size == 1
+        return results
+      else
+        return results
+      end
+    end
+  end
+
   # Returns all high schools in a Hash with district name for keys and an array of schools for values.
   def self.all_by_district(options = {})
     @all_by_district = {}
@@ -38,5 +83,7 @@ class HighSchool < Location
     end
     @all_by_district
   end
+
+
   
 end
