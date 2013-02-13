@@ -97,7 +97,7 @@ class Institution
       codes = document.xpath("//tr[@class!='headerRow']/td[@class='codeResultCell']").collect(&:text).collect(&:to_i)
       names = document.xpath("//tr[@class!='headerRow']/td[@class='schoolResultCell']").collect(&:text)
       codes.each_with_index do |code, i|
-        results[codes[i]] = names[i]
+        results[codes[i]] = names[i].strip
       end
       if results.empty?
         return nil
