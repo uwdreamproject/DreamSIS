@@ -2148,7 +2148,6 @@ div.notes.editable, p.notes.editable {
 
 .hoverable .show_on_hover {
 	opacity: 0;
-	/*-webkit-transition: opacity 0.15s ease-in-out;*/
 }
 
 .hoverable:hover .show_on_hover {
