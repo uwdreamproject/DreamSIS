@@ -29,10 +29,11 @@
 	</td>
 	<td><%= content_tag :span, mentor_quarter_group.mentor_quarters.size, :class => "" %></td>
 	<td><%= mentor_quarter_group.capacity %></td>
-	<td><%= link_to 'Show', mentor_quarter_group %>
-		| <%= link_to 'Edit', edit_mentor_quarter_group_path(mentor_quarter_group) %>
-		| <%= link_to 'Sync', sync_mentor_quarter_group_path(mentor_quarter_group), :method => :put unless mentor_quarter_group.course_id.blank? %>
-		| <%= link_to 'Delete', mentor_quarter_group, :confirm => 'Are you sure?', :method => :delete %>
+	<td class="functions">
+		<%= link_to 'Show', mentor_quarter_group %>
+		<%= link_to 'Edit', edit_mentor_quarter_group_path(mentor_quarter_group) %>
+		<%= link_to 'Sync', sync_mentor_quarter_group_path(mentor_quarter_group), :method => :put unless mentor_quarter_group.course_id.blank? %>
+		<%= link_to 'Delete', mentor_quarter_group, :confirm => 'Are you sure?', :method => :delete %>
 	</td>
 </tr>
 <% end %>
