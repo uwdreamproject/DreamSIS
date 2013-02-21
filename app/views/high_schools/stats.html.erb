@@ -3,7 +3,7 @@
 <%- for high_school in @high_schools -%>
 	<div style="margin-bottom: 2em">
 		<h2><%=h high_school.name %></h2>
-		<%= render :partial => "stats", 
+		<%= render :partial => "object_filters/high_school_stats", 
 					:locals => { 
 						:participants => Participant.in_cohort(@cohort).in_high_school(high_school.try(:id)),
 						:hide_title => true 

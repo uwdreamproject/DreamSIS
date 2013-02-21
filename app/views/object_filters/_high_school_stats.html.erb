@@ -1,0 +1,38 @@
+<% 
+participants ||= @participants
+active_participants = participants.select{|p| !p.inactive? }
+hide_title ||= false
+
+ %>
+
+<%- unless hide_title -%>
+	<h2><%= Participant.current_cohort %> Participants</h2>
+<% end -%>
+
+<table class="stats">
+
+	<tr>
+		<td class="title">Total Students</td>
+		<td class="number"><%= participants.size %></td>
+		<td></td>
+		<td class="percentage"></td>
+	</tr>
+	
+	<tr>
+		<td class="title">Active Students</td>
+		<td class="number"><%= active_participants.size %></td>
+		<td></td>
+		<td class="percentage"><%= number_to_percentage(active_participants.size.to_f / participants.size.to_f * 100, :precision => 0) rescue 0.0/0.0 %></td>
+	</tr>
+	
+	<%= render :partial => "object_filters/object_filter", 
+				:collection => Participant.object_filters,
+				:locals => { 
+					:participants => participants,
+					:active_participants => active_participants,
+					:hide_title => hide_title
+				} %>
+
+</table>
+
+<small class="light">Counts and percentages above are compared against <strong>active</strong> participants only.</small>

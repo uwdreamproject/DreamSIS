@@ -1,0 +1,39 @@
+<% 
+# Setup the initial calculations
+filtered_participants = active_participants.select{|p| object_filter.passes?(p, :purpose => :stats)} 
+active_percentage = filtered_participants.size.to_f / active_participants.size.to_f * 100
+total_percentage = filtered_participants.size.to_f / participants.size.to_f * 100
+
+# Figure out what CSS class to use
+if object_filter.target_percentage.blank? && object_filter.warning_threshold.blank?
+	meter_class = "no_target"
+elsif !object_filter.target_percentage.blank? && active_percentage >= object_filter.target_percentage
+	meter_class = "achieved"
+elsif !object_filter.warning_threshold.blank? && active_percentage < object_filter.warning_threshold
+	meter_class = "warning"
+else
+	meter_class = "not_achieved"
+end
+
+# Prep the alt text for the progress meter
+my_alt_text = []
+my_alt_text << "#{number_to_percentage active_percentage, :precision => 0} of active participants"
+my_alt_text << "#{number_to_percentage total_percentage, :precision => 0} of all participants"
+my_alt_text << "Target: #{number_to_percentage object_filter.target_percentage, :precision => 0}" unless object_filter.target_percentage.blank?
+my_alt_text << "Warning below #{number_to_percentage object_filter.warning_threshold, :precision => 0}" unless object_filter.warning_threshold.blank?
+%>
+<tr class="<%= meter_class %>">
+	<td class="title"><%= object_filter.title %></td>
+	<td class="number"><%= filtered_participants.size %></td>
+	<td class="percentage-meter" style="min-width:3em;">
+		<div class="signup-meter stat-meter <%= meter_class %>">
+			<div class="capacity" style="width: 100%;" title="<%= my_alt_text.join("\n") %>">
+				<%- unless object_filter.target_percentage.blank? -%>
+					<div class="target" style="width: <%= object_filter.target_percentage %>%">&nbsp;</div>
+				<% end -%>
+				<div class="size" style="width: <%= active_percentage %>%">&nbsp;</div>
+			</div>
+		</div>
+		</td>
+	<td class="percentage signup-numbers"><%= number_to_percentage(active_percentage, :precision => 0) rescue 0.0/0.0 %>
+</tr>
