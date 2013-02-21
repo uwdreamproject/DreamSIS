@@ -1,7 +1,7 @@
 <tr id="mentor_quarter_<%= mentor_quarter.id %>" class="hoverable <%= "newly_added" if params[:newly_added]==mentor_quarter.id.to_s %>">
 	<td class="photo"><%= image_tag photo_mentor_path(mentor_quarter.try(:mentor), :size => :default), 
 						:class => 'student_photo', 
-						:size => "77x100", 
+						:size => "64x83", 
 						:alt => "" %>
 		</td>
 		
@@ -29,7 +29,7 @@
 					:locals => { :mentor_quarter => mentor_quarter } if mentor_quarter.try(:location) %>
 		</td>
 		
-	<td>
+	<td class="functions">
 		<%- if mentor_quarter.deleted? -%>
 			<%= link_to "Undelete",
 						mentor_quarter_group_mentor_quarter_path(mentor_quarter.mentor_quarter_group, mentor_quarter,
@@ -41,7 +41,7 @@
 
 			<%= link_to "Edit", edit_mentor_quarter_group_mentor_quarter_path(mentor_quarter.mentor_quarter_group, mentor_quarter) %>
 		
-			<%- if @current_user.admin? -%> |
+			<%- if @current_user.admin? -%>
 				<%- if mentor_quarter.lead? -%>
 					<%= link_to "Remove as high school lead", 
 								mentor_quarter_group_mentor_quarter_path(mentor_quarter.mentor_quarter_group, mentor_quarter, 

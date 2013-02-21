@@ -11,3 +11,7 @@
 	<%= link_to 'Cancel', @mentor_quarter_group %>
 
 <% end %>
+
+<div id="sidebar">
+	<%= render :partial => 'time_schedule_details', :object => @mentor_quarter_group.course_resource if @mentor_quarter_group.course_resource %>
+</div>

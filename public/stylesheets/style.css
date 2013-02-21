@@ -88,6 +88,10 @@ table {
 	border-collapse: collapse;
 }
 
+tr {
+	-webkit-transition: background-color 0.15s ease-in-out;
+}
+
 tr:hover, tr.odd:hover, tr.even:hover, tr.highlight {
 	background: #fffde7;
 }
@@ -1355,6 +1359,10 @@ a.button:active {
 	text-align: center;
 }
 
+dd.time-schedule-comments {
+	font-size: 90%;
+	overflow: auto;
+}
 
 .split2.splitpos2 {
 	left: 49%;
@@ -1520,11 +1528,8 @@ fieldset ul {
 	color: #7f7f7f;
 }
 
-.empty, tr.empty td, td.empty {
+.empty, tr.empty td, td.empty, table.mentors tr.empty td {
 	padding: 30px;
-	/*
-
-padding-left: 5px;*/
 	color: #b2b2b2;
 	text-align: center;
 	font-size: 110%;
@@ -1648,7 +1653,7 @@ img.student_photo.left {
 }
 
 table.mentors td.photo {
-	width: 100px;
+	width: 80px;
 	padding: 10px 0;
 }
 
@@ -1663,7 +1668,11 @@ table.mentors td {
 
 table.mentors .mentor.name {
 	font-size: 125%;
-	font-weight: normal;
+	font-weight: bold;
+}
+
+.mentor.name a {
+	text-decoration: none;
 }
 
 .success-message {
@@ -2095,6 +2104,10 @@ td.signup-meter {
 	padding: 0 5px;
 }
 
+.note-form-container {
+	margin-top: 5px;
+}
+
 div.notes.editable, p.notes.editable {
 	background: #fffde7 url(../images/icons/silk/note.png) no-repeat 3px 3px;
 	padding: 3px;
@@ -2134,11 +2147,12 @@ div.notes.editable, p.notes.editable {
 }
 
 .hoverable .show_on_hover {
-	visibility: hidden;
+	opacity: 0;
+	-webkit-transition: opacity 0.15s ease-in-out;
 }
 
 .hoverable:hover .show_on_hover {
-	visibility: visible;
+	opacity: 1;
 }
 
 a.add.notes {
@@ -3220,6 +3234,7 @@ table.mentors td {
 
 .hoverable .show_on_hover {
 	visibility: visible;
+	opacity: 1;
 }
 
 .mentors td a.add.notes {

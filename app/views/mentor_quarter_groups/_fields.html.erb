@@ -1,7 +1,7 @@
 <%- f.inputs(:name => "Group Details") do -%>
 	<%= f.input :quarter %>
 	<%= f.input :title, :hint => "Give this group a title. Usually this just matches the location name, like \"Foster High School\"." %>
-	<%= f.input :location, :hint => "Where does this group meet?" %>
+	<%= f.input :location, :hint => "Where does this group meet?", :collection => HighSchool.partners %>
 	<%= f.input :capacity, :input_html => { :size => 4 }, 
 					:hint => "Setting a capacity limit will prevent volunteers from signing up when this group is full." %>
 	<%= f.input :none_option, :hint => "This group does not meet normally like other groups. Often used for tracking leaders or admins who are not actually a part of a real group." %>
