@@ -130,7 +130,10 @@ class Quarter < ActiveRecord::Base
 
   # Returns the CourseResources for the course_ids specified in the course_ids field.
   def courses
-    @courses ||= course_ids.split.to_a.collect{|course_id| CourseResource.find(course_id)}
+    return [] if course_ids.nil?
+    @courses ||= course_ids.split.to_a.collect do |course_id|
+      CourseResource.find(course_id)
+    end
   end
   
   # Pulls all the mentors from the mentor_quarter_groups and returns a single, flattened array of Mentors.

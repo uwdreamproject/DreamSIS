@@ -38,6 +38,12 @@ class MentorQuarterGroup < ActiveRecord::Base
     match = course_id.match(/\/(\w+)$/)
     match ? match[1] : nil
   end
+
+  # Returns the associated CourseResource for this group, if +course_id+ is set.
+  def course_resource
+    return nil if course_id.nil?
+    @course_resource ||= CourseResource.find(course_id)
+  end
   
   # Returns true if the mentor_quarter_count is greater than the capacity. Always returns false if cap is nil.
   def full?

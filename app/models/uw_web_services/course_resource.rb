@@ -11,36 +11,67 @@ class CourseResource < UwWebResource
   end
   
   # Course ID in the format that SWS uses. For example: "2011,spring,EDUC,360"
-  def id
-    [self.Course.Year, self.Course.Quarter, self.Course.CurriculumAbbreviation, self.Course.CourseNumber].join(",")
+  def id(include_section_id = true)
+    course = self.attributes["Course"] || self
+    curriculum = course.attributes["Curriculum"] || course
+    base_id = [curriculum.Year, curriculum.Quarter, curriculum.CurriculumAbbreviation, course.CourseNumber].join(",")
+    base_id << "/" + self.PrimarySection.SectionID if include_section_id && self.PrimarySection.SectionID rescue nil
+    return base_id
   end
   
   def abbreviation
-    [self.Course.CurriculumAbbreviation, self.Course.CourseNumber, self.SectionID].join(" ")
+    course = self.attributes["Course"] || self
+    [
+      (course.attributes["CurriculumAbbreviation"] || course.attributes["Curriculum"].attributes["CurriculumAbbreviation"]), 
+      course.attributes["CourseNumber"], 
+      self.attributes["SectionID"]
+    ].join(" ").strip
   end
   
-  # Shortcut method to get to the "LinkedSections" attribute in the xml payload from SWS.
-  def linked_sections
-    return [] if attributes["LinkedSectionTypes"].nil?
+  # Shortcut method to get to the "LinkedSections" attribute in the xml payload from SWS. If the data payload
+  # does not provide any linked sections, this method calls #associated_sections instead (bypass this by passing
+  # +false+ for +return_associated_sections_on_nil+).
+  def linked_sections(return_associated_sections_on_nil = true)
+    return associated_sections if return_associated_sections_on_nil && attributes["LinkedSectionTypes"].nil?
     self.LinkedSectionTypes.SectionType.LinkedSections.LinkedSection
+  end
+
+  # Performs a CourseSectionResource#find on this course's base ID, which should return all associated sections for this
+  # Course. This is useful for courses that do not specify any "LinkedSections" and you just need all of the sections
+  # for this Course.
+  def associated_sections
+    course = self.attributes["Course"] || self
+    curriculum = course.attributes["Curriculum"] || course
+    @associated_sections ||= CourseSectionResource.find(:all, :params => {
+      :year =>  curriculum.attributes["Year"],
+      :quarter => curriculum.attributes["Quarter"],
+      :curriculum_abbreviation => curriculum.attributes["CurriculumAbbreviation"],
+      :course_number => course.CourseNumber
+    }).collect(&:course_resource)
   end
   
   # Provides an array of section ID's for all linked sections in the format ready for a call to SWS:
   # for example, "2011,spring,EDUC,360/AD"
   def linked_section_ids
-    linked_sections.collect{|ls|
-      [ls.Section.Year, ls.Section.Quarter, ls.Section.CurriculumAbbreviation, ls.Section.CourseNumber].join(",") +
-      "/" + ls.Section.SectionID
-    }
+    linked_sections.collect do |ls|
+      if ls.attributes["Section"]
+        [ls.Section.Year, ls.Section.Quarter, ls.Section.CurriculumAbbreviation, ls.Section.CourseNumber].join(",") +
+        "/" + ls.Section.SectionID
+      else
+        ls.id
+      end
+    end
   end
   
   def active_registrations
+    course = self.attributes["Course"] || self
+    curriculum = course.attributes["Curriculum"] || course
     @active_registrations ||= RegistrationResource.find(:all, :params => {
-      :curriculum_abbreviation => self.Course.CurriculumAbbreviation, 
-      :year => self.Course.Year, 
-      :quarter => self.Course.Quarter, 
-      :course_number => self.Course.CourseNumber, 
-      :section_id => self.SectionID,
+      :curriculum_abbreviation => curriculum.attributes["CurriculumAbbreviation"], 
+      :year => curriculum.attributes["Year"], 
+      :quarter => curriculum.attributes["Quarter"], 
+      :course_number => course.attributes["CourseNumber"], 
+      :section_id => self.attributes["SectionID"],
       :is_active => "on"
     })
   end
@@ -66,7 +97,9 @@ class CourseResource < UwWebResource
           @meetings[d.attributes["Name"]] ||= []
           @meetings[d.attributes["Name"]] << {
             :start_time => start_time,
+            :start_time_parsed => Time.parse(start_time),
             :end_time => end_time,
+            :end_time_parsed => Time.parse(end_time),
             :course => self
           }
         end
@@ -78,5 +111,12 @@ class CourseResource < UwWebResource
   def meetings_array
     [attributes["Meetings"].attributes["Meeting"]].flatten
   end
-    
+  
+  # Returns an array of the multiple lines of the time schedule "comments" field from the student database.
+  # If the Student web service doesn't return any comment lines, this method returns an empty Array.
+  def time_schedule_comments
+    return [] if attributes["TimeScheduleComments"].attributes["SectionComments"].attributes["Lines"].nil?
+    [attributes["TimeScheduleComments"].attributes["SectionComments"].attributes["Lines"].attributes["Line"]].flatten.collect(&:Text)
+  end
+   
 end
