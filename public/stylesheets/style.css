@@ -637,6 +637,12 @@ a.redirect-link:hover {
 	border-left: 1px solid #dadada;
 }
 
+img.college_mapper_integration_bug {
+	float: right;
+	clear: both;
+	height: 1.5em;
+}
+
 td.college-logo {
 	vertical-align: top;
 }
@@ -1111,6 +1117,14 @@ a.button:active {
 	background-color: #f2f2f2;
 }
 
+.button.disabled {
+	opacity: 0.5;
+}
+
+.button.disabled:active {
+	border-style: outset;
+}
+
 .button.cancel {
 	background-image: url(../images/icons/silk/cross.png);
 }
@@ -1169,6 +1183,10 @@ a.button:active {
 
 .button.lock {
 	background-image: url(../images/icons/silk/lock.png);
+}
+
+.button.college_mapper {
+	background-image: url(../images/college_mapper_icon.png);
 }
 
 /*table.schedule {
@@ -1528,7 +1546,7 @@ fieldset ul {
 	color: #7f7f7f;
 }
 
-.empty, tr.empty td, td.empty, table.mentors tr.empty td {
+.empty, tr.empty td, td.empty, table.mentors tr.empty td, .info-section#college_applications tr.empty td {
 	padding: 30px;
 	color: #b2b2b2;
 	text-align: center;
@@ -1990,12 +2008,16 @@ td.signup-meter {
 	background: rgb(230,230,230);
 	z-index: 10;
 	float: left;
+	border-radius: 15px;
+	border: 1px solid rgba(0,0,0,0.05);
+	background: -webkit-linear-gradient(top, #f8f8f8 0%, #f0f0f0 100%);
 }
 
 .signup-meter div.size {
-	background: rgba(0,150,0,0.5);
+	background: -webkit-linear-gradient(top, rgba(0, 150, 0, 0.1) 0%, rgba(0,150,0,0.5) 100%) rgba(0,150,0,0.5);
 	z-index: 11;
 	float: left;
+	border-radius: 15px 0 0 15px;
 }
 
 .signup-meter div.target {
@@ -2011,13 +2033,17 @@ td.signup-meter {
 }
 
 .signup-meter .full_label {
-	padding: 1px 2px;
+	padding: 1px 5px;
 	text-transform: uppercase;
-	font: regular 80% "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font: bold 80% "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	text-shadow: 0 1px 1px rgba(255,255,255,0.7);
+	letter-spacing: 1px;
+	color: #525252;
 }
 
 .signup-meter.warning div.capacity {
 	background: rgba(255,0,0,0.25);
+	background: -webkit-linear-gradient(top, rgba(255,0,0,0.25) 0%, rgba(255,0,0,0.35) 100%);
 }
 
 .signup-meter.warning div.size {
@@ -2025,7 +2051,7 @@ td.signup-meter {
 }
 
 .signup-meter.not_achieved div.size {
-	background: #ffcd19;
+	background: -webkit-linear-gradient(top, #ffe898 0%, #ffcd19 100%) #ffcd19;
 }
 
 

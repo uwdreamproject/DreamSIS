@@ -12,13 +12,19 @@ class Participant < Person
   
   validates_presence_of :birthdate, :high_school_id, :if => :validate_ready_to_rsvp?
 
-  attr_accessor :override_binder_date, :override_fafsa_date
+  attr_accessor :override_binder_date, :override_fafsa_date, :create_college_mapper_student_after_save
   
   named_scope :in_cohort, lambda {|grad_year| {:conditions => { :grad_year => grad_year }}}
   named_scope :in_high_school, lambda {|high_school_id| {:conditions => { :high_school_id => high_school_id }}}
 
+  after_save :college_mapper_student, :if => :create_college_mapper_student_after_save?
+
   def validate_name?
     true
+  end
+  
+  def create_college_mapper_student_after_save?
+    create_college_mapper_student_after_save || self.high_school.try(:enable_college_mapper_integration?)
   end
   
   # Returns an array of unique graudation years
@@ -106,6 +112,44 @@ class Participant < Person
   def college_attending
     return nil unless college_attending_id
     Institution.find(college_attending_id)
+  end
+
+  # Calculates the current grade based on grad_year. If over 12, this method will always return 12.
+  def grade
+    academic_year_offset = 1 if Time.now.month > 6
+    @grade = Time.now.year - grad_year + academic_year_offset.to_i + 12
+    @grade > 12 ? 12 : @grade
+  end
+
+  # Returns the CollegeMapperStudent record for this individual if we have a college_mapper_id stored.
+  # By default, if the record doesn't exist, we create it. You can override that by passing +false+ for
+  # +create_if_nil+.
+  def college_mapper_student(create_if_nil = true)
+    if !self.college_mapper_id
+      return create_college_mapper_student if create_if_nil
+      return nil
+    end
+    @college_mapper_student ||= CollegeMapperStudent.find(self.college_mapper_id)
+  end
+
+  # Creates a CollegeMapperStudent record for this participant and stores the CollegeMapper user ID in the
+  # +college_mapper_id+ attribute. Returns +false+ if the account couldn't be created.
+  def create_college_mapper_student
+    @college_mapper_student = CollegeMapperStudent.create({
+      :firstName => firstname.to_s.titlecase,
+      :lastName => lastname.to_s.titlecase,
+      :email => email,
+      :zipCode => (zip || 98105),
+      :grade => grade,
+      :gender => (sex == "F" ? "female" : "male"),
+      :dream => true,
+      :youthforce => self.high_school.try(:name).include?("YouthForce")
+    })
+    self.update_attribute(:college_mapper_id, @college_mapper_student.id)
+    @college_mapper_student
+  rescue ActiveResource::BadRequest => e
+    logger.info { e.message }
+    false
   end
   
 end

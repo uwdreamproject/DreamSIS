@@ -41,7 +41,7 @@ class MentorQuarterGroup < ActiveRecord::Base
 
   # Returns the associated CourseResource for this group, if +course_id+ is set.
   def course_resource
-    return nil if course_id.nil?
+    return nil if course_id.blank?
     @course_resource ||= CourseResource.find(course_id)
   end
   

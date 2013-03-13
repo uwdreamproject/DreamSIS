@@ -118,7 +118,7 @@ class ParticipantsController < ApplicationController
   # GET /participants/new
   # GET /participants/new.xml
   def new
-    @participant = Participant.new
+    @participant = Participant.new(:high_school_id => params[:high_school_id])
     @participant.intake_survey_date = Time.now  # only default to setting this field if we're manually creating a new record.
     @participant_groups = []
 
@@ -237,6 +237,23 @@ class ParticipantsController < ApplicationController
                                       :conditions => ["LOWER(firstname) LIKE :fullname OR LOWER(lastname) LIKE :fullname", 
                                                       {:fullname => "%#{params[:participant][:fullname].downcase}%"}])
     render :inline => "<%= auto_complete_result @participants, 'fullname' %>"
+  end
+  
+  def college_mapper_login
+    @participant = Participant.find(params[:id])
+    render_error("You must be logged in as a Mentor to do that.") unless @current_user.try(:person).is_a?(Mentor)
+    @forbidden = !@participant.mentors.include?(@current_user.try(:person))
+    if @forbidden
+      message = "You must be linked to that student before you can view his/her CollegeMapper record."
+      flash[:error] = message
+      return render_error(message)
+    end
+    @login_token = @current_user.person.try(:college_mapper_counselor).try(:login_token, @participant.college_mapper_id)
+    render_error("Could not fetch login token") unless @login_token
+    
+    respond_to do |format|
+      format.js
+    end
   end
 
   protected

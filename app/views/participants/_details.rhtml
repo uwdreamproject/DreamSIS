@@ -6,6 +6,25 @@
 
 <%= link_to 'Edit this Student', edit_participant_path(@participant), :class => 'edit button' %>
 
+<%- if @participant.college_mapper_id -%>
+	<%- disabled = !@participant.mentors.include?(@current_user.try(:person)) -%>
+	<p><%= link_to_remote "Open in CollegeMapper", 
+			:url => college_mapper_login_participant_path(@participant), 
+			:method => :post, 
+			:html => {
+				:class => "college_mapper button #{"disabled" if disabled}", 
+				:title => "#{"You must be linked to this student to view his/her CollegeMapper record." if disabled}"
+			} %></p>
+	<form id="college_mapper_login_form" method="GET" target="_blank" style="display:none">
+		<input name="userId" id="college_mapper_userId">
+		<input name="token" id="college_mapper_token">
+		<input name="redirect_to" id="college_mapper_redirect_to" value="<%= "/counselors/timeline/#{@participant.college_mapper_id}" %>">
+		<input type="submit">
+	</form>
+		
+<%- end -%>
+
+
 <h4>High School</h4>
 <%= link_to h(@participant.high_school.name), 
 			high_school_cohort_path(@participant.high_school, @participant.grad_year), 

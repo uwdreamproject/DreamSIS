@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130204045628) do
+ActiveRecord::Schema.define(:version => 20130312080458) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -178,6 +178,7 @@ ActiveRecord::Schema.define(:version => 20130204045628) do
     t.integer  "institution_id"
     t.string   "country"
     t.string   "website_url"
+    t.boolean  "enable_college_mapper_integration"
   end
 
   create_table "mentor_participants", :force => true do |t|
@@ -186,6 +187,7 @@ ActiveRecord::Schema.define(:version => 20130204045628) do
     t.datetime "deleted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "college_mapper_id"
   end
 
   create_table "mentor_quarter_groups", :force => true do |t|
@@ -399,6 +401,7 @@ ActiveRecord::Schema.define(:version => 20130204045628) do
     t.string   "avatar_image_url"
     t.string   "organization"
     t.string   "shirt_size"
+    t.integer  "college_mapper_id"
   end
 
   add_index "people", ["display_name"], :name => "index_people_on_display_name"

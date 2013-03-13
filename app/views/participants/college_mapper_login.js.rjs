@@ -1,0 +1,4 @@
+page << "$('college_mapper_userId').value = '#{h(@login_token.userId)}'"
+page << "$('college_mapper_token').value = '#{h(@login_token.token)}'"
+page << "$('college_mapper_login_form').action = '#{h(@login_token.login_url(@participant.college_mapper_id))}'"
+page << "$('college_mapper_login_form').submit()"
