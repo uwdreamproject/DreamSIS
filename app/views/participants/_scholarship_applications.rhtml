@@ -8,5 +8,13 @@
 
 	<%= render :partial => "scholarship_applications/scholarship_application", 
 				:collection => @participant.scholarship_applications %>
+				
+	<%- if @participant.scholarship_applications.empty? -%>
+	<tr class="empty">
+		<td colspan="10">No scholarships yet.</td>
+	</tr>
+	<% end %>
+
+		
 
 </table>	

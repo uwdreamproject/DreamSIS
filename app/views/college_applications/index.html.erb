@@ -1,6 +1,5 @@
-<h1>Listing college applications
-	<font color="grey">for <%= link_to @participant.fullname, @participant %></font>
-	</h1>
+<h3 class="pre-title"><%= link_to h(@participant.fullname), @participant %></h3>
+<h1>Colleges</h1>
 
 <table>
   <tr>
@@ -16,4 +15,4 @@
 
 <br />
 
-<%= link_to 'New college application', new_participant_college_application_path, :class => 'add button' %>
+<%= link_to 'Add college', new_participant_college_application_path, :class => 'add button' %>

@@ -1,4 +1,5 @@
-<h1>Editing scholarship application</h1>
+<h3 class="pre-title"><%=h @participant.fullname %></h3>
+<h1>Editing scholarship</h1>
 
 <% semantic_form_for([@participant, @scholarship_application]) do |f| %>
   	<%= f.error_messages %>

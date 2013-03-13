@@ -1,6 +1,5 @@
-<h1>Listing scholarship applications
-	<font color="grey">for <%= link_to @participant.fullname, @participant %></font>
-	</h1>
+<h3 class="pre-title"><%= link_to h(@participant.fullname), @participant %></h3>
+<h1>Scholarships</h1>
 
 <table>
   <tr>
@@ -16,4 +15,4 @@
 
 <br />
 
-<%= link_to 'New scholarship application', new_participant_scholarship_application_path, :class => 'add button' %>
+<%= link_to 'Add scholarship', new_participant_scholarship_application_path, :class => 'add button' %>

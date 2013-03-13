@@ -8,5 +8,11 @@
 
 	<%= render :partial => "college_applications/college_application", 
 				:collection => @participant.college_applications %>
+				
+	<%- if @participant.college_applications.empty? -%>
+	<tr class="empty">
+		<td colspan="10">No colleges yet.</td>
+	</tr>
+	<% end %>
 
 </table>	
