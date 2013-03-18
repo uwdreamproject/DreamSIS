@@ -3,8 +3,6 @@
 
 config/certs
 
-config/database.yml
-
 config/exceptional.yml
 
 config/.DS_Store
