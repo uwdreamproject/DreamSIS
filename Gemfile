@@ -31,9 +31,9 @@ gem 'geocoder'
 # gem "nokogiri", "1.4.2"
 # gem "geokit"
 
-group :production do
-  gem "mysql2"
-end
+# group :production do
+gem "mysql2"
+# end
 
 group :development do
   # bundler requires these gems in development
