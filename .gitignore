@@ -64,3 +64,4 @@ public/images/icons/tango/.DS_Store
 public/images/icons/tango/.DS_Store
 
 config/college_mapper.yml
+.elasticbeanstalk/

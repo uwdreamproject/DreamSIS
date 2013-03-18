@@ -32,7 +32,7 @@ gem 'geocoder'
 # gem "geokit"
 
 group :production do
-  gem "mysql"
+  gem "mysql2"
 end
 
 group :development do
