@@ -28,7 +28,7 @@ class CollegeMapperResource < ActiveResource::Base
     # All configuration options are stored in RAILS_ROOT/config/web_services.yml. This allows us to use different
     # hosts, certs, etc. in different Rails environments.
     def config_options
-      config_file_path = "#{RAILS_ROOT}/config/college_mapper.yml"
+      config_file_path = File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "college_mapper.yml")
       @config_options ||= YAML::load(ERB.new((IO.read(config_file_path))).result)[(RAILS_ENV)].symbolize_keys
     end
 
