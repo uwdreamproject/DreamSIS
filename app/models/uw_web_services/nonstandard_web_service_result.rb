@@ -180,9 +180,9 @@ class NonstandardWebServiceResult
     def ssl_options
       check_cert_paths!
       @ssl_options ||= {
-        :cert         => OpenSSL::X509::Certificate.new(File.open("#{RAILS_ROOT}/config/certs/#{config_options[:cert]}")),
-        :key          => OpenSSL::PKey::RSA.new(File.open("#{RAILS_ROOT}/config/certs/#{config_options[:key]}")),
-        :ca_file      => "#{RAILS_ROOT}/config/certs/#{config_options[:ca_file]}",
+        :cert         => OpenSSL::X509::Certificate.new(File.open(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:cert]))),
+        :key          => OpenSSL::PKey::RSA.new(File.open(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:key]))),
+        :ca_file      => File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:ca_file]),
         :verify_mode  => OpenSSL::SSL::VERIFY_PEER
       }
     end
@@ -190,7 +190,7 @@ class NonstandardWebServiceResult
     # All configuration options are stored in RAILS_ROOT/config/web_services.yml. This allows us to use different
     # hosts, certs, etc. in different Rails environments.
     def config_options
-      config_file_path = "#{RAILS_ROOT}/config/web_services.yml"
+      config_file_path = File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "web_services.yml")
       @config_options ||= YAML::load(ERB.new((IO.read(config_file_path))).result)[(RAILS_ENV)].symbolize_keys
     end
   
@@ -220,9 +220,9 @@ class NonstandardWebServiceResult
 
   # Raises an error if the cert, key, or CA file does not exist.
   def self.check_cert_paths!
-    raise ActiveResource::SSLError, "Could not find cert file" unless File.exist?("#{RAILS_ROOT}/config/certs/#{config_options[:cert]}")
-    raise ActiveResource::SSLError, "Could not find key file" unless File.exist?("#{RAILS_ROOT}/config/certs/#{config_options[:key]}")
-    raise ActiveResource::SSLError, "Could not find CA file" unless File.exist?("#{RAILS_ROOT}/config/certs/#{config_options[:ca_file]}")
+    raise ActiveResource::SSLError, "Could not find cert file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:cert]))
+    raise ActiveResource::SSLError, "Could not find key file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:key]))
+    raise ActiveResource::SSLError, "Could not find CA file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:ca_file]))
   end
 
 end
