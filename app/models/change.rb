@@ -38,7 +38,7 @@ class Change < ActiveRecord::Base
     ) unless my_changes.empty?
   end
   
-  # Gets called after_delete
+  # Gets called after_delete. Saves the final state of the object's attributes in the +changes+ attribute for easy restoration.
   def self.log_delete(obj)
     return false if obj.is_a?(Change)
     return false if obj.is_a?(ActiveRecord::SessionStore::Session)
@@ -47,7 +47,8 @@ class Change < ActiveRecord::Base
       :change_loggable_id => obj.id, 
       :change_loggable_type => obj.class.to_s,
       :action_type => 'delete',
-      :user_id => Thread.current['user'].try(:id)
+      :user_id => Thread.current['user'].try(:id),
+      :changes => obj.attributes
     )
       # c.update_attribute(:change_loggable_type, obj.class.deleted_class.to_s)
     # end
