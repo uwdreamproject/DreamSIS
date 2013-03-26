@@ -16,6 +16,7 @@ class Participant < Person
   
   named_scope :in_cohort, lambda {|grad_year| {:conditions => { :grad_year => grad_year }}}
   named_scope :in_high_school, lambda {|high_school_id| {:conditions => { :high_school_id => high_school_id }}}
+  named_scope :active, :conditions => ["inactive IS NULL OR inactive = ?", false]
 
   after_save :college_mapper_student, :if => :create_college_mapper_student_after_save?
 
