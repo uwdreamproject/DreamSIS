@@ -2,6 +2,7 @@
 	http://dreamsis.dev/stylesheets/style.css
 	https://dreamsis.org/stylesheets/style.css?1338689516
 	https://dreamsis.org/stylesheets/style.css?1349862127
+	https://dreamsis.org/stylesheets/style.css?1364278654
 */
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700);
@@ -2013,16 +2014,17 @@ td.signup-meter {
 	background: rgb(230,230,230);
 	z-index: 10;
 	float: left;
-	border-radius: 15px;
+	border-radius: 5px;
 	border: 1px solid rgba(0,0,0,0.05);
 	background: -webkit-linear-gradient(top, #f8f8f8 0%, #f0f0f0 100%);
+	overflow: hidden;
 }
 
 .signup-meter div.size {
 	background: -webkit-linear-gradient(top, rgba(0, 150, 0, 0.1) 0%, rgba(0,150,0,0.5) 100%) rgba(0,150,0,0.5);
 	z-index: 11;
 	float: left;
-	border-radius: 15px 0 0 15px;
+	border-radius: 5px 0 0 5px;
 }
 
 .signup-meter div.target {
@@ -2048,11 +2050,11 @@ td.signup-meter {
 
 .signup-meter.warning div.capacity {
 	background: rgba(255,0,0,0.25);
-	background: -webkit-linear-gradient(top, rgba(255,0,0,0.25) 0%, rgba(255,0,0,0.35) 100%);
+	background: -webkit-linear-gradient(top, rgba(255,0,0,0.05) 0%, rgba(255,0,0,0.15) 100%);
 }
 
 .signup-meter.warning div.size {
-	background: red;
+	background: -webkit-linear-gradient(top, #ef8a7d 0%, red 100%) red;
 }
 
 .signup-meter.not_achieved div.size {
