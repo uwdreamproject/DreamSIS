@@ -1,4 +1,15 @@
-<h1><%= @cohort.to_s %> Participant Stats</h1>
+<h1><%=h @cohort.to_s %> Participant Stats</h1>
+
+<div style="margin-bottom: 2em">
+	<h2>All <%=h @cohort.to_s %> participants</h2>
+	<%= render :partial => "object_filters/high_school_stats", 
+				:locals => { 
+					:participants => Participant.in_cohort(@cohort),
+					:hide_title => true,
+					:summary => :all
+				} %>
+</div>
+
 
 <%- for high_school in @high_schools -%>
 	<div style="margin-bottom: 2em">

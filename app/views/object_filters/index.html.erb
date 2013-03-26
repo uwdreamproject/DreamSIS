@@ -18,9 +18,9 @@
 	<td><tt><%=h object_filter.criteria %></tt></td>
 	<td><%=h number_to_percentage object_filter.target_percentage, :precision => 0 %></td>
 	<td><%=h number_to_percentage object_filter.warning_threshold, :precision => 0 %></td>
-    <td><%= link_to 'Show', object_filter_path(object_filter) %></td>
-    <td><%= link_to 'Edit', edit_object_filter_path(object_filter) %></td>
-    <td><%= link_to 'Destroy', object_filter_path(object_filter), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td class="functions"><%= link_to 'Show', object_filter_path(object_filter) %></td>
+    <td class="functions"><%= link_to 'Edit', edit_object_filter_path(object_filter) %></td>
+    <td class="functions"><%= link_to 'Destroy', object_filter_path(object_filter), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

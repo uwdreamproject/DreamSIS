@@ -10,7 +10,10 @@ class ObjectFiltersController < ApplicationController
   end
 
   def show
+    @cohort = params[:cohort] || Participant.current_cohort
     @object_filter = ObjectFilter.find(params[:id])
+    @participants = Participant.in_cohort(@cohort)
+    @high_schools = HighSchool.partners
 
     respond_to do |format|
       format.html # show.html.erb
@@ -37,7 +40,7 @@ class ObjectFiltersController < ApplicationController
     respond_to do |format|
       if @object_filter.save
         flash[:notice] = "ObjectFilter was successfully created."
-        format.html { redirect_to(@object_filter) }
+        format.html { redirect_to(object_filters_url) }
         format.xml  { render :xml => @object_filter, :status => :created, :location => @object_filter }
       else
         format.html { render :action => "new" }
@@ -52,7 +55,7 @@ class ObjectFiltersController < ApplicationController
     respond_to do |format|
       if @object_filter.update_attributes(params[:object_filter])
         flash[:notice] = "ObjectFilter was successfully updated."
-        format.html { redirect_to(@object_filter) }
+        format.html { redirect_to(object_filters_url) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

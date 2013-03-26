@@ -903,6 +903,11 @@ body.error #content-wrap p {
 	font-size: 90%;
 }
 
+.stats td.percentage-meter {
+	min-width: 3em;
+	width: 30%;
+}
+
 form.fixed-width label {
 	float: left;
 	width: 200px;

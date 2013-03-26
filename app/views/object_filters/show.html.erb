@@ -1,28 +1,81 @@
+<h3 class="pre-title"><%=h @cohort.to_s %></h3>
 <h1><%= @object_filter.object_class %> <%=h @object_filter.title %></h1>
 
-<dl class="inline-definitions">
+<% 
+participants ||= @participants
+active_participants = participants.select{|p| !p.inactive? }
+hide_title ||= false
 
-	<%- unless @object_filter.opposite_title.blank? -%>
-		<dt>Opposite Title</dt>
-		<dd><%=h @object_filter.opposite_title %></dd>
-	<% end -%>
+ %>
 
-	<dt>Criteria</dt>
-	<dd><tt><%=h @object_filter.criteria %></tt></dd>
+<table class="stats">
 	
-	<%- unless @object_filter.target_percentage.blank? -%>
-		<dt>Target</dt>
-		<dd><%= number_to_percentage @object_filter.target_percentage, :precision => 0 %></dd>
-	<% end -%>
+	<tr>
+		<th>School</th>
+		<th>Total</th>
+		<th>Active</th>
+		<th>Meets Criteria</th>
+		<th>Completion</th>
+		<th></th>
+	</tr>
 
-	<%- unless @object_filter.warning_threshold.blank? -%>
-		<dt>Warning Threshold</dt>
-		<dd><%= number_to_percentage @object_filter.warning_threshold, :precision => 0 %></dd>
-	<% end -%>
+	<%= render :partial => "object_filters/high_school", 
+				:collection => [:all],
+				:locals => { 
+					:participants => participants,
+					:active_participants => active_participants,
+					:hide_title => hide_title,
+					:summary => :all
+				} %>
+	
+	<%= render :partial => "object_filters/high_school", 
+				:collection => @high_schools,
+				:locals => { 
+					:participants => participants,
+					:active_participants => active_participants,
+					:hide_title => hide_title
+				} %>
 
-</dl>
+</table>
+
+<p><small class="light">Counts and percentages above are compared against <strong>active</strong> participants only.</small></p>
+
+
 
 <div id="sidebar">
 	<p><%= link_to "Back to filters", object_filters_path, :class => "back button" %></p>
 	<p><%= link_to "Edit this filter", edit_object_filter_path(@object_filter), :class => 'edit button' %></p>
+	<p><%= link_to "Show all stats", stats_high_schools_url(:cohort => @cohort), :class => 'list button' %></p>
+	
+	<h3>Change Cohort</h3>
+	<p>
+		<form method="get">
+			<%= select_tag :cohort, options_for_select(Participant.cohorts, @cohort.to_i), :onChange => "this.form.submit()" %>
+		</form>
+	</p>
+
+
+	<h3>About this Filter</h3>
+	<dl class="sidebar">
+
+		<%- unless @object_filter.opposite_title.blank? -%>
+			<dt>Opposite Title</dt>
+			<dd><%=h @object_filter.opposite_title %></dd>
+		<% end -%>
+
+		<dt>Criteria</dt>
+		<dd><tt><%=h @object_filter.criteria %></tt></dd>
+	
+		<%- unless @object_filter.target_percentage.blank? -%>
+			<dt>Target</dt>
+			<dd><%= number_to_percentage @object_filter.target_percentage, :precision => 0 %></dd>
+		<% end -%>
+
+		<%- unless @object_filter.warning_threshold.blank? -%>
+			<dt>Warning Threshold</dt>
+			<dd><%= number_to_percentage @object_filter.warning_threshold, :precision => 0 %></dd>
+		<% end -%>
+
+	</dl>
+
 </div>
