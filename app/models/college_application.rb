@@ -10,6 +10,9 @@ class CollegeApplication < ActiveRecord::Base
   
   delegate :name, :to => :institution
   
+  before_destroy :destroy_college_mapper_college
+  after_create :create_college_mapper_college
+  
   attr_accessor :institution_name
 
   # Returns true if this application represents the college that the student is actually attending.
@@ -29,6 +32,33 @@ class CollegeApplication < ActiveRecord::Base
       :select => "institution_id, COUNT(institution_id) AS count", 
       :limit => limit,
       :order => "count DESC").collect(&:institution).compact
+  end
+
+  # Fetches the CollegeMapperCollege resource associated with this object.
+  def college_mapper_college
+    return nil unless participant.college_mapper_id
+    @college_mapper_college ||= CollegeMapperCollege.find(institution_id, :params => { :user_id => participant.college_mapper_id })
+  end
+
+  # Creates a new CollegeMapperCollege resource for this record. If the instition_id is less than 0
+  # (meaning this is a DreamSIS-only institution record) or nil, then return false.
+  def create_college_mapper_college
+    return false unless participant.college_mapper_id
+    return false if institution_id.nil? || institution_id <= 0
+    @college_mapper_college = CollegeMapperCollege.create({
+      :user_id => participant.college_mapper_id,
+      :collegeId => institution_id
+    })
+    @college_mapper_college
+  rescue ActiveResource::BadRequest => e
+    logger.info { e.message }
+    false
+  end
+
+  # Destroys the CollegeMapperCollege resource for this record if it exists.
+  def destroy_college_mapper_college
+    return false unless participant.college_mapper_id
+    college_mapper_college.destroy if college_mapper_college
   end
   
 end

@@ -124,13 +124,16 @@ class Participant < Person
 
   # Returns the CollegeMapperStudent record for this individual if we have a college_mapper_id stored.
   # By default, if the record doesn't exist, we create it. You can override that by passing +false+ for
-  # +create_if_nil+.
-  def college_mapper_student(create_if_nil = true)
+  # +create_if_nil+. This method will also update the college list in DreamSIS to match the student's
+  # college list on CollegeMapper. Override that by passing +false+ for +update_college_list+.
+  def college_mapper_student(create_if_nil = true, update_college_list = true)
     if !self.college_mapper_id
       return create_college_mapper_student if create_if_nil
       return nil
     end
     @college_mapper_student ||= CollegeMapperStudent.find(self.college_mapper_id)
+    update_college_list_from_college_mapper if update_college_list
+    @college_mapper_student
   end
 
   # Creates a CollegeMapperStudent record for this participant and stores the CollegeMapper user ID in the
@@ -151,6 +154,23 @@ class Participant < Person
   rescue ActiveResource::BadRequest => e
     logger.info { e.message }
     false
+  end
+  
+  # Fetches the college list for this student from CollegeMapper and updates the collection of CollegeApplications
+  # to match.
+  def update_college_list_from_college_mapper
+    college_mapper_colleges = college_mapper_student(true, false).colleges
+    college_ids = college_mapper_colleges.collect{|c| c.collegeId.to_i }
+    
+    # Delete colleges that no longer exist in CollegeMapper (if institution_id > 0)
+    for college_application in college_applications
+      college_application.destroy if college_application.institution_id > 0 && !college_ids.include?(college_application.institution_id.to_i)
+    end
+
+    # Create new colleges that exist in CollegeMapper
+    for college in college_mapper_colleges
+      college_applications.find_or_create_by_institution_id(college.collegeId) unless college.removed?
+    end
   end
   
 end
