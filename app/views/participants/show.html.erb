@@ -6,7 +6,9 @@
 	
 	<%- if @participant.respond_to?(:college_applications) -%>
 		<div class="info-section" id="college_applications">
-			<h2>Colleges</h2>
+			<h2>Colleges
+				<%= content_tag :em, "Synced with CollegeMapper", :class => "right synced-with-collegemapper-note" if @participant.college_mapper_id %>
+			</h2>
 			<%= render :partial => 'college_applications' %>
 			<br>
 			<%= link_to 'Add college', 
