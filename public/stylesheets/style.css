@@ -651,6 +651,16 @@ img.college_mapper_integration_bug {
 	height: 1.5em;
 }
 
+h2 em.synced-with-collegemapper-note {
+	font-size: 70%;
+	background: url(../images/college_mapper_icon.png) no-repeat left center;
+	padding-left: 22px;
+	font-weight: normal;
+	font-style: normal;
+	margin-right: 0.5em;
+	text-shadow: 0 1px 0 rgba(255,255,255,0.75);
+}
+
 td.college-logo {
 	vertical-align: top;
 }

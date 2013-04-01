@@ -1,5 +1,7 @@
 class ParticipantsController < ApplicationController
   protect_from_forgery :only => [:create, :update, :destroy] 
+  skip_before_filter :login_required, :only => [:college_mapper_callback]
+  skip_before_filter :check_if_enrolled, :only => [:college_mapper_callback]
   skip_before_filter :check_authorization, :except => [:index, :cohort, :destroy]
 
   # GET /participants
@@ -254,6 +256,14 @@ class ParticipantsController < ApplicationController
     respond_to do |format|
       format.js
     end
+  end
+  
+  def college_mapper_callback
+    @participant = Participant.find_by_college_mapper_id(params[:user_id])
+    @participant.update_college_list_from_college_mapper if params[:update] == 'colleges'
+    render :text => "OK\r\n", :status => 200
+  rescue
+    render :text => "Error\r\n", :status => 500
   end
 
   protected
