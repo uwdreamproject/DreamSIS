@@ -3,6 +3,7 @@
 	https://dreamsis.org/stylesheets/style.css?1338689516
 	https://dreamsis.org/stylesheets/style.css?1349862127
 	https://dreamsis.org/stylesheets/style.css?1364278654
+	https://dreamsis.org/stylesheets/style.css?1364280854
 */
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700);
@@ -160,7 +161,13 @@ table td.functions a {
 	border-radius: 10px;
 	background-color: #f9f9f9;
 	cursor: default;
-	color: #222;
+	color: rgb(60, 60, 60);
+	
+	border: 1px outset rgba(153,153,153,.5);
+	border-radius: 5px;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+	
+	
 }
 
 table td.functions a:active {
@@ -973,10 +980,12 @@ input[type=submit], input[type=button], form.formtastic input[type=submit], form
 	background-position: 5px center;
 	background-repeat: no-repeat;
 	border: 1px outset #dadada;
-	border-radius: 10px;
+	border-radius: 5px;
 	background-color: #f9f9f9;
 	cursor: default;
 	color: #222;
+	text-shadow: 0 1px 0 #fff;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.1);	
 }
 
 input[type=submit]:active, input[type=button]:active, form.formtastic input[type=submit]:active, form.formtastic input[type=button]:active, a.submit:active {
@@ -1103,15 +1112,17 @@ a.offsite {
 
 .button {
 	display: inline-block;
-	padding: 4px 10px 4px 25px;
+	padding: 5px 10px 5px 25px;
 	text-decoration: none;
 	background-position: 5px center;
 	background-repeat: no-repeat;
-	border: 1px outset #dadada;
-	border-radius: 10px;
+	border: 1px outset rgba(153,153,153,.5);
+	border-radius: 5px;
 	background-color: #f9f9f9;
 	cursor: default;
 	color: #222;
+	text-shadow: 0 1px 0 #fff;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 a.button:hover {
