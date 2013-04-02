@@ -1,6 +1,6 @@
 <% for quarter in Quarter.current_and_allowing_signups %>
 
-	<h2><%= quarter.title %> Mentors</h2>
+	<h2><%= quarter.title %> <%= Customer.mentors_Label %></h2>
 
 	<ul class="mentor_stats_summary">
 

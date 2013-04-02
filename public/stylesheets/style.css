@@ -1010,7 +1010,7 @@ textarea.code {
 }
 
 input[type=submit], input[type=button], form.formtastic input[type=submit], form.formtastic input[type=button], a.submit {
-	padding: 4px 10px 4px 10px;
+	padding: 5px 10px 5px 10px;
 	text-decoration: none;
 	background-position: 5px center;
 	background-repeat: no-repeat;
@@ -1020,7 +1020,7 @@ input[type=submit], input[type=button], form.formtastic input[type=submit], form
 	cursor: default;
 	color: #222;
 	text-shadow: 0 1px 0 #fff;
-	box-shadow: 0 1px 2px rgba(0,0,0,0.1);	
+	box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 input[type=submit]:active, input[type=button]:active, form.formtastic input[type=submit]:active, form.formtastic input[type=button]:active, a.submit:active {

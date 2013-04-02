@@ -26,9 +26,9 @@
 	<ul>
 		<li><%= link_to "#{Quarter.current_quarter.title} Visits", 
 						high_school_visits_path(@high_school, Quarter.current_quarter) %></li>
-		<li><%= link_to 'Take Attendance for Scholars', 
+		<li><%= link_to "Take Attendance for #{Customer.mentees_Label}", 
 						attendance_high_school_visits_path(@high_school, Quarter.current_quarter) %></li>
-		<li><%= link_to 'Take Attendance for Mentors', 
+		<li><%= link_to "Take Attendance for #{Customer.mentors_Label}", 
 						attendance_high_school_visits_path(@high_school, Quarter.current_quarter, :show => 'mentors') %></li>
 	</ul>
 </div>

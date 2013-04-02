@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130312080458) do
+ActiveRecord::Schema.define(:version => 20130402183731) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -32,6 +32,24 @@ ActiveRecord::Schema.define(:version => 20130312080458) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "choice"
+  end
+
+  create_table "customers", :force => true do |t|
+    t.string   "name"
+    t.integer  "program_id"
+    t.integer  "parent_customer_id"
+    t.boolean  "link_to_uw"
+    t.boolean  "term_system"
+    t.text     "risk_form_content"
+    t.boolean  "require_background_checks"
+    t.string   "mentor_label"
+    t.string   "lead_label"
+    t.string   "participant_label"
+    t.string   "workbook_label"
+    t.string   "intake_survey_label"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "mentee_label"
   end
 
   create_table "education_levels", :force => true do |t|

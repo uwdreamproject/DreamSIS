@@ -3,21 +3,21 @@
 <ul>
 	<li><%= link_to "Dashboard", root_url %></li>
 	
-	<li><%= link_to "Participants", "#", :onClick => "return false" %>
+	<li><%= link_to Customer.participants_Label, "#", :onClick => "return false" %>
 		<div>
 			<ul>
-				<li class="primary"><%= link_to "All Participants", participants_url %></li>
+				<li class="primary"><%= link_to "All #{Customer.participants_Label}", participants_url %></li>
 				<% for cohort in Participant.cohorts %>
 					<li><%= link_to "#{cohort.to_s} Cohort", cohort_url(cohort) %></li>
 				<% end -%>
 			</ul>
 		</div>
 	</li>
-	<li><%= link_to "Mentors", "#", :onClick => "return false" %>
+	<li><%= link_to Customer.mentors_Label, "#", :onClick => "return false" %>
 		<div>
 			<ul>
-				<li class="primary"><%= link_to "All Mentors", mentors_url %></li>
-				<li><%= link_to "Mentor Groups", mentor_quarter_groups_url %></li>
+				<li class="primary"><%= link_to "All #{Customer.mentors_Label}", mentors_url %></li>
+				<li><%= link_to "#{Customer.mentor_Label} Groups", mentor_quarter_groups_url %></li>
 				<li><%= link_to "On-boarding", onboarding_mentors_url(:quarter_id => Quarter.current_quarter) %></li>
 				<li><%= link_to "Event Status", event_status_mentors_url(:quarter_id => Quarter.current_quarter) %></li>
 				<li><%= link_to "High School Leads", leads_mentors_url(:quarter_id => Quarter.current_quarter) %></li>
