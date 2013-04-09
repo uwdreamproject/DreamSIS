@@ -457,10 +457,6 @@
 		  <%= f.label :fafsa_submitted_date %><br />
 		  <%= f.date_select :fafsa_submitted_date, :include_blank => true %>
 		</li>
-      <li>
-        <%= f.label :fafsa_not_applicable %><br />
-        <%= f.check_box :fafsa_not_applicable %>
-      </li>
 		<li>
 		  <%= f.label :binder_date, "Workbook Date" %><br />
 		  <%= f.date_select :binder_date, :include_blank => true %>

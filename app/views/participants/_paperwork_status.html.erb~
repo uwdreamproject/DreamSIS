@@ -31,7 +31,6 @@
 				</td>
 		</tr>
 		
-      <% unless @participant.fafsa_not_applicable %>
 		<tr>
 			<td>FAFSA</td>
 			<td><% if @participant.submitted_fafsa? %>
@@ -48,6 +47,5 @@
 				<% end %>
 				</td>
 		</tr>
-     <% end %>
 		
 	</table>
