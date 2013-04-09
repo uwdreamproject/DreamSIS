@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130312080458) do
+ActiveRecord::Schema.define(:version => 20130406041129) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -377,7 +377,6 @@ ActiveRecord::Schema.define(:version => 20130312080458) do
     t.datetime "resource_cache_updated_at"
     t.string   "display_name"
     t.string   "survey_id"
-    t.boolean  "clearinghouse_record_found"
     t.string   "other_how_did_you_hear"
     t.boolean  "can_send_texts"
     t.boolean  "can_receive_texts"
@@ -402,6 +401,7 @@ ActiveRecord::Schema.define(:version => 20130312080458) do
     t.string   "organization"
     t.string   "shirt_size"
     t.integer  "college_mapper_id"
+    t.boolean  "fafsa_not_applicable"
   end
 
   add_index "people", ["display_name"], :name => "index_people_on_display_name"

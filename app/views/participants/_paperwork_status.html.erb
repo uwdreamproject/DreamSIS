@@ -31,8 +31,8 @@
 				</td>
 		</tr>
 		
-      <% unless @participant.fafsa_not_applicable %>
-		<tr>
+      
+		<% unless @participant.fafsa_not_applicable %><tr>
 			<td>FAFSA</td>
 			<td><% if @participant.submitted_fafsa? %>
 					<span class="green">Submitted on <%= @participant.fafsa_submitted_date.to_s(:short) rescue "unknown" %></span>
@@ -47,7 +47,7 @@
 								:method => :put %></span>
 				<% end %>
 				</td>
-		</tr>
-     <% end %>
+		</tr><% end %>
+    
 		
 	</table>
