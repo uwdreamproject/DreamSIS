@@ -59,7 +59,7 @@
 <% end -%>
 
 <% f.inputs(:name => "Application Details") do %>
-	<%= f.input :choice, :as => :radio, :collection => ["Reach", "Solid", "Safety", "Interested"], :include_blank => true %>
+	<%= f.input :choice, :as => :radio, :collection => ["Interested", "Reach", "Solid", "Safety"] %>
 	<%= f.input :date_applied, :include_blank => true, :hint => link_to_now('college_application_date_applied') %>
 	<%= f.input :date_notified, :include_blank => true, :hint => link_to_now('college_application_date_notified') %>
 <% end -%>
