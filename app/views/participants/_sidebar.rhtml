@@ -1,6 +1,6 @@
 <div id="sidebar">
 
-<p><%= link_to "Add new participant", new_participant_path(:high_school_id => @high_school.try(:id)), :class => "add button" %></p>
+<p><%= link_to "Add new participant", new_participant_path(:high_school_id => @high_school.try(:id) || @participant.try(:high_school_id)), :class => "add button" %></p>
 
 <% if @controller.action_name == 'show' && @current_user.can_view?(@participant.high_school) %>
 	

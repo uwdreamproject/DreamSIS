@@ -5,6 +5,11 @@
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 
+	<p>
+		<%= f.check_box :link_to_current_user_after_save %>
+		<%= f.label :link_to_current_user_after_save, "Automatically create a link me to this student after creating the student record" %>
+	</p>
+		
   <p>
     <%= f.submit "Create" %>
   </p>
