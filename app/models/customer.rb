@@ -6,7 +6,7 @@ The main purpose of the Customer model is to sandbox multiple organizations' dat
 class Customer < ActiveRecord::Base
   validates_presence_of :name
   
-  belongs_to :parent_customer
+  belongs_to :parent_customer, :class_name => "Customer"
   belongs_to :program
   
   DEFAULT_LABEL = {
@@ -21,13 +21,13 @@ class Customer < ActiveRecord::Base
 
     # For now, just default to the first record in the Customer collection.
     def current_customer
-      Customer.first || Customer.new
+      Customer.first || Customer.new(:name => "Dream Project")
     end
     
     # Returns the current customer's name
-    # def name
-    #   current_customer.try(:name)
-    # end
+    def customer_label
+      current_customer.try(:name)
+    end
     
     # Automatically handle +Customer.method+ by passing it on to Customer.current_customer.
     def method_missing(method_name, *args)
@@ -50,7 +50,7 @@ class Customer < ActiveRecord::Base
     end
     method_name = "#{label_name.to_s}_label"
     return_label = self.try(method_name) if self.respond_to?(method_name)
-    return_label ||= DEFAULT_LABEL[label_name.to_sym]
+    return_label = DEFAULT_LABEL[label_name.to_sym] if return_label.blank?
     format_customer_label(return_label, :titleize => options[:titleize], :pluralize => pluralize)
   end
 
