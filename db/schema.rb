@@ -395,6 +395,7 @@ ActiveRecord::Schema.define(:version => 20130415043944) do
     t.datetime "resource_cache_updated_at"
     t.string   "display_name"
     t.string   "survey_id"
+    t.boolean  "clearinghouse_record_found"
     t.string   "other_how_did_you_hear"
     t.boolean  "can_send_texts"
     t.boolean  "can_receive_texts"
