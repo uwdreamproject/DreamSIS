@@ -1,0 +1,16 @@
+<%- f.inputs :name => "Administrative Information" do -%>
+	<%= f.input :fafsa_submitted_date, :label => "FAFSA submission date", :hint => link_to_now(:participant_fafsa_submitted_date) %>
+	<%= f.input :fafsa_not_applicable, :label => "FAFSA not applicable for this student" %>
+	<%= f.input :binder_date, :label => "#{Customer.workbook_Label} Date", :hint => link_to_now(:participant_binder_date) %>
+	<%= f.input :intake_survey_date, :label => "#{Customer.intake_survey_Label} Date", :hint => link_to_now(:participant_intake_survey_date) %>
+	
+	<%- f.inputs :name => "Inactive", :class => "inline" do -%>
+		<%= f.input :inactive, :onClick => "$('participant_inactive_explanation_input').toggle()" %>
+		<%= f.input :inactive_explanation, :label => "Explanation", :as => :string, :wrapper_html => { :style => ("display:none" unless f.object.inactive?) } %>
+	<% end %>
+
+	<li>
+		<%= f.label :participant_group_id %>
+		<%= render :partial => 'participant_group_select' %>
+	</li>
+<% end %>

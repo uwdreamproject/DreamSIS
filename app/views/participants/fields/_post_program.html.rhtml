@@ -1,0 +1,10 @@
+<fieldset>
+<legend>Post-Dream Project Information</legend>
+
+	<%= f.label :college_attending_id %>
+	<%= f.collection_select :college_attending_id, 
+							f.object.college_applications, 
+							:institution_id, :name, 
+							:include_blank => "None" %>
+			
+</fieldset>

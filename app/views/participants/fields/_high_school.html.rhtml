@@ -1,0 +1,30 @@
+<%- f.inputs :name => "High School" do -%>
+	<%= f.input :grad_year, :as => :select, :collection => (2004..Date.current.year+5), :include_blank => true, :label => "Graduation Year", 
+				:hint => "Enter the student's expected graduation year" %>
+				
+	<%= f.input :high_school_id, :collection => HighSchool.all %>
+
+	<p class="inline-hints">
+		<%= link_to_function "Add a new high school", "Effect.toggle('new_high_school_form', 'blind', {duration:0.25})" %>
+	</p>
+	<div id="new_high_school_form" style="display:none" class="inline-hints">
+		New high school name: <%= text_field_tag "high_school[name]", "",  :id => "high_school_name" %>
+		<%= button_to_remote "Create", 
+								:url => high_schools_path, 
+								:submit => "new_high_school_form",
+								:method => :post %>
+	</div>
+	
+	  
+	<%= observe_field 'participant_grad_year', 
+					:url => fetch_participant_group_options_participants_path(), 
+					:with => "Form.serialize($('participant_form'))" %>		
+	<%= observe_field 'participant_high_school_id', 
+					:url => fetch_participant_group_options_participants_path(), 
+					:with => "Form.serialize($('participant_form'))" %>
+					
+					
+	<%= f.input :gpa, :label => "High School GPA", :input_html => { :size => 5 } %>
+	<%= f.input :gpa_date, :label => "GPA Date", :hint => "Enter the date this GPA was calculated." %>
+	<%= f.input :other_location_id, :collection => Location.all %>
+<% end %>
