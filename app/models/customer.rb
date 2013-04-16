@@ -14,7 +14,8 @@ class Customer < ActiveRecord::Base
     :lead => "lead",
     :participant => "participant",
     :workbook => "workbook",
-    :intake_survey => "intake survey"
+    :intake_survey => "intake survey",
+    :mentee => "mentee"
   }
   
   class << self
@@ -25,7 +26,7 @@ class Customer < ActiveRecord::Base
     end
     
     # Returns the current customer's name
-    def customer_label
+    def name_label
       current_customer.try(:name)
     end
     
