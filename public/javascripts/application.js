@@ -183,11 +183,19 @@ function setFilter(type, filter_key, value) {
 
 function setToNow(element_id) {
 	d = new Date()
-    $(element_id + '_1i').value = d.getFullYear()
-    $(element_id + '_2i').value = d.getMonth() + 1
-    $(element_id + '_3i').value = d.getDate()
-    $(element_id + '_4i').value = d.getHours()
-    $(element_id + '_5i').value = d.getMinutes()
+  if($(element_id + '_1i')) $(element_id + '_1i').value = d.getFullYear()
+  if($(element_id + '_2i')) $(element_id + '_2i').value = d.getMonth() + 1
+ 	if($(element_id + '_3i')) $(element_id + '_3i').value = d.getDate()
+  if($(element_id + '_4i')) $(element_id + '_4i').value = d.getHours()
+  if($(element_id + '_5i'))$(element_id + '_5i').value = d.getMinutes()
+}
+
+function setToClear(element_id) {
+  if($(element_id + '_1i')) $(element_id + '_1i').value = ""
+  if($(element_id + '_2i')) $(element_id + '_2i').value = ""
+ 	if($(element_id + '_3i')) $(element_id + '_3i').value = ""
+  if($(element_id + '_4i')) $(element_id + '_4i').value = ""
+  if($(element_id + '_5i'))$(element_id + '_5i').value = ""
 }
 
 /*
