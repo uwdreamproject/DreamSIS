@@ -117,13 +117,13 @@
 		</div>
 
 		<%- if RAILS_ENV == 'development' -%>
-			<pre><%= session.to_yaml %></pre>
-
-			<%#= javascript_tag "updateFlashes({
-				'info' : 'This is an info test.',
-				'error' : 'An error was received.',
-				'notice' : 'You should be aware of this.'
-			})" %>
+		<div id="dev-inspector-container">
+			<%= link_to_function "Dev", "$('dev-inspector').toggle()", :id => "dev-inspector-link" %>
+			<div class="git branch">On branch <strong><%= `git rev-parse --symbolic-full-name --abbrev-ref HEAD` %></strong></div>
+			<div id="dev-inspector" style="display:none">
+				<div class="session-info"><pre><%= session.to_yaml %></pre></div>
+			</div>
+		</div>
 		<%- end -%>
 
 	</div>

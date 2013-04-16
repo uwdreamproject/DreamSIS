@@ -33,17 +33,6 @@
 		<dt>Date of Birth</dt>
 		<dd><%= @mentor.birthdate.to_s %></dd>
 		
-		<%- if @mentor.respond_to?(:husky_card_registered?) -%>
-			<dt>Husky Card</dt>
-			<dd><%- if @mentor.husky_card_registered? -%>
-					<span class="success-message">Yes</span>
-					<span class="light">(<%=h @mentor.husky_card_rfid %>)</span>
-				<% else %>
-				  	<em class="light">No</em>
-				<% end -%>
-			</dd>
-		<% end -%>
-			
 		<%- if @mentor.respond_to?(:valid_van_driver?) -%>
 			<dt>Van Trained?</dt>
 			<dd><%- if @mentor.valid_van_driver? -%>
@@ -60,7 +49,7 @@
 
 <%- if @participants -%>
 	<div class="content-block">
-		<h1 class="mentees">Mentees</h1>
+		<h1 class="mentees"><%= Customer.mentees_Label %></h1>
 		<%= render :partial => 'mentors/mentees' %>
 	</div>
 <% end -%>

@@ -919,6 +919,35 @@ body.error #content-wrap p {
 	font-size: inherit;
 }
 
+#dev-inspector-container {
+	position: fixed;
+	bottom: 0px;
+	left: 0;
+	padding: 0.5em;
+	padding-right: 0.75em;
+	font-size: 85%;
+	background: rgba(255,255,255,0.95);
+	border-top-right-radius: 5px;
+	border: 1px solid rgba(0,0,0,0.1);
+	-webkit-transition: all 0.25s ease-in-out;
+}
+
+#dev-inspector-container:hover {
+	box-shadow: -1px -1px 10px rgba(0,0,0,0.2);
+	
+}
+
+#dev-inspector-container .git.branch {
+	display: inline-block;
+	border-left: 1px solid rgba(0,0,0,0.3);
+	padding-left: 5px;
+	margin-left: 5px;
+}
+
+#dev-inspector-container .session-info{
+	margin-left: 1em;
+}
+
 .inline {
 	margin: 10px 0;
 }
@@ -998,10 +1027,13 @@ textarea, form.formtastic textarea {
 
 form#participant_form li {
 	list-style: none;
+	margin-left: 0;
+	padding-left: 0;
 }
 
 form#participant_form li li {
-	margin-left: 3em;
+/*	margin-left: 3em;*/
+	margin-right: 1em;
 }
 
 
@@ -1010,7 +1042,7 @@ textarea.code {
 }
 
 input[type=submit], input[type=button], form.formtastic input[type=submit], form.formtastic input[type=button], a.submit {
-	padding: 4px 10px 4px 10px;
+	padding: 5px 10px 5px 10px;
 	text-decoration: none;
 	background-position: 5px center;
 	background-repeat: no-repeat;
@@ -1020,7 +1052,7 @@ input[type=submit], input[type=button], form.formtastic input[type=submit], form
 	cursor: default;
 	color: #222;
 	text-shadow: 0 1px 0 #fff;
-	box-shadow: 0 1px 2px rgba(0,0,0,0.1);	
+	box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 input[type=submit]:active, input[type=button]:active, form.formtastic input[type=submit]:active, form.formtastic input[type=button]:active, a.submit:active {
@@ -1042,7 +1074,7 @@ input#mentor_fullname {
 }
 
 /*form:not(.formtastic) fieldset {*/
-fieldset, form.formtastic fieldset {
+fieldset, form.formtastic > fieldset {
 	border: none;
 	margin-bottom: 25px;
 	padding: 0.5em;
@@ -1069,14 +1101,104 @@ form.formtastic fieldset fieldset legend {
 	margin: 0;
 }
 
+/* @group Second-level fieldsets for inline grouped fields */
+
+form.formtastic fieldset fieldset.inline {
+	padding: 0;
+}
+
+form.formtastic fieldset fieldset.inline legend {
+	color: #656565;
+	float: left;
+	width: 25%;
+}
+
+form.formtastic fieldset fieldset.inline > ol > fieldset {
+	padding: 0;
+}
+
+form.formtastic fieldset fieldset.inline > ol {
+	margin-left: 25%;
+}
+
+form.formtastic fieldset fieldset.inline > ol li {
+	display: inline-block;
+	width: auto;
+	max-width: 30%;
+	margin-right: 1em;
+	margin-bottom: 0.5em;
+}
+
+form.formtastic fieldset fieldset.inline > ol {
+	margin-bottom: 1em;
+}
+
+form.formtastic fieldset fieldset.inline.compress-bottom > ol {
+	margin-bottom: 0;
+}
+
+
+form.formtastic fieldset fieldset.inline > ol li input, form.formtastic fieldset fieldset.inline > ol li select {
+	display: block;
+	clear: both;
+	max-width: 90%;
+}
+
+form.formtastic fieldset fieldset.inline > ol li label {
+	display: block;
+	font-weight: normal;
+	margin-bottom: 3px;
+	font-size: 85%;
+	width: auto;
+}
+
+form.formtastic fieldset fieldset.inline ol li.boolean {
+	width: auto;
+	max-width: 90%;
+}
+
+form.formtastic fieldset fieldset.inline ol li.boolean label {
+	padding-left: 0;
+	font-size: 100%;
+}
+
+form.formtastic fieldset fieldset.inline ol li.boolean label input {
+	display: inline;
+}
+
+
+/* @end */
+
+form.formtastic li#participant_suffix_input input {
+	width: 50px;
+}
+
+form.formtastic li#participant_state_input input {
+	width: 4em;
+}
+
+form.formtastic li#participant_zip_input input {
+	width: 8em;
+}
+
 form.formtastic fieldset p:first-child {
 	margin: -10px -2px 2em -7px;
 	padding: 7px;
 	background: rgba(0,0,0,0.03);
 }
 
+form.formtastic fieldset > ol > .inline-hints { 
+	color:#666; 
+	margin:-1em 0 1.5em 25%; 
+}
+
 form.formtastic fieldset fieldset {
 	margin: 0;
+}
+
+form.formtastic > fieldset > ol > li > label {
+	width: 22%;
+	padding-right: 3%;
 }
 
 .choose_identity p.intro {
@@ -2827,6 +2949,7 @@ li.input div.auto_complete.after_select {
 	height: auto;
 	line-height: 1em;
 	padding: 5px 10px;
+	padding-left: 22px;
 	width: 100%;
 	border-bottom: 1px dotted #dadada;
 	border-left: none;
@@ -2837,8 +2960,25 @@ li.input div.auto_complete.after_select {
 	font-weight: bold !important;
 }
 
-.menu ul ul a:hover {
-	background: url(../images/bullets/gold_arrow_small.gif) no-repeat left center;
+.menu ul ul li.list a {
+	background: url(../images/icons/silk/text_list_bullets.png) no-repeat left center;
+}
+
+.menu ul ul li.report a {
+	background: url(../images/icons/silk/chart_pie.png) no-repeat left center;
+}
+
+
+.menu ul ul li.add a {
+	background: url(../images/icons/silk/add.png) no-repeat left center;
+}
+
+.menu ul ul li a {
+	background-position: 5px top;
+}
+
+.menu ul ul li a:hover {
+	background: url(../images/bullets/gold_arrow_small.gif) no-repeat 5px center;
 	border: none;
 	border-bottom: 1px dotted #dadada;
 	color: rgb(53,94,170);
@@ -3565,6 +3705,19 @@ body.rsvp .when-and-where {
 	float: none;
 	width: auto;
 	margin: auto;
+}
+
+form.formtastic fieldset fieldset.inline legend {
+	display: block;
+	float: none;
+}
+
+form.formtastic fieldset fieldset.inline > ol {
+	margin-left: 0;
+}
+
+form.formtastic label {
+	width: auto !important;
 }
 
 }

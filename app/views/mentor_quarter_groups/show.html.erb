@@ -11,7 +11,7 @@
 	<tr>
 		<th>Photo</th>
 		<th>Name</th>
-		<th>Mentees</th>
+		<th><%= Customer.mentees_Label %></th>
 		<th>Functions</th>
 	</tr>
 
@@ -70,7 +70,7 @@
 	 				"mailto:#{@mentor_quarter_group.mentors.collect(&:email).compact.join(",")}",
 					:class => 'email button' %></p>
 
-	<h3>About this Mentor Group</h3>
+	<h3>About this Group</h3>
 	
 	<dl class="sidebar">
 		<dt>Location</dt>
@@ -96,7 +96,7 @@
 	
 	<%= render :partial => 'time_schedule_details', :object => @mentor_quarter_group.course_resource if @mentor_quarter_group.course_resource %>
 	
-	<h3>High School Leads</h3>
+	<h3><%= Customer.leads_Label %></h3>
 	<ul class="mini photo-list">
 	<% for lead in @mentor_quarter_group.mentor_quarters.leads %>
 		<li>
@@ -107,7 +107,7 @@
 							mentor_quarter_group_mentor_quarter_path(@mentor_quarter_group, lead, 
 								:mentor_quarter => { :lead => false }), 
 							:method => :put,
-							:confirm => "Are you sure you want to remove this person as a lead?" %>
+							:confirm => "Are you sure you want to remove this person as a #{Customer.lead_label}?" %>
 				</small>
 		</li>
 	<% end -%>

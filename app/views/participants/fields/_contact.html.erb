@@ -1,0 +1,18 @@
+<%- f.inputs :name => "Contact Information" do -%>
+	<%- f.inputs :name => "Mailing Address", :class => "inline compress-bottom" do %>
+		<%= f.inputs :street, :city, :state, :zip %>
+	<% end %>
+	<%= f.input :bad_address %>
+	
+	<%- f.inputs :name => "Phone Numbers", :class => "inline compress-bottom" do %>
+		<%= f.input :phone_home, :label => "Home" %>
+		<%= f.input :phone_mobile, :label => "Mobile" %>
+	<% end %>
+	<%= f.input :bad_phone %>
+	
+	<%- f.inputs :name => "Email", :class => "inline compress-bottom" do -%>
+		<%= f.input :email %>
+	<% end %>
+	<%= f.input :bad_email %>
+	
+<% end %>

@@ -113,8 +113,12 @@ class MentorQuarterGroup < ActiveRecord::Base
       # Add in the new ones
       active_reg_ids.each{|reg_id|
         mentor = Mentor.find_or_create_from_reg_id(reg_id)
-        mentors << mentor unless mentors_with_deleted.include?(mentor)
+        enroll!(mentor, :volunteer => false)
       }
+      # Update the counter cache
+      diff = mentor_quarters.count - mentor_quarters_count
+      MentorQuarterGroup.update_counters self.id, :mentor_quarters_count => diff
+      
       return true
     rescue ActiveResource::ResourceNotFound
       return false
@@ -126,6 +130,35 @@ class MentorQuarterGroup < ActiveRecord::Base
     @mentors_with_deleted ||= (mentors + deleted_mentor_quarters.collect(&:mentor)).flatten.uniq
   end
 
+  # Enrolls the mentor in this group, unless the mentor is already a member of the group. This method
+  # will properly handle a mentor who has previously been deleted and is now re-enrolling, such as
+  # a mentor who was a volunteer but is now enrolled for credit. The options hash accepts a +volunteer+
+  # parameter which will enable the +volunteer+ flag.
+  def enroll!(mentor, options = { :volunteer => false })
+    enroll_as_volunteer = options[:volunteer] || false
+    mentor_quarter = mentor_quarter_for_mentor(mentor)
+    begin
+      if mentor_quarter
+        mentor_quarter.deleted_at = nil && increment(:mentor_quarters_count, 1) if mentor_quarter.deleted?
+        mentor_quarter.volunteer = enroll_as_volunteer
+        mentor_quarter.save!
+      else
+        mentor_quarter = mentor_quarters.initialize_by_mentor_id(mentor.id)
+        mentor_quarter.volunteer = enroll_as_volunteer
+        mentor_quarter.save!
+      end
+    end
+    mentor_quarter
+  end
+  
+  # Get the MentorQuarter record for the requested mentor, deleted or not. Returns nil if the
+  # mentor doesn't have any MentorQuarter records for this group.
+  def mentor_quarter_for_mentor(mentor)
+    mentor_quarter = mentor_quarters.find_by_mentor_id(mentor.id) rescue nil
+    mentor_quarter ||= deleted_mentor_quarters.find_by_mentor_id(mentor.id) rescue nil
+    return mentor_quarter
+  end
+  
   # Creates MentorQuarterGroups for all of the specified quarter's course linked sections if they
   # don't already exist for that quarter.
   def self.create_from_linked_sections!(quarter_id)

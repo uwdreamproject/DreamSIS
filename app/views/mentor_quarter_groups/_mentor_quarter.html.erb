@@ -9,7 +9,7 @@
 		<small class="outline tag"><%= mentor_quarter.mentor_id %></small>
 		<br><%= auto_link mentor_quarter.email %>
 		<div>
-			<%= "#{content_tag :span, "High School Lead", :class => 'admin tag'}" if mentor_quarter.lead? %>
+			<%= "#{content_tag :span, Customer.lead_Label, :class => 'admin tag'}" if mentor_quarter.lead? %>
 			<%= "#{content_tag :span, "Volunteer", :class => 'orange tag'}" if mentor_quarter.volunteer? %>
 			<%= "#{content_tag :span, "Driver", :class => 'grey tag'}" if mentor_quarter.driver? %>
 		</div>
@@ -43,12 +43,12 @@
 		
 			<%- if @current_user.admin? -%>
 				<%- if mentor_quarter.lead? -%>
-					<%= link_to "Remove as high school lead", 
+					<%= link_to "Remove as #{Customer.lead_label}", 
 								mentor_quarter_group_mentor_quarter_path(mentor_quarter.mentor_quarter_group, mentor_quarter, 
 																		:mentor_quarter => { :lead => false }), 
 								:method => :put %>
 				<%- else -%>
-					<%= link_to "Make high school lead", 
+					<%= link_to "Make #{Customer.lead_label}", 
 								mentor_quarter_group_mentor_quarter_path(mentor_quarter.mentor_quarter_group, mentor_quarter, 
 																		:mentor_quarter => { :lead => true }), 
 								:method => :put %>
