@@ -98,7 +98,7 @@ class MentorQuarterGroupsController < ApplicationController
       @mentor_quarter_group = MentorQuarterGroup.find(params[:id])
       original_size = @mentor_quarter_group.mentor_quarters_count
       @mentor_quarter_group.sync_with_course!
-      new_size = @mentor_quarter_group.mentor_quarters_count
+      new_size = @mentor_quarter_group.reload.mentor_quarters_count
       flash[:notice] = "Successfully synced course enrollees. Went from #{@template.pluralize(original_size, "mentor")} to #{@template.pluralize(new_size, "mentor")}."
     else
       @mentor_quarter_group = nil
