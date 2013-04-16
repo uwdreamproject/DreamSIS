@@ -7,12 +7,15 @@ class ParticipantsController < ApplicationController
   # GET /participants
   # GET /participants.xml
   def index
-    @participants = Participant.all
+    @participants = Participant.paginate(:all, :page => params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
       format.xml { render :xml => @participants }
-      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+      format.xls { 
+        @participants = Participant.all
+        render :action => 'index', :layout => 'basic' 
+      }
     end
   end
 

@@ -28,7 +28,7 @@
 		<%= text_field_with_auto_complete :participant, :fullname %>
 	<% end %> -->
 
-
+	<%- unless @participants.respond_to?(:current_page) -%>
 	<h3>Filters
 		<%= link_to_function "show all", "clearAllFilters()" %></h3>
 
@@ -50,6 +50,7 @@
 		
 		<% end -%>
 		</ul>
+	<% end %>
 		
 	<%- if @participant_groups -%>
 	<h3>Groups</h3>
