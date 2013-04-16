@@ -1027,10 +1027,13 @@ textarea, form.formtastic textarea {
 
 form#participant_form li {
 	list-style: none;
+	margin-left: 0;
+	padding-left: 0;
 }
 
 form#participant_form li li {
-	margin-left: 3em;
+/*	margin-left: 3em;*/
+	margin-right: 1em;
 }
 
 
@@ -1071,7 +1074,7 @@ input#mentor_fullname {
 }
 
 /*form:not(.formtastic) fieldset {*/
-fieldset, form.formtastic fieldset {
+fieldset, form.formtastic > fieldset {
 	border: none;
 	margin-bottom: 25px;
 	padding: 0.5em;
@@ -1098,14 +1101,104 @@ form.formtastic fieldset fieldset legend {
 	margin: 0;
 }
 
+/* @group Second-level fieldsets for inline grouped fields */
+
+form.formtastic fieldset fieldset.inline {
+	padding: 0;
+}
+
+form.formtastic fieldset fieldset.inline legend {
+	color: #656565;
+	float: left;
+	width: 25%;
+}
+
+form.formtastic fieldset fieldset.inline > ol > fieldset {
+	padding: 0;
+}
+
+form.formtastic fieldset fieldset.inline > ol {
+	margin-left: 25%;
+}
+
+form.formtastic fieldset fieldset.inline > ol li {
+	display: inline-block;
+	width: auto;
+	max-width: 30%;
+	margin-right: 1em;
+	margin-bottom: 0.5em;
+}
+
+form.formtastic fieldset fieldset.inline > ol {
+	margin-bottom: 1em;
+}
+
+form.formtastic fieldset fieldset.inline.compress-bottom > ol {
+	margin-bottom: 0;
+}
+
+
+form.formtastic fieldset fieldset.inline > ol li input, form.formtastic fieldset fieldset.inline > ol li select {
+	display: block;
+	clear: both;
+	max-width: 90%;
+}
+
+form.formtastic fieldset fieldset.inline > ol li label {
+	display: block;
+	font-weight: normal;
+	margin-bottom: 3px;
+	font-size: 85%;
+	width: auto;
+}
+
+form.formtastic fieldset fieldset.inline ol li.boolean {
+	width: auto;
+	max-width: 90%;
+}
+
+form.formtastic fieldset fieldset.inline ol li.boolean label {
+	padding-left: 0;
+	font-size: 100%;
+}
+
+form.formtastic fieldset fieldset.inline ol li.boolean label input {
+	display: inline;
+}
+
+
+/* @end */
+
+form.formtastic li#participant_suffix_input input {
+	width: 50px;
+}
+
+form.formtastic li#participant_state_input input {
+	width: 4em;
+}
+
+form.formtastic li#participant_zip_input input {
+	width: 8em;
+}
+
 form.formtastic fieldset p:first-child {
 	margin: -10px -2px 2em -7px;
 	padding: 7px;
 	background: rgba(0,0,0,0.03);
 }
 
+form.formtastic fieldset > ol > .inline-hints { 
+	color:#666; 
+	margin:-1em 0 1.5em 25%; 
+}
+
 form.formtastic fieldset fieldset {
 	margin: 0;
+}
+
+form.formtastic > fieldset > ol > li > label {
+	width: 22%;
+	padding-right: 3%;
 }
 
 .choose_identity p.intro {
@@ -3594,6 +3687,19 @@ body.rsvp .when-and-where {
 	float: none;
 	width: auto;
 	margin: auto;
+}
+
+form.formtastic fieldset fieldset.inline legend {
+	display: block;
+	float: none;
+}
+
+form.formtastic fieldset fieldset.inline > ol {
+	margin-left: 0;
+}
+
+form.formtastic label {
+	width: auto !important;
 }
 
 }
