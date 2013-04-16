@@ -15,9 +15,9 @@ races = {
 
 <%- f.inputs :name => "Race/Ethnicity" do -%>
  
-	<%- for race, title in races -%>
+	<%- for race, title in races.sort_by{|r,t| t.gsub("Other", "ZOther")} -%>
 	<ol>
-		<li>
+		<li class="input">
 			<%= f.check_box race, :onClick => "$('participant_#{race.to_s.gsub("_ethnicity", "")}_heritage').toggle()" %>
 			<%= f.label race, title %>
 			<%= f.text_field "#{race.to_s.gsub("_ethnicity", "")}_heritage", :style => ("display:none" unless f.object["#{race}?"]) %>

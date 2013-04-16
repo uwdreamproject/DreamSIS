@@ -1,10 +1,5 @@
-<fieldset>
-<legend>Post-Dream Project Information</legend>
+<%- f.inputs :name => "Post-Program Information" do -%>
 
-	<%= f.label :college_attending_id %>
-	<%= f.collection_select :college_attending_id, 
-							f.object.college_applications, 
-							:institution_id, :name, 
-							:include_blank => "None" %>
-			
-</fieldset>
+	<%= f.input :college_attending_id, :collection => Hash[f.object.college_applications.map{|ca| [ca.name, ca.institution_id]}] %>
+	
+<% end %>
