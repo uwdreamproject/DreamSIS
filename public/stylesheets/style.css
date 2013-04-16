@@ -2949,6 +2949,7 @@ li.input div.auto_complete.after_select {
 	height: auto;
 	line-height: 1em;
 	padding: 5px 10px;
+	padding-left: 22px;
 	width: 100%;
 	border-bottom: 1px dotted #dadada;
 	border-left: none;
@@ -2959,8 +2960,25 @@ li.input div.auto_complete.after_select {
 	font-weight: bold !important;
 }
 
-.menu ul ul a:hover {
-	background: url(../images/bullets/gold_arrow_small.gif) no-repeat left center;
+.menu ul ul li.list a {
+	background: url(../images/icons/silk/text_list_bullets.png) no-repeat left center;
+}
+
+.menu ul ul li.report a {
+	background: url(../images/icons/silk/chart_pie.png) no-repeat left center;
+}
+
+
+.menu ul ul li.add a {
+	background: url(../images/icons/silk/add.png) no-repeat left center;
+}
+
+.menu ul ul li a {
+	background-position: 5px top;
+}
+
+.menu ul ul li a:hover {
+	background: url(../images/bullets/gold_arrow_small.gif) no-repeat 5px center;
 	border: none;
 	border-bottom: 1px dotted #dadada;
 	color: rgb(53,94,170);

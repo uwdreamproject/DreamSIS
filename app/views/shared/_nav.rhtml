@@ -30,8 +30,8 @@
 	<li><%= link_to "High Schools", "#", :onClick => "return false" %>
 		<div class="double-wide">
 			<ul>
-				<li class="primary"><%= link_to "Partner High Schools", high_schools_url %></li>
-				<li class="primary"><%= link_to "Current Stats", stats_high_schools_url %></li>
+				<li class="primary list"><%= link_to "Partner High Schools", high_schools_url %></li>
+				<li class="primary report"><%= link_to "Current Stats", stats_high_schools_url %></li>
 				<% for high_school in HighSchool.partners %>
 					<li><%= link_to "#{high_school.name}", high_school_url(high_school) %></li>
 				<% end -%>
@@ -41,7 +41,8 @@
 	<li><%= link_to "Events", "#", :onClick => "return false" %>
 		<div>
 			<ul>
-				<li class="primary"><%= link_to "All Events", events_url %></li>
+				<li class="primary list"><%= link_to "All Events", events_url %></li>
+				<li class="add"><%= link_to "Add new event", new_event_url %></li>
 				<li><%= link_to "Groups", event_groups_url %></li>
 				<li><%= link_to "Types", event_types_url %></li>
 			</ul>
