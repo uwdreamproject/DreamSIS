@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130406041129) do
+ActiveRecord::Schema.define(:version => 20130415043944) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -395,7 +395,6 @@ ActiveRecord::Schema.define(:version => 20130406041129) do
     t.datetime "resource_cache_updated_at"
     t.string   "display_name"
     t.string   "survey_id"
-    t.boolean  "clearinghouse_record_found"
     t.string   "other_how_did_you_hear"
     t.boolean  "can_send_texts"
     t.boolean  "can_receive_texts"
@@ -421,6 +420,22 @@ ActiveRecord::Schema.define(:version => 20130406041129) do
     t.string   "shirt_size"
     t.integer  "college_mapper_id"
     t.boolean  "fafsa_not_applicable"
+    t.integer  "child_id"
+    t.string   "relationship_to_child"
+    t.string   "occupation"
+    t.decimal  "annual_income"
+    t.boolean  "needs_interpreter"
+    t.text     "meeting_avilability"
+    t.string   "preferred_contact_method"
+    t.string   "preferred_phone"
+    t.string   "facebook_id"
+    t.boolean  "check_email_regularly"
+    t.integer  "student_id_number"
+    t.string   "birthplace"
+    t.boolean  "married"
+    t.integer  "number_of_children"
+    t.boolean  "free_reduced_lunch_signed_up"
+    t.string   "parent_type"
   end
 
   add_index "people", ["display_name"], :name => "index_people_on_display_name"
