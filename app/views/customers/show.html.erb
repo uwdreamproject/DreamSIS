@@ -1,0 +1,16 @@
+<h1><%= @customer.name %></h1>
+
+<dl class="inline-definitions">
+
+	<dt>Name</dt>
+	<dd><%=h @customer.name %></dd>
+
+	<dt>Program</dt>
+	<dd><%= link_to h(@customer.program.try(:title)), @customer.program %></dd>
+
+</dl>
+
+<div id="sidebar">
+	<p><%= link_to 'Edit this customer', edit_customer_path(@customer), :class => "edit button" %></p>
+	<p><%= link_to 'Back to customers', customers_path, :class => "back button" %></p>
+</div>
