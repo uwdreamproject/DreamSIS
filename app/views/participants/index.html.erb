@@ -1,4 +1,4 @@
-<h1>Listing <span id="filtered_record_count"></span> <%= pluralize @participants.size, "participant" %>
+<h1>Listing <span id="filtered_record_count"></span> <%= pluralize @participants.size, Customer.participant_label %>
 	<%= "<font color=grey> at #{@high_school.name}</font>" if @high_school %>
 	<%= "<font color=grey> in #{@grad_year} class</font>" if @grad_year %>
 </h1>
@@ -32,7 +32,7 @@
 
 <br />
 
-<%= link_to 'Add new participant', new_participant_path, :class => "add button" %>
+<%= link_to "Add new #{Customer.participant_label}", new_participant_path, :class => "add button" %>
 
 <%= render :partial => "sidebar" %>
 

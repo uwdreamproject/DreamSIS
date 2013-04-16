@@ -5,7 +5,7 @@
 				:object => (@quarter || Quarter.current_quarter || Quarter.allowing_signups.try(:first) || Quarter.last) %></p>
 
 	<% if @quarter %>
-		<p><%= link_to "Add a new mentor group", 
+		<p><%= link_to "Add a new group", 
 						new_mentor_quarter_group_path(:quarter_id => @quarter.to_param), 
 						:class => 'add button' %></p>
 		
