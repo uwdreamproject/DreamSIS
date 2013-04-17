@@ -65,5 +65,5 @@
 <% end -%>
 
 <% f.inputs(:name => "Decision") do %>
-	<%= f.input :decision, :as => :radio, :collection => ["Accepted", "Denied", "Waitlisted", "Deferred"], :include_blank => true %>
+	<%= f.input :decision, :as => :select, :collection => ["Accepted", "Denied", "Waitlisted", "Deferred"], :include_blank => true %>
 <% end -%>
