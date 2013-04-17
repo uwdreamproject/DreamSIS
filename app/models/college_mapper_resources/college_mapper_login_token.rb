@@ -17,7 +17,7 @@ class CollegeMapperLoginToken < CollegeMapperResource
   # after login.
   def login_url(student_id = nil)
     url = URI self.class.site.to_s.gsub(/(\w[^:]+):(\w[^@]+)@/, "") # strip out any basic auth credentials
-    url.path = "/api/v1/vicarious_login"
+    url.path = "/api/v1/vicarious_login.php"
     url.query = "redirect_to=/counselors/timeline/#{student_id}" if student_id
     url.to_s
   end
