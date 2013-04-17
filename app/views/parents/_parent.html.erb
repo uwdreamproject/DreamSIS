@@ -1,0 +1,12 @@
+<tr id="parent_<%= parent.id %>">
+
+	<td><%=h parent.fullname %></td>
+	<td><%=h parent.parent_type %></td>
+	<td><%= auto_link h(parent.preferred_contact_detail) %></td>
+	
+	<td class="functions">
+		<%= link_to 'Details', [@participant, parent] %>
+		<%= link_to 'Edit', edit_participant_parent_path(@participant, parent) %>
+		<%= link_to 'Remove', [@participant, parent], :confirm => 'Are you sure?', :method => :delete %>
+	</td>
+</tr>

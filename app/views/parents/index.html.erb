@@ -1,0 +1,18 @@
+<h3 class="pre-title"><%= link_to h(@participant.fullname), @participant %></h3>
+<h1>Scholarships</h1>
+
+<table>
+  <tr>
+		<th>Scholarship</th>
+		<th>Amount</th>
+		<th>Awarded?</th>
+		<th>Functions</th>
+  </tr>
+
+	<%= render :partial => "scholarship_application", :collection => @scholarship_applications %>
+
+</table>
+
+<br />
+
+<%= link_to 'Add scholarship', new_participant_scholarship_application_path, :class => 'add button' %>
