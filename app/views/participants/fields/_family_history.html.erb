@@ -15,4 +15,10 @@
 		<% end %>
 	<% end %>
 
+	<%- f.inputs :name => "Marriage/Children", :class => "inline" do -%>
+		<%= f.input :married %>
+		<%= f.input :aliases, :label => "Maiden Name", :as => :string %>
+		<%= f.input :number_of_children, :collection => 0..5, :as => :select %>
+	<% end %>
+
 <% end %>
