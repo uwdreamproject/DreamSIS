@@ -1,0 +1,28 @@
+<%- 
+races = {
+	:african_american => "African American",
+	:african => "African",
+	:american_indian => "Alaska Native or American Indian",
+	:asian => "Asian American", 
+	:hispanic => "Hispanic", 
+	:latino => "Latino", 
+	:middle_eastern => "Middle Eastern", 
+	:pacific_islander => "Pacific Islander", 
+	:caucasian => "Caucasian or White", 
+	:other_ethnicity => "Other ethnicity"
+}
+ -%>
+
+<%- f.inputs :name => "Race/Ethnicity" do -%>
+ 
+	<%- for race, title in races.sort_by{|r,t| t.gsub("Other", "ZOther")} -%>
+	<ol>
+		<li class="input">
+			<%= f.check_box race, :onClick => "$('participant_#{race.to_s.gsub("_ethnicity", "")}_heritage').toggle()" %>
+			<%= f.label race, title %>
+			<%= f.text_field "#{race.to_s.gsub("_ethnicity", "")}_heritage", :style => ("display:none" unless f.object["#{race}?"]) %>
+		</li>
+	</ol>
+	<% end %>
+
+<% end %>

@@ -1,0 +1,23 @@
+<%- f.inputs(:name => "Name and Personal Information") do -%>
+	<%- f.inputs :name => "Name", :class => "inline" do %>
+		<%= f.inputs :lastname, :firstname, :middlename, :suffix %>
+	<%- end -%>
+
+	<%= observe_field 'participant_lastname', 
+						:url => check_duplicate_participants_path, 
+						:with => "Form.serialize($('participant_form'))",
+						:condition => "$F('participant_firstname') != '' && F$('participant_lastname') != ''" %>
+						
+	<%= observe_field 'participant_firstname', 
+						:url => check_duplicate_participants_path, 
+						:with => "Form.serialize($('participant_form'))",
+						:condition => "$F('participant_firstname') != '' && $F('participant_lastname') != ''" %>
+
+	<div class="error-message" id="participant_duplicate_warning" style="clear:both"></div>
+
+	
+	<%= f.input :nickname, :label => "Nickname/Preferred Name" %>
+	<%= f.input :sex, :collection => {"Male" => "M", "Female" => "F", "No Response" => "NR"}, :include_blank => true %>
+	<%= f.input :birthdate, :start_year => 1985, :end_year => Time.now.year-10 %>
+	
+<%- end -%>

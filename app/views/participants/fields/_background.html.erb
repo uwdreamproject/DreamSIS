@@ -1,0 +1,31 @@
+<%- f.inputs :name => "Background Information" do -%>
+
+	<%- f.inputs :name => "Texting Capabilities", :class => "inline" do -%>
+		<%= f.inputs :can_send_texts, :can_receive_texts %>
+		<%= f.input :unlimited_texting, :label => "Unlimited (or near-unlimited) texting" %>
+	<% end %>
+
+	<%= f.input :computer_at_home, :label => "Reliable access to a computer and email at home" %>
+
+	<%- f.inputs :name => "Dietary Restrictions", :class => "inline" do -%>
+		<%= f.inputs :vegetarian, :vegan, :kosher, :halal %>
+		<%= f.input :dietary_restrictions, :label => "Other:" %>
+	<% end %>
+
+	<p>Which of the following programs are you affiliated with or do you participate in?</p>
+		<%= f.input :programs, :as => :check_boxes %>
+
+	<%= f.input :college_bound_scholarship, :label => "Signed up for Washington College Bound Scholarship" %>
+
+	<%= f.input :plans_after_high_school, :as => :select, :collection => [
+		"Vocational school", 
+		"Military service", 
+		"Community College",
+		"4-year college/university", 
+		"Job (not attend college)", 
+		"Job",
+		"Not attend college",
+		"Don't know"
+	] %>
+
+<% end %>

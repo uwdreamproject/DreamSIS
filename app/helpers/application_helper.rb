@@ -54,8 +54,21 @@ module ApplicationHelper
   end
 
   # Creates a link that updates the specified form element with the current date and time when clicked.
-  def link_to_now(element_id)
-    @template.link_to_function "Set to now", "setToNow('#{element_id}')"
+  # By default, this will also include a "Clear" link to clear out the same element instead.
+  def link_to_now(element_id, include_clear_link = true)
+    str = ""
+    str << @template.link_to_function("Set to now", "setToNow('#{element_id.to_s}')")
+    if include_clear_link
+      str << separator("or")
+      str << link_to_clear(element_id)
+    end
+    str
   end
+  
+  # Creates a link that updates the specified form date element to all blanks when clicked.
+  def link_to_clear(element_id)
+    @template.link_to_function "Clear", "setToClear('#{element_id.to_s}')"
+  end
+  
   
 end

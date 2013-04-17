@@ -1,0 +1,23 @@
+<h1>Customers</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Program</th>
+	<th colspan=3></th>
+  </tr>
+
+<% for customer in @customers %>
+  <tr>
+    <td><%=h customer.name %></td>
+    <td><%= link_to customer.program.try(:abbreviation), customer.program %></td>
+    <td class="functions"><%= link_to 'Show', customer %></td>
+    <td class="functions"><%= link_to 'Edit', edit_customer_path(customer) %></td>
+    <td class="functions"><%= link_to 'Destroy', customer, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New customer', new_customer_path, :class => "add button" %>

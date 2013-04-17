@@ -12,13 +12,14 @@ class Participant < Person
   
   validates_presence_of :birthdate, :high_school_id, :if => :validate_ready_to_rsvp?
 
-  attr_accessor :override_binder_date, :override_fafsa_date, :create_college_mapper_student_after_save
+  attr_accessor :override_binder_date, :override_fafsa_date, :create_college_mapper_student_after_save, :link_to_current_user_after_save
   
   named_scope :in_cohort, lambda {|grad_year| {:conditions => { :grad_year => grad_year }}}
   named_scope :in_high_school, lambda {|high_school_id| {:conditions => { :high_school_id => high_school_id }}}
   named_scope :active, :conditions => ["inactive IS NULL OR inactive = ?", false]
 
   after_save :college_mapper_student, :if => :create_college_mapper_student_after_save?
+  after_create :link_to_current_user, :if => :link_to_current_user_after_save?
 
   def validate_name?
     true
@@ -26,6 +27,10 @@ class Participant < Person
   
   def create_college_mapper_student_after_save?
     create_college_mapper_student_after_save || self.high_school.try(:enable_college_mapper_integration?)
+  end
+  
+  def link_to_current_user_after_save?
+    link_to_current_user_after_save || link_to_current_user_after_save == "1"
   end
   
   # Returns an array of unique graudation years
@@ -117,6 +122,7 @@ class Participant < Person
 
   # Calculates the current grade based on grad_year. If over 12, this method will always return 12.
   def grade
+    return nil unless grad_year
     academic_year_offset = 1 if Time.now.month > 6
     @grade = Time.now.year - grad_year + academic_year_offset.to_i + 12
     @grade > 12 ? 12 : @grade
@@ -170,6 +176,14 @@ class Participant < Person
     # Create new colleges that exist in CollegeMapper
     for college in college_mapper_colleges
       college_applications.find_or_create_by_institution_id(college.collegeId) unless college.removed?
+    end
+  end
+  
+  # Creates a ParticipantMentor link between this Participant and the Mentor that is the current user.
+  # This will only succeed if the current user (from User#current_user) is a Mentor person.
+  def link_to_current_user
+    if User.current_user && User.current_user.try(:person).is_a?(Mentor)
+      mentors << User.current_user.try(:person)
     end
   end
   

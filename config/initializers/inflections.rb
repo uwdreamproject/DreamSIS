@@ -8,3 +8,12 @@
 #   inflect.irregular 'person', 'people'
 #   inflect.uncountable %w( fish sheep )
 # end
+
+# module ActiveSupport::Inflector
+#   
+#   def titleize(word)
+#     return "AmeriCorps" if word == "AmeriCorps"
+#     super
+#   end
+#   
+# end

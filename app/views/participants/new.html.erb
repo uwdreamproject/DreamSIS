@@ -1,13 +1,21 @@
-<h1>New participant</h1>
+<h1>New <%= Customer.participant_label %></h1>
 
-<% form_for(@participant, :html => {:id => "participant_form"}) do |f| %>
-  <%= f.error_messages %>
+<% semantic_form_for(@participant, :html => {:id => "participant_form"}) do |f| %>
+	<%= f.error_messages %>
+	
+	<%= render :partial => 'participants/fields/name_and_personal', :locals => { :f => f } %>
+	<%= render :partial => 'participants/fields/contact', :locals => { :f => f } %>
+	<%= render :partial => 'participants/fields/high_school', :locals => { :f => f } %>
+	<%= render :partial => 'participants/fields/background', :locals => { :f => f } %>
+	<%= render :partial => 'participants/fields/race_ethnicity', :locals => { :f => f } %>
+	<%= render :partial => 'participants/fields/family_history', :locals => { :f => f } %>
+	<%= render :partial => 'participants/fields/parents', :locals => { :f => f } %>
+	<%= render :partial => 'participants/fields/financial', :locals => { :f => f } %>
+	<%= render :partial => 'participants/fields/administrative', :locals => { :f => f } %>	
 
-	<%= render :partial => "fields", :locals => { :f => f } %>
+	<%- f.inputs :name => "Create Record" do -%>
+		<%= f.input :link_to_current_user_after_save, :as => :boolean, :label => "Automatically link me to this student after creating the student record" %>
+	<% end %>
 
-  <p>
-    <%= f.submit "Create" %>
-  </p>
+	<%= f.buttons %>
 <% end %>
-
-<%= link_to 'Back', participants_path %>

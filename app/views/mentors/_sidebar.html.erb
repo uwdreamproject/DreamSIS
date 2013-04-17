@@ -1,8 +1,9 @@
 <div id="sidebar">
 	<p><%= link_to "Download in Excel", { :format => :xls }, :class => 'button xls' %></p>
+	<p><%= link_to "Add new #{Customer.mentor_label}", new_mentor_path, :class => "add button" %>
 	
 	<% form_for :mentor, :html => { :onSubmit => "return false;" } do |f| %>
-		<h4>Search for a mentor:</h4>
+		<h4><%= Customer.mentor_label %> Search:</h4>
 		<input id="mentor_fullname" name="mentor[fullname]" size="30" type="search" results="5" autosave="mentor_fullname_search" placeholder="Search" />
 		<div class="auto_complete" id="mentor_fullname_auto_complete"></div>
 		
