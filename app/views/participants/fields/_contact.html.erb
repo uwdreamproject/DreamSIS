@@ -7,12 +7,17 @@
 	<%- f.inputs :name => "Phone Numbers", :class => "inline compress-bottom" do %>
 		<%= f.input :phone_home, :label => "Home" %>
 		<%= f.input :phone_mobile, :label => "Mobile" %>
+		<%= f.input :preferred_phone, :collection => %w[Home Mobile] %>
 	<% end %>
 	<%= f.input :bad_phone %>
 	
 	<%- f.inputs :name => "Email", :class => "inline compress-bottom" do -%>
 		<%= f.input :email %>
+		<%= f.input :check_email_regularly, :label => "Checks email regularly" %>
 	<% end %>
 	<%= f.input :bad_email %>
+	
+	<%= f.input :facebook_id, :label => "Facebook ID", :input_html => { :size => 15 } %>
+	<%= f.input :preferred_contact_method, :collection => %w[Phone Text Email Facebook] %>
 	
 <% end %>

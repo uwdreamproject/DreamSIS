@@ -28,6 +28,17 @@
 		</div>
 	<% end -%>
 
+	<%- if @participant.respond_to?(:parents) && Customer.experimental? -%>
+		<div class="info-section" id="parents">
+			<h2>Parents/Guardians</h2>
+			<%= render :partial => 'parents' %>
+			<br>
+			<%= link_to 'Add parent/guardian', 
+						new_participant_parent_path(@participant),
+						:class => "add button" %>
+		</div>
+	<% end -%>
+	
 	<%- if @participant.respond_to?(:submitted_fafsa?) -%>
 		<div class="info-section" id="paperwork">
 			<%= render :partial => 'paperwork_status' %>

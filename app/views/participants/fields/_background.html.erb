@@ -12,10 +12,11 @@
 		<%= f.input :dietary_restrictions, :label => "Other:" %>
 	<% end %>
 
-	<p>Which of the following programs are you affiliated with or do you participate in?</p>
-		<%= f.input :programs, :as => :check_boxes %>
+	<%= f.input :programs, :label => "Other Programs", :as => :check_boxes %>
 
 	<%= f.input :college_bound_scholarship, :label => "Signed up for Washington College Bound Scholarship" %>
+
+	<%= f.input :after_school_activities, :label => "Other extracurricular activities", :input_html => { :rows => 5 } %>
 
 	<%= f.input :plans_after_high_school, :as => :select, :collection => [
 		"Vocational school", 

@@ -1,0 +1,17 @@
+<table id="parents">
+	<tr>
+		<th>Name</th>
+		<th>Relationship</th>
+		<th>Preferred Contact</th>
+		<th>Functions</th>
+	</tr>
+
+	<%= render :partial => "parents/parent", :collection => @participant.parents %>
+				
+	<%- if @participant.parents.empty? -%>
+	<tr class="empty">
+		<td colspan="10">No parents/guardians yet.</td>
+	</tr>
+	<% end %>
+
+</table>	
