@@ -143,7 +143,7 @@ class MentorQuarterGroup < ActiveRecord::Base
         mentor_quarter.volunteer = enroll_as_volunteer
         mentor_quarter.save!
       else
-        mentor_quarter = mentor_quarters.initialize_by_mentor_id(mentor.id)
+        mentor_quarter = mentor_quarters.new(:mentor_id => mentor.id)
         mentor_quarter.volunteer = enroll_as_volunteer
         mentor_quarter.save!
       end
