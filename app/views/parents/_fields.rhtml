@@ -1,0 +1,48 @@
+<%- f.inputs(:name => "Name and Relationship") do -%>
+	<%- f.inputs :name => "Name", :class => "inline" do %>
+		<%= f.inputs :lastname, :firstname, :middlename, :suffix %>
+	<%- end -%>	
+
+	<%= f.input :parent_type, :label => "Relationship to Student", :collection => %w[Mother Father Step-Mother Step-Father Guardian Other] %>
+<% end %>
+
+<%- f.inputs :name => "Contact Information" do -%>
+
+	<%- f.inputs :name => "Home Address (if different from student's)", :class => "inline compress-bottom" do %>
+		<%= f.inputs :street, :city, :state, :zip %>
+	<% end %>
+	<%= f.input :bad_address %>
+	
+	<%- f.inputs :name => "Phone Numbers", :class => "inline compress-bottom" do %>
+		<%= f.input :phone_home, :label => "Home" %>
+		<%= f.input :phone_mobile, :label => "Mobile" %>
+		<%= f.input :preferred_phone, :collection => %w[Home Mobile] %>
+	<% end %>
+	<%= f.input :bad_phone %>
+	
+	<%- f.inputs :name => "Email", :class => "inline compress-bottom" do -%>
+		<%= f.input :email %>
+	<% end %>
+	<%= f.input :bad_email %>
+	
+	<%= f.input :preferred_contact_method, :collection => ["Home Phone", "Mobile Phone", "Email"] %>
+	
+<% end %>
+
+<%- f.inputs :name => "Background Information" do -%>
+
+	<%= f.input :other_languages, :label => "Primary Language (if not English)" %>
+	<%= f.input :occupation %>
+	<%= f.input :annual_income, :input_html => { :size => 15 } %>
+	
+	<%= f.input :mother_education_level_id, :label => "Highest Education Level Completed", :collection => EducationLevel.all %>
+	<%= f.input :mother_education_level_id, :label => "Highest Education Level Completed", :collection => EducationLevel.all %>
+	
+<% end %>
+
+<%- f.inputs :name => "Meetings" do -%>
+
+	<%= f.input :meeting_availability, :input_html => { :rows => 5 } %>
+	<%= f.input :needs_interpreter %>
+
+<% end %>

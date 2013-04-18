@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130415043944) do
+ActiveRecord::Schema.define(:version => 20130417162744) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(:version => 20130415043944) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "mentee_label"
+    t.boolean  "experimental"
   end
 
   create_table "education_levels", :force => true do |t|
@@ -395,7 +396,6 @@ ActiveRecord::Schema.define(:version => 20130415043944) do
     t.datetime "resource_cache_updated_at"
     t.string   "display_name"
     t.string   "survey_id"
-    t.boolean  "clearinghouse_record_found"
     t.string   "other_how_did_you_hear"
     t.boolean  "can_send_texts"
     t.boolean  "can_receive_texts"
@@ -426,7 +426,7 @@ ActiveRecord::Schema.define(:version => 20130415043944) do
     t.string   "occupation"
     t.decimal  "annual_income"
     t.boolean  "needs_interpreter"
-    t.text     "meeting_avilability"
+    t.text     "meeting_availability"
     t.string   "preferred_contact_method"
     t.string   "preferred_phone"
     t.string   "facebook_id"

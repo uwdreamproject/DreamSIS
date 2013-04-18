@@ -698,6 +698,10 @@ td.college-logo {
 	background-image: url(../images/icons/silk/page_edit.png);
 }
 
+.info-section#parents h2 {
+	background-image: url(../images/icons/silk/user_suit.png);
+}
+
 .info-section#notes h2 {
 	background-image: url(../images/icons/silk/note.png);
 }
@@ -1169,15 +1173,15 @@ form.formtastic fieldset fieldset.inline ol li.boolean label input {
 
 /* @end */
 
-form.formtastic li#participant_suffix_input input {
+form.formtastic li#participant_suffix_input input, form.formtastic li#parent_suffix_input input {
 	width: 50px;
 }
 
-form.formtastic li#participant_state_input input {
+form.formtastic li#participant_state_input input, form.formtastic li#parent_state_input input {
 	width: 4em;
 }
 
-form.formtastic li#participant_zip_input input {
+form.formtastic li#participant_zip_input input, form.formtastic li#parent_zip_input input {
 	width: 8em;
 }
 
