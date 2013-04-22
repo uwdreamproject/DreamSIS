@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  abbreviation: MyString
+  maximum_total_score: 9.99
+  sections: MyText
+
+two:
+  name: MyString
+  abbreviation: MyString
+  maximum_total_score: 9.99
+  sections: MyText

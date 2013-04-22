@@ -38,6 +38,18 @@
 						:class => "add button" %>
 		</div>
 	<% end -%>
+
+
+	<%- if @participant.respond_to?(:test_scores) && Customer.experimental? -%>
+		<div class="info-section" id="test_scores">
+			<h2>Tests</h2>
+			<%= render :partial => 'test_scores' %>
+			<br>
+			<%= link_to 'Add test', 
+						new_participant_test_score_path(@participant),
+						:class => "add button" %>
+		</div>
+	<% end -%>
 	
 	<%- if @participant.respond_to?(:submitted_fafsa?) -%>
 		<div class="info-section" id="paperwork">

@@ -1,0 +1,10 @@
+<%- f.inputs do -%>
+	<%= f.input :name %>
+
+	<%= f.input :maximum_total_score %>
+
+	<%= f.input :sections, :input_html => { :rows => 5, :width => 20 }, 
+				:hint => "List each section, one per line. If the section tracks a score, 
+							show the maximum score after a colon, like this: \"Writing: 800\"" %>
+
+<% end -%>

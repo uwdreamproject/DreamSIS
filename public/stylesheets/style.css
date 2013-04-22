@@ -702,6 +702,10 @@ td.college-logo {
 	background-image: url(../images/icons/silk/user_suit.png);
 }
 
+.info-section#test_scores h2 {
+	background-image: url(../images/icons/silk/page_edit.png);
+}
+
 .info-section#notes h2 {
 	background-image: url(../images/icons/silk/note.png);
 }
@@ -1170,8 +1174,13 @@ form.formtastic fieldset fieldset.inline ol li.boolean label input {
 	display: inline;
 }
 
-
 /* @end */
+
+form.formtastic li.sameline-hint p.inline-hints {
+	display: inline;
+	margin: 0;
+	margin-left: 0.5em;
+}
 
 form.formtastic li#participant_suffix_input input, form.formtastic li#parent_suffix_input input {
 	width: 50px;
@@ -1184,6 +1193,11 @@ form.formtastic li#participant_state_input input, form.formtastic li#parent_stat
 form.formtastic li#participant_zip_input input, form.formtastic li#parent_zip_input input {
 	width: 8em;
 }
+
+/*form.formtastic li#test_score_total_score_input {
+	border-top: 1px solid rgba(0,0,0,0.25);
+}*/
+
 
 form.formtastic fieldset p:first-child {
 	margin: -10px -2px 2em -7px;

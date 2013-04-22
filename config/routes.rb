@@ -2,6 +2,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :trainings, :member => { :take => :get, :complete => :post }
   map.resources :notes
   map.resources :programs
+  map.resources :test_types
   map.resources :customers
   map.resources :object_filters
   map.resources :locations, :collection => { :auto_complete_for_location_name => :any }
@@ -24,7 +25,7 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.resources :participants, 
-    :has_many => [:college_applications, :scholarship_applications, :parents], 
+    :has_many => [:college_applications, :scholarship_applications, :parents, :test_scores], 
     :collection => { :check_duplicate => :any, :add_to_group => :post, :fetch_participant_group_options => :any, :college_mapper_callback => :post },
     :member => { :note => [ :post, :put ], :fetch_participant_group_options => :any, :college_mapper_login => :post } do |participant|
     participant.resources :college_applications, :collection => { :auto_complete_for_institution_name => :any }

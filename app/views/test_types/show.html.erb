@@ -1,0 +1,28 @@
+<h1><%= @test_type.name %></h1>
+
+<dl class="inline-definitions">
+
+	<dt>Name</dt>
+	<dd><%=h @test_type.name %></dd>
+
+	<dt>Maximum Score</dt>
+	<dd><%=h @test_type.maximum_total_score %></dd>
+
+	<dt>Sections</dt>
+	<dd>
+		<ul>
+		<%- for section, maximum_score in @test_type.section_scores_hash -%>
+			<li><%=h section %>
+				<%= content_tag :span, "(out of #{h(maximum_score)})", :class => "light" if maximum_score %>
+			</li>
+			<% end %>
+		</ul>
+	</dd>
+		
+
+</dl>
+
+<div id="sidebar">
+	<p><%= link_to 'Edit this test type', edit_test_type_path(@test_type), :class => "edit button" %></p>
+	<p><%= link_to 'Back to test types', test_types_path, :class => "back button" %></p>
+</div>

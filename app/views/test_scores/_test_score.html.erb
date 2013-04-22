@@ -1,0 +1,12 @@
+<tr id="test_score_<%= test_score.id %>">
+
+	<td><%=h test_score.name %></td>
+	<td><%=h test_score.taken_at.to_s(:date_with_day_of_week) %></td>
+	<td><%=h test_score.total_score.try(:to_i) %></td>
+	
+	<td class="functions">
+		<%= link_to 'Details', [@participant, test_score] %>
+		<%= link_to 'Edit', edit_participant_test_score_path(@participant, test_score) %>
+		<%= link_to 'Remove', [@participant, test_score], :confirm => 'Are you sure?', :method => :delete %>
+	</td>
+</tr>
