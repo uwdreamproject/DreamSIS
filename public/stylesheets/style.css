@@ -1275,7 +1275,7 @@ a.offsite {
 	display: inline-block;
 	padding: 5px 10px 5px 25px;
 	text-decoration: none;
-	background-position: 5px center;
+	background-position: 5px 5px;
 	background-repeat: no-repeat;
 	border: 1px outset rgba(153,153,153,.5);
 	border-radius: 5px;
