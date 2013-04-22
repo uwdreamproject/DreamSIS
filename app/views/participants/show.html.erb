@@ -30,7 +30,7 @@
 
 	<%- if @participant.respond_to?(:parents) && Customer.experimental? -%>
 		<div class="info-section" id="parents">
-			<h2>Parents/Guardians</h2>
+			<h2>Parents/Guardians &amp; Contacts</h2>
 			<%= render :partial => 'parents' %>
 			<br>
 			<%= link_to 'Add parent/guardian', 
