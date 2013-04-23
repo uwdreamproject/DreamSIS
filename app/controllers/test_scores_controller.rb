@@ -43,7 +43,11 @@ class TestScoresController < ParticipantsController
   # POST /participant/test_scores
   # POST /participant/test_scores.xml
   def create
-    @test_score = @participant.test_scores.new(params[:test_score])
+    @test_score = @participant.test_scores.new(:test_type_id => params[:test_score][:test_type_id])
+    @test_score.test_type.reload
+    @test_score.add_section_score_attribute_methods
+    @test_score.attributes = params[:test_score]
+
 
     respond_to do |format|
       if @test_score.save
@@ -61,6 +65,9 @@ class TestScoresController < ParticipantsController
   # PUT /participant/test_scores/1.xml
   def update
     @test_score = @participant.test_scores.find(params[:id])
+    @test_score.test_type_id = params[:test_score][:test_type_id]
+    @test_score.test_type.reload
+    @test_score.add_section_score_attribute_methods
 
     respond_to do |format|
       if @test_score.update_attributes(params[:test_score])
@@ -83,6 +90,17 @@ class TestScoresController < ParticipantsController
     respond_to do |format|
       format.html { redirect_to(participant_test_scores_url) }
       format.xml  { head :ok }
+    end
+  end
+
+  def update_scores_fields
+    @test_score = params[:id] ? @participant.test_scores.find(params[:id]) : @participant.test_scores.new(params[:test_score])
+    @test_score.test_type_id = params[:test_score][:test_type_id]
+    @test_score.test_type.reload
+    @test_score.add_section_score_attribute_methods
+    
+    respond_to do |format|
+      format.js
     end
   end
 

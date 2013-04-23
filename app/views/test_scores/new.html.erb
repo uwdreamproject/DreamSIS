@@ -12,4 +12,8 @@
 		<%= link_to 'Back', @participant, :class => 'cancel button' %>
 	<% end -%>
 
+	<%= observe_field :test_score_test_type_id, 
+					  :url => update_scores_fields_participant_test_scores_path(f.object.try(:participant)), 
+					  :with => 'test_score[test_type_id]' %>
+
 <% end %>

@@ -1,7 +1,9 @@
 <tr id="test_score_<%= test_score.id %>">
 
 	<td><%=h test_score.name %></td>
-	<td><%=h test_score.taken_at.to_s(:date_with_day_of_week) %></td>
+	<td><%=h test_score.taken_at.to_s(:date_with_day_of_week) %>
+		<small class="light">(<%= time_ago_in_words test_score.taken_at %> ago)</small>
+		</td>
 	<td><%=h test_score.total_score.try(:to_i) %></td>
 	
 	<td class="functions">

@@ -6,11 +6,12 @@ class TestScore < ActiveRecord::Base
   delegate :name, :to => :test_type
   
   validates_presence_of :participant_id, :test_type_id, :taken_at
-  
   validate :total_score_is_below_maximum
   
   serialize :section_scores
   before_save :update_section_scores_attribute
+
+  default_scope :joins => :test_type, :order => "test_types.name ASC, taken_at ASC"
 
   # Overrides the instantiate method to add the section score attributes to the class
   # using +attr_accessor+. This allows us to dynamically get and set the section scores,
