@@ -31,7 +31,7 @@ class Participant < Person
   end
   
   def link_to_current_user_after_save?
-    link_to_current_user_after_save || link_to_current_user_after_save == "1"
+    link_to_current_user_after_save == "1"
   end
   
   # Returns an array of unique graudation years

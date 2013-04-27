@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130417162744) do
+ActiveRecord::Schema.define(:version => 20130427064745) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -437,6 +437,7 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.integer  "number_of_children"
     t.boolean  "free_reduced_lunch_signed_up"
     t.string   "parent_type"
+    t.string   "not_attending_college_reason"
   end
 
   add_index "people", ["display_name"], :name => "index_people_on_display_name"
