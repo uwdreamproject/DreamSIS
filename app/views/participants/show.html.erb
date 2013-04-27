@@ -14,10 +14,7 @@
 			<%= link_to 'Add college', 
 						new_participant_college_application_path(@participant),
 						:class => "add button" %>
-		<% if @participant.not_attending_college %>
-         <p>This participant has post-high school plans other than college: <%= @participant.not_attending_college_reason %></p>
-      <% end %>
-      </div>
+		</div>
 	<% end -%>
 
 	<%- if @participant.respond_to?(:scholarship_applications) -%>
