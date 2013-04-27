@@ -1,0 +1,3 @@
+module EventGroupsHelper
+
+end

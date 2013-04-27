@@ -21,10 +21,10 @@ module ApplicationHelper
 	end
   
   def submit_tag_text
-    #case controller.action_name
-    #when 'edit': "Save changes"
-    #when 'new': "Save new record"
-    #end
+    case controller.action_name
+    when 'edit': "Save changes"
+    when 'new': "Save new record"
+    end
   end
   
   
