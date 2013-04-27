@@ -24,6 +24,7 @@ body {
 	text-align: left;
 	font: 13px/130% "Helvetica Neue", Helvetica, Arial, sans-serif;
 	color: rgb(51,51,51);
+	-webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5 {
