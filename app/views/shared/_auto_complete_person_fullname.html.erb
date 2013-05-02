@@ -4,7 +4,8 @@
 			<span class="primary"><%= highlight(h(result.fullname(:skip_update => true)), h(highlight_phrase)) %>
 				<small class="light">(#<%= result.id %>)</small></span>
 			<span class="secondary"><%=h result.email %></span>
-			<span class="tertiary"><%= result.class.to_s %></span>
+			<span class="tertiary"><%= Customer.current_customer.customer_label(result.class.to_s) || result.class.to_s %></span>
 		</li>
 	<% end -%>	
+	<%= content_tag :div, "No results", :class => "empty" if auto_complete_person_fullname.empty? %>
 <% end -%>

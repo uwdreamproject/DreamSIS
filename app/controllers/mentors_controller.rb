@@ -4,6 +4,7 @@ class MentorsController < ApplicationController
   
   def index
     @mentors = Mentor.paginate :all, :page => params[:page]
+    return redirect_to Mentor.find(params[:id]) if params[:id]
 
     respond_to do |format|
       format.html # index.html.erb
@@ -128,7 +129,11 @@ class MentorsController < ApplicationController
                                             OR LOWER(uw_net_id) LIKE :fullname", 
                                           {:fullname => "%#{params[:mentor][:fullname].downcase}%"}])
     respond_to do |format|
-      format.js
+      format.js { 
+        render :partial => "shared/auto_complete_person_fullname", 
+                :object => @mentors, 
+                :locals => { :highlight_phrase => params[:mentor][:fullname] }
+       }
     end
   end
   

@@ -51,10 +51,19 @@
 	<%= render :partial => "mentor_term", :collection => @mentor_term_group.deleted_mentor_terms %>
 </table>
 
-<h3>Add another mentor to this group: </h3>
-<% form_tag mentor_term_group_mentor_terms_path(@mentor_term_group), :method => :post, :style => "display: inline" do %>
-	UW NetID: <%= text_field_tag :uw_netid, "", :size => 8 %>
-	<%= submit_tag "Add" %>
+<% form_tag mentor_term_group_mentor_terms_path(@mentor_term_group), :method => :post, :style => "display: inline", :id => "add_mentor_form" do %>
+<h3>Add another <%= Customer.mentor_label %> to this group: </h3>
+	
+	<%= model_auto_completer "mentor[fullname]", "", "mentor_term[mentor_id]", nil,
+							{ 
+								:url => auto_complete_for_mentor_fullname_mentors_path, 
+								:submit_on_return => true, 
+								:after_update_element => "function(text_field, selection, hidden_field, id) { text_field.form.submit() }" 
+							},
+							{ :autocomplete => false, :class => "search", :placeholder => "Search for #{Customer.mentor_label}", :style => "display:inline" },
+							{ :skip_style => true } %>
+		
+	<%= submit_tag "Add", :style => "display: inline" %>
 <% end -%>
 
 
@@ -96,27 +105,23 @@
 	
 	<%= render :partial => 'time_schedule_details', :object => @mentor_term_group.course_resource if @mentor_term_group.course_resource %>
 	
-	<h3><%= Customer.leads_Label %></h3>
-	<ul class="mini photo-list">
-	<% for lead in @mentor_term_group.mentor_terms.leads %>
-		<li>
-			<%= image_tag photo_mentor_path(lead.try(:mentor), :size => "50"), :size => "", :class => 'photo' %>
-			<%= lead.fullname %>
-			<br><small>
-				<%= link_to "Remove", 
-							mentor_term_group_mentor_term_path(@mentor_term_group, lead, 
-								:mentor_term => { :lead => false }), 
-							:method => :put,
-							:confirm => "Are you sure you want to remove this person as a #{Customer.lead_label}?" %>
-				</small>
-		</li>
-	<% end -%>
-	</ul>
-
-	<h3>Add another mentor to this group</h3>
-	<% form_tag mentor_term_group_mentor_terms_path(@mentor_term_group), :class => :post do %>
-		UW NetID: <%= text_field_tag :uw_netid, "", :size => 8 %>
-		<%= submit_tag "Add" %>
-	<% end -%>
+	<%- unless @mentor_term_group.mentor_terms.leads.empty? -%>
+		<h3><%= Customer.leads_Label %></h3>
+		<ul class="mini photo-list">
+		<% for lead in @mentor_term_group.mentor_terms.leads %>
+			<li>
+				<%= image_tag photo_mentor_path(lead.try(:mentor), :size => "50"), :size => "", :class => 'photo' %>
+				<%= lead.fullname %>
+				<br><small>
+					<%= link_to "Remove", 
+								mentor_term_group_mentor_term_path(@mentor_term_group, lead, 
+									:mentor_term => { :lead => false }), 
+								:method => :put,
+								:confirm => "Are you sure you want to remove this person as a #{Customer.lead_label}?" %>
+					</small>
+			</li>
+		<% end -%>
+		</ul>
+	<% end %>
 
 </div>

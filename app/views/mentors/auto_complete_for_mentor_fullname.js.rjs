@@ -1,5 +1,9 @@
 unless params[:mentor][:fullname].blank?
-  page.hide 'original_mentors'
-  page << "$$('.pagination').invoke('hide')"
-  page.replace_html 'mentor_search_results', :partial => @mentors
+  page.if("$('original_mentors')")
+    page.hide 'original_mentors'
+    page << "$$('.pagination').invoke('hide')"
+    page.replace_html 'mentor_search_results', :partial => @mentors
+  else
+    
+  end
 end

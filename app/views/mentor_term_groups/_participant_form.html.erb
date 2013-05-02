@@ -1,6 +1,6 @@
 <div id="participant_form_container_<%= mentor_term.id %>">
 
-	<%= link_to_function "Add mentee", 
+	<%= link_to_function "Add #{Customer.mentee_label}", 
 						"this.hide(); Element.toggle('participant_form_#{mentor_term.id}')", 
 						:class => 'add mentee button show_on_hover',
 						:id => "add_participant_button_#{mentor_term.id}" %>
