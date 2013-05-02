@@ -40,22 +40,6 @@
 		<% else -%>
 
 			<%= link_to "Edit", edit_mentor_term_group_mentor_term_path(mentor_term.mentor_term_group, mentor_term) %>
-		
-			<%- if @current_user.admin? -%>
-				<%- if mentor_term.lead? -%>
-					<%= link_to "Remove as #{Customer.lead_label}", 
-								mentor_term_group_mentor_term_path(mentor_term.mentor_term_group, mentor_term, 
-																		:mentor_term => { :lead => false }), 
-								:method => :put %>
-				<%- else -%>
-					<%= link_to "Make #{Customer.lead_label}", 
-								mentor_term_group_mentor_term_path(mentor_term.mentor_term_group, mentor_term, 
-																		:mentor_term => { :lead => true }), 
-								:method => :put %>
-				<% end -%>
-			<% end -%>
-			
-			<br>
 			<%- if mentor_term.volunteer? -%>
 				<%= link_to "Delete", 
 							mentor_term_group_mentor_term_path(mentor_term.mentor_term_group, mentor_term), 
