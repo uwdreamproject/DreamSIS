@@ -1,57 +1,18 @@
+# Models a specific period of time, usually aligning to an academic calendar. This used to be called "Quarter" to model the academic quarters of the UW, but was renamed to Term to handle other types of calendars, such as semesters. The change also allows customers to use completely arbitrary calendar terms, like a full year or more.
+# 
+# Quarter is now available as a subclass of this model so that quarter-specific funcationality can be retained.
 class Term < ActiveRecord::Base
   has_many :mentor_term_groups, :include => { :mentor_terms => :mentor }
 
-  validates_presence_of :year
-  validates_presence_of :quarter_code
   validates_presence_of :start_date
   validates_presence_of :end_date
-  validates_inclusion_of :quarter_code, :in => 1..4
-
-  validates_uniqueness_of :quarter_code, :scope => :year
 
   after_create :sync_with_resource!
   
-  default_scope :order => "year, quarter_code"
+  default_scope :order => "year, quarter_code, title"
   
   named_scope :allowing_signups, :conditions => { :allow_signups => true }
   
-  # Returns a pretty representation of the Term; e.g., "Autumn 2008"
-  def title
-    titles = %w( Winter Spring Summer Autumn)
-    "#{titles[quarter_code-1]} #{year}"
-  end
-  
-  # Returns the abbreviation for the term code. 1 = WIN, 2 = SPR, 3 = SUM, 4 = AUT.
-  def quarter_code_abbreviation
-    abbrevs = %w( WIN SPR SUM AUT )
-    abbrevs[quarter_code - 1]
-  end
-  
-  # Returns the term title of just the term part. Useful for the UW web services.
-  def term_title
-    titles = %w( winter spring summer autumn )
-    titles[quarter_code-1]
-  end
-
-  # Determines the next Term in the calendar
-  def next
-    next_qtr_code = quarter_code == 4 ? 1 : quarter_code + 1
-    next_year = quarter_code == 4 ? year + 1 : year
-    Term.find("#{%w( WIN SPR SUM AUT )[next_qtr_code-1]}#{next_year}")
-  end
-  
-  # Determines the previous Term in the calendar
-  def prev
-    prev_qtr_code = quarter_code == 1 ? 4 : quarter_code - 1
-    prev_year = quarter_code == 1 ? year - 1 : year
-    Term.find("#{%w( WIN SPR SUM AUT )[prev_qtr_code-1]}#{prev_year}")
-  end
-  
-  # Returns an abbreviated version of the Term name; e.g., "AUT2008"
-  def to_param
-    "#{quarter_code_abbreviation}#{year}"
-  end
-
   # Overrides find to allow you to find a Term with any of the following types of ID's:
   # 
   # * database id, e.g., "1"
@@ -117,7 +78,7 @@ class Term < ActiveRecord::Base
   # Finds term where current date falls before term.end_date and after or on term.start_date 
   def self.current_term()
     q = Term.find(:first, :conditions => [ "? >= start_date AND ? < end_date", Time.now, Time.now])
-    q ||= Term.create(:year => Time.now.year,
+    q ||= Quarter.create(:year => Time.now.year,
                          :quarter_code => Term.guess_quarter_code, 
                          :start_date => Term.guess_first_day(Term.guess_quarter_code, Time.now.year),
                          :end_date  => Term.guess_last_day(Term.guess_quarter_code, Time.now.year))

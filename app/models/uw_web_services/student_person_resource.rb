@@ -39,7 +39,7 @@ class StudentPersonResource < UwWebResource
   def active_registrations(term)
     params = { :reg_id => self.RegID, :is_active => "on" }
     params[:year] = term.year if term
-    params[:term] = term.term_title if term
+    params[:term] = term.quarter_title if term
     registrations = RegistrationResource.find(:all, :params => params)
   end
   

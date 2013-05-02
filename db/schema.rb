@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130502161149) do
+ActiveRecord::Schema.define(:version => 20130502165947) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -505,6 +505,7 @@ ActiveRecord::Schema.define(:version => 20130502161149) do
     t.text     "course_ids"
     t.boolean  "allow_signups"
     t.string   "title"
+    t.string   "type"
   end
 
   create_table "test_scores", :force => true do |t|

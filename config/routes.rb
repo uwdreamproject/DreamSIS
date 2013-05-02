@@ -8,6 +8,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :locations, :collection => { :auto_complete_for_location_name => :any }
   map.resources :colleges, :controller => "locations"
   map.resources :terms, :member => { :sync => :put }
+  map.resources :quarters, :path => :quarters, :as => :terms
+
+  
   map.resources :events do |events|
     events.resources :event_attendances, :as => :attendees, :collection => { 
       :checkin => :get, :auto_complete_for_person_fullname => :any, :checkin_new_participant => :put, :checkin_new_volunteer => :put
