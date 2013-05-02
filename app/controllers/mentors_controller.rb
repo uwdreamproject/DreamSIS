@@ -56,6 +56,7 @@ class MentorsController < ApplicationController
 
   def create
     @mentor = Mentor.new(params[:mentor])
+    @mentor.validate_name = true
 
     respond_to do |format|
       if @mentor.save
@@ -71,6 +72,7 @@ class MentorsController < ApplicationController
 
   def update
     @mentor = Mentor.find(params[:id])
+    @mentor.validate_name = true
 
     respond_to do |format|
       if @mentor.update_attributes(params[:mentor])

@@ -7,9 +7,9 @@
 				:alt => "" %>
 	</div>
 
-	<h3 class="pre-title"><%= @mentor.class.to_s %></h3>
+	<h3 class="pre-title"><%= Customer.current_customer.customer_label(@mentor.class.to_s.underscore) || @mentor.class.to_s %></h3>
 	<h1><%= @mentor.fullname %></h1>
-	<%= link_to "Edit this mentor", edit_mentor_path(@mentor), :class => 'edit button' %>
+	<%= link_to "Edit this #{Customer.mentor_label}", edit_mentor_path(@mentor), :class => 'edit button' %>
 
 	<dl class="inline-definitions">
 
