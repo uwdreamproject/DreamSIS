@@ -14,8 +14,12 @@
 
 <div id="sidebar">
 	
-	<%= link_to "Sync with UW Calendar", 
+	<p><%= link_to "Back to terms", terms_path, :class => "back button" %></p>
+	
+	<p><%= link_to "Sync with UW Calendar", 
 				sync_term_path(@term), 
 				:method => :put, 
 				:confirm => "Are you sure you want to sync this term with the UW calendar?",
-				:class => "sync button" if Customer.link_to_uw? %>
+				:class => "sync button" if Customer.link_to_uw? %></p>
+				
+</div>

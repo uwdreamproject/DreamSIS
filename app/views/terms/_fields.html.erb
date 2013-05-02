@@ -1,4 +1,5 @@
 <% f.inputs do %>
+	<%= f.input :title unless f.object.is_a?(Quarter) %>
 	<%= f.input :start_date %>
 	<%= f.input :end_date %>
 	<%= f.input :course_ids, :as => :text, :label => "Primary Course ID(s)", :input_html => { :rows => 3 }, 

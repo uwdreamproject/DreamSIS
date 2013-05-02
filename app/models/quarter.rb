@@ -4,6 +4,8 @@ class Quarter < Term
   validates_inclusion_of :quarter_code, :in => 1..4
   validates_uniqueness_of :quarter_code, :scope => :year
 
+  after_create :sync_with_resource!
+  
 
   # Returns a pretty representation of the Quarter; e.g., "Autumn 2008"
   def title
@@ -41,6 +43,37 @@ class Quarter < Term
   def to_param
     "#{quarter_code_abbreviation}#{year}"
   end
+  
+  # Returns the TermResource that corresponds to this Term.
+  def term_resource
+    begin
+      titles = %w( winter spring summer autumn )
+      @term_resource ||= TermResource.find "#{year},#{titles[quarter_code-1]}"
+    rescue ActiveResource::ResourceNotFound => e
+      @term_resource = nil
+    end
+  end
+  
+  # Syncs the start and end dates with the TermResource FirstDay and LastFinalExamDay.
+  def sync_with_resource!
+    self.update_attributes({
+      :start_date => term_resource.try(:FirstDay),
+      :end_date => term_resource.try(:LastFinalExamDay)
+    }) if term_resource
+  end
+  
+  # Finds or creates a GroupResource based on this term. Name format is like this: u_uwdrmprj_mentors_spring2011
+  def group_resource
+    titles = %w( winter spring summer autumn )
+    @group_resource ||= GroupResource.find_or_create("mentors_#{titles[quarter_code-1]}#{year}")
+  end
+  
+  # Updates the group membership for this term's group membership with the current active mentors.
+  # Returns true if all members were added to the group. Returns an array of members not found.
+  def update_group_membership!
+    group_resource.update_members(mentors.collect(&:uw_net_id))
+  end
+  
 
   protected
   

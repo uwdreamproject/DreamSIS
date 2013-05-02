@@ -15,7 +15,7 @@
 <% end -%>
 
 
-<%- if f.object.term -%>
+<%- if f.object.term.try(:courses) != [] -%>
 	<% f.inputs(:name => "Link to Course") do %>
 		<% 
 			section_ids = f.object.term.courses.collect(&:linked_section_ids).flatten

@@ -1,1 +1,14 @@
-<%= f.inputs %>
+<%- f.inputs :name => "Name and Program" do -%>
+	<%= f.inputs :name, :parent_customer, :program %>
+<% end %>
+
+<%- f.inputs :name => "Settings" do -%>
+	<%= f.input :term_system, :collection => %w(Quarters) %>
+	<%= f.input :link_to_uw, :label => "Link to University of Washington systems" %>
+	<%= f.input :require_background_checks, :label => "Require background checks for mentors" %>
+	<%= f.input :experimental, :label => "Enable experimental features" %>
+<% end %>
+
+<%- f.inputs :name => "Custom Labels and Content" do -%>
+	<%= f.inputs :mentor_label, :lead_label, :participant_label, :mentee_label, :workbook_label, :intake_survey_label %>
+<% end %>

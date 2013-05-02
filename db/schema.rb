@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130502165947) do
+ActiveRecord::Schema.define(:version => 20130502172210) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(:version => 20130502165947) do
     t.integer  "program_id"
     t.integer  "parent_customer_id"
     t.boolean  "link_to_uw"
-    t.boolean  "term_system"
+    t.string   "term_system"
     t.text     "risk_form_content"
     t.boolean  "require_background_checks"
     t.string   "mentor_label"

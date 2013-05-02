@@ -18,6 +18,11 @@ class Customer < ActiveRecord::Base
     :mentee => "mentee"
   }
   
+  # Returns true if +term_system+ is +Quarters+.
+  def use_quarters?
+    term_system == "Quarters"
+  end
+  
   class << self
 
     # For now, just default to the first record in the Customer collection.
