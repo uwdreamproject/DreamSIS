@@ -11,12 +11,13 @@
 
 <% for quarter in @quarters %>
 <tr class="<%= "current" if quarter.current_quarter? %>">
-	<td><%= link_to quarter.title, quarter %></td>
+	<td class="name"><%= link_to quarter.title, quarter %></td>
 	<td><%= quarter.start_date.to_s(:db) %></td>
 	<td><%= quarter.course_ids.collect{|c| "<li>#{h(c)}</li>"} if quarter.course_ids %></td>
 	<td><%= "Y" if quarter.allow_signups? %>
-	<td><%= link_to 'Edit', edit_quarter_path(quarter) %>
-		| <%= link_to 'Delete', quarter, :confirm => 'Are you sure?', :method => :delete %>
+	<td class="functions">
+		<%= link_to 'Edit', edit_quarter_path(quarter) %>
+		<%= link_to 'Delete', quarter, :confirm => 'Are you sure?', :method => :delete %>
 	</td>
 </tr>
 <% end %>

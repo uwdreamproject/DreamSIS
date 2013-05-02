@@ -18,4 +18,4 @@
 				sync_quarter_path(@quarter), 
 				:method => :put, 
 				:confirm => "Are you sure you want to sync this quarter with the UW calendar?",
-				:class => "sync button" %>
+				:class => "sync button" if Customer.link_to_uw? %>
