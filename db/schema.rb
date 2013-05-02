@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130422052305) do
+ActiveRecord::Schema.define(:version => 20130502161149) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -209,8 +209,8 @@ ActiveRecord::Schema.define(:version => 20130422052305) do
     t.integer  "college_mapper_id"
   end
 
-  create_table "mentor_quarter_groups", :force => true do |t|
-    t.integer  "quarter_id"
+  create_table "mentor_term_groups", :force => true do |t|
+    t.integer  "term_id"
     t.integer  "location_id"
     t.string   "title"
     t.string   "course_id"
@@ -221,14 +221,14 @@ ActiveRecord::Schema.define(:version => 20130422052305) do
     t.boolean  "none_option"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "mentor_quarters_count", :default => 0
+    t.integer  "mentor_terms_count", :default => 0
     t.integer  "linked_group_id"
     t.string   "day_of_week"
   end
 
-  create_table "mentor_quarters", :force => true do |t|
+  create_table "mentor_terms", :force => true do |t|
     t.integer  "mentor_id"
-    t.integer  "mentor_quarter_group_id"
+    t.integer  "mentor_term_group_id"
     t.boolean  "lead"
     t.datetime "deleted_at"
     t.datetime "created_at"
@@ -461,17 +461,6 @@ ActiveRecord::Schema.define(:version => 20130422052305) do
     t.datetime "updated_at"
   end
 
-  create_table "quarters", :force => true do |t|
-    t.integer  "year"
-    t.integer  "quarter_code"
-    t.date     "start_date"
-    t.date     "end_date"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "course_ids"
-    t.boolean  "allow_signups"
-  end
-
   create_table "scholarship_applications", :force => true do |t|
     t.integer  "scholarship_id"
     t.integer  "participant_id"
@@ -505,6 +494,18 @@ ActiveRecord::Schema.define(:version => 20130422052305) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "terms", :force => true do |t|
+    t.integer  "year"
+    t.integer  "quarter_code"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "course_ids"
+    t.boolean  "allow_signups"
+    t.string   "title"
+  end
 
   create_table "test_scores", :force => true do |t|
     t.integer  "participant_id"

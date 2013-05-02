@@ -5,20 +5,20 @@ class HighSchool < Location
   named_scope :partners, :conditions => { :partner_school => true }
 
   has_many :participants do
-    def in_participating_cohort(quarter)
-      find_all_by_grad_year quarter.participating_cohort
+    def in_participating_cohort(term)
+      find_all_by_grad_year term.participating_cohort
     end
   end
   
   has_many :visits, :foreign_key => 'location_id' do
-    def for(quarter)
-      find_all {|visit| quarter.include?(visit.date)}
+    def for(term)
+      find_all {|visit| term.include?(visit.date)}
     end
   end
 
-  has_many :mentor_quarter_groups , :foreign_key => 'location_id' do
-    def for(quarter)
-      find_all_by_quarter_id quarter.id
+  has_many :mentor_term_groups , :foreign_key => 'location_id' do
+    def for(term)
+      find_all_by_term_id term.id
     end
   end
   

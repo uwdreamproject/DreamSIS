@@ -7,7 +7,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :object_filters
   map.resources :locations, :collection => { :auto_complete_for_location_name => :any }
   map.resources :colleges, :controller => "locations"
-  map.resources :quarters, :member => { :sync => :put }
+  map.resources :terms, :member => { :sync => :put }
   map.resources :events do |events|
     events.resources :event_attendances, :as => :attendees, :collection => { 
       :checkin => :get, :auto_complete_for_person_fullname => :any, :checkin_new_participant => :put, :checkin_new_volunteer => :put
@@ -21,7 +21,7 @@ ActionController::Routing::Routes.draw do |map|
     :collection => { :stats => :get, :in_district => :get } do |high_schools|
     high_schools.resources :visits, 
       :collection => { :attendance => :get, :update_attendance => :post }, 
-      :path_prefix  => "/high_schools/:high_school_id/:quarter_id"
+      :path_prefix  => "/high_schools/:high_school_id/:term_id"
   end
 
   map.resources :participants, 
@@ -42,22 +42,22 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :mentors, 
     :member => { :photo => :any, :remove_participant => :delete, :background_check_form_responses => :get }, 
     :collection => { :auto_complete_for_mentor_fullname => :any, :onboarding => :any, :event_status => :any, :leads => :any, :van_drivers => :any, :check_if_valid_van_driver => :get }
-  map.resources :mentor_quarter_groups, 
+  map.resources :mentor_term_groups, 
     :member => { :sync => :put, :photo_tile => :get }, 
     :collection => { :create_from_linked_sections => :put, :sync => :put },
-    :has_many => :mentor_quarters
-  map.mentor_quarter_groups_quarter 'mentor_quarter_groups/quarter/:quarter_id', 
-    :controller => 'mentor_quarter_groups', 
-    :action => 'quarter'
+    :has_many => :mentor_terms
+  map.mentor_term_groups_term 'mentor_term_groups/term/:term_id', 
+    :controller => 'mentor_term_groups', 
+    :action => 'term'
   map.resources :volunteers, :controller => :mentors, :only => [:show, :background_check_responses]
 
   map.mentor_signup_schedule_add_my_courses 'mentor_signup/add_my_courses', :controller => 'mentor_signup', :action => 'add_my_courses'
   map.mentor_signup_basics 'mentor_signup/basics', :controller => 'mentor_signup', :action => 'basics'
   map.mentor_signup_risk_form 'mentor_signup/risk_form', :controller => 'mentor_signup', :action => 'risk_form'
   map.mentor_signup_background_check_form 'mentor_signup/background_check_form', :controller => 'mentor_signup', :action => 'background_check_form'
-  map.mentor_signup_quarter_drop 'mentor_signup/:quarter_id/drop/:id', :controller => 'mentor_signup', :action => 'drop', :conditions => {:method => :delete}
-  map.mentor_signup_quarter_volunteer 'mentor_signup/:quarter_id/volunteer/:id', :controller => 'mentor_signup', :action => 'volunteer', :conditions => {:method => :put}
-  map.mentor_signup_quarter 'mentor_signup/:quarter_id', :controller => 'mentor_signup', :action => 'index'
+  map.mentor_signup_term_drop 'mentor_signup/:term_id/drop/:id', :controller => 'mentor_signup', :action => 'drop', :conditions => {:method => :delete}
+  map.mentor_signup_term_volunteer 'mentor_signup/:term_id/volunteer/:id', :controller => 'mentor_signup', :action => 'volunteer', :conditions => {:method => :put}
+  map.mentor_signup_term 'mentor_signup/:term_id', :controller => 'mentor_signup', :action => 'index'
   map.mentor_signup 'mentor_signup/', :controller => 'mentor_signup', :action => 'index'
 
   map.rsvp 'rsvp/rsvp/:id', :controller => 'rsvp', :action => 'rsvp', :conditions => { :method => :put }

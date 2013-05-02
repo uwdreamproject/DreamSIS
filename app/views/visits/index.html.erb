@@ -1,5 +1,5 @@
 <h1>High School Visits
-	<span class="light">&raquo; <%=h @high_school.name %></span> <%= @quarter.title %></h1>
+	<span class="light">&raquo; <%=h @high_school.name %></span> <%= @term.title %></h1>
 
 <table>
 	<tr>
@@ -20,9 +20,9 @@
 	<td><%=h visit.show_for_participants? ? "Yes" : "No" %></td>
 	<td><%=h visit.show_for_mentors? ? "Yes" : "No" %></td>
 	<td><%=h visit.attended_count %></td>
-	<td><%= link_to 'Show', high_school_visit_path(@high_school, @quarter, visit) %>
-		| <%= link_to 'Edit', edit_high_school_visit_path(@high_school, @quarter, visit) %>
-		| <%= link_to 'Delete', high_school_visit_path(@high_school, @quarter, visit), :confirm => 'Are you sure?', :method => :delete %>
+	<td><%= link_to 'Show', high_school_visit_path(@high_school, @term, visit) %>
+		| <%= link_to 'Edit', edit_high_school_visit_path(@high_school, @term, visit) %>
+		| <%= link_to 'Delete', high_school_visit_path(@high_school, @term, visit), :confirm => 'Are you sure?', :method => :delete %>
 	</td>
 </tr>
 <% end %>
@@ -31,13 +31,13 @@
 <tr class="empty">
 	<td colspan=10>
 		You haven't created any visits. 
-		<%= link_to "Add a new high school visit.", new_high_school_visit_path(@high_school, @quarter) %>
+		<%= link_to "Add a new high school visit.", new_high_school_visit_path(@high_school, @term) %>
 	</td>
 </tr>
 <% end -%>
 
 </table>
 
-<p><%= link_to "Add new high school visit", new_high_school_visit_path(@high_school, @quarter), :class => 'add button' %></p>
+<p><%= link_to "Add new high school visit", new_high_school_visit_path(@high_school, @term), :class => 'add button' %></p>
 
 <%= render :partial => "sidebar" %>

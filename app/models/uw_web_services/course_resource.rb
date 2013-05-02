@@ -14,7 +14,7 @@ class CourseResource < UwWebResource
   def id(include_section_id = true)
     course = self.attributes["Course"] || self
     curriculum = course.attributes["Curriculum"] || course
-    base_id = [curriculum.Year, curriculum.Quarter, curriculum.CurriculumAbbreviation, course.CourseNumber].join(",")
+    base_id = [curriculum.Year, curriculum.Term, curriculum.CurriculumAbbreviation, course.CourseNumber].join(",")
     base_id << "/" + self.PrimarySection.SectionID if include_section_id && self.PrimarySection.SectionID rescue nil
     return base_id
   end
@@ -44,7 +44,7 @@ class CourseResource < UwWebResource
     curriculum = course.attributes["Curriculum"] || course
     @associated_sections ||= CourseSectionResource.find(:all, :params => {
       :year =>  curriculum.attributes["Year"],
-      :quarter => curriculum.attributes["Quarter"],
+      :term => curriculum.attributes["Term"],
       :curriculum_abbreviation => curriculum.attributes["CurriculumAbbreviation"],
       :course_number => course.CourseNumber
     }).collect(&:course_resource)
@@ -55,7 +55,7 @@ class CourseResource < UwWebResource
   def linked_section_ids
     linked_sections.collect do |ls|
       if ls.attributes["Section"]
-        [ls.Section.Year, ls.Section.Quarter, ls.Section.CurriculumAbbreviation, ls.Section.CourseNumber].join(",") +
+        [ls.Section.Year, ls.Section.Term, ls.Section.CurriculumAbbreviation, ls.Section.CourseNumber].join(",") +
         "/" + ls.Section.SectionID
       else
         ls.id
@@ -69,7 +69,7 @@ class CourseResource < UwWebResource
     @active_registrations ||= RegistrationResource.find(:all, :params => {
       :curriculum_abbreviation => curriculum.attributes["CurriculumAbbreviation"], 
       :year => curriculum.attributes["Year"], 
-      :quarter => curriculum.attributes["Quarter"], 
+      :term => curriculum.attributes["Term"], 
       :course_number => course.attributes["CourseNumber"], 
       :section_id => self.attributes["SectionID"],
       :is_active => "on"

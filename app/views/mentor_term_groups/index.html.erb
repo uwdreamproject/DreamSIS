@@ -1,0 +1,50 @@
+<h1><%= Customer.mentor_Label %> Groups
+	<small class="light">&raquo; <%= @term.title %></small></h1>
+
+<table>
+	<tr>
+		<th>Section</th>
+		<th>Name</th>
+		<th>Times</th>
+		<th style="width: 10%"></th>
+		<th>Size</th>
+		<th>Capacity</th>
+		<th>Functions</th>
+	</tr>
+
+<% for mentor_term_group in @mentor_term_groups %>
+<tr>
+	<td><%= content_tag :span, h(mentor_term_group.section_id), :class => 'section_id tag' %></td>
+	<td><%= link_to h(mentor_term_group.title), mentor_term_group, :title => mentor_term_group.course_id %></td>
+	<td><%= mentor_term_group.times %></td>
+	<td class="signup-meter <%= "full" if mentor_term_group.full? %>">
+		<div class="capacity" 
+			 style="width: <%= mentor_term_group.capacity.to_f / @max_term_cap * 100 rescue 0 %>%;"
+			 title="<%= number_to_percentage mentor_term_group.percent_full, :precision => 0 %> full">
+			
+			<div class="size" style="width: <%= mentor_term_group.percent_full %>%">
+				<%= mentor_term_group.full? ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
+			</div>						
+		</div>
+	</td>
+	<td><%= content_tag :span, mentor_term_group.mentor_terms.size, :class => "" %></td>
+	<td><%= mentor_term_group.capacity %></td>
+	<td class="functions">
+		<%= link_to 'Show', mentor_term_group %>
+		<%= link_to 'Edit', edit_mentor_term_group_path(mentor_term_group) %>
+		<%= link_to 'Sync', sync_mentor_term_group_path(mentor_term_group), :method => :put unless mentor_term_group.course_id.blank? %>
+		<%= link_to 'Delete', mentor_term_group, :confirm => 'Are you sure?', :method => :delete %>
+	</td>
+</tr>
+<% end %>
+
+<tr class="total">
+	<td colspan="4">Total</td>
+	<td><%= @mentor_term_groups.collect(&:mentors).flatten.uniq.size %></td>
+	<td><%= @mentor_term_groups.collect(&:capacity).numeric_items.sum %></td>
+	<td></td>
+</tr>
+	
+</table>
+
+<%= render :partial => 'sidebar' %>

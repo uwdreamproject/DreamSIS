@@ -1,0 +1,11 @@
+<li id="mini_participant_<%= mentor_term.id %>_<%= mini_participant.participant_id %>">
+	<%= link_to mini_participant.participant.lastname_first, mini_participant.participant %>
+	
+	<%= link_to_remote "<span>delete</span>", 
+				:url => remove_participant_mentor_path(mentor_term.mentor, 
+														:mentor_participant_id => mini_participant.id, 
+														:mentor_term_id => mentor_term.id),
+				:method => :delete,
+				:html => { :class => "mini delete" },
+				:confirm => "Are you sure you want to remove this mentee?" %>
+</li>

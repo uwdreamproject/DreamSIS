@@ -17,11 +17,11 @@ class Location < ActiveRecord::Base
 
   default_scope :order => "name"
 
-  # Returns all the events that we should show on the attendance page for the requested quarter
-  def events(quarter = nil, audience = nil)
+  # Returns all the events that we should show on the attendance page for the requested term
+  def events(term = nil, audience = nil)
     conditions = ""
     conditions_values = {} 
-    conditions << "date >= '#{quarter.start_date.to_s(:db)}' AND date <= '#{quarter.end_date.to_s(:db)}'" if quarter
+    conditions << "date >= '#{term.start_date.to_s(:db)}' AND date <= '#{term.end_date.to_s(:db)}'" if term
     if audience
       conditions << " AND show_for_mentors = :sfm " && conditions_values[:sfm] = true if audience.include?(:mentors)
       conditions << " AND show_for_participants = :sfp " && conditions_values[:sfp] = true if audience.include?(:participants)

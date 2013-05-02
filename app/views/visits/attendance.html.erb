@@ -4,7 +4,7 @@
 </div>
 
 <h1>Attendance: <%= @showing.collect{|s| s.to_s.titleize }.to_sentence %></h1>
-<h2><%= @high_school.name %> &bull; <%= @quarter.title %></h2>
+<h2><%= @high_school.name %> &bull; <%= @term.title %></h2>
 
 <% form_for :attendance, :url => update_attendance_high_school_visits_path(@high_school) do |f| %>
 
@@ -140,7 +140,7 @@
 						<%= hidden_field_tag "rsvp[#{participant.id}][#{visit.id}]", "0", :id => nil %>
 					
 						<%= observe_field "rsvp_#{participant.id}_#{visit.id}",
-											:url => update_attendance_high_school_visits_path(@high_school, @quarter),
+											:url => update_attendance_high_school_visits_path(@high_school, @term),
 											:with => "rsvp[#{participant.id}][#{visit.id}]",
 											:failure => "alert('Could not save. Please try again or contact support.')" %>
 						<%= content_tag('span', '', :id => "status_#{participant.id}_#{visit.id}_rsvp", 
@@ -164,7 +164,7 @@
 						<%= hidden_field_tag "attendance[#{participant.id}][#{visit.id}]", "0", :id => nil %>
 					
 						<%= observe_field "attendance_#{participant.id}_#{visit.id}",
-											:url => update_attendance_high_school_visits_path(@high_school, @quarter),
+											:url => update_attendance_high_school_visits_path(@high_school, @term),
 											:with => "attendance[#{participant.id}][#{visit.id}]",
 											:failure => "alert('Could not save. Please try again or contact support.')" %>
 						<%= content_tag('span', '', :id => "status_#{participant.id}_#{visit.id}", 
@@ -187,9 +187,9 @@
 <% end -%>
 
 <div id="sidebar">
-	<%= render :partial => "shared/quarter_select", 
+	<%= render :partial => "shared/term_select", 
 				:locals => { :form_url => attendance_high_school_visits_path(@high_school, "new")},
-				:object => @quarter %>
+				:object => @term %>
 				
 	<p>This page allows you to track attendance for your <%= @showing.to_sentence %> at various events.
 		Only events that are pertinent to this group of people are shown (e.g., Dream Project class doesn't
@@ -198,7 +198,7 @@
 		to quickly mark the boxes without using your mouse.</p>
 	
 	<p><%= link_to "Add new high school visit", 
-					new_high_school_visit_path(@high_school, @quarter), 
+					new_high_school_visit_path(@high_school, @term), 
 					:class => 'add button' %></p>
 	
 	<%- unless @participants.empty? -%>

@@ -1,7 +1,0 @@
-<% f.inputs do %>
-	<%= f.input :start_date %>
-	<%= f.input :end_date %>
-	<%= f.input :course_ids, :as => :text, :label => "Primary Course ID(s)", :input_html => { :rows => 3 }, 
-					:hint => "Specify the course ID's for this quarter in the format: 2011,spring,EDUC,360/A. One per line." if Customer.link_to_uw? %>
-	<%= f.input :allow_signups %>
-<% end -%>

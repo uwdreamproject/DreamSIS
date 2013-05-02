@@ -12,7 +12,7 @@ class MentorParticipant < ActiveRecord::Base
   
   def destroy
     update_attribute :deleted_at, Time.now
-    # MentorQuarterGroup.decrement_counter(:mentor_quarters_count, mentor_quarter_group.id)
+    # MentorTermGroup.decrement_counter(:mentor_terms_count, mentor_term_group.id)
   end
   
   def deleted?

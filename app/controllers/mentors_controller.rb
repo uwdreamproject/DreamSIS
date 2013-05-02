@@ -133,17 +133,17 @@ class MentorsController < ApplicationController
   end
   
   def onboarding
-    @quarter = Quarter.find(params[:quarter_id])
-    @mentors = @quarter.mentors
+    @term = Term.find(params[:term_id])
+    @mentors = @term.mentors
   end
 
   def event_status
-    @quarter = Quarter.find(params[:quarter_id])
-    @mentors = @quarter.mentors
+    @term = Term.find(params[:term_id])
+    @mentors = @term.mentors
   end
   
   def leads
-    @quarter = Quarter.find(params[:quarter_id])
+    @term = Term.find(params[:term_id])
     @high_schools = HighSchool.partners
   end
   

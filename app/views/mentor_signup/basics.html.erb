@@ -4,7 +4,7 @@
 <% if @mentor.currently_enrolled? %>
 	<div class="complete">
 		<h2>Choose a high school visit</h2>
-		<p>You're currently signed up for <%= @mentor.current_mentor_quarter_groups_string %>.
+		<p>You're currently signed up for <%= @mentor.current_mentor_term_groups_string %>.
 			<br>
 			<%= link_to "Change your high school visit selection(s)", {:action => 'index'} %></p>
 	</div>

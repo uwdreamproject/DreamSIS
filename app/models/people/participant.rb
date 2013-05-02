@@ -42,10 +42,10 @@ class Participant < Person
   
   # Returns the grad_year of the currently-active cohort:
   # 
-  # * if the current quarter is Winter, return current year
-  # * if the current quarter is Summer, Autumn, or Spring, return current_year + 1
+  # * if the current term is Winter, return current year
+  # * if the current term is Summer, Autumn, or Spring, return current_year + 1
   def self.current_cohort
-    q = Quarter.current_quarter || Quarter.allowing_signups.try(:first) || Quarter.last
+    q = Term.current_term || Term.allowing_signups.try(:first) || Term.last
     q.quarter_code == 1 ? Time.now.year : Time.now.year + 1
   end
   

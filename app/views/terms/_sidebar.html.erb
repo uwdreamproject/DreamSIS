@@ -1,0 +1,7 @@
+<div id="sidebar">
+
+	<%= render :partial => "shared/term_select", 
+				:locals => { :form_url => term_path(:search)},
+				:object => (Term.current_term || Term.allowing_signups.try(:first) || Term.last) %>
+				
+</div>

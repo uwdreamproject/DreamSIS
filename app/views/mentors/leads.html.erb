@@ -1,11 +1,11 @@
-<h1>High School Leads <%= @quarter.title %></h1>
+<h1>High School Leads <%= @term.title %></h1>
 
 <% for high_school in @high_schools %>
 	
 	<h3><%=h high_school.name %></h3>
 
 	<ul class="mini photo-list indented">
-	<% for lead in high_school.mentor_quarter_groups.for(@quarter).collect{|g| g.mentor_quarters.leads}.flatten %>
+	<% for lead in high_school.mentor_term_groups.for(@term).collect{|g| g.mentor_terms.leads}.flatten %>
 		<li>
 			<%= image_tag photo_mentor_path(lead.try(:mentor), :size => "50"), :size => "", :class => 'photo' %>
 			<%= lead.fullname %>

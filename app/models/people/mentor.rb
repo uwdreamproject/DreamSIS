@@ -1,11 +1,11 @@
 class Mentor < Person
-  has_many :mentor_quarters, :conditions => { :deleted_at => nil } do
-    def for_quarter(quarter_id)
-      quarter_id = quarter_id.id if quarter_id.is_a?(Quarter)
-      find :all, :joins => [:mentor_quarter_group], :conditions => { :mentor_quarter_groups => { :quarter_id => quarter_id }, :deleted_at => nil }
+  has_many :mentor_terms, :conditions => { :deleted_at => nil } do
+    def for_term(term_id)
+      term_id = term_id.id if term_id.is_a?(Term)
+      find :all, :joins => [:mentor_term_group], :conditions => { :mentor_term_groups => { :term_id => term_id }, :deleted_at => nil }
     end
   end
-  has_many :mentor_quarter_groups, :through => :mentor_quarters
+  has_many :mentor_term_groups, :through => :mentor_terms
   
   has_many :mentor_participants, :conditions => { :deleted_at => nil }
   has_many :participants, :through => :mentor_participants
@@ -37,30 +37,30 @@ class Mentor < Person
     !risk_form_signed_at.nil? && !risk_form_signature.blank?
   end
   
-  # Returns true if the mentor is enrolled for the current quarter.
+  # Returns true if the mentor is enrolled for the current term.
   def currently_enrolled?
-    !current_mentor_quarter_groups.empty?
+    !current_mentor_term_groups.empty?
   end
   
-  # Returns a string of the titles of current mentor quarter groups for this mentor.
-  def current_mentor_quarter_groups_string
-    return "no groups" if current_mentor_quarter_groups.nil?
-    current_mentor_quarter_groups.collect(&:title).to_sentence
+  # Returns a string of the titles of current mentor term groups for this mentor.
+  def current_mentor_term_groups_string
+    return "no groups" if current_mentor_term_groups.nil?
+    current_mentor_term_groups.collect(&:title).to_sentence
   end
   
-  # "Current" mentor quarter groups are defined as groups from either the current quarter AND any quarter marked
+  # "Current" mentor term groups are defined as groups from either the current term AND any term marked
   # as allowing signups.
-  def current_mentor_quarter_groups
-    quarters = Quarter.allowing_signups.collect(&:id)
-    quarters << Quarter.current_quarter.id if Quarter.current_quarter
-    quarters = quarters.flatten.uniq
-    mentor_quarters.find :all, :joins => [:mentor_quarter_group], 
-      :conditions => { :mentor_quarter_groups => { :quarter_id => quarters }, :deleted_at => nil }
+  def current_mentor_term_groups
+    terms = Term.allowing_signups.collect(&:id)
+    terms << Term.current_term.id if Term.current_term
+    terms = terms.flatten.uniq
+    mentor_terms.find :all, :joins => [:mentor_term_group], 
+      :conditions => { :mentor_term_groups => { :term_id => terms }, :deleted_at => nil }
   end
   
   # Returns the high school records for the high schools at which this mentor is a high school lead.
   def current_lead_at
-    current_mentor_quarter_groups.select(&:lead?).collect(&:location)
+    current_mentor_term_groups.select(&:lead?).collect(&:location)
   end
   
   # Returns true if +current_lead_at+ is not empty.
@@ -108,7 +108,7 @@ class Mentor < Person
       return true if current_lead?
       return can_edit?(object)
     elsif object.is_a?(Location)
-      return current_mentor_quarter_groups.collect(&:location_id).include?(object.try(:id))
+      return current_mentor_term_groups.collect(&:location_id).include?(object.try(:id))
     end
     false
   end
@@ -122,7 +122,7 @@ class Mentor < Person
   def can_edit?(object)
     if object.is_a?(Participant)
       return true if participants.include?(object)
-      if current_mentor_quarter_groups.collect(&:location_id).include?(object.try(:high_school_id))
+      if current_mentor_term_groups.collect(&:location_id).include?(object.try(:high_school_id))
         return true if current_lead_at.collect(&:id).include?(object.try(:high_school_id))
         return true if object.try(:grad_year) == Participant.current_cohort
       end

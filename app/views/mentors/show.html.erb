@@ -59,7 +59,7 @@
 	<%= render :partial => 'mentors/events' %>
 </div>
 
-<%- if @mentor.respond_to?(:mentor_quarters) -%>
+<%- if @mentor.respond_to?(:mentor_terms) -%>
 	<div class="content-block">
 		<h1 class="participation">Participation</h1>
 		<%= render :partial => 'mentors/participation' %>
