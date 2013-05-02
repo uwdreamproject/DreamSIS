@@ -7,6 +7,7 @@ class ParticipantsController < ApplicationController
   # GET /participants
   # GET /participants.xml
   def index
+    return redirect_to Participant.find(params[:id]) if params[:id]
     @participants = Participant.paginate(:all, :page => params[:page])
 
     respond_to do |format|
@@ -238,10 +239,23 @@ class ParticipantsController < ApplicationController
   end
   
   def auto_complete_for_participant_fullname
+    conditions = ["(LOWER(firstname) LIKE :fullname OR LOWER(lastname) LIKE :fullname)"]
+    conditions << "high_school_id = :high_school_id" if params[:high_school_id]
+    conditions << "grad_year = :grad_year" if params[:grad_year]
+    
     @participants = Participant.find(:all, 
-                                      :conditions => ["LOWER(firstname) LIKE :fullname OR LOWER(lastname) LIKE :fullname", 
-                                                      {:fullname => "%#{params[:participant][:fullname].downcase}%"}])
-    render :inline => "<%= auto_complete_result @participants, 'fullname' %>"
+                                      :conditions => [conditions.join(" AND "), 
+                                                      {:fullname => "%#{params[:participant][:fullname].downcase}%",
+                                                      :grad_year => params[:grad_year],
+                                                      :high_school_id => params[:high_school_id]
+                                                      }])
+    respond_to do |format|
+      format.js { 
+        render :partial => "shared/auto_complete_person_fullname", 
+                :object => @participants, 
+                :locals => { :highlight_phrase => params[:participant][:fullname] }
+       }
+    end
   end
   
   def college_mapper_login

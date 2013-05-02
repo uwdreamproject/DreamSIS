@@ -3,8 +3,8 @@ class MentorsController < ApplicationController
   skip_before_filter :login_required, :check_authorization, :save_user_in_current_thread, :check_if_enrolled, :only => [:check_if_valid_van_driver]
   
   def index
-    @mentors = Mentor.paginate :all, :page => params[:page]
     return redirect_to Mentor.find(params[:id]) if params[:id]
+    @mentors = Mentor.paginate :all, :page => params[:page]
 
     respond_to do |format|
       format.html # index.html.erb

@@ -29,7 +29,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :participants, 
     :has_many => [:college_applications, :scholarship_applications, :parents], 
-    :collection => { :check_duplicate => :any, :add_to_group => :post, :fetch_participant_group_options => :any, :college_mapper_callback => :post },
+    :collection => { :auto_complete_for_participant_fullname => :any, :check_duplicate => :any, :add_to_group => :post, :fetch_participant_group_options => :any, :college_mapper_callback => :post },
     :member => { :note => [ :post, :put ], :fetch_participant_group_options => :any, :college_mapper_login => :post } do |participant|
     participant.resources :college_applications, :collection => { :auto_complete_for_institution_name => :any }
     participant.resources :test_scores, :collection => { :update_scores_fields => :post }, :member => { :update_scores_fields => :post }

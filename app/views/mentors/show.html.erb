@@ -9,7 +9,6 @@
 
 	<h3 class="pre-title"><%= Customer.current_customer.customer_label(@mentor.class.to_s.underscore) || @mentor.class.to_s %></h3>
 	<h1><%= @mentor.fullname %></h1>
-	<%= link_to "Edit this #{Customer.mentor_label}", edit_mentor_path(@mentor), :class => 'edit button' %>
 
 	<dl class="inline-definitions">
 
@@ -69,6 +68,7 @@
 <div id="sidebar">
 	
 	<p><%= link_to "Back to #{Customer.mentors_label}", mentors_path, :class => "back button" %></p>
+	<p><%= link_to "Edit this #{Customer.mentor_label}", edit_mentor_path(@mentor), :class => 'edit button' %></p>
 	
 	<h3>Contact Info</h3>
 
