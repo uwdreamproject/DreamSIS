@@ -1,4 +1,38 @@
-<p>
-  <b>Name:</b>
-  <%=h @test_score.name %>
-</p>
+<h3 class="pre-title"><%=h @participant.fullname %></h3>
+<h1><%=h @test_score.name %> <span class="light">on</span> <%=h @test_score.taken_at.try(:to_s, :date_with_full_month) %></h1>
+
+<dl class="inline-definitions">
+	
+	<dt>Registration Date</dt>
+	<dd><%= @test_score.registered_at.try(:to_s, :date_with_day_of_week) || "<em class=\'light\'>Unknown</em>" %></dd>
+	
+	<dt>Test Date</dt>
+	<dd><%= @test_score.taken_at.try(:to_s, :date_with_day_of_week) %></dd>
+	
+	<dt>Scores</dt>
+	<dd>
+		<ul class="scores">
+		<%- if @test_score.try(:test_type) -%>
+			<%- for section, maximum_score in @test_score.try(:test_type).try(:section_scores_hash) -%>
+				<li class="section score">
+					<%= content_tag :span, h(section), :class => "section title" %>:
+					<%=h @test_score.section_score(section) %>
+					<em class="light">out of <%=h maximum_score %></em>
+				</li>
+			<% end %>
+			
+			<li class="total score">
+				<%= content_tag :span, "Total", :class => "total title" %>:
+				<%=h @test_score.total_score %>
+				<em class="light">out of <%= @test_score.test_type.try(:maximum_total_score).to_i %></em>
+			</li>
+		<% end %>
+	</dd>
+	
+	
+</dl>
+
+<div id="sidebar">
+	<p><%= link_to "Back to participant", participant_path(@participant, :anchor => "test_scores"), :class => "back button" %></p>
+	<p><%= link_to 'Edit this test', edit_participant_test_score_path(@participant, @test_score), :class => "edit button" %></p>
+</div>

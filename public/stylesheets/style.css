@@ -133,6 +133,11 @@ table.participants td a {
 	text-decoration: none;
 }
 
+table td.name a {
+	font-weight: bold;
+	text-decoration: none;
+}
+
 table.participants td.name {
 	font-weight: bold;
 }

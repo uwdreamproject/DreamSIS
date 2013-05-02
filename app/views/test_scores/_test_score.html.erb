@@ -1,6 +1,6 @@
 <tr id="test_score_<%= test_score.id %>">
 
-	<td><%=h test_score.name %></td>
+	<td class="name"><%= link_to h(test_score.name), [@participant, test_score] %></td>
 	<td><%=h test_score.taken_at.to_s(:date_with_day_of_week) %>
 		<small class="light">(<%= time_ago_in_words test_score.taken_at %> ago)</small>
 		</td>
