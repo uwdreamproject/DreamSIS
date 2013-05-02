@@ -1,6 +1,6 @@
 <tr id="parent_<%= parent.id %>">
 
-	<td><%=h parent.fullname %></td>
+	<td class="name"><%= link_to h(parent.fullname), [@participant, parent] %></td>
 	<td><%=h parent.parent_type %></td>
 	<td><%= auto_link h(parent.preferred_contact_detail) %></td>
 	
