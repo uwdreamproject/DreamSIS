@@ -33,16 +33,17 @@ class MentorTermsController < MentorTermGroupsController
   end
 
   def create
-    new_mentor_user = PubcookieUser.authenticate params[:uw_netid]
-    if new_mentor_user
-      m = @mentor_term_group.mentor_terms.create(:mentor_id => new_mentor_user.person.try(:id), :volunteer => true)
+    new_mentor_user = PubcookieUser.authenticate params[:uw_netid] if params[:uw_netid]
+    @mentor = new_mentor_user.try(:person) || Mentor.find(params[:mentor_term][:mentor_id])
+    if @mentor
+      m = @mentor_term_group.enroll!(@mentor, :volunteer => true)
       if m.valid?
-        flash[:notice] = "Successfully added #{new_mentor_user.fullname} to this group."
+        flash[:notice] = "Successfully added #{@mentor.fullname} to this group."
       else
-        flash[:error] = "Could not add #{new_mentor_user.fullname} to this group, because #{m.errors.full_messages.to_sentence}."
+        flash[:error] = "Could not add #{@mentor.fullname} to this group, because #{m.errors.full_messages.to_sentence}."
       end
     else
-      flash[:error] = "Could not find anyone with that UW NetID."
+      flash[:error] = "Could not find anyone that user."
     end
     redirect_to mentor_term_group_path(@mentor_term_group, :newly_added => m.try(:id))
   end
