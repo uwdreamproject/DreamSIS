@@ -8,7 +8,7 @@ class MentorParticipant < ActiveRecord::Base
 
   default_scope :order => "people.lastname, people.firstname", :joins => :participant
   
-  after_save :update_college_mapper_association
+  after_save :update_college_mapper_association, :if => :college_mapper_student_exists?
   
   def destroy
     update_attribute :deleted_at, Time.now
@@ -17,6 +17,10 @@ class MentorParticipant < ActiveRecord::Base
   
   def deleted?
     !deleted_at.nil?
+  end
+  
+  def college_mapper_student_exists?
+    !participant.try(:college_mapper_id).nil?
   end
   
   # Returns the CollegeMapperAssociation record for this individual if we have a college_mapper_id stored.
