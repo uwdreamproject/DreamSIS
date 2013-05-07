@@ -24,6 +24,10 @@ class CollegeApplication < ActiveRecord::Base
     @institution ||= Institution.find(institution_id)
   end
   
+  def applied?
+    !date_applied.nil?
+  end
+  
   # Returns an array of the most commonly selected institution codes. Specify a number to limit.
   # Default is 10.
   def self.top_institutions(limit = 10)

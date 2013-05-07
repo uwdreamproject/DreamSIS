@@ -1,0 +1,8 @@
+<%= form_tag({}, {:method => :get, :id => "report_selector"}) %>
+	<%= select_tag "report", options_for_select(
+								{
+									"Basics" => "basics", 
+									"College Applications" => "college_applications"
+								},
+								@report.try(:pluralize)), :onChange => "this.form.submit()" %>
+</form>

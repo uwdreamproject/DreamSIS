@@ -1,0 +1,39 @@
+<td class="college-logo">
+	<img src="http://g.etfv.co/<%= Addressable::URI.heuristic_parse(h(college_application.institution.try(:webaddr))).to_s %>" width=16 height=16>
+</td>
+  <td>
+<span class="primary">  <%=h college_application.institution.try(:name) %>
+<small class="light"> (#<%=h college_application.institution.try(:id) %>)</small></span>
+<span class="tertiary">
+	<span class="location"><%=h college_application.institution.try(:location_detail) %></span> 
+
+	<%- unless college_application.institution.try(:webaddr).nil? %>
+		<span class="url">
+			<%= link_to h(college_application.institution.try(:webaddr)), 
+						Addressable::URI.heuristic_parse(h(college_application.institution.try(:webaddr))).to_s, 
+						:target => "_blank" %>
+			</span>
+	<% end -%>
+	
+	<%- unless college_application.institution.try(:college_navigator_url).nil? %>
+		<span class="ipeds">
+			<%= link_to "Open in CollegeNavigator", 
+						college_application.institution.try(:college_navigator_url), 
+						:target => "_blank", 
+						:class => "offsite" %>
+			</span>
+	<% end -%>
+</span>
+  </td>
+  <td><%=h college_application.choice %></td>
+  <td>
+<% remote_form_for([college_application.participant, college_application], 
+				:html => { :style => "display:inline", 
+				:id => "decision_form_#{college_application.id}" }) do |f| %>
+	<%= f.select :decision, ["Accepted", "Denied", "Waitlisted"], :include_blank => true %>
+ <% end -%>
+
+<%= observe_form "decision_form_#{college_application.id}", 
+				:function => "$('decision_form_#{college_application.id}').submit()" %>
+
+<%= "<font color=green>Attending</font>" if college_application.attending? %></td>

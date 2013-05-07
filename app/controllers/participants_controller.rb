@@ -3,6 +3,8 @@ class ParticipantsController < ApplicationController
   skip_before_filter :login_required, :only => [:college_mapper_callback]
   skip_before_filter :check_if_enrolled, :only => [:college_mapper_callback]
   skip_before_filter :check_authorization, :except => [:index, :cohort, :destroy]
+  
+  before_filter :set_report_type
 
   # GET /participants
   # GET /participants.xml
@@ -284,5 +286,10 @@ class ParticipantsController < ApplicationController
   end
 
   protected
+
+  # Stores the value from +params[:report]+ and stores it in +@report+ for use in views.
+  def set_report_type
+    @report = params[:report] || "basics"
+  end
     
 end

@@ -1,0 +1,5 @@
+<td class="college-logo">
+	<img src="http://g.etfv.co/<%= Addressable::URI.heuristic_parse(h(college_application.institution.try(:webaddr))).to_s %>" width=16 height=16>
+</td>
+<td class="college-name"><%=h college_application.institution.try(:name) %></td>
+<td><%=h college_application.choice %></td>

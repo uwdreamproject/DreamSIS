@@ -1,0 +1,15 @@
+<td class="email"><%= mail_to participant.email %></td>
+<td class="cohort"><%= link_to "#{truncate(participant.high_school.name, :length => 30)} #{participant.grad_year}", 
+				high_school_cohort_path(participant.high_school, participant.grad_year), 
+				:class => 'redirect-link' unless participant.high_school.nil? %></td>
+
+<%- if @participant_groups -%>
+	<td class="group-title"><%= link_to truncate(h(participant.participant_group.try(:title)), :length => 30), 
+				participant.participant_group, 
+				:class => 'redirect-link' if participant.participant_group %></td>
+<% end -%>
+	
+<td class="college-application-count"><%= participant.college_applications.size %></td>
+<td class="scholarship-application-count"><%= participant.scholarship_applications.size %></td>
+
+<td class="functions"></td>
