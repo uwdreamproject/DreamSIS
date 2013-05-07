@@ -16,7 +16,7 @@ set :repository, "git@github.com:uwdreamproject/DreamSIS.git"  # Your clone URL
 set :scm, "git"
 
 ssh_options[:forward_agent] = true
-set :branch, "master"
+set :branch, "uwdp-deploy"
 set :deploy_via, :remote_cache
 
 role :app, "expo.uaa.washington.edu"
