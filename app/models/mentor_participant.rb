@@ -37,6 +37,7 @@ class MentorParticipant < ActiveRecord::Base
   # Creates a CollegeMapperAssociation record for this participant and stores the CollegeMapper user ID in the
   # +college_mapper_id+ attribute. Returns +false+ if the account couldn't be created.
   def create_college_mapper_association
+    return nil unless college_mapper_student_exists?
     @college_mapper_association = CollegeMapperAssociation.create({
       :studentId => participant.college_mapper_student.try(:id),
       :counselorId => mentor.college_mapper_counselor.try(:id)
@@ -49,6 +50,7 @@ class MentorParticipant < ActiveRecord::Base
   end
 
   def update_college_mapper_association
+    return nil unless college_mapper_student_exists?
     if deleted? && self.college_mapper_id
       CollegeMapperAssociation.delete(self.college_mapper_id, :params => { :account_type => "students", :user_id => participant.college_mapper_student.try(:id) })
     elsif !college_mapper_id
