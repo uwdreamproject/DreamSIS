@@ -19,6 +19,7 @@ html {
 
 body {
 	background: #f9f8f4;
+/*	background: rgb(232, 235, 239);*/
 	margin: 0;
 	padding: 0;
 	text-align: left;
@@ -96,6 +97,10 @@ tr {
 }
 
 tr:hover, tr.odd:hover, tr.even:hover, tr.highlight {
+	background: #fffde7;
+}
+
+table.multirow tbody:hover {
 	background: #fffde7;
 }
 
@@ -609,6 +614,16 @@ a.redirect-link:hover {
 	min-height: 400px;
 }
 
+#report_selector {
+	float: right;
+	margin-left: 1em;
+}
+
+#report_selector select {
+	font: 13px Helvetica, Arial, sans-serif;
+	border-color: rgba(0,0,0,0.3);
+}
+
 .info-section {
 	padding-bottom: 2em;
 	margin-bottom: 2em;
@@ -1023,7 +1038,7 @@ input:focus, form.formtastic input:focus, textarea:focus, form.formtastic textar
 	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),0 0 8px rgba(82, 168, 236, 0.4);
 }
 
-input, textarea {
+input, textarea, select {
 -webkit-transition: border linear 0.2s,box-shadow linear 0.2s;
 -moz-transition: border linear 0.2s,box-shadow linear 0.2s;
 -ms-transition: border linear 0.2s,box-shadow linear 0.2s;
@@ -1090,12 +1105,36 @@ input.search {
 	font: 13px/130% Helvetica, Arial, sans-serif;
 	font-weight: lighter;
 	color: rgba(0,0,0,0.9);
+	border-radius: 5px;
+	border-color: rgba(153,153,153,0.9);
 }
 
 input.search:focus {
 	border-bottom-right-radius: 0;
 	border-bottom-left-radius: 0;
 }
+
+select, form.formtastic select {
+	padding: 10px;
+	border-color: rgba(153,153,153,0.9);
+	-webkit-appearance: none;	
+	padding: 5px 25px 5px 10px;
+	border: 1px outset rgba(153,153,153,.9);
+	border-radius: 5px;
+	color: rgba(0,0,0,0.8);
+	text-shadow: 0 1px 0 #fff;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+	background: url(../images/icons/silk/bullet_arrow_down.png) no-repeat right center #f9f9f9;
+}
+
+select:focus, form.formtastic select:focus {
+	color: #000;
+	outline: 0;
+/*	border-color: #036;*/
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),0 0 8px rgba(82, 168, 236, 0.4);
+	
+}
+
 
 #sidebar input.search {
 	width: 84%;
@@ -2974,7 +3013,6 @@ li.input div.auto_complete.after_select {
 	font-weight: bold;
 	text-decoration: none;
 	color: #fff;
-	border-left: 1px groove #fff;
 	padding-left: 5px;
 	padding-right: 5px;
 	line-height: 20px;
@@ -2987,11 +3025,9 @@ li.input div.auto_complete.after_select {
 	color: #fc0;
 	background: rgb(227,222,205);
 	border-radius: 2px;
-	border: none;
 	color: black;
 	text-shadow: none;
-	padding-right: 6px;
-	box-shadow: 0 3px 4px rgba(0,0,0,0.2) inset;
+	box-shadow: 0 3px 4px rgba(255,255,255,0.2) inset;
 	z-index: 25;
 }
 

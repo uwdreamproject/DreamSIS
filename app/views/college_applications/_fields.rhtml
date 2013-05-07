@@ -25,7 +25,7 @@
 																	institution_lookup(text_field, selection, hidden, id) 
 																  }",
 										:regexp_for_id => '(-?\d+)$' },
-									{ :autocomplete => false, :style => ('display:none' if @college_application.try(:institution)), :size => 50 },
+									{ :autocomplete => false, :style => ('display:none' if @college_application.try(:institution)), :size => 50, :class => "search" },
 									{ :skip_style => true } %>
 			
 			<% javascript_tag do -%>	
