@@ -50,6 +50,33 @@
 						:class => "add button" %>
 		</div>
 	<% end -%>
+
+	<%- if @participant.respond_to?(:college_enrollments) && Customer.experimental? -%>
+		<div class="info-section" id="college_enrollments">
+			<h2>College Enrollment</h2>
+			<%= render :partial => 'college_enrollments' %>
+		</div>
+	<% end -%>
+
+	<%- if @participant.respond_to?(:college_degrees) && Customer.experimental? -%>
+		<div class="info-section" id="college_degrees">
+			<h2>College Degrees</h2>
+			<%= render :partial => 'college_degrees' %>
+		</div>
+	<% end -%>
+
+
+	<%- if @participant.respond_to?(:mentors) -%>
+		<div class="info-section" id="mentors">
+			<h2><%= Customer.mentors_Label %></h2>
+			<%= render :partial => 'mentors' %>
+			<br>
+			<%#= link_to 'Add mentor', 
+						new_participant_mentor_path(@participant),
+						:class => "add button" %>
+		</div>
+	<% end -%>
+
 	
 	<%- if @participant.respond_to?(:submitted_fafsa?) -%>
 		<div class="info-section" id="paperwork">

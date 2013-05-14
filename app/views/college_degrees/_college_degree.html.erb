@@ -1,0 +1,8 @@
+<tr id="college_degree_<%= college_degree.id %>">
+
+	<td><%=h college_degree.institution.try(:name) %></td>
+	<td><%= college_degree.graduated_on.to_s(:short_date) %></td>
+	<td><%=h college_degree.degree_title %></td>
+	<td><%=h college_degree.source %></td>
+
+</tr>

@@ -1,0 +1,17 @@
+<table id="college_enrollments">
+	<tr>
+		<th>College</th>
+		<th>Start</th>
+		<th>End</th>
+		<th>Source</th>
+	</tr>
+
+	<%= render :partial => "college_enrollments/college_enrollment", :collection => @participant.college_enrollments %>
+				
+	<%- if @participant.college_enrollments.empty? -%>
+	<tr class="empty">
+		<td colspan="10">No college enrollments yet.</td>
+	</tr>
+	<% end %>
+
+</table>	

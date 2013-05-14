@@ -1,0 +1,17 @@
+<table id="college_enrollments">
+	<tr>
+		<th>College</th>
+		<th>Date</th>
+		<th>Degree</th>
+		<th>Source</th>
+	</tr>
+
+	<%= render :partial => "college_degrees/college_degree", :collection => @participant.college_degrees %>
+				
+	<%- if @participant.college_degrees.empty? -%>
+	<tr class="empty">
+		<td colspan="10">No college degrees yet.</td>
+	</tr>
+	<% end %>
+
+</table>	

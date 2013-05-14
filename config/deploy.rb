@@ -16,7 +16,7 @@ set :repository, "git@github.com:uwdreamproject/DreamSIS.git"  # Your clone URL
 set :scm, "git"
 
 ssh_options[:forward_agent] = true
-set :branch, "master"
+set :branch, "uwdp-deploy"
 set :deploy_via, :remote_cache
 
 role :app, "expo.uaa.washington.edu"
@@ -78,6 +78,7 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/config/college_mapper.yml #{release_path}/config/college_mapper.yml" 
     run "ln -nfs #{shared_path}/config/action_mailer.rb #{release_path}/config/initializers/action_mailer.rb" 
     run "ln -nfs #{shared_path}/config/certs #{release_path}/config/certs" 
+    run "ln -nfs #{shared_path}/system/files #{release_path}/files" 
   end
   
 end

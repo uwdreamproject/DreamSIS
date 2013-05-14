@@ -11,6 +11,8 @@ class Participant < Person
   has_many :mentors, :through => :mentor_participants
   has_many :parents, :foreign_key => :child_id
   has_many :test_scores
+  has_many :college_enrollments
+  has_many :college_degrees
   
   validates_presence_of :birthdate, :high_school_id, :if => :validate_ready_to_rsvp?
 

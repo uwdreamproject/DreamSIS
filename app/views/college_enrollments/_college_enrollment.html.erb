@@ -1,0 +1,8 @@
+<tr id="college_enrollment_<%= college_enrollment.id %>">
+
+	<td><%=h college_enrollment.institution.try(:name) %></td>
+	<td><%= college_enrollment.began_on.to_s(:short_date) %></td>
+	<td><%= college_enrollment.ended_on.to_s(:short_date) %></td>
+	<td><%=h college_enrollment.source %></td>
+
+</tr>
