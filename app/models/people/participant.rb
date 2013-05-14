@@ -131,6 +131,13 @@ class Participant < Person
     @grade = Time.now.year - grad_year + academic_year_offset.to_i + 12
     @grade > 12 ? 12 : @grade
   end
+  
+  # Uses TestScore#score_comparison to return a hash of test score comparisons for the the specified
+  # type of test.
+  def test_scores_comparison(test_type)
+    @score_comparison ||= {}
+    @score_comparison[test_type] ||= TestScore.score_comparison(self, test_type)
+  end
 
   # Returns the CollegeMapperStudent record for this individual if we have a college_mapper_id stored.
   # By default, if the record doesn't exist, we create it. You can override that by passing +false+ for

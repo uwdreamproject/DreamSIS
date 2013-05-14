@@ -62,4 +62,27 @@ class TestScore < ActiveRecord::Base
     errors.add(:total_score, "is above the maximum total score for this test type") if total_score > test_type.maximum_total_score
   end
   
+  # Returns some useful comparisons for the specified participant's test scores of the
+  # requested type. Returns a hash with the relevant values below.
+  # 
+  # * earliest_total: the total score for the earliest test of this type
+  # * highest_total: the highest total point score of any test of this type
+  # * highest_total_after_earliest: the highest total score, not including the earliest test
+  # * gain_or_loss: the total point gain or loss from the earliest score to the highest total after the earliest
+  # * gain_or_loss_trend: "up", "down" or "same"
+  # 
+  # When possible, the hash will include the actual TestScore object, but if mathematics is 
+  # involved, it will just return the calculated value.
+  def self.score_comparison(participant, test_type)
+    scores = participant.test_scores.find(:all, :joins => :test_type, :conditions => ["test_types.name LIKE ?", "%"+test_type+"%"])
+    results = {}
+    results[:all] = scores
+    results[:earliest_total] = scores.sort_by(&:taken_at).first
+    results[:highest_total] = scores.sort_by(&:total_score).last
+    results[:highest_total_after_earliest] = scores.dup.reject{|s| s == results[:earliest_total]}.sort_by(&:total_score).last
+    results[:gain_or_loss] = results[:highest_total_after_earliest].try(:total_score) - results[:earliest_total].try(:total_score) rescue nil
+    results[:gain_or_loss_trend] = results[:gain_or_loss] > 0 ? "up" : results[:gain_or_loss] < 0 ? "down" : "same" rescue nil
+    return results
+  end
+  
 end
