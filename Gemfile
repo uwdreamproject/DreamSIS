@@ -33,8 +33,8 @@ gem 'fastercsv'
 # gem "geokit"
 
 group :production do
-  # gem 'mysql2', '< 0.3'
-  gem "mysql"
+  gem 'mysql2', '< 0.3'
+  # gem "mysql"
 end
 
 group :development do
