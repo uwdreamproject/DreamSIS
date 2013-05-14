@@ -147,6 +147,22 @@ table.participants td.name {
 	font-weight: bold;
 }
 
+.gain_or_loss {
+	font-weight: bold;	
+}
+
+.gain_or_loss.up {
+	color: green;
+}
+
+.gain_or_loss.down {
+	color: red;
+}
+
+.gain_or_loss.up:before {
+	content: '+ ';
+}
+
 table.users td.login {
 	font-weight: bold;
 }

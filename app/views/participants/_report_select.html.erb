@@ -2,7 +2,8 @@
 	<%= select_tag "report", options_for_select(
 								{
 									"Basics" => "basics", 
-									"College Applications" => "college_applications"
+									"College Applications" => "college_applications",
+									"Test Scores" => "test_score_summary"
 								},
 								@report.try(:pluralize)), :onChange => "this.form.submit()" %>
 </form>

@@ -1,0 +1,16 @@
+<%- for test_type in ["SAT", "ACT"] -%>
+
+	<%- scores = participant.test_scores_comparison(test_type) -%>
+	<td>
+		<%= scores[:earliest_total].try(:total_score).try(:to_i) %>
+		<br><small class="light"><%= scores[:earliest_total].try(:taken_at).try(:to_s, :short_date) %></small>
+	</td>
+
+	<td class="gain_or_loss <%= scores[:gain_or_loss_trend] %>"><%= scores[:gain_or_loss].try(:to_i) %></td>
+
+	<td>
+		<%= scores[:highest_total_after_earliest].try(:total_score).try(:to_i) %>
+		<br><small class="light"><%= scores[:highest_total_after_earliest].try(:taken_at).try(:to_s, :short_date) %></small>
+	</td>
+	
+<% end %>
