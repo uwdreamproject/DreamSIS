@@ -1,0 +1,17 @@
+<table id="mentors">
+	<tr>
+		<th>Name</th>
+		<th>E-mail</th>
+		<th></th>
+		<th>Functions</th>
+	</tr>
+
+	<%= render :partial => "mentors/mentor", :collection => @participant.mentors %>
+				
+	<%- if @participant.mentors.empty? -%>
+	<tr class="empty">
+		<td colspan="10">No <%= Customer.mentors_label %> have been assigned to this <%= Customer.mentee_label %> yet.</td>
+	</tr>
+	<% end %>
+
+</table>	

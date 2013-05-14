@@ -726,6 +726,10 @@ td.college-logo {
 	background-image: url(../images/icons/silk/page_edit.png);
 }
 
+.info-section#mentors h2 {
+	background-image: url(../images/icons/silk/user_red.png);
+}
+
 .info-section#notes h2 {
 	background-image: url(../images/icons/silk/note.png);
 }
