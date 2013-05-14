@@ -25,7 +25,8 @@ gem 'omniauth-linkedin'
 
 gem 'mail_style'
 gem 'geocoder'
-
+gem 'aes'
+gem 'fastercsv'
 
 # bundler requires these gems in all environments
 # gem "nokogiri", "1.4.2"

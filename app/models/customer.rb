@@ -4,11 +4,13 @@
 The main purpose of the Customer model is to sandbox multiple organizations' data within the same DreamSIS instance. The current Customer is stored in the current thread so that customer details are accessible system-wide for each request. For convenience, all of the Customer instance methods are available through class methods on Customer. For example, +Customer.mentor_label+ is equivalent to +Customer.find(Thread.current['customer_id']).mentor_label+.
 =end
 class Customer < ActiveRecord::Base
-  validates_presence_of :name
+  validates_presence_of :name  
+  validates_presence_of :clearinghouse_customer_number, :clearinghouse_contract_start_date, :clearinghouse_number_of_submissions_allowed, :if => :validate_clearinghouse_configuration?
+  validates_numericality_of :clearinghouse_customer_number, :if => :validate_clearinghouse_configuration?
   
   belongs_to :parent_customer, :class_name => "Customer"
   belongs_to :program
-  
+
   DEFAULT_LABEL = {
     :mentor => "mentor",
     :lead => "lead",
@@ -17,6 +19,19 @@ class Customer < ActiveRecord::Base
     :intake_survey => "intake survey",
     :mentee => "mentee"
   }
+
+  has_many :clearinghouse_requests
+
+  attr_accessor :validate_clearinghouse_configuration
+  
+  def validate_clearinghouse_configuration?
+    validate_clearinghouse_configuration
+  end
+  
+  def current_contract_clearinghouse_requests
+    clearinghouse_requests.find(:all, :conditions => ["submitted_at > ?", clearinghouse_contract_start_date])
+  end
+  
   
   # Returns true if +term_system+ is +Quarters+.
   def use_quarters?

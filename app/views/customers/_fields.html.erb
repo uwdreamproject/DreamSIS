@@ -13,3 +13,26 @@
 	<p>Enter each label as a single, lower-cased word.</p>
 	<%= f.inputs :mentor_label, :lead_label, :participant_label, :mentee_label, :workbook_label, :intake_survey_label %>
 <% end %>
+
+<%- f.inputs :name => "National Student Clearinghouse Integration" do -%>
+	<p>If you have a contract with the National Student Clearinghouse, enter your account information here and 
+		DreamSIS can perform automatic queries about your participants.</p>
+		<%= f.input :clearinghouse_customer_number, 
+					:label => "Customer Number", 
+					:hint => "Your customer number (or account number) should be six digits.",
+					:input_html => { :size => 6 } %>
+		<%#= f.input :clearinghouse_ftp_password, 
+					:as => :string,
+					:label => "FTP password", 
+					:hint => "You must have an FTP account assigned. The password you enter here is encrypted
+						 		and only used when you manually trigger a request to NSC." %>
+		<%= f.input :clearinghouse_contract_start_date, 
+					:label => "Contract Start Date", 
+					:hint => "Enter the start date of the current contract. You'll need to update this 
+								date each time you sign a new contract with NSC (usually once per year)." %>
+		<%= f.input :clearinghouse_number_of_submissions_allowed, 
+					:label => "Submission Limit", 
+					:hint => "Enter the number of submissions allowed under the current contract. If you're not sure, enter 10.", 
+					:input_html => { :size => 3 } %>
+	
+<% end %>

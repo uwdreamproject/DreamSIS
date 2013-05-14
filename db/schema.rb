@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130502172210) do
+ActiveRecord::Schema.define(:version => 20130514175447) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -22,6 +22,21 @@ ActiveRecord::Schema.define(:version => 20130502172210) do
   end
 
   add_index "changes", ["change_loggable_id", "change_loggable_type"], :name => "index_changes_on_changable"
+
+  create_table "clearinghouse_requests", :force => true do |t|
+    t.integer  "customer_id"
+    t.integer  "created_by"
+    t.string   "submitted_filename"
+    t.datetime "submitted_at"
+    t.datetime "retrieved_at"
+    t.text     "participant_ids"
+    t.text     "ftp_password"
+    t.integer  "number_of_records_submitted"
+    t.integer  "number_of_records_returned"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "detail_report_filename"
+  end
 
   create_table "college_applications", :force => true do |t|
     t.integer  "participant_id"
@@ -51,12 +66,55 @@ ActiveRecord::Schema.define(:version => 20130502172210) do
     t.datetime "updated_at"
     t.string   "mentee_label"
     t.boolean  "experimental"
+    t.integer  "clearinghouse_customer_number"
+    t.date     "clearinghouse_contract_start_date"
+    t.integer  "clearinghouse_number_of_submissions_allowed"
+  end
+
+  create_table "degrees", :force => true do |t|
+    t.string   "type"
+    t.integer  "participant_id"
+    t.integer  "institution_id"
+    t.integer  "high_school_id"
+    t.date     "graduated_on"
+    t.string   "degree_title"
+    t.string   "major_1"
+    t.string   "major_1_cip"
+    t.string   "major_2"
+    t.string   "major_2_cip"
+    t.string   "major_3"
+    t.string   "major_3_cip"
+    t.string   "major_4"
+    t.string   "major_4_cip"
+    t.string   "source"
+    t.integer  "clearinghouse_request_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "education_levels", :force => true do |t|
     t.string   "title"
     t.string   "description"
     t.integer  "sequence"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "enrollments", :force => true do |t|
+    t.string   "type"
+    t.integer  "participant_id"
+    t.integer  "institution_id"
+    t.integer  "high_school_id"
+    t.date     "began_on"
+    t.date     "ended_on"
+    t.string   "enrollment_status"
+    t.string   "class_level"
+    t.string   "major_1"
+    t.string   "major_1_cip"
+    t.string   "major_2"
+    t.string   "major_2_cip"
+    t.string   "source"
+    t.integer  "clearinghouse_request_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
