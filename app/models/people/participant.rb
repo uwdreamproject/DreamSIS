@@ -30,11 +30,11 @@ class Participant < Person
   end
   
   def create_college_mapper_student_after_save?
-    create_college_mapper_student_after_save || self.high_school.try(:enable_college_mapper_integration?)
+    create_college_mapper_student_after_save == true || self.high_school.try(:enable_college_mapper_integration?)
   end
   
   def link_to_current_user_after_save?
-    link_to_current_user_after_save || link_to_current_user_after_save == "1"
+    link_to_current_user_after_save == true || link_to_current_user_after_save == "1"
   end
   
   # Returns an array of unique graudation years

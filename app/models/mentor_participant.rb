@@ -8,7 +8,7 @@ class MentorParticipant < ActiveRecord::Base
 
   default_scope :order => "people.lastname, people.firstname", :joins => :participant
   
-  after_save :update_college_mapper_association
+  after_save :update_college_mapper_association, :if => :college_mapper_student_exists?
   
   def destroy
     update_attribute :deleted_at, Time.now
@@ -17,6 +17,10 @@ class MentorParticipant < ActiveRecord::Base
   
   def deleted?
     !deleted_at.nil?
+  end
+  
+  def college_mapper_student_exists?
+    !participant.try(:college_mapper_id).nil?
   end
   
   # Returns the CollegeMapperAssociation record for this individual if we have a college_mapper_id stored.
@@ -33,6 +37,7 @@ class MentorParticipant < ActiveRecord::Base
   # Creates a CollegeMapperAssociation record for this participant and stores the CollegeMapper user ID in the
   # +college_mapper_id+ attribute. Returns +false+ if the account couldn't be created.
   def create_college_mapper_association
+    return nil unless college_mapper_student_exists?
     @college_mapper_association = CollegeMapperAssociation.create({
       :studentId => participant.college_mapper_student.try(:id),
       :counselorId => mentor.college_mapper_counselor.try(:id)
@@ -45,6 +50,7 @@ class MentorParticipant < ActiveRecord::Base
   end
 
   def update_college_mapper_association
+    return nil unless college_mapper_student_exists?
     if deleted? && self.college_mapper_id
       CollegeMapperAssociation.delete(self.college_mapper_id, :params => { :account_type => "students", :user_id => participant.college_mapper_student.try(:id) })
     elsif !college_mapper_id

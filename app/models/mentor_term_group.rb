@@ -143,7 +143,6 @@ class MentorTermGroup < ActiveRecord::Base
         mentor_term.volunteer = enroll_as_volunteer
         mentor_term.save!
       else
-        # mentor_term = mentor_terms.initialize_by_mentor_id(mentor.id)
         mentor_term = mentor_terms.new(:mentor_id => mentor.id)
         mentor_term.volunteer = enroll_as_volunteer
         mentor_term.save!
