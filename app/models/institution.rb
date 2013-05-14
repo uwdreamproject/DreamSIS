@@ -60,6 +60,15 @@ class Institution
       index_by_unitid[unitid.to_i]
     end
   end
+
+  # Finds an Intitution record by "opeid" (the OPE ID from Dept of Ed's API). The method will convert
+  # the parameter to an Integer so you can pass a String or an Integer. It will also strip out any
+  # hyphens, which are often placed to separate the branch number.
+  def self.find_by_opeid(opeid)
+    opeid = opeid.gsub("-", "")
+    index_by_opeid[opeid.to_i]
+  end
+
   
   # Returns the URL of this institution's record in the IPED's CollegeNavigator system.
   def college_navigator_url
@@ -155,6 +164,18 @@ class Institution
         index_by_unitid[object[:unitid].to_i] = object
       end
       index_by_unitid
+    end
+  end
+
+  # Generates an index for faster searching by OPE ID and stores it in the cache. Returns a hash with 
+  # OPE IDs as keys (converted to Integer) and Institution objects as values.
+  def self.index_by_opeid(options = {})
+    @index_by_opeid ||= RESULTS_CACHE.fetch("index_by_opeid", {:expires_in => 30.days}.merge(options)) do
+      index_by_opeid = {}
+      for object in Institution.all(options)
+        index_by_opeid[object[:opeid].to_i] = object
+      end
+      index_by_opeid
     end
   end
 
