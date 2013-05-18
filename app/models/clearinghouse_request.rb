@@ -28,6 +28,21 @@ class ClearinghouseRequest < ActiveRecord::Base
   
   attr_accessor :plain_ftp_password
   
+  attr_protected :customer_id, :ftp_password
+  
+  # Returns the current "status" of this request.
+  # 
+  # new::       Not submitted yet
+  # submitted:: Submitted but not retrieved
+  # retrieved:: Retrieved results
+  def status
+    if submitted?
+      return retrieved? ? "retrieved" : "submitted"
+    else
+      "new"
+    end
+  end
+  
   # Store the participants ID's for these participants in the +participant_ids+ attribute.
   # This also populates the +@participants+ instance variable.
   def participants=(new_participants)

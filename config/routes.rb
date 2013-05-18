@@ -9,7 +9,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :colleges, :controller => "locations"
   map.resources :terms, :member => { :sync => :put }
   map.resources :quarters, :path => :quarters, :as => :terms
-
+  map.resources :clearinghouse_requests, :member => { :submit => :post, :retrieve => :post, :file => :get, :upload => :post }
   
   map.resources :events do |events|
     events.resources :event_attendances, :as => :attendees, :collection => { 

@@ -37,6 +37,29 @@ class NationalStudentClearinghouse
     @request
   end
   
+  # Generates the file for submitting.
+  def generate_file!
+    begin
+      @record_count = 0
+      file = File.open(local_send_file_path, "w")
+      file.write header_row + "\n"
+      file.write dreamsis_control_row + "\n"
+      @participants.each do |p| 
+        row = participant_row(p); 
+        unless row.nil?
+          file.write row + "\n"
+          @record_count += 1
+        end
+      end
+      file.write footer_row + "\n"
+    rescue IOError => e
+      #some error occur, dir not writable etc.
+    ensure
+      file.close unless file == nil
+    end
+    local_send_file_path
+  end
+  
   # Submits the file to the home directory on the SFTP server
   def submit_file!
     generate_file!
@@ -107,28 +130,6 @@ class NationalStudentClearinghouse
   
   def remote_receive_file_path
     "/Home/#{@customer.clearinghouse_customer_number.to_s}/receive"
-  end
-  
-  def generate_file!
-    begin
-      @record_count = 0
-      file = File.open(local_send_file_path, "w")
-      file.write header_row + "\n"
-      file.write dreamsis_control_row + "\n"
-      @participants.each do |p| 
-        row = participant_row(p); 
-        unless row.nil?
-          file.write row + "\n"
-          @record_count += 1
-        end
-      end
-      file.write footer_row + "\n"
-    rescue IOError => e
-      #some error occur, dir not writable etc.
-    ensure
-      file.close unless file == nil
-    end
-    local_send_file_path
   end
   
   def header_row

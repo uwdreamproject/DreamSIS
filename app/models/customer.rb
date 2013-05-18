@@ -32,6 +32,9 @@ class Customer < ActiveRecord::Base
     clearinghouse_requests.find(:all, :conditions => ["submitted_at > ?", clearinghouse_contract_start_date])
   end
   
+  def uses_clearinghouse?
+    !clearinghouse_customer_number.blank?
+  end
   
   # Returns true if +term_system+ is +Quarters+.
   def use_quarters?

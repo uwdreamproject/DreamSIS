@@ -8,6 +8,9 @@
 			<ul>
 				<li class="primary list"><%= link_to "All #{Customer.participants_Label}", participants_url %></li>
 				<li class="add"><%= link_to "Add new #{Customer.participant_label}", new_participant_url %></li>
+				<%- if Customer.uses_clearinghouse? && @current_user.admin? -%>
+					<li class="nsc"><%= link_to "National Student Clearinghouse&reg; Requests", clearinghouse_requests_url %></li>
+				<% end %>
 				<% for cohort in Participant.cohorts %>
 					<li><%= link_to "#{cohort.to_s} Cohort", cohort_url(cohort) %></li>
 				<% end -%>
