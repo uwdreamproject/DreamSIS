@@ -155,45 +155,38 @@ class Institution
   
   protected
   
+  def self.indexes(options = {})
+    @indexes ||= RESULTS_CACHE.fetch("indexes", {:expires_in => 30.days}.merge(options)) do
+      indexes = { :unitid => {}, :opeid => {}, :name => {}}
+      for object in Institution.all(options)
+        indexes[:unitid][object[:unitid].to_i] = object
+        indexes[:opeid][object[:opeid].to_i] = object
+        for a in object.aliases
+          indexes[:name][a.downcase] ||= []
+          indexes[:name][a.downcase] << object
+        end
+      end
+      indexes
+    end
+  end
+  
   # Generates an index for faster searching by ID and stores it in the cache. Returns a hash with 
   # unitid as keys (converted to Integer) and Institution objects as values.
   def self.index_by_unitid(options = {})
-    @index_by_unitid ||= RESULTS_CACHE.fetch("index_by_unitid", {:expires_in => 30.days}.merge(options)) do
-      index_by_unitid = {}
-      for object in Institution.all(options)
-        index_by_unitid[object[:unitid].to_i] = object
-      end
-      index_by_unitid
-    end
+    self.indexes(options)[:unitid]
   end
 
   # Generates an index for faster searching by OPE ID and stores it in the cache. Returns a hash with 
   # OPE IDs as keys (converted to Integer) and Institution objects as values.
   def self.index_by_opeid(options = {})
-    @index_by_opeid ||= RESULTS_CACHE.fetch("index_by_opeid", {:expires_in => 30.days}.merge(options)) do
-      index_by_opeid = {}
-      for object in Institution.all(options)
-        index_by_opeid[object[:opeid].to_i] = object
-      end
-      index_by_opeid
-    end
+    self.indexes(options)[:opeid]
   end
 
   # Generates an index for faster searching by name/alias and stores it in the cache. Returns a hash with 
   # alias/names (converted to downcase) as keys and arrays of Institution objects as values.
   def self.index_by_name(options = {})
-    @index_by_name ||= RESULTS_CACHE.fetch("index_by_name", {:expires_in => 30.days}.merge(options)) do
-      index_by_name = {}
-      for object in Institution.all(options)
-        for a in object.aliases
-          index_by_name[a.downcase] ||= []
-          index_by_name[a.downcase] << object
-        end
-      end
-      index_by_name
-    end
+    self.indexes(options)[:name]
   end
-
   
   # Fetches the institutions listing from http://explore.data.gov/api/views/uc4u-xdrd/rows.json
   # and stores it as a hash of hashes into the RESULTS_CACHE. The hash keys are the "unitid" identifiers
