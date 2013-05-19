@@ -100,7 +100,7 @@ tr:hover, tr.odd:hover, tr.even:hover, tr.highlight {
 	background: #fffde7;
 }
 
-table.multirow tbody:hover {
+table.multirow tbody:hover td.multirow-highlight {
 	background: #fffde7;
 }
 
@@ -656,8 +656,12 @@ a.redirect-link:hover {
 	border-top-right-radius: 3px;
 }
 
-.info-section#college_applications h2 {
+.info-section#college_applications h2, .info-section#college_enrollments h2 {
 	background-image: url(../images/icons/silk/building.png);
+}
+
+.info-section#college_degrees h2 {
+	background-image: url(../images/icons/silk/script.png);
 }
 
 .info-section#college_applications td {
