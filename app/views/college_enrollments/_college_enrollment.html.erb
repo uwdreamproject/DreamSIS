@@ -1,18 +1,10 @@
-<% hide_title_cell ||= false %>
-
 <tr id="college_enrollment_<%= college_enrollment.id %>">
-
-	<%- unless hide_title_cell -%>
-		<td rowspan="<%= rowspan %>" class="multirow-highlight"><%=h college_enrollment.institution.try(:name) %></td>
-	<% end %>
+	<td><%= college_enrollment.began_on.try(:to_s, :short_date) %></td>
+	<td><%= college_enrollment.ended_on.try(:to_s, :short_date) %></td>
 	<td><%=h college_enrollment.enrollment_status_name %></td>
 	<td><%=h college_enrollment.class_level_name %></td>
 	<td><%=h college_enrollment.majors_list %></td>
-	<td><%= college_enrollment.began_on.try(:to_s, :short_date) %></td>
-	<td><%= college_enrollment.ended_on.try(:to_s, :short_date) %></td>
-	<td class="college_enrollment_source <%=h college_enrollment.source %>"><%=h college_enrollment.source %></td>
 	<td class="functions"><%= link_to "Details", [@participant, college_enrollment] %></td>
 	<td class="functions"><%= link_to "Edit", edit_participant_college_enrollment_path(@participant, college_enrollment) %></td>
 	<td class="functions"><%= link_to 'Delete', [@participant, college_enrollment], :confirm => 'Are you sure?', :method => :delete %></td>
-
 </tr>

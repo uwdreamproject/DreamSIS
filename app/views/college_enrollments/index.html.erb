@@ -4,27 +4,22 @@
 <table id="college_enrollments" class="multirow">
 	<thead>
 		<tr>
-			<th>College</th>
+			<th>Start</th>
+			<th>End</th>
 			<th>Status</th>
 			<th>Class</th>
 			<th>Major(s)</th>
-			<th>Start</th>
-			<th>End</th>
-			<th>Source</th>
 			<th colspan=3>Functions</th>
 		</tr>
 	</thead>
 
-	<%- if @college_enrollments.empty? -%>
-	
+	<%- if @college_enrollments.empty? -%>	
 		<tbody>
 			<tr class="empty">
 				<td colspan="10">No college enrollments yet.</td>
 			</tr>
 		</tbody>
-		
 	<% else %>
-
 		<%- 
 		es = { :enrollments => {}, :previous => nil, :index => 0 }
 		for e in @college_enrollments 
@@ -36,11 +31,8 @@
 		
 		for index, enrollments in es[:enrollments] -%>
 			<tbody>
-				<%- enrollments.each_with_index do |enrollment, index| -%>
-					<%= render :partial => "college_enrollments/college_enrollment", 
-								:object => enrollment, 
-								:locals => { :rowspan => enrollments.size, :hide_title_cell => (true if index > 0) } %>
-				<% end %>
+				<tr><th colspan=10><%=h enrollments.first.institution.try(:name) %></th></tr>
+				<%= render :partial => "college_enrollments/college_enrollment", :collection => enrollments %>
 			</tbody>
 		<% end %>
 	<% end %>

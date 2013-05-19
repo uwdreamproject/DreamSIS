@@ -5,7 +5,8 @@ my_formats = {
   :date_with_full_month   => "%B %d, %Y",
   :time12                 => "%l:%M %p",
   :time_with_seconds      => "%H:%M:%S",
-  :short_date             => "%m/%d/%Y"
+  :short_date             => "%m/%d/%Y",
+  :month_year             => "%B %Y"
 }
 
 ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.merge!(my_formats)
