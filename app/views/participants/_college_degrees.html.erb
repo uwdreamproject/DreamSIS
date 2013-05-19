@@ -4,6 +4,7 @@
 		<th>Date</th>
 		<th>Degree</th>
 		<th>Source</th>
+		<th colspan=3>Functions</th>
 	</tr>
 
 	<%= render :partial => "college_degrees/college_degree", :collection => @participant.college_degrees %>
@@ -15,3 +16,7 @@
 	<% end %>
 
 </table>	
+
+
+<br />
+<%= link_to 'Add college degree', new_participant_college_degree_path(@participant), :class => 'add button' %>

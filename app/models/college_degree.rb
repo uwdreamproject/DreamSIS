@@ -7,6 +7,10 @@ class CollegeDegree < Degree
   def institution
     @institution ||= Institution.find(institution_id)
   end
-  
+
+  # Returns a printable String of the names of the majors for this record.
+  def majors_list
+    [major_1, major_2, major_3, major_4].select{|m| !m.blank? }.collect(&:titleize).join(", ")
+  end  
   
 end

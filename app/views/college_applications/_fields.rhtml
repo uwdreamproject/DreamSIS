@@ -1,61 +1,11 @@
 <% f.inputs(:name => "Institution") do %>
-
-	<div style="float:right; display:none">
-	<strong>OR</strong> choose from the top 15 institutions:
-	<br>
-	<ul>
-	<%# for institution in CollegeApplication.top_institutions(15) %>
-		<li><%#= link_to_function institution.name, "$('college_application_institution_id').value=#{institution.id}" %></li>
-	<%# end -%>
-	</ul>
-	</div>
-
-  	<li class="input">
-		<%= f.label :institution_id %>
-		
-		<div id="institution_name_auto_complete">
-			<%= model_auto_completer "college_application[institution_name]", 
-									(@college_application.try(:institution).try(:name) if @college_application.try(:institution)), 
-									"college_application[institution_id]", 
-									(@college_application.try(:institution_id) || nil), 
-									{ 
-										:url => { :controller => 'college_applications', :action => 'auto_complete_for_institution_name' },
-										:append_random_suffix => false,
-										:after_update_element => "function(text_field, selection, hidden, id) { 
-																	institution_lookup(text_field, selection, hidden, id) 
-																  }",
-										:regexp_for_id => '(-?\d+)$' },
-									{ :autocomplete => false, :style => ('display:none' if @college_application.try(:institution)), :size => 50, :class => "search" },
-									{ :skip_style => true } %>
-			
-			<% javascript_tag do -%>	
-				function institution_lookup(text_field, selection, hidden, id) {
-					Element.update('institution_details_content', selection.innerHTML)
-					Element.show('institution_details')
-					Element.hide(text_field)
-				}
-			<% end -%>
-
-			<div id="institution_details" class="auto_complete after_select" <%= "style='display:none'" unless @college_application.try(:institution) %>>
-				<div id="institution_details_content">
-					<% if @college_application.try(:institution) %>
-						<span class="primary">  <%=h @college_application.institution.try(:name) %>
-						<small class="light"> (#<%=h @college_application.institution.try(:id) %>)</small></span>
-						<span class="secondary location"><%=h @college_application.institution.try(:location_detail) %></span>
-						<span class="secondary url"> <%= link_to h(@college_application.institution.try(:webaddr)), 
-													h(@college_application.institution.try(:webaddr)), :popup => true %></span>
-					<% end -%>
-				</div>
-				<small><%= link_to_function "Choose a different institution", 
-										"Element.hide('institution_details');
-										 Element.show('model_auto_completer_tf');
-										 $('model_auto_completer_tf').value = '';
-										 $('model_auto_completer_tf').focus()" %></small>
-
-			</div>
-		</div>
-	</li>
-	
+	<%= render :partial => 'institution_select', 
+				:locals => { 
+					:attribute_name => "institution_id", 
+					:parent_object => @college_application, 
+					:parent_name => "college_application",
+					:f => f
+				} %>
 <% end -%>
 
 <% f.inputs(:name => "Application Details") do %>
