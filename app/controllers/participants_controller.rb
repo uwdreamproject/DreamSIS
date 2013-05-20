@@ -15,6 +15,7 @@ class ParticipantsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml { render :xml => @participants }
+      format.js { render 'index'}
       format.xls { 
         @participants = Participant.all
         render :action => 'index', :layout => 'basic' 
@@ -34,6 +35,7 @@ class ParticipantsController < ApplicationController
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
+      format.js { render 'index'}
       format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
     end
   end
@@ -45,6 +47,7 @@ class ParticipantsController < ApplicationController
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
+      format.js { render 'index'}
       format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
     end
   end
@@ -63,6 +66,7 @@ class ParticipantsController < ApplicationController
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
+      format.js { render 'index'}
       format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
     end    
   end
@@ -82,6 +86,7 @@ class ParticipantsController < ApplicationController
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
+      format.js { render 'index'}
       format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
     end    
   end

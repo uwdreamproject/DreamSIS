@@ -1,10 +1,12 @@
 <%= render :partial => "report_select" %>
 
-<h1>Listing <span id="filtered_record_count"></span> 
-	<%= pluralize (@participants.respond_to?(:current_page) ? Participant.count : @participants.count), Customer.participant_label %>
-	<%= "<font color=grey> at #{@high_school.name}</font>" if @high_school %>
-	<%= "<font color=grey> in #{@grad_year} class</font>" if @grad_year %>
+<h1 style="margin-bottom: 0.25em">
+	<%= "Participants" unless @high_school && @grad_year %>
+	<%=h @high_school.name if @high_school%>
+	<%=h @grad_year.to_s if @grad_year %>
 </h1>
+<h3 class="light" style="margin-top: 0">Listing <span id="filtered_record_count"></span> 
+	<%= pluralize (@participants.respond_to?(:current_page) ? Participant.count : @participants.count), Customer.participant_label %></h3>
 
 <%- if @participant_group -%>
 	<h2>
@@ -16,23 +18,8 @@
 <%= javascript_tag "initFilters([#{Participant.object_filters.collect(&:id).join(",")}]);" %>	
 
 <%= will_paginate @participants if @participants.respond_to?(:current_page) %>
-
-<table class="participants multirow">
-	<thead>
-		<tr>
-			<%= render :partial => "participants/reports/#{h(@report || "basic").pluralize}_header" %>
-		</tr>
-	</thead>
-
-	<%= render :partial => 'participant', :collection => @participants, :locals => { :report => h(@report || "basic") } %>
-</table>
-
+<%= render :partial => 'participants_table' %>
 <%= will_paginate @participants if @participants.respond_to?(:current_page) %>
 
-<br />
-
-<%= link_to "Add new #{Customer.participant_label}", new_participant_path, :class => "add button" %>
-
 <%= render :partial => "sidebar" %>
-
 <%= javascript_tag "updateRecordCount()" %>

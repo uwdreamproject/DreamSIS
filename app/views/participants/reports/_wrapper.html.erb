@@ -1,7 +1,7 @@
 <tr class="<%= "deselected" if participant.inactive? %> filterable participant">
 
 	<%- if row_index == 1 -%>
-		<td rowspan="<%= row_count %>" class="name multirow-hover">
+		<td rowspan="<%= row_count %>" class="name multirow-highlight">
 			<%= link_to participant.lastname_first, participant %>
 			<small class="inactive-note">(inactive)</small>
 		</td>
@@ -16,7 +16,7 @@
 	<% end %>
 
 	<%- if row_index == 1 -%>	
-		<td rowspan="<%= row_count %>" class="functions multirow-hover">
+		<td rowspan="<%= row_count %>" class="functions multirow-highlight">
 			<%= link_to 'Show', participant %>
 			<%= link_to 'Edit', edit_participant_path(participant) %>
 		</td>
