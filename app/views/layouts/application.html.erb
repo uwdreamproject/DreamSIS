@@ -119,7 +119,8 @@
 		<%- if RAILS_ENV == 'development' -%>
 		<div id="dev-inspector-container">
 			<%= link_to_function "Dev", "$('dev-inspector').toggle()", :id => "dev-inspector-link" %>
-			<div class="git branch">On branch <strong><%= `git rev-parse --symbolic-full-name --abbrev-ref HEAD` %></strong></div>
+			<div class="git branch">Branch <strong><%= `git rev-parse --symbolic-full-name --abbrev-ref HEAD` %></strong></div>
+			<div class="git branch">Rails <strong><%= RAILS_GEM_VERSION %></strong></div>
 			<div id="dev-inspector" style="display:none">
 				<div class="session-info"><pre><%= session.to_yaml %></pre></div>
 			</div>
