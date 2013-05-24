@@ -65,3 +65,5 @@ config/college_mapper.yml
 .elasticbeanstalk/
 
 files
+
+config/api-keys.yml
