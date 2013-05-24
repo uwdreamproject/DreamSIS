@@ -49,7 +49,7 @@ class ResourceController < ApplicationController
     respond_to do |format|
       if @object.save
         flash[:notice] = "#{self.class.object_name.titleize} was successfully created."
-        format.html { redirect_to(@object)) }
+        format.html { redirect_to(@object) }
         format.xml  { render :xml => @object, :status => :created, :location => @object }
       else
         format.html { render :action => "new" }
