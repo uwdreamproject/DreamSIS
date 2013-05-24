@@ -51,6 +51,8 @@ class Quarter < Term
       @term_resource ||= TermResource.find "#{year},#{titles[quarter_code-1]}"
     rescue ActiveResource::ResourceNotFound => e
       @term_resource = nil
+    rescue ActiveResource::UnauthorizedAccess => e
+      @term_resource = nil
     end
   end
   
