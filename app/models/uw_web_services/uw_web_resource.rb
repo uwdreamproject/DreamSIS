@@ -55,6 +55,8 @@ class UwWebResource < ActiveResource::Base
     raise ActiveResource::SSLError, "Could not find cert file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:cert]))
     raise ActiveResource::SSLError, "Could not find key file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:key]))
     raise ActiveResource::SSLError, "Could not find CA file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:ca_file]))
+  rescue ActiveResource::SSLError => e
+    Rails.logger.warn "[WARN] ActiveResource::SSLError: #{e.message}\n #{e.backtrace.try(:first)}"
   end
   
 end
