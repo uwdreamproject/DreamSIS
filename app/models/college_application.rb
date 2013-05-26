@@ -10,8 +10,8 @@ class CollegeApplication < ActiveRecord::Base
   
   delegate :name, :to => :institution
   
-  before_destroy :destroy_college_mapper_college
-  after_create :create_college_mapper_college
+  before_destroy :destroy_college_mapper_college, :if => :do_college_mapper_functions?
+  after_create :create_college_mapper_college, :if => :do_college_mapper_functions?
   
   attr_accessor :institution_name
 
@@ -26,6 +26,10 @@ class CollegeApplication < ActiveRecord::Base
   
   def applied?
     !date_applied.nil?
+  end
+  
+  def do_college_mapper_functions?
+    !participant.college_mapper_id.nil? rescue false
   end
   
   # Returns an array of the most commonly selected institution codes. Specify a number to limit.
