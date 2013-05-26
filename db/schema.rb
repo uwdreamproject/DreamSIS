@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130514175447) do
+ActiveRecord::Schema.define(:version => 20130526040427) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -207,6 +207,14 @@ ActiveRecord::Schema.define(:version => 20130514175447) do
     t.boolean  "show_for_volunteers",   :default => true
   end
 
+  create_table "grade_levels", :force => true do |t|
+    t.string   "title"
+    t.integer  "level"
+    t.string   "abbreviation"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "how_did_you_hear_options", :force => true do |t|
     t.string   "name"
     t.boolean  "show_for_participants"
@@ -319,6 +327,11 @@ ActiveRecord::Schema.define(:version => 20130514175447) do
     t.string   "opposite_title"
     t.integer  "target_percentage"
     t.integer  "warning_threshold"
+    t.date     "start_display_at"
+    t.date     "end_display_at"
+    t.integer  "earliest_grade_level"
+    t.integer  "earliest_grade_level_level"
+    t.integer  "latest_grade_level_level"
   end
 
   create_table "participant_groups", :force => true do |t|
@@ -346,7 +359,7 @@ ActiveRecord::Schema.define(:version => 20130514175447) do
     t.string   "phone_work"
     t.string   "screen_name"
     t.string   "screen_name_type"
-    t.date     "birthdate"
+    t.date     "birthdate",                             :limit => 255
     t.string   "sex"
     t.boolean  "free_reduced_lunch"
     t.boolean  "no_internet_at_home"
@@ -495,6 +508,9 @@ ActiveRecord::Schema.define(:version => 20130514175447) do
     t.integer  "number_of_children"
     t.boolean  "free_reduced_lunch_signed_up"
     t.string   "parent_type"
+    t.text     "filter_cache"
+    t.string   "login_token"
+    t.datetime "login_token_expires_at"
   end
 
   add_index "people", ["display_name"], :name => "index_people_on_display_name"

@@ -36,7 +36,7 @@
 
 	<%- unless @participants.respond_to?(:current_page) -%>
 	<h3>Filters
-		<%= link_to_function "show all", "clearAllFilters()" %></h3>
+		<%= link_to_function "show all", "clearAllFilters()", :class => "right small" %></h3>
 
 		<ul class="filters">
 		<% for object_filter in Participant.object_filters %>
@@ -44,13 +44,12 @@
 			
 				<% 
 			    dom_id = "filter_#{object_filter.id.to_s}_true"
-			    str = check_box_tag dom_id, true, false, 
+			    check_box_str = check_box_tag dom_id, true, false, 
 									:class => "#{object_filter.id.to_s}_filter_checkbox filter_checkbox", 
 									:onClick => "changeFilter(this, '#{object_filter.id.to_s}', this.checked)"
 				record_count_str = "<small id='record_count_#{object_filter.id}'>&nbsp;</small>"
-				str << label_tag(dom_id, "#{object_filter.opposite_title} #{record_count_str}")
 				%>
-				<%= str %>
+				<%= label_tag(dom_id, "#{check_box_str}#{record_count_str}#{object_filter.opposite_title}") %>
 			
 			</li>
 		

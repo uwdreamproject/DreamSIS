@@ -688,6 +688,10 @@ a.redirect-link:hover {
 	background-image: url(../images/icons/silk/script.png);
 }
 
+.info-section#filter_results h2 {
+	background-image: url(../images/icons/silk/tick.png);
+}
+
 .info-section#college_applications td {
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
@@ -1289,6 +1293,18 @@ form.formtastic fieldset fieldset.inline > ol li input, form.formtastic fieldset
 	max-width: 90%;
 }
 
+form.formtastic fieldset fieldset.inline > ol li.date {
+	max-width: 100%;
+}
+
+form.formtastic fieldset fieldset.inline > ol li.date li {
+	min-width: 5em;
+}
+
+form.formtastic fieldset fieldset.inline > ol li.date li:first-child {
+	min-width: 11em;
+}
+
 form.formtastic fieldset fieldset.inline > ol li label {
 	display: block;
 	font-weight: normal;
@@ -1760,6 +1776,7 @@ ul.filters {
 
 .filters li {
 	clear: both;
+	margin-bottom: 5px;
 }
 
 .filters li:hover label small {
@@ -1768,6 +1785,12 @@ ul.filters {
 
 .filters li input {
 	margin-right: 1em;
+	margin-left: -2em;
+}
+
+.filters li label {
+	left: 1.7em;
+	position: relative;	
 }
 
 .filters label small {
@@ -1781,7 +1804,35 @@ ul.filters {
 	top: -2px;
 	width: 2em;
 	text-align: center;
+	right: 2em;
+	margin-left: 2em;
 }
+
+ul.filter-results {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	columns: 4;
+	-webkit-columns: 4;
+}
+
+.filter-results li {
+	background: no-repeat left 5px;
+	padding: 5px;
+	padding-left: 22px;
+	border-bottom: 1px solid #eee;
+	-webkit-column-break-inside: avoid;
+	break-inside: avoid-column;
+}
+
+.filter-results li.pass {
+	background-image: url(../images/icons/silk/tick.png);
+}
+
+.filter-results li.fail {
+	background-image: url(../images/icons/silk/cross.png);	
+}
+
 
 ul.quick_nav {
 	display: block;
@@ -2643,6 +2694,12 @@ div.incomplete {
 .mentor_stats {
 	margin: 0 2em;
 	min-width: 30%;
+}
+
+.panel-block table.stats {
+	max-height: 300px;
+	overflow: auto;
+	display: block;
 }
 
 ul.mentor_stats_summary {
