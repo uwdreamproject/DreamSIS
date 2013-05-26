@@ -50,7 +50,7 @@ Rails::Initializer.run do |config|
   # Make sure the secret is at least 30 characters and all random, 
   # no regular words or you'll be exposed to dictionary attacks.
   config.action_controller.session = {
-    :session_key => '_dreamsis_session',
+    :key => '_dreamsis_session',
     :secret      => rand(10e200).to_s(36)
   }
 
@@ -70,3 +70,4 @@ end
 
 load "#{RAILS_ROOT}/lib/date_helper.rb"
 load "#{RAILS_ROOT}/lib/string_helper.rb"
+load "#{RAILS_ROOT}/lib/national_student_clearinghouse.rb"

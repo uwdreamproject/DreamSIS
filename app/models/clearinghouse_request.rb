@@ -1,4 +1,3 @@
-require 'lib/national_student_clearinghouse.rb'
 require 'csv'
 
 =begin
