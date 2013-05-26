@@ -72,7 +72,6 @@
 		<th>college_attending</th>
 		<th>household_size</th>
 		<th>single_parent_household</th>
-		<th>clearinghouse_record_found?</th>
 		<th>survey_id</th>
 		<th>not_attending_college</th>
 		<th>intake_survey_date</th>
@@ -122,6 +121,9 @@
 		<th>other_college_programs</th>
 		<th>other_location_id</th>
 		<th>participant_group</th>
+		<%- for object_filter in Participant.object_filters -%>
+			<th><%=h object_filter.title %></th>
+		<%- end -%>	
 		<th>created_at</th>
 		<th>updated_at</th>
 	</tr>
@@ -202,7 +204,6 @@
 	<td><%=h participant.college_attending.name if participant.college_attending %></td>
 	<td><%=h participant.household_size %></td>
 	<td><%=h participant.single_parent_household %></td>
-	<td><%=h participant.clearinghouse_record_found? %></td>
 	<td><%=h participant.read_attribute(:survey_id) %></td>
 	<td><%=h participant.not_attending_college %></td>
 	<td><%=h participant.intake_survey_date %></td>
@@ -252,6 +253,9 @@
 	<td><%=h participant.other_college_programs %></td>
 	<td><%=h participant.other_location_id %></td>
 	<td><%=h participant.participant_group.try(:title) %></td>
+	<%- for object_filter in Participant.object_filters -%>
+		<td><%=h participant.passes_filter?(object_filter) ? "TRUE" : "" %></td>
+	<%- end -%>	
 	<td><%=h participant.created_at %></td>
 	<td><%=h participant.updated_at %></td>
 	</tr>
