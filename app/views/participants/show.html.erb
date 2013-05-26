@@ -3,6 +3,11 @@
 </div>
 
 <div id="column2">
+
+	<div class="info-section" id="filter_results">
+		<h2>Current Stats</h2>
+		<%= render :partial => 'filter_results' %>
+	</div>
 	
 	<%- if @participant.respond_to?(:college_applications) -%>
 		<div class="info-section" id="college_applications">

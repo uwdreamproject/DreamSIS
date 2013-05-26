@@ -14,6 +14,8 @@ class Participant < Person
   has_many :college_enrollments
   has_many :college_degrees
   
+  serialize :filter_cache
+  
   validates_presence_of :birthdate, :high_school_id, :if => :validate_ready_to_rsvp?
 
   attr_accessor :override_binder_date, :override_fafsa_date, :create_college_mapper_student_after_save, :link_to_current_user_after_save
@@ -24,6 +26,7 @@ class Participant < Person
 
   after_save :college_mapper_student, :if => :create_college_mapper_student_after_save?
   after_create :link_to_current_user, :if => :link_to_current_user_after_save?
+  before_save :update_filter_cache!
 
   def validate_name?
     true
@@ -53,7 +56,24 @@ class Participant < Person
   
   # Returns all Filter objects that list Participant as the object_class
   def self.object_filters
-    ObjectFilter.find_all_by_object_class("Participant")
+    ObjectFilter.find_all_by_object_class("Participant").select(&:display_now?)
+  end
+
+  # Checks the +filter_cache+ to see whether or not this person passes the specified filter.
+  # If the +filter_cache+ doesn't exist, it creates it.
+  def passes_filter?(object_filter)
+    update_filter_cache! if !filter_cache.is_a?(Hash) || self.filter_cache[object_filter.id].nil?
+    self.filter_cache[object_filter.id]
+  end
+  
+  # For each ObjectFilter relevant for this person type, run the filter on this person
+  # and store the result value in +filter_cache+.
+  def update_filter_cache!
+    self.filter_cache = {}
+    for object_filter in self.class.object_filters
+      self.filter_cache[object_filter.id] = object_filter.passes?(self)
+    end
+    self.filter_cache
   end
   
   # Tries to find duplicate records based on name and high school. Pass an array of participant data straight from your params
@@ -124,12 +144,12 @@ class Participant < Person
     Institution.find(college_attending_id)
   end
 
-  # Calculates the current grade based on grad_year. If over 12, this method will always return 12.
+  # Calculates the current grade based on grad_year.
   def grade
     return nil unless grad_year
     academic_year_offset = 1 if Time.now.month > 6
     @grade = Time.now.year - grad_year + academic_year_offset.to_i + 12
-    @grade > 12 ? 12 : @grade
+    @grade
   end
   
   # Uses TestScore#score_comparison to return a hash of test score comparisons for the the specified
