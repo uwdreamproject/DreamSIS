@@ -3,6 +3,7 @@ class CollegeEnrollment < Enrollment
   validates_presence_of :institution_id
   
   belongs_to :clearinghouse_request
+  belongs_to :grade_level, :foreign_key => :abbreviation, :primary_key => :class_level
 
   CLASS_LEVEL_NAMES = {
     "C" => "Certificate (Undergraduate)",
