@@ -18,6 +18,19 @@
 			<% else %>
 			  	<%= @mentor.users.collect{|u| link_to u.login, user_path(u)}.join(", ") %>
 			<% end -%>
+			
+			<%- if !Customer.link_to_uw? && @current_user.admin? -%>
+			<div class="login_link">
+				<%- if @mentor.has_valid_login_token? -%>
+					<p>
+						<strong>This user's personalized login link:</strong>
+						<br /><%= map_login_url @mentor, @mentor.login_token %>
+					</p>
+				<% else %>
+					<%= link_to "Generate login link", generate_login_token_mentor_path(@mentor), :method => :put %>
+				<% end %>
+			</div>
+			<% end %>
 			</dd>
 		
 		<dt>Aliases</dt>

@@ -43,7 +43,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users, :collection => { :auto_complete_for_user_login => :any, :admin => :get }
 
   map.resources :mentors, 
-    :member => { :photo => :any, :remove_participant => :delete, :background_check_form_responses => :get }, 
+    :member => { :photo => :any, :remove_participant => :delete, :background_check_form_responses => :get, :generate_login_token => :put, :login_link => :get }, 
     :collection => { :auto_complete_for_mentor_fullname => :any, :onboarding => :any, :event_status => :any, :leads => :any, :van_drivers => :any, :check_if_valid_van_driver => :get }
   map.resources :mentor_term_groups, 
     :member => { :sync => :put, :photo_tile => :get }, 
@@ -76,6 +76,8 @@ ActionController::Routing::Routes.draw do |map|
   map.participant_group_participants '/participants/groups/:id.:format', :controller => 'participants', :action => 'group'
 
   # Users and Sessions
+  map.map_login 'map_login/:person_id/:token', :controller => 'session', :action => 'map_login'
+  map.map_to_person 'map_to_person/:person_id/:token', :controller => 'session', :action => 'map_to_person'
   map.signup 'signup', :controller => 'session', :action => 'signup'
   map.login 'login', :controller => 'session', :action => 'new'
   map.logout 'logout', :controller => 'session', :action => 'destroy'

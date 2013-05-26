@@ -87,6 +87,14 @@ class MentorsController < ApplicationController
     end
   end
   
+  def generate_login_token
+    @mentor = Mentor.find(params[:id])
+    @mentor.generate_login_token!
+    
+    flash[:notice] = "Successfully generated new login token."
+    redirect_to @mentor
+  end
+  
   def remove_participant
     @mentor = Mentor.find(params[:id])
     @mentor_participant = @mentor.mentor_participants.find(params[:mentor_participant_id])
