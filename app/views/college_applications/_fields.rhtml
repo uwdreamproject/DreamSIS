@@ -1,4 +1,5 @@
 <% f.inputs(:name => "Institution") do %>
+	<p>Choose the college or university by searching by name below.</p>
 	<%= render :partial => 'institution_select', 
 				:locals => { 
 					:attribute_name => "institution_id", 
@@ -8,12 +9,18 @@
 				} %>
 <% end -%>
 
-<% f.inputs(:name => "Application Details") do %>
-	<%= f.input :choice, :as => :radio, :collection => ["Interested", "Reach", "Solid", "Safety"] %>
-	<%= f.input :date_applied, :include_blank => true, :hint => link_to_now('college_application_date_applied') %>
-	<%= f.input :date_notified, :include_blank => true, :hint => link_to_now('college_application_date_notified') %>
+<% f.inputs(:name => "Application Process") do %>
+	<p>Track the process of the application to this institution.</p>
+	<%= f.input :choice, :as => :select, :collection => ["Interested", "Reach", "Solid", "Safety"] %>
+	<%- f.inputs :name => "Personal Statement", :class => "inline" do -%>
+		<%= f.input :personal_statement_started, :label => "Started" %>
+		<%= f.input :personal_statement_completed, :label => "Completed" %>
+	<% end %>
+	<%= f.input :date_applied, :as => :date, :include_blank => true, :hint => link_to_now('college_application_date_applied') %>
 <% end -%>
 
 <% f.inputs(:name => "Decision") do %>
+	<p>Track the decision sent back from the institution to the student.</p>
 	<%= f.input :decision, :as => :select, :collection => ["Accepted", "Denied", "Waitlisted", "Deferred"], :include_blank => true %>
+	<%= f.input :date_notified, :as => :date, :include_blank => true, :hint => link_to_now('college_application_date_notified') %>
 <% end -%>
