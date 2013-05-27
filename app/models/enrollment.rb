@@ -1,5 +1,5 @@
 # Models a participant's enrollment at a particular institution or high school.
-class Enrollment < ActiveRecord::Base
+class Enrollment < CustomerScoped
   validates_presence_of :participant_id  
   belongs_to :participant
   

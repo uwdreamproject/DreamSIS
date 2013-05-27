@@ -1,4 +1,4 @@
-class Person < ActiveRecord::Base
+class Person < CustomerScoped
   include Comparable
 
   has_many :event_attendances do
@@ -44,7 +44,7 @@ class Person < ActiveRecord::Base
 
   PERSON_RESOURCE_CACHE_LIFETIME = 1.day
 
-  default_scope :order => "lastname, firstname, middlename"
+  default_scope :order => "lastname, firstname, middlename", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
 
   # Returns the actual person resource object. Specify +true+ as a parameter to fetch the "full" version
   # of the resource (only use this when more data is needed than the basics).

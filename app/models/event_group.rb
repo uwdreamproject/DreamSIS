@@ -1,4 +1,4 @@
-class EventGroup < ActiveRecord::Base
+class EventGroup < CustomerScoped
   has_many :events do
     def future
       find :all, :conditions => ["date >= ?", Time.now.midnight]

@@ -1,4 +1,4 @@
-class ObjectFilter < ActiveRecord::Base
+class ObjectFilter < CustomerScoped
   validates_presence_of :object_class, :title, :criteria  
   validate :validate_criteria
   

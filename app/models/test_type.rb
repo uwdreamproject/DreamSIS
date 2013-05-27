@@ -1,7 +1,7 @@
 # Models a specific type of test that a Participant can take, like SAT or ACT. Defines the maximum scores and sections of the test as well.
 # 
 # Note: The class name "TestType" is used to avoid namespace conflicts with Ruby or Rails' use of "Test".
-class TestType < ActiveRecord::Base
+class TestType < CustomerScoped
   has_many :test_scores
   
   validates_presence_of :name

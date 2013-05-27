@@ -1,4 +1,4 @@
-class MentorTermGroup < ActiveRecord::Base
+class MentorTermGroup < CustomerScoped
   belongs_to :term 
   belongs_to :location
   

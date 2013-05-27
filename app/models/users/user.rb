@@ -1,5 +1,5 @@
 require 'digest/sha1'
-class User < ActiveRecord::Base
+class User < CustomerScoped
   belongs_to :person
   
   # model_stamper
@@ -54,10 +54,11 @@ class User < ActiveRecord::Base
   # Creates a new user based on the auth data passed from OmniAuth.
   def self.create_with_omniauth(auth)
     u = create! do |user|
+      user.customer_id = Customer.current_customer.id
       user.provider = auth["provider"]
       user.uid = auth["uid"]
       user.login = (auth["info"]["nickname"] || auth["uid"]) + "@" + auth["provider"]
-      user.person = Person.create!
+      user.person = Person.create!(:customer_id => Customer.current_customer.id)
     end
     u.update_from_provider!(auth)
     return u

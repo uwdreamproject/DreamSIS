@@ -1,5 +1,5 @@
 # Models a degree that a Participant has earned, like a high school diploma or a college degree.
-class Degree < ActiveRecord::Base
+class Degree < CustomerScoped
   validates_presence_of :participant_id
   belongs_to :participant
   

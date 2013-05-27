@@ -1,4 +1,4 @@
-class EventShift < ActiveRecord::Base
+class EventShift < CustomerScoped
   belongs_to :event
   validates_presence_of :title
   

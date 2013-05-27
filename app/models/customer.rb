@@ -45,7 +45,7 @@ class Customer < ActiveRecord::Base
 
     # For now, just default to the first record in the Customer collection.
     def current_customer
-      Customer.first || Customer.new(:name => "Dream Project")
+      Customer.first || Customer.create(:name => "New Customer")
     end
     
     # Returns the current customer's name
