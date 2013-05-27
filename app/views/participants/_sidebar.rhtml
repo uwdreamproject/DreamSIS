@@ -6,7 +6,7 @@
 	
 	<p><%= link_to "Return to #{@participant.high_school.try(:name)} #{@participant.grad_year} list",
 	 				high_school_cohort_path(@participant.high_school, @participant.grad_year),
-	 				:class => 'back button' %></p>
+	 				:class => 'back button' if @participant.high_school && @participant.grad_year %></p>
 	
 <% end -%>
 
