@@ -11,7 +11,7 @@ class TestScore < CustomerScoped
   serialize :section_scores
   before_save :update_section_scores_attribute
 
-  default_scope :joins => :test_type, :order => "test_types.name ASC, taken_at ASC"
+  default_scope :joins => :test_type, :order => "test_types.name ASC, taken_at ASC", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
 
   # Overrides the instantiate method to add the section score attributes to the class
   # using +attr_accessor+. This allows us to dynamically get and set the section scores,

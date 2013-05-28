@@ -7,7 +7,7 @@ class Term < CustomerScoped
   validates_presence_of :start_date
   validates_presence_of :end_date
 
-  default_scope :order => "year, quarter_code, title"
+  default_scope :order => "year, quarter_code, title", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
   
   named_scope :allowing_signups, :conditions => { :allow_signups => true }
   

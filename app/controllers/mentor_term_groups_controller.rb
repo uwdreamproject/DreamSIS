@@ -130,6 +130,9 @@ class MentorTermGroupsController < ApplicationController
   
   def fetch_term
     @term = (Term.find(params[:new_term_id] || params[:term_id]) rescue nil) || Term.current_term || Term.allowing_signups.try(:first) || Term.last
+    unless @term
+      return render_error("You must define a term first before you can modify mentor groups.", "Unable to display page.")
+    end
   end
   
 end

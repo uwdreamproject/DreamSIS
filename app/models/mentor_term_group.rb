@@ -18,7 +18,7 @@ class MentorTermGroup < CustomerScoped
   after_create :sync_with_course!
   attr_accessor :skip_sync_after_create
 
-  default_scope :order => "title IS NULL, title, course_id"
+  default_scope :order => "title IS NULL, title, course_id", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
 
   # Returns the course ID if no title is specified.
   def title

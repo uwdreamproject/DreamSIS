@@ -29,6 +29,8 @@ class ClearinghouseRequest < CustomerScoped
   
   attr_protected :customer_id, :ftp_password
   
+  default_scope :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
+  
   # Returns the current "status" of this request.
   # 
   # new::       Not submitted yet

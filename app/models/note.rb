@@ -13,6 +13,8 @@ class Note < CustomerScoped
 
   before_create :update_creator_id
   
+  default_scope :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
+  
   def update_creator_id
     self.creator_id = Thread.current['user'].try(:id)
   end

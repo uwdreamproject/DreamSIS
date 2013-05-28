@@ -5,6 +5,8 @@ class TrainingCompletion < CustomerScoped
   belongs_to :training
   belongs_to :person
   
+  default_scope :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
+  
   def completed?
     !completed_at.nil?
   end

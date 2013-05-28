@@ -7,7 +7,7 @@ class TestType < CustomerScoped
   validates_presence_of :name
   validates_numericality_of :maximum_total_score
   
-  default_scope :order => "name"
+  default_scope :order => "name", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
   
   # Returns a hash with the section name as key and the maximum score as value.
   # If no sections are defined, this returns an empty hash.

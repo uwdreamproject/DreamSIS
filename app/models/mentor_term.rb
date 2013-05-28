@@ -8,7 +8,7 @@ class MentorTerm < CustomerScoped
   delegate :term, :term_id, :location, :title, :location_id, :to => :mentor_term_group
   delegate :fullname, :email, :reg_id, :participants, :mentor_participants, :to => :mentor
   
-  default_scope :order => "people.lastname, people.firstname", :joins => :mentor
+  default_scope :order => "people.lastname, people.firstname", :joins => :mentor, :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
   
   # after_create :add_to_group
   

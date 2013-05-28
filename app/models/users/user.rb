@@ -21,7 +21,7 @@ class User < CustomerScoped
   # anything else you want your user to change should be added here.
   attr_accessible :login, :email, :password, :password_confirmation, :identity_url, :person_attributes
 
-  default_scope :order => 'login'
+  default_scope :order => 'login', :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
 
   # Pulls the current user out of Thread.current. We try to avoid this when possible, but sometimes we need 
   # to access the current user in a model (e.g., to check EmailQueue#messages_waiting?).

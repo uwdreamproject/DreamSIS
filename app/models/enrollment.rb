@@ -4,4 +4,6 @@ class Enrollment < CustomerScoped
   belongs_to :participant
   
   validates_uniqueness_of :institution_id, :scope => [:participant_id, :began_on, :ended_on, :enrollment_status, :class_level]
+  
+  default_scope :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
 end
