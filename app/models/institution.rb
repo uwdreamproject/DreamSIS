@@ -8,8 +8,14 @@ class Institution
     :longitud  => [:longitude],
     :addr      => [:address, :street],
     :stabbr    => [:state],
-    :countynm  => [:county]
+    :countynm  => [:county],
+    :gentele   => [:phone],
+    :webaddr   => [:website_url]
   }
+
+  def geocoded?
+    false
+  end
 
   def initialize(raw_attributes)
     @raw_attributes = raw_attributes
@@ -151,6 +157,11 @@ class Institution
       end
       all
     end
+  end
+  
+  # Replicates the behavior of a has_many association.
+  def college_applications
+    @college_applications ||= CollegeApplication.find :all, :conditions => { :institution_id => id }
   end
   
   protected

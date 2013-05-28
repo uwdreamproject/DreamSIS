@@ -6,7 +6,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :customers
   map.resources :object_filters
   map.resources :locations, :collection => { :auto_complete_for_location_name => :any }
-  map.resources :colleges, :controller => "locations"
+  map.resources :colleges, :controller => "locations", :collection => { :auto_complete_for_institution_name => :any }, :member => { :applications => :get }
   map.resources :terms, :member => { :sync => :put }
   map.resources :quarters, :path => :quarters, :as => :terms
   map.resources :clearinghouse_requests, :member => { :submit => :post, :retrieve => :post, :file => :get, :upload => :post }

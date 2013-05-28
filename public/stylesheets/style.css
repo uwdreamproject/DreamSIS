@@ -1829,12 +1829,21 @@ ul.filter-results {
 	break-inside: avoid-column;
 }
 
-.filter-results li.pass {
+.filter-results li.pass, span.icon.pass {
 	background-image: url(../images/icons/silk/tick.png);
 }
 
-.filter-results li.fail {
+.filter-results li.fail, span.icon.fail {
 	background-image: url(../images/icons/silk/cross.png);	
+}
+
+span.icon {
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	background-repeat: no-repeat;
+	background-position: center center;
+	text-indent: -1500px;
 }
 
 
