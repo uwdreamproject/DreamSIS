@@ -84,10 +84,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def render_error(error_message)
+  def render_error(error_message, error_title = nil, status = 403)
+    status = 403 unless [403, 400].include?(status)
+    @error_title = error_title || "You aren't allowed to access that page."
     @error_message = error_message
-    @body_class = "error 403"
-    return render(:template => "application/forbidden", :status => 403) unless performed?
+    @body_class = "error #{status}"
+    return render(:template => "application/forbidden", :status => status) unless performed?
   end
 
   def flash_to_headers
