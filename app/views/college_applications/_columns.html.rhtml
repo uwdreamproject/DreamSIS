@@ -10,15 +10,3 @@
 	</td>
 <td><%=h college_application.choice %></td>
 <td><%=h college_application.decision %></td>
-
-
-
-
-<%# remote_form_for([college_application.participant, college_application], 
-			:html => { :style => "display:inline", 
-			:id => "decision_form_#{college_application.id}" }) do |f| %>
-	<%#= f.select :decision, ["Accepted", "Denied", "Waitlisted"], :include_blank => true %>
- <%# end -%>
-
-<%#= observe_form "decision_form_#{college_application.id}", 
-				:function => "$('decision_form_#{college_application.id}').submit()" %>
