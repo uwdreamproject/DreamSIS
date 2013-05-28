@@ -6,11 +6,10 @@
 		</td>
 		
 	<td><strong class="mentor name"><%= link_to mentor_term.fullname(:skip_update => true), mentor_term.mentor %></strong>
-		<small class="outline tag"><%= mentor_term.mentor_id %></small>
 		<br><%= auto_link mentor_term.email %>
 		<div>
 			<%= "#{content_tag :span, Customer.lead_Label, :class => 'admin tag'}" if mentor_term.lead? %>
-			<%= "#{content_tag :span, "Volunteer", :class => 'orange tag'}" if mentor_term.volunteer? %>
+			<%= "#{content_tag :span, "Enrolled", :class => 'green tag'}" unless mentor_term.volunteer? %>
 			<%= "#{content_tag :span, "Driver", :class => 'grey tag'}" if mentor_term.driver? %>
 		</div>
 		
@@ -21,9 +20,11 @@
 		
 	<td>
 		<ul id="participants_<%= mentor_term.id %>" class="mini_participants">
+			<%- mini_participants = mentor_term.mentor_participants -%>
 			<%= render :partial => 'mini_participant', 
-						:collection => mentor_term.mentor_participants,
+						:collection => mini_participants[0..4],
 						:locals => { :mentor_term => mentor_term } %>
+			<%= content_tag :li, "#{mini_participants.size-5} more", :class => 'extra note' if mini_participants.size > 5 %>
 		</ul>
 		<%= render :partial => 'participant_form', 
 					:locals => { :mentor_term => mentor_term } if mentor_term.try(:location) %>
