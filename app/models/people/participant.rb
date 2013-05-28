@@ -218,4 +218,10 @@ class Participant < Person
     end
   end
   
+  def new_mentor_id=(mentor_id)
+    mentors << Mentor.find(mentor_id)
+  rescue ActiveRecord::RecordInvalid => e
+    errors.add(:new_mentor_id, "has already been added to this participant")
+  end
+  
 end

@@ -1,5 +1,5 @@
-class MentorsController < ApplicationController
-  
+class MentorsController < ApplicationController  
+  protect_from_forgery :except => [:auto_complete_for_mentor_fullname] 
   skip_before_filter :login_required, :check_authorization, :save_user_in_current_thread, :check_if_enrolled, :only => [:check_if_valid_van_driver]
   
   def index

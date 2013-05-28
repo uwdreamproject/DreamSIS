@@ -1165,6 +1165,10 @@ input.search:focus {
 	border-bottom-left-radius: 0;
 }
 
+input.search.wide {
+	width: 20em;
+}
+
 select, form.formtastic select {
 	padding: 10px;
 	border-color: rgba(153,153,153,0.9);

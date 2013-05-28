@@ -76,9 +76,8 @@
 			<h2><%= Customer.mentors_Label %></h2>
 			<%= render :partial => 'mentors' %>
 			<br>
-			<%#= link_to 'Add mentor', 
-						new_participant_mentor_path(@participant),
-						:class => "add button" %>
+			<%= render :partial => 'add_mentor_form' %>
+
 		</div>
 	<% end -%>
 
