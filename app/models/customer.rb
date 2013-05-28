@@ -41,6 +41,10 @@ class Customer < ActiveRecord::Base
     term_system == "Quarters"
   end
   
+  def require_risk_form?
+    !risk_form_content.blank?
+  end
+  
   class << self
 
     # For now, just default to the first record in the Customer collection.

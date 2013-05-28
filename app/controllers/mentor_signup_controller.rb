@@ -111,7 +111,7 @@ class MentorSignupController < ApplicationController
   def check_if_signups_allowed
     unless @term.allow_signups?
       # Check if the next term allows signups unless we've explicitly asked for a specific term.
-      if @term.next.allow_signups? && params[:term_id].blank?
+      if @term.respond_to?(:next) && @term.next.allow_signups? && params[:term_id].blank?
         @term = @term.next
       else
         flash[:error] = "Sorry, but you can't sign up for #{@term.title} right now."
