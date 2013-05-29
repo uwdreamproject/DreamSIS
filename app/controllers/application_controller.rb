@@ -15,7 +15,8 @@ class ApplicationController < ActionController::Base
   
   include AuthenticatedSystem #, ExceptionNotifiable
   require 'array_math'
-  
+
+  before_filter :require_ssl
   before_filter :authenticated?
   before_filter :login_required, :except => [ 'remove_vicarious_login' ]
   before_filter :save_user_in_current_thread
@@ -55,6 +56,14 @@ class ApplicationController < ActionController::Base
   # consider_local "172.28.99.10"
 
   protected
+  
+  def require_ssl
+    unless request.ssl? || RAILS_ENV == 'development'
+      redirect_to "https://" + request.host + request.request_uri
+      flash.keep
+      return false
+    end
+  end
   
   def authenticated?
     @current_user ||= User.find session[:user_id] if session[:user_id]
