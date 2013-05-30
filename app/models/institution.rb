@@ -2,7 +2,7 @@ require 'open-uri'
 
 # Models an Institution record, pulled from the Department of Education's list.
 class Institution
-  RESULTS_CACHE = FileStoreWithExpiration.new("tmp/cache/institution")
+  RESULTS_CACHE = FileStoreWithExpiration.new("/tmp/cache/dreamsis/institution")
   ATTRIBUTE_ALIASES = {
     :instnm    => [:name, :title],
     :longitud  => [:longitude],
@@ -60,6 +60,7 @@ class Institution
   # Finds an Intitution record by "unitid" (the unique identifier provided by Dept of Ed's API).
   # If a negative integer is provided, this will find a College object instead (see note at College).
   def self.find(unitid)
+    fancy_log ":unitid => #{unitid}", "Find"
     if unitid.is_a?(Integer) && unitid < 0
       College.find(-unitid)
     else
@@ -71,6 +72,7 @@ class Institution
   # the parameter to an Integer so you can pass a String or an Integer. It will also strip out any
   # hyphens, which are often placed to separate the branch number.
   def self.find_by_opeid(opeid)
+    fancy_log ":opeid => #{opeid}", "Find"
     opeid = opeid.gsub("-", "")
     index_by_opeid[opeid.to_i]
   end
@@ -129,6 +131,7 @@ class Institution
   # in +search_term+ separated out and return an intersection of the results. By default, returns only
   # 100 results.
   def self.find_all_by_name(search_term, options = { :try_separating_words_on_failure => true, :limit => 100 })
+    fancy_log ":name => '#{search_term}'", "Find"
     limit = options[:limit].is_a?(Integer) ? options[:limit] : options[:limit].to_i
     search_term = search_term.gsub /[\(\)\#\d,]?/, "" # strip out parentheses and numbers
     search_term = search_term.gsub /\s/, " " # strip out tabs and such
@@ -150,6 +153,7 @@ class Institution
   
   # Returns an array of all Institutions as objects and caches the data for quick retrieval.
   def self.all(options = {})
+    fancy_log ":all", "Find"
     @all ||= RESULTS_CACHE.fetch("all_objects", {:expires_in => 30.days}.merge(options)) do
       all = []
       for unitid,raw_attributes in Institution.raw_dataset(options)
@@ -168,6 +172,7 @@ class Institution
   
   def self.indexes(options = {})
     @indexes ||= RESULTS_CACHE.fetch("indexes", {:expires_in => 30.days}.merge(options)) do
+      fancy_log ":all", "Index"
       indexes = { :unitid => {}, :opeid => {}, :name => {}}
       for object in Institution.all(options)
         indexes[:unitid][object[:unitid].to_i] = object
@@ -205,6 +210,7 @@ class Institution
   def self.raw_dataset(options = {})
     RESULTS_CACHE.fetch("raw_data", {:expires_in => 30.days}.merge(options)) do
       url = "http://explore.data.gov/api/views/uc4u-xdrd/rows.json"
+      fancy_log ":raw_data => #{url}", "Fetch"
       puts "Fetching institution directory listing dataset from #{url}"
       response = open(url).read
       self.convert_to_hashes ActiveSupport::JSON.decode(response)
@@ -224,6 +230,15 @@ class Institution
     end
     data
   end
+
+  def self.fancy_log(msg, method = "Fetch", time = nil)
+    caller_class_s = "Institution"
+    message = "  \e[4;33;1m#{caller_class_s} #{method}"
+    message << " (#{'%.1f' % (time*1000)}ms)" if time
+    message << "\e[0m   #{msg}"
+    RAILS_DEFAULT_LOGGER.info message
+  end
+
   
 end
 
