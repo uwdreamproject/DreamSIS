@@ -1,10 +1,10 @@
 <tr id="test_score_<%= test_score.id %>">
 
 	<td class="name"><%= link_to h(test_score.name), [@participant, test_score] %></td>
-	<td><%=h test_score.taken_at.to_s(:date_with_day_of_week) %>
-		<small class="light">(<%= time_ago_in_words test_score.taken_at %> ago)</small>
-		</td>
-	<td><%=h test_score.total_score.try(:to_i) %></td>
+	<td><%=h test_score.taken_at.try(:to_s, :date_with_day_of_week) %>
+		<%= content_tag :small, "(#{time_ago_in_words(test_score.taken_at)} ago)", :class => 'light' unless test_score.taken_at.blank? %>
+	</td>
+	<td><%=h test_score.total_score_pretty %></td>
 	
 	<td class="functions">
 		<%= link_to 'Details', [@participant, test_score] %>

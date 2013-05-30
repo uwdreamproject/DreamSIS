@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130529053535) do
+ActiveRecord::Schema.define(:version => 20130530172634) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -666,6 +666,7 @@ ActiveRecord::Schema.define(:version => 20130529053535) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "customer_id"
+    t.string   "score_calculation_method"
   end
 
   add_index "test_types", ["customer_id"], :name => "index_test_types_on_customer_id"

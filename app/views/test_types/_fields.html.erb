@@ -1,7 +1,11 @@
 <%- f.inputs do -%>
 	<%= f.input :name %>
 
-	<%= f.input :maximum_total_score %>
+	<%= f.input :maximum_total_score, :input_html => { :size => 5 } %>
+	
+	<%= f.input :score_calculation_method, :as => :select, :collection => %w[sum average],
+		 		:hint => "'Sum' adds each section score together to get the total score. 
+						  'Average' calculates an average of all the section scores instead." %>
 
 	<%= f.input :sections, :input_html => { :rows => 5, :width => 20 }, 
 				:hint => "List each section, one per line. If the section tracks a score, 

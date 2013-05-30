@@ -1,5 +1,5 @@
 # Models an instance of a participant taking a test represented by TestType. For example, the SAT or ACT tests.
-class TestScore < CustomerScoped
+class TestScore < CustomerScoped  
   belongs_to :participant
   belongs_to :test_type
   
@@ -48,6 +48,7 @@ class TestScore < CustomerScoped
   def section_score(section_name, new_score = nil)
     self.section_scores = {} if self.section_scores.nil?
     unless new_score.blank?
+      section_name = section_name.parameterize.underscore
       instance_eval "self.section_score_#{section_name} = #{new_score.to_s}"
       self.section_scores[section_name.to_s] = new_score
     end
@@ -60,6 +61,15 @@ class TestScore < CustomerScoped
     return true unless test_type
     return true unless test_type.maximum_total_score && total_score
     errors.add(:total_score, "is above the maximum total score for this test type") if total_score > test_type.maximum_total_score
+  end
+  
+  # Uses number_with_precision to display the total score with 2 fractional digits and then strips insignificant zeroes.
+  #
+  # TODO use native :strip_insignificant_zeroes option when upgrading to rails 3.
+  def total_score_pretty
+    return "" if total_score.blank?
+  	formatted_number = ActionController::Base.helpers.number_with_precision(total_score, :precision => 2)
+  	formatted_number.sub(/(\.)(\d*[1-9])?0+\z/, '\1\2').sub(/\.\z/, '')
   end
   
   # Returns some useful comparisons for the specified participant's test scores of the

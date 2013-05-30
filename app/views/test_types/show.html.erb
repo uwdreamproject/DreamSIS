@@ -6,7 +6,10 @@
 	<dd><%=h @test_type.name %></dd>
 
 	<dt>Maximum Score</dt>
-	<dd><%=h @test_type.maximum_total_score %></dd>
+	<dd><%=h @test_type.maximum_total_score.try(:to_i) %></dd>
+
+	<dt>Score Calculation</dt>
+	<dd><%=h @test_type.score_calculation_method.try(:titleize) %></dd>
 
 	<dt>Sections</dt>
 	<dd>

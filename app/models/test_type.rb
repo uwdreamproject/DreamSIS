@@ -4,7 +4,7 @@
 class TestType < CustomerScoped
   has_many :test_scores
   
-  validates_presence_of :name
+  validates_presence_of :name, :score_calculation_method
   validates_numericality_of :maximum_total_score
   
   default_scope :order => "name", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
@@ -16,8 +16,9 @@ class TestType < CustomerScoped
     @section_scores_hash = {}
     for section in sections.strip.split("\r\n")
       section = section.split(":")
+      section_name = section[0].to_s.strip.parameterize.underscore
       value = section[1].nil? ? nil : section[1].to_s.strip.try(:to_i)
-      @section_scores_hash[section[0].to_s.strip] = value
+      @section_scores_hash[section_name] = value
     end
     @section_scores_hash
   end
