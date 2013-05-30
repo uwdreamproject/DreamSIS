@@ -2,7 +2,7 @@ require 'open-uri'
 
 # Models an Institution record, pulled from the Department of Education's list.
 class Institution
-  RESULTS_CACHE = FileStoreWithExpiration.new("/tmp/cache/dreamsis/institution")
+  RESULTS_CACHE = FileStoreWithExpiration.new("tmp/cache/dreamsis/institution")
   ATTRIBUTE_ALIASES = {
     :instnm    => [:name, :title],
     :longitud  => [:longitude],
