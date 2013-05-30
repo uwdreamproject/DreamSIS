@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130527225919) do
+ActiveRecord::Schema.define(:version => 20130529053535) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -71,6 +71,8 @@ ActiveRecord::Schema.define(:version => 20130527225919) do
     t.integer  "clearinghouse_customer_number"
     t.date     "clearinghouse_contract_start_date"
     t.integer  "clearinghouse_number_of_submissions_allowed"
+    t.string   "url_shortcut"
+    t.text     "allowable_login_methods"
   end
 
   create_table "degrees", :force => true do |t|

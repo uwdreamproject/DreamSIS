@@ -1,5 +1,5 @@
 require 'digest/sha1'
-class User < CustomerScoped
+class User < ActiveRecord::Base
   belongs_to :person
   
   # model_stamper
@@ -17,11 +17,21 @@ class User < CustomerScoped
   # validates_uniqueness_of   :login, :scope => :type, :case_sensitive => false
   # before_save               :encrypt_password
 
+  belongs_to :customer
+  attr_protected :customer_id
+  validates_presence_of :customer_id  
+  before_save :append_customer_id
+  
+  # Adds the current customer ID to the record, which is used +before_create+.
+  def append_customer_id
+    self.customer_id = Customer.current_customer.id
+  end
+
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
   attr_accessible :login, :email, :password, :password_confirmation, :identity_url, :person_attributes
 
-  default_scope :order => 'login', :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
+  default_scope :order => 'login'
 
   # Pulls the current user out of Thread.current. We try to avoid this when possible, but sometimes we need 
   # to access the current user in a model (e.g., to check EmailQueue#messages_waiting?).
@@ -58,8 +68,9 @@ class User < CustomerScoped
       user.provider = auth["provider"]
       user.uid = auth["uid"]
       user.login = (auth["info"]["nickname"] || auth["uid"]) + "@" + auth["provider"]
-      user.person = Person.create!(:customer_id => Customer.current_customer.id)
+      user.person = Person.create!
     end
+    u.person.update_attribute :customer_id, Customer.current_customer.id
     u.update_from_provider!(auth)
     return u
   end

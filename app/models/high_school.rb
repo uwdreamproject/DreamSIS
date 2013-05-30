@@ -1,7 +1,7 @@
 class HighSchool < Location
 
-  default_scope :order => "name"
-
+  default_scope :order => "name", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
+  
   named_scope :partners, :conditions => { :partner_school => true }
 
   has_many :participants do

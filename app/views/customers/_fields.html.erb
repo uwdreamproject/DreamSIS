@@ -1,5 +1,6 @@
 <%- f.inputs :name => "Name and Program" do -%>
 	<%= f.inputs :name, :parent_customer, :program %>
+	<%= f.input :url_shortcut, :label => "URL Shortcut" %>
 <% end %>
 
 <%- f.inputs :name => "Settings" do -%>
@@ -7,6 +8,19 @@
 	<%= f.input :link_to_uw, :label => "Link to University of Washington systems" %>
 	<%= f.input :require_background_checks, :label => "Require background checks for mentors" %>
 	<%= f.input :experimental, :label => "Enable experimental features" %>
+<% end %>
+
+<%- f.inputs :name => "Allowed Login Methods" do -%>
+	<%- for provider in %w[facebook twitter google_oauth2 shibboleth windowslive linkedin] -%>
+		<%= f.input "allowable_login_methods", 
+					:as => :boolean, 
+					:input_html => { 
+						:name => "customer[allowable_login_methods][#{provider}]", 
+						:checked => ("checked" if f.object.allowable_login_method?(provider)),
+						:id => "customer_allowable_login_methods_#{provider}"
+					},
+					:label => provider.titleize %>
+	<% end %>
 <% end %>
 
 <%- f.inputs :name => "Custom Labels and Content" do -%>

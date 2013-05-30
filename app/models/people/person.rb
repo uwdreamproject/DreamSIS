@@ -45,6 +45,8 @@ class Person < CustomerScoped
   PERSON_RESOURCE_CACHE_LIFETIME = 1.day
 
   default_scope :order => "lastname, firstname, middlename", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
+  # default_scope lambda { |person| { :conditions => { :customer_id => Customer.current_customer.id } } }
+  
 
   # Returns the actual person resource object. Specify +true+ as a parameter to fetch the "full" version
   # of the resource (only use this when more data is needed than the basics).

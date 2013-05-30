@@ -13,24 +13,24 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
   
-  include AuthenticatedSystem #, ExceptionNotifiable
+  # include AuthenticatedSystem #, ExceptionNotifiable
   require 'array_math'
 
+  before_filter :handle_subdomain
   before_filter :require_ssl
   before_filter :authenticated?
   before_filter :login_required, :except => [ 'remove_vicarious_login' ]
   before_filter :save_user_in_current_thread
   before_filter :configure_exceptional
-  # before_filter :set_stamper # part of Userstamp -- moved here so that it is called *after* the login process
   before_filter :save_return_to
   before_filter :check_authorization
   before_filter :check_if_enrolled
-
   after_filter :flash_to_headers
   
   helper_method :current_user
 
   def forbidden
+    # render forbidden.html.erb
   end
 
   # Add return_to to session if it's been requested
@@ -56,7 +56,33 @@ class ApplicationController < ActionController::Base
   # consider_local "172.28.99.10"
 
   protected
-  
+
+  # In DreamSIS, subdomains are used simply as shortcuts to login in a specific customer's 
+  # sandboxed "space" in DreamSIS. This allows the login screen to be customized for a certain
+  # customer, which might want to restrict or allow certain login methods. When a subdomain
+  # is detected in the request, it is handled as such:
+  # 
+  # 1. Find a customer record matching the subdomain. Halt and error if the subdomain is invalid.
+  # 2. Strip the subdomain and navigate to /customer_login/:customer_id
+  # 3. Reset the current session and destroy the auth token (effectively logout)
+  # 4. Load the login form using the new customer's preferences.
+  # 5. Process the login for the user, which will be limited to the requested customer. (This
+  #    allows someone to use the same omniauth identity for multiple customers if needed.)
+  # 6. Proceed as normal.
+  def handle_subdomain
+    if !request.subdomains.empty? && request.subdomains.first != "www"
+      @customer = Customer.find :first, :conditions => { :url_shortcut => request.subdomains.first }
+      if @customer
+        new_url = request.ssl? ? "https://" : "http://"
+        new_url << request.host.gsub(/\A#{request.subdomains.first}\./, "")
+        new_url << login_path(:customer_id => @customer.id)
+        return redirect_to(new_url)
+      else
+        render_error "Please specify a valid subdomain.", "Invalid subdomain."
+      end
+    end
+  end
+
   def require_ssl
     unless request.ssl? || RAILS_ENV == 'development'
       redirect_to "https://" + request.host + request.request_uri
@@ -66,7 +92,7 @@ class ApplicationController < ActionController::Base
   end
   
   def authenticated?
-    @current_user ||= User.find session[:user_id] if session[:user_id]
+    @current_user ||= User.find(session[:user_id]) if session[:user_id] rescue nil
     !@current_user.nil?
   end
   
