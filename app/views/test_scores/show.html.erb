@@ -15,7 +15,7 @@
 		<%- if @test_score.try(:test_type) -%>
 			<%- for section, maximum_score in @test_score.try(:test_type).try(:section_scores_hash) -%>
 				<li class="section score">
-					<%= content_tag :span, h(section), :class => "section title" %>:
+					<%= content_tag :span, h(section.titleize), :class => "section title" %>:
 					<%=h @test_score.section_score(section) %>
 					<em class="light">out of <%=h maximum_score %></em>
 				</li>

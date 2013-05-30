@@ -15,7 +15,7 @@
 	<dd>
 		<ul>
 		<%- for section, maximum_score in @test_type.section_scores_hash -%>
-			<li><%=h section %>
+			<li><%=h section.titleize %>
 				<%= content_tag :span, "(out of #{h(maximum_score)})", :class => "light" if maximum_score %>
 			</li>
 			<% end %>

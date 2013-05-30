@@ -12,7 +12,7 @@
   <tr>
     <td><%=h test_type.name %></td>
     <td><%=h test_type.maximum_total_score.try(:to_i) %></td>
-	<td><%=h test_type.section_scores_hash.try(:keys).try(:join, ", ") %></td>
+	<td><%=h test_type.section_scores_hash.try(:keys).try(:collect, &:titleize).try(:join, ", ") %></td>
     <td class="functions"><%= link_to 'Show', test_type %></td>
     <td class="functions"><%= link_to 'Edit', edit_test_type_path(test_type) %></td>
     <td class="functions"><%= link_to 'Destroy', test_type, :confirm => 'Are you sure?', :method => :delete %></td>
