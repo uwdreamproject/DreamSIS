@@ -301,6 +301,12 @@ class Person < CustomerScoped
   def is_anonymous_user?
     users.first.is_a?(AnonymousUser)
   end
+  
+  # Always returns false. By default, a person can never use a login token to login.
+  # Override this method in subclasses to provide this functionality to certain models.
+  def has_valid_login_token?
+    false
+  end
     
   protected
   
