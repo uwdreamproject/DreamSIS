@@ -567,6 +567,8 @@ ActiveRecord::Schema.define(:version => 20130530184116) do
     t.string   "login_token"
     t.datetime "login_token_expires_at"
     t.integer  "customer_id"
+    t.string   "email2"
+    t.boolean  "gluten_free"
   end
 
   add_index "people", ["customer_id"], :name => "index_people_on_customer_id"
