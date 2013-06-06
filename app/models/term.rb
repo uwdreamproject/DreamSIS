@@ -29,8 +29,10 @@ class Term < CustomerScoped
       code_abbrevs = { :spring => "SPR", :winter => "WIN", :autumn => "AUT", :summer => "SUM" }
       abbrev = "#{code_abbrevs[m[2].to_sym]}#{m[1]}"
       return Quarter.find_by_abbrev(abbrev)
-    elsif id.is_a?(String)
+    elsif id.is_a?(String) && m = id.match(/([SPR,WIN,AUT,SUM]+)(\d{4})/)
       return Quarter.find_by_abbrev(id)
+    elsif id.is_a?(String)
+      return Term.find_by_title(id)
     elsif id.is_a?(Hash)
       return Quarter.find_by_abbrev("#{id[:quarter_code_abbreviation]}#{id[:year]}")
     else
@@ -88,6 +90,12 @@ class Term < CustomerScoped
   def current_term?
     self == Term.current_term
   end
+  
+  # Returns an parameterized version of the Term name; e.g., "2012-2013"
+  def to_param
+    title.to_param
+  end
+  
 
   # Returns the CourseResources for the course_ids specified in the course_ids field.
   def courses

@@ -1,5 +1,6 @@
-<h1>High School Visits
-	<span class="light">&raquo; <%=h @high_school.name %></span> <%= @term.title %></h1>
+<h3 class="pre-title"><%=h @term.title %></h3>
+<h1><%= Customer.visits_Label %>
+	<small class="light">&raquo; <%=h @high_school.name %></small></h1>
 
 <table>
 	<tr>
@@ -30,14 +31,14 @@
 <% if @visits.empty? %>
 <tr class="empty">
 	<td colspan=10>
-		You haven't created any visits. 
-		<%= link_to "Add a new high school visit.", new_high_school_visit_path(@high_school, @term) %>
+		You haven't created any <%= Customer.visits_label %>. 
+		<%= link_to "Add a new #{Customer.visit_label}.", new_high_school_visit_path(@high_school, @term) %>
 	</td>
 </tr>
 <% end -%>
 
 </table>
 
-<p><%= link_to "Add new high school visit", new_high_school_visit_path(@high_school, @term), :class => 'add button' %></p>
+<p><%= link_to "Add new #{Customer.visit_label}", new_high_school_visit_path(@high_school, @term), :class => 'add button' %></p>
 
 <%= render :partial => "sidebar" %>

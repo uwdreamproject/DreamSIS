@@ -140,7 +140,7 @@ class VisitsController < ApplicationController
     else
       abbrev = params[:term_id]
     end
-    @term = Term.find_or_create_by_abbrev(abbrev)
+    @term = Term.find(abbrev)
   end
   
 end
