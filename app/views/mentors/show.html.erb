@@ -18,19 +18,6 @@
 			<% else %>
 			  	<%= @mentor.users.collect{|u| link_to u.login, user_path(u)}.join(", ") %>
 			<% end -%>
-			
-			<%- if !Customer.link_to_uw? && @current_user.admin? -%>
-			<div class="login_link">
-				<%- if @mentor.has_valid_login_token? -%>
-					<p>
-						<strong>This user's personalized login link:</strong>
-						<br /><%= map_login_url @mentor, @mentor.login_token %>
-					</p>
-				<% else %>
-					<%= link_to "Generate login link", generate_login_token_mentor_path(@mentor), :method => :put %>
-				<% end %>
-			</div>
-			<% end %>
 			</dd>
 		
 		<dt>Aliases</dt>
@@ -82,6 +69,16 @@
 	
 	<p><%= link_to "Back to #{Customer.mentors_label}", mentors_path, :class => "back button" %></p>
 	<p><%= link_to "Edit this #{Customer.mentor_label}", edit_mentor_path(@mentor), :class => 'edit button' %></p>
+	
+	<%- if !Customer.link_to_uw? && @current_user.admin? -%>
+	<p class="login_link">
+		<%= link_to "Send login link", send_login_link_mentor_path(@mentor), 
+					:method => :put, 
+					:confirm => "Are you sure you want to send a login link email to this user?", 
+					:class => "email button" %>
+	</p>
+	<% end %>
+	
 	
 	<h3>Contact Info</h3>
 

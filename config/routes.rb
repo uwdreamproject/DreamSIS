@@ -43,7 +43,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users, :collection => { :auto_complete_for_user_login => :any, :admin => :get }
 
   map.resources :mentors, 
-    :member => { :photo => :any, :remove_participant => :delete, :background_check_form_responses => :get, :generate_login_token => :put, :login_link => :get }, 
+    :member => { :photo => :any, :remove_participant => :delete, :background_check_form_responses => :get, :send_login_link => :put, :login_link => :get }, 
     :collection => { :auto_complete_for_mentor_fullname => :any, :onboarding => :any, :event_status => :any, :leads => :any, :van_drivers => :any, :check_if_valid_van_driver => :get }
   map.resources :mentor_term_groups, 
     :member => { :sync => :put, :photo_tile => :get }, 

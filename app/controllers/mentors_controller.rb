@@ -87,11 +87,15 @@ class MentorsController < ApplicationController
     end
   end
   
-  def generate_login_token
+  def send_login_link
     @mentor = Mentor.find(params[:id])
-    @mentor.generate_login_token!
+    result = @mentor.send_login_link(map_login_url(@mentor, @mentor.generate_login_token!))
     
-    flash[:notice] = "Successfully generated new login token."
+    if result && result.first["status"] == 'sent'
+      flash[:notice] = "Login link sent successfully."
+    else
+      flash[:error] = "Error sending login link: #{result['reject_reason']}"
+    end
     redirect_to @mentor
   end
   
