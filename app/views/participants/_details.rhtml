@@ -31,10 +31,10 @@
 
 <h4>High School</h4>
 <%= link_to h(@participant.high_school.name), 
-			high_school_cohort_path(@participant.high_school, @participant.grad_year), 
+			high_school_cohort_path(@participant.high_school, (@participant.grad_year || 0)), 
 			:class => 'redirect-link' unless @participant.high_school.nil? %>
 <%= link_to "<br />Class of #{@participant.grad_year}",
- 			high_school_cohort_path(@participant.high_school, @participant.grad_year),
+ 			high_school_cohort_path(@participant.high_school, (@participant.grad_year || 0)),
 			:class => 'redirect-link' unless @participant.grad_year.blank? %>
 <%= "<br />GPA: #{@participant.gpa}" unless @participant.gpa.blank? %>
 

@@ -203,7 +203,7 @@
 	
 	<%- unless @participants.empty? -%>
 		<p><%= link_to "Return to #{@high_school.name} #{@participants.first.grad_year} list", 
-						high_school_cohort_path(@high_school, @participants.first.grad_year),
+						high_school_cohort_path(@high_school, (@participants.first.grad_year || 0)),
 						:class => "back button" %></p>
 	<% end -%>
 					
