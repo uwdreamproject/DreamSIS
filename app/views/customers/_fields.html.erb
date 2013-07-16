@@ -1,1 +1,48 @@
-<%= f.inputs %>
+<%- f.inputs :name => "Name and Program" do -%>
+	<%= f.inputs :name, :parent_customer, :program %>
+	<%= f.input :url_shortcut, :label => "URL Shortcut" %>
+<% end %>
+
+<%- f.inputs :name => "Settings" do -%>
+	<%= f.input :term_system, :collection => %w(Quarters) %>
+	<%= f.input :link_to_uw, :label => "Link to University of Washington systems" %>
+	<%= f.input :require_background_checks, :label => "Require background checks for mentors" %>
+	<%= f.input :experimental, :label => "Enable experimental features" %>
+<% end %>
+
+<%- f.inputs :name => "Allowed Login Methods" do -%>
+	<%- for provider in %w[facebook twitter google_oauth2 shibboleth windowslive linkedin] -%>
+		<%= f.input "allowable_login_methods", 
+					:as => :boolean, 
+					:input_html => { 
+						:name => "customer[allowable_login_methods][#{provider}]", 
+						:checked => ("checked" if f.object.allowable_login_method?(provider)),
+						:id => "customer_allowable_login_methods_#{provider}"
+					},
+					:label => provider.titleize %>
+	<% end %>
+<% end %>
+
+<%- f.inputs :name => "Custom Labels and Content" do -%>
+	<p>Enter each label as a single, lower-cased word.</p>
+	<%= f.inputs :mentor_label, :lead_label, :participant_label, :mentee_label, :workbook_label, :intake_survey_label, :visit_label %>
+	<%= f.input :risk_form_content, :input_html => { :rows => 5 }, :hint => "Mentors must consent to this statement before using the system. Use Textile for formatting. Leave this blank if mentors don't need to sign anything before gaining access.", :label => "Mentor consent" %>
+<% end %>
+
+<%- f.inputs :name => "National Student Clearinghouse Integration" do -%>
+	<p>If you have a contract with the National Student Clearinghouse, enter your account information here and 
+		DreamSIS can perform automatic queries about your participants.</p>
+		<%= f.input :clearinghouse_customer_number, 
+					:label => "Customer Number", 
+					:hint => "Your customer number (or account number) should be six digits.",
+					:input_html => { :size => 6 } %>
+		<%= f.input :clearinghouse_contract_start_date, 
+					:label => "Contract Start Date", 
+					:hint => "Enter the start date of the current contract. You'll need to update this 
+								date each time you sign a new contract with NSC (usually once per year)." %>
+		<%= f.input :clearinghouse_number_of_submissions_allowed, 
+					:label => "Submission Limit", 
+					:hint => "Enter the number of submissions allowed under the current contract. If you're not sure, enter 10.", 
+					:input_html => { :size => 3 } %>
+	
+<% end %>

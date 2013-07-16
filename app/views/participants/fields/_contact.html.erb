@@ -12,7 +12,8 @@
 	<%= f.input :bad_phone %>
 	
 	<%- f.inputs :name => "Email", :class => "inline compress-bottom" do -%>
-		<%= f.input :email %>
+		<%= f.input :email, :label => "Primary" %>
+		<%= f.input :email2, :label => "Backup" %>
 		<%= f.input :check_email_regularly, :label => "Checks email regularly" %>
 	<% end %>
 	<%= f.input :bad_email %>

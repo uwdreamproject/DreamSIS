@@ -1,5 +1,5 @@
 <h1>Conviction/Criminal History Information</h1>
-<p>The University of Washington Dream Project will use the use the information on this form to conduct a criminal conviction background check. <strong>You are required to submit this form before attending a high school visit or working directly with a high-school student.</strong> Please note that a conviction or criminal history does not necessarily disqualify you from participation in the Dream Project. All results are handled on a case-by-case basis.</p>
+<p><%= Customer.name_label %> will use the use the information on this form to conduct a criminal conviction background check. <strong>You are required to submit this form before working directly with a student under age 18.</strong> Please note that a conviction or criminal history does not necessarily disqualify you from participation in <%= Customer.name_label %>. All results are handled on a case-by-case basis.</p>
 
 <% semantic_form_for @mentor, :url => { :action => 'background_check_form' } do |f| %>
 
@@ -85,7 +85,7 @@
 			<%= f.input :general_convictions_explanation, :label => "If Yes, indicate all conviction dates, prison release date(s) and the nature of the offense(s)", :input_html => { :rows => 3 } %>
 		<% end -%>
 			
-		<p>I certify that the information contained in the above-stated information is true, correct, and complete to the best of my knowledge. I understand that consideration for participation in the Dream Project and the continuation of subsequent participation depend on true, accurate and complete representation of these facts as stated or implied in all application-related materials. I authorize the University of Washington to make inquiries regarding my education, work experience, references, unless otherwise stated, and criminal conviction history. I understand that participation may be conditioned on the University’s receipt of a satisfactory Criminal Conviction Report from the Washington State Patrol or other law-enforcement related agency.</p>
+		<p>I certify that the information contained in the above-stated information is true, correct, and complete to the best of my knowledge. I understand that consideration for participation in <%= Customer.name_label %> and the continuation of subsequent participation depend on true, accurate and complete representation of these facts as stated or implied in all application-related materials. I authorize <%= Customer.name_label %> to make inquiries regarding my education, work experience, references, unless otherwise stated, and criminal conviction history. I understand that participation may be conditioned on <%= Customer.name_label %>’s receipt of a satisfactory Criminal Conviction Report from the Washington State Patrol or other law-enforcement related agency.</p>
 
 		<% f.inputs do %>
 			<%= f.input :background_check_authorized, :as => :boolean, :label => "I understand the statement above." %>

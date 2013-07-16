@@ -1,0 +1,25 @@
+<h1><%= @term.title %></h1>
+
+<% semantic_form_for @term, :html => { :method => :put } do |f| %>
+
+	<%= f.error_messages %>
+
+	<%= render :partial => "fields", :locals => { :f => f } %>
+	
+	<%= f.submit "Save", :disable_with => 'Saving...' %>
+	<span class="separator">&mdash; or &mdash;</span>
+	<%= link_to 'Cancel', terms_path %>
+
+<% end %>
+
+<div id="sidebar">
+	
+	<p><%= link_to "Back to terms", terms_path, :class => "back button" %></p>
+	
+	<p><%= link_to "Sync with UW Calendar", 
+				sync_term_path(@term), 
+				:method => :put, 
+				:confirm => "Are you sure you want to sync this term with the UW calendar?",
+				:class => "sync button" if Customer.link_to_uw? %></p>
+				
+</div>

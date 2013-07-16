@@ -1,7 +1,10 @@
 class LocationsController < ApplicationController
+  protect_from_forgery :except => [:auto_complete_for_location_name, :auto_complete_for_institution_name] 
+  
   # GET /locations
   # GET /locations.xml
   def index
+    return redirect_to(request.env['REQUEST_URI'].include?("colleges") ? college_path(params[:id]) : location_path(params[:id])) if params[:id]
     @locations = Location.paginate(:all, :page => params[:page])
 
     respond_to do |format|
@@ -13,12 +16,28 @@ class LocationsController < ApplicationController
   # GET /locations/1
   # GET /locations/1.xml
   def show
-    @location = Location.find(params[:id])
+    if request.env['REQUEST_URI'].include?("colleges")
+      @location = Institution.find(params[:id].to_i < 100000 ? -params[:id].to_i.abs : params[:id])
+    else
+      @location = Location.find(params[:id])
+    end
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html { render :action => (@location.is_a?(Institution) || @location.is_a?(College) ? 'college' : 'show')}
       format.xml  { render :xml => @location }
     end
+  end
+
+  def colleges
+    # render college.html.erb
+  end
+  
+  def applications
+    @location = Institution.find(params[:id])
+
+    respond_to do |format|
+      format.html
+    end    
   end
 
   # GET /locations/new
@@ -89,10 +108,19 @@ class LocationsController < ApplicationController
 
   def auto_complete_for_location_name
     @locations = Location.find(:all, :conditions => ["LOWER(name) LIKE ?", "%#{params[:location][:name].to_s.downcase}%"])
-    respond_to do |format|
-      format.js
-    end
+    render :partial => "shared/auto_complete_location_name", 
+            :object => @locations, 
+            :locals => { :highlight_phrase => params[:location][:name] }
   end
+
+  def auto_complete_for_institution_name
+    @institutions = Institution.find_all_by_name(params[:college][:institution_name].to_s.downcase)[0..10]
+    render :partial => "shared/auto_complete_institution_name", 
+            :object => @institutions, 
+            :locals => { :highlight_phrase => params[:college][:institution_name].to_s }
+  end
+
+
   
   protected 
   

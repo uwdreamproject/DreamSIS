@@ -1,7 +1,0 @@
-<div id="sidebar">
-
-	<%= render :partial => "shared/quarter_select", 
-				:locals => { :form_url => quarter_path(:search)},
-				:object => (Quarter.current_quarter || Quarter.allowing_signups.try(:first) || Quarter.last) %>
-				
-</div>

@@ -1,44 +1,57 @@
-<h1>Locations</h1>
+<h1>Locations &amp; Colleges</h1>
 
 <%= will_paginate @locations %>
 
 <table class="locations">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Address</th>
-      <th>Coordinates</th>
-      <th>County</th>
-      <th>Phone</th>
-      <th colspan=3></th>
-    </tr>
-  </thead>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Type</th>
+			<th>Address</th>
+			<th>Coordinates</th>
+			<th>County</th>
+			<th>Phone</th>
+			<th colspan=3></th>
+		</tr>
+	</thead>
 
-  <tbody id="original_locations">
-    <%= render :partial => 'location', :collection => @locations %>
-  </tbody>
+	<tbody id="original_locations">
+		<%= render :partial => 'location', :collection => @locations %>
+	</tbody>
 
-  <tbody id="location_search_results"></tbody>
+	<tbody id="location_search_results"></tbody>
 
 </table>
 
 <div id="sidebar">
-  <p><%= link_to 'New location', new_location_path, :class => "add button" %></p>
-  <p><%= link_to 'New high school', new_location_path(:type => "HighSchool"), :class => "add button" %></p>
-  <p><%= link_to 'New college', new_location_path(:type => "College"), :class => "add button" %></p>
+	<p><%= link_to 'New location', new_location_path, :class => "add button" %></p>
+	<p><%= link_to 'New high school', new_location_path(:type => "HighSchool"), :class => "add button" %></p>
+	<p><%= link_to 'New college', new_location_path(:type => "College"), :class => "add button" %></p>
 
-  <% form_for :location, :html => { :onSubmit => "return false;" } do |f| %>
-    <h4>Search for a location:</h4>
-    <input id="location_name" name="location[name]" size="30" type="search" results="5" autosave="location_name_search" placeholder="Search" />
-    <div class="auto_complete" id="location_name_auto_complete"></div>
-    
-    <%= javascript_tag "var location_name_auto_completer = new Ajax.Autocompleter('location_name', 'location_name_auto_complete', '#{auto_complete_for_location_name_locations_path}', { minChars: 3 })" %>
-      
-    <%= observe_field('location_name', 
-      :frequency => 0.25,
-      :function => "if($F('location_name')=='') { $('original_locations').show(); $$('.pagination').invoke('show'); $('location_search_results').update(); return true; }") %>
+	<% form_for :location, :html => { :method => :get } do |f| %>
 
-  <% end %> 
-  
+		<%= model_auto_completer "location[name]", "", "id", nil,
+								{ 
+									:url => auto_complete_for_location_name_locations_path, 
+									:submit_on_return => true, 
+									:after_update_element => "function(text_field, selection, hidden_field, id) { text_field.form.submit() }" 
+								},
+								{ :autocomplete => false, :class => "search", :placeholder => "Search schools &amp; locations" },
+								{ :skip_style => true } %>
+								
+	<% end %>
+	
+	<% form_for :college, :url => colleges_path, :html => { :method => :get } do |f| %>
+
+		<%= model_auto_completer "college[institution_name]", "", "id", nil,
+								{ 
+									:url => auto_complete_for_institution_name_colleges_path, 
+									:submit_on_return => true, 
+									:after_update_element => "function(text_field, selection, hidden_field, id) { text_field.form.submit() }" 
+								},
+								{ :autocomplete => false, :class => "search", :placeholder => "Search colleges" },
+								{ :skip_style => true } %>
+								
+	<% end %>
+	
 </div>

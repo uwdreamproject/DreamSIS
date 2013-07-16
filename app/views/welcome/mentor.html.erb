@@ -7,10 +7,11 @@
 <% end -%>
 
 <div class="content-block">
+	<%#= render :partial => "participants/report_select" %>
 	<h1 class="mentees">My Current <%= Customer.mentees_Label %></h1>
 	<p>This section shows the mentees that you're currently assigned to work with. 
-		If you start working with another Dream Scholar as well, just tell your 
-		high school lead and he or she will add the student to your list.</p>
+		If you start working with another <%= Customer.mentee_label %> as well, just tell your 
+		<%= Customer.lead_label %> and he or she will add the student to your list.</p>
 
 	<%= render :partial => 'mentors/mentees' %>
 	
@@ -34,9 +35,8 @@
 
 <div class="content-block">
 	<h1 class="participation">My Participation</h1>
-	<p>This section shows you the quarters in which you've participated in the Dream 
-		Project as a UW student. If you want to change your high-school group for the
-		current quarter, you can click the link on the right.</p>
+	<p>This section shows you the terms in which you've participated in <%= Customer.name_label %>. 
+		If you want to change your high-school group for the current term, you can click the link on the right.</p>
 	
 	<%= render :partial => 'mentors/participation' %>
 </div>

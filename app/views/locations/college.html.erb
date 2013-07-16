@@ -1,0 +1,55 @@
+<h3 class="pre-title"><%=h @location.type.to_s.titleize %></h3>
+<h1><%=h @location.name %></h1>
+
+<div class="when-and-where">
+	<%= image_tag "https://maps.google.com/maps/api/staticmap?size=250x250&sensor=false&zoom=12&markers=#{@location.try(:latitude)}%2C#{@location.try(:longitude)}" %>
+	<p class="address"><%= @location.address %></p>
+</div>
+
+<dl class="inline-definitions">
+
+	<dt>Address</dt>
+	<dd><%=h @location.address %></dd>
+
+	<dt>Phone</dt>
+	<dd><%= number_to_phone @location.phone %></dd>
+
+	<dt>Website URL</dt>
+	<dd><%= link_to h(@location.try(:webaddr)), 
+					Addressable::URI.heuristic_parse(h(@location.try(:webaddr))).to_s, 
+					:target => "_blank" %>
+		</dd>
+
+	<%- if @location.respond_to?(:college_navigator_url) && !@location.try(:college_navigator_url).nil? %>
+	<dt>CollegeNavigator</dt>
+	<dd class="ipeds">
+		<%= link_to "Open in CollegeNavigator", 
+					@location.try(:college_navigator_url), 
+					:target => "_blank", 
+					:class => "offsite" %>
+		</dd>
+	<% end -%>
+
+	<dt>Applicants</dt>
+	<dd><%= link_to pluralize(@location.college_applications.count, Customer.participants_label),
+					applications_college_path(@location.id) %></dd>
+
+</dl>
+
+<div id="sidebar">
+	<p><%= link_to 'Back to all locations', locations_path, :class => 'back button' %></p>
+	
+	<% form_for :college, :url => colleges_path, :html => { :method => :get } do |f| %>
+
+		<%= model_auto_completer "college[institution_name]", "", "id", nil,
+								{ 
+									:url => auto_complete_for_institution_name_colleges_path, 
+									:submit_on_return => true, 
+									:after_update_element => "function(text_field, selection, hidden_field, id) { text_field.form.submit() }" 
+								},
+								{ :autocomplete => false, :class => "search", :placeholder => "Search colleges" },
+								{ :skip_style => true } %>
+								
+	<% end %>
+	
+</div>

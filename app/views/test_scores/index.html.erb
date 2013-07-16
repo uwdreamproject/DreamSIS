@@ -1,0 +1,7 @@
+<h3 class="pre-title"><%= link_to h(@participant.fullname), @participant %></h3>
+<h1>Tests</h1>
+
+<%= render :partial => "participants/test_scores" %>
+<br />
+
+<%= link_to 'Add test', new_participant_test_score_path, :class => 'add button' %>

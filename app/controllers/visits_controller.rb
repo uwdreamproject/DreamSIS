@@ -1,10 +1,10 @@
 class VisitsController < ApplicationController
 
   before_filter :fetch_high_school
-  before_filter :fetch_quarter
+  before_filter :fetch_term
   
   def index
-    @visits = @high_school.visits.for(@quarter)
+    @visits = @high_school.visits.for(@term)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -35,22 +35,22 @@ class VisitsController < ApplicationController
   end
   
   def attendance
-    return redirect_to attendance_high_school_visits_path(@high_school, @quarter) if params[:quarter_id] == "new"
+    return redirect_to attendance_high_school_visits_path(@high_school, @term) if params[:term_id] == "new"
     @participants = []
     @showing = []
     if !params[:show] || params[:show].include?("participants")
       @participants << @high_school.participants.find(:all, 
-                                                      :conditions => { :grad_year => @quarter.participating_cohort },
+                                                      :conditions => { :grad_year => @term.participating_cohort },
                                                       :order => "inactive")
       @showing << :participants
     end                              
     if params[:show] && params[:show].include?("mentors")
-      @participants << @high_school.mentor_quarter_groups.for(@quarter).collect(&:mentors)
+      @participants << @high_school.mentor_term_groups.for(@term).collect(&:mentors)
       @showing << :mentors
     end
     @participants.flatten!
 
-    @visits = @high_school.events(@quarter, @showing)
+    @visits = @high_school.events(@term, @showing)
   end
 
   def update_attendance
@@ -90,7 +90,7 @@ class VisitsController < ApplicationController
     respond_to do |format|
       if @visit.save
         flash[:notice] = 'Visit was successfully created.'
-        format.html { redirect_to(high_school_visit_url(@high_school, @quarter, @visit)) }
+        format.html { redirect_to(high_school_visit_url(@high_school, @term, @visit)) }
         format.xml  { render :xml => @visit, :status => :created, :location => @visit }
       else
         format.html { render :action => "new" }
@@ -105,7 +105,7 @@ class VisitsController < ApplicationController
     respond_to do |format|
       if @visit.update_attributes(params[:visit])
         flash[:notice] = 'Visit was successfully updated.'
-        format.html { redirect_to(high_school_visit_url(@high_school, @quarter, @visit)) }
+        format.html { redirect_to(high_school_visit_url(@high_school, @term, @visit)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -119,7 +119,7 @@ class VisitsController < ApplicationController
     @visit.destroy
 
     respond_to do |format|
-      format.html { redirect_to(high_school_visits_url(@high_school, @quarter)) }
+      format.html { redirect_to(high_school_visits_url(@high_school, @term)) }
       format.xml  { head :ok }
     end
   end
@@ -130,17 +130,17 @@ class VisitsController < ApplicationController
     @high_school = HighSchool.find(params[:high_school_id])
   end
   
-  def fetch_quarter
-    if params[:new_quarter_id]
-      if params[:new_quarter_id].is_a?(String)
-        abbrev = params[:new_quarter_id]
+  def fetch_term
+    if params[:new_term_id]
+      if params[:new_term_id].is_a?(String)
+        abbrev = params[:new_term_id]
       else
-        abbrev = "#{params[:new_quarter_id][:quarter_code_abbreviation]}#{params[:new_quarter_id][:year]}"
+        abbrev = "#{params[:new_term_id][:quarter_code_abbreviation]}#{params[:new_term_id][:year]}"
       end
     else
-      abbrev = params[:quarter_id]
+      abbrev = params[:term_id]
     end
-    @quarter = Quarter.find_or_create_by_abbrev(abbrev)
+    @term = Term.find(abbrev)
   end
   
 end

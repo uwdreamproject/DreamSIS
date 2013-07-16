@@ -1,0 +1,12 @@
+<td class="college-logo">
+	<img src="https://getfavicon.appspot.com/<%= Addressable::URI.heuristic_parse(h(college_application.institution.try(:webaddr))).to_s %>" width=16 height=16>
+</td>
+<td class="college-name"><%=h college_application.institution.try(:name) %></td>
+<td><%=h college_application.choice %></td>
+<td><%= content_tag :span, 
+					(college_application.applied? ? "Y" : "N"), 
+					:class => "icon #{college_application.applied? ? "pass" : "fail"}" %></td>
+<td><%=h college_application.decision %></td>
+<td><%= content_tag :span, 
+					(college_application.attending? ? "Y" : "N"), 
+					:class => "icon #{college_application.attending? ? "pass" : "fail"}" %></td>

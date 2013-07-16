@@ -5,32 +5,38 @@
 <% if @controller.action_name == 'show' && @current_user.can_view?(@participant.high_school) %>
 	
 	<p><%= link_to "Return to #{@participant.high_school.try(:name)} #{@participant.grad_year} list",
-	 				high_school_cohort_path(@participant.high_school, @participant.grad_year),
-	 				:class => 'back button' %></p>
-
-	<%- if @participants_for_nav -%>
-		<ul class="quick_nav">
-			<% for participant in @participants_for_nav %>
-				<li class="<%= "current" if current_page?(participant) %> i<%= cycle(1,2,3,4,5,6,7,8,9,10,11) %>">
-					<%= link_to_unless_current participant.lastname_first, participant %>
-				</li>
-			<% end -%>
-		</ul>
-	<% end -%>
+	 				high_school_cohort_path(@participant.high_school, (@participant.grad_year || 0)),
+	 				:class => 'back button' if @participant.high_school && @participant.grad_year %></p>
 	
 <% end -%>
+
+<% form_for :participant, :url => participants_path, :html => { :method => :get } do |f| %>
+	<%- 
+	placeholder_text = ["Search"]
+	placeholder_text << h(@grad_year.to_s) if @grad_year
+	placeholder_text << h(@high_school.name) if @high_school
+	placeholder_text <<  "all #{Customer.participants_label}" if !@grad_year || !@high_school
+	 -%>
+	
+	<%= model_auto_completer "participant[fullname]", "", "id", nil,
+							{ 
+								:url => auto_complete_for_participant_fullname_participants_path(
+									:high_school_id => @high_school.try(:id),
+									:grad_year => @grad_year), 
+								:submit_on_return => true, 
+								:after_update_element => "function(text_field, selection, hidden_field, id) { text_field.form.submit() }",
+							},
+							{ :autocomplete => false, :class => "search", :placeholder => placeholder_text.join(" ") },
+							{ :skip_style => true } %>
+
+<% end %>
 
 <% if @controller.action_name != 'show' %>
 	<p><%= link_to "Download in Excel", { :format => :xls }, :class => 'button xls' %></p>
 
-	<!-- <% form_for :participant do |f| %>
-		<h4>Search for a user:</h4>
-		<%= text_field_with_auto_complete :participant, :fullname %>
-	<% end %> -->
-
 	<%- unless @participants.respond_to?(:current_page) -%>
 	<h3>Filters
-		<%= link_to_function "show all", "clearAllFilters()" %></h3>
+		<%= link_to_function "show all", "clearAllFilters()", :class => "right small" %></h3>
 
 		<ul class="filters">
 		<% for object_filter in Participant.object_filters %>
@@ -38,13 +44,12 @@
 			
 				<% 
 			    dom_id = "filter_#{object_filter.id.to_s}_true"
-			    str = check_box_tag dom_id, true, false, 
+			    check_box_str = check_box_tag dom_id, true, false, 
 									:class => "#{object_filter.id.to_s}_filter_checkbox filter_checkbox", 
 									:onClick => "changeFilter(this, '#{object_filter.id.to_s}', this.checked)"
 				record_count_str = "<small id='record_count_#{object_filter.id}'>&nbsp;</small>"
-				str << label_tag(dom_id, "#{object_filter.opposite_title} #{record_count_str}")
 				%>
-				<%= str %>
+				<%= label_tag(dom_id, "#{check_box_str}#{record_count_str}#{object_filter.opposite_title}") %>
 			
 			</li>
 		

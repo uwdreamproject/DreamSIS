@@ -11,23 +11,29 @@
 	<h3>Administrative</h3>
 	
 	<dl class="sidebar">
-		<dt>Background Check</dt>
-		<dd>
-			<% if @mentor.passed_background_check? %>
-				Passed on <%= @mentor.background_check_run_at.to_s(:short_date) %>
-			<%- else -%>
-				<span class="error-message">Not passed</span>
-			<% end -%>
-		</dd>
 
-		<dt>Acknowledgment of Risk Form</dt>
-		<dd>
-			<% if @mentor.signed_risk_form? %>
-				Signed on <%= @mentor.risk_form_signed_at.to_s(:short_date) %>
-			<%- else -%>
-				<span class="error-message">Not signed</span>
-			<% end -%>
-		</dd>
+		<%- if Customer.require_background_checks? -%>
+			<dt>Background Check</dt>
+			<dd>
+				<% if @mentor.passed_background_check? %>
+					Passed on <%= @mentor.background_check_run_at.to_s(:short_date) %>
+				<%- else -%>
+					<span class="error-message">Not passed</span>
+				<% end -%>
+			</dd>
+		<% end %>
+
+		<%- if Customer.require_risk_form? && @mentor.respond_to?(:signed_risk_form?) -%>
+			<dt>Acknowledgment of Risk Form</dt>
+			<dd>
+				<% if @mentor.signed_risk_form? %>
+					Signed on <%= @mentor.risk_form_signed_at.to_s(:short_date) %>
+				<%- else -%>
+					<span class="error-message">Not signed</span>
+				<% end -%>
+			</dd>
+		<% end -%>
+		
 	</dl>
 	
 	

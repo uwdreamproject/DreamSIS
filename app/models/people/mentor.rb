@@ -1,11 +1,11 @@
 class Mentor < Person
-  has_many :mentor_quarters, :conditions => { :deleted_at => nil } do
-    def for_quarter(quarter_id)
-      quarter_id = quarter_id.id if quarter_id.is_a?(Quarter)
-      find :all, :joins => [:mentor_quarter_group], :conditions => { :mentor_quarter_groups => { :quarter_id => quarter_id }, :deleted_at => nil }
+  has_many :mentor_terms, :conditions => { :deleted_at => nil } do
+    def for_term(term_id)
+      term_id = term_id.id if term_id.is_a?(Term)
+      find :all, :joins => [:mentor_term_group], :conditions => { :mentor_term_groups => { :term_id => term_id }, :deleted_at => nil }
     end
   end
-  has_many :mentor_quarter_groups, :through => :mentor_quarters
+  has_many :mentor_term_groups, :through => :mentor_terms
   
   has_many :mentor_participants, :conditions => { :deleted_at => nil }
   has_many :participants, :through => :mentor_participants
@@ -28,7 +28,7 @@ class Mentor < Person
   
   # Returns true if +passed_background_check?+ and +signed_risk_form?+ both return true.
   def passed_basics?
-    passed_background_check? && signed_risk_form? && currently_enrolled?
+    (!Customer.require_background_checks? || passed_background_check?) && (!Customer.require_risk_form? || signed_risk_form?) && currently_enrolled?
   end
     
   # Returns true if there is a valid date in the +risk_form_signed_at+ attribute and any value in the 
@@ -37,30 +37,72 @@ class Mentor < Person
     !risk_form_signed_at.nil? && !risk_form_signature.blank?
   end
   
-  # Returns true if the mentor is enrolled for the current quarter.
+  # This mentor has a valid login token if there is a value in +login_token+ and the timestamp in
+  # +login_token_expires_at+ is in the future.
+  def has_valid_login_token?
+    return false if login_token.blank? || login_token_expires_at.nil?
+    return true if login_token_expires_at.future?
+    false
+  end
+  
+  # Generates a new random login token and stores it in the record, along with an expiry date of
+  # 1 week from now.
+  def generate_login_token!
+    new_login_token = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{rand(10e200).to_s(36)}--")
+    update_attributes(:login_token => new_login_token, :login_token_expires_at => 1.week.from_now)
+    new_login_token
+  end
+  
+  def invalidate_login_token!
+    update_attributes(:login_token => nil, :login_token_expires_at => nil)
+  end
+  
+  def send_login_link(login_link)
+    mandrill = Mandrill::API.new(MANDRILL_API_KEY)
+    
+    template_content = [
+      {:name => 'title', :content => "An account has been created for you by #{Customer.name_label}."},
+      {:name => 'main_message', :content => "#{Customer.name_label} is using DreamSIS.com to manage its program and keep track of student information. You can use the link below to login and setup your account. If you have any questions, please contact your program administrator."}
+    ]
+    message = {
+      :to => [{:name => fullname, :email => email }],
+      :global_merge_vars => [
+        {:name => "login_link", :content => login_link}
+      ],
+      :subject => "Your #{Customer.name_label} account on DreamSIS.com"
+    }
+
+    return mandrill.messages.send_template 'Account E-mail', template_content, message
+    
+  rescue Mandrill::Error => e
+      puts "A mandrill error occurred: #{e.class} - #{e.message}"
+      raise    
+  end
+    
+  # Returns true if the mentor is enrolled for the current term.
   def currently_enrolled?
-    !current_mentor_quarter_groups.empty?
+    !current_mentor_term_groups.empty?
   end
   
-  # Returns a string of the titles of current mentor quarter groups for this mentor.
-  def current_mentor_quarter_groups_string
-    return "no groups" if current_mentor_quarter_groups.nil?
-    current_mentor_quarter_groups.collect(&:title).to_sentence
+  # Returns a string of the titles of current mentor term groups for this mentor.
+  def current_mentor_term_groups_string
+    return "no groups" if current_mentor_term_groups.nil?
+    current_mentor_term_groups.collect(&:title).to_sentence
   end
   
-  # "Current" mentor quarter groups are defined as groups from either the current quarter AND any quarter marked
+  # "Current" mentor term groups are defined as groups from either the current term AND any term marked
   # as allowing signups.
-  def current_mentor_quarter_groups
-    quarters = Quarter.allowing_signups.collect(&:id)
-    quarters << Quarter.current_quarter.id if Quarter.current_quarter
-    quarters = quarters.flatten.uniq
-    mentor_quarters.find :all, :joins => [:mentor_quarter_group], 
-      :conditions => { :mentor_quarter_groups => { :quarter_id => quarters }, :deleted_at => nil }
+  def current_mentor_term_groups
+    terms = Term.allowing_signups.collect(&:id)
+    terms << Term.current_term.id if Term.current_term
+    terms = terms.flatten.uniq
+    mentor_terms.find :all, :joins => [:mentor_term_group], 
+      :conditions => { :mentor_term_groups => { :term_id => terms }, :deleted_at => nil }
   end
   
   # Returns the high school records for the high schools at which this mentor is a high school lead.
   def current_lead_at
-    current_mentor_quarter_groups.select(&:lead?).collect(&:location)
+    current_mentor_term_groups.select(&:lead?).collect(&:location)
   end
   
   # Returns true if +current_lead_at+ is not empty.
@@ -108,7 +150,7 @@ class Mentor < Person
       return true if current_lead?
       return can_edit?(object)
     elsif object.is_a?(Location)
-      return current_mentor_quarter_groups.collect(&:location_id).include?(object.try(:id))
+      return current_mentor_term_groups.collect(&:location_id).include?(object.try(:id))
     end
     false
   end
@@ -122,7 +164,7 @@ class Mentor < Person
   def can_edit?(object)
     if object.is_a?(Participant)
       return true if participants.include?(object)
-      if current_mentor_quarter_groups.collect(&:location_id).include?(object.try(:high_school_id))
+      if current_mentor_term_groups.collect(&:location_id).include?(object.try(:high_school_id))
         return true if current_lead_at.collect(&:id).include?(object.try(:high_school_id))
         return true if object.try(:grad_year) == Participant.current_cohort
       end
