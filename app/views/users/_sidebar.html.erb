@@ -1,7 +1,6 @@
 <div id="sidebar">
 	<% form_for :user, :html => { :onSubmit => "return false;" } do |f| %>
-		<h4>Search for a user:</h4>
-		<input id="user_login" name="user[login]" size="30" type="search" results="5" autosave="user_login_search" placeholder="Search" />
+		<input id="user_login" name="user[login]" size="30" type="input" class="search" placeholder="Search for user" />
 		<div class="auto_complete" id="user_login_auto_complete"></div>
 		
 		<%= javascript_tag "var user_login_auto_completer = new Ajax.Autocompleter('user_login', 'user_login_auto_complete', '#{auto_complete_for_user_login_users_path}', { minChars: 3 })" %>

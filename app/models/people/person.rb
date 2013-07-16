@@ -1,4 +1,4 @@
-class Person < ActiveRecord::Base
+class Person < CustomerScoped
   include Comparable
 
   has_many :event_attendances do
@@ -20,6 +20,7 @@ class Person < ActiveRecord::Base
   validates_presence_of :lastname, :firstname, :if => :validate_name?
   validates_uniqueness_of :survey_id, :allow_nil => true
   validates_format_of :email, :with => /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i, :allow_blank => true
+  validates_format_of :email2, :with => /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i, :allow_blank => true
   validates_presence_of :firstname, :lastname, :email, :sex, :phone_mobile, :birthdate, :if => :validate_ready_to_rsvp?
 
   has_many :notes, :as => :notable
@@ -44,7 +45,9 @@ class Person < ActiveRecord::Base
 
   PERSON_RESOURCE_CACHE_LIFETIME = 1.day
 
-  default_scope :order => "lastname, firstname, middlename"
+  default_scope :order => "lastname, firstname, middlename", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
+  # default_scope lambda { |person| { :conditions => { :customer_id => Customer.current_customer.id } } }
+  
 
   # Returns the actual person resource object. Specify +true+ as a parameter to fetch the "full" version
   # of the resource (only use this when more data is needed than the basics).
@@ -298,6 +301,12 @@ class Person < ActiveRecord::Base
   # Anonymous users can never be admins.
   def is_anonymous_user?
     users.first.is_a?(AnonymousUser)
+  end
+  
+  # Always returns false. By default, a person can never use a login token to login.
+  # Override this method in subclasses to provide this functionality to certain models.
+  def has_valid_login_token?
+    false
   end
     
   protected

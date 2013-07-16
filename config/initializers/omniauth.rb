@@ -1,5 +1,6 @@
-config_file_path = File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "omniauth_keys.yml")
-omniauth_keys = YAML::load(ERB.new((IO.read(config_file_path))).result)
+# config_file_path = File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "omniauth_keys.yml")
+# omniauth_keys = YAML::load(ERB.new((IO.read(config_file_path))).result)
+omniauth_keys = API_KEYS["omniauth"]
 
 ActionController::Dispatcher.middleware.use OmniAuth::Builder do
   provider :facebook, omniauth_keys["facebook"]["key"], omniauth_keys["facebook"]["secret"], :secure_image_url => true

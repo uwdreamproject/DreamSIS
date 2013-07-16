@@ -1,0 +1,30 @@
+<% f.inputs(:name => "Institution") do %>
+	<%= render :partial => 'college_applications/institution_select', 
+				:locals => { 
+					:attribute_name => "institution_id", 
+					:parent_object => @college_enrollment, 
+					:parent_name => "college_enrollment",
+					:f => f 
+				} %>
+<% end -%>
+
+
+<%- f.inputs :name => "Enrollment Details" do -%>
+	<%= f.input :began_on, :label => "Start Date" %>
+	<%= f.input :ended_on, :label => "End Date" %>
+	<%= f.input :enrollment_status, :as => :select, :collection => CollegeEnrollment::ENROLLMENT_STATUS_NAMES.invert %>
+	<%= f.input :class_level, :as => :select, :collection => CollegeEnrollment::CLASS_LEVEL_NAMES.invert %>
+	
+	<%- f.inputs :name => "Major 1", :class => "inline" do -%>
+		<%= f.input :major_1, :label => "Name" %>
+		<%= f.input :major_1_cip, :label => "CIP Code", :input_html => { :size => 6 } %>
+	<% end %>
+	
+	<%- f.inputs :name => "Major 2", :class => "inline" do -%>
+		<%= f.input :major_2, :label => "Name" %>
+		<%= f.input :major_2_cip, :label => "CIP Code", :input_html => { :size => 6 } %>
+	<% end %>
+	
+	<%= f.input :source, :as => :select, :collection => %w[manual clearinghouse] %>
+	
+<% end %>

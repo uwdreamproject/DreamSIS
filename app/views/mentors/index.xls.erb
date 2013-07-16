@@ -17,7 +17,7 @@
 		<th>reg_id</th>
 		<th>uw_student_no</th>
 		<th>uw_net_id</th>
-		<th>quarters_count</th>
+		<th>terms_count</th>
 		<th>created_at</th>
 		<th>updated_at</th>
 	</tr>
@@ -43,7 +43,7 @@
 		<td><%=h mentor.reg_id %></td>
 		<td><%=h mentor.uw_student_no %></td>
 		<td><%=h mentor.uw_net_id %></td>
-		<td><%=h mentor.mentor_quarter_groups.collect(&:quarter_id).flatten.uniq.size %></td>
+		<td><%=h mentor.mentor_term_groups.collect(&:term_id).flatten.uniq.size %></td>
 		<td><%=h mentor.created_at %></td>
 		<td><%=h mentor.updated_at %></td>
 	</tr>

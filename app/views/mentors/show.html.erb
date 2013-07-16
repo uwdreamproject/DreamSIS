@@ -7,9 +7,8 @@
 				:alt => "" %>
 	</div>
 
-	<h3 class="pre-title"><%= @mentor.class.to_s %></h3>
+	<h3 class="pre-title"><%= Customer.current_customer.customer_label(@mentor.class.to_s.underscore) || @mentor.class.to_s %></h3>
 	<h1><%= @mentor.fullname %></h1>
-	<%= link_to "Edit this mentor", edit_mentor_path(@mentor), :class => 'edit button' %>
 
 	<dl class="inline-definitions">
 
@@ -59,7 +58,7 @@
 	<%= render :partial => 'mentors/events' %>
 </div>
 
-<%- if @mentor.respond_to?(:mentor_quarters) -%>
+<%- if @mentor.respond_to?(:mentor_terms) -%>
 	<div class="content-block">
 		<h1 class="participation">Participation</h1>
 		<%= render :partial => 'mentors/participation' %>
@@ -67,6 +66,20 @@
 <% end -%>
 
 <div id="sidebar">
+	
+	<p><%= link_to "Back to #{Customer.mentors_label}", mentors_path, :class => "back button" %></p>
+	<p><%= link_to "Edit this #{Customer.mentor_label}", edit_mentor_path(@mentor), :class => 'edit button' %></p>
+	
+	<%- if !Customer.link_to_uw? && @current_user.admin? -%>
+	<p class="login_link">
+		<%= link_to "Send login link", send_login_link_mentor_path(@mentor), 
+					:method => :put, 
+					:confirm => "Are you sure you want to send a login link email to this user?", 
+					:class => "email button" %>
+	</p>
+	<% end %>
+	
+	
 	<h3>Contact Info</h3>
 
 	<dl class="sidebar">
@@ -78,17 +91,20 @@
 	<h3>Administrative</h3>
 
 	<dl class="sidebar">
-		<dt>Background Check</dt>
-		<dd>
-			<% if @mentor.passed_background_check? %>
-				Passed on <%= @mentor.background_check_run_at.to_s(:short_date) %>
-			<%- else -%>
-				<span class="error-message">Not passed</span>
-			<% end -%>
-			<br /><%= link_to "View responses", background_check_form_responses_mentor_path(@mentor), :class => 'small' %>
-		</dd>
+		
+		<%- if Customer.require_background_checks? -%>
+			<dt>Background Check</dt>
+			<dd>
+				<% if @mentor.passed_background_check? %>
+					Passed on <%= @mentor.background_check_run_at.to_s(:short_date) %>
+				<%- else -%>
+					<span class="error-message">Not passed</span>
+				<% end -%>
+				<br /><%= link_to "View responses", background_check_form_responses_mentor_path(@mentor), :class => 'small' %>
+			</dd>
+		<% end %>
 
-		<%- if @mentor.respond_to?(:signed_risk_form?) -%>
+		<%- if Customer.require_risk_form? && @mentor.respond_to?(:signed_risk_form?) -%>
 			<dt>Acknowledgment of Risk Form</dt>
 			<dd>
 				<% if @mentor.signed_risk_form? %>

@@ -1,0 +1,37 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  type: MyString
+  participant_id: 1
+  institution_id: 1
+  high_school_id: 1
+  graduated_on: 2013-05-14
+  degree_title: MyString
+  major_1: MyString
+  major_1_cip: MyString
+  major_2: MyString
+  major_2_cip: MyString
+  major_3: MyString
+  major_3_cip: MyString
+  major_4: MyString
+  major_4_cip: MyString
+  source: MyString
+  clearinghouse_request_id: 1
+
+two:
+  type: MyString
+  participant_id: 1
+  institution_id: 1
+  high_school_id: 1
+  graduated_on: 2013-05-14
+  degree_title: MyString
+  major_1: MyString
+  major_1_cip: MyString
+  major_2: MyString
+  major_2_cip: MyString
+  major_3: MyString
+  major_3_cip: MyString
+  major_4: MyString
+  major_4_cip: MyString
+  source: MyString
+  clearinghouse_request_id: 1

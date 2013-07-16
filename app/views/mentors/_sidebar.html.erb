@@ -2,16 +2,17 @@
 	<p><%= link_to "Download in Excel", { :format => :xls }, :class => 'button xls' %></p>
 	<p><%= link_to "Add new #{Customer.mentor_label}", new_mentor_path, :class => "add button" %>
 	
-	<% form_for :mentor, :html => { :onSubmit => "return false;" } do |f| %>
-		<h4><%= Customer.mentor_label %> Search:</h4>
-		<input id="mentor_fullname" name="mentor[fullname]" size="30" type="search" results="5" autosave="mentor_fullname_search" placeholder="Search" />
-		<div class="auto_complete" id="mentor_fullname_auto_complete"></div>
-		
-		<%= javascript_tag "var mentor_fullname_auto_completer = new Ajax.Autocompleter('mentor_fullname', 'mentor_fullname_auto_complete', '#{auto_complete_for_mentor_fullname_mentors_path}', { minChars: 3 })" %>
-			
-		<%= observe_field('mentor_fullname', 
-			:frequency => 0.25,
-			:function => "if($F('mentor_fullname')=='') { $('original_mentors').show(); $$('.pagination').invoke('show'); $('mentor_search_results').update(); return true; }") %>
+	<% form_for :mentor, :html => { :method => :get } do |f| %>
+		<%= model_auto_completer "mentor[fullname]", "", "id", nil,
+								{ 
+									:url => auto_complete_for_mentor_fullname_mentors_path, 
+									:submit_on_return => true, 
+									:after_update_element => "function(text_field, selection, hidden_field, id) { text_field.form.submit() }" 
+								},
+								{ :autocomplete => false, :class => "search", :placeholder => "Search #{Customer.mentors_label}" },
+								{ :skip_style => true } %>
+
+
 
 	<% end %>
 </div>

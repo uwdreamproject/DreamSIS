@@ -1,52 +1,8 @@
 <h1>Get Started with the <%= Customer.name_label %></h1>
 <p>In order to participate as a <%= Customer.mentor_label %> in the <%= Customer.name_label %>, you must complete a few important steps:</p>
 
-<% if @mentor.currently_enrolled? %>
-	<div class="complete">
-		<h2>Choose a high school visit</h2>
-		<p>You're currently signed up for <%= @mentor.current_mentor_quarter_groups_string %>.
-			<br>
-			<%= link_to "Change your high school visit selection(s)", {:action => 'index'} %></p>
-	</div>
-<%- else -%>
-	<div class="incomplete">
-		<h2>Sign up for a high school visit</h2>
-		<p>You need to choose a high school visit before you can participate in <%= Customer.name_label %>.</p>
-		<p><%= link_to "Choose a high school visit now &#x2192;", {:action => 'index'}, :class => 'button' %></p>
-	</div>
-<% end -%>
-
-<% if @mentor.passed_background_check? %>
-	<div class="complete">
-		<h2>Background Check Passed</h2>
-		<p>You passed your background check on <%= @mentor.background_check_run_at.to_s(:date_with_day_of_week) %></p>
-	</div>
-<%- elsif @mentor.background_check_pending? -%>
-	<div class="pending">
-		<h2>Background Check Pending</h2>
-		<p><%= Customer.name_label %> staff will process your background check as soon as possible. When that's done, you'll be able to access DreamSIS.</p>
-	</div>
-<%- else -%>
-	<div class="incomplete">
-		<h2>Background Check</h2>
-		<p>In order to participate in <%= Customer.name_label %>, you must pass a Washington State Patrol criminal background check.</p>
-		<p><%= link_to "Submit your criminal conviction history form now &#x2192;", {:action => 'background_check_form'}, :class => 'button' %>
-	</div>	
-<% end -%>
-
-<% if @mentor.signed_risk_form? %>
-	<div class="complete">
-		<h2>Acknowledgment of Risk Form Signed</h2>
-		<p>You signed the acknowledgment of risk form on <%= @mentor.risk_form_signed_at.to_s(:date_with_day_of_week) %>.
-			<br>
-			<%= link_to "Re-read the acknowledgment of risk", {:action => 'risk_form'} %></p>
-	</div>
-<%- else -%>
-	<div class="incomplete">
-		<h2>Acknowledgment of Risk</h2>
-		<p>You haven't signed your acknowledgment of risk form yet. You must do so before you can participate in <%= Customer.name_label %>.</p>
-		<p><%= link_to "Sign your acknowledgment of risk form now &#x2192;", {:action => 'risk_form'}, :class => 'button' %></p>
-	</div>
-<% end -%>
+	<%= render :partial => 'mentor_signup/basics/currently_enrolled' %>
+	<%= render :partial => 'mentor_signup/basics/passed_background_check' if Customer.require_background_checks? %>
+	<%= render :partial => 'mentor_signup/basics/signed_risk_form' if Customer.require_risk_form? %>
 
 <p>As soon as the steps above are complete, you'll be able to access DreamSIS.</p>

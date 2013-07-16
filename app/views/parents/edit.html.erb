@@ -1,5 +1,5 @@
 <h3 class="pre-title"><%=h @participant.fullname %></h3>
-<h1>Editing parent/guardian</h1>
+<h1>Editing parent/guardian/contact</h1>
 
 <% semantic_form_for([@participant, @parent]) do |f| %>
   	<%= f.error_messages %>
@@ -9,7 +9,7 @@
 	<%- f.buttons do -%>
 	 	<%= f.submit "Update" %>
 		<%= separator %>
-		<%= link_to 'Back', participant_parents_path, :class => 'cancel button' %>
+		<%= link_to 'Back', @participant, :class => 'cancel button' %>
 	<% end -%>
 
 <% end %>

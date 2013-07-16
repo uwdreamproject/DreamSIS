@@ -6,7 +6,7 @@ require 'thread'
 # ENV['RAILS_ENV'] ||= 'production'
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.3.5' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.18' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -34,7 +34,7 @@ Rails::Initializer.run do |config|
 
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
-  config.load_paths += Dir["#{RAILS_ROOT}/app/models/*"].find_all { |f| File.stat(f).directory? }
+  config.autoload_paths += Dir["#{RAILS_ROOT}/app/models/*"].find_all { |f| File.stat(f).directory? }
 
   # Force all environments to use the same logger level
   # (by default production uses :info, the others :debug)
@@ -50,8 +50,8 @@ Rails::Initializer.run do |config|
   # Make sure the secret is at least 30 characters and all random, 
   # no regular words or you'll be exposed to dictionary attacks.
   config.action_controller.session = {
-    :session_key => '_dreamsis_session',
-    :secret      => rand(10e200).to_s(36)
+    :key => '_dreamsis_session',
+    :secret => rand(10e200).to_s(36)
   }
 
   # Use the database for sessions instead of the cookie-based default,
@@ -70,3 +70,4 @@ end
 
 load "#{RAILS_ROOT}/lib/date_helper.rb"
 load "#{RAILS_ROOT}/lib/string_helper.rb"
+load "#{RAILS_ROOT}/lib/national_student_clearinghouse.rb"

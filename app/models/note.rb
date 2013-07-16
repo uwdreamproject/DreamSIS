@@ -4,7 +4,7 @@
 # 
 # * everyone (or blank) - any admin user can see the note
 # * creator - only the creator of the note can see it
-class Note < ActiveRecord::Base
+class Note < CustomerScoped
   belongs_to :notable, :polymorphic => true
   belongs_to :user, :class_name => "User", :foreign_key => "creator_id"
   # belongs_to :contact_type  
@@ -12,6 +12,8 @@ class Note < ActiveRecord::Base
   validates_presence_of :note, :notable_type, :notable_id
 
   before_create :update_creator_id
+  
+  default_scope :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
   
   def update_creator_id
     self.creator_id = Thread.current['user'].try(:id)

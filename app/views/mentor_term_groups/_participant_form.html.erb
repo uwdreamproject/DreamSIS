@@ -1,0 +1,28 @@
+<div id="participant_form_container_<%= mentor_term.id %>">
+
+	<%= link_to_function "Add #{Customer.mentee_label}", 
+						"this.hide(); Element.toggle('participant_form_#{mentor_term.id}')", 
+						:class => 'add mentee button show_on_hover',
+						:id => "add_participant_button_#{mentor_term.id}" %>
+
+
+	<div class="participants" id="participant_form_<%= mentor_term.id %>" style="display:none">
+		<% remote_form_for [mentor_term.mentor_term_group, mentor_term] do |f| %>
+
+			<%= model_auto_completer "participant[fullname]", "", "mentor_term[new_participant_id]", nil,
+									{ 
+										:url => auto_complete_for_participant_fullname_participants_path(:high_school_id => @high_school.try(:id)), 
+										:submit_on_return => true, 
+										:after_update_element => "function(text_field, selection, hidden_field, id) { text_field.form.submit() }",
+									},
+									{ :autocomplete => false, :class => "search", :placeholder => "Search for #{Customer.participant_label}" },
+									{ :skip_style => true } %>
+			
+						<br />
+			<%= f.submit "Save", :disable_with => "Saving..." %>
+			<%= separator %>
+			<%= link_to_function "Cancel", "$('add_participant_button_#{mentor_term.id}').show(); Element.toggle('participant_form_#{mentor_term.id}')" %>
+		<% end -%>
+	</div>
+	
+</div>

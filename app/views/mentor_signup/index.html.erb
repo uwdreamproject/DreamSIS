@@ -1,9 +1,9 @@
 <p class="right"><%= link_to "Switch to <strong>schedule view</strong>", { :display => 'schedule' }, :class => "calendar button" %></p>
 
-<h1>Sign up for <%= @quarter.title %></h1>
-<p>Welcome to the Dream Project! To get signed up for the quarter, choose the high school visit you'd like to attend below:</p>
+<h1>Sign up for <%= @term.title %></h1>
+<p>Welcome to the Dream Project! To get signed up for the term, choose the high school visit you'd like to attend below:</p>
 
-<table class="mentor_quarter_group signup">
+<table class="mentor_term_group signup">
 	<thead>
 		<tr>
 			<th>Section</th>
@@ -15,12 +15,12 @@
 	</thead>
 	
 	<tbody>
-		<%= render :partial => 'mentor_quarter_group', :collection => @quarter.mentor_quarter_groups %>
+		<%= render :partial => 'mentor_term_group', :collection => @term.mentor_term_groups %>
 
-		<%- if @quarter.mentor_quarter_groups.empty? -%>
+		<%- if @term.mentor_term_groups.empty? -%>
 		<tr class="empty">
 			<td colspan=10>
-				Hmm. There aren't any sections defined for <%= @quarter.title %> yet. Try back later.
+				Hmm. There aren't any sections defined for <%= @term.title %> yet. Try back later.
 				<p><%= link_to "Back", :back, :class => 'back button' rescue nil %></p>
 			</td>
 		</tr>
@@ -37,6 +37,6 @@
 	<p></p>
 	
 	<h2>Registering for credit?</h2>
-	<p>You can earn two credits per quarter by registering for the Dream Project on MyUW:</p>
-	<%= link_to "UW Time Schedule", "http://www.washington.edu/students/timeschd/#{@quarter.to_param}/indsrf.html", :class => "list button", :target => "_blank" %>
+	<p>You can earn two credits per term by registering for the Dream Project on MyUW:</p>
+	<%= link_to "UW Time Schedule", "http://www.washington.edu/students/timeschd/#{@term.to_param}/indsrf.html", :class => "list button", :target => "_blank" %>
 </div>

@@ -1,4 +1,4 @@
-class EventGroup < ActiveRecord::Base
+class EventGroup < CustomerScoped
   has_many :events do
     def future
       find :all, :conditions => ["date >= ?", Time.now.midnight]
@@ -11,7 +11,7 @@ class EventGroup < ActiveRecord::Base
   belongs_to :volunteer_training, :class_name => "Training"
   belongs_to :mentor_training, :class_name => "Training"
 
-  default_scope :order => "id DESC"
+  default_scope :order => "id DESC", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
   
   # Returns future events that should be displayed for the particular person or audience type.
   def future_events(person_or_type = nil)
