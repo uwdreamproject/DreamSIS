@@ -1,6 +1,6 @@
 <tr>
-	<td><%= link_to highlight(h(mentor.fullname(:skip_update => true)), (params[:mentor][:fullname] rescue nil)), mentor %></td>
-	<td><%=h mentor.uw_net_id %></td>
+	<td class="name"><%= link_to highlight(h(mentor.fullname(:skip_update => true)), (params[:mentor][:fullname] rescue nil)), mentor %></td>
+	<td><%= auto_link Customer.link_to_uw? ? h(mentor.uw_net_id) : h(mentor.email) %></td>
 	<td></td>
 	<td class="functions">
 		<%= link_to 'Show', mentor %>

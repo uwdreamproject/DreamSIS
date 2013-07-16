@@ -33,3 +33,17 @@ task :setup_development_users => :environment do
   end
   puts "Done"
 end
+
+
+namespace :dev do
+  desc "Switch the dev DB symlink to the one with the specified prefix"
+  task :switchdb => :environment do
+    print "Database name prefix (or enter to cancel): "
+    new_prefix = STDIN.gets
+    abort("OK, never mind.") if new_prefix.blank?
+    system "rm #{RAILS_ROOT}/db/development.sqlite3"
+    system "ln -s #{RAILS_ROOT}/../shared/db/dreamsis/#{new_prefix.strip}_development.sqlite3 #{RAILS_ROOT}/db/development.sqlite3"
+    system "ls -al #{RAILS_ROOT}/db/development.sqlite3"
+    system "touch #{RAILS_ROOT}/tmp/restart.txt"
+  end
+end

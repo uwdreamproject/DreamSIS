@@ -1,0 +1,17 @@
+<table id="test_scores">
+	<tr>
+		<th>Name</th>
+		<th>Test Date</th>
+		<th>Total Score</th>
+		<th>Functions</th>
+	</tr>
+
+	<%= render :partial => "test_scores/test_score", :collection => @participant.test_scores %>
+				
+	<%- if @participant.test_scores.empty? -%>
+	<tr class="empty">
+		<td colspan="10">No tests yet.</td>
+	</tr>
+	<% end %>
+
+</table>	

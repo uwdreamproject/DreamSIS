@@ -3,6 +3,11 @@
 </div>
 
 <div id="column2">
+
+	<div class="info-section" id="filter_results">
+		<h2>Current Stats</h2>
+		<%= render :partial => 'filter_results' %>
+	</div>
 	
 	<%- if @participant.respond_to?(:college_applications) -%>
 		<div class="info-section" id="college_applications">
@@ -30,14 +35,52 @@
 
 	<%- if @participant.respond_to?(:parents) && Customer.experimental? -%>
 		<div class="info-section" id="parents">
-			<h2>Parents/Guardians</h2>
+			<h2>Parents/Guardians &amp; Contacts</h2>
 			<%= render :partial => 'parents' %>
 			<br>
-			<%= link_to 'Add parent/guardian', 
+			<%= link_to 'Add parent/guardian or contact', 
 						new_participant_parent_path(@participant),
 						:class => "add button" %>
 		</div>
 	<% end -%>
+
+
+	<%- if @participant.respond_to?(:test_scores) && Customer.experimental? -%>
+		<div class="info-section" id="test_scores">
+			<h2>Tests</h2>
+			<%= render :partial => 'test_scores' %>
+			<br>
+			<%= link_to 'Add test', 
+						new_participant_test_score_path(@participant),
+						:class => "add button" %>
+		</div>
+	<% end -%>
+
+	<%- if @participant.respond_to?(:college_enrollments) && Customer.experimental? -%>
+		<div class="info-section" id="college_enrollments">
+			<h2>College Enrollment</h2>
+			<%= render :partial => 'college_enrollments' %>
+		</div>
+	<% end -%>
+
+	<%- if @participant.respond_to?(:college_degrees) && Customer.experimental? -%>
+		<div class="info-section" id="college_degrees">
+			<h2>College Degrees</h2>
+			<%= render :partial => 'college_degrees' %>
+		</div>
+	<% end -%>
+
+
+	<%- if @participant.respond_to?(:mentors) -%>
+		<div class="info-section" id="mentors">
+			<h2><%= Customer.mentors_Label %></h2>
+			<%= render :partial => 'mentors' %>
+			<br>
+			<%= render :partial => 'add_mentor_form' %>
+
+		</div>
+	<% end -%>
+
 	
 	<%- if @participant.respond_to?(:submitted_fafsa?) -%>
 		<div class="info-section" id="paperwork">

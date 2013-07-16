@@ -1,0 +1,23 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  term_id: 1
+  location_id: 1
+  title: MyString
+  course_id: MyString
+  times: MyString
+  depart_time: 2011-03-13 00:09:08
+  return_time: 2011-03-13 00:09:08
+  capacity: 1
+  none_option: false
+
+two:
+  term_id: 1
+  location_id: 1
+  title: MyString
+  course_id: MyString
+  times: MyString
+  depart_time: 2011-03-13 00:09:08
+  return_time: 2011-03-13 00:09:08
+  capacity: 1
+  none_option: false

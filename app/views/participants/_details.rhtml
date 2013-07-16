@@ -31,10 +31,10 @@
 
 <h4>High School</h4>
 <%= link_to h(@participant.high_school.name), 
-			high_school_cohort_path(@participant.high_school, @participant.grad_year), 
+			high_school_cohort_path(@participant.high_school, (@participant.grad_year || 0)), 
 			:class => 'redirect-link' unless @participant.high_school.nil? %>
 <%= link_to "<br />Class of #{@participant.grad_year}",
- 			high_school_cohort_path(@participant.high_school, @participant.grad_year),
+ 			high_school_cohort_path(@participant.high_school, (@participant.grad_year || 0)),
 			:class => 'redirect-link' unless @participant.grad_year.blank? %>
 <%= "<br />GPA: #{@participant.gpa}" unless @participant.gpa.blank? %>
 
@@ -66,3 +66,6 @@
 <h4>Date of Birth</h4>
 <%= @participant.birthdate.try(:to_s, :long) rescue nil %>
 <%= "<br /><small>Age #{@participant.age}</small>" if @participant.age %>
+
+<h4>Plans after high school</h4>
+<%=h @participant.plans_after_high_school %>

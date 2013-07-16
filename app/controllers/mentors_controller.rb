@@ -1,8 +1,9 @@
-class MentorsController < ApplicationController
-  
+class MentorsController < ApplicationController  
+  protect_from_forgery :except => [:auto_complete_for_mentor_fullname] 
   skip_before_filter :login_required, :check_authorization, :save_user_in_current_thread, :check_if_enrolled, :only => [:check_if_valid_van_driver]
   
   def index
+    return redirect_to Mentor.find(params[:id]) if params[:id]
     @mentors = Mentor.paginate :all, :page => params[:page]
 
     respond_to do |format|
@@ -56,6 +57,7 @@ class MentorsController < ApplicationController
 
   def create
     @mentor = Mentor.new(params[:mentor])
+    @mentor.validate_name = true
 
     respond_to do |format|
       if @mentor.save
@@ -71,6 +73,7 @@ class MentorsController < ApplicationController
 
   def update
     @mentor = Mentor.find(params[:id])
+    @mentor.validate_name = true
 
     respond_to do |format|
       if @mentor.update_attributes(params[:mentor])
@@ -82,6 +85,18 @@ class MentorsController < ApplicationController
         format.xml  { render :xml => @mentor.errors, :status => :unprocessable_entity }
       end
     end
+  end
+  
+  def send_login_link
+    @mentor = Mentor.find(params[:id])
+    result = @mentor.send_login_link(map_login_url(@mentor, @mentor.generate_login_token!))
+    
+    if result && result.first["status"] == 'sent'
+      flash[:notice] = "Login link sent successfully."
+    else
+      flash[:error] = "Error sending login link: #{result['reject_reason']}"
+    end
+    redirect_to @mentor
   end
   
   def remove_participant
@@ -126,22 +141,26 @@ class MentorsController < ApplicationController
                                             OR LOWER(uw_net_id) LIKE :fullname", 
                                           {:fullname => "%#{params[:mentor][:fullname].downcase}%"}])
     respond_to do |format|
-      format.js
+      format.js { 
+        render :partial => "shared/auto_complete_person_fullname", 
+                :object => @mentors, 
+                :locals => { :highlight_phrase => params[:mentor][:fullname] }
+       }
     end
   end
   
   def onboarding
-    @quarter = Quarter.find(params[:quarter_id])
-    @mentors = @quarter.mentors
+    @term = Term.find(params[:term_id])
+    @mentors = @term.mentors
   end
 
   def event_status
-    @quarter = Quarter.find(params[:quarter_id])
-    @mentors = @quarter.mentors
+    @term = Term.find(params[:term_id])
+    @mentors = @term.mentors
   end
   
   def leads
-    @quarter = Quarter.find(params[:quarter_id])
+    @term = Term.find(params[:term_id])
     @high_schools = HighSchool.partners
   end
   

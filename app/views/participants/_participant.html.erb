@@ -1,32 +1,29 @@
-	<% dom_id = "participant_#{participant.id}" %>
-	<tr class="<%= "deselected" if participant.inactive? %> filterable participant" id="<%= dom_id %>">
-		<td class="name"><%= link_to participant.lastname_first, participant %>
-			<small class="inactive-note">(inactive)</small>
+<% dom_id = "participant_#{participant.id}" %>
+<%- report ||= "basics" -%>
+<%- @participant_row_index = 1 -%>
+<tbody id="<%= dom_id %>">
+	
+	<%- 
+	collection ||= (participant.instance_eval(report.pluralize) rescue []) 
+	row_index = 0
+	%>
+	
+	<%- (collection.empty? ? 1 : collection.size).times do -%>
+		<%- row_index += 1 -%>
+		<%= render :partial => "participants/reports/wrapper", 
+					:locals => { 
+						:collection => collection, 
+						:participant => participant, 
+						:report => report, 
+						:row_count => (collection.empty? ? 1 : collection.size),
+						:row_index => row_index 
+					} %>
+	<% end %>
+	
+</tbody>
 
-			<% Participant.object_filters.each do |object_filter| %>
-				<%= javascript_tag "filterable('#{dom_id}', #{object_filter.id}, #{object_filter.passes?(participant, :purpose => :filter)})" %>
-			<% end -%>
-
-		</td>
-		<td class="email"><%= mail_to participant.email %></td>
-		<td class="cohort"><%= link_to "#{truncate(participant.high_school.name, :length => 30)} #{participant.grad_year}", 
-						high_school_cohort_path(participant.high_school, participant.grad_year), 
-						:class => 'redirect-link' unless participant.high_school.nil? %></td>
-		
-		<%- if @participant_groups -%>
-			<td class="group-title"><%= link_to truncate(h(participant.participant_group.try(:title)), :length => 30), 
-						participant.participant_group, 
-						:class => 'redirect-link' if participant.participant_group %></td>
-		<% end -%>
-			
-		<td class="college-application-count"><%= participant.college_applications.size %></td>
-		<td class="scholarship-application-count"><%= participant.scholarship_applications.size %></td>
-		
-		<td class="functions"></td>
-		<td class="functions">
-			<%= link_to 'Show', participant %>
-			<%= link_to 'Edit', edit_participant_path(participant) %>
-		</td>
-	</tr>
+<% Participant.object_filters.each do |object_filter| %>
+	<%= javascript_tag "filterable('#{dom_id}', #{object_filter.id}, #{participant.passes_filter?(object_filter)})" if object_filter.display_now? %>
+<% end -%>
 
 <%= draggable_element dom_id, :ghosting => true %>

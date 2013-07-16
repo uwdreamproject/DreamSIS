@@ -1,6 +1,16 @@
 # Models a parent, legal guardian, or other adult advocate of a student in the system. This model is linked to a student through +child_id+. 
 class Parent < Person
   include ActionView::Helpers::NumberHelper
+
+  RELATIONSHIP_TYPES = [
+    "Mother", "Father", 
+    "Step-Mother", "Step-Father", 
+    "Grandmother", "Grandfather",
+    "Foster Parent", 
+    "Guardian", 
+    "Other", 
+    "Emergency Contact"
+  ]
   
   validates_presence_of :lastname, :firstname
   validates_presence_of :child_id

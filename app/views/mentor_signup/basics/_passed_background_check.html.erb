@@ -1,0 +1,17 @@
+<% if @mentor.passed_background_check? %>
+	<div class="complete">
+		<h2>Background Check Passed</h2>
+		<p>You passed your background check on <%= @mentor.background_check_run_at.to_s(:date_with_day_of_week) %></p>
+	</div>
+<%- elsif @mentor.background_check_pending? -%>
+	<div class="pending">
+		<h2>Background Check Pending</h2>
+		<p><%= Customer.name_label %> staff will process your background check as soon as possible. When that's done, you'll be able to access DreamSIS.</p>
+	</div>
+<%- else -%>
+	<div class="incomplete">
+		<h2>Background Check</h2>
+		<p>In order to participate in <%= Customer.name_label %>, you must pass a criminal background check.</p>
+		<p><%= link_to "Submit your criminal conviction history form now &#x2192;", {:action => 'background_check_form'}, :class => 'button' %>
+	</div>	
+<% end -%>

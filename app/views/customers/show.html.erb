@@ -1,12 +1,49 @@
+<%= content_tag :span, "Experimental", :class => 'orange tag right' if @customer.experimental? %>
 <h1><%= @customer.name %></h1>
 
 <dl class="inline-definitions">
 
 	<dt>Name</dt>
-	<dd><%=h @customer.name %></dd>
+	<dd><%=h @customer.name %>
+		<%= content_tag :span, "(URL shortcut: #{h(@customer.url_shortcut)})", :class => 'light' unless @customer.url_shortcut.blank? %></dd>
 
 	<dt>Program</dt>
 	<dd><%= link_to h(@customer.program.try(:title)), @customer.program %></dd>
+	
+	<dt>Term System</dt>
+	<dd><%=h @customer.term_system.blank? ? content_tag(:em, "Not specified", :class => 'light') : @customer.term_system %>
+		<%= @customer.link_to_uw? ? "(linked to UW)" : "" %>
+		</dd>
+
+	<dt>Requirements</dt>
+	<dd><%= @customer.require_background_checks? ? "Background checks<br>" : "" %>
+		<%= @customer.require_risk_form? ? "Mentor consent<br>" : "" %>
+		</dd>
+
+	<dt>Login Methods</dt>
+	<dd>
+		<%= content_tag :a, "<span>&nbsp;</span>UW NetID", :class => "uwnetid login-link" if @customer.allowable_login_method?(:shibboleth) %>
+		<%= content_tag :a, "<span>&nbsp;</span>Google", :class => "google login-link" if @customer.allowable_login_method?(:google_oauth2) %>
+		<%= content_tag :a, "<span>&nbsp;</span>Facebook", :class => "facebook login-link" if @customer.allowable_login_method?(:facebook) %>
+		<%= content_tag :a, "<span>&nbsp;</span>Twitter", :class => "twitter login-link" if @customer.allowable_login_method?(:twitter) %>
+		<%= content_tag :a, "<span>&nbsp;</span>Live", :class => "windowslive login-link" if @customer.allowable_login_method?(:windowslive) %>
+		<%= content_tag :a, "<span>&nbsp;</span>LinkedIn", :class => "linkedin login-link" if @customer.allowable_login_method?(:linkedin) %>
+		</dd>
+
+	<dt>Labels</dt>
+	<dd>
+		<dl>
+		<%- for label_name in %w[mentor lead participant mentee workbook intake_survey visit] -%>
+			<%- unless @customer.read_attribute("#{label_name}_label").blank? -%>
+				<dt><%= label_name.titleize %></dt>
+				<dd><%=h @customer.customer_label(label_name, :titleize => true) %></dd>
+			<% end %>
+		<% end %>
+		</dl>
+	</dd>
+
+	<dt>NSC Customer ID</dt>
+	<dd><%=h @customer.clearinghouse_customer_number %></dd>
 
 </dl>
 

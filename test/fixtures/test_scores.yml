@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  participant_id: 1
+  test_id: 1
+  registered_at: 2013-04-21
+  taken_at: 2013-04-21
+  total_score: 9.99
+  score_parts: MyText
+
+two:
+  participant_id: 1
+  test_id: 1
+  registered_at: 2013-04-21
+  taken_at: 2013-04-21
+  total_score: 9.99
+  score_parts: MyText

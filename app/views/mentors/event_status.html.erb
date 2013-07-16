@@ -1,6 +1,6 @@
 <%- @rsvp_counts = [0]; @attended_counts = [0]; -%>
 
-<h3 class="pre-title"><%= @quarter.title %></h3>
+<h3 class="pre-title"><%= @term.title %></h3>
 <h1>Mentor Event Status</h1>
 
 <table id="event_status">
@@ -28,7 +28,7 @@
 										AND (event_type_id IS NULL OR event_types.name != ?)
 										AND events.type IS NULL
 										AND events.name != ?", 
-										@quarter.start_date, @quarter.end_date, true, true, "Mentor Workshop", 'Class']
+										@term.start_date, @term.end_date, true, true, "Mentor Workshop", 'Class']
 								)
 			rsvp_count = event_attendances.select(&:rsvp?).size
 			attended_count = event_attendances.select(&:attended?).size

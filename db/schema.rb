@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130417162744) do
+ActiveRecord::Schema.define(:version => 20130605060405) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -23,6 +23,21 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
 
   add_index "changes", ["change_loggable_id", "change_loggable_type"], :name => "index_changes_on_changable"
 
+  create_table "clearinghouse_requests", :force => true do |t|
+    t.integer  "customer_id"
+    t.integer  "created_by"
+    t.string   "submitted_filename"
+    t.datetime "submitted_at"
+    t.datetime "retrieved_at"
+    t.text     "participant_ids"
+    t.text     "ftp_password"
+    t.integer  "number_of_records_submitted"
+    t.integer  "number_of_records_returned"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "detail_report_filename"
+  end
+
   create_table "college_applications", :force => true do |t|
     t.integer  "participant_id"
     t.integer  "institution_id"
@@ -32,6 +47,8 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "choice"
+    t.boolean  "personal_statement_started"
+    t.boolean  "personal_statement_completed"
   end
 
   create_table "customers", :force => true do |t|
@@ -39,7 +56,7 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.integer  "program_id"
     t.integer  "parent_customer_id"
     t.boolean  "link_to_uw"
-    t.boolean  "term_system"
+    t.string   "term_system"
     t.text     "risk_form_content"
     t.boolean  "require_background_checks"
     t.string   "mentor_label"
@@ -51,7 +68,37 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.datetime "updated_at"
     t.string   "mentee_label"
     t.boolean  "experimental"
+    t.integer  "clearinghouse_customer_number"
+    t.date     "clearinghouse_contract_start_date"
+    t.integer  "clearinghouse_number_of_submissions_allowed"
+    t.string   "url_shortcut"
+    t.text     "allowable_login_methods"
+    t.string   "visit_label"
   end
+
+  create_table "degrees", :force => true do |t|
+    t.string   "type"
+    t.integer  "participant_id"
+    t.integer  "institution_id"
+    t.integer  "high_school_id"
+    t.date     "graduated_on"
+    t.string   "degree_title"
+    t.string   "major_1"
+    t.string   "major_1_cip"
+    t.string   "major_2"
+    t.string   "major_2_cip"
+    t.string   "major_3"
+    t.string   "major_3_cip"
+    t.string   "major_4"
+    t.string   "major_4_cip"
+    t.string   "source"
+    t.integer  "clearinghouse_request_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "customer_id"
+  end
+
+  add_index "degrees", ["customer_id"], :name => "index_degrees_on_customer_id"
 
   create_table "education_levels", :force => true do |t|
     t.string   "title"
@@ -59,7 +106,32 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.integer  "sequence"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "customer_id"
   end
+
+  add_index "education_levels", ["customer_id"], :name => "index_education_levels_on_customer_id"
+
+  create_table "enrollments", :force => true do |t|
+    t.string   "type"
+    t.integer  "participant_id"
+    t.integer  "institution_id"
+    t.integer  "high_school_id"
+    t.date     "began_on"
+    t.date     "ended_on"
+    t.string   "enrollment_status"
+    t.string   "class_level"
+    t.string   "major_1"
+    t.string   "major_1_cip"
+    t.string   "major_2"
+    t.string   "major_2_cip"
+    t.string   "source"
+    t.integer  "clearinghouse_request_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "customer_id"
+  end
+
+  add_index "enrollments", ["customer_id"], :name => "index_enrollments_on_customer_id"
 
   create_table "event_attendances", :force => true do |t|
     t.integer  "person_id"
@@ -70,7 +142,10 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.datetime "updated_at"
     t.integer  "event_shift_id"
     t.boolean  "admin"
+    t.integer  "customer_id"
   end
+
+  add_index "event_attendances", ["customer_id"], :name => "index_event_attendances_on_customer_id"
 
   create_table "event_groups", :force => true do |t|
     t.string   "name"
@@ -93,7 +168,10 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.text     "volunteer_confirmation_message"
     t.text     "mentor_confirmation_message"
     t.boolean  "hide_description_in_confirmation_message"
+    t.integer  "customer_id"
   end
+
+  add_index "event_groups", ["customer_id"], :name => "index_event_groups_on_customer_id"
 
   create_table "event_shifts", :force => true do |t|
     t.string   "title"
@@ -105,14 +183,20 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.boolean  "show_for_mentors"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "customer_id"
   end
+
+  add_index "event_shifts", ["customer_id"], :name => "index_event_shifts_on_customer_id"
 
   create_table "event_types", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "description"
+    t.integer  "customer_id"
   end
+
+  add_index "event_types", ["customer_id"], :name => "index_event_types_on_customer_id"
 
   create_table "events", :force => true do |t|
     t.string   "name"
@@ -147,6 +231,17 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.time     "mentor_end_time"
     t.boolean  "show_for_students",     :default => true
     t.boolean  "show_for_volunteers",   :default => true
+    t.integer  "customer_id"
+  end
+
+  add_index "events", ["customer_id"], :name => "index_events_on_customer_id"
+
+  create_table "grade_levels", :force => true do |t|
+    t.string   "title"
+    t.integer  "level"
+    t.string   "abbreviation"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "how_did_you_hear_options", :force => true do |t|
@@ -155,12 +250,18 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.boolean  "show_for_mentors"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "customer_id"
   end
+
+  add_index "how_did_you_hear_options", ["customer_id"], :name => "index_how_did_you_hear_options_on_customer_id"
 
   create_table "how_did_you_hear_options_people", :id => false, :force => true do |t|
     t.integer "person_id"
     t.integer "how_did_you_hear_option_id"
+    t.integer "customer_id"
   end
+
+  add_index "how_did_you_hear_options_people", ["customer_id"], :name => "index_how_did_you_hear_options_people_on_customer_id"
 
   create_table "identities", :force => true do |t|
     t.string   "name"
@@ -168,14 +269,20 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.string   "password_digest"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "customer_id"
   end
+
+  add_index "identities", ["customer_id"], :name => "index_identities_on_customer_id"
 
   create_table "income_levels", :force => true do |t|
     t.float    "min_level"
     t.float    "max_level"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "customer_id"
   end
+
+  add_index "income_levels", ["customer_id"], :name => "index_income_levels_on_customer_id"
 
   create_table "locations", :force => true do |t|
     t.string   "name"
@@ -198,7 +305,10 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.string   "country"
     t.string   "website_url"
     t.boolean  "enable_college_mapper_integration"
+    t.integer  "customer_id"
   end
+
+  add_index "locations", ["customer_id"], :name => "index_locations_on_customer_id"
 
   create_table "mentor_participants", :force => true do |t|
     t.integer  "mentor_id"
@@ -209,8 +319,8 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.integer  "college_mapper_id"
   end
 
-  create_table "mentor_quarter_groups", :force => true do |t|
-    t.integer  "quarter_id"
+  create_table "mentor_term_groups", :force => true do |t|
+    t.integer  "term_id"
     t.integer  "location_id"
     t.string   "title"
     t.string   "course_id"
@@ -221,14 +331,17 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.boolean  "none_option"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "mentor_quarters_count", :default => 0
+    t.integer  "mentor_terms_count", :default => 0
     t.integer  "linked_group_id"
     t.string   "day_of_week"
+    t.integer  "customer_id"
   end
 
-  create_table "mentor_quarters", :force => true do |t|
+  add_index "mentor_term_groups", ["customer_id"], :name => "index_mentor_term_groups_on_customer_id"
+
+  create_table "mentor_terms", :force => true do |t|
     t.integer  "mentor_id"
-    t.integer  "mentor_quarter_group_id"
+    t.integer  "mentor_term_group_id"
     t.boolean  "lead"
     t.datetime "deleted_at"
     t.datetime "created_at"
@@ -236,7 +349,10 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.boolean  "volunteer"
     t.boolean  "driver"
     t.text     "notes"
+    t.integer  "customer_id"
   end
+
+  add_index "mentor_terms", ["customer_id"], :name => "index_mentor_terms_on_customer_id"
 
   create_table "notes", :force => true do |t|
     t.text     "note"
@@ -250,7 +366,10 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.string   "access_level"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "customer_id"
   end
+
+  add_index "notes", ["customer_id"], :name => "index_notes_on_customer_id"
 
   create_table "object_filters", :force => true do |t|
     t.string   "object_class"
@@ -261,7 +380,15 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.string   "opposite_title"
     t.integer  "target_percentage"
     t.integer  "warning_threshold"
+    t.date     "start_display_at"
+    t.date     "end_display_at"
+    t.integer  "earliest_grade_level"
+    t.integer  "earliest_grade_level_level"
+    t.integer  "latest_grade_level_level"
+    t.integer  "customer_id"
   end
+
+  add_index "object_filters", ["customer_id"], :name => "index_object_filters_on_customer_id"
 
   create_table "participant_groups", :force => true do |t|
     t.string   "title"
@@ -437,8 +564,15 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.integer  "number_of_children"
     t.boolean  "free_reduced_lunch_signed_up"
     t.string   "parent_type"
+    t.text     "filter_cache"
+    t.string   "login_token"
+    t.datetime "login_token_expires_at"
+    t.integer  "customer_id"
+    t.string   "email2"
+    t.boolean  "gluten_free"
   end
 
+  add_index "people", ["customer_id"], :name => "index_people_on_customer_id"
   add_index "people", ["display_name"], :name => "index_people_on_display_name"
   add_index "people", ["firstname"], :name => "index_people_on_firstname"
   add_index "people", ["grad_year"], :name => "index_people_on_grad_year"
@@ -459,17 +593,6 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.string   "abbreviation"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "quarters", :force => true do |t|
-    t.integer  "year"
-    t.integer  "quarter_code"
-    t.date     "start_date"
-    t.date     "end_date"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "course_ids"
-    t.boolean  "allow_signups"
   end
 
   create_table "scholarship_applications", :force => true do |t|
@@ -494,7 +617,10 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.decimal  "default_amount"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "customer_id"
   end
+
+  add_index "scholarships", ["customer_id"], :name => "index_scholarships_on_customer_id"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
@@ -506,13 +632,58 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
+  create_table "terms", :force => true do |t|
+    t.integer  "year"
+    t.integer  "quarter_code"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "course_ids"
+    t.boolean  "allow_signups"
+    t.string   "title"
+    t.string   "type"
+    t.integer  "customer_id"
+  end
+
+  add_index "terms", ["customer_id"], :name => "index_terms_on_customer_id"
+
+  create_table "test_scores", :force => true do |t|
+    t.integer  "participant_id"
+    t.integer  "test_type_id"
+    t.datetime "registered_at"
+    t.datetime "taken_at"
+    t.decimal  "total_score"
+    t.text     "section_scores"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "customer_id"
+  end
+
+  add_index "test_scores", ["customer_id"], :name => "index_test_scores_on_customer_id"
+
+  create_table "test_types", :force => true do |t|
+    t.string   "name"
+    t.decimal  "maximum_total_score"
+    t.text     "sections"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "customer_id"
+    t.string   "score_calculation_method"
+  end
+
+  add_index "test_types", ["customer_id"], :name => "index_test_types_on_customer_id"
+
   create_table "training_completions", :force => true do |t|
     t.integer  "training_id"
     t.integer  "person_id"
     t.datetime "completed_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "customer_id"
   end
+
+  add_index "training_completions", ["customer_id"], :name => "index_training_completions_on_customer_id"
 
   create_table "trainings", :force => true do |t|
     t.string   "title"
@@ -522,7 +693,10 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.datetime "updated_at"
     t.string   "chapters_url"
     t.string   "stylesheet_url"
+    t.integer  "customer_id"
   end
+
+  add_index "trainings", ["customer_id"], :name => "index_trainings_on_customer_id"
 
   create_table "users", :force => true do |t|
     t.string   "login"
@@ -538,6 +712,9 @@ ActiveRecord::Schema.define(:version => 20130417162744) do
     t.boolean  "admin"
     t.string   "provider"
     t.string   "uid"
+    t.integer  "customer_id"
   end
+
+  add_index "users", ["customer_id"], :name => "index_users_on_customer_id"
 
 end

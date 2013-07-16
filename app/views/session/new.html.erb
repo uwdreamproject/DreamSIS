@@ -1,17 +1,19 @@
 <h1>Login</h1>
 
-<p>UW students, staff, faculty and alumni:
-<div class="login-links">
-	<%= link_to "<span>&nbsp;</span>Login with your UW NetID", "auth/shibboleth", :class => "uwnetid login-link" %>
-</div>
+<%- if Customer.allowable_login_method?(:shibboleth) -%>
+	<p>UW students, staff, faculty and alumni:
+	<div class="login-links">
+		<%= link_to "<span>&nbsp;</span>Login with your UW NetID", "auth/shibboleth", :class => "uwnetid login-link" %>
+	</div>
+<% end %>
 
-<p>All other users, log in using one of the following services:</p>
+<p><%= Customer.allowable_login_method?(:shibboleth) ? "All other users, log in" : "Log in" %> using one of the following services:</p>
 <div class="login-links">
-	<%= link_to "<span>&nbsp;</span>Facebook", "auth/facebook", :class => "facebook login-link" %>
-	<%= link_to "<span>&nbsp;</span>Twitter", "auth/twitter", :class => "twitter login-link" %>
-	<%= link_to "<span>&nbsp;</span>LinkedIn", "auth/linkedin", :class => "linkedin login-link" %>
-	<%= link_to "<span>&nbsp;</span>Google", "auth/google_oauth2", :class => "google login-link" %>
-	<%= link_to "<span>&nbsp;</span>Live", "auth/windowslive", :class => "windowslive login-link" %>
+	<%= link_to "<span>&nbsp;</span>Google", "auth/google_oauth2", :class => "google login-link" if Customer.allowable_login_method?(:google_oauth2) %>
+	<%= link_to "<span>&nbsp;</span>Facebook", "auth/facebook", :class => "facebook login-link" if Customer.allowable_login_method?(:facebook) %>
+	<%= link_to "<span>&nbsp;</span>Twitter", "auth/twitter", :class => "twitter login-link" if Customer.allowable_login_method?(:twitter) %>
+	<%= link_to "<span>&nbsp;</span>LinkedIn", "auth/linkedin", :class => "linkedin login-link" if Customer.allowable_login_method?(:linkedin) %>
+	<%= link_to "<span>&nbsp;</span>Live", "auth/windowslive", :class => "windowslive login-link" if Customer.allowable_login_method?(:windowslive) %>
 </div>
 
 <%- if session[:external_login_context] == :rsvp -%>
@@ -20,18 +22,3 @@
 		<%= link_to "Continue without logging in", anonymous_login_callback_path, :class => 'anonymous button' %>
 	</div>
 <% end -%>
-
-<!-- <% form_tag "/auth/identity/callback" do %>
-	<%= link_to "Create an account", signup_path %> or login below.
-
-
-	<p>
-		<%= label_tag :auth_key, "Email" %><br>
-		<%= text_field_tag :auth_key %>
-	</p>
-	<p>
-		<%= label_tag :password %><br>
-		<%= password_field_tag :password %>
-	</p>
-	<p class="actions"><%= submit_tag "Login" %></p>
-<% end %> -->

@@ -6,7 +6,7 @@
 	<thead>
 		<tr>
 			<th>Name</th>
-			<th>UW NetID</th>
+			<th><%= Customer.link_to_uw? ? "UW NetID" : "E-mail" %></th>
 			<th>Current High School Group</th>
 			<th>Functions</th>
 		</tr>

@@ -12,12 +12,12 @@
 	<%= observe_field "show_my_courses", :function => "$$('.course_meeting').invoke('toggle')" %>
 </div>
 
-<h1>Sign up for <%= @quarter.title %></h1>
-<p>Welcome to the Dream Project! To get signed up for the quarter, choose the high school visit you'd like to attend below.</p>
+<h1>Sign up for <%= @term.title %></h1>
+<p>Welcome to the Dream Project! To get signed up for the term, choose the high school visit you'd like to attend below.</p>
 
 <p><strong>Registering for credit?</strong>
-	You can earn two credits per quarter by
-	<%= link_to "registering for the Dream Project on MyUW", "http://www.washington.edu/students/timeschd/#{@quarter.to_param}/indsrf.html", :target => "_blank" %></p>
+	You can earn two credits per term by
+	<%= link_to "registering for the Dream Project on MyUW", "http://www.washington.edu/students/timeschd/#{@term.to_param}/indsrf.html", :target => "_blank" %></p>
 
 <table class="schedule">
 	<tr>
@@ -40,10 +40,10 @@
 		<td>
 			<ul class="course meetings" id="course_meetings_<%=h day %>"></ul>
 			<ul class="meetings">
-				<%- mentor_quarter_groups = @mentor_quarter_groups.select{|g| g.day_of_week == day} -%>
-				<%= render :partial => 'mentor_quarter_group_schedule', 
-							:collection => mentor_quarter_groups.sort_by(&:depart_time), 
-							:locals => { :mentor_quarter_groups => mentor_quarter_groups } %>
+				<%- mentor_term_groups = @mentor_term_groups.select{|g| g.day_of_week == day} -%>
+				<%= render :partial => 'mentor_term_group_schedule', 
+							:collection => mentor_term_groups.sort_by(&:depart_time), 
+							:locals => { :mentor_term_groups => mentor_term_groups } %>
 			</ul>
 			<ul class="time-blocks">
 				<%- for time in (Array.new(11.hours / 30.minutes)).each_with_index.collect{|t,i| (Time.parse("7:00") + (i*30.minutes)).strftime("%I:%M %p")} -%>
@@ -56,4 +56,4 @@
 	</tr>
 </table>
 
-<%= javascript_tag remote_function(:url => mentor_signup_schedule_add_my_courses_path(:quarter_id => @quarter.to_param)) %>
+<%= javascript_tag remote_function(:url => mentor_signup_schedule_add_my_courses_path(:term_id => @term.to_param)) %>

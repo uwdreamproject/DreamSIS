@@ -1,27 +1,27 @@
-<table class="quarter_status">
+<table class="term_status">
 	<% 
 	conditions_query = "allow_signups = ? " 
-	qstr = @mentor.mentor_quarters.collect{|mq| mq.quarter_id rescue nil}.compact.join(',')
+	qstr = @mentor.mentor_terms.collect{|mq| mq.term_id rescue nil}.compact.join(',')
 	conditions_query += "OR `id` IN (#{qstr})" unless qstr.blank?
 	%>
 	
-	<%- for quarter in Quarter.find(:all, :conditions => [conditions_query, true]).reverse -%>
+	<%- for term in Term.find(:all, :conditions => [conditions_query, true]).reverse -%>
 	
-	<% mentor_quarters = @mentor.mentor_quarters.for_quarter(quarter.id) %>
+	<% mentor_terms = @mentor.mentor_terms.for_term(term.id) %>
 	<tr>
-		<td class="quarter_title"><%= quarter.title %></td>
-		<td><%- if mentor_quarters.empty? -%>
+		<td class="term_title"><%= term.title %></td>
+		<td><%- if mentor_terms.empty? -%>
 				<span class="grey tag">Not Signed Up</span>
-				<%= link_to "Sign up now", mentor_signup_quarter_path(quarter) if quarter.allow_signups? %>
+				<%= link_to "Sign up now", mentor_signup_term_path(term) if term.allow_signups? %>
 			<%- else -%>
 				<table>
-					<%= render :partial => 'mentor_signup/mentor_quarter', :collection => mentor_quarters %>
+					<%= render :partial => 'mentor_signup/mentor_term', :collection => mentor_terms %>
 				</table>
 			<% end -%>
 		</td>
 		<td><%= link_to "Change my high-school group(s)", 
-						mentor_signup_quarter_path(quarter), 
-						:class => "edit button" if quarter.allow_signups? %></td>
+						mentor_signup_term_path(term), 
+						:class => "edit button" if term.allow_signups? %></td>
 	</tr>
 	<% end -%>
 </table>

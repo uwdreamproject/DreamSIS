@@ -11,8 +11,7 @@
   <tr>
     <td class="name"><%= link_to h(high_school.name), high_school %></td>
     <td><%=h high_school.district %></td>
-	  <td class="functions"><%= link_to 'Show', high_school %></td>
-	<td class="functions"><%= link_to "#{Quarter.current_quarter.title} Visits", high_school_visits_path(high_school, Quarter.current_quarter) if Quarter.current_quarter %>
+	<td class="functions"><%= link_to 'Show', high_school %></td>
     <td class="functions"><%= link_to 'Edit', edit_high_school_path(high_school) %></td>
     <td class="functions"><%= link_to 'Destroy', high_school, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

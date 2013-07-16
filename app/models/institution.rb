@@ -2,14 +2,20 @@ require 'open-uri'
 
 # Models an Institution record, pulled from the Department of Education's list.
 class Institution
-  RESULTS_CACHE = FileStoreWithExpiration.new("tmp/cache/institution")
+  RESULTS_CACHE = FileStoreWithExpiration.new("/tmp/cache/dreamsis/institution")
   ATTRIBUTE_ALIASES = {
     :instnm    => [:name, :title],
     :longitud  => [:longitude],
     :addr      => [:address, :street],
     :stabbr    => [:state],
-    :countynm  => [:county]
+    :countynm  => [:county],
+    :gentele   => [:phone],
+    :webaddr   => [:website_url]
   }
+
+  def geocoded?
+    false
+  end
 
   def initialize(raw_attributes)
     @raw_attributes = raw_attributes
@@ -54,12 +60,23 @@ class Institution
   # Finds an Intitution record by "unitid" (the unique identifier provided by Dept of Ed's API).
   # If a negative integer is provided, this will find a College object instead (see note at College).
   def self.find(unitid)
+    fancy_log ":unitid => #{unitid}", "Find"
     if unitid.is_a?(Integer) && unitid < 0
       College.find(-unitid)
     else
       index_by_unitid[unitid.to_i]
     end
   end
+
+  # Finds an Intitution record by "opeid" (the OPE ID from Dept of Ed's API). The method will convert
+  # the parameter to an Integer so you can pass a String or an Integer. It will also strip out any
+  # hyphens, which are often placed to separate the branch number.
+  def self.find_by_opeid(opeid)
+    fancy_log ":opeid => #{opeid}", "Find"
+    opeid = opeid.gsub("-", "")
+    index_by_opeid[opeid.to_i]
+  end
+
   
   # Returns the URL of this institution's record in the IPED's CollegeNavigator system.
   def college_navigator_url
@@ -114,6 +131,7 @@ class Institution
   # in +search_term+ separated out and return an intersection of the results. By default, returns only
   # 100 results.
   def self.find_all_by_name(search_term, options = { :try_separating_words_on_failure => true, :limit => 100 })
+    fancy_log ":name => '#{search_term}'", "Find"
     limit = options[:limit].is_a?(Integer) ? options[:limit] : options[:limit].to_i
     search_term = search_term.gsub /[\(\)\#\d,]?/, "" # strip out parentheses and numbers
     search_term = search_term.gsub /\s/, " " # strip out tabs and such
@@ -135,6 +153,7 @@ class Institution
   
   # Returns an array of all Institutions as objects and caches the data for quick retrieval.
   def self.all(options = {})
+    fancy_log ":all", "Find"
     @all ||= RESULTS_CACHE.fetch("all_objects", {:expires_in => 30.days}.merge(options)) do
       all = []
       for unitid,raw_attributes in Institution.raw_dataset(options)
@@ -144,35 +163,46 @@ class Institution
     end
   end
   
+  # Replicates the behavior of a has_many association.
+  def college_applications
+    @college_applications ||= CollegeApplication.find :all, :conditions => { :institution_id => id }
+  end
+  
   protected
+  
+  def self.indexes(options = {})
+    @indexes ||= RESULTS_CACHE.fetch("indexes", {:expires_in => 30.days}.merge(options)) do
+      fancy_log ":all", "Index"
+      indexes = { :unitid => {}, :opeid => {}, :name => {}}
+      for object in Institution.all(options)
+        indexes[:unitid][object[:unitid].to_i] = object
+        indexes[:opeid][object[:opeid].to_i] = object
+        for a in object.aliases
+          indexes[:name][a.downcase] ||= []
+          indexes[:name][a.downcase] << object
+        end
+      end
+      indexes
+    end
+  end
   
   # Generates an index for faster searching by ID and stores it in the cache. Returns a hash with 
   # unitid as keys (converted to Integer) and Institution objects as values.
   def self.index_by_unitid(options = {})
-    @index_by_unitid ||= RESULTS_CACHE.fetch("index_by_unitid", {:expires_in => 30.days}.merge(options)) do
-      index_by_unitid = {}
-      for object in Institution.all(options)
-        index_by_unitid[object[:unitid].to_i] = object
-      end
-      index_by_unitid
-    end
+    self.indexes(options)[:unitid]
+  end
+
+  # Generates an index for faster searching by OPE ID and stores it in the cache. Returns a hash with 
+  # OPE IDs as keys (converted to Integer) and Institution objects as values.
+  def self.index_by_opeid(options = {})
+    self.indexes(options)[:opeid]
   end
 
   # Generates an index for faster searching by name/alias and stores it in the cache. Returns a hash with 
   # alias/names (converted to downcase) as keys and arrays of Institution objects as values.
   def self.index_by_name(options = {})
-    @index_by_name ||= RESULTS_CACHE.fetch("index_by_name", {:expires_in => 30.days}.merge(options)) do
-      index_by_name = {}
-      for object in Institution.all(options)
-        for a in object.aliases
-          index_by_name[a.downcase] ||= []
-          index_by_name[a.downcase] << object
-        end
-      end
-      index_by_name
-    end
+    self.indexes(options)[:name]
   end
-
   
   # Fetches the institutions listing from http://explore.data.gov/api/views/uc4u-xdrd/rows.json
   # and stores it as a hash of hashes into the RESULTS_CACHE. The hash keys are the "unitid" identifiers
@@ -180,6 +210,7 @@ class Institution
   def self.raw_dataset(options = {})
     RESULTS_CACHE.fetch("raw_data", {:expires_in => 30.days}.merge(options)) do
       url = "http://explore.data.gov/api/views/uc4u-xdrd/rows.json"
+      fancy_log ":raw_data => #{url}", "Fetch"
       puts "Fetching institution directory listing dataset from #{url}"
       response = open(url).read
       self.convert_to_hashes ActiveSupport::JSON.decode(response)
@@ -199,6 +230,15 @@ class Institution
     end
     data
   end
+
+  def self.fancy_log(msg, method = "Fetch", time = nil)
+    caller_class_s = "Institution"
+    message = "  \e[4;33;1m#{caller_class_s} #{method}"
+    message << " (#{'%.1f' % (time*1000)}ms)" if time
+    message << "\e[0m   #{msg}"
+    RAILS_DEFAULT_LOGGER.info message
+  end
+
   
 end
 
