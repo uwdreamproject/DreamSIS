@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  customer_id: 1
+  created_by: 1
+  submitted_filename: MyString
+  submitted_at: 2013-05-10 18:05:31
+  retrieved_at: 2013-05-10 18:05:31
+  number_of_records_submitted: 1
+  number_of_records_returned: 1
+
+two:
+  customer_id: 1
+  created_by: 1
+  submitted_filename: MyString
+  submitted_at: 2013-05-10 18:05:31
+  retrieved_at: 2013-05-10 18:05:31
+  number_of_records_submitted: 1
+  number_of_records_returned: 1

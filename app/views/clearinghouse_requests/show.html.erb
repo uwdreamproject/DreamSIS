@@ -1,0 +1,72 @@
+<h1>Request #<%= @clearinghouse_request.id.to_s %></h1>
+
+<dl class="inline-definitions">
+	
+	<dt>Created</dt>
+	<dd>
+		<%= @clearinghouse_request.created_at.to_s(:date_with_full_month) %>
+		with <%= pluralize @clearinghouse_request.participant_ids.size, "participant" %>
+
+		<%- unless @clearinghouse_request.submitted? -%>
+			<p>
+				<br /><%= link_to "Submit request now", submit_clearinghouse_request_path(@clearinghouse_request), :method => :post, :class => "upload button" %>
+				<%= separator %>
+				<%= link_to "Mark as submitted", clearinghouse_request_path(@clearinghouse_request, :clearinghouse_request => { 
+						:submitted_at => Time.now, 
+						:number_of_records_submitted => @clearinghouse_request.participant_ids.size }
+					), :method => :put, :class => "ok button" %>
+			</p>
+		<% end %>
+		
+		<p><br />
+		<%= link_to "Download submission file", file_clearinghouse_request_path(@clearinghouse_request, :file => 'submission'), :class => "save button" %>
+		<%= @clearinghouse_request.nsc.send_filename %>
+		</p>
+		</dd>
+	
+	<dt>Submitted</dt>
+	<dd>
+		<%- if @clearinghouse_request.submitted? -%>
+			<%= @clearinghouse_request.submitted_at.to_s(:date_with_full_month) %>
+			with <%= pluralize @clearinghouse_request.number_of_records_submitted, "record" %>
+			
+			<%- unless @clearinghouse_request.retrieved? -%>
+				<p>
+					<br /><%= link_to "Retrieve results now", retrieve_clearinghouse_request_path(@clearinghouse_request), :method => :post, :class => "download button" %>
+					<%= separator %>
+					<%= link_to_function "Upload results file", "$('upload_form').show()", :class => "save button" %>
+				</p>
+				
+				<%- form_tag upload_clearinghouse_request_path(@clearinghouse_request), :id => 'upload_form', :style => "display:none", :multipart => true do |f| -%>
+					<p><br />Upload the detail file that was returned by National Student Clearinghouse.</p>
+					<%= file_field_tag 'retrieved_file' %>
+					<%= submit_tag "Upload" %>
+				<% end %>
+			<% end %>
+		<% else %>
+			<%= content_tag(:em, "Not submitted", :class => 'light') %>
+		<% end %>
+		</dd>
+	
+	<dt>Retrieved</dt>
+	<dd>
+		<%- if @clearinghouse_request.retrieved? -%>
+			<%= @clearinghouse_request.retrieved_at.to_s(:date_with_full_month) %>
+			with <%= pluralize @clearinghouse_request.number_of_records_returned, "record" %>
+		<% else %>
+			<%= content_tag(:em, "Not retrieved", :class => 'light') %>
+		<% end %>
+		</dd>
+	
+	<%- if @clearinghouse_request.retrieved? -%>
+		<dt>Files</dt>
+		<dd></dd>
+	<% end %>
+
+</dl>
+
+
+
+<div id="sidebar">
+	<p><%= link_to "Back to requests", clearinghouse_requests_path, :class => "back button" %></p>
+</div>

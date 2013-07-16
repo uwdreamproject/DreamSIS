@@ -1,0 +1,44 @@
+<table id="college_enrollments" class="multirow">
+	<thead>
+		<tr>
+			<th>Start</th>
+			<th>End</th>
+			<th>Status</th>
+			<th>Class</th>
+			<th>Major(s)</th>
+			<th colspan=3>Functions</th>
+		</tr>
+	</thead>
+
+	<%- if @participant.college_enrollments.empty? -%>
+	
+		<tbody>
+			<tr class="empty">
+				<td colspan="10">No college enrollments yet.</td>
+			</tr>
+		</tbody>
+		
+	<% else %>
+
+		<%- 
+		es = { :enrollments => {}, :previous => nil, :index => 0 }
+		for e in @participant.college_enrollments 
+			es[:index] += 1 if e.institution_id != es[:previous]
+			es[:enrollments][es[:index]] ||= []
+			es[:enrollments][es[:index]] << e
+			es[:previous] = e.institution_id
+		end
+		
+		for index, enrollments in es[:enrollments] -%>
+			<tbody>
+				<tr><th colspan=10><%=h enrollments.first.institution.try(:name) %></th></tr>
+				<%= render :partial => "college_enrollments/college_enrollment", :collection => enrollments %>
+			</tbody>
+		<% end %>
+	<% end %>
+
+
+</table>	
+
+<br />
+<%= link_to 'Add college enrollment', new_participant_college_enrollment_path(@participant), :class => 'add button' %>

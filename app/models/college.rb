@@ -7,6 +7,8 @@ class College < Location
 	validates_uniqueness_of :institution_id, :allow_nil => true
 	validates_presence_of :name
 
+  has_many :college_applications, :foreign_key => 'institution_id'
+
 	# Overrides #find_one in case we receive a negative ID number. See note at College.
 	def self.find_one(id, *args)
 		super(id.abs, *args)

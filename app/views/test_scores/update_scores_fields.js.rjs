@@ -1,0 +1,7 @@
+# create a temporary form that can be used to generate the fields in the partial below
+ref = nil
+form_txt = content_tag :div do
+  semantic_form_for([@participant, @test_score]) { |f| ref = f }
+end
+
+page.replace "scores_fields", :partial => "scores_fields", :locals => { :f => ref } 

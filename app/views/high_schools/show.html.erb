@@ -20,16 +20,16 @@
 </div>
 
 
-<%- if Quarter.current_quarter -%>
+<%- if Term.current_term -%>
 <div class="panel-block">
-	<h2>Visits/Attendance</h2>
+	<h2><%= Customer.visits_Label %></h2>
 	<ul>
-		<li><%= link_to "#{Quarter.current_quarter.title} Visits", 
-						high_school_visits_path(@high_school, Quarter.current_quarter) %></li>
+		<li><%= link_to "#{Term.current_term.title} #{Customer.visits_Label}", 
+						high_school_visits_path(@high_school, Term.current_term) %></li>
 		<li><%= link_to "Take Attendance for #{Customer.mentees_Label}", 
-						attendance_high_school_visits_path(@high_school, Quarter.current_quarter) %></li>
+						attendance_high_school_visits_path(@high_school, Term.current_term) %></li>
 		<li><%= link_to "Take Attendance for #{Customer.mentors_Label}", 
-						attendance_high_school_visits_path(@high_school, Quarter.current_quarter, :show => 'mentors') %></li>
+						attendance_high_school_visits_path(@high_school, Term.current_term, :show => 'mentors') %></li>
 	</ul>
 </div>
 <% end -%>

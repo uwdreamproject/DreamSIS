@@ -7,7 +7,9 @@
     <th>Title</th>
 	<th>Criteria</th>
 	<th>Target</th>
-	<th>Warning Threshold</th>
+	<th>Warning</th>
+	<th>Dates</th>
+	<th>Grades</th>
 	<th colspan=3>Functions</th>
   </tr>
 
@@ -18,6 +20,8 @@
 	<td><tt><%=h object_filter.criteria %></tt></td>
 	<td><%=h number_to_percentage object_filter.target_percentage, :precision => 0 %></td>
 	<td><%=h number_to_percentage object_filter.warning_threshold, :precision => 0 %></td>
+	<td><%= object_filter.display_period_string %></td>
+	<td><%= object_filter.grade_levels_list_string %></td>
     <td class="functions"><%= link_to 'Show', object_filter_path(object_filter) %></td>
     <td class="functions"><%= link_to 'Edit', edit_object_filter_path(object_filter) %></td>
     <td class="functions"><%= link_to 'Destroy', object_filter_path(object_filter), :confirm => 'Are you sure?', :method => :delete %></td>

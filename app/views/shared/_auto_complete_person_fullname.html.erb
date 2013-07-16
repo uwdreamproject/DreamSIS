@@ -3,8 +3,14 @@
 		<li id="<%= result.class.to_s.underscore %>_<%= result.id %>" class="icon-left <%= result.class.to_s.underscore %>">
 			<span class="primary"><%= highlight(h(result.fullname(:skip_update => true)), h(highlight_phrase)) %>
 				<small class="light">(#<%= result.id %>)</small></span>
-			<span class="secondary"><%=h result.email %></span>
-			<span class="tertiary"><%= result.class.to_s %></span>
+			<span class="secondary">
+				<%=h result.is_a?(Participant) ? "#{h(result.high_school.try(:name))} #{h(result.grad_year)}" : result.email %>
+			</span>
+			<span class="tertiary">
+				<%= (result.inactive? ? "Inactive" : "Active") if result.is_a?(Participant) %>
+				<%= Customer.current_customer.customer_label(result.class.to_s.underscore, :titleize => true) || result.class.to_s %>
+			</span>
 		</li>
 	<% end -%>	
+	<%= content_tag :div, "No results", :class => "empty" if auto_complete_person_fullname.empty? %>
 <% end -%>

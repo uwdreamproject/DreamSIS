@@ -1,0 +1,23 @@
+<h3 class="pre-title"><%= link_to h(@participant.fullname), @participant %></h3>
+<h1>College Degree</h1>
+
+<dl class="inline-definitions">
+	
+	<dt>Institution</dt>
+	<dd><%=h @college_degree.institution.try(:name) %></dd>
+	
+	<dt>Graduation Date</dt>
+	<dd><%= @college_degree.graduated_on.try(:to_s, :date_with_full_month) %></dd>
+
+	<dt>Degree Title</dt>
+	<dd><%=h @college_degree.degree_title %></dd>
+
+	<dt>Majors</dt>
+	<dd><%=h @college_degree.majors_list %></dd>
+
+	<dt>Source</dt>
+	<dd><%=h @college_degree.source.try(:titleize) %>
+		<%= " &ndash; " + link_to("Request ##{@college_degree.clearinghouse_request.id.to_s}", @college_degree.clearinghouse_request) if @college_degree.clearinghouse_request %>
+		</dd>
+
+</dl>

@@ -186,8 +186,8 @@ function setToNow(element_id) {
   if($(element_id + '_1i')) $(element_id + '_1i').value = d.getFullYear()
   if($(element_id + '_2i')) $(element_id + '_2i').value = d.getMonth() + 1
  	if($(element_id + '_3i')) $(element_id + '_3i').value = d.getDate()
-  if($(element_id + '_4i')) $(element_id + '_4i').value = d.getHours()
-  if($(element_id + '_5i'))$(element_id + '_5i').value = d.getMinutes()
+  if($(element_id + '_4i')) $(element_id + '_4i').value = pad(d.getHours(), 2, "0")
+  if($(element_id + '_5i'))$(element_id + '_5i').value = pad(d.getMinutes(), 2, "0")
 }
 
 function setToClear(element_id) {
@@ -211,4 +211,29 @@ function filterByCounty(filter_value) {
 		$$('.filterable-by-county.county-' + filter_value).invoke('show') 
 		window.location.hash = "filter-county=" + filter_value
 	}
+}
+
+// Left-pads a string with the specified character.
+function pad(n, width, z) {
+  z = z || '0';
+  n = n + '';
+  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}
+
+// Averages the numbers in an array.
+function average(numbers) {
+	var total = 0.0;
+	for (var i=0; i < numbers.length; i++) {
+		total += numbers[i];
+	}
+	return total / numbers.length;
+}
+
+// Sums the numbers in an array.
+function sum(numbers) {
+	var total = 0.0;
+	for (var i=0; i < numbers.length; i++) {
+		total += numbers[i];
+	}
+	return total;
 }
