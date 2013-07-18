@@ -33,7 +33,7 @@
 		<dd><%= @mentor.birthdate.to_s %></dd>
 		
 		<%- if @mentor.respond_to?(:valid_van_driver?) -%>
-			<dt>Van Trained?</dt>
+			<dt>Driver Trained?</dt>
 			<dd><%- if @mentor.valid_van_driver? -%>
 					<span class="success-message">Yes</span> - on <%= @mentor.van_driver_training_completed_at.to_s(:short_date) %>
 				<% else %>

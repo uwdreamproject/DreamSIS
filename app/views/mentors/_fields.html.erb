@@ -27,5 +27,5 @@
 								or #{link_to_function('OK', 
 									"$('mentor_background_check_result').value='OK  [#{@current_user.login}]'")}
 								(include an explanation) if the mentor passed the check." %>
-	<%= f.input :van_driver_training_completed_at, :hint => link_to_now("mentor_van_driver_training_completed_at") %>
+	<%= f.input :van_driver_training_completed_at, :hint => link_to_now("mentor_van_driver_training_completed_at"), :label => "Driver Training" %>
 <% end -%>
