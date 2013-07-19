@@ -81,6 +81,14 @@
 		</div>
 	<% end -%>
 
+	<%- if @participant.respond_to?(:events) -%>
+		<div class="info-section" id="events">
+			<h2>Events</h2>
+			<%= render :partial => 'events' %>
+		</div>
+	<% end -%>
+
+
 	
 	<%- if @participant.respond_to?(:submitted_fafsa?) -%>
 		<div class="info-section" id="paperwork">

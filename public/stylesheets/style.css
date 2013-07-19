@@ -782,6 +782,10 @@ td.college-logo {
 	background-image: url(../images/icons/silk/note.png);
 }
 
+.info-section#events h2 {
+	background-image: url(../images/icons/silk/calendar_view_month.png);
+}
+
 abbr.initialism {
 	font-size: 90%;
 	text-transform: uppercase;
@@ -1501,6 +1505,11 @@ a.button:active {
 .button.forward {
 	background-image: url(../images/icons/silk/arrow_right.png);
 }
+
+.button.up {
+	background-image: url(../images/icons/silk/arrow_up.png);
+}
+
 
 .button.info {
 	background-image: url(../images/icons/silk/information.png);

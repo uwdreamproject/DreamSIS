@@ -10,9 +10,9 @@
 	</thead>
 
 	<tbody>
-		<%= render :partial => "event_attendances/event_row", :collection => @event_attendances %>
+		<%= render :partial => "event_attendances/event_row", :collection => @participant.event_attendances %>
 		
-		<%- if @event_attendances.empty? -%>
+		<%- if @participant.event_attendances.empty? -%>
 			<tr class="empty">
 				<td colspan=10>You haven't attended any events.</td>
 			</tr>
