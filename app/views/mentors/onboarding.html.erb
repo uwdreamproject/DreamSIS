@@ -1,5 +1,5 @@
 <h3 class="pre-title"><%= @term.title %></h3>
-<h1>Mentor On-boarding</h1>
+<h1><%= Customer.mentor_Label %> On-boarding</h1>
 
 <%- @background_check_textblocks = [] -%>
 
@@ -10,7 +10,7 @@
 	<thead>
 		<tr>
 			<th>Name</th>
-			<th>NetID</th>
+			<th>E-mail</th>
 			<th class="centered">Gender</th>
 			<th>Date of Birth</th>
 			<th class="centered">Aliases</th>
@@ -23,8 +23,8 @@
 	<tbody>
 		<%- for mentor in @mentors -%>
 			<tr>
-				<td><%= link_to h(mentor.fullname), mentor %></td>
-				<td><%=h mentor.uw_net_id %></td>
+				<td class="name"><%= link_to h(mentor.fullname), mentor %></td>
+				<td><%=h mentor.email %></td>
 				<td class="centered"><%=h mentor.sex %></td>
 				<td><%=h mentor.birthdate.to_s %></td>
 				<td class="centered"><%= mentor.has_aliases? ? content_tag(:span, "Y", :class => 'red tag') : "-" %></td>
