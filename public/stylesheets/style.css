@@ -202,6 +202,8 @@ table.locations td.name a {
 
 table td.functions {
 	text-align: right;
+	width: 10px;
+	white-space: nowrap;
 }
 
 table td.functions a {
