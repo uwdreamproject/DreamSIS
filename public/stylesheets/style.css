@@ -2401,7 +2401,7 @@ ul.mini.photo-list li {
 	padding: 5px 0;
 }
 
-ul.mini.photo-list li img {
+ul.mini.photo-list li img, .mini.photo-list img {
 	float: left;
 	margin-right: 10px;
 	width: 30px;
