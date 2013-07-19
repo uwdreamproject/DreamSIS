@@ -3975,6 +3975,19 @@ body.rsvp .when-and-where {
 	margin: auto;
 }
 
+form.formtastic {
+	max-width: 100%;
+	overflow: hidden;
+/*	border: 1px solid red;*/
+}
+
+form.formtastic fieldset {
+	max-width: 99% !important;
+/*	border: 1px solid blue;*/
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
 form.formtastic fieldset fieldset.inline legend {
 	display: block;
 	float: none;
@@ -3985,8 +3998,45 @@ form.formtastic fieldset fieldset.inline > ol {
 }
 
 form.formtastic label {
-	width: auto !important;
+	display: block !important;
+	float: none !important;
+/*	border: 1px solid green;*/
+	padding-left: 4px;
+	width: 90% !important;
+	margin-bottom: 3px;
 }
+
+form.formtastic .inline-hints {
+	margin-left: 0 !important;
+	max-width: 100%;
+}
+
+form.formtastic input {
+	margin: 0;
+}
+
+form.formtastic fieldset > ol > li fieldset legend.label label {
+	position: absolute; 
+	color: red !important;
+	display: block !important;
+	float: none !important;
+	height: 2em !important;
+}
+
+form.formtastic fieldset > ol > li fieldset ol { 
+	color: green !important;
+	float: none !important; 
+	width: 100%; 
+	margin:0; 
+	padding:0 0 0 0 !important; 
+	display: block !important;
+	position: relative;
+}
+
+#dev-inspector-container {
+	display: none;
+}
+
 
 }
 
