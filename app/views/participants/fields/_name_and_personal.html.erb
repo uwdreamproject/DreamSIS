@@ -13,7 +13,7 @@
 						:with => "Form.serialize($('participant_form'))",
 						:condition => "$F('participant_firstname') != '' && $F('participant_lastname') != ''" %>
 
-	<div class="error-message" id="participant_duplicate_warning" style="clear:both"></div>
+	<div class="error-message no-icon" id="participant_duplicate_warning" style="clear:both"></div>
 
 	
 	<%= f.input :nickname, :label => "Nickname/Preferred Name" %>

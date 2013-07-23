@@ -950,6 +950,13 @@ ul.crimes-list li {
 .error-message {
 	color: red;
 	font-weight: bold;
+	background: url(../images/icons/silk/exclamation.png) no-repeat;
+	padding-left: 20px;
+	min-height: 18px;
+}
+
+.error-message.no-icon {
+	background: none;
 }
 
 
