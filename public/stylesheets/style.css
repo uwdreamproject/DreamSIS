@@ -2487,6 +2487,25 @@ td.signup-meter {
 	background: -webkit-linear-gradient(top, #ffe898 0%, #ffcd19 100%) #ffcd19;
 }
 
+input.default-threshold {
+	background: rgb(230,230,230) !important;
+	border: 1px solid rgba(0,0,0,0.25) !important;
+}
+
+input.caution-threshold {	
+	background: rgba(255,0,0,0.1) !important;
+	border: 1px solid rgba(255,0,0, 0.5) !important;
+}
+
+input.warning-threshold {
+	background: rgba(255,205,25, 0.1) !important;
+	border: 1px solid rgba(255,205,25, 1) !important;
+}
+
+input.target-threshold {
+	background: rgba(0, 150, 0, 0.1) !important;
+	border: 1px solid rgba(0, 150, 0, 0.5) !important;
+}
 
 /* @group Pagination */
 
