@@ -20,6 +20,9 @@
 			<% end -%>
 			</dd>
 		
+		<dt>Email</dt>
+		<dd><%= @mentor.email.blank? ? content_tag(:strong, "No email address", :class => "error-message") : auto_link(h(@mentor.email)) %></dd>
+
 		<dt>Aliases</dt>
 		<dd><%= @mentor.has_aliases? ? h(@mentor.aliases) : content_tag(:em, "None", :class => 'light') %></dd>
 			
@@ -70,7 +73,7 @@
 	<p><%= link_to "Back to #{Customer.mentors_label}", mentors_path, :class => "back button" %></p>
 	<p><%= link_to "Edit this #{Customer.mentor_label}", edit_mentor_path(@mentor), :class => 'edit button' %></p>
 	
-	<%- if !Customer.link_to_uw? && @current_user.admin? -%>
+	<%- if !Customer.link_to_uw? && @current_user.admin? && !@mentor.email.blank? -%>
 	<p class="login_link">
 		<%= link_to "Send login link", send_login_link_mentor_path(@mentor), 
 					:method => :put, 
@@ -79,12 +82,25 @@
 	</p>
 	<% end %>
 	
+	<% form_for :mentor, :html => { :method => :get }, :url => mentors_path do |f| %>
+		<%= model_auto_completer "mentor[fullname]", "", "id", nil,
+								{ 
+									:url => auto_complete_for_mentor_fullname_mentors_path, 
+									:submit_on_return => true, 
+									:after_update_element => "function(text_field, selection, hidden_field, id) { text_field.form.submit() }" 
+								},
+								{ :autocomplete => false, :class => "search", :placeholder => "Search #{Customer.mentors_label}" },
+								{ :skip_style => true } %>
+
+	<% end %>
+	
+	
 	
 	<h3>Contact Info</h3>
 
 	<dl class="sidebar">
 		<dt>Email</dt>
-		<dd><%= auto_link @mentor.email %></dd>
+		<dd><%= auto_link h(@mentor.email) %></dd>
 	</dl>
 
 
