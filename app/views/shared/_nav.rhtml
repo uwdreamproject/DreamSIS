@@ -22,7 +22,7 @@
 			<ul>
 				<li class="primary list"><%= link_to "All #{Customer.mentors_Label}", mentors_url %></li>
 				<li class="add"><%= link_to "Add new #{Customer.mentor_label}", new_mentor_url %></li>
-				<li><%= link_to "#{Customer.mentor_Label} Groups", mentor_term_groups_url %></li>
+				<li class="groups"><%= link_to "#{Customer.mentor_Label} Groups", mentor_term_groups_url %></li>
 				<li><%= link_to "On-boarding", onboarding_mentors_url(:term_id => Term.current_term) %></li>
 				<li><%= link_to "Event Status", event_status_mentors_url(:term_id => Term.current_term) %></li>
 				<li><%= link_to Customer.leads_Label, leads_mentors_url(:term_id => Term.current_term) %></li>
@@ -54,14 +54,15 @@
 	<li><%= link_to "Other", "#", :onClick => "return false" %>
 		<div>
 			<ul>
-				<li><%= link_to "Terms", terms_url %></li>
-				<li><%= link_to "Stat Filters", object_filters_url %></li>
-				<li><%= link_to "Locations &amp; Colleges", locations_url %></li>
-				<li><%= link_to "Users", users_url %></li>
-				<li><%= link_to "Participant Groups", participant_groups_url %></li>
-				<li><%= link_to "Trainings", trainings_url %></li>
-				<li><%= link_to "Programs", programs_url %></li>
-				<li><%= link_to "Test Types", test_types_url %></li>
+				<li class="locations"><%= link_to "Locations &amp; Colleges", locations_url %></li>
+				<li class="groups"><%= link_to "Participant Groups", participant_groups_url %></li>
+				<li class="programs"><%= link_to "Programs", programs_url %></li>
+				<li class="scholarships"><%= link_to "Scholarships", scholarships_url %></li>
+				<li class="filters"><%= link_to "Stat Filters", object_filters_url %></li>
+				<li class="terms"><%= link_to "Terms", terms_url %></li>
+				<li class="tests"><%= link_to "Tests", test_types_url %></li>
+				<li class="trainings"><%= link_to "Trainings", trainings_url %></li>
+				<li class="users"><%= link_to "Users", users_url %></li>
 			</ul>
 		</div>
 	</li>

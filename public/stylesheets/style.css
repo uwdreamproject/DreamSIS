@@ -3268,25 +3268,25 @@ li.input div.auto_complete.after_select {
 	font-weight: bold !important;
 }
 
-.menu ul ul li.list a {
-	background: url(../images/icons/silk/text_list_bullets.png) no-repeat left center;
-}
+.menu ul ul li.list a {	background-image: url(../images/icons/silk/text_list_bullets.png); }
+.menu ul ul li.report a {	background-image: url(../images/icons/silk/chart_pie.png); }
+.menu ul ul li.add a { background-image: url(../images/icons/silk/add.png); }
+.menu ul ul li.nsc a { background-image: url(../images/icons/nsc-favicon.png); }
+.menu ul ul li.scholarships a { background-image: url(../images/icons/silk/money.png); }
+.menu ul ul li.colleges a { background-image: url(../images/icons/silk/building.png); }
+.menu ul ul li.locations a { background-image: url(../images/icons/silk/building.png); }
+.menu ul ul li.groups a { background-image: url(../images/icons/silk/group.png); }
+.menu ul ul li.programs a { background-image: url(../images/icons/silk/bricks.png); }
+.menu ul ul li.filters a { background-image: url(../images/icons/silk/timeline_marker.png); }
+.menu ul ul li.terms a { background-image: url(../images/icons/silk/date.png); }
+.menu ul ul li.tests a { background-image: url(../images/icons/silk/page_edit.png); }
+.menu ul ul li.trainings a { background-image: url(../images/icons/silk/book_open.png); }
+.menu ul ul li.users a { background-image: url(../images/icons/silk/shield.png); }
 
-.menu ul ul li.report a {
-	background: url(../images/icons/silk/chart_pie.png) no-repeat left center;
-}
-
-
-.menu ul ul li.add a {
-	background: url(../images/icons/silk/add.png) no-repeat left center;
-}
-
-.menu ul ul li.nsc a {
-	background: url(../images/icons/nsc-favicon.png) no-repeat left center;
-}
 
 .menu ul ul li a {
-	background-position: 5px top;
+	background-position: left center;
+	background-repeat: no-repeat;
 }
 
 .menu ul ul li a:hover {
