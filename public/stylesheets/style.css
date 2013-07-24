@@ -1180,6 +1180,8 @@ input.search {
 input.search:focus {
 	border-bottom-right-radius: 0;
 	border-bottom-left-radius: 0;
+	background: #edf5fe url(../images/icons/silk/magnifier.png) no-repeat 4px center !important;
+	padding-left: 25px !important;
 }
 
 input.search.wide {
@@ -1391,6 +1393,17 @@ form.formtastic fieldset fieldset {
 form.formtastic > fieldset > ol > li > label {
 	width: 22%;
 	padding-right: 3%;
+}
+
+input.currency:before {
+	content: "$ ";
+	float: left;
+	margin-right: 0.25em;
+	color: rgba(0,0,0,0.5);
+}
+
+input.currency {
+	text-align: right;
 }
 
 .choose_identity p.intro {
@@ -3053,9 +3066,12 @@ div.auto_complete {
 }
 
 div#institution_name_auto_complete ul {
-	width: 300px;
+	width: 350px;
 }
 
+div#scholarship_title_auto_complete ul {
+	width: 350px;
+}
 
 div.auto_complete ul {
   border: 1px solid #9aa4ab;

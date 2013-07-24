@@ -1,0 +1,25 @@
+<% content_tag('ul') do %>
+	<% for result in auto_complete_scholarship_title %>
+		<li id="<%= result.class.to_s.underscore %>_<%= result.id %>" class="icon-left <%= result.class.to_s.underscore %>">
+			<span class="primary"><%= highlight(h(result.title), h(highlight_phrase)) %></span>
+			<span class="secondary"><%=h result.organization_name %></span>
+			<span class="secondary currency"><%= number_to_currency(result.default_amount) %></span>
+
+			<%- 
+			string_fields = %w[amount renewable_years]
+			boolean_fields = %w[renewable full_ride gap_funding living_stipend]
+
+			for field in string_fields %>
+				<%= javascript_tag "if($('scholarship_application_#{field}')) { 
+							$('scholarship_application_#{field}').value = '#{h(result['default_' + field])}' 
+						}" %>
+			<% end %>
+			
+			<%- for field in boolean_fields %>
+				<%= javascript_tag "if($('scholarship_application_#{field}')) { 
+							$('scholarship_application_#{field}').checked = #{result['default_' + field] ? 'true' : 'false'} 
+						}" %>
+			<% end %>
+		</li>
+	<% end -%>	
+<% end -%>

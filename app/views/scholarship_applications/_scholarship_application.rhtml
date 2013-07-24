@@ -1,6 +1,6 @@
 <tr id="scholarship_application_<%= scholarship_application.id %>">
 
-  <td class="name"><%=h scholarship_application.title %></td>
+  <td class="name"><%= link_to h(scholarship_application.title), scholarship_application.try(:scholarship) %></td>
   <td><%=h number_to_currency scholarship_application.amount %></td>
   <td>
 	<% remote_form_for([@participant, scholarship_application], 

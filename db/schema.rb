@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130605060405) do
+ActiveRecord::Schema.define(:version => 20130724055405) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -608,6 +608,11 @@ ActiveRecord::Schema.define(:version => 20130605060405) do
     t.datetime "updated_at"
     t.text     "notes"
     t.boolean  "nominated"
+    t.integer  "renewable_years"
+    t.boolean  "full_ride"
+    t.boolean  "gap_funding"
+    t.boolean  "living_stipend"
+    t.integer  "institution_id"
   end
 
   create_table "scholarships", :force => true do |t|
@@ -618,6 +623,11 @@ ActiveRecord::Schema.define(:version => 20130605060405) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "customer_id"
+    t.integer  "default_renewable_years"
+    t.boolean  "default_full_ride"
+    t.boolean  "default_gap_funding"
+    t.boolean  "default_living_stipend"
+    t.boolean  "default_renewable"
   end
 
   add_index "scholarships", ["customer_id"], :name => "index_scholarships_on_customer_id"
