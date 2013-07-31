@@ -171,6 +171,10 @@ class Participant < Person
     @college_mapper_student ||= CollegeMapperStudent.find(self.college_mapper_id)
     update_college_list_from_college_mapper if update_college_list
     @college_mapper_student
+  rescue Exception => e
+    logger.info { e.message }
+    ::Exceptional::Catcher.handle(e)  # log the error to Exceptional but continue along without error to the user.
+    return nil
   end
 
   # Creates a CollegeMapperStudent record for this participant and stores the CollegeMapper user ID in the
@@ -188,9 +192,10 @@ class Participant < Person
     })
     self.update_attribute(:college_mapper_id, @college_mapper_student.id)
     @college_mapper_student
-  rescue ActiveResource::BadRequest => e
+  rescue Exception => e
     logger.info { e.message }
-    false
+    ::Exceptional::Catcher.handle(e)  # log the error to Exceptional but continue along without error to the user.
+    return false
   end
   
   # Fetches the college list for this student from CollegeMapper and updates the collection of CollegeApplications
