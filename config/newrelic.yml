@@ -1,7 +1,7 @@
 
 common: &default_settings
-  license_key: '3d55356357429ef2e20bc676a98e71e506e98236'
-  app_name: 'DreamSIS_Production'
+  license_key: ''
+  app_name: ''
   monitor_mode: true
   developer_mode: false
   log_level: info
