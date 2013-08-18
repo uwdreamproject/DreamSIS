@@ -36,6 +36,7 @@
 <%- f.inputs :name => "Process &amp; Decision" do -%>
 	<p>Was the student awarded the scholarship?</p>
 
+	<%= f.input :application_due_date, :include_blank => true, :hint => link_to_now(:scholarship_application_application_due_date) %>
 	<%= f.input :date_applied, :include_blank => true, :hint => link_to_now(:scholarship_application_date_applied) %>
 
 	<%- f.inputs :name => "Decision", :class => "inline" do -%>

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130817015052) do
+ActiveRecord::Schema.define(:version => 20130817222957) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -616,6 +616,7 @@ ActiveRecord::Schema.define(:version => 20130817015052) do
     t.boolean  "gap_funding"
     t.boolean  "living_stipend"
     t.integer  "institution_id"
+    t.date     "application_due_date"
   end
 
   create_table "scholarships", :force => true do |t|
