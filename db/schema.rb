@@ -671,6 +671,7 @@ ActiveRecord::Schema.define(:version => 20130817015052) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "customer_id"
+    t.boolean  "passed"
   end
 
   add_index "test_scores", ["customer_id"], :name => "index_test_scores_on_customer_id"
@@ -683,6 +684,7 @@ ActiveRecord::Schema.define(:version => 20130817015052) do
     t.datetime "updated_at"
     t.integer  "customer_id"
     t.string   "score_calculation_method"
+    t.boolean  "passable"
   end
 
   add_index "test_types", ["customer_id"], :name => "index_test_types_on_customer_id"

@@ -38,5 +38,7 @@
 		return new_total_score;
 	}
 	<% end %>
+
+    <%= f.input :passed, :hint => "Did the student pass the minimum score?" if f.object.test_type.try(:passable?) %>
 	
 <% end %>
