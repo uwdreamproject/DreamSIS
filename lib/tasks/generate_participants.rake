@@ -10,6 +10,7 @@ task :generate_participants => :environment do
   high_schools.each do |high_school|
     HighSchool.find_or_create_by_name_and_partner_school(high_school + " High School", true)
   end
+  all_high_schools = HighSchool.all
   
   grad_years = (2011..Time.now.year+1).to_a
   n = ENV['N'].to_i
@@ -17,7 +18,7 @@ task :generate_participants => :environment do
     Participant.create(
       :firstname => firstnames[rand(firstnames.size)].strip, 
       :lastname => lastnames[rand(lastnames.size)].strip, 
-      :high_school_id => HighSchool.find(:first, :order=>"Random()").id, 
+      :high_school_id => all_high_schools[rand(all_high_schools.length)].try(:id), 
       :grad_year => grad_years[rand(grad_years.size)]
     )
     print "."
