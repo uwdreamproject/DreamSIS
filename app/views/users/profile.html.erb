@@ -6,11 +6,12 @@
 	<%= f.error_messages :header_message => "Oops, there was a problem." %>
 
 	<%- f.inputs do -%>
-        <%- f.inputs(:name => "Name", :class => "inline") do -%>
-    		<%= f.input :firstname, :label => "First Name", :disabled => @person.is_a?(Mentor) %>
+        <%- f.inputs(:name => "First Name", :class => "inline") do -%>
+    		<%= f.input :firstname, :label => "Legal/Given Name", :disabled => @person.is_a?(Mentor) %>
     		<%= f.input :nickname, :label => "Preferred/Nickname", :input_html => { :size => 10 } %>
-    		<%= f.input :lastname, :label => "Last Name", :disabled => @person.is_a?(Mentor) %>
         <% end %>
+
+		<%= f.input :lastname, :label => "Last Name", :disabled => @person.is_a?(Mentor) %>
         
 		<%= f.input :email, :label => "E-mail Address", :disabled => @person.is_a?(Mentor), :hint => "We've pulled your email address from the login service that you used (if it was provided). You can change the email address here if you'd like to use a different address instead." %>
 		<%= f.input :sex, :label => "Gender", :as => :select, :collection => {"Male" => "M", "Female" => "F", "No Response" => "NR"} %>
