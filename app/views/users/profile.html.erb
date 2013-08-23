@@ -12,6 +12,7 @@
 		<%= f.input :sex, :label => "Gender", :as => :select, :collection => {"Male" => "M", "Female" => "F", "No Response" => "NR"} %>
 		<%= f.input :phone_mobile, :label => "Phone", :input_html => { :value => number_to_phone(f.object.phone_mobile) }, :hint => "We only use your phone number to get ahold of you about events and activities that you've signed up for on this site." %>
 		<%= f.input :birthdate, :label => "Birth Date", :start_year => Time.now.year-13, :end_year => 1930 %>
+        <%= f.input :other_languages, :label => "Other languages you speak", :hint => "If you speak any languages other than English, enter them here to help coordinate event planning and project assignment." %>
 	
 		<%- if @person.is_a?(Student) || @person.is_a?(Participant) -%>
 			<li class="select optional <%= "error" if @person.errors.on(:high_school_id) %>" id="person_high_school_id_input">
