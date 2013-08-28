@@ -1,5 +1,5 @@
 <h3 class="pre-title"><%=h @term.title %></h3>
-<h1><%= Customer.visits_Label %>
+<h1><%= Customer.visit_label %>
 	<small class="light">&raquo; <%=h @high_school.name %></small></h1>
 
 <table>
@@ -31,7 +31,7 @@
 <% if @visits.empty? %>
 <tr class="empty">
 	<td colspan=10>
-		You haven't created any <%= Customer.visits_label %>. 
+		You haven't created any <%= Customer.visit_label %>. 
 		<%= link_to "Add a new #{Customer.visit_label}.", new_high_school_visit_path(@high_school, @term) %>
 	</td>
 </tr>

@@ -42,7 +42,7 @@ style_height = mentor_term_group.length.to_i
 	</p>
 
 	<p class="light"><%= mentor_term_group.times %></p>
-	<p class="light"><%= "Section #{h(mentor_term_group.section_id)}" unless mentor_term_group.section_id.blank? %></p>
+	<p class="light"><%= h(mentor_term_group.course_number + mentor_term_group.section_id) unless mentor_term_group.section_id.blank? %></p>
 	<p class="spots_left"><%= "#{pluralize(mentor_term_group.spots_left, "spot")} left" if mentor_term_group.spots_left %></p>
 	
 </li>

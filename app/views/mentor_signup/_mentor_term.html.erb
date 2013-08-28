@@ -8,7 +8,7 @@
 	</td>
 	
 	<td class="section_id"><%= content_tag :span, 
-			mentor_term.mentor_term_group.try(:section_id), 
+			h(mentor_term.mentor_term_group.try(:course_number) + mentor_term.mentor_term_group.try(:section_id)), 
 			:class => 'section_id tag' %></td>
 			
 	<td class="mentor_term_group_title">

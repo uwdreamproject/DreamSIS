@@ -58,6 +58,10 @@ class MentorSignupController < ApplicationController
     end
     if m.valid?
       flash[:notice] = "You were successfully added to the group."
+      if Customer.link_to_uw? && !@mentor.correct_sections?
+        flash[:notice] << " You are still not signed up for the correct sections."
+        return redirect_to :back
+      end
     else
       flash[:error] = "Could not add you to the group, or you're already in that group."
     end
@@ -77,7 +81,9 @@ class MentorSignupController < ApplicationController
     @mentor_term.destroy
     
     flash[:notice] = "Successfully removed you from the group."
-    
+    if Customer.link_to_uw? && !@mentor.correct_sections?
+      flash[:notice] << " You are still not signed up for the correct sections."
+    end
     respond_to do |format|
       format.html { redirect_to mentor_signup_term_url(@term) }
       format.js   { 

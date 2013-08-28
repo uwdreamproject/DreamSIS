@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130605060405) do
+ActiveRecord::Schema.define(:version => 20130827214106) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -644,6 +644,8 @@ ActiveRecord::Schema.define(:version => 20130605060405) do
     t.string   "title"
     t.string   "type"
     t.integer  "customer_id"
+    t.text     "course_dependencies"
+    t.text     "signup_description"
   end
 
   add_index "terms", ["customer_id"], :name => "index_terms_on_customer_id"
