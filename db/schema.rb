@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130818224835) do
+ActiveRecord::Schema.define(:version => 20130830180707) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -597,6 +597,7 @@ ActiveRecord::Schema.define(:version => 20130818224835) do
     t.string   "abbreviation"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "website_url"
   end
 
   create_table "scholarship_applications", :force => true do |t|

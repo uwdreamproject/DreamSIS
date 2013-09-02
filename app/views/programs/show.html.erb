@@ -5,8 +5,11 @@
 	<dt>Title</dt>
 	<dd><%=h @program.title %></dd>
 
-	<dt>Abbreviation</dt>
-	<dd><%=h @program.abbreviation %></dd>
+    <dt>Abbreviation</dt>
+    <dd><%=h @program.abbreviation %></dd>
+
+    <dt>Website</dt>
+    <dd><%= auto_link h(@program.website_url) %></dd>
 
 </dl>
 
