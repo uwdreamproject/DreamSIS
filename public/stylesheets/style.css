@@ -2196,6 +2196,23 @@ span.result.highlight, .result.highlight {
 	padding-right: .5em;
 }
 
+tr.change_value td {
+	vertical-align: top;
+	padding-top: 1em;
+}
+
+tr.change_value td li {
+	font-size: 90%;
+	padding: 2px;
+}
+
+code.change_value {
+	border-bottom: 1px solid #ddd;
+	background: #f5f5f5;
+	padding: 0 5px;
+	border-radius: 3px;
+}
+
 /* @group Tags */
 
 .tag {

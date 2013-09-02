@@ -55,6 +55,8 @@ ActionController::Routing::Routes.draw do |map|
     :action => 'term'
   map.resources :volunteers, :controller => :mentors, :only => [:show, :background_check_responses]
 
+  map.changes_for_object 'changes/for/:model_name/:id', :controller => 'changes', :action => 'for_object'
+
   map.mentor_signup_schedule_add_my_courses 'mentor_signup/add_my_courses', :controller => 'mentor_signup', :action => 'add_my_courses'
   map.mentor_signup_basics 'mentor_signup/basics', :controller => 'mentor_signup', :action => 'basics'
   map.mentor_signup_risk_form 'mentor_signup/risk_form', :controller => 'mentor_signup', :action => 'risk_form'

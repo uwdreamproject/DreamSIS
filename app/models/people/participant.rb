@@ -229,4 +229,25 @@ class Participant < Person
     errors.add(:new_mentor_id, "has already been added to this participant")
   end
   
+  # Returns the objects that have a child relationship to this object:
+  # 
+  # * college_applications
+  # * scholarship_applications
+  # * parents
+  # * test_scores
+  # * college_enrollments
+  # * college_degrees
+  # * participant_mentors
+  # * event_attendances
+  def child_objects
+    collections = %w[college_applications scholarship_applications parents test_scores 
+                     college_enrollments college_degrees mentor_participants event_attendances]
+    child_objects = []
+    for collection in collections
+      child_objects << self.instance_eval(collection)
+    end
+    
+    child_objects.flatten.compact
+  end
+  
 end

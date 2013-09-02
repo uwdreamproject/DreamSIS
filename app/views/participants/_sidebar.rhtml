@@ -8,6 +8,10 @@
 	 				high_school_cohort_path(@participant.high_school, (@participant.grad_year || 0)),
 	 				:class => 'back button' if @participant.high_school && @participant.grad_year %></p>
 	
+    <%- if @current_user.admin? -%>
+        <p><%= link_to "Record History", changes_for_object_path("participant", @participant), :class => "info button" %></p>
+    <% end %>
+    
 <% end -%>
 
 <% form_for :participant, :url => participants_path, :html => { :method => :get } do |f| %>
