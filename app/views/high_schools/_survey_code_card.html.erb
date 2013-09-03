@@ -6,7 +6,7 @@
 		<small><%= participant.try(:id) %></small>
 		</span>
 	<ol>
-		<li>Go to <span class="url">http://dreamproject.org/survey</span></li>
+		<li>Go to <span class="url"><%= @survey_url.split("/").join("&thinsp;/&thinsp;") %></span></li>
 		<li>Enter your survey ID code:</li>
 	</ol>
 	<span class="code"><%= code %></span>
