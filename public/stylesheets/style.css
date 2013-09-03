@@ -1589,6 +1589,10 @@ a.button:active {
 	background-image: url(../images/icons/silk/tick.png);
 }
 
+.button.trash, .button.delete {
+  background-image: url(../images/icons/silk/bin_closed.png);
+}
+
 /*table.schedule {
 	position: absolute;
 }*/

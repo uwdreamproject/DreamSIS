@@ -10,6 +10,7 @@
 	
     <%- if @current_user.admin? -%>
         <p><%= link_to "Record History", changes_for_object_path("participant", @participant), :class => "info button" %></p>
+        <p><%= link_to "Delete this #{Customer.participant_label}", @participant, :method => :delete, :confirm => "Are you SURE you want to delete this #{Customer.participant_label}?", :class => "delete button" %></p>
     <% end %>
     
 <% end -%>
