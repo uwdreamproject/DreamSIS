@@ -1106,6 +1106,16 @@ input:focus, form.formtastic input:focus, textarea:focus, form.formtastic textar
 	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),0 0 8px rgba(82, 168, 236, 0.4);
 }
 
+input[type=checkbox]:focus, form.formtastic input[type=checkbox]:focus {
+  outline: 2px solid rgba(82, 168, 236, 0.4);
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),0 0 8px rgba(82, 168, 236, 0.4);
+}
+
+body.attendance .success-marker {
+  margin-left: 0.5em;
+  margin-top: 2px;
+}
+
 input, textarea, select {
 -webkit-transition: border linear 0.2s,box-shadow linear 0.2s;
 -moz-transition: border linear 0.2s,box-shadow linear 0.2s;

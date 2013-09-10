@@ -8,9 +8,9 @@
 	<%= f.input :event_type %>
 	<%= f.input :event_group %>
 		
-	<%= f.input :date %>
+	<%= f.input :date, :hint => link_to_now(f.object.class.to_s.underscore + "_date") %>
 	<%= f.input :time_tba, :label => "Time TBA", :input_html => { :onChange => "
-					if($('event_time_tba').checked) {
+					if(this.checked) {
 						$('event_times_input').hide(); $('audience_specific_times').hide();
 					} else {
 						$('event_times_input').show(); $('audience_specific_times').show();
