@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130830180707) do
+ActiveRecord::Schema.define(:version => 20130912063806) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -574,6 +574,8 @@ ActiveRecord::Schema.define(:version => 20130830180707) do
     t.boolean  "incarcerated"
     t.integer  "highest_education_level_id"
     t.string   "migration_id"
+    t.boolean  "lives_with"
+    t.string   "education_country"
   end
 
   add_index "people", ["customer_id"], :name => "index_people_on_customer_id"
@@ -647,6 +649,23 @@ ActiveRecord::Schema.define(:version => 20130830180707) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "taggings", :force => true do |t|
+    t.integer  "tag_id"
+    t.integer  "taggable_id"
+    t.integer  "tagger_id"
+    t.string   "tagger_type"
+    t.string   "taggable_type"
+    t.string   "context"
+    t.datetime "created_at"
+  end
+
+  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
+  add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
+
+  create_table "tags", :force => true do |t|
+    t.string "name"
+  end
 
   create_table "terms", :force => true do |t|
     t.integer  "year"

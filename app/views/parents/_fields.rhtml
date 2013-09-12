@@ -3,7 +3,11 @@
 		<%= f.inputs :lastname, :firstname, :middlename, :suffix %>
 	<%- end -%>	
 
-	<%= f.input :parent_type, :label => "Relationship to Student", :collection => Parent::RELATIONSHIP_TYPES %>
+    <%- f.inputs :name => "Relationship", :class => "inline" do -%>
+    	<%= f.input :parent_type, :label => "Relationship to Student", :collection => Parent::RELATIONSHIP_TYPES %>
+        <%= f.input :lives_with, :label => "Student lives with this person" %>
+    <% end %>
+    
 <% end %>
 
 <%- f.inputs :name => "Contact Information" do -%>
@@ -35,7 +39,8 @@
 	<%= f.input :occupation %>
 	<%= f.input :annual_income, :input_html => { :size => 15 } %>
 	<%= f.input :highest_education_level_id, :label => "Highest Education Level Completed", :collection => EducationLevel.all %>
-	
+	<%= f.input :education_country, :label => "Country where educated", :include_blank => "United States" %>
+    
 <% end %>
 
 <%- f.inputs :name => "Meetings" do -%>
