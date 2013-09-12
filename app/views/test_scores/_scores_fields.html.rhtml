@@ -1,7 +1,7 @@
 <%- f.inputs :name => "Scores", :id => "scores_fields" do -%>
 
 	<%- if f.object.try(:test_type) -%>
-		<%- for section, maximum_score in f.object.try(:test_type).try(:section_scores_hash) -%>
+		<%- for section, maximum_score in f.object.try(:test_type).try(:section_scores_hash).sort_by{|k,v| k} -%>
 			<%= f.input "section_score_#{section}",
 						:wrapper_html => { :class => "sameline-hint" },
 						:hint => "out of #{maximum_score}",
