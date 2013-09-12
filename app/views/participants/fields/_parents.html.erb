@@ -11,6 +11,7 @@
 		<%= f.input :foster_youth, :label => "Foster Care Youth" %>
 	<% end %>
 
+    <%- if false -%>
 	<%- for count, parent in {1 => "mother", 2 => "father"} -%>
 		<%- f.inputs :name => "#{parent.titleize}/Guardian #{count}", :class => "inline" do -%>
 			<%= f.input "#{parent}_education_level_id", :label => "Education Level", :collection => EducationLevel.all %>
@@ -18,5 +19,6 @@
 			<%= f.input "live_with_#{parent}", :label => "Lives with this person" %>
 		<% end %>
 	<% end %>
+    <% end %>
 
 <% end %>
