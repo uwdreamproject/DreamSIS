@@ -3,7 +3,7 @@
 
 	<%= f.input :maximum_total_score, :input_html => { :size => 5 } %>
 	
-	<%= f.input :score_calculation_method, :as => :select, :collection => %w[sum average],
+	<%= f.input :score_calculation_method, :as => :select, :collection => %w[sum average rounded-average],
 		 		:hint => "'Sum' adds each section score together to get the total score. 
 						  'Average' calculates an average of all the section scores instead." %>
 

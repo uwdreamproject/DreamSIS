@@ -31,7 +31,9 @@
 		}
 		if (calculation_method == 'average') {
 			new_total_score = average(scores);
-		} else {
+        } else if (calculation_method == 'rounded-average') {
+            new_total_score = average_and_round(scores);
+        } else {
 			new_total_score = sum(scores);
 		}
 		$(total_element_id).value = new_total_score;
