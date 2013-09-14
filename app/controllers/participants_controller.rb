@@ -3,15 +3,19 @@ class ParticipantsController < ApplicationController
   skip_before_filter :login_required, :only => [:college_mapper_callback]
   skip_before_filter :check_if_enrolled, :only => [:college_mapper_callback]
   skip_before_filter :check_authorization, :except => [:index, :cohort, :destroy]
+  
+  before_filter :set_report_type
 
   # GET /participants
   # GET /participants.xml
   def index
+    return redirect_to Participant.find(params[:id]) if params[:id]
     @participants = Participant.paginate(:all, :page => params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
       format.xml { render :xml => @participants }
+      format.js { render 'index'}
       format.xls { 
         @participants = Participant.all
         render :action => 'index', :layout => 'basic' 
@@ -31,6 +35,7 @@ class ParticipantsController < ApplicationController
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
+      format.js { render 'index'}
       format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
     end
   end
@@ -42,6 +47,7 @@ class ParticipantsController < ApplicationController
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
+      format.js { render 'index'}
       format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
     end
   end
@@ -60,6 +66,7 @@ class ParticipantsController < ApplicationController
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
+      format.js { render 'index'}
       format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
     end    
   end
@@ -79,6 +86,7 @@ class ParticipantsController < ApplicationController
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
+      format.js { render 'index'}
       format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
     end    
   end
@@ -99,21 +107,13 @@ class ParticipantsController < ApplicationController
   # GET /participants/1.xml
   def show
     @participant = Participant.find(params[:id]) rescue Student.find(params[:id])
+    @high_school = @participant.high_school
+    @grad_year = @participant.grad_year
     
     unless @current_user && @current_user.can_view?(@participant)
       return render_error("You are not allowed to view that participant.")
     end
     
-    if @participant.is_a?(Participant)
-      participants = Participant.in_cohort(@participant.grad_year).in_high_school(@participant.high_school_id)
-      my_index = participants.index(@participant)
-      start_index = my_index - 5
-      start_index = 0 if start_index < 0
-      end_index = my_index + 5
-      end_index = participants.size-1 if end_index > participants.size
-      @participants_for_nav = participants[start_index..end_index]
-    end
-
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @participant }
@@ -238,10 +238,23 @@ class ParticipantsController < ApplicationController
   end
   
   def auto_complete_for_participant_fullname
+    conditions = ["(LOWER(firstname) LIKE :fullname OR LOWER(lastname) LIKE :fullname)"]
+    conditions << "high_school_id = :high_school_id" if params[:high_school_id]
+    conditions << "grad_year = :grad_year" if params[:grad_year]
+    
     @participants = Participant.find(:all, 
-                                      :conditions => ["LOWER(firstname) LIKE :fullname OR LOWER(lastname) LIKE :fullname", 
-                                                      {:fullname => "%#{params[:participant][:fullname].downcase}%"}])
-    render :inline => "<%= auto_complete_result @participants, 'fullname' %>"
+                                      :conditions => [conditions.join(" AND "), 
+                                                      {:fullname => "%#{params[:participant][:fullname].downcase}%",
+                                                      :grad_year => params[:grad_year],
+                                                      :high_school_id => params[:high_school_id]
+                                                      }])
+    respond_to do |format|
+      format.js { 
+        render :partial => "shared/auto_complete_person_fullname", 
+                :object => @participants, 
+                :locals => { :highlight_phrase => params[:participant][:fullname] }
+       }
+    end
   end
   
   def college_mapper_login
@@ -270,5 +283,10 @@ class ParticipantsController < ApplicationController
   end
 
   protected
+
+  # Stores the value from +params[:report]+ and stores it in +@report+ for use in views.
+  def set_report_type
+    @report = params[:report] || "basics"
+  end
     
 end

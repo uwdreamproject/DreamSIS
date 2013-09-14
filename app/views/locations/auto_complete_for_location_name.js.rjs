@@ -1,5 +1,0 @@
-unless params[:location][:name].blank?
-  page.hide 'original_locations'
-  page << "$$('.pagination').invoke('hide')"
-  page.replace_html 'location_search_results', :partial => "location", :collection => @locations
-end

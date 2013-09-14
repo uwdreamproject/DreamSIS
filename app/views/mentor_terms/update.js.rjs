@@ -1,0 +1,23 @@
+page.if "$('note_form_container_#{@mentor_term.id}')" do
+  page.replace "note_form_container_#{@mentor_term.id}", 
+              :partial => "mentor_term_groups/note_form", 
+              :locals => { :mentor_term => @mentor_term}
+end
+
+page.if "$('participant_form_container_#{@mentor_term.id}')" do
+  page.replace "participant_form_container_#{@mentor_term.id}", 
+              :partial => "mentor_term_groups/participant_form", 
+              :locals => { :mentor_term => @mentor_term}
+end
+
+page.if "$('participants_#{@mentor_term.id}')" do
+  page.replace_html "participants_#{@mentor_term.id}",
+                    :partial => 'mentor_term_groups/mini_participant', 
+                    :collection => @mentor_term.mentor_participants,
+                    :locals => { :mentor_term => @mentor_term }
+end
+
+page.if "$('mini_participant_#{@mentor_term.id}_#{params[:mentor_term][:new_participant_id] rescue nil}')" do
+  page.visual_effect :highlight, "mini_participant_#{@mentor_term.id}_#{params[:mentor_term][:new_participant_id]}"
+end
+

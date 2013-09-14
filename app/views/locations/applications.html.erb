@@ -1,0 +1,32 @@
+<h3 class="pre-title"><%=h @location.type.to_s.titleize %></h3>
+<h1><%=h @location.name %></h1>
+
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Choice</th>
+			<th>Applied?</th>
+			<th>Decision</th>
+			<th>Attending?</th>
+			<th>Functions</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+		<%- for college_application in @location.college_applications -%>
+		<tr>
+			<td class="name"><%= link_to h(college_application.participant.try(:fullname)), college_application.participant %></td>
+			<td><%=h college_application.choice %></td>
+			<td><%= content_tag :span, 
+								(college_application.applied? ? "Y" : "N"), 
+								:class => "icon #{college_application.applied? ? "pass" : "fail"}" %></td>
+			<td><%=h college_application.decision %></td>
+			<td><%= content_tag :span, 
+								(college_application.attending? ? "Y" : "N"), 
+								:class => "icon #{college_application.attending? ? "pass" : "fail"}" %></td>
+			<td></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>

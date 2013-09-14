@@ -1,4 +1,5 @@
-<h1>Edit High School Visit for <%= @high_school.name %></h1>
+<h3 class="pre-title"><%= @high_school.name %></h3>
+<h1>Edit <%= Customer.visit_Label %></h1>
 
 <% semantic_form_for :visit, @visit, :url => high_school_visit_path(@high_school), :html => { :method => :put } do |f| %>
 

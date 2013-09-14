@@ -5,9 +5,18 @@ class CourseResource < UwWebResource
   self.caller_class = "CourseResource"
   
   def self.find(*args)
-    return super(args.first.gsub(" ", "%20")) if args.size == 1
-    sws_log args.inspect, "Find"
-    super
+    if args && args.first.include?("/")
+      # Uses /public/ to avoid  attaching certs to standard request
+      fetch = JSON.parse(open("#{self.site}" + "#{self.prefix}" + "/public/course/" + args.first+".json").read)
+      term = fetch["Term"]
+      fetch.delete("Term")
+      fetch["TermA"] = term
+      return CourseResource.new(fetch) 
+    else
+      return super(args.first.gsub(" ", "%20")) if args.size == 1
+      sws_log args.inspect, "Find"
+      super
+    end
   end
   
   # Course ID in the format that SWS uses. For example: "2011,spring,EDUC,360"
@@ -55,7 +64,7 @@ class CourseResource < UwWebResource
   def linked_section_ids
     linked_sections.collect do |ls|
       if ls.attributes["Section"]
-        [ls.Section.Year, ls.Section.Quarter, ls.Section.CurriculumAbbreviation, ls.Section.CourseNumber].join(",") +
+        [ls.Section.Year, ls.Section.Term, ls.Section.CurriculumAbbreviation, ls.Section.CourseNumber].join(",") +
         "/" + ls.Section.SectionID
       else
         ls.id
@@ -109,7 +118,7 @@ class CourseResource < UwWebResource
   end
   
   def meetings_array
-    [attributes["Meetings"].attributes["Meeting"]].flatten
+    [attributes["Meetings"]].flatten
   end
   
   # Returns an array of the multiple lines of the time schedule "comments" field from the student database.

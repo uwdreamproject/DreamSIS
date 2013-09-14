@@ -1,4 +1,4 @@
-<table class="participants">
+<table class="participants" id="participants_table">
 	<thead>
 		<tr>
 			<th>Name</th>
@@ -15,7 +15,7 @@
 	
 		<%- if (@my_mentees || @participants).empty? -%>
 			<tr class="empty">
-				<td colspan=10>You don't currently have any mentees assigned to you.</td>
+				<td colspan=10>You don't currently have any <%= Customer.mentees_label %> assigned to you.</td>
 			</tr>
 		<% end -%>
 	</tbody>

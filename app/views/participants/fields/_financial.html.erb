@@ -7,4 +7,8 @@
 
 	<%= f.input :household_size, :collection => 1..20, :as => :select, :label => "Number of persons in household", :hint => "Include the student in this count." %>
 
+
+	<%= f.input :fafsa_submitted_date, :label => "FAFSA submission date", :hint => link_to_now(:participant_fafsa_submitted_date) %>
+	<%= f.input :fafsa_not_applicable, :label => "FAFSA not applicable for this student" %>
+
 <% end %>

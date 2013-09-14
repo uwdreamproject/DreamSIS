@@ -1,0 +1,32 @@
+<tr id="mentor_term_group_<%= mentor_term_group.id %>">
+	<td><%= content_tag :span, h(mentor_term_group.course_string), :class => 'section_id tag' %></td>
+	<td><%=h mentor_term_group.title %>
+		<br>
+		<span class="light"><%= mentor_term_group.times %></span>
+		</td>
+	<td class="signup-meter <%= "full" if mentor_term_group.full? %>">
+		<div class="capacity" 
+			 style="width: <%= mentor_term_group.capacity.to_f / @max_term_cap * 100 rescue 0 %>%;"
+			 title="<%= number_to_percentage mentor_term_group.percent_full, :precision => 0 %> full">
+			
+			<div class="size" style="width: <%= mentor_term_group.percent_full %>%">
+				<%= mentor_term_group.full? ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
+			</div>						
+		</div>
+	</td>
+	<td><%= content_tag :span, mentor_term_group.mentor_terms.size, :class => "" %></td>
+	<td><%= mentor_term_group.capacity %></td>
+
+	<td class="signup-link">
+		<% mentor_term = @mentor_terms.select{ |mq| mq.mentor_term_group_id == mentor_term_group.id }.try(:first) %>
+		<%- if mentor_term.nil? -%>
+			<%= link_to "Sign up as a volunteer", mentor_signup_term_volunteer_path(@term, mentor_term_group), :class => "add button", :method => :put unless mentor_term_group.full? %>
+		<%- elsif mentor_term.volunteer? -%>
+			<span class="orange tag">Signed up as a volunteer</span> -
+			<%= link_to "Leave this group", mentor_signup_term_drop_path(@term, mentor_term), :method => :delete, :confirm => "Are you sure you want to leave this group?" %>
+					
+		<%- else -%>
+			<span class="green tag">Enrolled through MyUW</span>
+		<% end -%>
+	</td>
+</tr>

@@ -1,28 +1,28 @@
-<% for quarter in Quarter.current_and_allowing_signups %>
+<% for term in Term.current_and_allowing_signups %>
 
-	<h2><%= quarter.title %> <%= Customer.mentors_Label %></h2>
+	<h2><%= term.title %> <%= Customer.mentors_Label %></h2>
 
 	<ul class="mentor_stats_summary">
 
-	<% for mentor_quarter_group in @high_school.mentor_quarter_groups.for(quarter) %>
-		<li><%= content_tag :span, h(mentor_quarter_group.section_id), :class => 'section_id tag', :align => 'left' %>
-			<%= link_to h(mentor_quarter_group.title), mentor_quarter_group, :title => mentor_quarter_group.course_id %>
-			<br><%= mentor_quarter_group.times %>
+	<% for mentor_term_group in @high_school.mentor_term_groups.for(term) %>
+		<li><%= content_tag :span, h(mentor_term_group.section_id), :class => 'section_id tag', :align => 'left' %>
+			<%= link_to h(mentor_term_group.title), mentor_term_group, :title => mentor_term_group.course_id %>
+			<br><%= mentor_term_group.times %>
 			
-			<div class="signup-meter <%= "full" if mentor_quarter_group.full? %>">
+			<div class="signup-meter <%= "full" if mentor_term_group.full? %>">
 				<div class="capacity" 
 					 style="width: 100%;"
-					 title="<%= number_to_percentage mentor_quarter_group.percent_full, :precision => 0 %> full">
+					 title="<%= number_to_percentage mentor_term_group.percent_full, :precision => 0 %> full">
 
-					<div class="size" style="width: <%= mentor_quarter_group.percent_full %>%">
-						<%= mentor_quarter_group.full? ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
+					<div class="size" style="width: <%= mentor_term_group.percent_full %>%">
+						<%= mentor_term_group.full? ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
 					</div>						
 				</div>
 			</div>
 			<div class="signup-numbers">
-				<%= content_tag :span, mentor_quarter_group.mentor_quarters.size %>
+				<%= content_tag :span, mentor_term_group.mentor_terms.size %>
 				of
-				<%= content_tag :span, mentor_quarter_group.capacity %>
+				<%= content_tag :span, mentor_term_group.capacity %>
 			</div>
 			
 		</li>

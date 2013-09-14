@@ -1,0 +1,29 @@
+<h3 class="pre-title"><%= link_to h(@participant.fullname), @participant %></h3>
+<h1>College Enrollment</h1>
+
+<dl class="inline-definitions">
+	
+	<dt>Institution</dt>
+	<dd><%=h @college_enrollment.institution.try(:name) %></dd>
+	
+	<dt>Dates</dt>
+	<dd><%= @college_enrollment.began_on.try(:to_s, :date_with_full_month) %>
+		&ndash;
+		<%= @college_enrollment.ended_on.try(:to_s, :date_with_full_month) %></dd>
+
+	<dt>Enrollment Status</dt>
+	<dd><%=h @college_enrollment.enrollment_status_name %></dd>
+
+	<dt>Class Level</dt>
+	<dd><%=h @college_enrollment.class_level_name %></dd>
+
+	<dt>Majors</dt>
+	<dd><%=h @college_enrollment.majors_list %></dd>
+
+	<dt>Source</dt>
+	<dd><%=h @college_enrollment.source.try(:titleize) %>
+		<%= " &ndash; " + link_to("Request ##{@college_enrollment.clearinghouse_request.id.to_s}", @college_enrollment.clearinghouse_request) if @college_enrollment.clearinghouse_request %>
+		</dd>
+
+</dl>
+

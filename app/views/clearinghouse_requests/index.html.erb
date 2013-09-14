@@ -1,0 +1,24 @@
+<h1>National Student Clearinghouse&reg; Requests</h1>
+
+<table id="clearinghouse_requests">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Date</th>
+			<th>Status</th>
+			<th class="centered number">Selected</th>
+			<th class="centered number">Submitted</th>
+			<th class="centered number">Returned</th>
+			<th colspan=3>Functions</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+		<%= render :partial => 'clearinghouse_request', :collection => @clearinghouse_requests %>
+	</tbody>	
+</table>
+
+
+<div id="sidebar">
+	<%= link_to 'Add new request', new_clearinghouse_request_path, :class => 'add button' %>
+</div>

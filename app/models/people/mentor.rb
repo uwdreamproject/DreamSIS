@@ -1,11 +1,11 @@
 class Mentor < Person
-  has_many :mentor_quarters, :conditions => { :deleted_at => nil } do
-    def for_quarter(quarter_id)
-      quarter_id = quarter_id.id if quarter_id.is_a?(Quarter)
-      find :all, :joins => [:mentor_quarter_group], :conditions => { :mentor_quarter_groups => { :quarter_id => quarter_id }, :deleted_at => nil }
+  has_many :mentor_terms, :conditions => { :deleted_at => nil } do
+    def for_term(term_id)
+      term_id = term_id.id if term_id.is_a?(Term)
+      find :all, :joins => [:mentor_term_group], :conditions => { :mentor_term_groups => { :term_id => term_id }, :deleted_at => nil }
     end
   end
-  has_many :mentor_quarter_groups, :through => :mentor_quarters
+  has_many :mentor_term_groups, :through => :mentor_terms
   
   has_many :mentor_participants, :conditions => { :deleted_at => nil }
   has_many :participants, :through => :mentor_participants
@@ -28,7 +28,7 @@ class Mentor < Person
   
   # Returns true if +passed_background_check?+ and +signed_risk_form?+ both return true.
   def passed_basics?
-    passed_background_check? && signed_risk_form? && currently_enrolled?
+    (!Customer.require_background_checks? || passed_background_check?) && (!Customer.require_risk_form? || signed_risk_form?) && currently_enrolled?
   end
     
   # Returns true if there is a valid date in the +risk_form_signed_at+ attribute and any value in the 
@@ -37,30 +37,156 @@ class Mentor < Person
     !risk_form_signed_at.nil? && !risk_form_signature.blank?
   end
   
-  # Returns true if the mentor is enrolled for the current quarter.
+  # This mentor has a valid login token if there is a value in +login_token+ and the timestamp in
+  # +login_token_expires_at+ is in the future.
+  def has_valid_login_token?
+    return false if login_token.blank? || login_token_expires_at.nil?
+    return true if login_token_expires_at.future?
+    false
+  end
+  
+  # Generates a new random login token and stores it in the record, along with an expiry date of
+  # 1 week from now.
+  def generate_login_token!
+    new_login_token = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{rand(10e200).to_s(36)}--")
+    update_attributes(:login_token => new_login_token, :login_token_expires_at => 1.week.from_now)
+    new_login_token
+  end
+  
+  def invalidate_login_token!
+    update_attributes(:login_token => nil, :login_token_expires_at => nil)
+  end
+  
+  def send_login_link(login_link)
+    mandrill = Mandrill::API.new(MANDRILL_API_KEY)
+    
+    template_content = [
+      {:name => 'title', :content => "An account has been created for you by #{Customer.name_label}."},
+      {:name => 'main_message', :content => "#{Customer.name_label} is using DreamSIS.com to manage its program and keep track of student information. You can use the link below to login and setup your account. If you have any questions, please contact your program administrator."}
+    ]
+    message = {
+      :to => [{:name => fullname, :email => email }],
+      :global_merge_vars => [
+        {:name => "login_link", :content => login_link}
+      ],
+      :subject => "Your #{Customer.name_label} account on DreamSIS.com"
+    }
+
+    return mandrill.messages.send_template 'Account E-mail', template_content, message
+    
+  rescue Mandrill::Error => e
+      puts "A mandrill error occurred: #{e.class} - #{e.message}"
+      raise    
+  end
+    
+  # Returns true if the mentor is enrolled for the current term.
   def currently_enrolled?
-    !current_mentor_quarter_groups.empty?
+    !current_mentor_term_groups.empty?
+  end
+
+=begin
+Returns whether the mentor is signed up for the correct sections
+as layed out in the current term's course dependencies
+  
+MentorTermGroup.course_dependencies outline:
+  
+(Dept Abv) (Course Number)(Letter optional):<--------------------|
+  never any: [(C.N.), (C.N.),..., (C.N.)]  <------| As many        | Repeat 
+  not currently: [(C.N.), (C.N.),..., (C.N.)]     | as             | as
+  require: [(C.N.), (C.N.),..., (C.N.)]           | needed         | needed
+  have taken one: [(C.N.), (C.N.),..., (C.N.)] <--|<---------------|
+
+Sample:
+  
+EDUC 260:
+  never any: [EDUC 360, EDUC 361]
+  not currently: [EDUC 360]
+  require: [EDUC 369]
+EDUC 360:
+  have taken one: [EDUC 260]
+  not currently: [EDUC 260]
+  require: [EDUC 369]
+EDUC 361:
+  require: [EDUC 369]
+EDUC 361A:
+  have taken one: [EDUC 360]
+  not currently: [EDUC 260, EDUC 360]
+EDUC 361B:
+  require one: [EDUC 260, EDUC 360]
+EDUC 369:
+  require one: [EDUC 260, EDUC 360, EDUC 361]
+
+--------------------------------------------------------------
+
+Documentation for each filter:
+
+ * Dept Abv: All caps department abbrevation, e.g., EDUC
+
+ * Course Number: 3-digit course number for course, e.g., 360
+
+ * Letter: Section letter (as stated above, this is optional). If a letter is used,
+   the rules are valid for that section only
+
+ Note: Valid combinations of the above include EDUC 360, EDUC 361A, etc. As you 
+       can see above, you can make a general listing for a course (see EDUC 361) and 
+       then give requirements for each section (see EDUC 361A and EDUC 361B).
+
+ * never any: Lists course numbers a mentor can't have had before. It checks all 
+   past courses. If even just one of the courses listed has been had by the 
+   mentor, the function returns false.
+
+ * not currently: Lists courses you can't be concurrently enrolled in with. 
+   If a mentor is enrolled in any of the list, returns false.
+
+ * require: Lists a set of courses from which mentor must be currently enrolled in. 
+   If a mentor isn't signed up for any of the listed courses, returns false.
+
+ * have taken one: Lists a set of courses from which a mentor must have been 
+   signed up for in the past. If the mentor hasn't taken any of the listed 
+   courses, returns false
+ 
+=end
+
+  def correct_sections?
+    if currently_enrolled?
+      current_groups = self.current_mentor_term_groups.collect(&:mentor_term_group)
+      current_sections = current_groups.collect {|grp| grp.course_number + grp.section_id }
+      all_groups = self.mentor_term_groups
+      prev_groups = all_groups.delete_if{|k,v| current_groups.include? k}
+      prev_sections = prev_groups.collect {|grp| grp.course_number + grp.section_id }
+      dependencies = YAML.load(current_groups.first.term.course_dependencies)
+      correct = true
+      dependencies.each do |dep, rules|
+        if current_sections.any? { |cur_sec| cur_sec.include? dep }
+          correct = check_dependency(current_sections, prev_sections, dep, rules) 
+        end
+        return correct if !correct
+      end
+    return correct
+    else
+      return false
+    end
   end
   
-  # Returns a string of the titles of current mentor quarter groups for this mentor.
-  def current_mentor_quarter_groups_string
-    return "no groups" if current_mentor_quarter_groups.nil?
-    current_mentor_quarter_groups.collect(&:title).to_sentence
+  # Returns a string of the titles of current mentor term groups for this mentor.
+  def current_mentor_term_groups_string
+    return "no groups" if current_mentor_term_groups.nil?
+    current_mentor_term_groups.collect(&:title).to_sentence
   end
   
-  # "Current" mentor quarter groups are defined as groups from either the current quarter AND any quarter marked
+  # "Current" mentor term groups are defined as groups from either the current term AND any term marked
   # as allowing signups.
-  def current_mentor_quarter_groups
-    quarters = Quarter.allowing_signups.collect(&:id)
-    quarters << Quarter.current_quarter.id if Quarter.current_quarter
-    quarters = quarters.flatten.uniq
-    mentor_quarters.find :all, :joins => [:mentor_quarter_group], 
-      :conditions => { :mentor_quarter_groups => { :quarter_id => quarters }, :deleted_at => nil }
+  def current_mentor_term_groups
+    terms = Term.allowing_signups.collect(&:id)
+    terms << Term.current_term.id if Term.current_term
+    terms = terms.flatten.uniq
+    mentor_terms.find :all, :joins => [:mentor_term_group], 
+      :conditions => { :mentor_term_groups => { :term_id => terms }, :deleted_at => nil }
   end
   
   # Returns the high school records for the high schools at which this mentor is a high school lead.
   def current_lead_at
-    current_mentor_quarter_groups.select(&:lead?).collect(&:location)
+    current_mentor_term_groups.select(&:lead?).collect(&:location)
   end
   
   # Returns true if +current_lead_at+ is not empty.
@@ -108,7 +234,7 @@ class Mentor < Person
       return true if current_lead?
       return can_edit?(object)
     elsif object.is_a?(Location)
-      return current_mentor_quarter_groups.collect(&:location_id).include?(object.try(:id))
+      return current_mentor_term_groups.collect(&:location_id).include?(object.try(:id))
     end
     false
   end
@@ -122,7 +248,7 @@ class Mentor < Person
   def can_edit?(object)
     if object.is_a?(Participant)
       return true if participants.include?(object)
-      if current_mentor_quarter_groups.collect(&:location_id).include?(object.try(:high_school_id))
+      if current_mentor_term_groups.collect(&:location_id).include?(object.try(:high_school_id))
         return true if current_lead_at.collect(&:id).include?(object.try(:high_school_id))
         return true if object.try(:grad_year) == Participant.current_cohort
       end
@@ -167,4 +293,37 @@ class Mentor < Person
     false
   end
   
+  protected
+  
+  # Handles the logic of course dependencies
+  def check_dependency(current_sections, prev_sections, course, rules)
+    correct = true
+    if rules.include? "have taken one"
+      valid = false
+      prev_sections.each do |prev_s|
+        valid ||= rules["have taken one"].any? {|section| prev_s.include?(section)}
+      end
+      correct &&= valid
+    end
+    if rules.include? "require"
+      valid = false
+      current_sections.each do |cur_s|
+        valid ||= rules["require"].any? {|section| cur_s.include?(section)}
+      end
+      correct &&= valid
+    end
+    if rules.include? "not currently"
+      current_sections.each do |cur_s|
+        correct &&= !rules["not currently"].any? {|section| cur_s.include?(section)}
+      end
+      correct &&= valid
+    end
+    if rules.include? "never any"
+      prev_sections.each do |prev_s|
+        correct &&= !rules["never any"].any? {|section| prev_s.include?(section)}
+      end
+    end
+    return correct
+  end
+    
 end

@@ -1,0 +1,10 @@
+<%- html_class ||= "" -%>
+<table class="participants multirow <%= html_class %>" id="participants_table">
+	<thead>
+		<tr>
+			<%= render :partial => "participants/reports/#{h(@report || "basic").pluralize}_header" %>
+		</tr>
+	</thead>
+	
+	<%= render :partial => 'participant', :collection => @participants, :locals => { :report => h(@report || "basic") } %>
+</table>
