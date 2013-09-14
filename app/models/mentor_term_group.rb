@@ -43,6 +43,10 @@ class MentorTermGroup < CustomerScoped
     m = m.sub(",", " ")
   end
   
+  # Combines course_number and section_id, e.g., "EDUC 360AF"
+  def course_string
+    return course_number + section_id
+  end
 
   # Returns the associated CourseResource for this group, if +course_id+ is set.
   def course_resource

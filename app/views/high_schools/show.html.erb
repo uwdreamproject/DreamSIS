@@ -26,9 +26,9 @@
 	<ul>
 		<li><%= link_to "#{Term.current_term.title} #{Customer.visit_label}", 
 						high_school_visits_path(@high_school, Term.current_term) %></li>
-		<li><%= link_to "Take Attendance for #{Customer.mentee_label}", 
+		<li><%= link_to "Take Attendance for #{Customer.mentees_label}", 
 						attendance_high_school_visits_path(@high_school, Term.current_term) %></li>
-		<li><%= link_to "Take Attendance for #{Customer.mentor_label}", 
+		<li><%= link_to "Take Attendance for #{Customer.mentors_label}", 
 						attendance_high_school_visits_path(@high_school, Term.current_term, :show => 'mentors') %></li>
 	</ul>
 </div>

@@ -14,7 +14,7 @@ class WelcomeController < ApplicationController
   def mentor
     @mentor = @current_user.person
     if !@mentor.passed_basics?
-    redirect_to mentor_signup_basics_path 
+      redirect_to mentor_signup_basics_path 
     elsif Customer.link_to_uw? && !@mentor.correct_sections?
       flash[:error] = "You are not signed up for the correct sections. See information below."
       redirect_to mentor_signup_path

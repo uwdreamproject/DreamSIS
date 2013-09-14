@@ -23,7 +23,7 @@ class CourseResource < UwWebResource
   def id(include_section_id = true)
     course = self.attributes["Course"] || self
     curriculum = course.attributes["Curriculum"] || course
-    base_id = [curriculum.Year, course.Quarter, curriculum.CurriculumAbbreviation, course.CourseNumber].join(",")
+    base_id = [curriculum.Year, curriculum.Quarter, curriculum.CurriculumAbbreviation, course.CourseNumber].join(",")
     base_id << "/" + self.PrimarySection.SectionID if include_section_id && self.PrimarySection.SectionID rescue nil
     return base_id
   end
@@ -78,7 +78,7 @@ class CourseResource < UwWebResource
     @active_registrations ||= RegistrationResource.find(:all, :params => {
       :curriculum_abbreviation => curriculum.attributes["CurriculumAbbreviation"], 
       :year => curriculum.attributes["Year"], 
-      :quarter => course.attributes["Quarter"], 
+      :quarter => curriculum.attributes["Quarter"], 
       :course_number => course.attributes["CourseNumber"], 
       :section_id => self.attributes["SectionID"],
       :is_active => "on"
