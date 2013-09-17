@@ -15,7 +15,6 @@ Relevant attributes on Customer:
 =end
 class ClearinghouseRequest < CustomerScoped
   validates_presence_of :customer_id, :participant_ids
-  validates_presence_of :ftp_password, :on => :create
   validate :overlimit_protection
   
   belongs_to :customer
@@ -58,6 +57,7 @@ class ClearinghouseRequest < CustomerScoped
   end
   
   def plain_ftp_password=(pwd)
+    return false if pwd.blank?
     iv = AES.iv(:base_64)
     enc64 = AES.encrypt(pwd, aes_key, {:iv => iv})
     self.ftp_password = enc64
@@ -76,6 +76,16 @@ class ClearinghouseRequest < CustomerScoped
   def retrieved?
     return false unless submitted?
     retrieved_at.try(:past?)
+  end
+  
+  # Returns true if there is a valid FTP password stored and the file hasn't yet been submitted.
+  def submittable?
+    !ftp_password.blank? && !submitted?
+  end
+  
+  # Returns true if there is a valid FTP password and the file hasn't yet been retreived.
+  def retrievable?
+    !ftp_password.blank? && !retrieved?
   end
   
   def nsc
@@ -219,9 +229,7 @@ class ClearinghouseRequest < CustomerScoped
   private
   
   def aes_key
-    config_file_path = File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "omniauth_keys.yml")
-    omniauth_keys = YAML::load(ERB.new((IO.read(config_file_path))).result)
-    key = omniauth_keys["twitter"]["secret"]
+    key = API_KEYS["omniauth"]["twitter"]["secret"]
   end
 
 end

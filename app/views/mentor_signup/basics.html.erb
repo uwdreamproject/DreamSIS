@@ -1,5 +1,5 @@
 <h1>Get Started with the <%= Customer.name_label %></h1>
-<p>In order to participate as a <%= Customer.mentor_label %> in the <%= Customer.name_label %>, you must complete a few important steps:</p>
+<p>In order to participate as a <%= Customer.mentor_label %> in <%= Customer.name_label %>, you must complete a few important steps:</p>
 
 	<%= render :partial => 'mentor_signup/basics/currently_enrolled' %>
 	<%= render :partial => 'mentor_signup/basics/passed_background_check' if Customer.require_background_checks? %>

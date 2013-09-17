@@ -1,0 +1,44 @@
+<li class="input">
+<%= f.label attribute_name %>
+
+<div id="scholarship_title_auto_complete">
+	<%= model_auto_completer "scholarship[title]", 
+							(parent_object.try(:scholarship).try(:title) if parent_object.try(:scholarship)), 
+							"#{parent_name}[#{attribute_name.to_sym}]", 
+							(parent_object.try(attribute_name.to_sym) || nil), 
+							{ 
+								:url => { :controller => 'scholarships', :action => 'auto_complete_for_scholarship_title' },
+								:append_random_suffix => false,
+								:after_update_element => "function(text_field, selection, hidden, id) { 
+															scholarship_lookup(text_field, selection, hidden, id) 
+														  }",
+								:regexp_for_id => '(-?\d+)$' },
+							{ :autocomplete => false, :style => ('display:none' if parent_object.try(:scholarship)), :size => 50, :class => "search" },
+							{ :skip_style => true } %>
+	
+	<% javascript_tag do -%>	
+		function scholarship_lookup(text_field, selection, hidden, id) {
+			Element.update('scholarship_details_content', selection.innerHTML)
+			Element.show('scholarship_details')
+			Element.hide(text_field)
+		}
+	<% end -%>
+
+	<div id="scholarship_details" class="auto_complete after_select" <%= "style='display:none'" unless parent_object.try(:scholarship) %>>
+		<div id="scholarship_details_content">
+			<% if parent_object.try(:scholarship) %>
+				<span class="primary">  <%=h parent_object.scholarship.try(:title) %>
+				<small class="light"> (#<%=h parent_object.scholarship.try(:id) %>)</small></span>
+				<span class="secondary"><%=h parent_object.scholarship.try(:organization_name) %></span>
+				<span class="secondary currency"> <%= number_to_currency(h(parent_object.scholarship.try(:default_amount))) %></span>
+			<% end -%>
+		</div>
+		<small><%= link_to_function "Choose a different scholarship", 
+								"Element.hide('scholarship_details');
+								 Element.show('model_auto_completer_tf');
+								 $('model_auto_completer_tf').value = '';
+								 $('model_auto_completer_tf').focus()" %></small>
+
+	</div>
+</div>
+</li>

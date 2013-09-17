@@ -106,6 +106,7 @@ class RsvpController < ApplicationController
   end
   
   def apply_extra_stylesheet(event_or_group)
+    @include_typekit = true
     @event_group = event_or_group.respond_to?(:event_group) ? event_or_group.event_group : event_or_group
     super(@event_group.stylesheet_url) if @event_group && !@event_group.stylesheet_url.blank?
   end

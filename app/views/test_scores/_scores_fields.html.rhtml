@@ -1,7 +1,7 @@
 <%- f.inputs :name => "Scores", :id => "scores_fields" do -%>
 
 	<%- if f.object.try(:test_type) -%>
-		<%- for section, maximum_score in f.object.try(:test_type).try(:section_scores_hash) -%>
+		<%- for section, maximum_score in f.object.try(:test_type).try(:section_scores_hash).sort_by{|k,v| k} -%>
 			<%= f.input "section_score_#{section}",
 						:wrapper_html => { :class => "sameline-hint" },
 						:hint => "out of #{maximum_score}",
@@ -31,12 +31,16 @@
 		}
 		if (calculation_method == 'average') {
 			new_total_score = average(scores);
-		} else {
+        } else if (calculation_method == 'rounded-average') {
+            new_total_score = average_and_round(scores);
+        } else {
 			new_total_score = sum(scores);
 		}
 		$(total_element_id).value = new_total_score;
 		return new_total_score;
 	}
 	<% end %>
+
+    <%= f.input :passed, :hint => "Did the student pass the minimum score?" if f.object.test_type.try(:passable?) %>
 	
 <% end %>

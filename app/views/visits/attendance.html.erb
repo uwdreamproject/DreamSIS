@@ -1,6 +1,6 @@
 <div class="right">
-	<%= link_to "Show mentors", {:show => "mentors"}, :class => "list button" unless @showing.include?(:mentors) %>
-	<%= link_to "Show participants", {:show => "participants"}, :class => "list button" unless @showing.include?(:participants) %>
+	<%= link_to "Show #{Customer.mentors_label}", {:show => "mentors"}, :class => "list button" unless @showing.include?(:mentors) %>
+	<%= link_to "Show #{Customer.participants_label}", {:show => "participants"}, :class => "list button" unless @showing.include?(:participants) %>
 </div>
 
 <h1>Attendance: <%= @showing.collect{|s| s.to_s.titleize }.to_sentence %></h1>
@@ -59,7 +59,7 @@
 		<% end -%>
 
 		<tr <%= "class='deselected'" if participant.inactive? %>>
-		    <td><%= link_to participant.lastname_first, participant, :popup => true %>
+		    <td class="name"><%= link_to participant.lastname_first, participant, :popup => true %>
 				<small class="inactive-note">(inactive)</small>
 				</td>
 				
@@ -192,8 +192,7 @@
 				:object => @term %>
 				
 	<p>This page allows you to track attendance for your <%= @showing.to_sentence %> at various events.
-		Only events that are pertinent to this group of people are shown (e.g., Dream Project class doesn't
-		show up when taking attendance for high-school participants).</p>
+		Only events that are pertinent to this group of people are shown.</p>
 	<p>To mark someone as present, click the checkbox. You can also use the "tab" key and your spacebar 
 		to quickly mark the boxes without using your mouse.</p>
 	

@@ -1,0 +1,22 @@
+<table class="events">
+	<thead>
+		<tr>
+			<th>Event</th>
+			<th>Date</th>
+			<th>Time</th>
+			<th class="centered">RSVP</th>
+			<th class="centered">Attended</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<%= render :partial => "event_attendances/event_row", :collection => @participant.event_attendances %>
+		
+		<%- if @participant.event_attendances.empty? -%>
+			<tr class="empty">
+				<td colspan=10>You haven't attended any events.</td>
+			</tr>
+		<% end -%>
+	</tbody>
+	
+</table>

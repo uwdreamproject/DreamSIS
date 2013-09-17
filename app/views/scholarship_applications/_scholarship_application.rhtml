@@ -1,6 +1,6 @@
 <tr id="scholarship_application_<%= scholarship_application.id %>">
 
-  <td><%=h scholarship_application.title %></td>
+  <td class="name"><%= link_to h(scholarship_application.title), scholarship_application.try(:scholarship) %></td>
   <td><%=h number_to_currency scholarship_application.amount %></td>
   <td>
 	<% remote_form_for([@participant, scholarship_application], 
@@ -13,8 +13,8 @@
 					:function => "$('awarded_form_#{scholarship_application.id}').submit()" %>
 	</td>
 	
-  <td><%= link_to 'Details', [@participant, scholarship_application] %>
-  	| <%= link_to 'Edit', edit_participant_scholarship_application_path(@participant, scholarship_application) %>
-  	| <%= link_to 'Remove', [@participant, scholarship_application], :confirm => 'Are you sure?', :method => :delete %>
+  <td class="functions"><%= link_to 'Details', [@participant, scholarship_application] %>
+  	<%= link_to 'Edit', edit_participant_scholarship_application_path(@participant, scholarship_application) %>
+  	<%= link_to 'Remove', [@participant, scholarship_application], :confirm => 'Are you sure?', :method => :delete %>
 	</td>
 </tr>
