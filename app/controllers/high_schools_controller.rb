@@ -110,6 +110,12 @@ class HighSchoolsController < ApplicationController
       @participants = @participants.select{|p| p.mentor_ids.include?(params[:mentor_id].to_i)}
     end
     @unassigned_codes = @high_school.unassigned_survey_ids[0..(@n-1)]
+    
+    if params[:survey_url] && params[:survey_url].match(URI.regexp(%w[http https]))
+      @survey_url = params[:survey_url]
+    else
+      @survey_url = (Customer.website_url.blank? ? "http://dreamproject.org" : Customer.website_url) + "/survey"
+    end
   end
 
   def stats

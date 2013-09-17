@@ -1,8 +1,12 @@
 <%- f.inputs :name => "Family History Information" do -%>
 
-	<%= f.input :family_members_who_went_to_college %>
-	<%= f.input :family_members_graduated, :label => "Did any of them graduate?" %>
-	<%= f.input :first_generation, :label => "Student is first in immediate family to go to college/university" %>
+	
+    <%- f.inputs :name => "First-generation college student", :class => "inline" do -%>
+        <%= f.input :first_generation, :label => "First in immediate family to go to college/university" %>
+    	<%= f.input :family_members_who_went_to_college %>
+    	<%= f.input :family_members_graduated, :label => "Did any of them graduate?" %>    
+    <% end %>
+    
 
 	<%- f.inputs :name => "Attended school outside USA", :class => "inline" do -%>
 		<%= f.input :attended_school_outside_usa, :label => "Yes" %>

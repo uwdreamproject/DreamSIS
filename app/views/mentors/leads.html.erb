@@ -1,16 +1,29 @@
-<h1><%= Customer.leads_Label %> <%= @term.title %></h1>
+<h3 class="pre-title"><%=h @term.title %></h3>
+<h1><%= Customer.leads_Label %></h1>
 
+<table>
 <% for high_school in @high_schools %>
-	
-	<h3><%=h high_school.name %></h3>
+	<tbody>
+		<tr class="rowset-header">
+			<th colspan="10"><%=h high_school.name %></th>
+		</tr>
 
-	<ul class="mini photo-list indented">
-	<% for lead in high_school.mentor_term_groups.for(@term).collect{|g| g.mentor_terms.leads}.flatten %>
-		<li>
-			<%= image_tag photo_mentor_path(lead.try(:mentor), :size => "50"), :size => "", :class => 'photo' %>
-			<%= link_to h(lead.fullname), lead.mentor %>
-		</li>
-	<% end -%>
-	</ul>
-
+		<%- leads = high_school.mentor_term_groups.for(@term).collect{|g| g.mentor_terms.leads}.flatten.collect(&:mentor).flatten -%>
+		<%= render :partial => "mentors/mentor", 
+					:collection => leads,
+					:locals => { :include_image => true } %>
+		
+		<%- if leads.empty? -%>
+			<tr class="empty"><td colspan=10>No <%= Customer.leads_label %> assigned.</td></tr>
+		<% end %>
+		
+	</tbody>
 <% end -%>
+</table>
+
+
+<div id="sidebar">
+	<p><%= render :partial => "shared/term_select", 
+					:locals => { :form_url => leads_mentors_path },
+					:object => (@term || Term.current_term || Term.allowing_signups.try(:first) || Term.last) %></p>
+</div>

@@ -3,8 +3,18 @@
 	<%= f.input :title, :title => "Title", :hint => "A quick phrase identifying this filter. For example, \"applied to 3 colleges.\"" %>
 	<%= f.input :object_class, :as => :select, :collection => ["Participant"], :include_blank => true, :hint => "Choose the object type that this filter relates to." %>
 	<%= f.input :criteria, :input_html => {:rows => 3, :class => "code"}, :hint => "Use Ruby code that evaluates to either true or false." %>
-	<%= f.input :target_percentage, :hint => "What is the target that you're trying to achieve?", :input_html => { :size => 3 } %>
-	<%= f.input :warning_threshold, :hint => "Completion rates below this threshold will be displayed in red.", :input_html => { :size => 3 } %>
+
+	<%- f.inputs(:name => "Reporting Thresholds", :class => "inline") do -%>
+	
+		<li class="numeric optional"><label for="default_threshold">Caution (Default)</label><input class="caution-threshold" id="default-threshold" name="default-threshold" size="3" type="text" value="&mdash;" disabled /></li>
+		
+		<%= f.input :warning_threshold, 
+					:label => "Warning (Percentage)",
+					:input_html => { :size => 3, :class => "warning-threshold" } %>
+		<%= f.input :target_percentage, 
+					:label => "Target (Percentage)",
+					:input_html => { :size => 3, :class => "target-threshold" } %>
+	<% end %>
 
 <% end -%>
 

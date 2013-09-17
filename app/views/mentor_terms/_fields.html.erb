@@ -1,6 +1,6 @@
 <% f.inputs "Options" do  %>
-	<%= f.input :lead %>
-	<%= f.input :volunteer %>
+	<%= f.input :lead, :label => Customer.lead_Label %>
+	<%= f.input :volunteer if Customer.link_to_uw? %>
 	<%= f.input :driver %>
 	
 	<%= f.input :notes, :input_html => { :rows => 5 } %>

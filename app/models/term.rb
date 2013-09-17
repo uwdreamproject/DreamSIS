@@ -72,8 +72,12 @@ class Term < CustomerScoped
   # Returns the grad year of participants who were dream scholars in this term. 
   # Eg. Spring 2008, Summer 2008, Autumn 2008 returns 2009. Winter 2009 returns 2009
   # Does not include spring term seniors
-  def participating_cohort  
-    quarter_code == 1 ? year : year + 1
+  def participating_cohort
+    if quarter_code
+      return quarter_code == 1 ? year : year + 1
+    else
+      return end_date.blank? ? Time.now.year : end_date.year
+    end
   end
     
   

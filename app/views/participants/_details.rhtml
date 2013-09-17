@@ -49,18 +49,18 @@
 <% end -%>
 
 <h4>Address</h4>
-<%= content_tag(:div, "** BAD ADDRESS **", :class => 'error-message') if @participant.bad_address? %>
+<%= content_tag(:div, "BAD ADDRESS", :class => 'error-message') if @participant.bad_address? %>
 <%= @participant.street unless @participant.street.blank? %>
 <%= "<br />#{@participant.city}, #{@participant.state} #{@participant.zip}" unless @participant.city.blank? %>
 
 <h4>Phone</h4>
-<%= content_tag(:div, "** BAD PHONE **", :class => 'error-message') if @participant.bad_phone? %>
+<%= content_tag(:div, "BAD PHONE", :class => 'error-message') if @participant.bad_phone? %>
 <%= number_to_phone_pretty(@participant.phone_home, :type => 'home') unless @participant.phone_home.blank? %>
 <%= "<br />" + number_to_phone_pretty(@participant.phone_mobile, :type => 'mobile') unless @participant.phone_mobile.blank? %>
 <%= "<br />" + number_to_phone_pretty(@participant.phone_work, :type => 'work') unless @participant.phone_work.blank? %>
 
 <h4>E-mail</h4>
-<%= content_tag(:div, "** BAD E-MAIL **", :class => 'error-message') if @participant.bad_email? %>
+<%= content_tag(:div, "BAD E-MAIL", :class => 'error-message') if @participant.bad_email? %>
 <%= auto_link @participant.email %>
 
 <h4>Date of Birth</h4>

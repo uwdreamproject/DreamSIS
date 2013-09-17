@@ -10,6 +10,11 @@
 
 	<dt>Score Calculation</dt>
 	<dd><%=h @test_type.score_calculation_method.try(:titleize) %></dd>
+    
+    <%- if @test_type.passable? -%>
+        <dt>Passable?</dt>
+        <dd><em>Yes</em></dd>
+    <% end %>
 
 	<dt>Sections</dt>
 	<dd>
