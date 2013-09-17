@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130605060405) do
+ActiveRecord::Schema.define(:version => 20130912063806) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -570,6 +570,12 @@ ActiveRecord::Schema.define(:version => 20130605060405) do
     t.integer  "customer_id"
     t.string   "email2"
     t.boolean  "gluten_free"
+    t.boolean  "deceased"
+    t.boolean  "incarcerated"
+    t.integer  "highest_education_level_id"
+    t.string   "migration_id"
+    t.boolean  "lives_with"
+    t.string   "education_country"
   end
 
   add_index "people", ["customer_id"], :name => "index_people_on_customer_id"
@@ -593,6 +599,7 @@ ActiveRecord::Schema.define(:version => 20130605060405) do
     t.string   "abbreviation"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "website_url"
   end
 
   create_table "scholarship_applications", :force => true do |t|
@@ -608,6 +615,12 @@ ActiveRecord::Schema.define(:version => 20130605060405) do
     t.datetime "updated_at"
     t.text     "notes"
     t.boolean  "nominated"
+    t.integer  "renewable_years"
+    t.boolean  "full_ride"
+    t.boolean  "gap_funding"
+    t.boolean  "living_stipend"
+    t.integer  "institution_id"
+    t.date     "application_due_date"
   end
 
   create_table "scholarships", :force => true do |t|
@@ -618,6 +631,11 @@ ActiveRecord::Schema.define(:version => 20130605060405) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "customer_id"
+    t.integer  "default_renewable_years"
+    t.boolean  "default_full_ride"
+    t.boolean  "default_gap_funding"
+    t.boolean  "default_living_stipend"
+    t.boolean  "default_renewable"
   end
 
   add_index "scholarships", ["customer_id"], :name => "index_scholarships_on_customer_id"
@@ -631,6 +649,23 @@ ActiveRecord::Schema.define(:version => 20130605060405) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "taggings", :force => true do |t|
+    t.integer  "tag_id"
+    t.integer  "taggable_id"
+    t.integer  "tagger_id"
+    t.string   "tagger_type"
+    t.string   "taggable_type"
+    t.string   "context"
+    t.datetime "created_at"
+  end
+
+  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
+  add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
+
+  create_table "tags", :force => true do |t|
+    t.string "name"
+  end
 
   create_table "terms", :force => true do |t|
     t.integer  "year"
@@ -658,6 +693,7 @@ ActiveRecord::Schema.define(:version => 20130605060405) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "customer_id"
+    t.boolean  "passed"
   end
 
   add_index "test_scores", ["customer_id"], :name => "index_test_scores_on_customer_id"
@@ -670,6 +706,7 @@ ActiveRecord::Schema.define(:version => 20130605060405) do
     t.datetime "updated_at"
     t.integer  "customer_id"
     t.string   "score_calculation_method"
+    t.boolean  "passable"
   end
 
   add_index "test_types", ["customer_id"], :name => "index_test_types_on_customer_id"

@@ -1,6 +1,8 @@
 class LocationsController < ApplicationController
   protect_from_forgery :except => [:auto_complete_for_location_name, :auto_complete_for_institution_name] 
   
+  skip_before_filter :check_authorization, :only => [:show]
+  
   # GET /locations
   # GET /locations.xml
   def index

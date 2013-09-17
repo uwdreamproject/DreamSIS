@@ -44,7 +44,7 @@ class NationalStudentClearinghouse
       file = File.open(local_send_file_path, "w")
       file.write header_row + "\n"
       file.write dreamsis_control_row + "\n"
-      @participants.each do |p| 
+      request.participants.each do |p| 
         row = participant_row(p); 
         unless row.nil?
           file.write row + "\n"
@@ -52,6 +52,7 @@ class NationalStudentClearinghouse
         end
       end
       file.write footer_row + "\n"
+      request.update_attribute(:number_of_records_submitted, @record_count)
     rescue IOError => e
       #some error occur, dir not writable etc.
     ensure

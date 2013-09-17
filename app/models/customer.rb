@@ -12,6 +12,8 @@ class Customer < ActiveRecord::Base
   belongs_to :parent_customer, :class_name => "Customer"
   belongs_to :program
 
+  delegate :website_url, :to => :program
+
   DEFAULT_LABEL = {
     :mentor => "mentor",
     :lead => "lead",

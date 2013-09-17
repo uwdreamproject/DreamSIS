@@ -1,12 +1,15 @@
-<h1><%= @program.title %></h1>
+<h1><%=h @program.title %></h1>
 
 <dl class="inline-definitions">
 
 	<dt>Title</dt>
-	<dd><%= @program.title %></dd>
+	<dd><%=h @program.title %></dd>
 
-	<dt>Abbreviation</dt>
-	<dd><%= @program.abbreviation %></dd>
+    <dt>Abbreviation</dt>
+    <dd><%=h @program.abbreviation %></dd>
+
+    <dt>Website</dt>
+    <dd><%= auto_link h(@program.website_url) %></dd>
 
 </dl>
 

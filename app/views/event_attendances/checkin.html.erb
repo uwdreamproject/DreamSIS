@@ -21,7 +21,7 @@
 
 <div id="new_participant_form_container" style="display:none">
 	<h5>Quick Add New Student</h5>
-	<span class="error-message" id="new_participant_error"></span>
+	<span class="error-message no-icon" id="new_participant_error"></span>
 	<% remote_form_for(:new_participant, :url => checkin_new_participant_event_event_attendances_path(@event), :method => :put, :html => { :id => 'new_participant_form' }) do |f| %>
 		First Name: <%= f.text_field :firstname %>
 		Last Name: <%= f.text_field :lastname %>
@@ -32,7 +32,7 @@
 
 <div id="new_volunteer_form_container" style="display:none">
 	<h5>Quick Add New Volunteer</h5>
-	<span class="error-message" id="new_volunteer_error"></span>
+	<span class="error-message no-icon" id="new_volunteer_error"></span>
 	<% remote_form_for(:new_volunteer, :url => checkin_new_volunteer_event_event_attendances_path(@event), :method => :put, :html => { :id => 'new_volunteer_form' }) do |f| %>
 		First Name: <%= f.text_field :firstname %>
 		Last Name: <%= f.text_field :lastname %>
