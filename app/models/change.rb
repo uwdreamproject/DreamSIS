@@ -4,12 +4,16 @@ class Change < ActiveRecord::Base
   
   belongs_to :change_loggable, :polymorphic => true
   serialize :changes
-
-  NON_TRACKED_ATTRIBUTES = %w(created_at updated_at deleted_at creator_id updater_id deleter_id resource_cache_updated_at)
-
+  
+  belongs_to :user
+  
+  NON_TRACKED_ATTRIBUTES = %w(created_at updated_at deleted_at creator_id updater_id deleter_id resource_cache_updated_at filter_cache)
+  
   named_scope :for, lambda { |klasses| { :conditions => self.conditions_for(klasses) } }  
   named_scope :last50, :order => "created_at DESC", :limit => 50
   named_scope :since, lambda { |time_ago| { :conditions => ['created_at > ?', time_ago] } }
+
+  default_scope :order => "created_at DESC"
 
   # Gets called after_create
   def self.log_create(obj)

@@ -40,12 +40,12 @@ class MentorTermGroup < CustomerScoped
   # Extracts the department abbreviation and 3 digit course number from the course_id, e.g., "EDUC 360"
   def course_number
     m = match_in_id /(\w+\,\d{3})/
-    m = m.sub(",", " ")
+    m ? m.sub(",", " ") : ""
   end
   
   # Combines course_number and section_id, e.g., "EDUC 360AF"
   def course_string
-    return course_number + section_id
+    return "#{course_number}#{section_id}"
   end
 
   # Returns the associated CourseResource for this group, if +course_id+ is set.

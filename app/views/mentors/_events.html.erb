@@ -10,15 +10,7 @@
 	</thead>
 
 	<tbody>
-		<%- for event_attendance in @event_attendances -%>
-			<tr>
-				<td><%= link_to h(event_attendance.event.try(:name)), event_path(event_attendance.event) %></td>
-				<td><%=h event_attendance.event.try(:time_detail, {:date_only => true}) %></td>
-				<td><%=h event_attendance.event.try(:time_only) %></td>
-				<td class="centered"><%= event_attendance.rsvp? ? content_tag(:span, "Y", :class => 'green tag') : content_tag(:span, "-", :class => 'light') %></td>
-				<td class="centered"><%= event_attendance.attended? ? content_tag(:span, "Y", :class => 'green tag') : content_tag(:span, "-", :class => 'light') %></td>
-			</tr>
-		<% end -%>
+		<%= render :partial => "event_attendances/event_row", :collection => @event_attendances %>
 		
 		<%- if @event_attendances.empty? -%>
 			<tr class="empty">

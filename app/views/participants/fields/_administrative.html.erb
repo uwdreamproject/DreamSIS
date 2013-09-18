@@ -1,8 +1,8 @@
 <%- f.inputs :name => "Administrative Information" do -%>
 	<%= f.input :binder_date, :label => "#{Customer.workbook_Label} Date", :hint => link_to_now(:participant_binder_date) %>
 	<%= f.input :intake_survey_date, :label => "#{Customer.intake_survey_Label} Date", :hint => link_to_now(:participant_intake_survey_date) %>
+	<%= f.input :photo_release_date, :hint => link_to_now(:participant_photo_release_date) %>
 	<%= f.input :survey_id, :label => "Survey ID", :input_html => { :size => 10 }, :hint => "This value is automatically generated unless you specify a custom survey ID here. In most cases, you should not change this field." %>
-	<%= f.input :student_id_number, :label => "District Student ID Number", :input_html => { :size => 15 } %>
 	
 	<li>
 		<%= f.label :participant_group_id %>

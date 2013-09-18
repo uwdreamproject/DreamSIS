@@ -43,7 +43,7 @@ class ResourceController < ApplicationController
   end
   
   def create
-    @object = self.class.object_class.find(params[self.class.object_name])
+    @object = self.class.object_class.new(params[self.class.object_name])
     load_variables
       
     respond_to do |format|

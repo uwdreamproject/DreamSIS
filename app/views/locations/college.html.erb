@@ -3,13 +3,18 @@
 
 <div class="when-and-where">
 	<%= image_tag "https://maps.google.com/maps/api/staticmap?size=250x250&sensor=false&zoom=12&markers=#{@location.try(:latitude)}%2C#{@location.try(:longitude)}" %>
-	<p class="address"><%= @location.address %></p>
+	<p class="address">
+		<%=h @location.address %>
+		<br><%=h [@location.city, @location.state].join(", ") %> <%=h @location.zip %>
+	</p>
 </div>
 
 <dl class="inline-definitions">
 
 	<dt>Address</dt>
-	<dd><%=h @location.address %></dd>
+	<dd><%=h @location.address %>
+		<br><%=h [@location.city, @location.state].join(", ") %> <%=h @location.zip %>
+		</dd>
 
 	<dt>Phone</dt>
 	<dd><%= number_to_phone @location.phone %></dd>
