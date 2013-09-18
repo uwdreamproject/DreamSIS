@@ -6,6 +6,11 @@
 	<dd>
 		<%= @clearinghouse_request.created_at.to_s(:date_with_full_month) %>
 		with <%= pluralize @clearinghouse_request.participant_ids.size, "participant" %>
+        
+        <%- missing_count = @clearinghouse_request.participant_ids.size - @clearinghouse_request.participants.size -%>
+        <%- if missing_count > 0 -%>
+            <span class="light">(<%= pluralize missing_count, "record" %> no longer found)</span>
+        <% end %>
 
 		<%- unless @clearinghouse_request.submitted? -%>
 			<p>

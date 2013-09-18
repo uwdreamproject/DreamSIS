@@ -53,7 +53,8 @@ class ClearinghouseRequest < CustomerScoped
   # If +@participants+ instance variable is assigned, return that. Otherwise, find all of the participants
   # identified by the collection in the +participant_ids+ attribute.
   def participants
-    @participants ||= Participant.find(participant_ids)
+    # @participants ||= Participant.find(participant_ids)
+    @participants ||= Participant.find(:all, :conditions => ["`id` IN (?)", participant_ids])
   end
   
   def plain_ftp_password=(pwd)
