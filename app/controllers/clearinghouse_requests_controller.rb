@@ -49,6 +49,18 @@ class ClearinghouseRequestsController < ApplicationController
     end
     redirect_to(@clearinghouse_request)
   end
+
+  def retrieve
+    @clearinghouse_request = ClearinghouseRequest.find(params[:id])
+    if @clearinghouse_request.retrieve!
+      flash[:notice] = "The file was successfully retrieved from NSC and processed."
+    else
+      flash[:eerror] = "There was a problem retrieving the file. Please try again or upload the results file manually."
+    end
+    redirect_to(@clearinghouse_request)
+  end
+  
+
   
   def create
     @clearinghouse_request = ClearinghouseRequest.new(params[:clearinghouse_request])
