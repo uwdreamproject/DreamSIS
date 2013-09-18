@@ -9,11 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(:version => 20130827214106) do
-=======
 ActiveRecord::Schema.define(:version => 20130912063806) do
->>>>>>> master
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -386,7 +382,6 @@ ActiveRecord::Schema.define(:version => 20130912063806) do
     t.integer  "warning_threshold"
     t.date     "start_display_at"
     t.date     "end_display_at"
-    t.integer  "earliest_grade_level"
     t.integer  "earliest_grade_level_level"
     t.integer  "latest_grade_level_level"
     t.integer  "customer_id"
@@ -653,23 +648,6 @@ ActiveRecord::Schema.define(:version => 20130912063806) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
-
-  create_table "taggings", :force => true do |t|
-    t.integer  "tag_id"
-    t.integer  "taggable_id"
-    t.integer  "tagger_id"
-    t.string   "tagger_type"
-    t.string   "taggable_type"
-    t.string   "context"
-    t.datetime "created_at"
-  end
-
-  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
-  add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
-
-  create_table "tags", :force => true do |t|
-    t.string "name"
-  end
 
   create_table "terms", :force => true do |t|
     t.integer  "year"
