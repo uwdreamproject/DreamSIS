@@ -48,7 +48,7 @@ class ScholarshipApplicationsController < ParticipantsController
     respond_to do |format|
       if @scholarship_application.save
         flash[:notice] = 'Scholarship application was successfully created.'
-        format.html { redirect_to(@participant) }
+        format.html { redirect_to(participant_path(@participant, :anchor => "scholarship_applications")) }
         format.xml  { render :xml => @scholarship_application, :status => :created, :location => @participant }
       else
         format.html { render :action => "new" }
@@ -65,7 +65,7 @@ class ScholarshipApplicationsController < ParticipantsController
     respond_to do |format|
       if @scholarship_application.update_attributes(params[:scholarship_application])
         flash[:notice] = 'Scholarship application was successfully updated.'
-        format.html { redirect_to(@participant) }
+        format.html { redirect_to(participant_path(@participant, :anchor => "scholarship_applications")) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

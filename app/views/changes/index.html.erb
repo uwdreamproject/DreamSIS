@@ -1,0 +1,26 @@
+<h1>Changes for <%=h @object.class.to_s %> <%=h @object.id.to_s %></h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Action</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <%= render :partial => "change", :collection => @changes %>
+        
+        <%- if @changes.empty? -%>
+        <tr class="empty">
+            <td colspan=10>No changes recorded for this object.</td>
+        </tr>
+        <% end %>
+        
+    </tbody>
+</table>
+
+<div id="sidebar">
+    <p><%= link_to "Return to record", @object, :class => "back button" rescue nil %></p>
+</div>

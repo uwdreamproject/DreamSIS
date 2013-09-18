@@ -1,0 +1,34 @@
+<h1><%=h @scholarship.title %></h1>
+
+<dl class="inline-definitions">
+
+	<dt>Title</dt>
+	<dd><%=h @scholarship.title %></dd>
+
+	<dt>Organization</dt>
+	<dd><%=h @scholarship.organization_name %></dd>
+
+	<dt>Description</dt>
+	<dd><%= simple_format(auto_link(h(@scholarship.description))) %></dd>
+
+	<dt>Default Amount</dt>
+	<dd><%= @scholarship.default_amount.blank? || @scholarship.default_amount.zero? ? "Not specified" : number_to_currency(@scholarship.default_amount) %>
+		
+		<%= "&ndash; renewable" if @scholarship.default_renewable? %>
+		<%= "for #{pluralize(@scholarship.default_renewable_years, "year")}" unless @scholarship.default_renewable_years.blank? %>
+		</dd>
+		
+	<dt>Non-cash</dt>
+	<dd><%- nmv = []
+		nmv << "Full Ride" if @scholarship.default_full_ride?
+		nmv << "Gap Funding" if @scholarship.default_gap_funding?
+		nmv << "Living Stipend" if @scholarship.default_living_stipend?
+		 -%>
+		 <%= nmv.join(", ") %></dd>
+
+</dl>
+
+<div id="sidebar">
+	<p><%= link_to 'Edit this scholarship', edit_scholarship_path(@scholarship), :class => "edit button" %></p>
+	<p><%= link_to 'Back to scholarships', scholarships_path, :class => "back button" %></p>
+</div>

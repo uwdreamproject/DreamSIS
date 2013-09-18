@@ -160,7 +160,7 @@ class MentorsController < ApplicationController
   end
   
   def leads
-    @term = Term.find(params[:term_id])
+    @term = (Term.find(params[:new_term_id] || params[:term_id]) rescue nil) || Term.current_term || Term.allowing_signups.try(:first) || Term.last
     @high_schools = HighSchool.partners
   end
   

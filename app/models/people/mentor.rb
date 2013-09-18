@@ -150,11 +150,16 @@ Documentation for each filter:
   def correct_sections?
     if currently_enrolled?
       current_groups = self.current_mentor_term_groups.collect(&:mentor_term_group)
-      current_sections = current_groups.collect {|grp| grp.course_number + grp.section_id }
+      current_sections = current_groups.collect {|grp| grp.course_string }
       all_groups = self.mentor_term_groups
       prev_groups = all_groups.delete_if{|k,v| current_groups.include? k}
-      prev_sections = prev_groups.collect {|grp| grp.course_number + grp.section_id }
-      dependencies = YAML.load(current_groups.first.term.course_dependencies)
+      prev_sections = prev_groups.collect {|grp| grp.course_string }
+      yaml = current_groups.first.term.course_dependencies
+      if yaml
+        dependencies = YAML.load(yaml)
+      else
+        return true
+      end
       correct = true
       dependencies.each do |dep, rules|
         if current_sections.any? { |cur_sec| cur_sec.include? dep }

@@ -4,7 +4,10 @@
 	<td><%=h test_score.taken_at.try(:to_s, :date_with_day_of_week) %>
 		<%= content_tag :small, "(#{time_ago_in_words(test_score.taken_at)} ago)", :class => 'light' unless test_score.taken_at.blank? %>
 	</td>
-	<td><%=h test_score.total_score_pretty %></td>
+	<td>
+        <%=h test_score.total_score_pretty %>
+        <%= content_tag :span, "passed", :class => "green tag" if test_score.passed? %>
+    </td>
 	
 	<td class="functions">
 		<%= link_to 'Details', [@participant, test_score] %>

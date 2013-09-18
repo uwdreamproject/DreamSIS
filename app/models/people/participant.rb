@@ -171,6 +171,10 @@ class Participant < Person
     @college_mapper_student ||= CollegeMapperStudent.find(self.college_mapper_id)
     update_college_list_from_college_mapper if update_college_list
     @college_mapper_student
+  rescue Exception => e
+    logger.info { e.message }
+    ::Exceptional::Catcher.handle(e)  # log the error to Exceptional but continue along without error to the user.
+    return nil
   end
 
   # Creates a CollegeMapperStudent record for this participant and stores the CollegeMapper user ID in the
@@ -188,9 +192,10 @@ class Participant < Person
     })
     self.update_attribute(:college_mapper_id, @college_mapper_student.id)
     @college_mapper_student
-  rescue ActiveResource::BadRequest => e
+  rescue Exception => e
     logger.info { e.message }
-    false
+    ::Exceptional::Catcher.handle(e)  # log the error to Exceptional but continue along without error to the user.
+    return false
   end
   
   # Fetches the college list for this student from CollegeMapper and updates the collection of CollegeApplications
@@ -222,6 +227,27 @@ class Participant < Person
     mentors << Mentor.find(mentor_id)
   rescue ActiveRecord::RecordInvalid => e
     errors.add(:new_mentor_id, "has already been added to this participant")
+  end
+  
+  # Returns the objects that have a child relationship to this object:
+  # 
+  # * college_applications
+  # * scholarship_applications
+  # * parents
+  # * test_scores
+  # * college_enrollments
+  # * college_degrees
+  # * participant_mentors
+  # * event_attendances
+  def child_objects
+    collections = %w[college_applications scholarship_applications parents test_scores 
+                     college_enrollments college_degrees mentor_participants event_attendances]
+    child_objects = []
+    for collection in collections
+      child_objects << self.instance_eval(collection)
+    end
+    
+    child_objects.flatten.compact
   end
   
 end

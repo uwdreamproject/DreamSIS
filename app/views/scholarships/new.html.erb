@@ -1,0 +1,13 @@
+<h1>New scholarship</h1>
+
+<% semantic_form_for @scholarship do |f| %>
+
+	<%= f.error_messages %>
+
+	<%= render :partial => "fields", :locals => { :f => f } %>
+	
+	<%= f.submit "Create", :disable_with => 'Creating...' %>
+	<span class="separator">&mdash; or &mdash;</span>
+	<%= link_to 'Cancel', scholarships_path %>
+
+<% end %>

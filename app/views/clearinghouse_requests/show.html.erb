@@ -9,8 +9,8 @@
 
 		<%- unless @clearinghouse_request.submitted? -%>
 			<p>
-				<br /><%= link_to "Submit request now", submit_clearinghouse_request_path(@clearinghouse_request), :method => :post, :class => "upload button" %>
-				<%= separator %>
+				<br /><%= link_to "Submit request now", submit_clearinghouse_request_path(@clearinghouse_request), :method => :post, :class => "upload button" if @clearinghouse_request.submittable? %>
+				<%= separator if @clearinghouse_request.submittable? %>
 				<%= link_to "Mark as submitted", clearinghouse_request_path(@clearinghouse_request, :clearinghouse_request => { 
 						:submitted_at => Time.now, 
 						:number_of_records_submitted => @clearinghouse_request.participant_ids.size }
@@ -32,8 +32,8 @@
 			
 			<%- unless @clearinghouse_request.retrieved? -%>
 				<p>
-					<br /><%= link_to "Retrieve results now", retrieve_clearinghouse_request_path(@clearinghouse_request), :method => :post, :class => "download button" %>
-					<%= separator %>
+					<br /><%= link_to "Retrieve results now", retrieve_clearinghouse_request_path(@clearinghouse_request), :method => :post, :class => "download button" if @clearinghouse_request.retrievable? %>
+					<%= separator if @clearinghouse_request.retrievable? %>
 					<%= link_to_function "Upload results file", "$('upload_form').show()", :class => "save button" %>
 				</p>
 				

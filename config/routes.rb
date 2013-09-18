@@ -3,6 +3,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :notes
   map.resources :programs
   map.resources :test_types
+  map.resources :scholarships, :collection => { :auto_complete_for_scholarship_title => :any }
   map.resources :customers
   map.resources :object_filters
   map.resources :locations, :collection => { :auto_complete_for_location_name => :any }
@@ -53,6 +54,8 @@ ActionController::Routing::Routes.draw do |map|
     :controller => 'mentor_term_groups', 
     :action => 'term'
   map.resources :volunteers, :controller => :mentors, :only => [:show, :background_check_responses]
+
+  map.changes_for_object 'changes/for/:model_name/:id', :controller => 'changes', :action => 'for_object'
 
   map.mentor_signup_schedule_add_my_courses 'mentor_signup/add_my_courses', :controller => 'mentor_signup', :action => 'add_my_courses'
   map.mentor_signup_basics 'mentor_signup/basics', :controller => 'mentor_signup', :action => 'basics'

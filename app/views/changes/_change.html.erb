@@ -1,0 +1,19 @@
+<tr id="change_<%= change.id.to_s %>" class="change_value">
+    <td><strong><%= change[:created_at].to_s(:date_with_full_month) %></strong>
+        <br>
+        <%= change[:created_at].to_s(:time_with_seconds) %>
+        </td>
+    <td><%= change.user.nil? ? "The system" : link_to(h(change.user.try(:fullname)), change.user) %>
+        <%=h change[:action_type] %>d the 
+        <%= link_to change.change_loggable_type, change.change_loggable rescue change.change_loggable_type %> record.
+        
+        <ul>
+            <%- for attribute_name, change_array in change[:changes] -%>
+                <li><strong><%=h attribute_name %></strong> changed
+                    from <%= prep_change_value(change_array[0]) rescue "#err" %> 
+                    to <%= prep_change_value(change_array[1]) rescue "#err" %>
+                </li>
+            <% end %>
+        </ul>
+    </td>
+</tr>
