@@ -15,5 +15,9 @@
 	<%= render :partial => 'participants/fields/administrative', :locals => { :f => f } %>
 	<%#= render :partial => 'participants/fields/post_program', :locals => { :f => f } %>
 
-	<%= f.buttons %>
+	<%- f.buttons do -%>
+        <%= f.submit %>
+        <%= separator %>
+        <%= link_to "Cancel", @participant, :class => "cancel button" %>
+    <% end %>
 <% end %>
