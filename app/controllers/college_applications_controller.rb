@@ -28,6 +28,7 @@ class CollegeApplicationsController < ParticipantsController
   # GET /participant_colleges/new.xml
   def new
     @college_application = @participant.college_applications.new
+    @college_application_choice_options = Customer.college_application_choice_options_array
 
     respond_to do |format|
       format.html # new.html.erb
@@ -38,6 +39,7 @@ class CollegeApplicationsController < ParticipantsController
   # GET /participant_colleges/1/edit
   def edit
     @college_application = @participant.college_applications.find(params[:id])
+    @college_application_choice_options = [[@college_application.try(:choice)] + Customer.college_application_choice_options_array].flatten.uniq
   end
 
   # POST /participant_colleges

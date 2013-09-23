@@ -39,6 +39,10 @@
 				<dd><%=h @customer.customer_label(label_name, :titleize => true) %></dd>
 			<% end %>
 		<% end %>
+        
+            <dt>Choice Options</dt>
+            <dd><%= Customer.college_application_choice_options_array.join(", ") %></dd>
+            
 		</dl>
 	</dd>
 

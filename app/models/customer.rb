@@ -67,6 +67,12 @@ class Customer < ActiveRecord::Base
     (allowable_login_methods || "").include?(provider.to_s)
   end
   
+  # Parses the text in +college_application_choice_options+ and returns an array that is split on newlines.
+  def college_application_choice_options_array
+    return %w[Reach Solid Safety] if college_application_choice_options.blank?
+    college_application_choice_options.split("\n").collect(&:strip)
+  end
+  
   def self.current_customer
     # logger.info { "user: " + User.current_user.try(:customer).inspect }
     # logger.info { "thread: " + Thread.current['customer'].inspect }

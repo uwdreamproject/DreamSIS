@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130912063806) do
+ActiveRecord::Schema.define(:version => 20130923024747) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(:version => 20130912063806) do
     t.string   "url_shortcut"
     t.text     "allowable_login_methods"
     t.string   "visit_label"
+    t.text     "college_application_choice_options",          :default => "'Reach\nSolid\nSafety'"
   end
 
   create_table "degrees", :force => true do |t|
