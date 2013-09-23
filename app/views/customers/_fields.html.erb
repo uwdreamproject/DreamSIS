@@ -34,7 +34,8 @@
 		DreamSIS can perform automatic queries about your participants.</p>
 		<%= f.input :clearinghouse_customer_number, 
 					:label => "Customer Number", 
-					:hint => "Your customer number (or account number) should be six digits.",
+					:hint => "Your customer number (or account number) should be six digits. If your customer number starts with a zero,
+                             DreamSIS will automatically add the leading zeros.",
 					:input_html => { :size => 6 } %>
 		<%= f.input :clearinghouse_contract_start_date, 
 					:label => "Contract Start Date", 

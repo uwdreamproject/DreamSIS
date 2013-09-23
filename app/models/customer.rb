@@ -41,6 +41,14 @@ class Customer < ActiveRecord::Base
     !clearinghouse_customer_number.blank?
   end
   
+  # Returns the NSC customer number as a string with left-padded zeros, per NSC practice.
+  # To return the stored integer version, pass +false+ for the +return_integer+ parameter.
+  def clearinghouse_customer_number(return_integer = false)
+    raw = read_attribute(:clearinghouse_customer_number)
+    return nil if raw.nil?
+    return_integer ? raw : raw.to_s.rjust(6, "0")
+  end
+  
   # Returns true if +term_system+ is +Quarters+.
   def use_quarters?
     term_system == "Quarters"
