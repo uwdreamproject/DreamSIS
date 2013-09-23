@@ -58,14 +58,35 @@
 <%= number_to_phone_pretty(@participant.phone_home, :type => 'home') unless @participant.phone_home.blank? %>
 <%= "<br />" + number_to_phone_pretty(@participant.phone_mobile, :type => 'mobile') unless @participant.phone_mobile.blank? %>
 <%= "<br />" + number_to_phone_pretty(@participant.phone_work, :type => 'work') unless @participant.phone_work.blank? %>
+<%- 
+textables = []
+textables << "Send" if @participant.can_send_texts?
+textables << "Receive" if @participant.can_receive_texts?
+textables = ["Unlimited"] if @participant.unlimited_texting?
+-%>
+<br />Texting: <%= textables.empty? ? content_tag(:span, "None", :class => "light") : textables.join("<br />") %>
+<%= content_tag(:div, "Preferred", :class => 'preferred-note') if @participant.preferred_contact_method == 'Text' %>
+
+
+<%= content_tag(:div, "Phone Preferred", :class => 'preferred-note') if @participant.preferred_contact_method == 'Phone' %>
+<%= content_tag(:div, "Texting Preferred", :class => 'preferred-note') if @participant.preferred_contact_method == 'Text' %>
 
 <h4>E-mail</h4>
 <%= content_tag(:div, "BAD E-MAIL", :class => 'error-message') if @participant.bad_email? %>
-<%= auto_link @participant.email %>
+<%= auto_link h(@participant.email) %>
+<%= content_tag :span, "(Primary)<br />#{mail_to(h(@participant.email2))} (Backup)", :class => 'light email' unless @participant.email2.blank? %>
+
+<%= content_tag(:div, "E-mail Preferred", :class => 'preferred-note') if @participant.preferred_contact_method == 'Email' %>
+
+<%- unless @participant.facebook_id.blank? -%>
+    <h4>Facebook</h4>
+    <%= link_to h(@participant.facebook_id), "http://facebook.com/" + h(@participant.facebook_id), :class => "facebook-mini" %>
+	<%= content_tag(:div, "Facebook Preferred", :class => 'preferred-note') if @participant.preferred_contact_method == 'Facebook' %>
+<% end %>
 
 <h4>Date of Birth</h4>
 <%= @participant.birthdate.try(:to_s, :long) rescue nil %>
-<%= "<br /><small>Age #{@participant.age}</small>" if @participant.age %>
+<%= "<br /><span class=\"light\">Age #{@participant.age}</span>" if @participant.age %>
 
 <h4>Plans after high school</h4>
 <%=h @participant.plans_after_high_school %>

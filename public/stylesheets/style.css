@@ -1473,6 +1473,12 @@ ul.big.choice li {
 	background: url('../images/icons/work_bw.gif') center left no-repeat;
 }
 
+.facebook-mini {
+	padding: 10px 0 10px 20px;
+	line-height: 20px;
+  background: url('../images/icons/facebook_16.gif') center left no-repeat;
+}
+
 .dropzone {
 	background: rgba(10,255,10,0.5) !important;
 }
@@ -2154,6 +2160,13 @@ table.mentors .mentor.name {
 .success-message {
 	color: green;
 	font-weight: bold;
+}
+
+.preferred-note {
+  color: green;
+  font-weight: bold;
+	background: url(../images/check-mini.gif) no-repeat 0;
+	padding-left: 15px;
 }
 
 .green {
