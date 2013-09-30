@@ -112,9 +112,9 @@ EDUC 361A:
   have taken one: [EDUC 360]
   not currently: [EDUC 260, EDUC 360]
 EDUC 361B:
-  require one: [EDUC 260, EDUC 360]
+  require: [EDUC 260, EDUC 360]
 EDUC 369:
-  require one: [EDUC 260, EDUC 360, EDUC 361]
+  require: [EDUC 260, EDUC 360, EDUC 361]
 
 --------------------------------------------------------------
 
@@ -148,6 +148,7 @@ Documentation for each filter:
 =end
 
   def correct_sections?
+    return true if (current_lead? || (self.users.first.admin? rescue false))
     if currently_enrolled?
       current_groups = self.current_mentor_term_groups.collect(&:mentor_term_group)
       current_sections = current_groups.collect {|grp| grp.course_string }
@@ -155,6 +156,7 @@ Documentation for each filter:
       prev_groups = all_groups.delete_if{|k,v| current_groups.include? k}
       prev_sections = prev_groups.collect {|grp| grp.course_string }
       yaml = current_groups.first.term.course_dependencies
+      dependencies = 0
       if yaml
         dependencies = YAML.load(yaml)
       else
