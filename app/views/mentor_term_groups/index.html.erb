@@ -19,7 +19,7 @@
 	<td><%= mentor_term_group.times %></td>
 	<td class="signup-meter <%= "full" if mentor_term_group.full? %>">
 		<div class="capacity" 
-			 style="width: <%= mentor_term_group.capacity.to_f / @max_term_cap * 100 rescue 0 %>%;"
+		         style="width: 100%"
 			 title="<%= number_to_percentage mentor_term_group.percent_full, :precision => 0 %> full">
 			
 			<div class="size" style="width: <%= mentor_term_group.percent_full %>%">
