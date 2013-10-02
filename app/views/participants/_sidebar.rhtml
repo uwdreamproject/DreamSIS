@@ -38,6 +38,14 @@
 
 <% if @controller.action_name != 'show' %>
 	<p><%= link_to "Download in Excel", { :format => :xls }, :class => 'button xls' %></p>
+	
+	<%- if @high_school %>
+		<form>
+	    <p>Class of <%= select_tag :cohort, options_for_select(@high_school.cohorts.collect(&:to_s), @grad_year.to_s) %>
+	    <%= submit_tag "Go" %></p>
+		</form>
+	<% end %>
+	
 
 	<%- unless @participants.respond_to?(:current_page) -%>
 	<h3>Filters
@@ -62,7 +70,7 @@
 		</ul>
 	<% end %>
 		
-	<%- if @participant_groups -%>
+	<%- if @participant_groups && !@participant_groups.empty? -%>
 	<h3>Groups</h3>
 	<ul class="quick_nav" style="margin-top: 0">
 		<%- for participant_group in @participant_groups -%>

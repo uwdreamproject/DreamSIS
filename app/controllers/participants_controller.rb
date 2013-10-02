@@ -53,6 +53,7 @@ class ParticipantsController < ApplicationController
   end
 
   def high_school_cohort
+    return redirect_to(high_school_cohort_path(:high_school_id => params[:high_school_id], :year => params[:cohort])) if params[:cohort]
     @grad_year = params[:year]
     @high_school = HighSchool.find(params[:high_school_id])
     
