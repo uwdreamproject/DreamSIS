@@ -20,6 +20,13 @@ class MentorTermGroup < CustomerScoped
 
   default_scope :order => "title IS NULL, title, course_id", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
 
+  PERMISSION_LEVELS = {
+		:current_school_current_cohort => "only participants in the current-year cohort for this high school (the default)",
+		:current_school_any_cohort => "participants in any cohort for this high school",
+		:current_school_future_cohorts => "participants in current and future cohorts for this high school",
+		:any => "any participant at any school in any cohort"
+  }
+
   # Returns the course ID if no title is specified.
   def title
     read_attribute(:title).blank? ? course_id : read_attribute(:title)
@@ -69,6 +76,18 @@ class MentorTermGroup < CustomerScoped
     return nil if capacity.nil?
     spots_left = capacity - mentor_terms_count
     spots_left < 0 ? 0 : spots_left
+  end
+  
+  # Indicates that this group is using permissions other than the default "current_school_current_cohort" permission level.
+  def non_default_permissions?
+    return false if permissions_level.blank?
+    return false if permissions_level == "current_school_current_cohort"
+    true
+  end
+  
+  # Returns a full sentence description of the permissions level for this group.
+  def permissions_level_description
+    "#{Customer.mentors_Label} in this group can view and edit #{PERMISSION_LEVELS[permissions_level.to_sym]}"
   end
   
   # Given an array of other MentorTermGroup objects, this method returns an array of matching objects whose times overlap on a schedule.

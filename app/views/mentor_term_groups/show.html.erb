@@ -84,6 +84,12 @@
 	<dl class="sidebar">
 		<dt>Location</dt>
 		<dd><%= @mentor_term_group.location.try(:name) %></dd>
+		
+		<%- if @mentor_term_group.non_default_permissions? %>
+			<dt class="red">Permissions Level</dt>
+			<dd><%= content_tag :abbr, @mentor_term_group.permissions_level.titleize, 
+								:title => @mentor_term_group.permissions_level_description %></dd>
+		<% end %>
 
 		<dt>Term</dt>
 		<dd><%= @mentor_term_group.term.try(:title) %></dd>

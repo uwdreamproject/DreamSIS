@@ -91,13 +91,14 @@ class Mentor < Person
   end
   
   # "Current" mentor term groups are defined as groups from either the current term AND any term marked
-  # as allowing signups.
-  def current_mentor_term_groups
+  # as allowing signups. To limit this to a particular location, pass that as an option parameter.
+  def current_mentor_term_groups(location = nil)
     terms = Term.allowing_signups.collect(&:id)
     terms << Term.current_term.id if Term.current_term
     terms = terms.flatten.uniq
-    mentor_terms.find :all, :joins => [:mentor_term_group], 
-      :conditions => { :mentor_term_groups => { :term_id => terms }, :deleted_at => nil }
+    conditions = { :mentor_term_groups => { :term_id => terms }, :deleted_at => nil }
+    conditions[:mentor_term_groups][:location_id] = location.try(:id) if location
+    mentor_terms.find :all, :joins => [:mentor_term_group], :conditions => conditions
   end
   
   # Returns the high school records for the high schools at which this mentor is a high school lead.
@@ -150,7 +151,10 @@ class Mentor < Person
       return true if current_lead?
       return can_edit?(object)
     elsif object.is_a?(Location)
-      return current_mentor_term_groups.collect(&:location_id).include?(object.try(:id))
+      for mentor_term in current_mentor_term_groups
+        return true if mentor_term.permissions_level == "any"
+        return true if mentor_term.location_id == object.try(:id)
+      end
     end
     false
   end
@@ -161,12 +165,22 @@ class Mentor < Person
   # * the participant is in the mentor's current list of mentees
   # * the participant is in the current cohort at a high school that the mentor attends
   # * the mentor is a current high school lead at that participant's high school
+  # 
+  # Additionally, mentors can be assigned to a group which grants additional permissions.
+  # See options at MentorTermGroup.PERMISSION_LEVELS for details.
   def can_edit?(object)
     if object.is_a?(Participant)
       return true if participants.include?(object)
-      if current_mentor_term_groups.collect(&:location_id).include?(object.try(:high_school_id))
-        return true if current_lead_at.collect(&:id).include?(object.try(:high_school_id))
-        return true if object.try(:grad_year) == Participant.current_cohort
+      
+      for mentor_term in current_mentor_term_groups
+        return true if mentor_term.permissions_level == "any"
+
+        if mentor_term.location_id == object.try(:high_school_id)
+          return true if mentor_term.lead?
+          return true if mentor_term.permissions_level == "current_school_any_cohort"
+          return true if mentor_term.permissions_level == "current_school_future_cohorts" && object.try(:grad_year) >= Participant.current_cohort
+          return true if object.try(:grad_year) == Participant.current_cohort # this is the default choice
+        end
       end
     end
     false

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130923024747) do
+ActiveRecord::Schema.define(:version => 20131002031922) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -336,6 +336,7 @@ ActiveRecord::Schema.define(:version => 20130923024747) do
     t.integer  "linked_group_id"
     t.string   "day_of_week"
     t.integer  "customer_id"
+    t.string   "permissions_level"
   end
 
   add_index "mentor_term_groups", ["customer_id"], :name => "index_mentor_term_groups_on_customer_id"
