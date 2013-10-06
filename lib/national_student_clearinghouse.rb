@@ -220,6 +220,8 @@ class NationalStudentClearinghouse
       Rails.logger.info { "Matched DreamSIS indicator in file contents - request ID is #{match[1].to_i}" }
       cr = ClearinghouseRequest.find(match[1].to_i)
       cr.process_detail_file(file_path, self)
+    else 
+      Rails.logger.info { "Did not match DreamSIS indicator in file contents! Quitting." }
     end
   end
   
