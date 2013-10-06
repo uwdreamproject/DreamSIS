@@ -1,3 +1,5 @@
+/* @override http://dreamsis.dev/stylesheets/style.css */
+
 /* @override 
 	http://dreamsis.dev/stylesheets/style.css
 	https://dreamsis.org/stylesheets/style.css?1338689516
@@ -6,7 +8,8 @@
 	https://dreamsis.org/stylesheets/style.css?1364280854
 */
 
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700);
+@import url(http://fonts.googleapis.com/css?family=Oxygen:400,300,700);
+
 
 html {
 	/*width: 100%;
@@ -18,8 +21,7 @@ html {
 }
 
 body {
-	background: #f9f8f4;
-/*	background: rgb(232, 235, 239);*/
+	background: #4b4b4b;
 	margin: 0;
 	padding: 0;
 	text-align: left;
@@ -29,7 +31,7 @@ body {
 }
 
 h1, h2, h3, h4, h5 {
-	font-family: 'Open Sans', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
+	font-family: 'Oxygen', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
 	color: #39275B;
 	font-style: normal;
 	font-weight: normal;
@@ -38,7 +40,8 @@ h1, h2, h3, h4, h5 {
 
 h1 {
 	font-size: 200%;
-	color: #036;
+	color: #323131;
+	font-weight: 600;
 	line-height: 100%;
 }
 
@@ -90,6 +93,7 @@ a:visited {
 table {
 	width: 100%;
 	border-collapse: collapse;
+	background: white;
 }
 
 tr {
@@ -116,12 +120,21 @@ th, td {
 th {
 	text-align: left;
 	border-bottom: 1px solid rgba(3, 114, 145, 1);
-	background-color: rgba(234, 240, 248, 1);
+	background-color: rgb(246, 248, 252);
+	padding: 10px 4px;
 }
 
 td {
 	border-bottom: 1px solid #eee;
 	color: #424242;
+}
+
+table td:first-child, table th:first-child {
+	padding-left: 30px !important;
+}
+
+table td:last-child, table th:last-child {
+	padding-right: 30px !important;
 }
 
 tr.rowset-header td {
@@ -286,17 +299,21 @@ h4 {
 	padding: 5px 10px;
 	color: white;
 	display: block;
-	box-shadow: rgba(0,0,0,0.3) 0 3px 3px;
-	background-image: url(../images/backgrounds/uw-purple-header.jpg);
+	/*box-shadow: rgba(0,0,0,0.3) 0 3px 3px;*/
+background: url(../images/backgrounds/uw-purple-header.jpg) -1px;
+/*background: #f5f5f5;*/
+	border-bottom: 5px solid #e0e0e0;
+	border-top: 5px solid #f8cb40;
 }
 
 #header h1 {
 	margin: 0;
 	/*margin-top: 10px;*/
 	color: white;
-	width: 230px;
+	width: 220px;
 	/*height: 37px;*/
-	background: url(../images/dreamsis-logo-transparent.png) no-repeat;
+	background: url(../images/dreamsis-logo-transparent.png) 7px 7px no-repeat;
+	background-size: 192px;
 }
 
 #header h1 a strong {
@@ -313,11 +330,11 @@ h4 {
 }
 
 #header h1 a:hover {
-	background: url(../images/icons/house.png) no-repeat right bottom;
+	/*background: url(../images/icons/house.png) no-repeat right bottom;*/
 }
 
 #sidebar-header {
-	background: #036 url('../images/dreamsis-logo.png') 2px center no-repeat;
+	/*background: #036 url('../images/dreamsis-logo.png') 2px center no-repeat;*/
 	height: 55px;
 	position: fixed;
 	top: 1px;
@@ -338,17 +355,24 @@ h4 {
 }
 
 #footer {
-	color: #7f7f7f;
+	color: rgb(187,187,187);
 	font-size: 90%;
+	margin: 0;
+	background-color: #4b4b4b;
+	padding: 3em 20px;
+	border-top-style: solid;
+	border-top-width: 1px;
 }
 
 #footer a {
-	color: #7f7f7f;
+	color: rgb(187,187,187);
 }
 
 #content {
-	margin-right: 220px;
-	padding: 20px;
+	margin-right: 0;
+	padding: 0;
+	background: rgb(246, 246, 247);
+	
 }
 
 .admin #content {
@@ -370,13 +394,16 @@ body.full #sidebar-header {
 #content-wrap {
 	margin: -00px;
 	margin-bottom: -13px;
-	padding: 20px;
-	padding-right: 30px;
-	border-radius: 3px;
-	margin-bottom: 20px;
+	padding: 30px 0;
+	padding-right: 0px;
+	/*border-radius: 3px;*/
+	margin-bottom: 0px;
+	margin-right: 230px;
+	padding-bottom: 100px;
 	background: #fff;
-	box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
-	-moz-box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+/*	box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);*/
+	border-right: 1px solid #e0e0e0;
 	height: 100%;
 	z-index: 1;
 }
@@ -388,7 +415,7 @@ body.full #sidebar-header {
 }
 
 #content-wrap h1 {
-	margin-top: 0;
+	margin-top: 0.25em !important;
 }
 
 #content-wrap.blocked {
@@ -408,17 +435,25 @@ body.full #sidebar-header {
 }
 
 .content-block {
-	box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
-	-moz-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
-	padding: 20px;
-	margin: 1.5em 0;
-	background: #fff;
-	border-radius: 3px;
+/*	box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);*/
+	padding: 30px 0 !important;
+	margin: 0;
+	/*background: #8989ba;*/
+	background: white;
+	/*border-radius: 3px;*/
+	border-bottom: 5px solid #e0e0e0;
+}
+
+.content-block > *, #content-wrap > * {
+	padding-left: 30px;
+	padding-right: 30px;
 }
 
 .content-block h1 {
 	margin: 0;
 	margin-bottom: 0.25em;
+	margin-top: 0.25em !important;
 }
 
 .welcome .content-block p {
@@ -427,11 +462,11 @@ body.full #sidebar-header {
 
 #sidebar {
 	position: fixed;
-	top: 60px;
-	right: 10px;
-	width: 200px;
+	top: 40px;
+	right: 0;
+	width: 190px;
 	/*background: #e7e7e7;*/
-	padding: 10px;
+	padding: 20px;
 	padding-top: 20px;
 	bottom: 20px;
 	overflow-x: hidden;
@@ -442,50 +477,92 @@ body.full #sidebar-header {
 }
 
 .admin #sidebar {
-	top: 94px;
+	top: 74px;
 }
 
 #sidebar h3 {
 	margin-top: 1.5em;
-	border-bottom: 1px solid #047391;
+	/*border-bottom: 1px solid #047391;*/
 	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 90%;
+	font-family: "Oxygen", sans-serif;
 }
 
 #sidebar :first-child {
 	margin-top: 0;
 }
 
+#sidebar a.button {
+	border: none;
+	box-shadow: none;
+	margin: 0 -20px;
+	background-color: transparent;
+	display: block;
+	border-radius: 0;
+	background-position-x: 20px;
+	background-position-y: center;
+	padding: 0.75em;
+	padding-left: 45px;
+	border-bottom: 1px inset #dfdfdf;
+}
+
+#sidebar a.button:hover {
+	background-color: rgba(0,0,0,0.03);
+}
+
+#sidebar p a.button {
+	margin-top: -1em;
+}
+
+#sidebar p:first-child a.button {
+	border-top: 1px outset; #dfdfdf;
+}
+
 #login_logout {
 	position: absolute;
 	right: 10px;
-	top: 30px;
-	color: rgba(255,255,255,0.7);
+	top: 16px;
+	z-index: 100;
+	color: #9;
+	min-width: 13%;
 }
 
 #login_logout a {
-	color: #999;
-	font-weight: bold;
+	color: #a8a7a7;
+	font-weight: normal;
+	text-decoration: none;
 }
 
 #login_logout ul {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
-	float: right;
+	float: none;
+	padding-left: 35px;
+	margin-top: 4px;
+}
+
+#login_logout .hide_when_small {
+	display: none;
 }
 
 #login_logout ul > li {
 	margin: 0;
-	margin-right: 0.5em;
+	margin-right: 0em;
 	padding: 0;
 	padding-left: 0.5em;
-	float: left;
-	border-left: 1px solid rgba(255,255,255,0.5);
+	font-size: 85%;
+	display: inline-block;
 }
 
 #login_logout ul > li:first-child {
 	list-style: none;
 	border: none;
+	font-weight: bold;
+	display: block;	
+	font-size: 90%;
+	line-height: 100%;
 }
 
 body.new.session #login_logout {
@@ -493,12 +570,12 @@ body.new.session #login_logout {
 }
 
 #login_logout img.avatar {
-	float: right;
-	margin-left: 1em;
-	top: -18px;
+	float: left;
+	margin-left: 0;
+	top: 0;
 	position: relative;
 	border: 1px solid #919191;
-	border-radius: 2px;
+	border-radius: 50px;
 }
 
 a.login-link {
@@ -635,9 +712,10 @@ a.redirect-link:hover {
 
 #main-nav {
 	display: block;
+	float: left;
 	clear: both;
 	top: 0;
-	box-shadow: rgba(0,0,0,0.3) 0 3px 3px;
+	/*box-shadow: rgba(0,0,0,0.3) 0 3px 3px;*/
 }
 
 #column1, #column2 {
@@ -1514,6 +1592,10 @@ a.offsite {
 	box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
+a.button:visited {
+	color: #222;
+}
+
 a.button:hover {
 	
 }
@@ -2073,7 +2155,7 @@ tr.current, tr.current td {
 }
 
 dl.sidebar {
-	margin: -10px;
+	margin: -15px;
 	margin-bottom: 0;
 }
 
@@ -2101,7 +2183,7 @@ dl.inline-definitions dt {
 	font-size: 100%;
 	font-weight: bold;
 	color: #999;
-	margin-left: 20px;
+	margin-left: 0px;
 	display: block;
 	line-height: 1.3em;
 }
@@ -2134,9 +2216,20 @@ dl.inline-definitions dd p {
 	margin: 0;
 }
 
+div.photo {
+	width: 110px;
+	height: 110px;
+	overflow: hidden;
+	border-radius: 100px;
+	padding: 0;
+	margin: 0 40px;
+	
+}
+
 img.student_photo {
-	border: 1px solid #f2f2f2;
-	border-radius: 7px;
+	border: none;
+	border-radius: 0;
+	width: 100%;
 }
 
 img.student_photo.left {
@@ -3260,41 +3353,44 @@ li.input div.auto_complete.after_select {
 }
 
 #main-nav {
-	height: 35px;
+	height: 0;
 	font-size: 100%;
 	/*position: relative;*/
 	z-index: 100;
-	background: rgb(125,125,127);
-	border: 1px solid #fff;
-	border-width: 1px 0 1px 0;
-	text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+	/*background: rgb(125,125,127);*/
+	/*border-width: 1px 0 1px 0;*/
+	/*text-shadow: 0 1px 0 rgba(0,0,0,0.3);*/
+	left: 220px;
+	top: -48px;
+	position: relative;
 }
 
 /* style the links for the top level */
 
 .menu a, .menu a:visited {
 	display: block;
-	font-size: 100%;
+	font: 90% "Oxygen", sans-serif;
 	font-weight: bold;
 	text-decoration: none;
-	color: #fff;
+	color: #e5e5e5;
 	padding-left: 5px;
 	padding-right: 5px;
 	line-height: 20px;
 	-webkit-transition: background 0.25s ease-in-out;
+	text-transform: uppercase;
 }
 
 
 /*style the top level hover*/ 
 .menu a:hover, .menu ul ul a:hover, .menu :hover > a, .menu ul ul :hover > a {
 	color: #fc0;
-	background: rgb(227,222,205);
+	/*background: rgb(227,222,205);*/
 	border-radius: 2px;
-	color: black;
 	text-shadow: none;
-	box-shadow: 0 3px 4px rgba(255,255,255,0.2) inset;
+	/*box-shadow: 0 3px 4px rgba(255,255,255,0.2) inset;*/
 	z-index: 25;
 }
+
 
 .menu ul ul :hover > a {
 	box-shadow: none;
@@ -3302,11 +3398,11 @@ li.input div.auto_complete.after_select {
 
 .menu ul li {
 	-webkit-transition: background 0.25s ease-in-out;
-	background-position: 40% 10px;
+	background-position: 40% 10px;	
 }
 
 .menu ul li:hover {
-	background: url(../images/mainNav_notch.gif) no-repeat 40% 18px;
+	/*background: url(../images/mainNav_notch.gif) no-repeat 40% 18px;*/
 	z-index: 21;
 	opacity: 0.98;
 }
@@ -3322,12 +3418,15 @@ li.input div.auto_complete.after_select {
 	font-weight: normal;
 	height: auto;
 	line-height: 1em;
-	padding: 5px 10px;
-	padding-left: 22px;
+	padding: 8px 10px;
+	padding-left: 25px;
 	width: 100%;
 	border-bottom: 1px dotted #dadada;
 	border-left: none;
 	text-shadow: none;
+	text-transform: none;
+	font-family: inherit;
+	font-size: 100%;
 }
 
 .menu ul ul li.primary a {
@@ -3367,15 +3466,15 @@ li.input div.auto_complete.after_select {
 	padding: 10px;
 	display: block;
 	z-index: 10;
-	border: 1px solid #999;
+	/*border: 1px solid #999;*/
 	border-radius: 5px;
-	box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
-	-moz-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+	box-shadow: 1px 2px 7px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.2);
 	border-top: none;
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
 	float: left;
-	margin-top: 10px;
+	margin-top: 20px;
 }
 
 .menu ul li div {
@@ -3401,10 +3500,10 @@ li.input div.auto_complete.after_select {
 
 .menu ul {
 	padding: 0;
-	padding-left: 10px;
+	padding-left: 0px;
 	margin: 5px;
 	list-style-type: none;
-	margin-left: 10px;
+	margin-left: 20px;
 	margin-top: 7px;
 }
 
@@ -4202,7 +4301,6 @@ form.formtastic fieldset > ol > li fieldset ol {
   	position: absolute;
   	right: 0.25in;
   	top: 15px;
-  	color: black;
   }
 
   #login_logout .outline.tag {
