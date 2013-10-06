@@ -216,7 +216,7 @@ class NationalStudentClearinghouse
   # record and passes in this file path.
   def process_detail_file(file_path)
     Rails.logger.info { "Processing detail file #{file_path}" }
-    if match = File.read(file_path).match(/DreamSIS-ClearinghouseRequest(\d+)/)
+    if match = File.read(file_path).match(/DreamSIS-ClearinghouseRequest(\d+)/i)
       Rails.logger.info { "Matched DreamSIS indicator in file contents - request ID is #{match[1].to_i}" }
       cr = ClearinghouseRequest.find(match[1].to_i)
       cr.process_detail_file(file_path, self)
