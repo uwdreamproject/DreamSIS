@@ -75,11 +75,11 @@ class NationalStudentClearinghouse
   # what request file it is related to until you download it. This method retrieves all the files that 
   # exist in the /recieve folder and then processes them.
   def retrieve_files!(process_after_retrieving = true)
-    logger.info { "NSC retrieve request starting" }
+    Rails.logger.info { "NSC retrieve request starting" }
     Net::SFTP.start(NSC_FTP_HOST, @customer.clearinghouse_customer_number, :password => @request.decrypted_ftp_password) do |sftp|
       
       sftp.dir.foreach(remote_receive_file_path) do |entry|
-        logger.info { entry.name }
+        Rails.logger.info { entry.name }
         sftp.download!("#{remote_receive_file_path}/#{entry.name}", File.join("#{local_receive_file_path}", entry.name))
       end
     end
@@ -231,11 +231,11 @@ class NSCUploadHandler
   end
   
   def on_open(uploader, file)
-    logger.info { "starting upload: #{file.local} -> #{file.remote} (#{file.size} bytes)" }
+    Rails.logger.info { "starting upload: #{file.local} -> #{file.remote} (#{file.size} bytes)" }
   end
 
   def on_finish(uploader)
-    logger.info { "finished." }
+    Rails.logger.info { "finished." }
     @nsc.request.update_attributes(
       :submitted_at => Time.now, 
       :submitted_filename => @nsc.send_filename, 
@@ -251,11 +251,11 @@ class NSCDownloadHandler
   end
     
   def on_open(downloader, file)
-    logger.info { "starting download: #{file.remote} -> #{file.local} (#{file.size} bytes)" }
+    Rails.logger.info { "starting download: #{file.remote} -> #{file.local} (#{file.size} bytes)" }
   end
 
   def on_finish(downloader)
-    logger.info { "finished." }
+    Rails.logger.info { "finished." }
     # @nsc.request.update_attributes(
     #   :retrieved_at => Time.now
     # )
