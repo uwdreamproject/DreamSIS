@@ -16,21 +16,25 @@ class ApplicationController < ActionController::Base
   # include AuthenticatedSystem #, ExceptionNotifiable
   require 'array_math'
 
-  before_filter :handle_subdomain
-  before_filter :require_ssl
-  before_filter :authenticated?
-  before_filter :login_required, :except => [ 'remove_vicarious_login' ]
-  before_filter :save_user_in_current_thread
-  before_filter :configure_exceptional
-  before_filter :save_return_to
-  before_filter :check_authorization
-  before_filter :check_if_enrolled
-  after_filter :flash_to_headers
+  before_filter :handle_subdomain, :except => %w[ ping ]
+  before_filter :require_ssl, :except => %w[ ping ]
+  before_filter :authenticated?, :except => %w[ ping ]
+  before_filter :login_required, :except => [ 'remove_vicarious_login', 'ping' ]
+  before_filter :save_user_in_current_thread, :except => %w[ ping ]
+  before_filter :configure_exceptional, :except => %w[ ping ]
+  before_filter :save_return_to, :except => %w[ ping ]
+  before_filter :check_authorization, :except => %w[ ping ]
+  before_filter :check_if_enrolled, :except => %w[ ping ]
+  after_filter :flash_to_headers, :except => %w[ ping ]
   
   helper_method :current_user
 
   def forbidden
     # render forbidden.html.erb
+  end
+  
+  def ping
+    render :text => "200 OK", :status => :ok
   end
 
   # Add return_to to session if it's been requested
