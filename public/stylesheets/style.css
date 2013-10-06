@@ -3348,6 +3348,7 @@ li.input div.auto_complete.after_select {
 .menu ul ul li.tests a { background-image: url(../images/icons/silk/page_edit.png); }
 .menu ul ul li.trainings a { background-image: url(../images/icons/silk/book_open.png); }
 .menu ul ul li.users a { background-image: url(../images/icons/silk/shield.png); }
+.menu ul ul li.trash a { background-image: url(../images/icons/silk/bin_closed.png); }
 
 
 .menu ul ul li a {
