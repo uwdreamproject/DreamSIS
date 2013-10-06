@@ -19,6 +19,14 @@ class Parent < Person
   belongs_to :child  
 
   validates_presence_of :lastname, :firstname, :parent_type
+
+  after_save :update_filter_cache
+  after_destroy :update_filter_cache
+
+  # Updates the participant filter cache
+  def update_filter_cache
+    child.save
+  end
   
   # Returns the preferred method of contact, ready for printing on the page.
   # For example, if the preferred contact method is "Home Phone", this method

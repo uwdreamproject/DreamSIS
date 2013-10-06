@@ -5,6 +5,14 @@ class ScholarshipApplication < ActiveRecord::Base
   validates_presence_of :scholarship_id, :participant_id
   # validates_uniqueness_of :scholarship_id, :scope => :participant_id  # Deprecated. Students can earn the same scholarship more than once.
   
+  after_save :update_filter_cache
+  after_destroy :update_filter_cache
+
+  # Updates the participant filter cache
+  def update_filter_cache
+    participant.save
+  end
+  
   def title
     scholarship.try(:title)
   end
