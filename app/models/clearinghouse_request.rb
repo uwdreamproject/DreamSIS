@@ -143,7 +143,7 @@ class ClearinghouseRequest < CustomerScoped
           end
         end
       end
-      logger.info { "Done - update request metadata" }
+      logger.info { "Done - updating request metadata" }
       update_attributes(
         :retrieved_at => Time.now,
         :number_of_records_returned => participant_ids.uniq.size

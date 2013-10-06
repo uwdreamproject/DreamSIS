@@ -76,14 +76,17 @@ class NationalStudentClearinghouse
   # exist in the /recieve folder and then processes them.
   def retrieve_files!(process_after_retrieving = true)
     Rails.logger.info { "NSC retrieve request starting" }
+    Rails.logger.info { " -- #{process_after_retrieving ? "will" : "will not"} process files after retrieving" }
     Net::SFTP.start(NSC_FTP_HOST, @customer.clearinghouse_customer_number, :password => @request.decrypted_ftp_password) do |sftp|
       
+      Rails.logger.info { "Connected to server, getting dir list" }
       sftp.dir.foreach(remote_receive_file_path) do |entry|
-        Rails.logger.info { entry.name }
+        Rails.logger.info { "Found #{entry.name} - downloading..." }
         sftp.download!("#{remote_receive_file_path}/#{entry.name}", File.join("#{local_receive_file_path}", entry.name))
       end
     end
     
+    Rails.logger.info { "Got files, requesting they be processed." }
     process_files!(local_receive_file_path) if process_after_retrieving
   end
   
@@ -202,6 +205,7 @@ class NationalStudentClearinghouse
   
   # Processes the files that were downloaded from the /recive subdiretory on the server.
   def process_files!(local_path)
+    Rails.logger.info { "Processing files from #{local_path}" }
     Dir.glob(File.join(local_path, "*")).each do |file_path|
       process_detail_file(file_path) if file_path.ends_with?("_DA.csv") && !file_path.include?("aggrrpt")
     end
@@ -211,7 +215,9 @@ class NationalStudentClearinghouse
   # ClearinghouseRequest this result is for. Then calls #process_detail_file on that
   # record and passes in this file path.
   def process_detail_file(file_path)
+    Rails.logger.info { "Processing detail file #{file_path}" }
     if match = File.read(file_path).match(/DreamSIS-ClearinghouseRequest(\d+)/)
+      Rails.logger.info { "Matched DreamSIS indicator in file contents - request ID is #{match[1].to_i}" }
       cr = ClearinghouseRequest.find(match[1].to_i)
       cr.process_detail_file(file_path, self)
     end
