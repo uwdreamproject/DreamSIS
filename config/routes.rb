@@ -56,6 +56,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :volunteers, :controller => :mentors, :only => [:show, :background_check_responses]
 
   map.changes_for_object 'changes/for/:model_name/:id', :controller => 'changes', :action => 'for_object'
+  map.deleted_records 'changes/trash', :controller => 'changes', :action => "deleted"
+  map.undelete_change 'changes/undelete/:id', :controller => "changes", :action => "undelete", :conditions => { :method => :delete }
 
   map.mentor_signup_schedule_add_my_courses 'mentor_signup/add_my_courses', :controller => 'mentor_signup', :action => 'add_my_courses'
   map.mentor_signup_basics 'mentor_signup/basics', :controller => 'mentor_signup', :action => 'basics'

@@ -210,7 +210,7 @@ table td.functions {
 	white-space: nowrap;
 }
 
-table td.functions a {
+table td.functions a:not(.default) {
 	font-size: 90%;
 	display: inline-block;
 	padding: 4px 10px;

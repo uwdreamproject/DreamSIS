@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131002031922) do
+ActiveRecord::Schema.define(:version => 20131006195723) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(:version => 20131002031922) do
     t.string   "action_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "restored_at"
+    t.integer  "restored_user_id"
   end
 
   add_index "changes", ["change_loggable_id", "change_loggable_type"], :name => "index_changes_on_changable"
