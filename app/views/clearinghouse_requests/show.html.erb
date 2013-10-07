@@ -21,13 +21,8 @@
 						:number_of_records_submitted => @clearinghouse_request.participant_ids.size }
 					), :method => :put, :class => "ok button" %>
 			</p>
-		<% end %>
-		
-		<p><br />
-		<%= link_to "Download submission file", file_clearinghouse_request_path(@clearinghouse_request, :file => 'submission'), :class => "save button" %>
-		<%= @clearinghouse_request.nsc.send_filename %>
-		</p>
-		</dd>
+		<% end %>		
+	</dd>
 	
 	<dt>Submitted</dt>
 	<dd>
@@ -63,16 +58,16 @@
 		<% end %>
 		</dd>
 	
-	<%- if @clearinghouse_request.retrieved? -%>
-		<dt>Files</dt>
-		<dd>
-			<ul>
-				<li>
-					<%= link_to "#{@clearinghouse_request.nsc.send_filename}",
-						 	file_clearinghouse_request_path(@clearinghouse_request, :file => 'submission') %>
-							(Submission file)
-				</li>
-				
+	<dt>Files</dt>
+	<dd>
+		<ul>
+			<li>
+				<%= link_to "#{@clearinghouse_request.nsc.send_filename}",
+					 	file_clearinghouse_request_path(@clearinghouse_request, :file => 'submission') %>
+						(Submission file)
+			</li>
+			
+			<%- if @clearinghouse_request.retrieved? -%>
 				<%- @clearinghouse_request.files.each_with_index do |file, i| %>
 					<li>
 						<%= link_to h(File.basename(file)), file_clearinghouse_request_path(@clearinghouse_request, :file => i+1) %>
@@ -80,9 +75,9 @@
 						<%= "(Control report)" if File.basename(file).match("cntlrpt") %>
 					</li>
 				<% end %>
-			</ul>
-		</dd>
-	<% end %>
+			<% end %>
+		</ul>
+	</dd>
 
 </dl>
 
