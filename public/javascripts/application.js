@@ -243,3 +243,32 @@ function sum(numbers) {
 	}
 	return total;
 }
+
+// Moves to a particular tab
+function switchToTab(tab_id) {
+  $$('.info-section-container .active').each(function(n) { n.removeClassName('active') })
+  $(tab_id).addClassName('active');
+  $(tab_id + '_tab_link').addClassName('active');
+}
+
+// Switch to the "next" tab
+function nextTab() {
+  var next_li = $$('ul.tabs .active').first().up('li').next()
+  if(! next_li) {
+    return false
+  } else {
+    var next_tab = next_li.down('a')
+    switchToTab(next_tab.id.gsub("_tab_link", ""))
+  }
+}
+
+// Switch to the "previous" tab
+function previousTab() {
+  var previous_li = $$('ul.tabs .active').first().up('li').previous()
+  if(! previous_li) {
+    return false
+  } else {
+    var previous_tab = previous_li.down('a')
+    switchToTab(previous_tab.id.gsub("_tab_link", ""))
+  }
+}

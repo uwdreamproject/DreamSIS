@@ -4,6 +4,12 @@
 
 <% if @controller.action_name == 'show' && @current_user.can_view?(@participant.high_school) %>
 	
+	<p><%= link_to 'Edit this participant', edit_participant_path(@participant), :class => 'edit button' %></p>
+	
+	<%- if @participant.college_mapper_id %>
+		<p><%= render :partial => 'open_in_college_mapper' %></p>
+	<% end %>
+	
 	<p><%= link_to "Return to #{@participant.high_school.try(:name)} #{@participant.grad_year} list",
 	 				high_school_cohort_path(@participant.high_school, (@participant.grad_year || 0)),
 	 				:class => 'back button' if @participant.high_school && @participant.grad_year %></p>

@@ -28,6 +28,7 @@ body {
 	font: 13px/130% "Helvetica Neue", Helvetica, Arial, sans-serif;
 	color: rgb(51,51,51);
 	-webkit-font-smoothing: antialiased;
+	z-index: 0;
 }
 
 h1, h2, h3, h4, h5 {
@@ -119,7 +120,7 @@ th, td {
 
 th {
 	text-align: left;
-	border-bottom: 1px solid rgba(3, 114, 145, 1);
+	border-bottom: 1px solid rgb(176, 183, 226);
 	background-color: rgb(246, 248, 252);
 	padding: 10px 4px;
 }
@@ -300,10 +301,11 @@ h4 {
 	color: white;
 	display: block;
 	/*box-shadow: rgba(0,0,0,0.3) 0 3px 3px;*/
-background: url(../images/backgrounds/uw-purple-header.jpg) -1px;
+	background: url(../images/backgrounds/uw-purple-header.jpg) -1px;
 /*background: #f5f5f5;*/
 	border-bottom: 5px solid #e0e0e0;
 	border-top: 5px solid #f8cb40;
+	z-index: 5;
 }
 
 #header h1 {
@@ -334,16 +336,17 @@ background: url(../images/backgrounds/uw-purple-header.jpg) -1px;
 }
 
 #sidebar-header {
-	/*background: #036 url('../images/dreamsis-logo.png') 2px center no-repeat;*/
-	height: 55px;
+	background: transparent url('../images/dreamsis-logo-dark-200.png') 2px center no-repeat;
+	height: 30px;
 	position: fixed;
-	top: 1px;
-	right: 10px;
+	top: 10px;
+	right: 5px;
 	width: 213px;
-	z-index: -1;
+	z-index: 0;
 	border-radius: 4px;
-	opacity: 0.4;
+	opacity: 0.3;
 	border: none;
+	display: none;
 }
 
 #sidebar_expander_link {
@@ -355,17 +358,20 @@ background: url(../images/backgrounds/uw-purple-header.jpg) -1px;
 }
 
 #footer {
-	color: rgb(187,187,187);
+	color: rgb(116, 116, 116);
 	font-size: 90%;
 	margin: 0;
-	background-color: #4b4b4b;
+	/*background-color: #f5f5f5;*/
+	background: rgba(248, 203, 63, 0.65);
 	padding: 3em 20px;
-	border-top-style: solid;
-	border-top-width: 1px;
+	border-top: 1px outset rgb(248, 203, 63);
+	
+	/*border-bottom: 5px solid #e0e0e0;*/
+	/*border-top: 5px solid #e0e0e0;*/
 }
 
 #footer a {
-	color: rgb(187,187,187);
+	color: rgb(116,116,116);
 }
 
 #content {
@@ -462,7 +468,7 @@ body.full #sidebar-header {
 
 #sidebar {
 	position: fixed;
-	top: 40px;
+	top: 65px;
 	right: 0;
 	width: 190px;
 	/*background: #e7e7e7;*/
@@ -474,10 +480,11 @@ body.full #sidebar-header {
 	text-shadow: 0 1px 0 white;
 	z-index: 25;
 	color: #4c4c4c;
+	clear: both;
 }
 
 .admin #sidebar {
-	top: 74px;
+	/*top: 74px;*/
 }
 
 #sidebar h3 {
@@ -745,6 +752,130 @@ a.redirect-link:hover {
 	min-height: 400px;
 }
 
+.record-header {
+	padding: 20px;
+	padding-top: 20px;
+	position: relative;
+	min-height: 5em;
+	/*background-color: rgb(247, 249, 250);*/
+	border-bottom: 5px solid rgb(236, 241, 245);
+}
+
+.record-header .photo {
+
+	margin: 0;
+	width: 80px;
+	height: 80px;
+}
+
+.record-header .name {
+	position: absolute;
+	top: 35px;
+	left: 120px;
+}
+
+.record-header .details {
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+}
+
+.record-header dl {
+	margin: 0;
+	padding: 20px;
+}
+
+.record-header dt {
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 85%;
+	font-family: "Oxygen", sans-serif;
+	color: #39275B;
+	float: left;
+	clear: both;
+}
+
+.record-header dd {
+	margin: 0 10px 10px 0;
+	padding: 0;
+	color: rgb(51,51,51);
+	float: left;
+	clear: both;
+}
+
+.info-section-container.vertical ul.tabs {
+	position: absolute;
+	width: 210px;
+	margin: 0 0 0 -30px;
+	list-style: none;
+	padding: 0;
+	border-right: 1px solid rgb(229, 231, 241);
+}
+
+.info-section-container.vertical ul.tabs li a, .info-section-container.vertical ul.tabs li a:visited {
+	padding: 10px 20px;
+	padding-left: 50px;
+	padding-right: 40px;
+	display: block;
+	text-decoration: none;
+	font-family: Oxygen, sans-serif;
+	font-weight: bold;
+	color: rgb(74, 74, 74);
+	border-bottom: 1px inset #f7f7f7;
+	background-repeat: no-repeat;
+	background-position: 20px center;
+	
+}
+
+.info-section-container.vertical ul.tabs li a.active {
+	background-color: rgb(236, 241, 245) !important;
+}
+
+.info-section-container.vertical ul.tabs li a:hover {
+	background-color: rgb(244, 246, 248);
+}
+
+.info-section-container.vertical ul.tabs li a span.count {
+	display: inline-block;
+	position: absolute;
+	right: 10px;
+	width: 1em;
+	text-align: center;
+	background: rgb(115, 115, 115);
+	padding: 1px 7px;
+	margin-top: -2px;
+	font-size: 90%;
+	font-weight: bold;
+	font-family: "Helvetica Neue", Helvetica, sans-serif;
+	color: white;
+	border-radius: 20px;
+}
+
+.info-section-container.vertical .tab-content {
+	margin-left: 180px;
+	border-left: 3px solid rgb(236, 241, 245);
+	padding-left: 0;
+	padding-bottom: 50px;
+	min-height: 400px;
+	margin-right: -30px;	
+}
+
+.info-section-container .tab-content .info-section {
+	display: none;
+	overflow: auto;
+	clear: both;
+}
+
+.info-section-container .tab-content .info-section.active {
+	display: block;
+}
+
+body.participants.show #content-wrap {
+	padding-bottom: 0;
+	padding-top: 0;
+}
+
 #report_selector {
 	float: right;
 	margin-left: 1em;
@@ -759,27 +890,34 @@ a.redirect-link:hover {
 	margin-bottom: 2em;
 }
 
-.info-section h2 {
-	margin-top: 0;
-	background-color: #cedae5;
-	background-repeat: no-repeat;
-	background-position: 7px center;
-	padding: 5px;
-	padding-left: 30px;
-	margin-bottom: 0;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
+.info-section > a, .info-section div, .info-section > form {
+	margin-left: 30px;
+	margin-right: 30px;
+	margin-top: 20px;
 }
 
-.info-section#college_applications h2, .info-section#college_enrollments h2 {
+.info-section h2 {
+	margin-top: 0;
+	background-repeat: no-repeat;
+	background-position: 7px center;
+	padding: 8px;
+	padding-left: 30px;
+	font-weight: bold;
+	font-size: 125%;
+	margin-bottom: 0;
+	background-color: rgb(236, 241, 245);
+	border-bottom: 1px solid rgb(229, 231, 241);	
+}
+
+.info-section#college_applications h2, .info-section#college_enrollments h2, .tabs a.college_applications, .tabs a.college_enrollments {
 	background-image: url(../images/icons/silk/building.png);
 }
 
-.info-section#college_degrees h2 {
+.info-section#college_degrees h2, .tabs a.college_degrees {
 	background-image: url(../images/icons/silk/script.png);
 }
 
-.info-section#filter_results h2 {
+.info-section#filter_results h2, .tabs a.filter_results {
 	background-image: url(../images/icons/silk/tick.png);
 }
 
@@ -849,31 +987,31 @@ td.college-logo {
 	vertical-align: top;
 }
 
-.info-section#scholarship_applications h2 {
+.info-section#scholarship_applications h2, .tabs a.scholarship_applications {
 	background-image: url(../images/icons/silk/money.png);
 }
 
-.info-section#paperwork h2 {
+.info-section#paperwork h2, .tabs a.paperwork {
 	background-image: url(../images/icons/silk/page_edit.png);
 }
 
-.info-section#parents h2 {
+.info-section#parents h2, .tabs a.parents {
 	background-image: url(../images/icons/silk/user_suit.png);
 }
 
-.info-section#test_scores h2 {
+.info-section#test_scores h2, .tabs a.test_scores {
 	background-image: url(../images/icons/silk/page_edit.png);
 }
 
-.info-section#mentors h2 {
+.info-section#mentors h2, .tabs a.mentors {
 	background-image: url(../images/icons/silk/user_red.png);
 }
 
-.info-section#notes h2 {
+.info-section#notes h2, .tabs a.notes {
 	background-image: url(../images/icons/silk/note.png);
 }
 
-.info-section#events h2 {
+.info-section#events h2, .tabs a.events {
 	background-image: url(../images/icons/silk/calendar_view_month.png);
 }
 
@@ -1963,14 +2101,14 @@ ul.filters {
 ul.filter-results {
 	list-style: none;
 	padding: 0;
-	margin: 0;
+	margin: 20px 30px;
 	columns: 4;
 	-webkit-columns: 4;
 }
 
 .filter-results li {
-	background: no-repeat left 5px;
-	padding: 5px;
+	background: no-repeat left center;
+	padding: 7px;
 	padding-left: 22px;
 	border-bottom: 1px solid #eee;
 	-webkit-column-break-inside: avoid;
