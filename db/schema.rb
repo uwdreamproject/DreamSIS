@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131006195723) do
+ActiveRecord::Schema.define(:version => 20131007013103) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -76,7 +76,8 @@ ActiveRecord::Schema.define(:version => 20131006195723) do
     t.string   "url_shortcut"
     t.text     "allowable_login_methods"
     t.string   "visit_label"
-    t.text     "college_application_choice_options",          :default => "'Reach\nSolid\nSafety'"
+    t.text     "college_application_choice_options"
+    t.text     "paperwork_status_options"
   end
 
   create_table "degrees", :force => true do |t|
@@ -580,6 +581,9 @@ ActiveRecord::Schema.define(:version => 20131006195723) do
     t.string   "migration_id"
     t.boolean  "lives_with"
     t.string   "education_country"
+    t.string   "personal_statement_status"
+    t.string   "resume_status"
+    t.string   "activity_log_status"
   end
 
   add_index "people", ["customer_id"], :name => "index_people_on_customer_id"

@@ -124,6 +124,10 @@ td {
 	color: #424242;
 }
 
+table.borderless td {
+  border-bottom: none !important;
+}
+
 tr.rowset-header td {
 	font-weight: bold;
 	background: #e5e5e5;
