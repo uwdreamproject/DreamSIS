@@ -36,6 +36,8 @@ class ClearinghouseRequestsController < ApplicationController
     @clearinghouse_request = ClearinghouseRequest.find(params[:id])
     if params[:file] == 'submission'
       file_path = @clearinghouse_request.nsc.generate_file!
+    elsif !params[:file].to_i.zero?
+      file_path = @clearinghouse_request.files[params[:file].to_i-1]
     end
     send_file file_path, :disposition => 'attachment'
   end
@@ -59,8 +61,6 @@ class ClearinghouseRequestsController < ApplicationController
     end
     redirect_to(@clearinghouse_request)
   end
-  
-
   
   def create
     @clearinghouse_request = ClearinghouseRequest.new(params[:clearinghouse_request])

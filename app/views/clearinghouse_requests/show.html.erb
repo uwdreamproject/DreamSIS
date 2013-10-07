@@ -65,7 +65,23 @@
 	
 	<%- if @clearinghouse_request.retrieved? -%>
 		<dt>Files</dt>
-		<dd></dd>
+		<dd>
+			<ul>
+				<li>
+					<%= link_to "#{@clearinghouse_request.nsc.send_filename}",
+						 	file_clearinghouse_request_path(@clearinghouse_request, :file => 'submission') %>
+							(Submission file)
+				</li>
+				
+				<%- @clearinghouse_request.files.each_with_index do |file, i| %>
+					<li>
+						<%= link_to h(File.basename(file)), file_clearinghouse_request_path(@clearinghouse_request, :file => i+1) %>
+						<%= "(Aggregate report)" if File.basename(file).match("aggrrpt") %>
+						<%= "(Control report)" if File.basename(file).match("cntlrpt") %>
+					</li>
+				<% end %>
+			</ul>
+		</dd>
 	<% end %>
 
 </dl>

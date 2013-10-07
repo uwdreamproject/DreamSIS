@@ -162,6 +162,12 @@ class ClearinghouseRequest < CustomerScoped
     update_attribute(:ftp_password, nil)
   end
 
+  # Returns an array of the files stored for this request.
+  def files
+    files_dir = File.join("files", "clearinghouse_request", id.to_s, "receive", "*")
+    Dir.glob(files_dir)
+  end
+
   protected
   
   # Creates a CollegeDegree record from the attributes provided. 
@@ -225,7 +231,7 @@ class ClearinghouseRequest < CustomerScoped
     logger.info { "done" }
     copied_files
   end
-
+  
   # Tells the nsc object to delete the files related to this request.
   def delete_sftp_files
     logger.info { "Deleting related sftp files" }
