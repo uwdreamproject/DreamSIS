@@ -11,9 +11,17 @@ class CollegeApplication < ActiveRecord::Base
   delegate :name, :to => :institution
   
   before_destroy :destroy_college_mapper_college, :if => :do_college_mapper_functions?
-  after_create :create_college_mapper_college, :if => :do_college_mapper_functions?
+  after_create :create_college_mapper_college, :if => :do_college_mapper_functions?  
   
   attr_accessor :institution_name
+
+  after_save :update_filter_cache
+  after_destroy :update_filter_cache
+
+  # Updates the participant filter cache
+  def update_filter_cache
+    participant.save
+  end
 
   # Returns true if this application represents the college that the student is actually attending.
   def attending?

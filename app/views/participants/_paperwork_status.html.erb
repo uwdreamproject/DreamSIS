@@ -51,6 +51,27 @@
 				<% end %>
 				</td><% end %>
 		</tr>
-    
+		
+		<%- for item in %w[personal_statement resume activity_log] %>
+		<tr>
+			<td><%= item.titleize %></td>
+			<td colspan="2">
+				<%- remote_form_for @participant do |f| %>
+				<table class="borderless">
+					<tr>
+					<%- for option in Customer.paperwork_status_options_array %>
+						<td>
+							<%= f.radio_button "#{item}_status", h(option), 
+									:id => "participant_#{item}_status_#{option.to_param}", 
+									:onChange => "this.form.onsubmit()" %>
+							<%= f.label "#{item}_status_#{option.to_param}", h(option) %>
+						</td>
+					<% end %>
+					</tr>
+				<% end %>				
+				</table>
+			</td>
+		</tr>	
+		<% end %>
 		
 	</table>

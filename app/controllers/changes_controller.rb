@@ -1,6 +1,6 @@
 class ChangesController < ApplicationController
   
-  ALLOWABLE_MODELS = %w[Person User Participant Mentor Volunteer PubcookieUser]
+  ALLOWABLE_MODELS = %w[Person User Participant Mentor Volunteer PubcookieUser CollegeApplication ScholarshipApplication]
   
   # GET /changes/for/:model_name/:id
   def for_object
@@ -16,6 +16,23 @@ class ChangesController < ApplicationController
     end
       
     render :action => "index"
+  end
+  
+  def deleted
+    @changes = Change.paginate(:all, 
+      :conditions => ["change_loggable_type IN (?) AND action_type = ?", ALLOWABLE_MODELS, 'delete'], 
+      :page => params[:page], 
+      :per_page => 10)
+    @allowable_models = ALLOWABLE_MODELS
+  end
+  
+  def undelete
+    @change = Change.find(params[:id])
+    raise Exception.new("Already undeleted") if @change.restored?
+    raise Exception.new("Can only undelete allowable models") unless ALLOWABLE_MODELS.include?(@change.change_loggable_type.to_s)
+    new_object = @change.undelete!
+    flash[:notice] = "The record was successfully restored."
+    redirect_to(new_object) rescue redirect_to(:back)
   end
   
   protected

@@ -17,7 +17,7 @@ class ObjectFilter < CustomerScoped
   # to change the behavior for filters marked as +stats_shows_opposite+.
   def passes?(object, options = { :purpose => :filter })
     result = object.instance_eval(criteria)
-    options[:purpose] == :filter && display_filter_as_opposite? ? !result : result
+    options[:purpose].to_sym == :stats && display_filter_as_opposite? ? !result : result
   end
 
   # If +opposite_title+ is blank, just default to the normal title.

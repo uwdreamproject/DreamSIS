@@ -130,12 +130,17 @@ td {
 	color: #424242;
 }
 
+<<<<<<< HEAD
 table td:first-child, table th:first-child {
 	padding-left: 30px !important;
 }
 
 table td:last-child, table th:last-child {
 	padding-right: 30px !important;
+=======
+table.borderless td {
+  border-bottom: none !important;
+>>>>>>> can
 }
 
 tr.rowset-header td {
@@ -224,7 +229,7 @@ table td.functions {
 	white-space: nowrap;
 }
 
-table td.functions a {
+table td.functions a:not(.default) {
 	font-size: 90%;
 	display: inline-block;
 	padding: 4px 10px;
@@ -3608,6 +3613,7 @@ li.input div.auto_complete.after_select {
 .menu ul ul li.tests a { background-image: url(../images/icons/silk/page_edit.png); }
 .menu ul ul li.trainings a { background-image: url(../images/icons/silk/book_open.png); }
 .menu ul ul li.users a { background-image: url(../images/icons/silk/shield.png); }
+.menu ul ul li.trash a { background-image: url(../images/icons/silk/bin_closed.png); }
 
 
 .menu ul ul li a {

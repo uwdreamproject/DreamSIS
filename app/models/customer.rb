@@ -72,6 +72,12 @@ class Customer < ActiveRecord::Base
     return %w[Reach Solid Safety] if college_application_choice_options.blank?
     college_application_choice_options.split("\n").collect(&:strip)
   end
+
+  # Parses the text in +paperwork_status_options+ and returns an array that is split on newlines.
+  def paperwork_status_options_array
+    return ["Not Started", "In Progress", "Complete"] if paperwork_status_options.blank?
+    paperwork_status_options.split("\n").collect(&:strip)
+  end
   
   def self.current_customer
     # logger.info { "user: " + User.current_user.try(:customer).inspect }

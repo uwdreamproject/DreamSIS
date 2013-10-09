@@ -56,6 +56,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :volunteers, :controller => :mentors, :only => [:show, :background_check_responses]
 
   map.changes_for_object 'changes/for/:model_name/:id', :controller => 'changes', :action => 'for_object'
+  map.deleted_records 'changes/trash', :controller => 'changes', :action => "deleted"
+  map.undelete_change 'changes/undelete/:id', :controller => "changes", :action => "undelete", :conditions => { :method => :delete }
 
   map.mentor_signup_schedule_add_my_courses 'mentor_signup/add_my_courses', :controller => 'mentor_signup', :action => 'add_my_courses'
   map.mentor_signup_basics 'mentor_signup/basics', :controller => 'mentor_signup', :action => 'basics'
@@ -72,6 +74,9 @@ ActionController::Routing::Routes.draw do |map|
   map.event_group_rsvp 'rsvp/event_group/:id', :controller => 'rsvp', :action => 'event_group', :conditions => { :method => :get }
   map.event_type_rsvp 'rsvp/event_type/:id', :controller => 'rsvp', :action => 'event_type', :conditions => { :method => :get }
 
+  map.mentor_participants '/participants/mentor/:mentor_id.:format', :controller => 'participants', :action => 'mentor'
+  map.college_participants_cohort '/participants/college/:college_id/cohort/:year.:format', :controller => 'participants', :action => 'college_cohort'
+  map.college_participants '/participants/college/:college_id.:format', :controller => 'participants', :action => 'college'
   map.high_school_cohort '/participants/high_school/:high_school_id/cohort/:year.:format', 
     :controller => 'participants', 
     :action => 'high_school_cohort'
@@ -96,6 +101,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.connect "welcome/mentor", :controller => "welcome", :action => "mentor"
   map.root :controller => "welcome"
+
+  map.connect "ping", :controller => "application", :action => "ping"
 
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should

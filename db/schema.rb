@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131002031922) do
+ActiveRecord::Schema.define(:version => 20131009034349) do
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(:version => 20131002031922) do
     t.string   "action_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "restored_at"
+    t.integer  "restored_user_id"
   end
 
   add_index "changes", ["change_loggable_id", "change_loggable_type"], :name => "index_changes_on_changable"
@@ -74,7 +76,8 @@ ActiveRecord::Schema.define(:version => 20131002031922) do
     t.string   "url_shortcut"
     t.text     "allowable_login_methods"
     t.string   "visit_label"
-    t.text     "college_application_choice_options",          :default => "'Reach\nSolid\nSafety'"
+    t.text     "college_application_choice_options",          :default => "'''''''Reach\nSolid\nSafety'''''''"
+    t.text     "paperwork_status_options"
   end
 
   create_table "degrees", :force => true do |t|
@@ -578,8 +581,12 @@ ActiveRecord::Schema.define(:version => 20131002031922) do
     t.string   "migration_id"
     t.boolean  "lives_with"
     t.string   "education_country"
+    t.string   "personal_statement_status"
+    t.string   "resume_status"
+    t.string   "activity_log_status"
   end
 
+  add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"
   add_index "people", ["customer_id"], :name => "index_people_on_customer_id"
   add_index "people", ["display_name"], :name => "index_people_on_display_name"
   add_index "people", ["firstname"], :name => "index_people_on_firstname"

@@ -13,6 +13,14 @@ class TestScore < CustomerScoped
 
   default_scope :joins => :test_type, :order => "test_types.name ASC, taken_at ASC", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
 
+  after_save :update_filter_cache
+  after_destroy :update_filter_cache
+
+  # Updates the participant filter cache
+  def update_filter_cache
+    participant.save
+  end
+
   # Overrides the instantiate method to add the section score attributes to the class
   # using +attr_accessor+. This allows us to dynamically get and set the section scores,
   # which are stored in a serialized hash in the +section_scores+ attribute.
