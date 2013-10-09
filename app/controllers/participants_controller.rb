@@ -71,6 +71,43 @@ class ParticipantsController < ApplicationController
       format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
     end    
   end
+
+  def college
+    @college = Institution.find(params[:college_id].to_i)
+    @participants = Participant.attending_college(@college.try(:id))
+    
+    respond_to do |format|
+      format.html { render :action => 'index' }
+      format.xml  { render :xml => @participants }
+      format.js { render 'index'}
+      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+    end
+  end
+
+  def college_cohort
+    @college = Institution.find(params[:college_id].to_i)
+    @grad_year = params[:year]
+    @participants = Participant.in_cohort(@grad_year).attending_college(@college.try(:id))
+    
+    respond_to do |format|
+      format.html { render :action => 'index' }
+      format.xml  { render :xml => @participants }
+      format.js { render 'index'}
+      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+    end
+  end
+
+  def mentor
+    @mentor = Mentor.find(params[:mentor_id] == "me" ? User.current_user.try(:person_id) : params[:mentor_id])
+    @participants = Participant.assigned_to_mentor(@mentor.try(:id))
+    
+    respond_to do |format|
+      format.html { render :action => 'index' }
+      format.xml  { render :xml => @participants }
+      format.js { render 'index'}
+      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+    end
+  end
   
   def group
     @participant_group = ParticipantGroup.find(params[:id])

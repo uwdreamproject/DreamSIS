@@ -74,6 +74,9 @@ ActionController::Routing::Routes.draw do |map|
   map.event_group_rsvp 'rsvp/event_group/:id', :controller => 'rsvp', :action => 'event_group', :conditions => { :method => :get }
   map.event_type_rsvp 'rsvp/event_type/:id', :controller => 'rsvp', :action => 'event_type', :conditions => { :method => :get }
 
+  map.mentor_participants '/participants/mentor/:mentor_id.:format', :controller => 'participants', :action => 'mentor'
+  map.college_participants_cohort '/participants/college/:college_id/cohort/:year.:format', :controller => 'participants', :action => 'college_cohort'
+  map.college_participants '/participants/college/:college_id.:format', :controller => 'participants', :action => 'college'
   map.high_school_cohort '/participants/high_school/:high_school_id/cohort/:year.:format', 
     :controller => 'participants', 
     :action => 'high_school_cohort'
