@@ -762,16 +762,22 @@ a.redirect-link:hover {
 }
 
 .record-header .photo {
-
+	z-index: 10;
 	margin: 0;
 	width: 80px;
 	height: 80px;
+	position: relative;
 }
 
 .record-header .name {
 	position: absolute;
 	top: 35px;
 	left: 120px;
+}
+
+#content-wrap .record-header .name h1 {
+	margin-top: 0 !important;
+	margin-bottom: 0.25em;
 }
 
 .record-header .details {
@@ -802,6 +808,23 @@ a.redirect-link:hover {
 	color: rgb(51,51,51);
 	float: left;
 	clear: both;
+}
+
+.record-header .inactive-note {
+	margin-top: 0.25em;
+	margin-bottom: 0;
+	background: #f8594a;
+	font: bold 85% Oxygen, sans-serif;
+	text-transform: uppercase;
+	color: white;
+	padding: 1px;
+	padding-right: 20px;
+	margin-left: -60px;
+	padding-left: 60px;
+	display: inline;
+	/*border-radius: 20px;*/
+	z-index: 0;
+	position: relative;
 }
 
 .info-section-container.vertical ul.tabs {
@@ -2212,7 +2235,7 @@ tr.deselected:hover td, td.deselected:hover, tr.deselected:hover td a, td.desele
 }
 
 .inactive-note {
-	display: none;
+	display: inline;
 }
 
 tr.deselected .inactive-note {
