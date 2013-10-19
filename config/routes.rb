@@ -1,4 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
+	map.resources :activity_logs
   map.resources :trainings, :member => { :take => :get, :complete => :post }
   map.resources :notes
   map.resources :programs

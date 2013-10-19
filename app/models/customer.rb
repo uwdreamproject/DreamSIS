@@ -78,6 +78,16 @@ class Customer < ActiveRecord::Base
     return ["Not Started", "In Progress", "Complete"] if paperwork_status_options.blank?
     paperwork_status_options.split("\n").collect(&:strip)
   end
+
+  # Parses the text in +activity_log_student_time_categories+ and returns an array that is split on newlines.
+  def activity_log_student_time_categories_array
+    activity_log_student_time_categories.split("\n").collect(&:strip)
+  end
+
+  # Parses the text in +activity_log_non_student_time_categories+ and returns an array that is split on newlines.
+  def activity_log_non_student_time_categories_array
+    activity_log_non_student_time_categories.split("\n").collect(&:strip)
+  end
   
   def self.current_customer
     # logger.info { "user: " + User.current_user.try(:customer).inspect }

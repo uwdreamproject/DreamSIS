@@ -29,12 +29,14 @@ function clearFlashes() {
 	$('notice_notification').removeClassName('visible')
 	$('error_notification').removeClassName('visible')
 	$('info_notification').removeClassName('visible')
+	$('saved_notification').removeClassName('visible')
 	
 	// Wait for a second to clear the text, if it's hidden.
 	setTimeout(function() {
 		if(!$('notice_notification').hasClassName('visible')) $('notice_notification').innerHTML = ''
 		if(!$('error_notification').hasClassName('visible')) $('error_notification').innerHTML = ''
 		if(!$('info_notification').hasClassName('visible')) $('info_notification').innerHTML = ''
+		if(!$('saved_notification').hasClassName('visible')) $('saved_notification').innerHTML = ''
 	}, 1000)
 }
 
@@ -42,6 +44,7 @@ function updateFlashes(flash) {
 	if(flash.notice) { $('notice_notification').innerHTML = flash.notice; $('notice_notification').addClassName('visible') }
 	if(flash.error) { $('error_notification').innerHTML = flash.error; $('error_notification').addClassName('visible') }
 	if(flash.info) { $('info_notification').innerHTML = flash.info; $('info_notification').addClassName('visible') }
+	if(flash.saved) { $('saved_notification').innerHTML = flash.saved; $('saved_notification').addClassName('visible') }
 }
 
 // Handles filtering lists in place
@@ -211,6 +214,14 @@ function filterByCounty(filter_value) {
 		$$('.filterable-by-county.county-' + filter_value).invoke('show') 
 		window.location.hash = "filter-county=" + filter_value
 	}
+}
+
+// Used for activity logs.
+function updateActivityTimeDescription(elem) {
+	values = new Array("", "Some", "Lots", "Nearly all")
+	elem.next("span.value").update(values[elem.value])
+	elem.up("li").removeClassName("time0").removeClassName("time1").removeClassName("time2").removeClassName("time3")
+	elem.up("li").addClassName("time" + elem.value)
 }
 
 // Left-pads a string with the specified character.

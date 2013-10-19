@@ -270,7 +270,9 @@ h4 {
 #indicator {
 	position: fixed;
 	top: -6px;
-	left: 45%;
+	left: 50%;
+	width: 70px;
+	margin-left: -45px;
 	background: yellow url(../images/indicator.gif) no-repeat 8px 10px;
 	padding: 10px 10px 5px 30px;
 	border-radius: 5px;
@@ -962,6 +964,29 @@ ul.crimes-list li {
 	border-color: #07b;
 }
 
+#notifications .saved {
+	position: fixed;
+	top: -6px !important;
+	left: 50%;
+	margin-left: -2.5em;
+	width: 5em;
+	background: rgb(235, 235, 235);
+	padding: 10px 10px 5px 10px;
+	border-radius: 5px;
+	font-weight: normal;
+	opacity: 0;
+	text-shadow: none;
+	box-shadow: none;
+	-webkit-transition: all 0.5s ease-in-out;
+	z-index: 1000;
+	border: none;
+}
+
+#notifications .saved.visible {
+	opacity: 0.9;
+	top: -6px !important;
+}
+
 .error-message {
 	color: red;
 	font-weight: bold;
@@ -1429,6 +1454,85 @@ input.currency:before {
 
 input.currency {
 	text-align: right;
+}
+
+ul.time_categories > li {
+	width: 49%;
+	float: left;
+	padding: 0;
+}
+
+ul.time_categories > li:first-child {
+	margin-right: 2%;
+}
+
+ul.time_categories > li label {
+	clear: both;
+	font-weight: normal;
+	margin-top: 6px;
+	width: 50% !important;
+}
+
+ul.time_categories > li > ul > li {
+	clear: both;
+	padding-left: 24px;
+	background: url(../images/icons/silk/tick-grey.png) left center no-repeat;
+
+}
+
+ul.time_categories > li > ul > li:not(.time0) {
+	background: url(../images/icons/silk/tick.png) left center no-repeat;
+}
+
+ul.time_categories > li > ul > li span.value {
+	margin-left: 5px;
+	color: #666;
+	font-size: 85%;
+	margin-top: 10px;
+	line-height: 100%;
+	float: right;
+	width: 4em;	
+}
+
+
+
+ul.time_categories th.category {
+	width: 50%;
+	text-align: left;
+	font-size: 110%;
+	font-family: 'Open Sans', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
+	padding-left: 0;
+	font-weight: bold;
+	vertical-align: bottom;
+	padding-bottom: 10px;
+}
+
+ul.time_categories th.value {
+	width: 5em;
+}
+
+ul.time_categories th {
+	font-size: 80%;
+	text-align: center;
+	font-weight: normal;
+	line-height: 100%;
+	padding: 5px;
+	background: none;
+	vertical-align: top;
+	width: 9%;
+}
+
+ul.time_categories tr:hover {
+	background: none;
+}
+
+ul.time_categories input[type=range] {
+	width: 32%;
+}
+
+ul.time_categories input[type=range]:focus {
+	outline: 2px solid rgba(82, 168, 236, 0.4);
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),0 0 8px rgba(82, 168, 236, 0.4);
 }
 
 .choose_identity p.intro {

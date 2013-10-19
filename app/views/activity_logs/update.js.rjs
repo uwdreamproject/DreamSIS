@@ -1,0 +1,2 @@
+# flash[:error] = "Err"
+page << "setTimeout(\"$('saved_notification').removeClassName('visible')\", 2000)"

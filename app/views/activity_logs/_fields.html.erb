@@ -1,0 +1,45 @@
+<%- f.inputs :name => "How did you spend your time?" do %>
+
+	<li>
+		<ul class="time_categories">
+		<%- for ctype in %w[student non_student] %>
+			<li id="<%= ctype %>_time">
+				<table>
+					<tr>
+						<th class="category"><%= ctype.titleize %> Time</th>
+						<th>No time at all</th>
+						<th>Some time</th>
+						<th>Lots of time</th>
+						<th>Nearly all of my time</th>
+						<th class="value"></th>
+					</tr>
+				</table>
+				
+				<ul>
+					<%- for category in Customer.current_customer.instance_eval("activity_log_#{ctype}_time_categories_array") %>
+						<li class="time_range_select time0">
+							<label><%=h category %></label>
+							<%- dom_id = "time_input_" + category.hash.to_s + rand(100).to_s %>
+							<input name="activity_log[<%= ctype %>_time][<%=h category %>]" type="range" 
+									autocomplete="off" min="0" max="3" step="1" value="<%= f.object["#{ctype}_time"][category] %>"
+									onChange="updateActivityTimeDescription(this)" id="<%= dom_id %>">
+							<span class="value"></span>
+						</li>
+					<% end %>
+				</ul>
+			</li>
+		<% end %>
+		</ul>
+		
+		<%= javascript_tag "document.observe('dom:loaded', function() { $$('.time_range_select input').each(updateActivityTimeDescription); });" %>
+
+<% end %>
+
+<%- f.inputs :name => "How many students did you work with?" do %>
+	<%= f.input :direct_interaction_count, :label => "1-on-1/Direct", :hint => "Approximate number of students you worked with one-on-one (e.g., direct advising, small groups, etc.)", :input_html => {:size => 5}, :wrapper_html => { :class => "sameline-hint"} %>
+	<%= f.input :indirect_interaction_count, :label => "Larger Group", :hint => "Approximate number of students you worked with in a larger group (e.g., presentations, assemblies, etc.)", :input_html => {:size => 5}, :wrapper_html => { :class => "sameline-hint"} %>
+<% end %>
+
+<%- f.inputs :name => "Highlight of the week" do %>
+	<%= f.input :highlight_note, :input_html => { :rows => 5 }, :label => "Your Highlight", :hint => "What was the highlight of your week? What exciting/cool/interesting/unexpected thing happened this week that might be worth sharing or remembering?" %>
+<% end %>

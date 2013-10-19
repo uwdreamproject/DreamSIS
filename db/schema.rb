@@ -9,7 +9,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131009034349) do
+ActiveRecord::Schema.define(:version => 20131014034849) do
+
+  create_table "activity_logs", :force => true do |t|
+    t.date     "start_date"
+    t.date     "end_date"
+    t.integer  "mentor_id"
+    t.integer  "direct_interaction_count"
+    t.integer  "indirect_interaction_count"
+    t.string   "student_time"
+    t.string   "non_student_time"
+    t.text     "highlight_note"
+    t.integer  "customer_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -76,8 +90,10 @@ ActiveRecord::Schema.define(:version => 20131009034349) do
     t.string   "url_shortcut"
     t.text     "allowable_login_methods"
     t.string   "visit_label"
-    t.text     "college_application_choice_options",          :default => "'''''''Reach\nSolid\nSafety'''''''"
+    t.text     "college_application_choice_options",          :default => "'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Reach\nSolid\nSafety'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''"
     t.text     "paperwork_status_options"
+    t.text     "activity_log_student_time_categories"
+    t.text     "activity_log_non_student_time_categories"
   end
 
   create_table "degrees", :force => true do |t|

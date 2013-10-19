@@ -8,6 +8,8 @@
 	<title>DreamSIS<%= " [DEV]" if RAILS_ENV == "development" %></title>
 
 	<meta name="viewport" content="width=device-width">
+	<meta name="csrf-token" content="<%= form_authenticity_token %>" />
+	<meta name="csrf-param" content="authenticity_token" />
 
     <%= formtastic_stylesheet_link_tag %>
 	<%= stylesheet_link_tag 'style', :media => "all" %>
@@ -84,7 +86,7 @@
 	<div id="content">	
 
 		<div id="notifications">
-			<% %w(error notice info).each do |key| -%>
+			<% %w(error notice info saved).each do |key| -%>
 				<div id="<%= key %>_notification" class="alert <%= key %> <%= "visible" unless flash[key.to_sym].blank? %>" onClick="if(this.hasClassName('visible')) { this.toggleClassName('visible'); }"><%= flash[key.to_sym] %></div>
 			<% end -%>
 		</div>
