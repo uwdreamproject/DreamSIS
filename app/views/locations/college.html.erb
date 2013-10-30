@@ -37,7 +37,11 @@
 
 	<dt>Applicants</dt>
 	<dd><%= link_to pluralize(@location.college_applications.count, Customer.participants_label),
-					applications_college_path(@location.id) %></dd>
+					applications_college_path(@location.id) %>,
+					
+		<%= link_to pluralize(Participant.attending_college(@location.id).count, "attendee"),
+					college_participants_path(@location.id) %>
+		</dd>
 
 </dl>
 

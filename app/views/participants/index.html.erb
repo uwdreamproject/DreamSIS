@@ -3,7 +3,7 @@
 <h1 style="margin-bottom: 0.25em">
 	<%= "Participants" unless @high_school && @grad_year %>
 	<%=h @high_school.name if @high_school%>
-	<%= "&raquo; " + h(@college.name) if @college %>
+	<%= "at " + h(@college.name) if @college %>
 	<%= "assigned to " + (params[:mentor_id] == "me" ? "me" : h(@mentor.fullname)) if @mentor %>
 	<%=h @grad_year.to_s if @grad_year %>
 </h1>
