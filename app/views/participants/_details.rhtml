@@ -1,8 +1,7 @@
 <h3 class="pre-title"><%= @participant.class.to_s %></h3>
 <h1><%= @participant.fullname(:middlename => false) %></h1>
-<% if @participant.inactive? %>
-	<h2><font color=red>** INACTIVE **</font></h2>
-<% end -%>
+<%= content_tag :h2, "** Inactive **", :class => "inactive-note" if @participant.inactive? %>
+<%= content_tag :h2, "** #{Customer.not_target_Label} **", :class => "not-target-note" if @participant.not_target_participant? %>
 
 <%= link_to 'Edit this Student', edit_participant_path(@participant), :class => 'edit button' %>
 

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131014034849) do
+ActiveRecord::Schema.define(:version => 20131030044614) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(:version => 20131014034849) do
     t.text     "paperwork_status_options"
     t.text     "activity_log_student_time_categories"
     t.text     "activity_log_non_student_time_categories"
+    t.string   "not_target_label"
   end
 
   create_table "degrees", :force => true do |t|

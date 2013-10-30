@@ -26,7 +26,7 @@
 <%- f.inputs :name => "Custom Labels and Content" do -%>
 	<p>Enter each label as a single, lower-cased word.</p>
 	<%- f.inputs :name => "Labels", :class => "inline" do %>
-		<%= f.inputs :mentor_label, :lead_label, :participant_label, :mentee_label, :workbook_label, :intake_survey_label, :visit_label %>
+		<%= f.inputs :mentor_label, :lead_label, :participant_label, :mentee_label, :workbook_label, :intake_survey_label, :visit_label, :not_target_label %>
 	<% end %>
 	
 	<%= f.input :risk_form_content, :input_html => { :rows => 5 }, :hint => "Mentors must consent to this statement before using the system. Use Textile for formatting. Leave this blank if mentors don't need to sign anything before gaining access.", :label => "Mentor consent" %>

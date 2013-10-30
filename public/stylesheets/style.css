@@ -2095,6 +2095,10 @@ tr.deselected td, td.deselected, tr.deselected td a, td.deselected a {
 	color: #999;
 }
 
+tr.not-target td, td.not-target, tr.not-target td a, td.not-target a {
+	
+}
+
 tr.deselected:hover td, td.deselected:hover, tr.deselected:hover td a, td.deselected a:hover {
 	color: inherit;
 }
@@ -2103,7 +2107,21 @@ tr.deselected:hover td, td.deselected:hover, tr.deselected:hover td a, td.desele
 	display: none;
 }
 
+.not-target-note {
+	display: none;
+}
+
+h2.inactive-note, h2.not-target-note {
+	display: block;
+	color: red;
+	text-transform: uppercase;
+}
+
 tr.deselected .inactive-note {
+	display: inline;
+}
+
+tr.not-target .not-target-note {
 	display: inline;
 }
 

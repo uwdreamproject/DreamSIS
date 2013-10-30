@@ -20,7 +20,8 @@ class Customer < ActiveRecord::Base
     :participant => "participant",
     :workbook => "workbook",
     :intake_survey => "intake survey",
-    :mentee => "mentee"
+    :mentee => "mentee",
+		:not_target => "not target"
   }
 
   has_many :clearinghouse_requests

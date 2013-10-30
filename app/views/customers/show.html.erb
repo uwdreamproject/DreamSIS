@@ -33,7 +33,7 @@
 	<dt>Labels</dt>
 	<dd>
 		<dl>
-		<%- for label_name in %w[mentor lead participant mentee workbook intake_survey visit] -%>
+		<%- for label_name in Customer::DEFAULT_LABEL.keys.collect(&:to_s) -%>
 			<%- unless @customer.read_attribute("#{label_name}_label").blank? -%>
 				<dt><%= label_name.titleize %></dt>
 				<dd><%=h @customer.customer_label(label_name, :titleize => true) %></dd>

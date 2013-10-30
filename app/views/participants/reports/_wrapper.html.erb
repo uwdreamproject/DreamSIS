@@ -1,9 +1,10 @@
-<tr class="<%= "deselected" if participant.inactive? %> filterable participant">
+<tr class="<%= "deselected" if participant.inactive? %> <%= "not-target" if participant.not_target_participant? %> filterable participant">
 
 	<%- if row_index == 1 -%>
 		<td rowspan="<%= row_count %>" class="name multirow-highlight">
 			<%= link_to participant.lastname_first, participant %>
 			<small class="inactive-note">(inactive)</small>
+			<small class="not-target-note">(<%= Customer.not_target_label %>)</small>
 		</td>
 		<%= render :partial => "participants/reports/#{report.pluralize}", 
 					:locals => { :participant => participant, :collection => collection, :row_count => collection.size, :row_index => row_index } %>
