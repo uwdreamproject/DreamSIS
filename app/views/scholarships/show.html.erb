@@ -26,6 +26,10 @@
 		 -%>
 		 <%= nmv.join(", ") %></dd>
 
+	 <dt>Applicants</dt>
+	 <dd><%= link_to pluralize(@scholarship.scholarship_applications.count, Customer.participant_label),
+ 					applications_scholarship_path(@scholarship) %></dd>
+
 </dl>
 
 <div id="sidebar">

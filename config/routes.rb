@@ -11,7 +11,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :notes
   map.resources :programs
   map.resources :test_types
-  map.resources :scholarships, :collection => { :auto_complete_for_scholarship_title => :any }
+  map.resources :scholarships, :collection => { :auto_complete_for_scholarship_title => :any }, :member => { :applications => :get }
   map.resources :customers
   map.resources :object_filters
   map.resources :locations, :collection => { :auto_complete_for_location_name => :any }

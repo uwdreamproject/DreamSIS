@@ -14,6 +14,15 @@ class ScholarshipsController < ResourceController
     end
   end
   
+  def applications
+    @scholarship = Scholarship.find(params[:id])
+
+    respond_to do |format|
+      format.html
+      format.xls { render :layout => 'basic' }
+    end    
+  end
+
   def auto_complete_for_scholarship_title
     @scholarships = Scholarship.find(:all, :conditions => ["LOWER(title) LIKE ?", "%#{params[:scholarship][:title].to_s.downcase}%"], :limit => 20)
     render :partial => "shared/auto_complete_scholarship_title", 

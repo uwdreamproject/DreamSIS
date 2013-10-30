@@ -1,6 +1,6 @@
 class Scholarship < ActiveRecord::Base
   validates_presence_of :title
-  has_many :scholarhip_applications
+  has_many :scholarship_applications
   
   default_scope :order => "title"
   
