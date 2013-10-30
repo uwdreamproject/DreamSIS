@@ -36,6 +36,7 @@ ActionController::Routing::Routes.draw do |map|
       :path_prefix  => "/high_schools/:high_school_id/:term_id"
   end
 
+	map.my_participants "/my/mentees", :controller => "participants", :action => "mentor", :mentor_id => "me"
   map.resources :participants, 
     :has_many => [:college_applications, :scholarship_applications, :parents, :college_enrollments, :college_degrees], 
     :collection => { :auto_complete_for_participant_fullname => :any, :check_duplicate => :any, :add_to_group => :post, :fetch_participant_group_options => :any, :college_mapper_callback => :post },
@@ -107,7 +108,7 @@ ActionController::Routing::Routes.draw do |map|
   map.anonymous_login_callback "/auth/anonymous/", :controller => 'session', :action => 'create_anonymous'
   map.omniauth_callback "/auth/:provider/callback", :controller => 'session', :action => 'create'  
 
-  map.connect "welcome/mentor", :controller => "welcome", :action => "mentor"
+  map.my_dashboard "my/dashboard", :controller => "welcome", :action => "mentor"
   map.root :controller => "welcome"
 
   map.connect "ping", :controller => "application", :action => "ping"

@@ -1,5 +1,8 @@
 <div id="sidebar">
 
+	<p><%= link_to "My #{Customer.mentees_label}", my_participants_path, :class => "list button" %></p>
+	<p><%= link_to "Track my week", my_current_activity_log_path, :class => "calendar button" %></p>
+
 	<h3>Contact Info</h3>
 	
 	<dl class="sidebar">
