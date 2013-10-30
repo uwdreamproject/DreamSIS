@@ -21,7 +21,7 @@
 							<label><%=h category %></label>
 							<%- dom_id = "time_input_" + category.hash.to_s + rand(100).to_s %>
 							<input name="activity_log[<%= ctype %>_time][<%=h category %>]" type="range" 
-									autocomplete="off" min="0" max="3" step="1" value="<%= f.object["#{ctype}_time"][category] %>"
+									autocomplete="off" min="0" max="3" step="1" value="<%= f.object["#{ctype}_time"][category] rescue 0 %>"
 									onChange="updateActivityTimeDescription(this)" id="<%= dom_id %>">
 							<span class="value"></span>
 						</li>
