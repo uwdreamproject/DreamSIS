@@ -1,5 +1,12 @@
 ActionController::Routing::Routes.draw do |map|
 	map.resources :activity_logs
+	map.activity_log_weekly_summary "/activity_logs/summary/week/:year/:month/:day.:format", :controller => "activity_logs", :action => "weekly_summary"
+	map.activity_log_current_week_summary "/activity_logs/summary/week.:format", :controller => "activity_logs", :action => "weekly_summary"
+	map.my_activity_log "/my/week/:year/:month/:day.:format", :controller => "activity_logs", :action => "my_week"
+	map.my_current_activity_log "/my/week.:format", :controller => "activity_logs", :action => "my_current_week"
+	
+	
+	
   map.resources :trainings, :member => { :take => :get, :complete => :post }
   map.resources :notes
   map.resources :programs
