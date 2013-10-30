@@ -1,8 +1,8 @@
 class ParticipantsController < ApplicationController
-  protect_from_forgery :only => [:create, :update, :destroy] 
+  protect_from_forgery :only => [:create, :update, :destroy, :bulk] 
   skip_before_filter :login_required, :only => [:college_mapper_callback]
   skip_before_filter :check_if_enrolled, :only => [:college_mapper_callback]
-  skip_before_filter :check_authorization, :except => [:index, :cohort, :destroy]
+  skip_before_filter :check_authorization, :except => [:index, :cohort, :destroy, :bulk]
   
   before_filter :set_report_type
 
@@ -274,6 +274,22 @@ class ParticipantsController < ApplicationController
       format.js
     end
   end
+	
+	def bulk
+		render_error("Invalid task request", "Bad request", 400) unless %w[send_email].include?(params[:task])
+		@participants = Participant.find(params[:selected]["Participant"].keys)
+		
+		if params[:task] == "send_email"
+			@emails = @participants.collect(&:email).flatten.compact.uniq
+			if @emails.empty?
+				flash[:error] = "You must select at least one record with an e-mail address."
+				render :text => flash[:error], :status => 200
+			else
+				# flash[:notice] = "Sent #{@template.pluralize(@emails.count, "e-mail address")} to your e-mail program."
+				render :js => "window.location.href = 'mailto:#{@emails.join(",")}';"
+			end			
+		end
+	end
   
   def auto_complete_for_participant_fullname
     conditions = ["(LOWER(firstname) LIKE :fullname OR LOWER(lastname) LIKE :fullname)"]

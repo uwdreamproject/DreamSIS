@@ -54,6 +54,14 @@
 			</p>
 	<% end %>
 	
+    <%- if @current_user.admin? -%>
+	<div class="with_selected_actions">
+		<h3>With Selected</h3>
+		<ul>
+			<li><%= link_to_remote "Send e-mail", :url => bulk_participants_path(:task => :send_email), :with => "Form.serializeElements($$('input.index_check_box'))" %></li>
+		</ul>
+	</div>
+	<% end %>
 
 	<%- unless @participants.respond_to?(:current_page) -%>
 	<h3>Filters

@@ -1,6 +1,9 @@
 <tr class="<%= "deselected" if participant.inactive? %> <%= "not-target" if participant.not_target_participant? %> filterable participant">
 
 	<%- if row_index == 1 -%>
+		<td class="check_box_td multirow-highlight" rowspan="<%= row_count %>">
+			<input type="checkbox" name="selected[Participant][<%= participant.id %>]" class="index_check_box" value="1" />
+		</td>
 		<td rowspan="<%= row_count %>" class="name multirow-highlight">
 			<%= link_to participant.lastname_first, participant %>
 			<small class="inactive-note">(inactive)</small>

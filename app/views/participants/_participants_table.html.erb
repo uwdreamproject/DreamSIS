@@ -2,6 +2,7 @@
 <table class="participants multirow active-report <%= html_class %>" id="participants_table">
 	<thead>
 		<tr>
+			<th><input type="checkbox" onClick="$$('input.index_check_box').each(function(e) { e.checked = this.checked }, this)"></th>
 			<%= render :partial => "participants/reports/#{h(@report || "basic").pluralize}_header" %>
 		</tr>
 	</thead>
