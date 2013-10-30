@@ -26,7 +26,7 @@ GEM
       addressable
     exceptional (2.0.33)
       rack
-    excon (0.16.10)
+    excon (0.27.6)
     ey_config (0.0.6)
     faraday (0.8.7)
       multipart-post (~> 1.1)
@@ -40,14 +40,14 @@ GEM
     highline (1.6.19)
     httpauth (0.2.0)
     i18n (0.4.2)
-    json (1.7.7)
+    json (1.8.1)
     mail_style (0.1.6)
       actionmailer (>= 1.2.3)
       css_parser (>= 1.0.0)
       nokogiri (>= 1.0.0)
-    mandrill-api (1.0.33)
-      excon (~> 0.16.0)
-      json (~> 1.7.7)
+    mandrill-api (1.0.49)
+      excon (>= 0.16.0, < 1.0)
+      json (>= 1.7.7, < 2.0)
     multi_json (1.7.3)
     multipart-post (1.2.0)
     mysql2 (0.2.18)
@@ -70,10 +70,10 @@ GEM
       rack
     omniauth-facebook (1.4.0)
       omniauth-oauth2 (~> 1.0.2)
-    omniauth-google-oauth2 (0.1.17)
+    omniauth-google-oauth2 (0.2.1)
       omniauth (~> 1.0)
       omniauth-oauth2
-    omniauth-identity (1.1.0)
+    omniauth-identity (1.1.1)
       bcrypt-ruby (~> 3.0)
       omniauth (~> 1.0)
     omniauth-linkedin (0.1.0)
@@ -86,7 +86,7 @@ GEM
       omniauth (~> 1.0)
     omniauth-shibboleth (1.0.8)
       omniauth (>= 1.0.0)
-    omniauth-twitter (0.0.16)
+    omniauth-twitter (1.0.1)
       multi_json (~> 1.3)
       omniauth-oauth (~> 1.0)
     omniauth-windowslive (0.0.8.1)
@@ -104,8 +104,6 @@ GEM
     rdoc (4.0.1)
       json (~> 1.4)
     sqlite3 (1.3.7)
-    sqlite3-ruby (1.3.3)
-      sqlite3 (>= 1.3.3)
     system_timer (1.2.4)
     will_paginate (2.3.16)
 
@@ -130,7 +128,7 @@ DEPENDENCIES
   mysql2 (< 0.3)
   newrelic_rpm
   nokogiri
-  omniauth-facebook
+  omniauth-facebook (= 1.4.0)
   omniauth-google-oauth2
   omniauth-identity
   omniauth-linkedin
@@ -139,6 +137,6 @@ DEPENDENCIES
   omniauth-windowslive
   rails (= 2.3.18)
   rdoc
-  sqlite3-ruby
-  system_timer
+  sqlite3
+  system_timer (= 1.2.4)
   will_paginate (~> 2.3.11)
