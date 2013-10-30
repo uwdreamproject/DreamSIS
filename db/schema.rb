@@ -9,7 +9,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130912063806) do
+ActiveRecord::Schema.define(:version => 20131030044614) do
+
+  create_table "activity_logs", :force => true do |t|
+    t.date     "start_date"
+    t.date     "end_date"
+    t.integer  "mentor_id"
+    t.integer  "direct_interaction_count"
+    t.integer  "indirect_interaction_count"
+    t.string   "student_time"
+    t.string   "non_student_time"
+    t.text     "highlight_note"
+    t.integer  "customer_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "changes", :force => true do |t|
     t.integer  "change_loggable_id"
@@ -19,6 +33,8 @@ ActiveRecord::Schema.define(:version => 20130912063806) do
     t.string   "action_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "restored_at"
+    t.integer  "restored_user_id"
   end
 
   add_index "changes", ["change_loggable_id", "change_loggable_type"], :name => "index_changes_on_changable"
@@ -74,6 +90,11 @@ ActiveRecord::Schema.define(:version => 20130912063806) do
     t.string   "url_shortcut"
     t.text     "allowable_login_methods"
     t.string   "visit_label"
+    t.text     "college_application_choice_options",          :default => "'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Reach\nSolid\nSafety'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''"
+    t.text     "paperwork_status_options"
+    t.text     "activity_log_student_time_categories"
+    t.text     "activity_log_non_student_time_categories"
+    t.string   "not_target_label"
   end
 
   create_table "degrees", :force => true do |t|
@@ -335,6 +356,7 @@ ActiveRecord::Schema.define(:version => 20130912063806) do
     t.integer  "linked_group_id"
     t.string   "day_of_week"
     t.integer  "customer_id"
+    t.string   "permissions_level"
   end
 
   add_index "mentor_term_groups", ["customer_id"], :name => "index_mentor_term_groups_on_customer_id"
@@ -576,8 +598,12 @@ ActiveRecord::Schema.define(:version => 20130912063806) do
     t.string   "migration_id"
     t.boolean  "lives_with"
     t.string   "education_country"
+    t.string   "personal_statement_status"
+    t.string   "resume_status"
+    t.string   "activity_log_status"
   end
 
+  add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"
   add_index "people", ["customer_id"], :name => "index_people_on_customer_id"
   add_index "people", ["display_name"], :name => "index_people_on_display_name"
   add_index "people", ["firstname"], :name => "index_people_on_firstname"

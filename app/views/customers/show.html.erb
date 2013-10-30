@@ -33,13 +33,28 @@
 	<dt>Labels</dt>
 	<dd>
 		<dl>
-		<%- for label_name in %w[mentor lead participant mentee workbook intake_survey visit] -%>
+		<%- for label_name in Customer::DEFAULT_LABEL.keys.collect(&:to_s) -%>
 			<%- unless @customer.read_attribute("#{label_name}_label").blank? -%>
 				<dt><%= label_name.titleize %></dt>
 				<dd><%=h @customer.customer_label(label_name, :titleize => true) %></dd>
 			<% end %>
 		<% end %>
+        
+            <dt>Choice Options</dt>
+            <dd><%=h Customer.college_application_choice_options_array.join(", ") %></dd>
+            
 		</dl>
+	</dd>
+	
+	<dt>Activity Logs</dt>
+	<dd>
+		<dl>
+            <dt>Student Time</dt>
+            <dd><%=h Customer.activity_log_student_time_categories_array.join(", ") %></dd>
+
+            <dt>Non-Student Time</dt>
+            <dd><%=h Customer.activity_log_non_student_time_categories_array.join(", ") %></dd>
+         </dl>
 	</dd>
 
 	<dt>NSC Customer ID</dt>

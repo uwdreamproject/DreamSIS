@@ -3,6 +3,8 @@
 <h1 style="margin-bottom: 0.25em">
 	<%= "Participants" unless @high_school && @grad_year %>
 	<%=h @high_school.name if @high_school%>
+	<%= "at " + h(@college.name) if @college %>
+	<%= "assigned to " + (params[:mentor_id] == "me" ? "me" : h(@mentor.fullname)) if @mentor %>
 	<%=h @grad_year.to_s if @grad_year %>
 </h1>
 <h3 class="light" style="margin-top: 0">Listing <span id="filtered_record_count"></span> 

@@ -20,7 +20,8 @@ class Customer < ActiveRecord::Base
     :participant => "participant",
     :workbook => "workbook",
     :intake_survey => "intake survey",
-    :mentee => "mentee"
+    :mentee => "mentee",
+		:not_target => "not target"
   }
 
   has_many :clearinghouse_requests
@@ -41,6 +42,14 @@ class Customer < ActiveRecord::Base
     !clearinghouse_customer_number.blank?
   end
   
+  # Returns the NSC customer number as a string with left-padded zeros, per NSC practice.
+  # To return the stored integer version, pass +false+ for the +return_integer+ parameter.
+  def clearinghouse_customer_number(return_integer = false)
+    raw = read_attribute(:clearinghouse_customer_number)
+    return nil if raw.nil?
+    return_integer ? raw : raw.to_s.rjust(6, "0")
+  end
+  
   # Returns true if +term_system+ is +Quarters+.
   def use_quarters?
     term_system == "Quarters"
@@ -57,6 +66,28 @@ class Customer < ActiveRecord::Base
   def allowable_login_method?(provider)
     # logger.info { "allowable_login_methods: " + allowable_login_methods.inspect }
     (allowable_login_methods || "").include?(provider.to_s)
+  end
+  
+  # Parses the text in +college_application_choice_options+ and returns an array that is split on newlines.
+  def college_application_choice_options_array
+    return %w[Reach Solid Safety] if college_application_choice_options.blank?
+    college_application_choice_options.split("\n").collect(&:strip)
+  end
+
+  # Parses the text in +paperwork_status_options+ and returns an array that is split on newlines.
+  def paperwork_status_options_array
+    return ["Not Started", "In Progress", "Complete"] if paperwork_status_options.blank?
+    paperwork_status_options.split("\n").collect(&:strip)
+  end
+
+  # Parses the text in +activity_log_student_time_categories+ and returns an array that is split on newlines.
+  def activity_log_student_time_categories_array
+    activity_log_student_time_categories.split("\n").collect(&:strip)
+  end
+
+  # Parses the text in +activity_log_non_student_time_categories+ and returns an array that is split on newlines.
+  def activity_log_non_student_time_categories_array
+    activity_log_non_student_time_categories.split("\n").collect(&:strip)
   end
   
   def self.current_customer

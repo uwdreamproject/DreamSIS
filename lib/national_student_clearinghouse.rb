@@ -75,14 +75,18 @@ class NationalStudentClearinghouse
   # what request file it is related to until you download it. This method retrieves all the files that 
   # exist in the /recieve folder and then processes them.
   def retrieve_files!(process_after_retrieving = true)
+    Rails.logger.info { "NSC retrieve request starting" }
+    Rails.logger.info { " -- #{process_after_retrieving ? "will" : "will not"} process files after retrieving" }
     Net::SFTP.start(NSC_FTP_HOST, @customer.clearinghouse_customer_number, :password => @request.decrypted_ftp_password) do |sftp|
       
+      Rails.logger.info { "Connected to server, getting dir list" }
       sftp.dir.foreach(remote_receive_file_path) do |entry|
-        puts entry.name
+        Rails.logger.info { "Found #{entry.name} - downloading..." }
         sftp.download!("#{remote_receive_file_path}/#{entry.name}", File.join("#{local_receive_file_path}", entry.name))
       end
     end
     
+    Rails.logger.info { "Got files, requesting they be processed." }
     process_files!(local_receive_file_path) if process_after_retrieving
   end
   
@@ -201,6 +205,7 @@ class NationalStudentClearinghouse
   
   # Processes the files that were downloaded from the /recive subdiretory on the server.
   def process_files!(local_path)
+    Rails.logger.info { "Processing files from #{local_path}" }
     Dir.glob(File.join(local_path, "*")).each do |file_path|
       process_detail_file(file_path) if file_path.ends_with?("_DA.csv") && !file_path.include?("aggrrpt")
     end
@@ -210,9 +215,13 @@ class NationalStudentClearinghouse
   # ClearinghouseRequest this result is for. Then calls #process_detail_file on that
   # record and passes in this file path.
   def process_detail_file(file_path)
-    if match = File.read(file_path).match(/DreamSIS-ClearinghouseRequest(\d+)/)
+    Rails.logger.info { "Processing detail file #{file_path}" }
+    if match = File.read(file_path).match(/DreamSIS-ClearinghouseRequest(\d+)/i)
+      Rails.logger.info { "Matched DreamSIS indicator in file contents - request ID is #{match[1].to_i}" }
       cr = ClearinghouseRequest.find(match[1].to_i)
-      cr.process_detail_file(file_path, self)
+      cr.process_detail_file(file_path)
+    else 
+      Rails.logger.info { "Did not match DreamSIS indicator in file contents! Quitting." }
     end
   end
   
@@ -230,11 +239,11 @@ class NSCUploadHandler
   end
   
   def on_open(uploader, file)
-    puts "starting upload: #{file.local} -> #{file.remote} (#{file.size} bytes)"
+    Rails.logger.info { "starting upload: #{file.local} -> #{file.remote} (#{file.size} bytes)" }
   end
 
   def on_finish(uploader)
-    puts "finished."
+    Rails.logger.info { "finished." }
     @nsc.request.update_attributes(
       :submitted_at => Time.now, 
       :submitted_filename => @nsc.send_filename, 
@@ -250,11 +259,11 @@ class NSCDownloadHandler
   end
     
   def on_open(downloader, file)
-    puts "starting download: #{file.remote} -> #{file.local} (#{file.size} bytes)"
+    Rails.logger.info { "starting download: #{file.remote} -> #{file.local} (#{file.size} bytes)" }
   end
 
   def on_finish(downloader)
-    puts "finished."
+    Rails.logger.info { "finished." }
     # @nsc.request.update_attributes(
     #   :retrieved_at => Time.now
     # )

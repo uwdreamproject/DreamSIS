@@ -5,7 +5,7 @@ class MentorTerm < CustomerScoped
   validates_presence_of :mentor_id, :mentor_term_group_id
   validates_uniqueness_of :mentor_id, :scope => :mentor_term_group_id, :message => "is already a member of this group"
 
-  delegate :term, :term_id, :location, :title, :location_id, :to => :mentor_term_group
+  delegate :term, :term_id, :location, :title, :location_id, :permissions_level, :to => :mentor_term_group
   delegate :fullname, :email, :reg_id, :participants, :mentor_participants, :to => :mentor
   
   default_scope :order => "people.lastname, people.firstname", :joins => :mentor, :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }

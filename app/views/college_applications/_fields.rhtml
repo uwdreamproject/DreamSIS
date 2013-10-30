@@ -11,7 +11,7 @@
 
 <% f.inputs(:name => "Application Process") do %>
 	<p>Track the process of the application to this institution.</p>
-	<%= f.input :choice, :as => :select, :collection => ["Interested", "Reach", "Solid", "Safety"] %>
+	<%= f.input :choice, :as => :select, :collection => (@college_application_choice_options || %w[Interested Reach Solid Safety]) %>
 	<%- f.inputs :name => "Personal Statement", :class => "inline" do -%>
 		<%= f.input :personal_statement_started, :label => "Started" %>
 		<%= f.input :personal_statement_completed, :label => "Completed" %>

@@ -19,6 +19,14 @@ class EventAttendance < ActiveRecord::Base
   attr_accessor :enforce_rsvp_limits
   
   attr_protected :admin
+
+  after_save :update_filter_cache
+  after_destroy :update_filter_cache
+
+  # Updates the participant filter cache
+  def update_filter_cache
+    person.save
+  end
   
   def enforce_rsvp_limits?
     enforce_rsvp_limits

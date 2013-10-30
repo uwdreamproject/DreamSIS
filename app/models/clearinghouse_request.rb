@@ -53,7 +53,8 @@ class ClearinghouseRequest < CustomerScoped
   # If +@participants+ instance variable is assigned, return that. Otherwise, find all of the participants
   # identified by the collection in the +participant_ids+ attribute.
   def participants
-    @participants ||= Participant.find(participant_ids)
+    # @participants ||= Participant.find(participant_ids)
+    @participants ||= Participant.find(:all, :conditions => ["`id` IN (?)", participant_ids])
   end
   
   def plain_ftp_password=(pwd)
@@ -126,13 +127,15 @@ class ClearinghouseRequest < CustomerScoped
   def process_detail_file(file_path)
     errors.add(:retrieved_at, "can only be retrieved once") and return false if retrieved?
     begin
+      logger.info { "process_detail_file(#{file_path})" }
       participant_ids = []
       FasterCSV.foreach(file_path, :headers => true) do |row|
         attrs = row.to_hash
         if attrs["Record Found Y/N"] == "Y"
           participant_id = attrs["Requester Return Field"]
           participant_ids << participant_id
-          participant = Participant.find(participant_id)
+          participant = Participant.find(participant_id) rescue nil
+          next unless participant
           if attrs["Graduated?"] == "Y"
             create_college_degree_from(attrs, participant_id)
           else
@@ -140,6 +143,7 @@ class ClearinghouseRequest < CustomerScoped
           end
         end
       end
+      logger.info { "Done - updating request metadata" }
       update_attributes(
         :retrieved_at => Time.now,
         :number_of_records_returned => participant_ids.uniq.size
@@ -153,8 +157,15 @@ class ClearinghouseRequest < CustomerScoped
   # 1. Delete the files from the server if needed.
   # 2. Delete FTP password
   def close
+    logger.info { "Closing this request" }
     delete_sftp_files
     update_attribute(:ftp_password, nil)
+  end
+
+  # Returns an array of the files stored for this request.
+  def files
+    files_dir = File.join("files", "clearinghouse_request", id.to_s, "receive", "*")
+    Dir.glob(files_dir)
   end
 
   protected
@@ -204,6 +215,7 @@ class ClearinghouseRequest < CustomerScoped
   # it won't return those in the list.
   def store_files(detail_file_path)
     destination_dir = File.join("files", "clearinghouse_request", id.to_s, "receive")
+    logger.info { "Storing files for later use(#{detail_file_path}) to #{destination_dir}" }
     source_dir = File.dirname(detail_file_path)
     update_attribute(:detail_report_filename, File.basename(detail_file_path))
     FileUtils.mkdir_p(destination_dir)
@@ -216,11 +228,13 @@ class ClearinghouseRequest < CustomerScoped
         copied_files << file_name
       end
     end
+    logger.info { "done" }
     copied_files
   end
-
+  
   # Tells the nsc object to delete the files related to this request.
   def delete_sftp_files
+    logger.info { "Deleting related sftp files" }
     return false if detail_report_filename.blank? || ftp_password.blank?
     all_files = nsc.interpolate_file_names_from_detail_file_path(detail_report_filename)
     nsc.delete_retrieved_files!(all_files)

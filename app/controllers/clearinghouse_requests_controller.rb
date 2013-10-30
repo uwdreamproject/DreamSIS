@@ -36,6 +36,8 @@ class ClearinghouseRequestsController < ApplicationController
     @clearinghouse_request = ClearinghouseRequest.find(params[:id])
     if params[:file] == 'submission'
       file_path = @clearinghouse_request.nsc.generate_file!
+    elsif !params[:file].to_i.zero?
+      file_path = @clearinghouse_request.files[params[:file].to_i-1]
     end
     send_file file_path, :disposition => 'attachment'
   end
@@ -46,6 +48,16 @@ class ClearinghouseRequestsController < ApplicationController
       flash[:notice] = "The file was successfully submitted to NSC for processing. You will receive an email when it has been processed."
     else
       flash[:eerror] = "There was a problem submitting the file. Please try again or submit the file to NSC manually."
+    end
+    redirect_to(@clearinghouse_request)
+  end
+
+  def retrieve
+    @clearinghouse_request = ClearinghouseRequest.find(params[:id])
+    if @clearinghouse_request.retrieve!
+      flash[:notice] = "The file was successfully retrieved from NSC and processed."
+    else
+      flash[:eerror] = "There was a problem retrieving the file. Please try again or upload the results file manually."
     end
     redirect_to(@clearinghouse_request)
   end

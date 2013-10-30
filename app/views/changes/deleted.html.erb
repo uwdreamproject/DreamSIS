@@ -1,0 +1,18 @@
+<h1>Deleted Records</h1>
+<p><small class="light">Only shows the following types of records: <%=h @allowable_models.to_sentence %>.</small></p>
+
+<%= will_paginate @changes %>
+
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Action</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <%= render :partial => "change", :collection => @changes %>
+    </tbody>
+</table>

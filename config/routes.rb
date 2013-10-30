@@ -1,9 +1,17 @@
 ActionController::Routing::Routes.draw do |map|
+	map.resources :activity_logs
+	map.activity_log_weekly_summary "/activity_logs/summary/week/:year/:month/:day.:format", :controller => "activity_logs", :action => "weekly_summary"
+	map.activity_log_current_week_summary "/activity_logs/summary/week.:format", :controller => "activity_logs", :action => "weekly_summary"
+	map.my_activity_log "/my/week/:year/:month/:day.:format", :controller => "activity_logs", :action => "my_week"
+	map.my_current_activity_log "/my/week.:format", :controller => "activity_logs", :action => "my_current_week"
+	
+	
+	
   map.resources :trainings, :member => { :take => :get, :complete => :post }
   map.resources :notes
   map.resources :programs
   map.resources :test_types
-  map.resources :scholarships, :collection => { :auto_complete_for_scholarship_title => :any }
+  map.resources :scholarships, :collection => { :auto_complete_for_scholarship_title => :any }, :member => { :applications => :get }
   map.resources :customers
   map.resources :object_filters
   map.resources :locations, :collection => { :auto_complete_for_location_name => :any }
@@ -28,9 +36,10 @@ ActionController::Routing::Routes.draw do |map|
       :path_prefix  => "/high_schools/:high_school_id/:term_id"
   end
 
+	map.my_participants "/my/mentees", :controller => "participants", :action => "mentor", :mentor_id => "me"
   map.resources :participants, 
     :has_many => [:college_applications, :scholarship_applications, :parents, :college_enrollments, :college_degrees], 
-    :collection => { :auto_complete_for_participant_fullname => :any, :check_duplicate => :any, :add_to_group => :post, :fetch_participant_group_options => :any, :college_mapper_callback => :post },
+    :collection => { :auto_complete_for_participant_fullname => :any, :check_duplicate => :any, :add_to_group => :post, :fetch_participant_group_options => :any, :college_mapper_callback => :post, :bulk => :post },
     :member => { :note => [ :post, :put ], :fetch_participant_group_options => :any, :college_mapper_login => :post } do |participant|
     participant.resources :college_applications, :collection => { :auto_complete_for_institution_name => :any }
     participant.resources :test_scores, :collection => { :update_scores_fields => :post }, :member => { :update_scores_fields => :post }
@@ -56,6 +65,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :volunteers, :controller => :mentors, :only => [:show, :background_check_responses]
 
   map.changes_for_object 'changes/for/:model_name/:id', :controller => 'changes', :action => 'for_object'
+  map.deleted_records 'changes/trash', :controller => 'changes', :action => "deleted"
+  map.undelete_change 'changes/undelete/:id', :controller => "changes", :action => "undelete", :conditions => { :method => :delete }
 
   map.mentor_signup_schedule_add_my_courses 'mentor_signup/add_my_courses', :controller => 'mentor_signup', :action => 'add_my_courses'
   map.mentor_signup_basics 'mentor_signup/basics', :controller => 'mentor_signup', :action => 'basics'
@@ -72,6 +83,9 @@ ActionController::Routing::Routes.draw do |map|
   map.event_group_rsvp 'rsvp/event_group/:id', :controller => 'rsvp', :action => 'event_group', :conditions => { :method => :get }
   map.event_type_rsvp 'rsvp/event_type/:id', :controller => 'rsvp', :action => 'event_type', :conditions => { :method => :get }
 
+  map.mentor_participants '/participants/mentor/:mentor_id.:format', :controller => 'participants', :action => 'mentor'
+  map.college_participants_cohort '/participants/college/:college_id/cohort/:year.:format', :controller => 'participants', :action => 'college_cohort'
+  map.college_participants '/participants/college/:college_id.:format', :controller => 'participants', :action => 'college'
   map.high_school_cohort '/participants/high_school/:high_school_id/cohort/:year.:format', 
     :controller => 'participants', 
     :action => 'high_school_cohort'
@@ -94,8 +108,10 @@ ActionController::Routing::Routes.draw do |map|
   map.anonymous_login_callback "/auth/anonymous/", :controller => 'session', :action => 'create_anonymous'
   map.omniauth_callback "/auth/:provider/callback", :controller => 'session', :action => 'create'  
 
-  map.connect "welcome/mentor", :controller => "welcome", :action => "mentor"
+  map.my_dashboard "my/dashboard", :controller => "welcome", :action => "mentor"
   map.root :controller => "welcome"
+
+  map.connect "ping", :controller => "application", :action => "ping"
 
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should

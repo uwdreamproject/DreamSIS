@@ -6,6 +6,7 @@ class Change < ActiveRecord::Base
   serialize :changes
   
   belongs_to :user
+  belongs_to :restored_user, :class_name => "User", :foreign_key => "restored_user_id"
   
   NON_TRACKED_ATTRIBUTES = %w(created_at updated_at deleted_at creator_id updater_id deleter_id resource_cache_updated_at filter_cache)
   
@@ -56,6 +57,21 @@ class Change < ActiveRecord::Base
     )
       # c.update_attribute(:change_loggable_type, obj.class.deleted_class.to_s)
     # end
+  end
+  
+  # Restores this object by creating a new matching object with the same attributes.
+  def undelete!
+    new_object = change_loggable_type.constantize.create!(changes)
+    if new_object.valid?
+      self.restored_at = Time.now
+      self.restored_user_id = Thread.current['user'].try(:id)
+      self.save!
+    end
+    new_object
+  end
+  
+  def restored?
+    !restored_at.nil?
   end
 
   # Returns the "identifier_string" for the associated changed object. ChangeLoggable models should include an +identifier_string+

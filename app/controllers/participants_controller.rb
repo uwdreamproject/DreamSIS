@@ -1,8 +1,8 @@
 class ParticipantsController < ApplicationController
-  protect_from_forgery :only => [:create, :update, :destroy] 
+  protect_from_forgery :only => [:create, :update, :destroy, :bulk] 
   skip_before_filter :login_required, :only => [:college_mapper_callback]
   skip_before_filter :check_if_enrolled, :only => [:college_mapper_callback]
-  skip_before_filter :check_authorization, :except => [:index, :cohort, :destroy]
+  skip_before_filter :check_authorization, :except => [:index, :cohort, :destroy, :bulk]
   
   before_filter :set_report_type
 
@@ -53,6 +53,7 @@ class ParticipantsController < ApplicationController
   end
 
   def high_school_cohort
+    return redirect_to(high_school_cohort_path(:high_school_id => params[:high_school_id], :year => params[:cohort])) if params[:cohort]
     @grad_year = params[:year]
     @high_school = HighSchool.find(params[:high_school_id])
     
@@ -69,6 +70,43 @@ class ParticipantsController < ApplicationController
       format.js { render 'index'}
       format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
     end    
+  end
+
+  def college
+    @college = Institution.find(params[:college_id].to_i)
+    @participants = Participant.attending_college(@college.try(:id))
+    
+    respond_to do |format|
+      format.html { render :action => 'index' }
+      format.xml  { render :xml => @participants }
+      format.js { render 'index'}
+      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+    end
+  end
+
+  def college_cohort
+    @college = Institution.find(params[:college_id].to_i)
+    @grad_year = params[:year]
+    @participants = Participant.in_cohort(@grad_year).attending_college(@college.try(:id))
+    
+    respond_to do |format|
+      format.html { render :action => 'index' }
+      format.xml  { render :xml => @participants }
+      format.js { render 'index'}
+      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+    end
+  end
+
+  def mentor
+    @mentor = Mentor.find(params[:mentor_id] == "me" ? User.current_user.try(:person_id) : params[:mentor_id])
+    @participants = Participant.assigned_to_mentor(@mentor.try(:id))
+    
+    respond_to do |format|
+      format.html { render :action => 'index' }
+      format.xml  { render :xml => @participants }
+      format.js { render 'index'}
+      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+    end
   end
   
   def group
@@ -236,6 +274,22 @@ class ParticipantsController < ApplicationController
       format.js
     end
   end
+	
+	def bulk
+		render_error("Invalid task request", "Bad request", 400) unless %w[send_email].include?(params[:task])
+		@participants = Participant.find(params[:selected]["Participant"].keys)
+		
+		if params[:task] == "send_email"
+			@emails = @participants.collect(&:email).flatten.compact.uniq
+			if @emails.empty?
+				flash[:error] = "You must select at least one record with an e-mail address."
+				render :text => flash[:error], :status => 200
+			else
+				# flash[:notice] = "Sent #{@template.pluralize(@emails.count, "e-mail address")} to your e-mail program."
+				render :js => "window.location.href = 'mailto:#{@emails.join(",")}';"
+			end			
+		end
+	end
   
   def auto_complete_for_participant_fullname
     conditions = ["(LOWER(firstname) LIKE :fullname OR LOWER(lastname) LIKE :fullname)"]

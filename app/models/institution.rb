@@ -2,7 +2,7 @@ require 'open-uri'
 
 # Models an Institution record, pulled from the Department of Education's list.
 class Institution
-  RESULTS_CACHE = FileStoreWithExpiration.new("/tmp/cache/dreamsis/institution")
+  RESULTS_CACHE = FileStoreWithExpiration.new(File.join(RAILS_ROOT, "files", "institution", "cache"))
   ATTRIBUTE_ALIASES = {
     :instnm    => [:name, :title],
     :longitud  => [:longitude],
@@ -61,6 +61,7 @@ class Institution
   # If a negative integer is provided, this will find a College object instead (see note at College).
   def self.find(unitid)
     fancy_log ":unitid => #{unitid}", "Find"
+		return nil if unitid.blank?
     if unitid.is_a?(Integer) && unitid < 0
       College.find(-unitid)
     else

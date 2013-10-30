@@ -1,4 +1,4 @@
-# Models a parent, legal guardian, or other adult advocate of a student in the system. This model is linked to a student through +child_id+. 
+# Models a parent, legal guardian, or other adult advocate of a student in the system. This model is linked to a student through +child_id+. Note that because "child" is a reserved word, the association is called "child_person" in this model.
 class Parent < Person
   include ActionView::Helpers::NumberHelper
 
@@ -16,9 +16,17 @@ class Parent < Person
   validates_presence_of :lastname, :firstname
   validates_presence_of :child_id
 
-  belongs_to :child  
+  belongs_to :child_person, :class_name => "Person", :foreign_key => :child_id
 
   validates_presence_of :lastname, :firstname, :parent_type
+
+  after_save :update_filter_cache
+  after_destroy :update_filter_cache
+
+  # Updates the participant filter cache
+  def update_filter_cache
+    child_person.save
+  end
   
   # Returns the preferred method of contact, ready for printing on the page.
   # For example, if the preferred contact method is "Home Phone", this method

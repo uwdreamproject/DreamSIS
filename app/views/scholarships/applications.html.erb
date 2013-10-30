@@ -1,0 +1,35 @@
+<h3 class="pre-title"><%=h @scholarship.organization_name %></h3>
+<h1><%=h @scholarship.title %></h1>
+
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Amount</th>
+			<th>Awarded?</th>
+			<th>Accepted?</th>
+			<th>Functions</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+		<%- for scholarship_application in @scholarship.scholarship_applications -%>
+		<tr>
+			<td class="name"><%= link_to h(scholarship_application.participant.try(:fullname)), scholarship_application.participant %></td>
+			<td><%=h number_to_currency scholarship_application.amount %></td>
+			<td><%= content_tag :span, 
+								(scholarship_application.awarded? ? "Y" : "N"), 
+								:class => "icon #{scholarship_application.awarded? ? "pass" : "fail"}" %></td>
+			<td><%= content_tag :span, 
+								(scholarship_application.accepted? ? "Y" : "N"), 
+								:class => "icon #{scholarship_application.accepted? ? "pass" : "fail"}" %></td>
+			<td></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<div id="sidebar">
+	<p><%= link_to "Back to scholarship", @scholarship, :class => "back button" %></p>
+	<p><%= link_to "Download in Excel", { :format => :xls }, :class => "xls button" %></p>
+</div>

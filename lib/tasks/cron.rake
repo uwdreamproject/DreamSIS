@@ -30,6 +30,21 @@ namespace :cron do
     end
 
   end
+
+  namespace :institutions do
+    
+    desc "Reload and cache IPEDS database (if needed)"
+    task :load => :environment do
+      RAILS_DEFAULT_LOGGER = Logger.new(STDOUT)
+      STDOUT.sync = true
+      bt = Benchmark.realtime do 
+        puts "Reloading IPEDS database into Institutions..."
+        Institution.all; nil
+        print "Done "
+      end
+      puts "(took #{'%.2f' % bt} seconds)."
+    end
+  end
   
 end
         

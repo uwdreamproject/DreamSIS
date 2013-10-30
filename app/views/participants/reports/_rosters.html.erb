@@ -1,0 +1,44 @@
+<td class="email">
+    <%= mail_to h(participant.email) %>
+    <%= content_tag :span, "(Primary)<br />#{mail_to(h(participant.email2))} (Backup)", :class => 'light email' unless participant.email2.blank? %>
+    <%= content_tag(:div, "BAD E-MAIL", :class => 'error-message') if participant.bad_email? %>
+	<%= content_tag(:div, "Preferred", :class => 'preferred-note') if participant.preferred_contact_method == 'Email' %>
+</td>
+
+<td class="phone">
+    <%= number_to_phone_pretty(participant.phone_home, :type => 'home') unless participant.phone_home.blank? %>
+    <%= content_tag :span, "(Preferred)", :class => "light" if participant.preferred_phone == "Home" %>
+    
+    <%= "<br />" + number_to_phone_pretty(participant.phone_mobile, :type => 'mobile') unless participant.phone_mobile.blank? %>
+    <%= content_tag :span, "(Preferred)", :class => "light" if participant.preferred_phone == "Mobile" %>
+    
+    <%= "<br />" + number_to_phone_pretty(participant.phone_work, :type => 'work') unless participant.phone_work.blank? %>
+    <%= content_tag(:div, "BAD PHONE", :class => 'error-message') if participant.bad_phone? %>
+	<%= content_tag(:div, "Preferred", :class => 'preferred-note') if participant.preferred_contact_method == 'Phone' %>
+</td>
+
+<td class="texting">
+    <%- 
+    textables = []
+    textables << "Can Send" if participant.can_send_texts?
+    textables << "Can Receive" if participant.can_receive_texts?
+    textables = ["Unlimited"] if participant.unlimited_texting?
+    -%>
+    <%= textables.empty? ? content_tag(:span, "None", :class => "light") : textables.join("<br />") %>
+	<%= content_tag(:div, "Preferred", :class => 'preferred-note') if participant.preferred_contact_method == 'Text' %>
+</td>
+
+<td class="address">
+    <%= participant.street unless participant.street.blank? %>
+    <%= "<br />#{participant.city}, #{participant.state} #{participant.zip}" unless participant.city.blank? %>
+    <%= content_tag(:div, "BAD ADDRESS", :class => 'error-message') if participant.bad_address? %>    
+</td>
+
+<td class="social-media">
+	<%= link_to h(participant.facebook_id), "http://facebook.com/" + h(participant.facebook_id), :class => "facebook-mini" unless participant.facebook_id.blank? %>
+	<%= content_tag(:div, "Preferred", :class => 'preferred-note') if participant.preferred_contact_method == 'Facebook' %>
+	
+</td>
+
+
+<td class="functions"></td>

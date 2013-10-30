@@ -62,6 +62,9 @@
 				<li class="terms"><%= link_to "Terms", terms_url %></li>
 				<li class="tests"><%= link_to "Tests", test_types_url %></li>
 				<li class="trainings"><%= link_to "Trainings", trainings_url %></li>
+				<%- if @current_user.admin? -%>
+					<li class="trash"><%= link_to "Trashed Records", deleted_records_url %></li>
+				<% end %>
 				<li class="users"><%= link_to "Users", users_url %></li>
 			</ul>
 		</div>
