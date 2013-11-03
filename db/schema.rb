@@ -17,8 +17,8 @@ ActiveRecord::Schema.define(:version => 20131030044614) do
     t.integer  "mentor_id"
     t.integer  "direct_interaction_count"
     t.integer  "indirect_interaction_count"
-    t.string   "student_time"
-    t.string   "non_student_time"
+    t.text     "student_time"
+    t.text     "non_student_time"
     t.text     "highlight_note"
     t.integer  "customer_id"
     t.datetime "created_at"
@@ -90,11 +90,11 @@ ActiveRecord::Schema.define(:version => 20131030044614) do
     t.string   "url_shortcut"
     t.text     "allowable_login_methods"
     t.string   "visit_label"
-    t.text     "college_application_choice_options",          :default => "'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''Reach\nSolid\nSafety'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''"
+    t.text     "college_application_choice_options"
     t.text     "paperwork_status_options"
+    t.string   "not_target_label"
     t.text     "activity_log_student_time_categories"
     t.text     "activity_log_non_student_time_categories"
-    t.string   "not_target_label"
   end
 
   create_table "degrees", :force => true do |t|
