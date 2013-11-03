@@ -1655,6 +1655,10 @@ a.button:active {
 	background-image: url(../images/icons/silk/text_list_bullets.png);
 }
 
+.button.people {
+	background-image: url(../images/icons/silk/group.png);
+}
+
 .button.back {
 	background-image: url(../images/icons/silk/arrow_left.png);
 }
@@ -1690,6 +1694,10 @@ a.button:active {
 
 .button.calendar {
 	background-image: url(../images/icons/silk/calendar.png);
+}
+
+.button.calendar_day {
+	background-image: url(../images/icons/silk/calendar_view_day.png);
 }
 
 .button.view {
