@@ -1,4 +1,5 @@
 class ActivityLogsController < ApplicationController
+  skip_before_filter :check_authorization, :only => [:my_week, :my_current_week, :update]
 	
   def index
     @activity_logs = ActivityLog.paginate :all, :page => params[:page]
@@ -66,6 +67,10 @@ class ActivityLogsController < ApplicationController
   
   def update
     @activity_log = ActivityLog.find(params[:id])      
+		
+    unless @current_user && (@current_user.admin? || @activity_log.belongs_to?(@current_user))
+      return render_error("You are not allowed to update that activity log.")
+    end
 
     respond_to do |format|
       if @activity_log.update_attributes(params[:activity_log])

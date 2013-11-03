@@ -25,6 +25,14 @@ class ActivityLog < CustomerScoped
 		ActivityLog.find_or_create_by_mentor_and_week_and_year(mentor, week_number, Date.today.year)
 	end
   
+	# Returns true if this activity log "belongs to" the user or person passed as a parameter.
+	# If a User is passed, this method calls +person_id+ to compare against +mentor_id+.
+	def belongs_to?(user_or_person)
+		return user_or_person.person_id == mentor_id if user_or_person.is_a?(User)
+		return user_or_person.id == mentor_id if user_or_person.is_a?(Person)
+		false
+	end
+	
 	# Returns the week_number for this ActivityLog by returning +cweek+
 	# for this ActivityLog's start_date.
 	def week_number
