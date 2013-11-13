@@ -69,6 +69,11 @@ module ApplicationHelper
   def link_to_clear(element_id)
     @template.link_to_function "Clear", "setToClear('#{element_id.to_s}')"
   end
+
+	# Like the +pluralize+ method but doesn't include the number.
+	def pluralize_without_number(number, noun)
+		number == 1 ? noun : noun.pluralize
+	end
   
   
 end

@@ -1,0 +1,7 @@
+<%- unless highlight.highlight_note.blank? -%>
+	<p>
+		<strong class="light"><%=h highlight.try(:mentor).try(:fullname) %></strong>
+		<br />
+		<%=h highlight.highlight_note %>
+	</p>
+<% end %>

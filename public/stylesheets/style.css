@@ -1097,6 +1097,58 @@ body.error #content-wrap p {
 	float: right;
 }
 
+ul.stat-numbers {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+ul.stat-numbers li {
+	display: inline-block;
+	margin: 1em 5em 1em 0;
+}
+
+ul.stat-numbers li strong {
+	font-size: 50px;	
+	display: inline-block;
+	vertical-align: bottom;
+}
+
+ul.stat-numbers li strong em {
+	font-size: 11px;
+	text-transform: uppercase;
+	font-style: normal;
+	font-weight: normal;
+	font-weight: 200;
+	margin-bottom: 1em;
+	display: block;
+}
+
+ul.stat-numbers li strong.smaller {
+	font-size: 25px;
+	padding-left: 0.75em;
+	font-weight: normal;
+	margin-bottom: -9px;
+	vertical-align: bottom;
+	color: gray;
+	position: relative;
+}
+
+ul.stat-numbers li strong.smaller em {
+	margin-bottom: 0.25em;
+}
+
+ul.stat-numbers li strong.smaller:after {
+	content: " / ";
+	position: absolute;
+	left: 0.25em;
+	bottom: 0;
+}
+
+ul.stat-numbers li p {
+	padding-top: 0.25em;
+}
+
 .stats td.title {
 	padding-right: 4em;
 }
@@ -1655,6 +1707,10 @@ a.button:active {
 	background-image: url(../images/icons/silk/text_list_bullets.png);
 }
 
+.button.people {
+	background-image: url(../images/icons/silk/group.png);
+}
+
 .button.back {
 	background-image: url(../images/icons/silk/arrow_left.png);
 }
@@ -1690,6 +1746,10 @@ a.button:active {
 
 .button.calendar {
 	background-image: url(../images/icons/silk/calendar.png);
+}
+
+.button.calendar_day {
+	background-image: url(../images/icons/silk/calendar_view_day.png);
 }
 
 .button.view {

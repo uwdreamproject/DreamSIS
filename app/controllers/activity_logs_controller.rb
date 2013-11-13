@@ -1,4 +1,5 @@
 class ActivityLogsController < ApplicationController
+  skip_before_filter :check_authorization, :only => [:my_week, :my_current_week, :update]
 	
   def index
     @activity_logs = ActivityLog.paginate :all, :page => params[:page]
@@ -32,6 +33,21 @@ class ActivityLogsController < ApplicationController
 	def weekly_summary
 		@start_date = params[:year] ? Date.strptime("#{params[:year]}-#{params[:month]}-#{params[:day]}") : Date.today.beginning_of_week
 		@activity_logs = ActivityLog.find_all_by_start_date_and_end_date(@start_date, @start_date + 6.days)
+		
+		@direct_interaction_count = @activity_logs.collect(&:direct_interaction_count).numeric_items
+		@indirect_interaction_count = @activity_logs.collect(&:indirect_interaction_count).numeric_items
+		
+		@time_breakdown = { "student_time" => {}, "non_student_time" => {}}
+		@activity_logs.each do |al|
+			for ctype in %w[student non_student]
+				if al.instance_eval("#{ctype}_time?")
+					al.instance_eval("#{ctype}_time").each do |category, value| 
+						@time_breakdown["#{ctype}_time"][category] ||= 0
+						@time_breakdown["#{ctype}_time"][category] += value.to_i
+					end
+				end
+			end
+		end
 	end
   
   def new
@@ -66,6 +82,10 @@ class ActivityLogsController < ApplicationController
   
   def update
     @activity_log = ActivityLog.find(params[:id])      
+		
+    unless @current_user && (@current_user.admin? || @activity_log.belongs_to?(@current_user))
+      return render_error("You are not allowed to update that activity log.")
+    end
 
     respond_to do |format|
       if @activity_log.update_attributes(params[:activity_log])

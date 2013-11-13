@@ -1,0 +1,22 @@
+<%- ctype = time_breakdown -%>
+
+<tr><th colspan=5><%= ctype.titleize %> Time</th></tr>
+
+<% sum = @time_breakdown["#{ctype}_time"].collect{|n| n[1] }.sum %>
+<%- for category, total in @time_breakdown["#{ctype}_time"].sort{|n| n[0][1] }.reverse -%>
+	<%- if total > 0 -%>
+		<tr>
+			<td class="title"><%= category %></td>
+			<td class="number"><%= total %></td>
+			<td class="percentage-meter">
+				<div class="signup-meter stat-meter">
+					<div class="capacity" style="width: 100%;" title="">
+						<div class="size" style="width: <%= total / sum * 100 %>%">&nbsp;</div>
+					</div>
+				</div>
+				</td>
+			<td class="percentage signup-numbers"><%= number_to_percentage(total / sum * 100, :precision => 0) rescue 0.0/0.0 %></td>
+		</tr>
+	<% end %>
+<% end %>
+

@@ -6,8 +6,8 @@ class CreateActivityLogs < ActiveRecord::Migration
       t.integer :mentor_id
       t.integer :direct_interaction_count
       t.integer :indirect_interaction_count
-      t.string :student_time
-      t.string :non_student_time
+      t.text :student_time
+      t.text :non_student_time
       t.text :highlight_note
       t.integer :customer_id
       t.timestamps
