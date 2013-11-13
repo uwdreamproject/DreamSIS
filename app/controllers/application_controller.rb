@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   # include AuthenticatedSystem #, ExceptionNotifiable
   require 'array_math'
 
-  before_filter :handle_subdomain, :except => %w[ ping ]
+  # before_filter :handle_subdomain, :except => %w[ ping ]
   before_filter :require_ssl, :except => %w[ ping ]
   before_filter :authenticated?, :except => %w[ ping ]
   before_filter :login_required, :except => [ 'remove_vicarious_login', 'ping' ]
