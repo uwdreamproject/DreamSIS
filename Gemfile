@@ -26,6 +26,8 @@ gem 'fastercsv'
 gem 'mandrill-api'
 gem 'newrelic_rpm'
 gem 'ey_config'
+gem "mime-types", "1.25"
+gem "paperclip", "~> 2.0"
 
 group :production do
   gem 'mysql2', '< 0.3'
