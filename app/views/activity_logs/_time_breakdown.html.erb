@@ -1,9 +1,9 @@
 <%- ctype = time_breakdown -%>
+<% sum = @time_breakdown["#{ctype}_time"].collect{|category, total| total }.sum * 1.0 %>
 
 <tr><th colspan=5><%= ctype.titleize %> Time</th></tr>
 
-<% sum = @time_breakdown["#{ctype}_time"].collect{|n| n[1] }.sum %>
-<%- for category, total in @time_breakdown["#{ctype}_time"].sort{|n| n[0][1] }.reverse -%>
+<%- for category, total in @time_breakdown["#{ctype}_time"].sort_by{|category, total| total }.reverse -%>
 	<%- if total > 0 -%>
 		<tr>
 			<td class="title"><%= category %></td>

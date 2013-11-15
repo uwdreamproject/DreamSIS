@@ -32,7 +32,17 @@ class ActivityLogsController < ApplicationController
 
 	def weekly_summary
 		@start_date = params[:year] ? Date.strptime("#{params[:year]}-#{params[:month]}-#{params[:day]}") : Date.today.beginning_of_week
-		@activity_logs = ActivityLog.find_all_by_start_date_and_end_date(@start_date, @start_date + 6.days)
+		
+		conditions_string = "start_date = :start_date AND end_date = :end_date"
+		conditions_values = { :start_date => @start_date, :end_date => @start_date + 6.days }
+
+		if params[:mentor_term_group_id] && params[:mentor_term_group_id] != "All"
+			@mentor_term_group = MentorTermGroup.find params[:mentor_term_group_id]
+			conditions_string << " AND mentor_id IN (:mentor_ids)"
+			conditions_values[:mentor_ids] = @mentor_term_group.mentor_ids
+		end
+
+		@activity_logs = ActivityLog.find(:all, :conditions => [conditions_string, conditions_values])
 		
 		@direct_interaction_count = @activity_logs.collect(&:direct_interaction_count).numeric_items
 		@indirect_interaction_count = @activity_logs.collect(&:indirect_interaction_count).numeric_items
