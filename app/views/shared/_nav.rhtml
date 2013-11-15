@@ -5,7 +5,9 @@
 		<div>
 			<ul>
 				<li class="primary groups"><%= link_to "My #{Customer.mentees_label}", my_participants_url %></li>
-				<li class="calendar"><%= link_to "Track my week", my_current_activity_log_url %></li>
+				<%- if Customer.uses_activity_logs? -%>
+					<li class="calendar"><%= link_to "Track my week", my_current_activity_log_url %></li>
+				<% end %>
 			</ul>
 		</div>
 	</li>

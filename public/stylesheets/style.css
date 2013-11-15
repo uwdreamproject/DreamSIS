@@ -61,6 +61,15 @@ h3.pre-title {
 	font-weight: normal;
 }
 
+h3.pre-title a {
+	text-decoration: none;
+}
+
+h3.pre-title a:hover {
+	text-decoration: underline;
+}
+
+
 h4, h5 {
 	font-size: 100%;
 }
@@ -673,6 +682,18 @@ a.redirect-link:hover {
 	min-height: 400px;
 }
 
+.spanhalf {
+	width: 48.5%;
+}
+
+.spanhalf.left {
+	margin-right: 2%;
+}
+
+.spanhalf.right {
+	/*float: right;*/
+}
+
 #report_selector {
 	float: right;
 	margin-left: 1em;
@@ -1105,7 +1126,7 @@ ul.stat-numbers {
 
 ul.stat-numbers li {
 	display: inline-block;
-	margin: 1em 5em 1em 0;
+	margin: 1em 4em 1em 0;
 }
 
 ul.stat-numbers li strong {
@@ -1147,6 +1168,7 @@ ul.stat-numbers li strong.smaller:after {
 
 ul.stat-numbers li p {
 	padding-top: 0.25em;
+	margin-bottom: 0;
 }
 
 .stats td.title {
@@ -1580,6 +1602,10 @@ ul.time_categories tr:hover {
 
 ul.time_categories input[type=range] {
 	width: 32%;
+	-webkit-appearance: none;
+	border: none;
+	box-shadow: none;
+	background: linear-gradient(to bottom, transparent 45%, rgba(0, 0, 0, 0.33) 50%, transparent 55%);
 }
 
 ul.time_categories input[type=range]:focus {
