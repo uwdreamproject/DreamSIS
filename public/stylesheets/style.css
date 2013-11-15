@@ -1102,6 +1102,12 @@ body.error #content-wrap p {
 	margin-left: 5px;
 }
 
+#dev-inspector-container .git.branch.master strong {
+	font-size: 200%;
+	font-weight: bold;
+	color: red;
+}
+
 #dev-inspector-container .session-info{
 	margin-left: 1em;
 }
