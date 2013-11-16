@@ -255,6 +255,12 @@ class Person < CustomerScoped
   def phone_work=(new_number)
     write_attribute :phone_work, new_number.gsub(/[^0-9]/i, '')
   end
+	
+  # Strip out non-digit characters in annual_income if needed, like "$" or "," or other text.
+  def annual_income=(new_amount)
+    new_amount = new_amount.gsub(/[^0-9.]/i, '') unless new_amount.is_a?(Numeric)
+    self.write_attribute(:annual_income, new_amount)
+  end
   
   # Returns true if this person has completed the specified training
   def completed_training?(training)
