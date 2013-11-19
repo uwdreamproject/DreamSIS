@@ -7,7 +7,7 @@ class CourseResource < UwWebResource
   def self.find(*args)
     if args && args.first.include?("/")
       # Uses /public/ to avoid  attaching certs to standard request
-      fetch = JSON.parse(open("#{self.site}" + "#{self.prefix}" + "/public/course/" + args.first+".json").read)
+      fetch = JSON.parse(open(("#{self.site}" + "#{self.prefix}" + "/public/course/" + args.first+".json").sub(' ', '%20')).read)
       term = fetch["Term"]
       fetch.delete("Term")
       fetch["TermA"] = term

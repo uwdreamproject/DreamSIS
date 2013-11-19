@@ -3,7 +3,7 @@
         <br>
         <%= change[:created_at].to_s(:time_with_seconds) %>
         </td>
-    <td><%= change.user.nil? ? "The system" : link_to(h(change.user.try(:fullname)), change.user) %>
+    <td><%= change.user.nil? ? "The system" : link_to(h(change.user.try(:fullname)), user_path(change.user)) %>
         <%=h change[:action_type] %>d the 
         <%= link_to change.change_loggable_type, change.change_loggable rescue change.change_loggable_type %> record.
         
