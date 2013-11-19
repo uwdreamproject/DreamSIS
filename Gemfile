@@ -5,7 +5,7 @@ gem "i18n", '0.4.2'
 gem 'formtastic', '~> 1.1.0'
 gem "capistrano"
 gem "will_paginate", '~> 2.3.11'
-gem 'nokogiri'
+gem "nokogiri", '~> 1.5.9'
 gem 'json'
 gem 'exceptional'
 gem 'rdoc'
