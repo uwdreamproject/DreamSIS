@@ -41,9 +41,18 @@ class MentorTermGroup < CustomerScoped
 
   # Pulls off just the section ID from the course_id (the part after the slash), e.g., "AF"
   def section_id
-    return nil if course_id.blank?
-    match = course_id.match(/\/(\w+)$/)
-    match ? match[1] : nil
+    match_in_id /\/(\w+)$/
+  end
+  
+  # Extracts the department abbreviation and 3 digit course number from the course_id, e.g., "EDUC 360"
+  def course_number
+    m = match_in_id /(\w+\,\d{3})/
+    m ? m.sub(",", " ") : ""
+  end
+  
+  # Combines course_number and section_id, e.g., "EDUC 360AF"
+  def course_string
+    return "#{course_number}#{section_id}"
   end
 
   # Returns the associated CourseResource for this group, if +course_id+ is set.
@@ -193,5 +202,13 @@ class MentorTermGroup < CustomerScoped
     end
     return true
   end
-  
+
+  protected
+
+  # Returns the pattern found by the passed Regular Expression or nil
+  def match_in_id(regex)
+    return nil if course_id.blank?
+    match = course_id.match(regex)
+    match ? match[1] : nil
+  end
 end

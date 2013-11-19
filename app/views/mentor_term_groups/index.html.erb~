@@ -14,6 +14,7 @@
 
 <% for mentor_term_group in @mentor_term_groups %>
 <tr>
+<<<<<<< HEAD
 	<td><%= content_tag :span, h(mentor_term_group.section_id), :class => 'section_id tag' %></td>
 	<td>
 		<%= link_to h(mentor_term_group.title), mentor_term_group, :title => mentor_term_group.course_id %>
@@ -21,6 +22,10 @@
 						:title => "Permissions Level: #{h(mentor_term_group.permissions_level.titleize)} (#{h(mentor_term_group.permissions_level_description)})", 
 						:class => "unlocked tag" if mentor_term_group.non_default_permissions? %>
 	</td>
+=======
+	<td><%= content_tag :span, h(mentor_term_group.course_string), :class => 'section_id tag' %></td>
+	<td><%= link_to h(mentor_term_group.title), mentor_term_group, :title => mentor_term_group.course_id %></td>
+>>>>>>> origin/uwdp-deploy
 	<td><%= mentor_term_group.times %></td>
 	<td class="signup-meter <%= "full" if mentor_term_group.full? %>">
 		<div class="capacity" 
