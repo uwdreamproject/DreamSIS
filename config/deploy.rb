@@ -1,13 +1,13 @@
-require 'bundler/capistrano'
+#require 'bundler/capistrano'
 
 set :application, "dreamsis"
 set :deploy_to, "/usr/local/apps/#{application}"
-set :user, "mharris2"
+set :user, "mitchwharper"
 set :runner, "root"
 set :use_sudo, true
 
 $:.unshift(File.expand_path('./lib', ENV['rvm_path'])) # Add RVM's lib directory to the load path.
-require "rvm/capistrano"                  # Load RVM's capistrano plugin.
+#require "rvm/capistrano"                  # Load RVM's capistrano plugin.
 set :rvm_ruby_string, '1.8.7@rails235'        # Or whatever env you want it to run in.
 
 default_run_options[:pty] = true
