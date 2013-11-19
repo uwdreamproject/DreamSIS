@@ -1,6 +1,6 @@
 <h1>Edit Note</h1>
 
-<% semantic_form_for @note do |f| %>
+<% semantic_form_for @note, :html => { :multipart => true } do |f| %>
 
 	<%= f.error_messages %>
 

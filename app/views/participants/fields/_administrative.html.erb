@@ -9,9 +9,10 @@
 		<%= render :partial => 'participant_group_select' %>
 	</li>
 	
-	<%- f.inputs :name => "Inactive", :class => "inline" do -%>
+	<%- f.inputs :name => "Status", :class => "inline" do -%>
 		<%= f.input :inactive, :onClick => "$('participant_inactive_explanation_input').toggle()" %>
 		<%= f.input :inactive_explanation, :label => "Explanation", :as => :string, :wrapper_html => { :style => ("display:none" unless f.object.inactive?) } %>
+		<%= f.input :not_target_participant, :label => "#{Customer.not_target_Label}" %>
 	<% end %>
 
 <% end %>

@@ -65,6 +65,15 @@ h3.pre-title {
 	font-weight: normal;
 }
 
+h3.pre-title a {
+	text-decoration: none;
+}
+
+h3.pre-title a:hover {
+	text-decoration: underline;
+}
+
+
 h4, h5 {
 	font-size: 100%;
 }
@@ -284,7 +293,9 @@ h4 {
 #indicator {
 	position: fixed;
 	top: -6px;
-	left: 45%;
+	left: 50%;
+	width: 70px;
+	margin-left: -45px;
 	background: yellow url(../images/indicator.gif) no-repeat 8px 10px;
 	padding: 10px 10px 5px 30px;
 	border-radius: 5px;
@@ -903,6 +914,18 @@ body.participants.show #content-wrap {
 	padding-top: 0;
 }
 
+.spanhalf {
+	width: 48.5%;
+}
+
+.spanhalf.left {
+	margin-right: 2%;
+}
+
+.spanhalf.right {
+	/*float: right;*/
+}
+
 #report_selector {
 	float: right;
 	margin-left: 1em;
@@ -1201,6 +1224,29 @@ ul.crimes-list li {
 	border-color: #07b;
 }
 
+#notifications .saved {
+	position: fixed;
+	top: -6px !important;
+	left: 50%;
+	margin-left: -2.5em;
+	width: 5em;
+	background: rgb(235, 235, 235);
+	padding: 10px 10px 5px 10px;
+	border-radius: 5px;
+	font-weight: normal;
+	opacity: 0;
+	text-shadow: none;
+	box-shadow: none;
+	-webkit-transition: all 0.5s ease-in-out;
+	z-index: 1000;
+	border: none;
+}
+
+#notifications .saved.visible {
+	opacity: 0.9;
+	top: -6px !important;
+}
+
 .error-message {
 	color: red;
 	font-weight: bold;
@@ -1295,6 +1341,12 @@ body.error #content-wrap p {
 	margin-left: 5px;
 }
 
+#dev-inspector-container .git.branch.master strong {
+	font-size: 200%;
+	font-weight: bold;
+	color: red;
+}
+
 #dev-inspector-container .session-info{
 	margin-left: 1em;
 }
@@ -1309,6 +1361,59 @@ body.error #content-wrap p {
 
 .inline .right {
 	float: right;
+}
+
+ul.stat-numbers {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+ul.stat-numbers li {
+	display: inline-block;
+	margin: 1em 4em 1em 0;
+}
+
+ul.stat-numbers li strong {
+	font-size: 50px;	
+	display: inline-block;
+	vertical-align: bottom;
+}
+
+ul.stat-numbers li strong em {
+	font-size: 11px;
+	text-transform: uppercase;
+	font-style: normal;
+	font-weight: normal;
+	font-weight: 200;
+	margin-bottom: 1em;
+	display: block;
+}
+
+ul.stat-numbers li strong.smaller {
+	font-size: 25px;
+	padding-left: 0.75em;
+	font-weight: normal;
+	margin-bottom: -9px;
+	vertical-align: bottom;
+	color: gray;
+	position: relative;
+}
+
+ul.stat-numbers li strong.smaller em {
+	margin-bottom: 0.25em;
+}
+
+ul.stat-numbers li strong.smaller:after {
+	content: " / ";
+	position: absolute;
+	left: 0.25em;
+	bottom: 0;
+}
+
+ul.stat-numbers li p {
+	padding-top: 0.25em;
+	margin-bottom: 0;
 }
 
 .stats td.title {
@@ -1670,6 +1775,89 @@ input.currency {
 	text-align: right;
 }
 
+ul.time_categories > li {
+	width: 49%;
+	float: left;
+	padding: 0;
+}
+
+ul.time_categories > li:first-child {
+	margin-right: 2%;
+}
+
+ul.time_categories > li label {
+	clear: both;
+	font-weight: normal;
+	margin-top: 6px;
+	width: 50% !important;
+}
+
+ul.time_categories > li > ul > li {
+	clear: both;
+	padding-left: 24px;
+	background: url(../images/icons/silk/tick-grey.png) left center no-repeat;
+
+}
+
+ul.time_categories > li > ul > li:not(.time0) {
+	background: url(../images/icons/silk/tick.png) left center no-repeat;
+}
+
+ul.time_categories > li > ul > li span.value {
+	margin-left: 5px;
+	color: #666;
+	font-size: 85%;
+	margin-top: 10px;
+	line-height: 100%;
+	float: right;
+	width: 4em;	
+}
+
+
+
+ul.time_categories th.category {
+	width: 50%;
+	text-align: left;
+	font-size: 110%;
+	font-family: 'Open Sans', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
+	padding-left: 0;
+	font-weight: bold;
+	vertical-align: bottom;
+	padding-bottom: 10px;
+}
+
+ul.time_categories th.value {
+	width: 5em;
+}
+
+ul.time_categories th {
+	font-size: 80%;
+	text-align: center;
+	font-weight: normal;
+	line-height: 100%;
+	padding: 5px;
+	background: none;
+	vertical-align: top;
+	width: 9%;
+}
+
+ul.time_categories tr:hover {
+	background: none;
+}
+
+ul.time_categories input[type=range] {
+	width: 32%;
+	-webkit-appearance: none;
+	border: none;
+	box-shadow: none;
+	background: linear-gradient(to bottom, transparent 45%, rgba(0, 0, 0, 0.33) 50%, transparent 55%);
+}
+
+ul.time_categories input[type=range]:focus {
+	outline: 2px solid rgba(82, 168, 236, 0.4);
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),0 0 8px rgba(82, 168, 236, 0.4);
+}
+
 .choose_identity p.intro {
 	font-size: 150%;
 	margin-bottom: 0;
@@ -1794,6 +1982,10 @@ a.button:active {
 	background-image: url(../images/icons/silk/text_list_bullets.png);
 }
 
+.button.people {
+	background-image: url(../images/icons/silk/group.png);
+}
+
 .button.back {
 	background-image: url(../images/icons/silk/arrow_left.png);
 }
@@ -1829,6 +2021,10 @@ a.button:active {
 
 .button.calendar {
 	background-image: url(../images/icons/silk/calendar.png);
+}
+
+.button.calendar_day {
+	background-image: url(../images/icons/silk/calendar_view_day.png);
 }
 
 .button.view {
@@ -2234,6 +2430,10 @@ tr.deselected td, td.deselected, tr.deselected td a, td.deselected a {
 	color: #999;
 }
 
+tr.not-target td, td.not-target, tr.not-target td a, td.not-target a {
+	
+}
+
 tr.deselected:hover td, td.deselected:hover, tr.deselected:hover td a, td.deselected a:hover {
 	color: inherit;
 }
@@ -2242,7 +2442,21 @@ tr.deselected:hover td, td.deselected:hover, tr.deselected:hover td a, td.desele
 	display: inline;
 }
 
+.not-target-note {
+	display: none;
+}
+
+h2.inactive-note, h2.not-target-note {
+	display: block;
+	color: red;
+	text-transform: uppercase;
+}
+
 tr.deselected .inactive-note {
+	display: inline;
+}
+
+tr.not-target .not-target-note {
 	display: inline;
 }
 

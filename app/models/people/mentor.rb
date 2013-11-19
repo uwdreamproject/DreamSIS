@@ -9,6 +9,7 @@ class Mentor < Person
   
   has_many :mentor_participants, :conditions => { :deleted_at => nil }
   has_many :participants, :through => :mentor_participants
+	has_many :activity_logs
   
   validates_uniqueness_of :reg_id, :allow_blank => true
 

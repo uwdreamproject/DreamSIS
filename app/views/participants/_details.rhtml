@@ -1,4 +1,3 @@
-
 <div class="photo">
 	<%= image_tag photo_mentor_path(Mentor.first, :size => :large), 
 			:class => 'student_photo', 
@@ -8,11 +7,10 @@
 
 <div class="name">
 	<h3 class="pre-title"><%= @participant.class.to_s %></h3>
-	<h1><%= @participant.fullname(:middlename => false) %></h1>
+	<h1><%=h @participant.fullname(:middlename => false) %></h1>
 
-	<% if @participant.inactive? %>
-		<h2 class="inactive-note">INACTIVE</h2>
-	<% end -%>
+	<%= content_tag :h2, "** Inactive **", :class => "inactive-note" if @participant.inactive? %>
+	<%= content_tag :h2, "** #{Customer.not_target_Label} **", :class => "not-target-note" if @participant.not_target_participant? %>
 
 </div>
 

@@ -76,3 +76,9 @@ class Range
   end  
   alias_method :&, :intersection  
 end
+
+class Date
+	def this_week?
+		beginning_of_week == Date.today.beginning_of_week
+	end
+end

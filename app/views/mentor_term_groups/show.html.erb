@@ -79,6 +79,12 @@
 	 				"mailto:#{@mentor_term_group.mentors.collect(&:email).compact.join(",")}",
 					:class => 'email button' %></p>
 
+	<%- if Customer.uses_activity_logs? -%>
+		<p><%= link_to "Weekly summary", 
+						activity_log_current_week_summary_path(:mentor_term_group_id => @mentor_term_group), 
+						:class => "calendar button" %></p>
+	<% end %>
+
 	<h3>About this Group</h3>
 	
 	<dl class="sidebar">

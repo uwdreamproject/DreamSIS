@@ -20,7 +20,8 @@ class Customer < ActiveRecord::Base
     :participant => "participant",
     :workbook => "workbook",
     :intake_survey => "intake survey",
-    :mentee => "mentee"
+    :mentee => "mentee",
+		:not_target => "not target"
   }
 
   has_many :clearinghouse_requests
@@ -78,6 +79,21 @@ class Customer < ActiveRecord::Base
     return ["Not Started", "In Progress", "Complete"] if paperwork_status_options.blank?
     paperwork_status_options.split("\n").collect(&:strip)
   end
+
+  # Parses the text in +activity_log_student_time_categories+ and returns an array that is split on newlines.
+  def activity_log_student_time_categories_array
+    activity_log_student_time_categories.split("\n").collect(&:strip)
+  end
+
+  # Parses the text in +activity_log_non_student_time_categories+ and returns an array that is split on newlines.
+  def activity_log_non_student_time_categories_array
+    activity_log_non_student_time_categories.split("\n").collect(&:strip)
+  end
+	
+	# Returns true if there is anything in the acitivity log categories fields.
+	def uses_activity_logs?
+		!activity_log_student_time_categories.blank? || !activity_log_non_student_time_categories.blank?
+	end
   
   def self.current_customer
     # logger.info { "user: " + User.current_user.try(:customer).inspect }

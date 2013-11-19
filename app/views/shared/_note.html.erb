@@ -23,6 +23,12 @@
 	<td class="note-body">
 		<%= auto_link textilize_without_paragraph(note.note) %>
 		
+		<% if note.document? %>
+			<p class="attached_file">
+				<%=h note.document_file_name %>
+			</p>
+		<% end %>
+		
 		<% if note.restricted? %>
 			<p class="privacy_note <%= note.access_level %>">
 				<%= note.restriction_in_words %>

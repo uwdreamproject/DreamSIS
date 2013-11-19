@@ -61,6 +61,7 @@ class Institution
   # If a negative integer is provided, this will find a College object instead (see note at College).
   def self.find(unitid)
     fancy_log ":unitid => #{unitid}", "Find"
+		return nil if unitid.blank?
     if unitid.is_a?(Integer) && unitid < 0
       College.find(-unitid)
     else

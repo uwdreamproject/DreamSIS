@@ -51,7 +51,23 @@
 	    <%= submit_tag "Go" %></p>
 		</form>
 	<% end %>
+
+	<%- if @college %>
+		<h3>High School Cohort</h3>
+		<p><%- for grad_year in @participants.collect(&:grad_year).uniq.sort %>
+				<%= link_to grad_year, college_participants_cohort_path(@college.id, grad_year) %>
+				<% end %>
+			</p>
+	<% end %>
 	
+    <%- if @current_user.admin? -%>
+	<div class="with_selected_actions">
+		<h3>With Selected</h3>
+		<ul>
+			<li><%= link_to_remote "Send e-mail", :url => bulk_participants_path(:task => :send_email), :with => "Form.serializeElements($$('input.index_check_box'))" %></li>
+		</ul>
+	</div>
+	<% end %>
 
 	<%- unless @participants.respond_to?(:current_page) -%>
 	<h3>Filters

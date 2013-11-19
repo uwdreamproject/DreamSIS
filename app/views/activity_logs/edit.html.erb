@@ -1,0 +1,35 @@
+<h1>Activity Log
+	<small class="light">&raquo; <%= @activity_log.this_week? ? "This Week #{(Date.today.beginning_of_week.to_s(:short))}" : "Week of #{@activity_log.start_date.to_s(:short)}" %></small></h1>
+
+	<p class="intro">Use the activity log to track how you spent your time this week. This information will be available to program staff as well.</p>
+	
+<% semantic_form_for(@activity_log) do |f| %>
+  	<%= f.error_messages %>
+	<%= render :partial => "fields", :locals => { :f => f } %>
+
+	<%- f.buttons do -%>
+	 	<%= f.submit "Update" %>
+		<%= separator %>
+		<%= link_to 'Back', @activity_log, :class => 'cancel button' %>
+	<% end -%>
+
+<% end %>
+
+<%= observe_form "edit_activity_log_#{@activity_log.id.to_s}", :url => activity_log_path(@activity_log), :method => :put %>
+
+<div id="sidebar">
+	
+	<p><%= link_to "Back to Dashboard", my_dashboard_path, :class => "photo-tile button" %></p>
+	
+	<p><%= link_to "Previous Week", my_activity_log_path(@activity_log.start_date.year, (@activity_log.start_date - 7.days).month, (@activity_log.start_date - 7.days).day), :class => "back button" %></p>
+	
+	<p><%= link_to "This Week", my_current_activity_log_path, :class => "calendar_day button" unless @activity_log.this_week? %></p>
+	
+	<p><%= link_to "Next Week", my_activity_log_path(@activity_log.start_date.year, (@activity_log.start_date + 7.days).month,(@activity_log.start_date + 7.days).day), :class => "forward button" %></p>
+	
+	<%- if @current_user.admin? -%>
+		<h3>Admin View</h3>
+		<p><%= link_to "Weekly summary", activity_log_current_week_summary_path, :class => "lock button" %></p>
+	<% end %>
+	
+</div>
