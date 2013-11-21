@@ -4,6 +4,7 @@ class AnonymousUser < User
   # Creates a new user based on the auth data passed from OmniAuth.
   def self.create_random
     u = create! do |user|
+      user.customer_id = Customer.current_customer.id
       user.login = "AnonymousUser" + Time.now.to_i.to_s + rand(10000).to_s
       user.person = Person.create!
     end
