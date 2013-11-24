@@ -12,9 +12,6 @@
 						:url => check_duplicate_participants_path, 
 						:with => "Form.serialize($('participant_form'))",
 						:condition => "$F('participant_firstname') != '' && $F('participant_lastname') != ''" %>
-
-	<div class="error-message no-icon" id="participant_duplicate_warning" style="clear:both"></div>
-
 	
 	<%= f.input :nickname, :label => "Nickname/Preferred Name" %>
 	<%= f.input :birthdate, :start_year => 1985, :end_year => Time.now.year-10 %>
