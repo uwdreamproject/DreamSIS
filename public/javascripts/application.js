@@ -147,6 +147,7 @@ function updateRecordCount(filter_key) {
 	} else {		
 		if ($('filtered_record_count')) {
 			$('filtered_record_count').update($$('.filterable:not(.hidden)').size() + " of")
+			updateWithSelectedActions()
 		}
 		filterables.each(function(pair) {
 			filter_key = pair.key
@@ -177,6 +178,23 @@ function setFilter(type, filter_key, value) {
 		$$('.' + filter_key + '_filter_checkbox').each(function(e) {e.checked = true})
 	}
 	executeFilters();
+}
+
+// Returns the currently selected rows
+function selectedElements() {
+	return $$('tbody:not(.hidden) input.index_check_box:checked')
+}
+
+// Shows the actions that can be performed, if any rows are selected.
+function updateWithSelectedActions() {
+	if($("with_selected_actions")) {
+		if(selectedElements().length > 0) {
+			$("with_selected_actions").show()
+			$("with_selected_actions_count").update(selectedElements().length)
+		} else {
+			$("with_selected_actions").hide()
+		}
+	}
 }
 
 function setToNow(element_id) {

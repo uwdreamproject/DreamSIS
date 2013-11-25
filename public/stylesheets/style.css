@@ -470,6 +470,38 @@ body.full #sidebar-header {
 	margin-top: 0;
 }
 
+#sidebar .with_selected_actions ul {
+	list-style: square;
+	margin: 0;
+	padding-left: 22px;
+}
+
+#sidebar .with_selected_actions h3 {
+	margin-bottom: 0;
+}
+
+#sidebar .with_selected_actions a {
+	display: block;
+	padding: 7px 0;
+}
+
+#sidebar #with_selected_actions_count {
+	margin-left: 0.25em;
+	font-size: 85%;
+	font-weight: normal;
+	position: relative;
+	top: -1px;
+}
+
+#sidebar #with_selected_actions_count:before {
+	content: "(";
+}
+
+#sidebar #with_selected_actions_count:after {
+	content: ")";
+}
+
+
 #login_logout {
 	position: absolute;
 	right: 10px;
