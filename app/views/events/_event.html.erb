@@ -1,5 +1,5 @@
   <tr id="event_<%= event.id %>">
-    <td><%= link_to (event.name.blank? ? content_tag(:span, "High School Visit", :class => 'light') : h(event.name)), event_path(event) %></td>
+    <td class="name"><%= link_to (event.name.blank? ? content_tag(:span, "High School Visit", :class => 'light') : h(event.name)), event_path(event) %></td>
     <td><%=h event.date %></td>
 	<td><%= event.attendees.size %></td>
 	<td><%= event.attendees.rsvpd.size %></td>

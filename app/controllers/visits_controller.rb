@@ -63,7 +63,19 @@ class VisitsController < ApplicationController
           event_attendance.update_attribute(:attended, attended)
         end
       end
-      flash[:notice] = "Attendance data saved."
+      flash[:saved] = "Saved."
+    end
+
+    if params[:attendance_option]
+      params[:attendance_option].each do |participant_id,attendance_attributes|
+        @participant = Person.find(participant_id)
+        attendance_attributes.each do |event_id,attendance_option|
+          @event = Event.find(event_id)
+          event_attendance = @participant.event_attendances.find_or_create_by_event_id(@event.id)
+          event_attendance.update_attribute(:attendance_option, attendance_option)
+        end
+      end
+      flash[:saved] = "Saved."
     end
 
     if params[:rsvp]
@@ -75,7 +87,7 @@ class VisitsController < ApplicationController
           event_attendance.update_attribute(:rsvp, rsvp)
         end
       end
-      flash[:notice] = "Attendance data saved."
+      flash[:saved] = "Saved."
     end
 
     respond_to do |format|

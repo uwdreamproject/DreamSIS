@@ -7,24 +7,23 @@
 		<th>Date</th>
 		<th>Start Time</th>
 		<th>End Time</th>
-		<th>Show for Participants</th>
-		<th>Show for Mentors</th>
+		<th>Show for <%= Customer.participants_Label %></th>
+		<th>Show for <%= Customer.mentors_Label %></th>
 		<th>Attendance</th>
-		<th>Functions</th>
+		<th colspan=3>Functions</th>
 	</tr>
 
 <% for visit in @visits %>
 <tr>
-	<td><%=h visit.date %></td>
+    <td class="name"><%= link_to (visit.name.blank? ? visit.date : h("#{visit.name} (#{visit.date})")), high_school_visit_path(@high_school, @term, visit) %></td>
 	<td><%=h visit.start_time.to_s(:time12) if visit.start_time %></td>
 	<td><%=h visit.end_time.to_s(:time12) if visit.end_time %></td>
 	<td><%=h visit.show_for_participants? ? "Yes" : "No" %></td>
 	<td><%=h visit.show_for_mentors? ? "Yes" : "No" %></td>
 	<td><%=h visit.attended_count %></td>
-	<td><%= link_to 'Show', high_school_visit_path(@high_school, @term, visit) %>
-		| <%= link_to 'Edit', edit_high_school_visit_path(@high_school, @term, visit) %>
-		| <%= link_to 'Delete', high_school_visit_path(@high_school, @term, visit), :confirm => 'Are you sure?', :method => :delete %>
-	</td>
+	<td class="functions"><%= link_to 'Show', high_school_visit_path(@high_school, @term, visit) %></td>
+	<td class="functions"><%= link_to 'Edit', edit_high_school_visit_path(@high_school, @term, visit) %></td>
+	<td class="functions"><%= link_to 'Delete', high_school_visit_path(@high_school, @term, visit), :confirm => 'Are you sure?', :method => :delete %></td>
 </tr>
 <% end %>
 

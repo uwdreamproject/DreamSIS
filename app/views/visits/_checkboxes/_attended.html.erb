@@ -1,0 +1,101 @@
+<%- 
+show_date ||= false
+
+if Customer.uses_visit_attendance_options?
+	attendance_option = participant.attendance_option(visit) || nil
+	attendance_option_standing = Customer.visit_attendance_options_array.index(attendance_option)
+	attendance_option_condition = case attendance_option_standing
+	when 0 then "first"
+	when Customer.visit_attendance_options_array.size-1 then "last"
+	when nil then "none"
+	else "middle"
+	end
+	
+	td_onclick = "var elem = $('attendance_option_#{participant.id}_#{visit.id}');
+					if(elem.selectedIndex == elem.options.length-1) {
+						elem.selectedIndex = 0;
+					} else {
+						elem.selectedIndex += 1;
+					}
+				  elem.focus();
+				  $('em_#{participant.id}_#{visit.id}').update($F('attendance_option_#{participant.id}_#{visit.id}'));
+				  $('firstinitial_#{participant.id}_#{visit.id}').update($F('attendance_option_#{participant.id}_#{visit.id}')[0]);
+				  
+				  klass = 'none';
+				  switch(elem.selectedIndex) {
+					  case 0:
+						  klass = 'none';
+						  break;
+					  case 1:
+						  klass = 'first';
+						  break;
+					  case elem.options.length-1:
+						  klass = 'last';
+						  break;
+					  case -1:
+						  klass = 'none';
+						  break;
+					  default: 
+					      klass = 'middle';
+				  }
+				 
+				 $('td_#{participant.id}_#{visit.id}').removeClassName('first');
+				 $('td_#{participant.id}_#{visit.id}').removeClassName('middle');
+				 $('td_#{participant.id}_#{visit.id}').removeClassName('last');
+				 $('td_#{participant.id}_#{visit.id}').addClassName(klass);
+				 
+		  		 #{remote_function :url => update_attendance_high_school_visits_path(@high_school, @term),
+					:with => "'attendance_option[#{participant.id}][#{visit.id}]=' + $F('attendance_option_#{participant.id}_#{visit.id}')",
+					:failure => "alert('Could not save. Please try again or contact support.')"};				  
+					
+				  return false;"
+end
+-%>
+
+
+
+<td id="<%= "td_#{participant.id}_#{visit.id}" %>" class="centered <%= "optioned #{attendance_option_condition}" if Customer.uses_visit_attendance_options? %>" <%= "onClick=\"#{td_onclick}\"" if Customer.uses_visit_attendance_options? %>>
+
+	<%= content_tag :h5, visit.date.to_s(:short) if show_date %>
+	
+	<%= check_box_tag "attendance[#{participant.id}][#{visit.id}]", 
+						"1",
+						participant.attended?(visit),
+						:id => "attendance_#{participant.id}_#{visit.id}",
+						:disabled => (visit.allow_rsvps? && !visit.past?),
+						:tabindex => (i+2)*10+2,
+						:onFocus => "this.up('tr').toggleClassName('highlight')",
+						:onBlur => "this.up('tr').toggleClassName('highlight')",
+						:onClick => "this.focus()" %>
+	<%= hidden_field_tag "attendance[#{participant.id}][#{visit.id}]", "0", :id => nil %>
+
+	<%= observe_field "attendance_#{participant.id}_#{visit.id}",
+						:url => update_attendance_high_school_visits_path(@high_school, @term),
+						:with => "attendance[#{participant.id}][#{visit.id}]",
+						:failure => "alert('Could not save. Please try again or contact support.')" %>
+	<%= content_tag('span', '', :id => "status_#{participant.id}_#{visit.id}", 
+								:class => 'absolute-note success-marker') %>
+
+	<%- if Customer.uses_visit_attendance_options? -%>
+
+		<%= select_tag "attendance_option[#{participant.id}][#{visit.id}]",
+						options_for_select([""] + Customer.visit_attendance_options_array, attendance_option),
+						:id => "attendance_option_#{participant.id}_#{visit.id}",
+						:tabindex => (i+3)*10+3,
+						:onFocus => "this.up('tr').toggleClassName('highlight')",
+						:onBlur => "this.up('tr').toggleClassName('highlight')"
+						%>
+					
+		<%= observe_field "attendance_option_#{participant.id}_#{visit.id}",
+							:url => update_attendance_high_school_visits_path(@high_school, @term),
+							:with => "attendance_option[#{participant.id}][#{visit.id}]",
+							:failure => "alert('Could not save. Please try again or contact support.')" %>
+							
+		<span class="emwrap">
+			<strong id="<%= "firstinitial_#{participant.id}_#{visit.id}" %>"><%= attendance_option.to_s[0..0] %></strong>
+			<em id="<%= "em_#{participant.id}_#{visit.id}" %>"><%= attendance_option || "" %></em>
+		</span>
+	
+	<% end %>
+	
+</td>

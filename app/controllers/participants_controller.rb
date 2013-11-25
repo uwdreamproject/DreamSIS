@@ -147,6 +147,7 @@ class ParticipantsController < ApplicationController
     @participant = Participant.find(params[:id]) rescue Student.find(params[:id])
     @high_school = @participant.high_school
     @grad_year = @participant.grad_year
+		@term = Term.current_term
     
     unless @current_user && @current_user.can_view?(@participant)
       return render_error("You are not allowed to view that participant.")

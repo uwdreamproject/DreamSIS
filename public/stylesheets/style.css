@@ -1236,6 +1236,93 @@ body.attendance .success-marker {
   margin-top: 2px;
 }
 
+.attendance td.optioned input, .attendance td.optioned select {
+	display: none;
+} 
+
+.attendance td.optioned {
+	text-align: left;
+}
+
+.attendance td.optioned .emwrap {
+	display: block;
+	background: #f9f9f9;
+	padding: 1px;
+	padding-left: 3px;
+	border-radius: 2px;
+	width: 1em !important;
+	height: 1.1em;
+	line-height: 1em;
+	border: 1px solid #bdbcbc;
+	font-weight: normal;
+	font-style: normal;
+	position: relative;
+	left: 45%;
+}
+
+.attendance td.optioned .emwrap strong {
+	font-style: normal;
+}
+.attendance td.optioned .emwrap em {
+	position: absolute;
+	top: -1px;
+	left: -1px;
+	display: block;
+	width: auto;
+	background: inherit;
+	border: inherit;
+	padding: inherit;
+	border-radius: inherit;
+	height: inherit;
+	z-index: 20;
+	min-width: inherit;
+	white-space: nowrap;
+	font-style: normal;
+	opacity: 0;
+	-webkit-transition: opacity 0.15s ease-out;
+}
+
+.attendance td.optioned:hover {
+	cursor: pointer;
+}
+
+.attendance td.optioned:hover .emwrap {
+	width: auto;
+	min-width: 1em;
+}
+
+.attendance td.optioned:hover .emwrap em {
+	opacity: 1;
+}
+
+
+.attendance td.optioned.first .emwrap {
+	background: green;
+	color: white;
+	font-weight: bold;
+	border-color: green;
+}
+
+.attendance td.optioned.middle .emwrap {
+	background: yellow;
+	color: black;
+	font-weight: bold;
+	border-color: #f9de00;
+}
+
+.attendance td.optioned.last .emwrap {
+	background: red;
+	color: white;
+	font-weight: bold;
+	border-color: red;
+}
+
+.attendance td h5 {
+	margin: 0;	
+	margin-bottom: 0.5em;
+	text-align: center;
+}
+
 input, textarea, select {
 -webkit-transition: border linear 0.2s,box-shadow linear 0.2s;
 -moz-transition: border linear 0.2s,box-shadow linear 0.2s;
@@ -1350,6 +1437,10 @@ select:focus, form.formtastic select:focus {
 
 #sidebar input.search {
 	width: 84%;
+}
+
+#sidebar select {
+	max-width: 100%;
 }
 
 #add_mentor_form h3 {

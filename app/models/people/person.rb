@@ -5,6 +5,12 @@ class Person < CustomerScoped
     def future_attending
       find :all, :joins => [:event], :conditions => ["events.date >= ? AND rsvp = ?", Time.now.midnight, true]
     end
+		def non_visits
+			find :all, :joins => [:event], :conditions => ["type = ?", nil]
+		end
+		def visits
+			find :all, :joins => [:event], :conditions => ["type = ?", "Visit"]
+		end
   end
   has_many :events, :through => :event_attendances do
     def future
@@ -123,6 +129,13 @@ class Person < CustomerScoped
     return false unless event.is_a?(Event)
     return false unless events.include?(event)
     event_attendances.find_by_event_id(event.id).rsvp?
+  end
+
+  # Checks if this Person has an attendance option set for the specified event, and returns the value if so.
+  def attendance_option(event)
+    return false unless event.is_a?(Event)
+    return false unless events.include?(event)
+    event_attendances.find_by_event_id(event.id).attendance_option
   end
 
   # Automatically capitalizes the first letter of +firstname+
