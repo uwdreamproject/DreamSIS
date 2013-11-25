@@ -105,7 +105,8 @@ function executeFilters() {
 		elements = pair.value.get(false)
 		if (appliedFilters.get(filter_key) == true && elements) {
 			// window.console.log("   Filter " + filter_key + ": Hiding " + filter_key + "/false (" + elements.size() + " elements)")
-			elements.invoke('hide')
+			// elements.invoke('hide')
+			elements.invoke('addClassName', 'hidden')
 		} else if (elements) {
 			// window.console.log("   Filter " + filter_key + ": Keeping " + filter_key + "/true visible (" + elements.size() + " elements)")
 		} else {
@@ -120,7 +121,8 @@ function showAllFilterables() {
 	// window.console.log("   Showing all filterables")
 	filterables.each(function(filter_keys) {
 		filter_keys.value.each(function(elements) {
-			elements.value.invoke('show')
+			// elements.value.invoke('show')
+			elements.value.invoke('removeClassName', 'hidden')
 		})
 	})
 }
@@ -140,18 +142,11 @@ function updateRecordCount(filter_key) {
 		if ($('record_count_' + filter_key)) {
 			filterables_count = filterables.get(filter_key).get(true)
 			filterables_count = filterables_count == undefined ? "0" : filterables_count.size()
-			$('record_count_' + filter_key).innerHTML = filterables_count
+			$('record_count_' + filter_key).update(filterables_count)
 		}
 	} else {		
 		if ($('filtered_record_count')) {
-			n = 0
-			elements = $$('.filterable')
-			for (var i = 0; i < elements.size(); i++) {
-				if (elements[i].visible()) {
-					n++
-				}
-			}
-			$('filtered_record_count').innerHTML = n + " of "
+			$('filtered_record_count').update($$('.filterable:not(.hidden)').size() + " of")
 		}
 		filterables.each(function(pair) {
 			filter_key = pair.key

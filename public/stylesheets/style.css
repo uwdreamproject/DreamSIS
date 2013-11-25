@@ -2194,6 +2194,10 @@ ul.filter-results {
 	background-image: url(../images/icons/silk/cross.png);	
 }
 
+.filterable.hidden {
+	display: none;
+}
+
 span.icon {
 	width: 16px;
 	height: 16px;
