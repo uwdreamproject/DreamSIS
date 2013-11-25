@@ -1,7 +1,7 @@
 <h3 class="pre-title">Edit</h3>
 <h1><%=h @participant.fullname %></h1>
 
-<% semantic_form_for(@participant, :html => {:id => "participant_form"}) do |f| %>
+<% semantic_form_for(@participant, :html => {:id => "participant_form", :multipart => true}) do |f| %>
 	<%= f.error_messages %>
 
 	<%= render :partial => 'participants/fields/name_and_personal', :locals => { :f => f } %>

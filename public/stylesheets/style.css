@@ -160,6 +160,15 @@ table.participants td.name {
 	font-weight: bold;
 }
 
+table.participants img.avatar {
+	width: 32px;
+	height: 32px;
+	float: left;
+	margin-right: 1em;
+	border: 1px solid #e0e0e0;
+	border-radius: 3px;
+}
+
 table.participants.loading {
 	background: url(../images/bar-loader.gif) no-repeat center 25%;
 }
@@ -699,6 +708,7 @@ a.redirect-link:hover {
 
 #column1 h1 {
 	margin-top: 0;
+	margin-bottom: 0.3em;
 }
 
 #column1 h4 {
@@ -724,6 +734,67 @@ a.redirect-link:hover {
 
 .spanhalf.right {
 	/*float: right;*/
+}
+
+.participants.show #avatar_container img {
+	border-radius: 10px;
+}
+
+#avatar_container {
+	position: relative;
+	max-width: 175px;
+	overflow: hidden;
+	margin-bottom: 1em;
+}
+
+#avatar_container img {
+	-webkit-transition: opacity 0.5s ease-in-out;
+}
+
+#avatar_container form {
+	display: none;
+	position: absolute;
+	z-index: 10;
+	top: 0;
+	left: 0;
+	padding: 1em;
+}
+
+#avatar_container input[type=file] {
+	border: none;
+	width: 100%;
+	padding: 0;
+	background: none;
+	box-shadow: none;
+}
+
+#avatar_container a.edit.button {
+	position: absolute;
+	bottom: 1em;
+	left: 50%;
+	margin-left: -35%;
+	-webkit-transition: opacity 0.25s ease-in-out;
+	opacity: 0;
+}
+
+#avatar_container:hover a.edit.button {
+	opacity: .75;
+}
+
+#avatar_container:hover a.edit.button:hover {
+	opacity: 1;
+}
+
+#avatar_container.expanded form {
+	display: block;	
+}
+
+#avatar_container.expanded img {
+	opacity: 0.1;
+}
+
+#avatar_container.expanded a.edit.button {
+	display: none;
 }
 
 #report_selector {

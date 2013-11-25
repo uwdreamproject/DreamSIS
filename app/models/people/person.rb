@@ -36,6 +36,11 @@ class Person < CustomerScoped
 
   has_and_belongs_to_many :programs
 
+  has_attached_file :avatar, 
+										:path => ":rails_root/files/person/:attachment/:id/:style/:filename", 
+										:styles => { :medium => "175", :thumb => "32x32>" }, 
+										:default_url => "blank_avatar.png"
+
   after_create :generate_survey_id
 
   attr_accessor :validate_name
