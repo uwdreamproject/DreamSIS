@@ -14,6 +14,18 @@ class ScholarshipsController < ResourceController
     end
   end
   
+	def merge
+		@source = Scholarship.find(params[:source_id])
+		@target = Scholarship.find(params[:target_id])
+		
+		if @source.merge_into(@target)
+			flash[:success] = "#{sanitize(@source.title)} was successfully merged into #{sanitize(@target.title)}"
+		else
+			flash[:error] = "There was an error merging these two scholarship records."
+		end
+		redirect_to :back
+	end
+	
   def applications
     @scholarship = Scholarship.find(params[:id])
 

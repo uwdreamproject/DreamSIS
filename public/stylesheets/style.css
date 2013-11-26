@@ -279,6 +279,71 @@ tr.total td {
 	font-weight: bold;
 }
 
+tr.merge_source {
+	background-color: #f6a59c;
+}
+
+tr.merge_target {
+	background-color: #ace1a4;
+}
+
+#merge_form .merge_item {
+	padding: 0.5em;
+	border: 2px dashed #dddcdc;
+}
+
+#merge_form p.name {
+	margin-bottom: 0;
+}
+
+#merge_form p strong {
+	display: block;
+	font-size: 120%;
+	line-height: 1.3em;
+}
+
+#merge_form label {
+	font-size: 85%;
+}
+
+#merge_form em.separator {
+	display: block;
+	margin: 1em auto;
+	text-align: center;
+}
+
+#merge_form p.error-message, #merge_form p.success-message {
+	font-weight: normal;
+	font-size: 85%;
+	line-height: 1.2em;
+	margin: -6px;
+	margin-bottom: 0.5em;
+	padding: 1em;
+	border-bottom: 1px inset #e2e2e2;
+	background: #ececec;
+}
+
+#merge_form em.separator:before {
+	content: '\2193  ';
+	padding-right: 1em;
+}
+
+#merge_form em.separator:after {
+	content: '  \2193';
+	padding-left: 1em;
+}
+
+
+#merge_form input:not([type=submit]) {
+	width: 2em;
+	background: none;
+	display: inline;
+	padding: 0;
+	border: none;
+	box-shadow: none;
+	font-size: 75%;
+}
+
 h4 {
 	margin: 0;
 	color: #81a4cc;
@@ -737,7 +802,7 @@ a.redirect-link:hover {
 }
 
 .participants.show #avatar_container img {
-	border-radius: 10px;
+	border-radius: 3px;
 }
 
 #avatar_container {

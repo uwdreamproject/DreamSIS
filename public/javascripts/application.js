@@ -197,6 +197,36 @@ function updateWithSelectedActions() {
 	}
 }
 
+// For merging records on an index screen.
+function addMergeTarget(element) {
+	if($('merge_form') && $('merge_form').visible()) {
+		if($F('merge_source_id') == '') {
+			selectMergeItem(element, "source")
+		} else if($F('merge_target_id') != '') {
+			selectMergeItem(element, "source")
+			selectMergeItem(null, "target")
+		} else {
+			selectMergeItem(element, "target")
+		}
+	}
+}
+
+function selectMergeItem(element, part) {
+	if(element == null) {
+		$('merge_' + part + '_id').value = ''
+		$('merge_' + part + '_name').update('(Not selected)')
+		$$('.merge_' + part).invoke('removeClassName', 'merge_' + part)
+	} else {
+		$('merge_' + part + '_id').value = element.getAttribute('data-id')
+		$('merge_' + part + '_name').update(element.down('.name').innerHTML)
+		$$('.merge_' + part).invoke('removeClassName', 'merge_' + part)
+		element.addClassName('merge_' + part)
+	}
+}
+
+
+
+
 function setToNow(element_id) {
 	d = new Date()
   if($(element_id + '_1i')) $(element_id + '_1i').value = d.getFullYear()
