@@ -147,6 +147,7 @@ class ParticipantsController < ApplicationController
     @participant = Participant.find(params[:id]) rescue Student.find(params[:id])
     @high_school = @participant.high_school
     @grad_year = @participant.grad_year
+		@term = Term.current_term
     
     unless @current_user && @current_user.can_view?(@participant)
       return render_error("You are not allowed to view that participant.")
@@ -157,6 +158,20 @@ class ParticipantsController < ApplicationController
       format.xml  { render :xml => @participant }
     end
   end
+	
+  def avatar
+    @participant = Participant.find(params[:id]) rescue Student.find(params[:id])
+    unless @current_user && @current_user.can_view?(@participant)
+      return render_error("You are not allowed to view that participant.")
+    end
+    
+		if @participant.avatar?
+				send_file @participant.avatar.path(params[:style] || :original), :type => @participant.avatar.content_type, :disposition => 'inline'
+		else
+			redirect_to "/images/blank_avatar.png", :status => 301
+		end
+  end
+	
 
   # GET /participants/new
   # GET /participants/new.xml

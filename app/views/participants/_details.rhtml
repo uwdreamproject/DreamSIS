@@ -1,5 +1,8 @@
+
 <h3 class="pre-title"><%= @participant.class.to_s %></h3>
 <h1><%= @participant.fullname(:middlename => false) %></h1>
+
+<%= render :partial => "avatar" if @participant.avatar? %>
 <%= content_tag :h2, "** Inactive **", :class => "inactive-note" if @participant.inactive? %>
 <%= content_tag :h2, "** #{Customer.not_target_Label} **", :class => "not-target-note" if @participant.not_target_participant? %>
 

@@ -1,7 +1,7 @@
-<p>There are some other participants with that name. Are you looking for one of these students?</p>
+<p class="error-message">There are some other participants with that name. Are you looking for one of these students?</p>
 
-<ul>
+<ul class="sidebar">
 	<% for participant in @duplicates %>
-		<li><%= link_to participant.lastname_first, participant %> at <%= participant.high_school.try(:name) %></li>
+		<li><%= link_to h(participant.lastname_first), participant %> in <%=h participant.high_school.try(:name) %> <%= participant.grad_year %></li>
 	<% end -%>
 </ul>

@@ -55,10 +55,10 @@
 	<% end %>
 	
     <%- if @current_user.admin? -%>
-	<div class="with_selected_actions">
-		<h3>With Selected</h3>
+	<div class="with_selected_actions" id="with_selected_actions" style="display:none">
+		<h3>With Selected <span id="with_selected_actions_count"></span></h3>
 		<ul>
-			<li><%= link_to_remote "Send e-mail", :url => bulk_participants_path(:task => :send_email), :with => "Form.serializeElements($$('input.index_check_box'))" %></li>
+			<li><%= link_to_remote "Send e-mail", :url => bulk_participants_path(:task => :send_email), :with => "Form.serializeElements(selectedElements())" %></li>
 		</ul>
 	</div>
 	<% end %>
