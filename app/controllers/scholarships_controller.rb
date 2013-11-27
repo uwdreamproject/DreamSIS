@@ -1,6 +1,7 @@
 class ScholarshipsController < ResourceController
   self.object_class = Scholarship
 
+
   skip_before_filter :check_authorization, :only => [:show]
   protect_from_forgery :except => [:auto_complete_for_scholarship_title] 
   
@@ -16,10 +17,13 @@ class ScholarshipsController < ResourceController
   
 	def merge
 		@source = Scholarship.find(params[:source_id])
+		@source_applications_count = @source.scholarship_applications.count
 		@target = Scholarship.find(params[:target_id])
+		@before_applications_count = @target.scholarship_applications.count
 		
 		if @source.merge_into(@target)
-			flash[:success] = "#{sanitize(@source.title)} was successfully merged into #{sanitize(@target.title)}"
+			@after_applications_count = @target.scholarship_applications.count
+			flash[:notice] = "#{@source.title} was successfully merged into #{@target.title}. There were #{ActionController::Base.helpers.pluralize(@source_applications_count, 'application')} and #{@after_applications_count - @before_applications_count} of them were reassigned."
 		else
 			flash[:error] = "There was an error merging these two scholarship records."
 		end
