@@ -1491,6 +1491,64 @@ body.attendance .success-marker {
 	text-align: center;
 }
 
+.activity_logs td.visits {
+	min-width: 8em;
+}
+
+.activity_logs .attendance td.optioned .emwrap {
+	display: inline-block;
+	margin: 0;
+	left: 0;
+}
+
+.activity_logs .attendance td {
+	border-bottom: none;
+}
+
+.activity_logs .attendance td h5 {
+	display: inline-block;
+	text-align: left;
+	font-weight: normal;
+	color: inherit;
+	margin-bottom: 0;
+	min-width: 4em;
+}
+
+.activity_logs td.notes h2, .activity_logs td.notes h4, .activity_logs td.notes tr.empty {
+	display: none;
+}
+
+.activity_logs td.notes textarea {
+	padding: 0.5em;
+	height: 1.1em;
+	width: 95% !important;
+	border-color: transparent;
+	background-color: transparent;
+	-webkit-transition: all 0.25s ease-in-out;
+}
+
+.activity_logs td.notes textarea:focus {
+	height: 4em;
+	border-color: inherit;
+	background-color: #fcfcfc;
+}
+
+.activity_logs td.notes textarea + input {
+	display: none;
+}
+
+.activity_logs td.notes textarea + input:active, .activity_logs td.notes textarea + input:focus, .activity_logs td.notes textarea + input:disabled {
+	display: block;
+}
+
+.activity_logs td.notes textarea:focus + input {
+	display: block;
+}
+
+.activity_logs td.notes .rowset-header td {
+	background: none;
+}
+
 input, textarea, select {
 -webkit-transition: border linear 0.2s,box-shadow linear 0.2s;
 -moz-transition: border linear 0.2s,box-shadow linear 0.2s;

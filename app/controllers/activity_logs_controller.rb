@@ -22,11 +22,13 @@ class ActivityLogsController < ApplicationController
 	def my_week
 		@date = Date.strptime "#{params[:year]}-#{params[:month]}-#{params[:day]}"
 		@activity_log = ActivityLog.find_or_create_by_mentor_and_week_and_year(@current_user.try(:person), @date.cweek, @date.year)
+		@participants = @activity_log.mentor.try(:participants)
 		render :action => 'edit'
 	end
 	
 	def my_current_week
 		@activity_log = ActivityLog.current_for(@current_user.try(:person))
+		@participants = @activity_log.mentor.try(:participants)
 		render :action => 'edit'
 	end
 
@@ -72,6 +74,7 @@ class ActivityLogsController < ApplicationController
   
   def edit
     @activity_log = ActivityLog.find(params[:id])
+		@participants = @activity_log.mentor.try(:participants)
   end
   
   def create

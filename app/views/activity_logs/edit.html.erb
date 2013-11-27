@@ -14,8 +14,9 @@
 	<% end -%>
 
 <% end %>
-
 <%= observe_form "edit_activity_log_#{@activity_log.id.to_s}", :url => activity_log_path(@activity_log), :method => :put %>
+
+<%= render :partial => "participants" if @participants && !@participants.empty? %>
 
 <div id="sidebar">
 	
