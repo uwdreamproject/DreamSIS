@@ -724,6 +724,10 @@ body.new.session #footer {
 	float: right;
 }
 
+.share_links {
+	float: right;
+}
+
 a.redirect-link {
 	background: url('../images/forward-arrow.gif') center right no-repeat;
 	padding-right: 16px;

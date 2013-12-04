@@ -5,7 +5,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-	<title>DreamSIS<%= " [DEV]" if RAILS_ENV == "development" %></title>
+	<title><%= @title.blank? ? "" : "#{h(@title)} - " %>DreamSIS<%= " [DEV]" if RAILS_ENV == "development" %></title>
 
 	<meta name="viewport" content="width=device-width">
 	<meta name="csrf-token" content="<%= form_authenticity_token %>" />
@@ -27,6 +27,18 @@
 		<script src="/mediaelement/mediaelement-and-player.js"></script>
 		<link rel="stylesheet" href="/mediaelement/mediaelementplayer.css" />
 	<%- end -%>
+	
+	<%- if @share_links && API_KEYS['sharethis'] -%>
+		<script type="text/javascript">var switchTo5x=true;</script>
+		<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+		<script type="text/javascript">stLight.options({
+			publisher: "<%= API_KEYS['sharethis']['publisher_id'] %>", 
+			doNotHash: true, 
+			doNotCopy: false, 
+			hashAddressBar: false,
+			shorten: false
+		});</script>
+	<% end %>
 
 
 	<%- if GOOGLE_ANALYTICS_TRACKING_ID && RAILS_ENV == 'production' -%>
@@ -92,6 +104,8 @@
 		</div>
 
 		<div id="content-wrap" class="<%= "blocked" if @layout_in_blocks %>">
+			<%= render :partial => "shared/share_links" if @share_links && API_KEYS['sharethis'] %>
+			
 			<%= yield %>
 			
 			<%- unless @extra_footer_content.blank? -%>
