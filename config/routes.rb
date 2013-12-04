@@ -90,6 +90,7 @@ ActionController::Routing::Routes.draw do |map|
   map.high_school_cohort '/participants/high_school/:high_school_id/cohort/:year.:format', 
     :controller => 'participants', 
     :action => 'high_school_cohort'
+	map.high_school_participants '/participants/high_school/:high_school_id.:format', :controller => 'participants', :action => 'high_school'
   map.cohort '/participants/cohort/:id.:format', :controller => 'participants', :action => 'cohort'
   map.participant_group_participants '/participants/groups/:id.:format', :controller => 'participants', :action => 'group'
 

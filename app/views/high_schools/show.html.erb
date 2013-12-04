@@ -10,37 +10,45 @@
 	<%= render :partial => "high_schools/mentor_stats" %>
 </div>
 
-<div class="panel-block">
+<div class="span4 panel-block">
 	<h2>Participants</h2>
-	<ul>
+	<table>
+		<tr>
+			<td class="name"><%= link_to "All Cohorts", high_school_participants_url(@high_school) %></td>
+			<td><%= link_to "<span>Excel</span>", high_school_participants_url(@high_school, :format => :xls), :class => "xls button icon-only right" %></td>
+		</tr>
+		
 		<% for cohort in @high_school.cohorts %>
-			<li><%= link_to "#{cohort.to_s} Cohort", high_school_cohort_url(@high_school, cohort) %></li>
+			<tr>
+				<td><%= link_to "#{cohort.to_s} Cohort", high_school_cohort_url(@high_school, cohort) %></td>
+				<td><%= link_to "<span>Excel</span>", high_school_cohort_url(@high_school, cohort, :format => :xls), :class => "xls button icon-only right" %></td>
+			</tr>
 		<% end -%>
-	</ul>
+	</table>
 </div>
 
 
 <%- if Term.current_term -%>
-<div class="panel-block">
+<div class="panel-block span4">
 	<h2><%= Customer.visits_Label %></h2>
-	<ul>
-		<li><%= link_to "#{Term.current_term.title} #{Customer.visits_Label}", 
-						high_school_visits_path(@high_school, Term.current_term) %></li>
-		<li><%= link_to "Take Attendance for #{Customer.mentees_Label}", 
-						attendance_high_school_visits_path(@high_school, Term.current_term) %></li>
-		<li><%= link_to "Take Attendance for #{Customer.mentors_Label}", 
-						attendance_high_school_visits_path(@high_school, Term.current_term, :show => 'mentors') %></li>
-	</ul>
+	<table>
+		<tr><td><%= link_to "#{Term.current_term.title} #{Customer.visits_Label}", 
+						high_school_visits_path(@high_school, Term.current_term) %></td></tr>
+		<tr><td><%= link_to "Take Attendance for #{Customer.mentees_Label}", 
+						attendance_high_school_visits_path(@high_school, Term.current_term) %></td></tr>
+		<td><%= link_to "Take Attendance for #{Customer.mentors_Label}", 
+						attendance_high_school_visits_path(@high_school, Term.current_term, :show => 'mentors') %></td></tr>
+	</table>
 </div>
 <% end -%>
 					
-<div class="panel-block">
+<div class="panel-block span4">
 	<h2>Resources</h2>
-	<ul>
-		<li><%= link_to "Survey Code List", survey_codes_high_school_path(@high_school) %></li>
-		<li><%= link_to "Survey Code Cards", survey_code_cards_high_school_path(@high_school) %></li>
-		<li><%= link_to "Manage Groups", high_school_participant_groups_path(:high_school_id => @high_school) %></li>
-	</ul>
+	<table>
+		<tr><td><%= link_to "Survey Code List", survey_codes_high_school_path(@high_school) %></td></tr>
+		<tr><td><%= link_to "Survey Code Cards", survey_code_cards_high_school_path(@high_school) %></td></tr>
+		<tr><td><%= link_to "Manage Groups", high_school_participant_groups_path(:high_school_id => @high_school) %></td></tr>
+	</table>
 </div>
 
 <br style="clear:both">
