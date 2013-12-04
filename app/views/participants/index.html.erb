@@ -20,7 +20,11 @@
 <%= javascript_tag "initFilters([#{Participant.object_filters.collect(&:id).join(",")}]);" %>	
 
 <%= will_paginate @participants if @participants.respond_to?(:current_page) %>
-<%= render :partial => 'participants_table' %>
+	<table id="participants_table">
+		<tr class="empty"><td class="loading"></td></tr>
+	</table>
+	<%= javascript_tag "document.observe('dom:loaded', function() { #{remote_function(:url => {:report => 'basics', :page => params[:page]}, :method => :get, :loaded => "setTimeout('updateRecordCount()', 100)")} });" %>
+
 <%= will_paginate @participants if @participants.respond_to?(:current_page) %>
 
 <%= render :partial => "sidebar" %>

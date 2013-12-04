@@ -173,6 +173,14 @@ table.participants.loading {
 	background: url(../images/bar-loader.gif) no-repeat center 25%;
 }
 
+.loading {
+	background: url(../images/bar-loader.gif) center 75% no-repeat;
+	min-height: 5em;
+	min-width: 220px;
+	padding: 6px;
+	display: block;
+}
+
 table.participants td, table.participants th {
 	-webkit-transition: opacity 0.25s ease-in-out 0s;
 	-webkit-transition: color 0.25s ease-in-out 0s;
@@ -2427,6 +2435,8 @@ ul.filters {
 
 .filters li:hover label small {
 	background: #999;
+	color: white;
+	text-shadow: 0 1px 0 #999;
 }
 
 .filters li input {
@@ -2479,8 +2489,16 @@ ul.filter-results {
 	background-image: url(../images/icons/silk/cross.png);	
 }
 
+.filterable {
+	-webkit-transition: all 0.2s ease-in-out;
+}
+
 .filterable.hidden {
 	display: none;
+}
+
+.filterable.preview {
+	background: rgba(189, 211, 224, 0.2);
 }
 
 span.icon {
