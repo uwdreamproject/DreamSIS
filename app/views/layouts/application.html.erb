@@ -5,7 +5,8 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-	<title><%= @title.blank? ? "" : "#{h(@title)} - " %>DreamSIS<%= " [DEV]" if RAILS_ENV == "development" %></title>
+	<title><%= @title.blank? ? "" : "#{@title.is_a?(Array) ? @title.collect(&:to_title).join(" - ") : @title.to_title} - " %>DreamSIS
+		<%= " [DEV]" if RAILS_ENV == "development" %></title>
 
 	<meta name="viewport" content="width=device-width">
 	<meta name="csrf-token" content="<%= form_authenticity_token %>" />

@@ -12,7 +12,7 @@ class RsvpController < ApplicationController
     @hide_description_link = true
     @event_attendance = @current_user.person.event_attendances.find_or_initialize_by_event_id(@event.id) if @current_user
 		@share_links = true
-		@title = @event.name
+		@title = @event
   end
   
   def event_group
@@ -21,6 +21,7 @@ class RsvpController < ApplicationController
     check_if_external_users_allowed(@event_group)
     apply_extra_stylesheet(@event_group)
     apply_extra_footer_content(@event_group)
+		@title = @event_group
   end
   
   def event_group_locations
@@ -29,6 +30,7 @@ class RsvpController < ApplicationController
     check_if_external_users_allowed(@event_group)
     apply_extra_stylesheet(@event_group)
     apply_extra_footer_content(@event_group)
+		@title = "Locations", @event_group
     
     @counties = {}
     for event in @event_group.future_events(@current_user.try(:person) || @audience)
@@ -50,6 +52,7 @@ class RsvpController < ApplicationController
     check_if_external_users_allowed(@event)
     apply_extra_stylesheet(@event)
     apply_extra_footer_content(@event)
+		@title = "RSVP", @event
     
     if !@current_user || !@current_user.person.ready_to_rsvp?(@event)
       session[:return_to_after_rsvp] = request.env["HTTP_REFERER"]
