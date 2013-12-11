@@ -1,14 +1,18 @@
-<% if @mentor.currently_enrolled? %>
+<% if @mentor.correct_sections? %>
 	<div class="complete">
-		<h2>Choose a high school visit</h2>
+		<h2>Sign up for a high school visit and lecture</h2>
 		<p>You're currently signed up for <%= @mentor.current_mentor_term_groups_string %>.
 			<br>
-			<%= link_to "Change your high school visit selection(s)", {:action => 'index'} %></p>
+			<%= link_to "Change your selection(s)", {:action => 'index'} %></p>
 	</div>
 <%- else -%>
 	<div class="incomplete">
-		<h2>Sign up for a high school visit</h2>
-		<p>You need to choose a high school visit before you can participate in <%= Customer.name_label %>.</p>
-		<p><%= link_to "Choose a high school visit now &#x2192;", {:action => 'index'}, :class => 'button' %></p>
+		<h2>Sign up for a high school visit and lecture/seminar</h2>
+		<p>
+		<% if @mentor.currently_enrolled? %>
+		You are still not signed up for the correct sections. 
+		<% end %>
+		You need to choose a high school visit and a lecture/seminar before you can participate in <%= Customer.name_label %>.</p>
+		<p><%= link_to "Choose sections now &#x2192;", {:action => 'index'}, :class => 'button' %></p>
 	</div>
 <% end -%>

@@ -84,6 +84,97 @@ class Mentor < Person
   def currently_enrolled?
     !current_mentor_term_groups.empty?
   end
+
+=begin
+Returns whether the mentor is signed up for the correct sections
+as layed out in the current term's course dependencies
+  
+MentorTermGroup.course_dependencies outline:
+  
+(Dept Abv) (Course Number)(Letter optional):<--------------------|
+  never any: [(C.N.), (C.N.),..., (C.N.)]  <------| As many        | Repeat 
+  not currently: [(C.N.), (C.N.),..., (C.N.)]     | as             | as
+  require: [(C.N.), (C.N.),..., (C.N.)]           | needed         | needed
+  have taken one: [(C.N.), (C.N.),..., (C.N.)] <--|<---------------|
+
+Sample:
+  
+EDUC 260:
+  never any: [EDUC 360, EDUC 361]
+  not currently: [EDUC 360]
+  require: [EDUC 369]
+EDUC 360:
+  have taken one: [EDUC 260]
+  not currently: [EDUC 260]
+  require: [EDUC 369]
+EDUC 361:
+  require: [EDUC 369]
+EDUC 361A:
+  have taken one: [EDUC 360]
+  not currently: [EDUC 260, EDUC 360]
+EDUC 361B:
+  require: [EDUC 260, EDUC 360]
+EDUC 369:
+  require: [EDUC 260, EDUC 360, EDUC 361]
+
+--------------------------------------------------------------
+
+Documentation for each filter:
+
+ * Dept Abv: All caps department abbrevation, e.g., EDUC
+
+ * Course Number: 3-digit course number for course, e.g., 360
+
+ * Letter: Section letter (as stated above, this is optional). If a letter is used,
+   the rules are valid for that section only
+
+ Note: Valid combinations of the above include EDUC 360, EDUC 361A, etc. As you 
+       can see above, you can make a general listing for a course (see EDUC 361) and 
+       then give requirements for each section (see EDUC 361A and EDUC 361B).
+
+ * never any: Lists course numbers a mentor can't have had before. It checks all 
+   past courses. If even just one of the courses listed has been had by the 
+   mentor, the function returns false.
+
+ * not currently: Lists courses you can't be concurrently enrolled in with. 
+   If a mentor is enrolled in any of the list, returns false.
+
+ * require: Lists a set of courses from which mentor must be currently enrolled in. 
+   If a mentor isn't signed up for any of the listed courses, returns false.
+
+ * have taken one: Lists a set of courses from which a mentor must have been 
+   signed up for in the past. If the mentor hasn't taken any of the listed 
+   courses, returns false
+ 
+=end
+
+  def correct_sections?
+    return true if (current_lead? || (self.users.first.admin? rescue false))
+    if currently_enrolled?
+      current_groups = self.current_mentor_term_groups.collect(&:mentor_term_group)
+      current_sections = current_groups.collect {|grp| grp.course_string }
+      all_groups = self.mentor_term_groups
+      prev_groups = all_groups.delete_if{|k,v| current_groups.include? k}
+      prev_sections = prev_groups.collect {|grp| grp.course_string }
+      yaml = current_groups.first.term.course_dependencies
+      dependencies = 0
+      if yaml
+        dependencies = YAML.load(yaml)
+      else
+        return true
+      end
+      correct = true
+      dependencies.each do |dep, rules|
+        if current_sections.any? { |cur_sec| cur_sec.include? dep }
+          correct = check_dependency(current_sections, prev_sections, dep, rules) 
+        end
+        return correct if !correct
+      end
+    return correct
+    else
+      return false
+    end
+  end
   
   # Returns a string of the titles of current mentor term groups for this mentor.
   def current_mentor_term_groups_string
@@ -224,4 +315,37 @@ class Mentor < Person
     false
   end
   
+  protected
+  
+  # Handles the logic of course dependencies
+  def check_dependency(current_sections, prev_sections, course, rules)
+    correct = true
+    if rules.include? "have taken one"
+      valid = false
+      prev_sections.each do |prev_s|
+        valid ||= rules["have taken one"].any? {|section| prev_s.include?(section)}
+      end
+      correct &&= valid
+    end
+    if rules.include? "require"
+      valid = false
+      current_sections.each do |cur_s|
+        valid ||= rules["require"].any? {|section| cur_s.include?(section)}
+      end
+      correct &&= valid
+    end
+    if rules.include? "not currently"
+      current_sections.each do |cur_s|
+        correct &&= !rules["not currently"].any? {|section| cur_s.include?(section)}
+      end
+      correct &&= valid
+    end
+    if rules.include? "never any"
+      prev_sections.each do |prev_s|
+        correct &&= !rules["never any"].any? {|section| prev_s.include?(section)}
+      end
+    end
+    return correct
+  end
+    
 end

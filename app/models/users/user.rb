@@ -18,7 +18,6 @@ class User < ActiveRecord::Base
   # before_save               :encrypt_password
 
   belongs_to :customer
-  attr_protected :customer_id
   validates_presence_of :customer_id  
   before_save :append_customer_id
   

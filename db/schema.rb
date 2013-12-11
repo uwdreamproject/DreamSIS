@@ -410,7 +410,6 @@ ActiveRecord::Schema.define(:version => 20131125062240) do
     t.integer  "warning_threshold"
     t.date     "start_display_at"
     t.date     "end_display_at"
-    t.integer  "earliest_grade_level"
     t.integer  "earliest_grade_level_level"
     t.integer  "latest_grade_level_level"
     t.integer  "customer_id"
@@ -443,7 +442,7 @@ ActiveRecord::Schema.define(:version => 20131125062240) do
     t.string   "phone_work"
     t.string   "screen_name"
     t.string   "screen_name_type"
-    t.date     "birthdate",                             :limit => 255
+    t.date     "birthdate"
     t.string   "sex"
     t.boolean  "free_reduced_lunch"
     t.boolean  "no_internet_at_home"
@@ -498,6 +497,7 @@ ActiveRecord::Schema.define(:version => 20131125062240) do
     t.boolean  "not_target_participant"
     t.text     "inactive_explanation"
     t.datetime "inactive_date"
+    t.boolean  "clearinghouse_record_found"
     t.string   "parent_only_speaks_language"
     t.boolean  "kosher"
     t.boolean  "halal"
@@ -579,7 +579,7 @@ ActiveRecord::Schema.define(:version => 20131125062240) do
     t.integer  "child_id"
     t.string   "relationship_to_child"
     t.string   "occupation"
-    t.decimal  "annual_income"
+    t.integer  "annual_income",                         :limit => 10, :precision => 10, :scale => 0
     t.boolean  "needs_interpreter"
     t.text     "meeting_availability"
     t.string   "preferred_contact_method"
@@ -644,7 +644,7 @@ ActiveRecord::Schema.define(:version => 20131125062240) do
     t.boolean  "awarded"
     t.boolean  "renewable"
     t.boolean  "accepted"
-    t.decimal  "amount"
+    t.integer  "amount",               :limit => 10, :precision => 10, :scale => 0
     t.date     "date_applied"
     t.text     "restrictions"
     t.datetime "created_at"
@@ -663,7 +663,7 @@ ActiveRecord::Schema.define(:version => 20131125062240) do
     t.string   "title"
     t.string   "organization_name"
     t.text     "description"
-    t.decimal  "default_amount"
+    t.integer  "default_amount",          :limit => 10, :precision => 10, :scale => 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "customer_id"
@@ -686,23 +686,6 @@ ActiveRecord::Schema.define(:version => 20131125062240) do
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
-  create_table "taggings", :force => true do |t|
-    t.integer  "tag_id"
-    t.integer  "taggable_id"
-    t.integer  "tagger_id"
-    t.string   "tagger_type"
-    t.string   "taggable_type"
-    t.string   "context"
-    t.datetime "created_at"
-  end
-
-  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
-  add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
-
-  create_table "tags", :force => true do |t|
-    t.string "name"
-  end
-
   create_table "terms", :force => true do |t|
     t.integer  "year"
     t.integer  "quarter_code"
@@ -715,6 +698,8 @@ ActiveRecord::Schema.define(:version => 20131125062240) do
     t.string   "title"
     t.string   "type"
     t.integer  "customer_id"
+    t.text     "course_dependencies"
+    t.text     "signup_description"
   end
 
   add_index "terms", ["customer_id"], :name => "index_terms_on_customer_id"
@@ -724,7 +709,7 @@ ActiveRecord::Schema.define(:version => 20131125062240) do
     t.integer  "test_type_id"
     t.datetime "registered_at"
     t.datetime "taken_at"
-    t.decimal  "total_score"
+    t.integer  "total_score",    :limit => 10, :precision => 10, :scale => 0
     t.text     "section_scores"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -736,7 +721,7 @@ ActiveRecord::Schema.define(:version => 20131125062240) do
 
   create_table "test_types", :force => true do |t|
     t.string   "name"
-    t.decimal  "maximum_total_score"
+    t.integer  "maximum_total_score",      :limit => 10, :precision => 10, :scale => 0
     t.text     "sections"
     t.datetime "created_at"
     t.datetime "updated_at"

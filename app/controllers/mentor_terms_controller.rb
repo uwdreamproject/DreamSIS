@@ -38,7 +38,7 @@ class MentorTermsController < MentorTermGroupsController
     if @mentor
       m = @mentor_term_group.enroll!(@mentor, :volunteer => true)
       if m.valid?
-        flash[:notice] = "Successfully added #{@mentor.fullname} to this group."
+        flash[:notice] = "Successfully added #{@mentor.fullname} to this group."   
       else
         flash[:error] = "Could not add #{@mentor.fullname} to this group, because #{m.errors.full_messages.to_sentence}."
       end

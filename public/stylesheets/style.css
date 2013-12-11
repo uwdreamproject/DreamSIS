@@ -254,24 +254,24 @@ table td.functions a:active {
 	background-color: #f2f2f2;
 }
 
-table.quarter_status table td {
+table.term_status table td {
 	border-bottom: none;
 }
 
-table.quarter_status td.status_tag {
+table.term_status td.status_tag {
 	width: 7em;
 	text-align: center;
 }
 
-table.quarter_status td.quarter_title {
+table.term_status td.term_title {
 	vertical-align: top;
 	padding-top: 0.5em;
 	font-weight: bold;
 	text-transform: uppercase;
 }
 
-table.quarter_status td.section_id {
-	width: 4em;
+table.term_status td.section_id {
+	width: 12em;
 }
 
 tr.total td {
@@ -2898,6 +2898,10 @@ h1 .session_identifier.tag {
 	padding-left: 16px;
 }
 
+.driver.tag {
+        color: #505050;
+}
+
 .archived.tag {
 	font-weight: bold;
 }
@@ -3065,6 +3069,11 @@ td.signup-meter {
 }
 
 .signup-meter div.size {
+        background: rgba(0, 150, 0, 0.1);
+        background: -linear-gradient(top, rgba(0, 150, 0, 0.1) 0%, rgba(0,150,0,0.5) 100%) rgba(0,150,0,0.5);
+        background: -moz-linear-gradient(top, rgba(0, 150, 0, 0.1) 0%, rgba(0,150,0,0.5) 100%) rgba(0,150,0,0.5);
+        background: -o-linear-gradient(top, rgba(0, 150, 0, 0.1) 0%, rgba(0,150,0,0.5) 100%) rgba(0,150,0,0.5);
+        background: -ms-linear-gradient(top, rgba(0, 150, 0, 0.1) 0%, rgba(0,150,0,0.5) 100%) rgba(0,150,0,0.5);
 	background: -webkit-linear-gradient(top, rgba(0, 150, 0, 0.1) 0%, rgba(0,150,0,0.5) 100%) rgba(0,150,0,0.5);
 	z-index: 11;
 	float: left;
@@ -4483,27 +4492,27 @@ table.participants tr {
 	border-bottom: 1px solid #eee;
 }
 
-table.quarter_status > tbody > tr > td {
+table.term_status > tbody > tr > td {
 	clear: left;
 	display: block;
 	border-bottom: none;
 }
 
-table.quarter_status td.quarter_title {
+table.term_status td.term_title {
 	display: block;
 	border-bottom: 1px solid #eee;
 }
 
-table.quarter_status a.edit.button {
+table.term_status a.edit.button {
 	margin-left: 2em;
 	margin-bottom: 0.5em;
 }
 
-table.mentor_quarter_group.signup td {
+table.mentor_term_group.signup td {
 	padding-bottom: 3em;
 }
 
-table.mentor_quarter_group.signup td.signup-link {
+table.mentor_term_group.signup td.signup-link {
 	display: block;
 	position: absolute;
 	left: 5em;
