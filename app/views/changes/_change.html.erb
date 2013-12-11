@@ -2,8 +2,8 @@
     <td><strong><%= change[:created_at].to_s(:date_with_full_month) %></strong>
         <br>
         <%= change[:created_at].to_s(:time_with_seconds) %>
-        </td>
-    <td><%= change.user.nil? ? "The system" : link_to(h(change.user.try(:fullname)), user_path(change.user)) %>
+       </td>
+    <td><%= change.user.nil? ? "The system" : link_to(h(change.user.try(:fullname)), change.user) %>
         <%=h change[:action_type] %>d
 		<%= change[:action_type] == 'delete' ? "a" : "the" %>
         <%= link_to change.change_loggable_type, change.change_loggable rescue change.change_loggable_type %> record.
@@ -23,8 +23,6 @@
             <% end %>
         </ul>
     </td>
-<<<<<<< HEAD
-	
 	<td class="functions">
 		<%- if change[:action_type] == 'delete' %>
 			<%- if change.restored? %>
@@ -38,6 +36,3 @@
 		<% end %>
 	</td>
 </tr>
-=======
-</tr>
->>>>>>> origin/uwdp-deploy

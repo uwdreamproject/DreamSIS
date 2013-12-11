@@ -94,6 +94,18 @@ class Customer < ActiveRecord::Base
 	def uses_activity_logs?
 		!activity_log_student_time_categories.blank? || !activity_log_non_student_time_categories.blank?
 	end
+	
+	# Returns true if there is anything in the visit attendance options field.
+	def uses_visit_attendance_options?
+		!visit_attendance_options.blank?
+	end
+	
+	# Parses the text in +visit_attendance_options+ and returns an array that is split on newlines.
+	# Visit attendance always includes "Attended" as an option, but this allows customers to provide
+	# other options that might also count when reporting attendance.
+	def visit_attendance_options_array
+		(["Attended"] + visit_attendance_options.split("\n").collect(&:strip)).flatten.uniq
+	end
   
   def self.current_customer
     # logger.info { "user: " + User.current_user.try(:customer).inspect }

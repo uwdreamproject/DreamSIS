@@ -1,0 +1,21 @@
+<td id="<%= "td_#{participant.id}_#{visit.id}_rsvp" %>" class="centered">
+	<% if (participant.created_at <= visit.date rescue true) %>
+		<%= check_box_tag "rsvp[#{participant.id}][#{visit.id}]", 
+							"1",
+							participant.attending?(visit),
+							:id => "rsvp_#{participant.id}_#{visit.id}",
+							:disabled => visit.past?,
+							:tabindex => (i+2)*10+1,
+							:onFocus => "this.up('tr').toggleClassName('highlight')",
+							:onBlur => "this.up('tr').toggleClassName('highlight')",
+							:onClick => "this.focus()" %>
+		<%= hidden_field_tag "rsvp[#{participant.id}][#{visit.id}]", "0", :id => nil %>
+	
+		<%= observe_field "rsvp_#{participant.id}_#{visit.id}",
+							:url => update_attendance_high_school_visits_path(@high_school, @term),
+							:with => "rsvp[#{participant.id}][#{visit.id}]",
+							:failure => "alert('Could not save. Please try again or contact support.')" %>
+		<%= content_tag('span', '', :id => "status_#{participant.id}_#{visit.id}_rsvp", 
+									:class => 'absolute-note success-marker') %>
+	<% end -%>
+</td>

@@ -1,0 +1,42 @@
+<h2>My <%= Customer.mentees_Label %></h2>
+
+<table class="participants activity">
+	
+	<thead>
+		<tr>
+			<th><%= Customer.participant_Label %></th>
+			<th>Events</th>
+			<th>Notes</th>
+		</tr>
+	</thead>
+	
+	<tbody>	
+	<%- for participant in @participants -%>
+		<tr>
+			<td class="name"><%= link_to h(participant.lastname_first), participant %>
+				<small class="inactive-note">(inactive)</small>
+				<small class="not-target-note">(<%= Customer.not_target_label %>)</small>
+			</td>
+			<td class="visits">
+				<table class="attendance highlightless">
+					<%- for visit in participant.visits_during_week(@activity_log.start_date || Date.today) -%>
+					<tr>
+						<%= render :partial => "visits/_checkboxes/attended", 
+									:locals => { :participant => participant, :visit => visit, :i => 0, 
+													:show_date => true, :high_school => participant.high_school,
+													:term => Term.current_term } %>
+					</tr>
+					<% end %>
+				</table>
+			</td>
+			<td class="notes" id="notes_container_<%= participant.id %>">
+				<%= render :partial => "participants/notes", 
+							:locals => { :participant => participant, 
+										:start_date => @activity_log.start_date, 
+										:end_date => @activity_log.end_date } %>
+			</td>
+		</tr>
+	<% end %>
+	</tbody>
+
+</table>

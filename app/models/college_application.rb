@@ -25,7 +25,7 @@ class CollegeApplication < ActiveRecord::Base
 
   # Returns true if this application represents the college that the student is actually attending.
   def attending?
-    institution_id == participant.college_attending_id
+    institution_id == participant.try(:college_attending_id)
   end
   
   def institution

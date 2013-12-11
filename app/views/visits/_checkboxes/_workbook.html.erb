@@ -1,0 +1,26 @@
+<td class="centered">
+	<%- if participant.is_a?(Participant) -%>
+		<%= check_box_tag "participant[#{participant.id}][received_binder]", 
+							"1",
+							participant.received_binder?,
+							:id => "participant_#{participant.id}_received_binder",
+							:tabindex => 1,
+							:onFocus => "this.up('tr').toggleClassName('highlight')",
+							:onBlur => "this.up('tr').toggleClassName('highlight')",
+							:onClick => "this.focus()" %>
+		<%= hidden_field_tag "participant[#{participant.id}][received_binder]", "0", :id => nil %>
+		<%= content_tag(:small, 
+						(participant.binder_date.to_s(:db) if participant.received_binder?), 
+						:class => "light",
+						:id => "participant_#{participant.id}_binder_date") %>
+
+		<%= observe_field "participant_#{participant.id}_received_binder",
+							:url => participant,
+							:with => "'participant[received_binder]=' + $('participant_#{participant.id}_received_binder').checked +
+										'&override_binder_date=' + $F('override_binder_date')",
+							:failure => "alert('Could not save. Please try again or contact support.')",
+							:method => :put %>
+		<%= content_tag('span', '', :id => "status_#{participant.id}_received_binder", 
+									:class => 'absolute-note success-marker') %>
+	<% end -%>
+</td>

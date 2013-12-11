@@ -1,8 +1,11 @@
 <% full ||= false %>
 <% include_other ||= [] %>
+<% start_date ||= nil %>
+<% end_date ||= nil %>
 <% 
 objects = []
-objects << notes.notes
+conditions = ["created_at >= ? AND created_at <= ?", start_date, end_date] if start_date && end_date
+objects << notes.notes.find(:all, :conditions => conditions)
 if include_other
 	include_other.each do |other|
 		objects << notes.send(other) if notes.respond_to?(other)
@@ -11,7 +14,6 @@ if include_other
 end
 
  %>
-
 
 <div class="<%= "full" if full %>">
 	<table class="" id="notes_<%= notes.id %>">

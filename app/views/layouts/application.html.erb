@@ -87,7 +87,7 @@
 
 		<div id="notifications">
 			<% %w(error notice info saved).each do |key| -%>
-				<div id="<%= key %>_notification" class="alert <%= key %> <%= "visible" unless flash[key.to_sym].blank? %>" onClick="if(this.hasClassName('visible')) { this.toggleClassName('visible'); }"><%= flash[key.to_sym] %></div>
+				<div id="<%= key %>_notification" class="alert <%= key %> <%= "visible" unless flash[key.to_sym].blank? %>" onClick="if(this.hasClassName('visible')) { this.toggleClassName('visible'); }"><%=h flash[key.to_sym] %></div>
 			<% end -%>
 		</div>
 
@@ -117,7 +117,7 @@
 		<%- if RAILS_ENV == 'development' -%>
 		<div id="dev-inspector-container">
 			<%= link_to_function "Dev", "$('dev-inspector').toggle()", :id => "dev-inspector-link" %>
-			<div class="git branch">Branch <strong><%= `git rev-parse --symbolic-full-name --abbrev-ref HEAD` %></strong></div>
+			<div class="git branch <%= `git rev-parse --symbolic-full-name --abbrev-ref HEAD` %>">Branch <strong><%= `git rev-parse --symbolic-full-name --abbrev-ref HEAD` %></strong></div>
 			<div class="git branch">Rails <strong><%= RAILS_GEM_VERSION %></strong></div>
 			<div class="git branch">Customer <strong><%= Customer.name_label rescue nil %></strong></div>
 			<div id="dev-inspector" style="display:none">

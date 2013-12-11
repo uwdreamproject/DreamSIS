@@ -2,12 +2,11 @@ require 'open-uri'
 
 # Models an Institution record, pulled from the Department of Education's list.
 class Institution
-<<<<<<< HEAD
   RESULTS_CACHE = FileStoreWithExpiration.new(File.join(RAILS_ROOT, "files", "institution", "cache"))
+<<<<<<< HEAD
+  EXPIRATION = 30
 =======
-  RESULTS_CACHE = FileStoreWithExpiration.new(CACHE_CONFIG["institution"]["location"])
-  EXPIRATION = CACHE_CONFIG["institution"]["expiration"]
->>>>>>> origin/uwdp-deploy
+>>>>>>> uwdp-develop
   ATTRIBUTE_ALIASES = {
     :instnm    => [:name, :title],
     :longitud  => [:longitude],

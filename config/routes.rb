@@ -11,7 +11,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :notes
   map.resources :programs
   map.resources :test_types
-  map.resources :scholarships, :collection => { :auto_complete_for_scholarship_title => :any }, :member => { :applications => :get }
+  map.resources :scholarships, :collection => { :auto_complete_for_scholarship_title => :any, :merge => :post }, :member => { :applications => :get }
   map.resources :customers
   map.resources :object_filters
   map.resources :locations, :collection => { :auto_complete_for_location_name => :any }
@@ -37,6 +37,7 @@ ActionController::Routing::Routes.draw do |map|
   end
 
 	map.my_participants "/my/mentees", :controller => "participants", :action => "mentor", :mentor_id => "me"
+	map.participant_avatar "/participants/:id/avatar/:style", :controller => "participants", :action => "avatar"
   map.resources :participants, 
     :has_many => [:college_applications, :scholarship_applications, :parents, :college_enrollments, :college_degrees], 
     :collection => { :auto_complete_for_participant_fullname => :any, :check_duplicate => :any, :add_to_group => :post, :fetch_participant_group_options => :any, :college_mapper_callback => :post, :bulk => :post },
