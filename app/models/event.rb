@@ -2,22 +2,23 @@ class Event < ActiveRecord::Base
   include Comparable
   has_many :attendees, :class_name => "EventAttendance" do
     def all(audience = nil)
-      audience = audience.class if audience.is_a?(Person)
       conditions = {}
-      conditions.merge!({ :people => { :type => audience.to_s.classify }}) if audience
-      find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+      conditions = { :audience => audience.to_s.classify } if audience
+      find(:all, :conditions => conditions,:joins => :person, :order => "lastname, firstname",
+         :order => "lastname, firstname")
     end
     def rsvpd(audience = nil)
-      audience = audience.class if audience.is_a?(Person)
       conditions = { :rsvp => true }
-      conditions.merge!({ :people => { :type => audience.to_s.classify }}) if audience
-      find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+      conditions.merge!({ :audience => audience.to_s.classify }) if audience
+      find(:all, :conditions => conditions,:joins => :person, :order => "lastname, firstname",
+         :order => "lastname, firstname")
     end
     def attended(audience = nil)
       audience = audience.class if audience.is_a?(Person)
       conditions = { :attended => true }
-      conditions.merge!({ :people => { :type => audience.to_s.classify }}) if audience
-      find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+      conditions.merge!({ :audience => audience.to_s.classify }) if audience
+      find(:all, :conditions => conditions,:joins => :person, :order => "lastname, firstname",
+         :order => "lastname, firstname")
     end
   end
   has_many :people, :through => :attendees
