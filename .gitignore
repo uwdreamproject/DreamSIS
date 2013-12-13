@@ -67,3 +67,5 @@ config/college_mapper.yml
 files
 
 config/api-keys.yml
+
+*~
