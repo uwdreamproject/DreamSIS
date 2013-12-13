@@ -60,6 +60,7 @@ class RsvpController < ApplicationController
     end
     @event_attendance = @current_user.person.event_attendances.find_or_initialize_by_event_id(@event.id)
     @event_attendance.event_shift_id = params[:event_attendance].try(:[], :event_shift_id)
+    @event_attendance.audience = params[:event_attendance].try(:[], :audience) || @event_attendance.person.class.to_s
     if request.put? || (request.get? && (params[:rsvp] == true || params[:rsvp] == "true"))
       @event_attendance.rsvp = true
       @event_attendance.enforce_rsvp_limits = true
@@ -81,13 +82,13 @@ class RsvpController < ApplicationController
       else
         if @event_attendance.errors.on(:enforce_rsvp_limits)
           flash[:error] = "Sorry, but the capacity for that event has been reached."
-          format.html { redirect_to(event_rsvp_path(@event)) }
-          format.js
+        elsif @event_attendance.errors.on(:audience)
+          flash[:error] = "Invalid Audience, check that you are using the correct RSVP link."
         else
           flash[:error] = "We couldn't save your RSVP. Please complete the required information."
+        end
           format.html { redirect_to(event_rsvp_path(@event)) }
           format.js
-        end
       end
     end
     

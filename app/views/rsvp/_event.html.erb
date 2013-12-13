@@ -35,7 +35,7 @@
 	</td>
 	
 	<td class="event-functions">
-		<%= render :partial => 'rsvp/rsvp_button', :locals => { :event => event, :event_attendance => event_attendance } %>
+		<%= render :partial => 'rsvp/rsvp_button', :locals => { :event => event, :event_attendance => event_attendance, :audience => params[:audience] } %>
 		<em class="rsvp_status"><%= "Attending" if event_attendance.try(:rsvp?) %></em>
 	</td>
 </tr>
