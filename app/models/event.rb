@@ -4,21 +4,18 @@ class Event < ActiveRecord::Base
     def all(audience = nil)
       conditions = {}
       conditions = { :audience => audience.to_s.classify } if audience
-      find(:all, :conditions => conditions,:joins => :person, :order => "lastname, firstname",
-         :order => "lastname, firstname")
+      find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
     end
     def rsvpd(audience = nil)
       conditions = { :rsvp => true }
       conditions.merge!({ :audience => audience.to_s.classify }) if audience
-      find(:all, :conditions => conditions,:joins => :person, :order => "lastname, firstname",
-         :order => "lastname, firstname")
+      find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
     end
     def attended(audience = nil)
       audience = audience.class if audience.is_a?(Person)
       conditions = { :attended => true }
       conditions.merge!({ :audience => audience.to_s.classify }) if audience
-      find(:all, :conditions => conditions,:joins => :person, :order => "lastname, firstname",
-         :order => "lastname, firstname")
+      find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
     end
   end
   has_many :people, :through => :attendees
