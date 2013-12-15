@@ -6,8 +6,9 @@ Ajax.Responders.register({
 			$('indicator').addClassName("visible")
 	},
 	onException: function(request, exception) {
-		$('indicator').removeClassName("visible")
-		updateFlashes( { "error" : "There was a problem processing your request. Your data was not saved." })
+		$('indicator').removeClassName("visible");
+		if (exception.lineNumber != 276 && exception.lineNumber != 2429) // Kludge to stop flash error on autocomplete_for_fullname
+		  updateFlashes( { "error" : "There was a problem processing your request. Your data was not saved." })
 	},
 	onComplete: function(event, request) {	
 		if (Ajax.activeRequestCount == 0)

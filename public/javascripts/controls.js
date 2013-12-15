@@ -360,8 +360,6 @@ Ajax.Autocompleter = Class.create(Autocompleter.Base, {
 
     if(this.options.defaultParams) 
       this.options.parameters += '&' + this.options.defaultParams;
-   this.options.requestHeaders = {}; 
-   this.options.requestHeaders['X-CSRF-Token'] = document.getElementsByTagName("meta")[1].getAttribute('content');
     new Ajax.Request(this.url, this.options);
   },
 
