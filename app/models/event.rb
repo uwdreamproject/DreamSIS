@@ -2,22 +2,27 @@ class Event < ActiveRecord::Base
   include Comparable
   has_many :attendees, :class_name => "EventAttendance" do
     def all(audience = nil)
-      conditions = {}
-      conditions = { :audience => audience.to_s.classify } if audience
-      find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+      audience = audience.class if audience.is_a?(Person)
+      al = find(:all, :joins => :person, :order => "lastname, firstname")
+      al.reject! {|att| att.audience != audience.to_s.classify} unless audience.nil?
+      al
     end
     def rsvpd(audience = nil)
+      audience = audience.class if audience.is_a?(Person)
       conditions = { :rsvp => true }
-      conditions.merge!({ :audience => audience.to_s.classify }) if audience
-      find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+      rsvp = find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+      rsvp.reject!{|att| att.audience != audience.to_s.classify} unless audience.nil?
+      rsvp
     end
     def attended(audience = nil)
       audience = audience.class if audience.is_a?(Person)
       conditions = { :attended => true }
-      conditions.merge!({ :audience => audience.to_s.classify }) if audience
-      find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+      attend = find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+      attend.reject! {|att| att.audience != audience.to_s.classify} unless audience.nil?
+      attend
     end
   end
+
   has_many :people, :through => :attendees
   belongs_to :location
   belongs_to :event_type
@@ -50,13 +55,12 @@ class Event < ActiveRecord::Base
   def capacity(person_or_type = nil)
     overall_capacity = read_attribute(:capacity)
     return overall_capacity if person_or_type.nil?
-
-    klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type
-    if klass == Student || klass == Participant
+    klass = person_or_type.is_a?(Person) ? person_or_type.class.to_s : person_or_type.to_s
+    if (klass.eql? "Student") || (klass.eql? "Participant")
       custom_capacity = student_capacity
-    elsif klass == Volunteer
+    elsif klass.eql? "Volunteer"
       custom_capacity = volunteer_capacity
-    elsif klass == Mentor
+    elsif klass.eql? "Mentor"
       custom_capacity = mentor_capacity
     end    
     (custom_capacity.nil? || custom_capacity <= 0) ? overall_capacity : custom_capacity

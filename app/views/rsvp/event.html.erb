@@ -1,6 +1,7 @@
+<%- event_audience = @audience || @current_user.try(:person) -%>
 <h3 class="pre-title">RSVP for</h3>
 <h1><%=h @event.name %></h1>
-<h2 class="date"><%= @event.time_detail(:audience => @current_user.try(:person) || @audience) %></h2>
+<h2 class="date"><%= @event.time_detail(:audience => event_audience) %></h2>
 
 <div class="when-and-where">
 	<h3>When &amp; Where</h3>
@@ -11,7 +12,7 @@
 		<p class="address"><%= @event.location.address %></p>
 	<% end -%>
 	<p class="location_text"><%= @event.location_text %></p>
-	<p class="time"><%= @event.time_detail(:audience => @current_user.try(:person) || @audience) %>
+	<p class="time"><%= @event.time_detail(:audience => event_audience) %>
 		<%= content_tag(:p, content_tag(:span, "Time TBA", :class => 'outline tag')) if @event.time_tba? %></p>
 </div>
 
@@ -20,12 +21,12 @@
 
 		<dt>Date &amp; Time</dt>
 		<dd class="date">
-			<%= @event.time_detail(:audience => @current_user.try(:person) || @audience) %> 
+			<%= @event.time_detail(:audience => event_audience) %> 
 			<%= content_tag(:span, "Time TBA", :class => 'outline tag') if @event.time_tba? %>
 			
-			<%- if @event.time_is_audience_specific?(@current_user.try(:person) || @audience) -%>
+			<%- if @event.time_is_audience_specific?(event_audience) -%>
 				<br><small class="light">
-					Note: This is the time for <%= (@current_user.try(:person).try(:class) || @audience).to_s.downcase.pluralize %>.
+					Note: This is the time for <%= (@audience || @current_user.try(:person).try(:class)).to_s.downcase.pluralize %>.
 					The event time is listed publicly as <%= @event.time_detail %>.
 				</small>
 			<% end -%>
@@ -35,16 +36,16 @@
 		<dt>Location</dt>
 		<dd class="location"><%=h @event.location_string %></dd>
 
-		<%- unless @event.description(@current_user.try(:person) || @audience).blank? -%>
+		<%- unless @event.description(event_audience).blank? -%>
 			<dt>About</dt>
 			<dd class="description">
-				<%= sanitize textilize_without_paragraph(@event.description(@current_user.try(:person) || @audience)) %>
+				<%= sanitize textilize_without_paragraph(@event.description(event_audience)) %>
 			</dd>
 		<% end -%>
 
-		<%- if @event.event_group && !@event.event_group.description(@current_user.try(:person) || @audience).blank? -%>
+		<%- if @event.event_group && !@event.event_group.description(event_audience).blank? -%>
 			<dt>More Info</dt>
-			<dd class="event_group description"><%= sanitize textilize_without_paragraph(@event.event_group.description(@current_user.try(:person) || @audience)) %></dd>
+			<dd class="event_group description"><%= sanitize textilize_without_paragraph(@event.event_group.description(event_audience)) %></dd>
 		<% end -%>
 	
 		<%- if @event.event_coordinator -%>
