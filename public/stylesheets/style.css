@@ -538,7 +538,7 @@ body.full #sidebar-header {
 }
 
 #sidebar p:first-child a.button {
-	border-top: 1px outset; #dfdfdf;
+	border-top: 1px outset #dfdfdf;
 }
 
 #login_logout {
