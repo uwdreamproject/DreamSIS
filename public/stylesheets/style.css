@@ -342,7 +342,7 @@ tr.merge_target {
 }
 
 
-#merge_form input:not([type=submit]) {
+#merge_form input:not([type=submit]):not(.editable) {
 	width: 2em;
 	background: none;
 	display: inline;

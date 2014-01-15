@@ -27,7 +27,7 @@ class ScholarshipsController < ResourceController
 		else
 			flash[:error] = "There was an error merging these two scholarship records."
 		end
-		redirect_to :back
+		redirect_back_or_default(:back)
 	end
 	
   def applications
