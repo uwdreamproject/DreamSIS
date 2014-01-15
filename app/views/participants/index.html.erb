@@ -7,8 +7,13 @@
 	<%= "assigned to " + (params[:mentor_id] == "me" ? "me" : h(@mentor.fullname)) if @mentor %>
 	<%=h @grad_year.to_s if @grad_year %>
 </h1>
-<h3 class="light" style="margin-top: 0">Listing <span id="filtered_record_count"></span> 
-	<%= pluralize (@participants.respond_to?(:current_page) ? Participant.count : @participants.count), Customer.participant_label %></h3>
+<h3 class="light" style="margin-top: 0">
+	Listing 
+	<span id="filtered_record_count"></span> 
+	<span id="total_record_count">
+		<%= pluralize (@participants.respond_to?(:current_page) ? Participant.count : @participants.count), Customer.participant_label %>
+	</span>
+</h3>
 
 <%- if @participant_group -%>
 	<h2>

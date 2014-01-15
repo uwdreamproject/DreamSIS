@@ -12,3 +12,13 @@ module ActiveRecord
 		
 	end
 end
+
+module ActionController
+	class Request
+		
+		def html?
+			template_format == :html
+		end
+	
+	end
+end
