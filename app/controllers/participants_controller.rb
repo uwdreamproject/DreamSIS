@@ -4,6 +4,7 @@ class ParticipantsController < ApplicationController
   skip_before_filter :check_if_enrolled, :only => [:college_mapper_callback]
   skip_before_filter :check_authorization, :except => [:index, :cohort, :destroy, :bulk]
   
+	before_filter :set_title_prefix
   before_filter :set_report_type
 
   # GET /participants
@@ -24,7 +25,8 @@ class ParticipantsController < ApplicationController
   end
 
   def high_school
-    @high_school = HighSchool.find(params[:id])
+    @high_school = HighSchool.find(params[:id] || params[:high_school_id])
+		@title << @high_school
     
     unless @current_user && @current_user.can_view?(@high_school)
       return render_error("You are not allowed to view that high school.")
@@ -43,6 +45,7 @@ class ParticipantsController < ApplicationController
   def cohort
     @grad_year = params[:id]
     @participants = Participant.in_cohort(params[:id])
+		@title << @grad_year
     
     respond_to do |format|
       format.html { render :action => 'index' }
@@ -56,12 +59,14 @@ class ParticipantsController < ApplicationController
     return redirect_to(high_school_cohort_path(:high_school_id => params[:high_school_id], :year => params[:cohort])) if params[:cohort]
     @grad_year = params[:year]
     @high_school = HighSchool.find(params[:high_school_id])
+		@title << @high_school
+		@title << @grad_year
     
     unless @current_user && @current_user.can_view?(@high_school)
       return render_error("You are not allowed to view that high school.")
     end
     
-    @participants = Participant.in_cohort(@grad_year).in_high_school(@high_school.try(:id))
+    @participants = request.html? ? [] : Participant.in_cohort(@grad_year).in_high_school(@high_school.try(:id))
     @participant_groups = ParticipantGroup.find(:all, :conditions => { :location_id => @high_school, :grad_year => @grad_year })
 
     respond_to do |format|
@@ -75,6 +80,7 @@ class ParticipantsController < ApplicationController
   def college
     @college = Institution.find(params[:college_id].to_i)
     @participants = Participant.attending_college(@college.try(:id))
+		@title << @college
     
     respond_to do |format|
       format.html { render :action => 'index' }
@@ -88,6 +94,8 @@ class ParticipantsController < ApplicationController
     @college = Institution.find(params[:college_id].to_i)
     @grad_year = params[:year]
     @participants = Participant.in_cohort(@grad_year).attending_college(@college.try(:id))
+		@title << @college
+		@title << @grad_year
     
     respond_to do |format|
       format.html { render :action => 'index' }
@@ -100,6 +108,7 @@ class ParticipantsController < ApplicationController
   def mentor
     @mentor = Mentor.find(params[:mentor_id] == "me" ? User.current_user.try(:person_id) : params[:mentor_id])
     @participants = Participant.assigned_to_mentor(@mentor.try(:id))
+		@title << "Assigned to #{@mentor.try(:fullname)}"
     
     respond_to do |format|
       format.html { render :action => 'index' }
@@ -148,7 +157,8 @@ class ParticipantsController < ApplicationController
     @high_school = @participant.high_school
     @grad_year = @participant.grad_year
 		@term = Term.current_term
-    
+    @title = @participant.try(:fullname)
+		
     unless @current_user && @current_user.can_view?(@participant)
       return render_error("You are not allowed to view that participant.")
     end
@@ -357,5 +367,9 @@ class ParticipantsController < ApplicationController
   def set_report_type
     @report = params[:report] || "basics"
   end
+
+	def set_title_prefix
+		@title = ["Participants"]
+	end
     
 end

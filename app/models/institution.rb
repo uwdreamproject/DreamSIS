@@ -26,6 +26,10 @@ class Institution
   def id
     unitid.to_i
   end
+	
+	def to_title
+		title
+	end
   
   def [](attribute)
     matching_aliases = self.class::ATTRIBUTE_ALIASES.collect{|k,v| k unless v.select{|a| a.to_s == attribute.to_s}.empty?}.compact

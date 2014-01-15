@@ -102,11 +102,15 @@ class Participant < Person
   def ethnicities(separator = nil, options = {})
     ethnicities = []
     ethnicities << "hispanic" if hispanic?
+    ethnicities << "latino" if latino?
+    ethnicities << "african" if african?
     ethnicities << "african_american" if african_american?
     ethnicities << "american_indian" if american_indian?
     ethnicities << "asian" if asian?
     ethnicities << "pacific_islander" if pacific_islander?
     ethnicities << "caucasian" if caucasian?
+    ethnicities << "middle_eastern" if middle_eastern?
+    ethnicities << "pacific_islander" if pacific_islander?
     ethnicities << ethnicity_details if !ethnicity_details.blank? && options[:include_details]
     return ethnicities if separator.nil?
     ethnicities.join(separator)

@@ -173,6 +173,14 @@ table.participants.loading {
 	background: url(../images/bar-loader.gif) no-repeat center 25%;
 }
 
+.loading {
+	background: url(../images/bar-loader.gif) center 75% no-repeat;
+	min-height: 5em;
+	min-width: 220px;
+	padding: 6px;
+	display: block;
+}
+
 table.participants td, table.participants th {
 	-webkit-transition: opacity 0.25s ease-in-out 0s;
 	-webkit-transition: color 0.25s ease-in-out 0s;
@@ -334,7 +342,7 @@ tr.merge_target {
 }
 
 
-#merge_form input:not([type=submit]) {
+#merge_form input:not([type=submit]):not(.editable) {
 	width: 2em;
 	background: none;
 	display: inline;
@@ -724,6 +732,10 @@ body.new.session #footer {
 	float: right;
 }
 
+.share_links {
+	float: right;
+}
+
 a.redirect-link {
 	background: url('../images/forward-arrow.gif') center right no-repeat;
 	padding-right: 16px;
@@ -791,6 +803,10 @@ a.redirect-link:hover {
 
 .spanhalf {
 	width: 48.5%;
+}
+
+.span4 {
+	width: 25%;
 }
 
 .spanhalf.left {
@@ -2040,6 +2056,57 @@ a.button:active {
 	border-style: outset;
 }
 
+.button.icon-only {
+	width: 16px;
+	height: 16px;
+	padding: 0;
+	margin: 0;
+	background-color: none !important;
+	border: none;
+	box-shadow: none;
+	background-position: 0 0;
+	border-radius: 0;
+	vertical-align: text-bottom;
+	cursor: pointer;
+	position: relative;
+	text-shadow: none;
+}
+
+.button.icon-only:hover {
+	/*box-shadow: 1px 1px 3px rgba(0,0,0,0.3);*/
+}
+
+.button.icon-only > span {
+	display: none;
+	position: absolute;
+	left: -75%;
+	top: -23px;
+	font-size: 90%;
+	background: rgba(0,0,0,0.7);
+	color: white;
+	text-shadow: 0px 1px 1px rgba(0,0,0,0.5);
+	padding: 1px 5px;
+	border-radius: 3px;
+}
+
+.button.icon-only:after {
+	content: " ";
+	display: none;
+	position: absolute;
+	top: -6px;
+	width: 16px;
+	height: 10px;
+	background: url(../images/icons/down-arrow.png) center 1px no-repeat;
+}
+
+.button.icon-only:hover > span {
+	display: block;	
+}
+
+.button.icon-only:hover:after {
+	display: block;
+}
+
 .button.cancel {
 	background-image: url(../images/icons/silk/cross.png);
 }
@@ -2368,6 +2435,8 @@ ul.filters {
 
 .filters li:hover label small {
 	background: #999;
+	color: white;
+	text-shadow: 0 1px 0 #999;
 }
 
 .filters li input {
@@ -2420,8 +2489,16 @@ ul.filter-results {
 	background-image: url(../images/icons/silk/cross.png);	
 }
 
+.filterable {
+	-webkit-transition: all 0.2s ease-in-out;
+}
+
 .filterable.hidden {
 	display: none;
+}
+
+.filterable.preview {
+	background: rgba(189, 211, 224, 0.2);
 }
 
 span.icon {
