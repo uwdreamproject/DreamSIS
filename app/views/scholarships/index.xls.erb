@@ -31,7 +31,7 @@
 	    <td><%=h scholarship.default_renewable %></td>
 		<td><%=h scholarship.scholarship_applications.size %></td>
 		<td><%=h scholarship.scholarship_applications.awarded.size %></td>
-		<td class="currency"><%=h scholarship.scholarship_applications.awarded.collect(&:amount).sum %></td>
+		<td class="currency"><%=h scholarship.scholarship_applications.awarded.collect(&:amount).numeric_items.sum %></td>
 		<td><%=h scholarship.created_at %></td>
 		<td><%=h scholarship.updated_at %></td>
 	</tr>

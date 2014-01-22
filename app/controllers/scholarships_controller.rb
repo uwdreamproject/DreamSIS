@@ -41,7 +41,11 @@ class ScholarshipsController < ResourceController
   end
 
   def auto_complete_for_scholarship_title
-    @scholarships = Scholarship.find(:all, :conditions => ["LOWER(title) LIKE ?", "%#{params[:scholarship][:title].to_s.downcase}%"], :limit => 20)
+		if params[:scholarship][:title].is_integer?
+			@scholarships = [Scholarship.find(params[:scholarship][:title])]
+		else
+	    @scholarships = Scholarship.find(:all, :conditions => ["LOWER(title) LIKE ?", "%#{params[:scholarship][:title].to_s.downcase}%"], :limit => 20)
+		end
     render :partial => "shared/auto_complete_scholarship_title", 
             :object => @scholarships, 
             :locals => { :highlight_phrase => params[:scholarship][:title] }

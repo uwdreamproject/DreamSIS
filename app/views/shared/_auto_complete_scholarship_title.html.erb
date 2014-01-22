@@ -4,6 +4,7 @@
 			<span class="primary"><%= highlight(h(result.title), h(highlight_phrase)) %></span>
 			<span class="secondary"><%=h result.organization_name %></span>
 			<span class="secondary currency"><%= number_to_currency(result.default_amount) %></span>
+			<span class="tertiary">ID #<%= result.id.to_s %></span>
 
 			<%- 
 			string_fields = %w[amount renewable_years]
