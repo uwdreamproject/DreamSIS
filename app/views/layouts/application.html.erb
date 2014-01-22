@@ -5,13 +5,14 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-	<title>DreamSIS<%= " [DEV]" if RAILS_ENV == "development" %></title>
+	<title><%= @title.blank? ? "" : "#{@title.is_a?(Array) ? @title.collect(&:to_title).join(" - ") : @title.to_title} - " %>DreamSIS
+		<%= " [DEV]" if RAILS_ENV == "development" %></title>
 
 	<meta name="viewport" content="width=device-width">
 	<meta name="csrf-token" content="<%= form_authenticity_token %>" />
 	<meta name="csrf-param" content="authenticity_token" />
 
-	<link rel="shortcut icon" href="/favicon.ico"/>
+	<link rel="shortcut icon" href="<%= request.protocol + request.host_with_port + "/" + image_path("favicon.ico") %>" type="image/x-icon">
 
     <%= formtastic_stylesheet_link_tag %>
 	<%= stylesheet_link_tag 'style', :media => "all" %>
@@ -29,6 +30,18 @@
 		<script src="/mediaelement/mediaelement-and-player.js"></script>
 		<link rel="stylesheet" href="/mediaelement/mediaelementplayer.css" />
 	<%- end -%>
+	
+	<%- if @share_links && API_KEYS['sharethis'] -%>
+		<script type="text/javascript">var switchTo5x=true;</script>
+		<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+		<script type="text/javascript">stLight.options({
+			publisher: "<%= API_KEYS['sharethis']['publisher_id'] %>", 
+			doNotHash: true, 
+			doNotCopy: false, 
+			hashAddressBar: false,
+			shorten: false
+		});</script>
+	<% end %>
 
 
 	<%- if GOOGLE_ANALYTICS_TRACKING_ID && RAILS_ENV == 'production' -%>
@@ -89,11 +102,13 @@
 
 		<div id="notifications">
 			<% %w(error notice info saved).each do |key| -%>
-				<div id="<%= key %>_notification" class="alert <%= key %> <%= "visible" unless flash[key.to_sym].blank? %>" onClick="if(this.hasClassName('visible')) { this.toggleClassName('visible'); }"><%= flash[key.to_sym] %></div>
+				<div id="<%= key %>_notification" class="alert <%= key %> <%= "visible" unless flash[key.to_sym].blank? %>" onClick="if(this.hasClassName('visible')) { this.toggleClassName('visible'); }"><%=h flash[key.to_sym] %></div>
 			<% end -%>
 		</div>
 
 		<div id="content-wrap" class="<%= "blocked" if @layout_in_blocks %>">
+			<%= render :partial => "shared/share_links" if @share_links && API_KEYS['sharethis'] %>
+			
 			<%= yield %>
 			
 			<%- unless @extra_footer_content.blank? -%>

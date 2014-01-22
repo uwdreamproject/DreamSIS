@@ -4,8 +4,9 @@
 </h1>
 
 <div class="spanhalf right">
-	<h2>Highlights</h2>
+	<h2>Submitted Logs</h2>
 	<%= render :partial => "highlight", :collection => @activity_logs %>
+	<%= content_tag :div, "No logs submitted this week", :class => "empty left" if @activity_logs.empty? %>
 </div>
 
 <div class="spanhalf left">
@@ -32,7 +33,7 @@
 		</li>
 	</ul>
 
-	<div>
+	<div style="<%= "display:none" if @activity_logs.empty? %>">
 		<h2>Time Breakdown</h2>
 		<table class="stats">
 			<%= render :partial => "time_breakdown", :collection => %w[student non_student] %>

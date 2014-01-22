@@ -1,8 +1,5 @@
 <div class="photo">
-	<%= image_tag photo_mentor_path(Mentor.first, :size => :large), 
-			:class => 'student_photo', 
-			:size => "80x95", 
-			:alt => "" %>
+	<%= render :partial => "avatar" if @participant.avatar? %>
 </div>
 
 <div class="name">
@@ -11,11 +8,9 @@
 
 	<%= content_tag :h2, "** Inactive **", :class => "inactive-note" if @participant.inactive? %>
 	<%= content_tag :h2, "** #{Customer.not_target_Label} **", :class => "not-target-note" if @participant.not_target_participant? %>
-
 </div>
 
 <div class="details">
-
 	<dl>
 		<dt>High School</dt>
 		<dd>
@@ -23,7 +18,7 @@
 					high_school_cohort_path(@participant.high_school, (@participant.grad_year || 0)), 
 					:class => 'redirect-link' unless @participant.high_school.nil? %>
 		</dd>
-		
+
 		<dt>Graduation Year</dt>
 		<dd>
 			<%= link_to "Class of #{@participant.grad_year}",

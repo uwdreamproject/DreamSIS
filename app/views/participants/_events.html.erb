@@ -10,13 +10,26 @@
 	</thead>
 
 	<tbody>
-		<%= render :partial => "event_attendances/event_row", :collection => @participant.event_attendances %>
+		<%= render :partial => "event_attendances/event_row", :collection => @participant.event_attendances.non_visits %>
 		
-		<%- if @participant.event_attendances.empty? -%>
+		<%- if @participant.event_attendances.non_visits.empty? -%>
 			<tr class="empty">
 				<td colspan=10>You haven't attended any events.</td>
 			</tr>
 		<% end -%>
 	</tbody>
+	
+</table>
+
+<h3><%= Customer.visits_Label %> Attendance</h3>
+<table class="visits attendance">
+	
+	<tr>
+		<%- for visit in @high_school.try(:events, @term, [:participants]) -%>
+			<!-- Attended Checkbox -->
+			<%= render :partial => "visits/_checkboxes/attended", 
+						:locals => { :participant => @participant, :visit => visit, :i => 0, :show_date => true } %>
+		<% end %>
+	</tr>
 	
 </table>

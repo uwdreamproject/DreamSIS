@@ -102,11 +102,15 @@ class Participant < Person
   def ethnicities(separator = nil, options = {})
     ethnicities = []
     ethnicities << "hispanic" if hispanic?
+    ethnicities << "latino" if latino?
+    ethnicities << "african" if african?
     ethnicities << "african_american" if african_american?
     ethnicities << "american_indian" if american_indian?
     ethnicities << "asian" if asian?
     ethnicities << "pacific_islander" if pacific_islander?
     ethnicities << "caucasian" if caucasian?
+    ethnicities << "middle_eastern" if middle_eastern?
+    ethnicities << "pacific_islander" if pacific_islander?
     ethnicities << ethnicity_details if !ethnicity_details.blank? && options[:include_details]
     return ethnicities if separator.nil?
     ethnicities.join(separator)
@@ -160,6 +164,13 @@ class Participant < Person
     @score_comparison ||= {}
     @score_comparison[test_type] ||= TestScore.score_comparison(self, test_type)
   end
+	
+	# Returns the Visits that happened during the week of the requested date at this student's HighSchool.
+	def visits_during_week(date = Date.today)
+		start_date = Date.commercial(date.year, date.cweek, 1)
+		end_date = Date.commercial(date.year, date.cweek, 7)
+		Visit.find(:all, :conditions => ["date >= ? AND date <= ? AND location_id = ?", start_date, end_date, high_school_id])
+	end
 
   # Returns the CollegeMapperStudent record for this individual if we have a college_mapper_id stored.
   # By default, if the record doesn't exist, we create it. You can override that by passing +false+ for

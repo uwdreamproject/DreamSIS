@@ -1,7 +1,7 @@
 <% dom_id = "participant_#{participant.id}" %>
 <%- report ||= "basics" -%>
 <%- @participant_row_index = 1 -%>
-<tbody id="<%= dom_id %>">
+<tbody id="<%= dom_id %>" class="filterable">
 	
 	<%- 
 	collection ||= (participant.instance_eval(report.pluralize) rescue []) 

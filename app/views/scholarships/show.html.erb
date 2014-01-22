@@ -3,8 +3,10 @@
 <dl class="inline-definitions">
 
 	<dt>Title</dt>
-	<dd><%=h @scholarship.title %></dd>
-
+	<dd><%=h @scholarship.title %>
+		<small>(ID #<%= @scholarship.id.to_s %>)</small>
+		</dd>
+	
 	<dt>Organization</dt>
 	<dd><%=h @scholarship.organization_name %></dd>
 
