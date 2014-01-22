@@ -1,7 +1,17 @@
-<%- unless highlight.highlight_note.blank? -%>
-	<p>
-		<strong class="light"><%=h highlight.try(:mentor).try(:fullname) %></strong>
-		<br />
-		<%=h highlight.highlight_note %>
-	</p>
-<% end %>
+<div class="highlight_container">
+	<div align="left" class="photo">
+		<%= image_tag photo_mentor_path(highlight.try(:mentor), :size => :thumb), 
+				:class => 'student_photo', 
+				:size => "50", 
+				:alt => "" %>
+	</div>
+
+	<h4><%= h(highlight.try(:mentor).try(:fullname)) %></h4>
+	<small class="light">
+		<%= relative_timestamp highlight.updated_at %>
+		&bull;
+		<%= link_to "View activity log", highlight %>
+	</small>
+
+	<%= content_tag :blockquote, simple_format(h(highlight.highlight_note)) unless highlight.highlight_note.blank? %>
+</div>

@@ -1,17 +1,18 @@
 class ScholarshipsController < ResourceController
   self.object_class = Scholarship
 
-
-  skip_before_filter :check_authorization, :only => [:show]
+  skip_before_filter :check_authorization, :only => [:show, :auto_complete_for_scholarship_title]
   protect_from_forgery :except => [:auto_complete_for_scholarship_title] 
   
   def index
     return redirect_to Scholarship.find(params[:id]) if params[:id]
-    @scholarships = Scholarship.paginate :all, :page => params[:page]
+		per_page = request.format.xls? ? 1000000 : params[:per_page]
+    @scholarships = Scholarship.paginate :all, :page => params[:page], :per_page => per_page
     
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @scholarships }
+      format.xml { render :xml => @scholarships }
+			format.xls { render :layout => 'basic' }
     end
   end
   

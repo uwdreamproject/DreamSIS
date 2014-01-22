@@ -96,6 +96,31 @@ a:visited {
 	clear: both;
 }
 
+.activity_logs.weekly_summary .highlight_container {
+	clear: left;
+	padding-bottom: 1em;
+	min-height: 60px;
+	border-bottom: 1px solid #efefef;
+}
+
+.activity_logs.weekly_summary .highlight_container h4 {
+	font-weight: bold;
+}
+
+.activity_logs.weekly_summary blockquote {
+	margin-left: 65px;
+	margin-right: 0;
+}
+
+.activity_logs.weekly_summary blockquote p:first-child {
+	margin-top: 0;
+}
+
+.activity_logs.weekly_summary .photo {
+	float: left;
+	margin-right: 1em;
+}
+
 table {
 	width: 100%;
 	border-collapse: collapse;
@@ -393,7 +418,8 @@ h4 {
 	color: white;
 	width: 230px;
 	/*height: 37px;*/
-	background: url(../images/dreamsis-logo-transparent.png) no-repeat;
+	background: url(../images/dreamsis-logo-transp-2x.png) 7px 7px no-repeat;
+	background-size: 192px;
 }
 
 #header h1 a strong {
@@ -1118,13 +1144,13 @@ ul.crimes-list li {
 	top: 10px;
 	text-align: center;
 	z-index: 100;
-	width: 30%;
-	left: 50%;
+	width: 70%;
+	left: 15%;
 	margin-left: -15%;
 }
 
 #notifications .alert {
-	background: #bec url(../images/icons/silk/accept.png) no-repeat 10px center;
+	background: #bec url(../images/icons/silk/accept.png) no-repeat 10px 10px;
 	color: #031;
 	border: 1px solid #031;
 	padding: 10px 20px;
