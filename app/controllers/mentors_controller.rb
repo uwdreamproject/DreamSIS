@@ -120,9 +120,16 @@ class MentorsController < ApplicationController
   def photo
     begin
       @mentor = Mentor.find(params[:id])
-      return send_default_photo(params[:size]) if @mentor.reg_id.nil?
-      student_photo = StudentPhoto.find(@mentor.reg_id)
-      file_path = student_photo.try(:image_path, params[:size])
+			if @mentor.avatar?
+				file_path = @mentor.avatar.path(params[:size])
+			elsif avatar_image_url = @mentor.users.try(:first).try(:person).try(:avatar_image_url)
+				return redirect_to(avatar_image_url)
+			elsif !@mentor.reg_id.nil?
+	      student_photo = StudentPhoto.find(@mentor.reg_id)
+	      file_path = student_photo.try(:image_path, params[:size])
+			else
+				file_path = nil
+			end
       if file_path
         send_file file_path, :disposition => 'inline', :type => 'image/jpeg' # TODO :x_sendfile => true in production
       else
@@ -180,7 +187,8 @@ class MentorsController < ApplicationController
   protected
   
   def send_default_photo(size)
-    send_file File.join(RAILS_ROOT, "public", "images", "blank_avatar.png"), 
+		filename = size == "thumb" ? "blank_avatar_thumb.png" : "blank_avatar.png"
+    send_file File.join(RAILS_ROOT, "public", "images", filename), 
               :disposition => 'inline', :type => 'image/png', :status => 404
   end  
   
