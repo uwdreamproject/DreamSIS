@@ -1,3 +1,4 @@
+<%= content_tag :h3, "Submitted by " + link_to(h(@activity_log.try(:mentor).try(:fullname)), @activity_log.try(:mentor)), :class => "pre-title" unless @activity_log.belongs_to?(@current_user) %>
 <h1>Activity Log
 	<small class="light">&raquo; <%= @activity_log.this_week? ? "This Week #{(Date.today.beginning_of_week.to_s(:short))}" : "Week of #{@activity_log.start_date.to_s(:short)}" %></small></h1>
 
