@@ -294,14 +294,14 @@ class Person < CustomerScoped
   # check result text will include these details but also include to the text "OK".
   def passed_background_check?
     return false if background_check_result.nil?
-    return false if background_check_run_at.nil?
+    return false if (background_check_run_at.nil? || background_check_run_at < Customer.current_customer.background_check_validity_length.days.ago)
     background_check_result.include?("OK") || background_check_result.include?("NO RECORD FOUND")
   end
   
   # Returns true if the +background_check_authorized_at+ is not nil but the person hasn't passed the background
   # check yet. This means that a staff person hasn't yet run the check and entered it into the system yet.
   def background_check_pending?
-    !background_check_authorized_at.nil? && !passed_background_check?
+    !background_check_authorized_at.nil? && (!passed_background_check? && background_check_run_at.nil?)
   end
   
   # Returns true if there are any responses "Yes" on the background check form from mentor signup.

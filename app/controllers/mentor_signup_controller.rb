@@ -5,7 +5,7 @@ class MentorSignupController < ApplicationController
 
   def index
     @mentor_terms = @mentor.mentor_terms.for_term(@term.id)
-    @mentor_term_groups = @term.mentor_term_groups
+    @mentor_term_groups = @term.mentor_term_groups.select {|mtg| !(mtg.none_option == true)}
     @max_term_cap = @mentor_term_groups.collect(&:capacity).numeric_items.max
     @max_term_size = @mentor_term_groups.collect(&:mentor_terms_count).numeric_items.max
     if params[:display] == 'schedule'
@@ -26,6 +26,14 @@ class MentorSignupController < ApplicationController
       if @mentor.update_attributes(params[:mentor])
         flash[:notice] = "Your background check form was successfully received. Thank you."
         redirect_to root_url
+      end
+    elsif request.get?
+      if !@mentor.passed_background_check? && @mentor.background_check_authorized == true
+        @mentor.update_attributes({:background_check_authorized => false,
+                                   :background_check_authorized_at => nil,
+                                   :background_check_run_at => nil,
+                                   :background_check_result => nil
+                                  })
       end
     end
   end

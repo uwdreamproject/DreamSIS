@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131212222913) do
+ActiveRecord::Schema.define(:version => 20140122041049) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(:version => 20131212222913) do
     t.text     "activity_log_student_time_categories"
     t.text     "activity_log_non_student_time_categories"
     t.text     "visit_attendance_options"
+    t.integer  "background_check_validity_length"
   end
 
   create_table "degrees", :force => true do |t|
