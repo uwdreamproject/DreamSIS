@@ -12,6 +12,8 @@
 	<meta name="csrf-token" content="<%= form_authenticity_token %>" />
 	<meta name="csrf-param" content="authenticity_token" />
 
+	<link rel="shortcut icon" href="<%= request.protocol + request.host_with_port + "/" + image_path("favicon.ico") %>" type="image/x-icon">
+
     <%= formtastic_stylesheet_link_tag %>
 	<%= stylesheet_link_tag 'style', :media => "all" %>
 	<%= stylesheet_link_tag @extra_stylesheet if @extra_stylesheet %>
