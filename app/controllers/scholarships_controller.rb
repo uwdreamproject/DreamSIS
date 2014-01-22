@@ -1,8 +1,7 @@
 class ScholarshipsController < ResourceController
   self.object_class = Scholarship
 
-
-  skip_before_filter :check_authorization, :only => [:show]
+  skip_before_filter :check_authorization, :only => [:show, :auto_complete_for_scholarship_title]
   protect_from_forgery :except => [:auto_complete_for_scholarship_title] 
   
   def index
