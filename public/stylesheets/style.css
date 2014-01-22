@@ -418,7 +418,8 @@ h4 {
 	color: white;
 	width: 230px;
 	/*height: 37px;*/
-	background: url(../images/dreamsis-logo-transparent.png) no-repeat;
+	background: url(../images/dreamsis-logo-transp-2x.png) 7px 7px no-repeat;
+	background-size: 192px;
 }
 
 #header h1 a strong {
