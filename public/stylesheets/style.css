@@ -1144,13 +1144,13 @@ ul.crimes-list li {
 	top: 10px;
 	text-align: center;
 	z-index: 100;
-	width: 30%;
-	left: 50%;
+	width: 70%;
+	left: 15%;
 	margin-left: -15%;
 }
 
 #notifications .alert {
-	background: #bec url(../images/icons/silk/accept.png) no-repeat 10px center;
+	background: #bec url(../images/icons/silk/accept.png) no-repeat 10px 10px;
 	color: #031;
 	border: 1px solid #031;
 	padding: 10px 20px;
