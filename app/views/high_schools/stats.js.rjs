@@ -2,7 +2,7 @@ for high_school in @high_schools
 	page.replace_html "participant_stats_#{high_school.id}", :partial => "object_filters/high_school_stats", 
 				:locals => { 
 					:participants => Participant.in_cohort(@cohort).in_high_school(high_school.try(:id)),
-					:hide_title => false
+					:hide_title => true
 				}
-	page << "$('participant_stats_#{high_school.id}').removeClassName('loading')"
+	page << "$('participant_stats_#{high_school.id}').up('div').removeClassName('loading')"
 end

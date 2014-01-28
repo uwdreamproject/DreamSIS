@@ -8,5 +8,9 @@ class EducationLevel < ActiveRecord::Base
   def <=>(o)
     sequence <=> o.sequence rescue 0
   end
+
+	def above_sequence?(sequence_param)
+		sequence > sequence_param
+	end
   
 end
