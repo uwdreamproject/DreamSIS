@@ -164,5 +164,21 @@ class Customer < ActiveRecord::Base
     return_label = return_label.titleize if options[:titleize]
     return return_label
   end
+	
+	# Tries to guess the appropriate "opposite" title for the not_target label.
+	def not_target_opposite_label
+		case read_attribute(:not_target_label)
+		when "unofficial"
+			"official"
+		when "not target"
+			"target"
+		when ""
+			"target"
+		when nil
+			"target"
+		else
+			"not " + not_target_label
+		end
+	end
   
 end

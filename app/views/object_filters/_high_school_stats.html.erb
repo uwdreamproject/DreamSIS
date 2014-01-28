@@ -1,6 +1,6 @@
 <% 
 participants ||= @participants
-active_participants = participants.select{|p| !p.inactive? }
+active_participants = participants.select{|p| !p.inactive? && !p.not_target_participant?}
 hide_title ||= false
 
  %>
@@ -19,7 +19,8 @@ hide_title ||= false
 	</tr>
 	
 	<tr>
-		<td class="title">Active Students</td>
+		<td class="title">Active <%= "&amp; #{Customer.not_target_opposite_Label}" unless Customer.not_target_label.blank? %> students
+		</td>
 		<td class="number"><%= active_participants.size %></td>
 		<td></td>
 		<td class="percentage"><%= number_to_percentage(active_participants.size.to_f / participants.size.to_f * 100, :precision => 0) rescue 0.0/0.0 %></td>
@@ -35,4 +36,4 @@ hide_title ||= false
 
 </table>
 
-<small class="light">Counts and percentages above are compared against <strong>active</strong> participants only.</small>
+<small class="light">Counts and percentages above are compared against <strong>active, <%= Customer.not_target_opposite_label %></strong> participants only.</small>
