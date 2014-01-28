@@ -3,7 +3,7 @@
 
 <% 
 participants ||= @participants
-active_participants = participants.select{|p| !p.inactive? }
+active_participants = participants.select{|p| !p.inactive? && !p.not_target_participant? }
 hide_title ||= false
 
  %>
@@ -13,7 +13,7 @@ hide_title ||= false
 	<tr>
 		<th>School</th>
 		<th>Total</th>
-		<th>Active</th>
+		<th>Active <%= "&amp; #{Customer.not_target_opposite_Label}" unless Customer.not_target_label.blank? %></th>
 		<th>Meets Criteria</th>
 		<th>Completion</th>
 		<th></th>
@@ -38,7 +38,7 @@ hide_title ||= false
 
 </table>
 
-<p><small class="light">Counts and percentages above are compared against <strong>active</strong> participants only.</small></p>
+<p><small class="light">Counts and percentages above are compared against <strong>active, <%= Customer.not_target_opposite_label %></strong> participants only.</small></p>
 
 
 

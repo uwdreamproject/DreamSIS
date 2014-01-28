@@ -1,8 +1,12 @@
 <h1><%=h @cohort.to_s %> Participant Stats</h1>
 
 <div style="margin-bottom: 2em">
-	<h2>All <%=h @cohort.to_s %> participants</h2>
-	<%= render :partial => "object_filters/high_school_stats", 
+	<h2>All <%=h @cohort.to_s %> participants</h2>	
+	<div id="participant_stats_all" class="loading">
+		<%= javascript_tag "document.observe('dom:loaded', function() { #{remote_function(:url => stats_high_schools_path(:cohort => @cohort, :hide_title => true), :method => :get)} });" %>
+	</div>
+	
+	<%#= render :partial => "object_filters/high_school_stats", 
 				:locals => { 
 					:participants => Participant.in_cohort(@cohort),
 					:hide_title => true,
@@ -15,7 +19,11 @@
 	<div style="margin-bottom: 2em">
 		<%= link_to "Show only " + h(high_school.name), url_for(:cohort => @cohort, :id => high_school), :class => "right" unless params[:id] %>
 		<h2><%=h high_school.name %></h2>
-		<%= render :partial => "object_filters/high_school_stats", 
+		<div id="participant_stats_<%= high_school.id %>" class="loading">
+			<%= javascript_tag "document.observe('dom:loaded', function() { #{remote_function(:url => stats_high_school_path(high_school, :cohort => @cohort, :hide_title => true), :method => :get)} });" %>
+		</div>
+		
+		<%#= render :partial => "object_filters/high_school_stats", 
 					:locals => { 
 						:participants => Participant.in_cohort(@cohort).in_high_school(high_school.try(:id)),
 						:hide_title => true 
