@@ -5,6 +5,11 @@ if @all_schools
 					:hide_title => (params[:hide_title] || false)
 				}
 	page << "$('participant_stats_all').removeClassName('loading')"	
+	
+	page.if("$('show_participants_stats_all_link')") do
+		page << "$('show_participants_stats_all_link').update('All #{(@cohort.to_s)} Participants')"
+	end
+	
 else
 	for high_school in @high_schools
 		page.replace_html "participant_stats_#{high_school.id}", :partial => "object_filters/high_school_stats", 

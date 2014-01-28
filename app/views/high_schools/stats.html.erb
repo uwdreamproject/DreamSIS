@@ -1,17 +1,18 @@
 <h1><%=h @cohort.to_s %> Participant Stats</h1>
 
 <div style="margin-bottom: 2em">
-	<h2>All <%=h @cohort.to_s %> participants</h2>	
-	<div id="participant_stats_all" class="loading">
-		<%= javascript_tag "document.observe('dom:loaded', function() { #{remote_function(:url => stats_high_schools_path(:cohort => @cohort, :hide_title => true), :method => :get)} });" %>
+	<h2><%= link_to_remote "Show all #{h(@cohort.to_s)} participants", 
+							:url => stats_high_schools_path(:cohort => @cohort, :hide_title => true), 
+							:method => :get, 
+							:html => {
+								:onclick => "$('participant_stats_all').show()", 
+								:id => "show_participants_stats_all_link"
+							} %></h2>	
+	<div id="participant_stats_all" class="loading" style="display:none">
+		<%#= javascript_tag "document.observe('dom:loaded', function() { #{remote_function(
+			:url => stats_high_schools_path(:cohort => @cohort, :hide_title => true), :method => :get
+		)} });" %>
 	</div>
-	
-	<%#= render :partial => "object_filters/high_school_stats", 
-				:locals => { 
-					:participants => Participant.in_cohort(@cohort),
-					:hide_title => true,
-					:summary => :all
-				} %>
 </div>
 
 
@@ -22,12 +23,6 @@
 		<div id="participant_stats_<%= high_school.id %>" class="loading">
 			<%= javascript_tag "document.observe('dom:loaded', function() { #{remote_function(:url => stats_high_school_path(high_school, :cohort => @cohort, :hide_title => true), :method => :get)} });" %>
 		</div>
-		
-		<%#= render :partial => "object_filters/high_school_stats", 
-					:locals => { 
-						:participants => Participant.in_cohort(@cohort).in_high_school(high_school.try(:id)),
-						:hide_title => true 
-					} %>
 	</div>
 <% end -%>
 
