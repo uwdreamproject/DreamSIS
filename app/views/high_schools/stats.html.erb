@@ -13,6 +13,7 @@
 
 <%- for high_school in @high_schools -%>
 	<div style="margin-bottom: 2em">
+		<%= link_to "Show only " + h(high_school.name), url_for(:cohort => @cohort, :id => high_school), :class => "right" unless params[:id] %>
 		<h2><%=h high_school.name %></h2>
 		<%= render :partial => "object_filters/high_school_stats", 
 					:locals => { 
@@ -23,10 +24,14 @@
 <% end -%>
 
 <div id="sidebar">
+	<%- if params[:id] -%>
+		<p><%= link_to "All high schools", url_for(:cohort => @cohort), :class => 'list button' %></p>
+	<% end %>
+	
 	<h3>Other Cohorts</h3>
 	<ul class="quick_nav">
 	<%- for cohort in Participant.cohorts.reverse -%>
-		<li><%= link_to cohort.to_s, url_for(:cohort => cohort) %></li>
+		<li><%= link_to cohort.to_s, url_for(:cohort => cohort, :id => params[:id]) %></li>
 	<% end -%>
 	</ul>
 </div>
