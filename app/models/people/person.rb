@@ -20,6 +20,7 @@ class Person < CustomerScoped
   # has_many :how_did_you_hear_people
   # has_many :how_did_you_hear_options, :through => :how_did_you_hear_people
   has_and_belongs_to_many :how_did_you_hear_options
+	belongs_to :highest_education_level, :class_name => "EducationLevel"
   
   has_many :users
   
