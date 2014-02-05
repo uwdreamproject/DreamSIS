@@ -1,7 +1,8 @@
 class ScholarshipsController < ResourceController
   self.object_class = Scholarship
 
-  skip_before_filter :check_authorization, :only => [:show, :auto_complete_for_scholarship_title]
+  skip_before_filter :check_authorization, :only => [:show, :auto_complete_for_scholarship_title, :index, :edit, :new, :create, :update]
+	before_filter :check_if_enrolled
   protect_from_forgery :except => [:auto_complete_for_scholarship_title] 
   
   def index
@@ -51,4 +52,12 @@ class ScholarshipsController < ResourceController
             :locals => { :highlight_phrase => params[:scholarship][:title] }
   end
   
+	protected
+	
+	def check_if_enrolled
+		unless @current_user.admin? || @current_user.person.try(:currently_enrolled?)
+			render_error("You are not allowed to access that page.")
+		end
+	end
+	
 end
