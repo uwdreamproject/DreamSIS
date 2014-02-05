@@ -1,0 +1,48 @@
+<% form_for :scholarship, :html => { :method => :get } do |f| %>
+
+	<%= model_auto_completer "scholarship[title]", "", "id", nil,
+							{ 
+								:url => auto_complete_for_scholarship_title_scholarships_path, 
+								:submit_on_return => true, 
+								:after_update_element => "function(text_field, selection, hidden_field, id) { text_field.form.submit() }" 
+							},
+							{ :autocomplete => false, :class => "search", :placeholder => "Search scholarships" },
+							{ :skip_style => true } %>
+							
+<% end %>
+
+
+<h3>Merge Records</h3>
+<p>To merge duplicate scholarship records, <%= link_to_function "enable merging", "$('merge_form').show(); this.up('p').hide();" %>.</p>
+
+<%= form_tag merge_scholarships_path, :id => "merge_form", :style => "display:none" %>
+	<p class="intro">Click on the row for the record to merge, then click the record to merge into. Then click Merge.</p>
+	
+	<div class="merge_item">
+		<p class="error-message">
+			<strong>Source:</strong>
+			This scholarship will be deleted. All existing scholarship applications assigned
+			to this scholarship will be reassigned to the target scholarship below.</p>
+		<p class="name">
+			<span id="merge_source_name">(Not selected)</span>
+		</p>
+		<label>ID:</label>
+		<input name="source_id" id="merge_source_id" readonly>
+	</div>
+	
+	<em class="separator">into</em>
+
+	<div class="merge_item">
+		<p class="success-message">
+			<strong>Target:</strong>
+			This scholarship will be kept and all applications will be reassigned to this one.
+		</p>
+		<p class="name">
+			<span id="merge_target_name">(Not selected)</span>
+		</p>
+		<label>ID:</label>
+		<input name="target_id" id="merge_target_id" readonly>
+	</div>
+	
+	<p><%= submit_tag "Merge", :confirm => "Are you sure you want to merge these scholarships?" %></p>
+</form>

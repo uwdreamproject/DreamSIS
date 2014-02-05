@@ -4,6 +4,7 @@
 	https://dreamsis.org/stylesheets/style.css?1349862127
 	https://dreamsis.org/stylesheets/style.css?1364278654
 	https://dreamsis.org/stylesheets/style.css?1364280854
+	https://dreamsis.com/stylesheets/style.css?1390890932
 */
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700);
@@ -2779,6 +2780,11 @@ dl.inline-definitions dd p {
 img.student_photo {
 	border: 1px solid #f2f2f2;
 	border-radius: 7px;
+	max-width: 150px;
+}
+
+img.student_photo.thumb {
+	max-width: 50px;
 }
 
 img.student_photo.left {
@@ -4770,10 +4776,16 @@ form.formtastic input {
 
 form.formtastic fieldset > ol > li fieldset legend.label label {
 	position: absolute; 
-	color: red !important;
+	color: #656565 !important;
 	display: block !important;
 	float: none !important;
 	height: 2em !important;
+}
+
+form.formtastic fieldset > ol > li fieldset legend.label {
+	display: block;
+	height: 2em;
+	position: relative;
 }
 
 form.formtastic fieldset > ol > li fieldset ol { 
