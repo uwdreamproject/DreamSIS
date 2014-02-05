@@ -70,6 +70,7 @@
 		<th>mother_education_country</th>
 		<th>father_education_country</th>
 		<th>family_income_level</th>
+		<th>lives_with</th>
 		<th>college_attending</th>
 		<th>household_size</th>
 		<th>single_parent_household</th>
@@ -91,8 +92,6 @@
 		<th>halal</th>
 		<th>foster_youth</th>
 		<th>plans_after_high_school</th>
-		<th>live_with_mother</th>
-		<th>live_with_father</th>
 		<th>parent_graduated_college</th>
 		<th>family_members_who_went_to_college</th>
 		<th>family_members_graduated</th>
@@ -202,6 +201,7 @@
 	<td><%=h participant.mother_education_country %></td>
 	<td><%=h participant.father_education_country %></td>
 	<td><%=h participant.family_income_level.title if participant.family_income_level %></td>
+	<td><%=h participant.parents.find(:all, :conditions => { :lives_with => true }).collect(&:parent_type).join(", ") rescue "#Error" %></td>
 	<td><%=h participant.college_attending.name if participant.college_attending %></td>
 	<td><%=h participant.household_size %></td>
 	<td><%=h participant.single_parent_household %></td>
@@ -223,8 +223,6 @@
 	<td><%=h participant.halal %></td>
 	<td><%=h participant.foster_youth %></td>
 	<td><%=h participant.plans_after_high_school %></td>
-	<td><%=h participant.live_with_mother %></td>
-	<td><%=h participant.live_with_father %></td>
 	<td><%=h participant.parent_graduated_college %></td>
 	<td><%=h participant.family_members_who_went_to_college %></td>
 	<td><%=h participant.family_members_graduated %></td>
