@@ -12,7 +12,7 @@
 	</thead>
 
 	<tbody>
-		<%= render :partial => 'participants/participant', :collection => @my_mentees || @participants %>
+		<tr class="empty"><td class="loading" colspan=10></td></tr>
 	
 		<%- if (@my_mentees || @participants).empty? -%>
 			<tr class="empty">
@@ -21,4 +21,8 @@
 		<% end -%>
 	</tbody>
 	
+	<%= javascript_tag "document.observe('dom:loaded', function() { #{remote_function(:url => mentor_participants_url(@mentor, :report => 'basics'), :method => :get) } });" %>
+	
 </table>
+
+
