@@ -27,6 +27,20 @@ module ApplicationHelper
     end
   end
   
+	# Creates an image tag with the icon for the requested MIME content type. Defaults to the 32px size.
+	def file_icon_tag(content_type, size = "32px")
+		aliases = {
+			:jpeg => :jpg,
+			:docx => :doc
+		}
+		extension = Rack::Mime::MIME_TYPES.invert[content_type] || ""
+		extension = extension.dup.to_s
+		extension.gsub!(".", "")
+		title = h "#{extension.upcase} file"
+		extension = aliases[extension.to_sym].to_s if !extension.blank? && aliases[extension.to_sym]
+		extension = "_blank" unless File.exists?(RAILS_ROOT + "/public/images/icons/Free-file-icons/#{h(size)}/#{h(extension)}.png")
+		image_tag "icons/Free-file-icons/#{h(size)}/#{h(extension)}.png", :title => title
+	end
   
 
   # Print pretty phone numbers
