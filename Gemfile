@@ -27,7 +27,10 @@ gem 'mandrill-api'
 gem 'newrelic_rpm'
 gem 'ey_config'
 gem "mime-types", "1.25"
-gem "paperclip", "~> 2.0"
+# gem "paperclip", "~> 2.0"
+gem "carrierwave", "~> 0.4"
+gem "aws"
+gem "mini_magick"
 
 group :production do
   gem 'mysql2', '< 0.3'

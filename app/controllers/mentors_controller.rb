@@ -121,7 +121,9 @@ class MentorsController < ApplicationController
     begin
       @mentor = Mentor.find(params[:id])
 			if @mentor.avatar?
-				file_path = @mentor.avatar.path(params[:size])
+				av = params[:size] ? @mentor.avatar.versions[params[:size].to_sym] : @mentor.avatar
+				return send_default_photo(params[:size]) if av.nil?
+				return send_data(av.read, :disposition => 'inline', :type => 'image/jpeg')
 			elsif avatar_image_url = @mentor.users.try(:first).try(:person).try(:avatar_image_url)
 				return redirect_to(avatar_image_url)
 			elsif !@mentor.reg_id.nil?

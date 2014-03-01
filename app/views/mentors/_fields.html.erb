@@ -16,7 +16,7 @@
 	<%= f.input :phone_mobile, :label => "Phone", :input_html => { :value => number_to_phone(f.object.phone_mobile), :size => 12 } %>
 	<%= f.input :birthdate, :label => "Birth Date", :start_year => Time.now.year-13, :end_year => 1930 %>
 	<%= f.input :shirt_size, :as => :select, :collection => %w[XS S M L XL XXL 3XL] %>
-	<%= f.input :avatar %>
+	<%= f.input :avatar, :as => :file %>
 	
 <% end %>
 
