@@ -7,8 +7,9 @@ class Participant < Person
   belongs_to :family_income_level, :class_name => "IncomeLevel"
   belongs_to :participant_group, :counter_cache => true
 
-  has_many :mentor_participants
-  has_many :mentors, :through => :mentor_participants
+  has_many :mentor_participants, :conditions => { :deleted_at => nil }
+  has_many :former_mentor_participants, :class_name => "MentorParticipant", :conditions => "deleted_at IS NOT NULL"
+	has_many :mentors, :through => :mentor_participants
   has_many :parents, :foreign_key => :child_id
   has_many :test_scores
   has_many :college_enrollments
