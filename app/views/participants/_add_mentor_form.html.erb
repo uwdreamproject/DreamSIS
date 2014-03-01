@@ -7,7 +7,7 @@
 									:submit_on_return => true,
 									:after_update_element => "function(text_field, selection, hidden_field, id) { text_field.form.submit() }" 
 								},
-								{ :autocomplete => false, :class => "search wide", :placeholder => "Add another #{Customer.mentors_label}" },
+								{ :autocomplete => false, :class => "search wide", :placeholder => "Add another #{Customer.mentor_label}" },
 								{ :skip_style => true } %>
 	
 		<%= f.submit "Add", :disable_with => "Adding..." %>
