@@ -8,6 +8,8 @@ class ScholarshipApplication < ActiveRecord::Base
   after_save :update_filter_cache
   after_destroy :update_filter_cache
 
+	named_scope :awarded, :conditions => { "awarded" => true }
+
   # Updates the participant filter cache
   def update_filter_cache
     participant.save

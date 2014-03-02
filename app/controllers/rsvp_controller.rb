@@ -11,6 +11,8 @@ class RsvpController < ApplicationController
     apply_extra_footer_content(@event)
     @hide_description_link = true
     @event_attendance = @current_user.person.event_attendances.find_or_initialize_by_event_id(@event.id) if @current_user
+		@share_links = true
+		@title = @event
   end
   
   def event_group
@@ -19,6 +21,7 @@ class RsvpController < ApplicationController
     check_if_external_users_allowed(@event_group)
     apply_extra_stylesheet(@event_group)
     apply_extra_footer_content(@event_group)
+		@title = @event_group
   end
   
   def event_group_locations
@@ -27,12 +30,14 @@ class RsvpController < ApplicationController
     check_if_external_users_allowed(@event_group)
     apply_extra_stylesheet(@event_group)
     apply_extra_footer_content(@event_group)
+		@title = "Locations", @event_group
     
     @counties = {}
     for event in @event_group.future_events(@current_user.try(:person) || @audience)
-      @counties[event.location.try(:county)] ||= {}
-      @counties[event.location.try(:county)][event.location] ||= []
-      @counties[event.location.try(:county)][event.location] << event
+			county_name = event.location.try(:county).gsub("County","").strip
+      @counties[county_name] ||= {}
+      @counties[county_name][event.location] ||= []
+      @counties[county_name][event.location] << event
     end
     @counties = @counties.sort_by{ |k,v| k.nil? ? "ZZZZZ" : k.to_s }
   end
@@ -47,6 +52,7 @@ class RsvpController < ApplicationController
     check_if_external_users_allowed(@event)
     apply_extra_stylesheet(@event)
     apply_extra_footer_content(@event)
+		@title = "RSVP", @event
     
     if !@current_user || !@current_user.person.ready_to_rsvp?(@event)
       session[:return_to_after_rsvp] = request.env["HTTP_REFERER"]

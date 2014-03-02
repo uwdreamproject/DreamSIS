@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   # include AuthenticatedSystem #, ExceptionNotifiable
   require 'array_math'
 
-  # before_filter :handle_subdomain, :except => %w[ ping ]
+  before_filter :handle_subdomain, :except => %w[ ping ]
   before_filter :require_ssl, :except => %w[ ping ]
   before_filter :authenticated?, :except => %w[ ping ]
   before_filter :login_required, :except => [ 'remove_vicarious_login', 'ping' ]
@@ -74,17 +74,21 @@ class ApplicationController < ActionController::Base
   #    allows someone to use the same omniauth identity for multiple customers if needed.)
   # 6. Proceed as normal.
   def handle_subdomain
-    if !request.subdomains.empty? && request.subdomains.first != "www"
-      @customer = Customer.find :first, :conditions => { :url_shortcut => request.subdomains.first }
-      if @customer
-        new_url = request.ssl? ? "https://" : "http://"
-        new_url << request.host.gsub(/\A#{request.subdomains.first}\./, "")
-        new_url << login_path(:customer_id => @customer.id)
-        return redirect_to(new_url)
-      else
-        render_error "Please specify a valid subdomain.", "Invalid subdomain."
-      end
-    end
+		if !request.subdomains.empty? && request.subdomains.first == "www"
+      new_url = (request.ssl? ? "https://" : "http://") + request.host.gsub(/\Awww\./, "")
+      return redirect_to(new_url)
+		end
+    # if !request.subdomains.empty? && request.subdomains.first != "www"
+    #   @customer = Customer.find :first, :conditions => { :url_shortcut => request.subdomains.first }
+    #   if @customer
+    #     new_url = request.ssl? ? "https://" : "http://"
+    #     new_url << request.host.gsub(/\A#{request.subdomains.first}\./, "")
+    #     new_url << login_path(:customer_id => @customer.id)
+    #     return redirect_to(new_url)
+    #   else
+    #     render_error "Please specify a valid subdomain.", "Invalid subdomain."
+    #   end
+    # end
   end
 
   def require_ssl
@@ -116,7 +120,7 @@ class ApplicationController < ActionController::Base
   def check_if_enrolled
     unless @current_user.admin? || !@current_user.is_a?(Mentor) || @current_user.person.currently_enrolled?
       if Term.allowing_signups.empty?
-        render_error("You aren't signed up for the Dream Project and sign ups are disabled for now. Please come back later.")
+        render_error("You aren't signed up for the #{Customer.name_label} and sign ups are disabled for now. Please come back later.")
       else
         return redirect_to(mentor_signup_path)
       end

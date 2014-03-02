@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140122041049) do
+ActiveRecord::Schema.define(:version => 20140215041211) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -397,6 +397,7 @@ ActiveRecord::Schema.define(:version => 20140122041049) do
     t.string   "document_content_type"
     t.integer  "document_file_size"
     t.string   "document_file_name"
+    t.string   "title"
   end
 
   add_index "notes", ["customer_id"], :name => "index_notes_on_customer_id"
@@ -609,10 +610,7 @@ ActiveRecord::Schema.define(:version => 20140122041049) do
     t.string   "personal_statement_status"
     t.string   "resume_status"
     t.string   "activity_log_status"
-    t.string   "avatar_file_name"
-    t.string   "avatar_content_type"
-    t.integer  "avatar_file_size"
-    t.datetime "avatar_updated_at"
+    t.string   "avatar"
   end
 
   add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"

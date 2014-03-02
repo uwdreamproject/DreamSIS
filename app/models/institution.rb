@@ -27,6 +27,10 @@ class Institution
   def id
     unitid.to_i
   end
+	
+	def to_title
+		title
+	end
   
   def [](attribute)
     matching_aliases = self.class::ATTRIBUTE_ALIASES.collect{|k,v| k unless v.select{|a| a.to_s == attribute.to_s}.empty?}.compact
@@ -156,7 +160,7 @@ class Institution
   # Returns an array of all Institutions as objects and caches the data for quick retrieval.
   def self.all(options = {})
     fancy_log ":all", "Find"
-    @all ||= RESULTS_CACHE.fetch("all_objects", {:expires_in => EXPIRATION.days}.merge(options)) do
+    @all ||= RESULTS_CACHE.fetch("all_objects", {:expires_in => 180.days}.merge(options)) do
       all = []
       for unitid,raw_attributes in Institution.raw_dataset(options)
         all << Institution.new(raw_attributes)
@@ -173,7 +177,7 @@ class Institution
   protected
   
   def self.indexes(options = {})
-    @indexes ||= RESULTS_CACHE.fetch("indexes", {:expires_in => EXPIRATION.days}.merge(options)) do
+    @indexes ||= RESULTS_CACHE.fetch("indexes", {:expires_in => 180.days}.merge(options)) do
       fancy_log ":all", "Index"
       indexes = { :unitid => {}, :opeid => {}, :name => {}}
       for object in Institution.all(options)
@@ -210,7 +214,11 @@ class Institution
   # and stores it as a hash of hashes into the RESULTS_CACHE. The hash keys are the "unitid" identifiers
   # for the school and the hash values are the raw data hashes returned from the API.
   def self.raw_dataset(options = {})
+<<<<<<< HEAD
     RESULTS_CACHE.fetch("raw_data", {:expires_in => EXPIRATION.days}.merge(options)) do
+=======
+    RESULTS_CACHE.fetch("raw_data", {:expires_in => 180.days}.merge(options)) do
+>>>>>>> 0f39a080654aa7a9183d10be1d530b468d2dbb29
       url = "http://explore.data.gov/api/views/uc4u-xdrd/rows.json"
       fancy_log ":raw_data => #{url}", "Fetch"
       puts "Fetching institution directory listing dataset from #{url}"

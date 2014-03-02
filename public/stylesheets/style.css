@@ -4,6 +4,7 @@
 	https://dreamsis.org/stylesheets/style.css?1349862127
 	https://dreamsis.org/stylesheets/style.css?1364278654
 	https://dreamsis.org/stylesheets/style.css?1364280854
+	https://dreamsis.com/stylesheets/style.css?1390890932
 */
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700);
@@ -96,6 +97,31 @@ a:visited {
 	clear: both;
 }
 
+.activity_logs.weekly_summary .highlight_container {
+	clear: left;
+	padding-bottom: 1em;
+	min-height: 60px;
+	border-bottom: 1px solid #efefef;
+}
+
+.activity_logs.weekly_summary .highlight_container h4 {
+	font-weight: bold;
+}
+
+.activity_logs.weekly_summary blockquote {
+	margin-left: 65px;
+	margin-right: 0;
+}
+
+.activity_logs.weekly_summary blockquote p:first-child {
+	margin-top: 0;
+}
+
+.activity_logs.weekly_summary .photo {
+	float: left;
+	margin-right: 1em;
+}
+
 table {
 	width: 100%;
 	border-collapse: collapse;
@@ -171,6 +197,14 @@ table.participants img.avatar {
 
 table.participants.loading {
 	background: url(../images/bar-loader.gif) no-repeat center 25%;
+}
+
+.loading {
+	background: url(../images/bar-loader.gif) center 75% no-repeat;
+	min-height: 5em;
+	min-width: 220px;
+	padding: 6px;
+	display: block;
 }
 
 table.participants td, table.participants th {
@@ -334,7 +368,7 @@ tr.merge_target {
 }
 
 
-#merge_form input:not([type=submit]) {
+#merge_form input:not([type=submit]):not(.editable) {
 	width: 2em;
 	background: none;
 	display: inline;
@@ -385,7 +419,8 @@ h4 {
 	color: white;
 	width: 230px;
 	/*height: 37px;*/
-	background: url(../images/dreamsis-logo-transparent.png) no-repeat;
+	background: url(../images/dreamsis-logo-transp-2x.png) 7px 7px no-repeat;
+	background-size: 192px;
 }
 
 #header h1 a strong {
@@ -724,6 +759,10 @@ body.new.session #footer {
 	float: right;
 }
 
+.share_links {
+	float: right;
+}
+
 a.redirect-link {
 	background: url('../images/forward-arrow.gif') center right no-repeat;
 	padding-right: 16px;
@@ -791,6 +830,10 @@ a.redirect-link:hover {
 
 .spanhalf {
 	width: 48.5%;
+}
+
+.span4 {
+	width: 25%;
 }
 
 .spanhalf.left {
@@ -974,6 +1017,10 @@ td.college-logo {
 	background-image: url(../images/icons/silk/page_edit.png);
 }
 
+.info-section#paperwork td {
+	height: 2em;
+}
+
 .info-section#parents h2 {
 	background-image: url(../images/icons/silk/user_suit.png);
 }
@@ -1102,13 +1149,13 @@ ul.crimes-list li {
 	top: 10px;
 	text-align: center;
 	z-index: 100;
-	width: 30%;
-	left: 50%;
+	width: 70%;
+	left: 15%;
 	margin-left: -15%;
 }
 
 #notifications .alert {
-	background: #bec url(../images/icons/silk/accept.png) no-repeat 10px center;
+	background: #bec url(../images/icons/silk/accept.png) no-repeat 10px 10px;
 	color: #031;
 	border: 1px solid #031;
 	padding: 10px 20px;
@@ -2040,6 +2087,57 @@ a.button:active {
 	border-style: outset;
 }
 
+.button.icon-only {
+	width: 16px;
+	height: 16px;
+	padding: 0;
+	margin: 0;
+	background-color: none !important;
+	border: none;
+	box-shadow: none;
+	background-position: 0 0;
+	border-radius: 0;
+	vertical-align: text-bottom;
+	cursor: pointer;
+	position: relative;
+	text-shadow: none;
+}
+
+.button.icon-only:hover {
+	/*box-shadow: 1px 1px 3px rgba(0,0,0,0.3);*/
+}
+
+.button.icon-only > span {
+	display: none;
+	position: absolute;
+	left: -75%;
+	top: -23px;
+	font-size: 90%;
+	background: rgba(0,0,0,0.7);
+	color: white;
+	text-shadow: 0px 1px 1px rgba(0,0,0,0.5);
+	padding: 1px 5px;
+	border-radius: 3px;
+}
+
+.button.icon-only:after {
+	content: " ";
+	display: none;
+	position: absolute;
+	top: -6px;
+	width: 16px;
+	height: 10px;
+	background: url(../images/icons/down-arrow.png) center 1px no-repeat;
+}
+
+.button.icon-only:hover > span {
+	display: block;	
+}
+
+.button.icon-only:hover:after {
+	display: block;
+}
+
 .button.cancel {
 	background-image: url(../images/icons/silk/cross.png);
 }
@@ -2368,6 +2466,8 @@ ul.filters {
 
 .filters li:hover label small {
 	background: #999;
+	color: white;
+	text-shadow: 0 1px 0 #999;
 }
 
 .filters li input {
@@ -2420,8 +2520,16 @@ ul.filter-results {
 	background-image: url(../images/icons/silk/cross.png);	
 }
 
+.filterable {
+	-webkit-transition: all 0.2s ease-in-out;
+}
+
 .filterable.hidden {
 	display: none;
+}
+
+.filterable.preview {
+	background: rgba(189, 211, 224, 0.2);
 }
 
 span.icon {
@@ -2676,6 +2784,11 @@ dl.inline-definitions dd p {
 img.student_photo {
 	border: 1px solid #f2f2f2;
 	border-radius: 7px;
+	max-width: 150px;
+}
+
+img.student_photo.thumb {
+	max-width: 50px;
 }
 
 img.student_photo.left {
@@ -3240,7 +3353,11 @@ div.notes.editable, p.notes.editable {
 	font-size: 90%;
 	color: #656565;
 	padding-right: 1em;
-	min-width: 13em;
+	min-width: 10em;
+}
+
+#notes .note-body {
+	width: 100%;
 }
 
 #notes table {
@@ -3249,6 +3366,56 @@ div.notes.editable, p.notes.editable {
 
 #notes .metadata .username {
 	font-weight: bold;
+}
+
+#notes table td.functions a {
+	visibility: hidden;
+}
+
+#notes table tr:hover td.functions a {
+	visibility: visible;
+}
+
+table.documents strong {
+	margin: 0;
+	margin-top: 0.5em;
+}
+
+table.documents strong a {
+	text-decoration: none;
+	font-weight: bold;
+}
+
+table.documents p {
+	margin-top: 0;
+	margin-bottom: 0.5em;
+}
+
+table.documents td.content_type {
+	width: 42px;
+}
+
+table.documents .timestamp {
+	font-size: 80%;
+}
+
+table.documents .timestamp .username {
+	font-weight: bold;
+}
+
+table.documents td.functions a {
+	visibility: hidden;
+}
+
+table.documents tr:hover td.functions a {
+	visibility: visible;
+}
+
+#new_document_form {
+	background: #f5f5f5;
+	padding: 1em;
+	margin-bottom: 1em;
+	padding-bottom: 1em;
 }
 
 .hoverable .show_on_hover {
@@ -4676,10 +4843,16 @@ form.formtastic input {
 
 form.formtastic fieldset > ol > li fieldset legend.label label {
 	position: absolute; 
-	color: red !important;
+	color: #656565 !important;
 	display: block !important;
 	float: none !important;
 	height: 2em !important;
+}
+
+form.formtastic fieldset > ol > li fieldset legend.label {
+	display: block;
+	height: 2em;
+	position: relative;
 }
 
 form.formtastic fieldset > ol > li fieldset ol { 

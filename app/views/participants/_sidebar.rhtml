@@ -69,7 +69,7 @@
 
 		<ul class="filters">
 		<% for object_filter in Participant.object_filters %>
-			<li>
+			<li id="filter_li_<%= object_filter.id.to_s %>">
 			
 				<% 
 			    dom_id = "filter_#{object_filter.id.to_s}_true"
@@ -81,6 +81,9 @@
 				<%= label_tag(dom_id, "#{check_box_str}#{record_count_str}#{object_filter.opposite_title}") %>
 			
 			</li>
+			
+			<%= javascript_tag "$('filter_li_#{object_filter.id.to_s}').on('mouseover', function() { previewFilter('#{object_filter.id.to_s}') })" %>
+			<%= javascript_tag "$('filter_li_#{object_filter.id.to_s}').on('mouseout', function() { unpreviewFilter('#{object_filter.id.to_s}') })" %>
 		
 		<% end -%>
 		</ul>

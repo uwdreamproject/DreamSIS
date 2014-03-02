@@ -14,7 +14,7 @@
 				<span class="grey tag">Not Signed Up</span>
 				<%= link_to "Sign up now", mentor_signup_term_path(term) if term.allow_signups? %>
 			<%- else -%>
-				<table>
+				<table class="borderless">
 					<%= render :partial => 'mentor_signup/mentor_term', :collection => mentor_terms %>
 				</table>
 			<% end -%>

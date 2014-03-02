@@ -7,8 +7,9 @@ class Participant < Person
   belongs_to :family_income_level, :class_name => "IncomeLevel"
   belongs_to :participant_group, :counter_cache => true
 
-  has_many :mentor_participants
-  has_many :mentors, :through => :mentor_participants
+  has_many :mentor_participants, :conditions => { :deleted_at => nil }
+  has_many :former_mentor_participants, :class_name => "MentorParticipant", :conditions => "deleted_at IS NOT NULL"
+	has_many :mentors, :through => :mentor_participants
   has_many :parents, :foreign_key => :child_id
   has_many :test_scores
   has_many :college_enrollments
@@ -23,6 +24,7 @@ class Participant < Person
   named_scope :in_cohort, lambda {|grad_year| {:conditions => { :grad_year => grad_year }}}
   named_scope :in_high_school, lambda {|high_school_id| {:conditions => { :high_school_id => high_school_id }}}
   named_scope :active, :conditions => ["inactive IS NULL OR inactive = ?", false]
+  named_scope :target, :conditions => ["not_target_participant IS NULL OR not_target_participant = ?", false]
   named_scope :attending_college, lambda {|college_id| { :conditions => { :college_attending_id => college_id }}}
   named_scope :assigned_to_mentor, lambda {|mentor_id| { :joins => :mentor_participants, :conditions => { :mentor_participants => { :mentor_id => mentor_id }}}}
 
@@ -102,11 +104,15 @@ class Participant < Person
   def ethnicities(separator = nil, options = {})
     ethnicities = []
     ethnicities << "hispanic" if hispanic?
+    ethnicities << "latino" if latino?
+    ethnicities << "african" if african?
     ethnicities << "african_american" if african_american?
     ethnicities << "american_indian" if american_indian?
     ethnicities << "asian" if asian?
     ethnicities << "pacific_islander" if pacific_islander?
     ethnicities << "caucasian" if caucasian?
+    ethnicities << "middle_eastern" if middle_eastern?
+    ethnicities << "pacific_islander" if pacific_islander?
     ethnicities << ethnicity_details if !ethnicity_details.blank? && options[:include_details]
     return ethnicities if separator.nil?
     ethnicities.join(separator)

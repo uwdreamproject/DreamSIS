@@ -77,7 +77,12 @@
 			<%= render :partial => 'mentors' %>
 			<br>
 			<%= render :partial => 'add_mentor_form' %>
-
+			
+			<%- unless @participant.former_mentor_participants.empty? -%>
+				<br>
+				<h4>Former <%= Customer.mentors_Label %></h4>
+				<%= render :partial => 'former_mentors' %>
+			<% end %>
 		</div>
 	<% end -%>
 
