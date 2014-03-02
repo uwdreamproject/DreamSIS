@@ -11,7 +11,7 @@
 	
 	<%- if @participant.respond_to?(:college_applications) -%>
 		<div class="info-section" id="college_applications">
-			<h2>Colleges
+			<h2>College Applications
 				<%= content_tag :em, "Synced with CollegeMapper", :class => "right synced-with-collegemapper-note" if @participant.college_mapper_id %>
 			</h2>
 			<%= render :partial => 'college_applications' %>
@@ -24,7 +24,7 @@
 
 	<%- if @participant.respond_to?(:scholarship_applications) -%>
 		<div class="info-section" id="scholarship_applications">
-			<h2>Scholarships</h2>
+			<h2>Scholarship Applications</h2>
 			<%= render :partial => 'scholarship_applications' %>
 			<br>
 			<%= link_to 'Add scholarship', 

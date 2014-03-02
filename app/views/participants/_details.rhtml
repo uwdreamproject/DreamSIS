@@ -48,6 +48,13 @@
 <% if @participant.respond_to?(:college_attending) && @participant.college_attending %>
 	<h4>College</h4>
 	<%= @participant.college_attending.name %>
+	
+	<br /><%= link_to 'Remove', 
+						participant_url(@participant, :participant => { :college_attending_id => nil }),
+						:method => :put,
+						:confirm => "Are you sure this student is no longer attending this college?",
+						:class => 'small' %>
+	
 <% end -%>
 
 <h4>Address</h4>
