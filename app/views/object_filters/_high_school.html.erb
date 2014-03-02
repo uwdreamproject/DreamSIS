@@ -3,7 +3,7 @@
 object_filter ||= @object_filter
 summary ||= nil
 high_school_participants = participants.select{|p| summary == :all ? true : (p.high_school == high_school) }
-active_participants = high_school_participants.select{|p| !p.inactive? }
+active_participants = high_school_participants.select{|p| !p.inactive? && !p.not_target_participant? }
 filtered_participants = active_participants.select{|p| object_filter.passes?(p, :purpose => :stats)} 
 
 active_percentage = filtered_participants.size.to_f / active_participants.size.to_f * 100

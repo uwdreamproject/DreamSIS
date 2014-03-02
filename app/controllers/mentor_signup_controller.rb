@@ -1,6 +1,7 @@
 class MentorSignupController < ApplicationController
   before_filter :fetch_mentor
-  before_filter :fetch_term, :check_if_signups_allowed, :except => ['basics', 'background_check_form', 'risk_form']
+  before_filter :fetch_term, :except => ['background_check_form', 'risk_form']
+	before_filter :check_if_signups_allowed, :except => ['basics', 'background_check_form', 'risk_form']
   skip_before_filter :check_authorization, :check_if_enrolled
 
   def index

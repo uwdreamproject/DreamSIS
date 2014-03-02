@@ -1,32 +1,40 @@
 <h1><%=h @cohort.to_s %> Participant Stats</h1>
 
 <div style="margin-bottom: 2em">
-	<h2>All <%=h @cohort.to_s %> participants</h2>
-	<%= render :partial => "object_filters/high_school_stats", 
-				:locals => { 
-					:participants => Participant.in_cohort(@cohort),
-					:hide_title => true,
-					:summary => :all
-				} %>
+	<h2><%= link_to_remote "Show all #{h(@cohort.to_s)} participants", 
+							:url => stats_high_schools_path(:cohort => @cohort, :hide_title => true), 
+							:method => :get, 
+							:html => {
+								:onclick => "$('participant_stats_all').show()", 
+								:id => "show_participants_stats_all_link"
+							} %></h2>	
+	<div id="participant_stats_all" class="loading" style="display:none">
+		<%#= javascript_tag "document.observe('dom:loaded', function() { #{remote_function(
+			:url => stats_high_schools_path(:cohort => @cohort, :hide_title => true), :method => :get
+		)} });" %>
+	</div>
 </div>
 
 
 <%- for high_school in @high_schools -%>
 	<div style="margin-bottom: 2em">
+		<%= link_to "Show only " + h(high_school.name), url_for(:cohort => @cohort, :id => high_school), :class => "right" unless params[:id] %>
 		<h2><%=h high_school.name %></h2>
-		<%= render :partial => "object_filters/high_school_stats", 
-					:locals => { 
-						:participants => Participant.in_cohort(@cohort).in_high_school(high_school.try(:id)),
-						:hide_title => true 
-					} %>
+		<div id="participant_stats_<%= high_school.id %>" class="loading">
+			<%= javascript_tag "document.observe('dom:loaded', function() { #{remote_function(:url => stats_high_school_path(high_school, :cohort => @cohort, :hide_title => true), :method => :get)} });" %>
+		</div>
 	</div>
 <% end -%>
 
 <div id="sidebar">
+	<%- if params[:id] -%>
+		<p><%= link_to "All high schools", url_for(:cohort => @cohort), :class => 'list button' %></p>
+	<% end %>
+	
 	<h3>Other Cohorts</h3>
 	<ul class="quick_nav">
 	<%- for cohort in Participant.cohorts.reverse -%>
-		<li><%= link_to cohort.to_s, url_for(:cohort => cohort) %></li>
+		<li><%= link_to cohort.to_s, url_for(:cohort => cohort, :id => params[:id]) %></li>
 	<% end -%>
 	</ul>
 </div>

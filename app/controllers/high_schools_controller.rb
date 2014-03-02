@@ -120,7 +120,13 @@ class HighSchoolsController < ApplicationController
 
   def stats
     @high_schools = params[:id].nil? ? HighSchool.partners : [HighSchool.find(params[:id])]
+		@all_schools = params[:id].nil?
     @cohort = params[:cohort] || Participant.current_cohort
+		
+		respond_to do |format|
+			format.html
+			format.js
+		end
   end
   
   def in_district

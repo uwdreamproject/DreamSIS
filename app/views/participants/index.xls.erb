@@ -29,6 +29,7 @@
 		<th>after_school_activities</th>
 		<th>time_conflicts</th>
 		<th>fafsa_submitted_date</th>
+		<th>fafsa_not_applicable</th>
 		<th>binder_date</th>
 		<th>photo_release_date</th>
 		<th>photo_release_no_fullname</th>
@@ -42,7 +43,7 @@
 		<th>vegan</th>
 		<th>hispanic</th>
 		<th>african_american</th>
-		<th>american_indian</th>
+		<th>american_indian (or alaska_native)</th>
 		<th>asian</th>
 		<th>pacific_islander</th>
 		<th>caucasian</th>
@@ -69,6 +70,7 @@
 		<th>mother_education_country</th>
 		<th>father_education_country</th>
 		<th>family_income_level</th>
+		<th>lives_with</th>
 		<th>college_attending</th>
 		<th>household_size</th>
 		<th>single_parent_household</th>
@@ -80,7 +82,6 @@
 		<th>live_the_dream_nominee</th>
 		<th>address_is_invalid</th>
 		<th>email_is_invalid</th>
-		<th>other_programs</th>
 		<th>college_graduation_date</th>
 		<th>target_participant</th>
 		<th><%=h Customer.not_target_label %></th>
@@ -91,8 +92,6 @@
 		<th>halal</th>
 		<th>foster_youth</th>
 		<th>plans_after_high_school</th>
-		<th>live_with_mother</th>
-		<th>live_with_father</th>
 		<th>parent_graduated_college</th>
 		<th>family_members_who_went_to_college</th>
 		<th>family_members_graduated</th>
@@ -118,7 +117,7 @@
 		<th>can_receive_texts</th>
 		<th>unlimited_texting</th>
 		<th>college_bound_scholarship</th>
-		<th>other_college_programs</th>
+		<th>programs</th>
 		<th>other_location_id</th>
 		<th>participant_group</th>
 		<%- for object_filter in Participant.object_filters -%>
@@ -161,6 +160,7 @@
 	<td><%=h participant.after_school_activities %></td>
 	<td><%=h participant.time_conflicts %></td>
 	<td><%=h participant.fafsa_submitted_date %></td>
+	<td><%=h participant.fafsa_not_applicable %></td>
 	<td><%=h participant.binder_date %></td>
 	<td><%=h participant.photo_release_date %></td>
 	<td><%=h participant.photo_release_no_fullname %></td>
@@ -201,6 +201,7 @@
 	<td><%=h participant.mother_education_country %></td>
 	<td><%=h participant.father_education_country %></td>
 	<td><%=h participant.family_income_level.title if participant.family_income_level %></td>
+	<td><%=h participant.parents.find(:all, :conditions => { :lives_with => true }).collect(&:parent_type).join(", ") rescue "#Error" %></td>
 	<td><%=h participant.college_attending.name if participant.college_attending %></td>
 	<td><%=h participant.household_size %></td>
 	<td><%=h participant.single_parent_household %></td>
@@ -212,7 +213,6 @@
 	<td><%=h participant.live_the_dream_nominee %></td>
 	<td><%=h participant.address_is_invalid %></td>
 	<td><%=h participant.email_is_invalid %></td>
-	<td><%=h participant.other_programs %></td>
 	<td><%=h participant.college_graduation_date %></td>
 	<td><%=h participant.target_participant %></td>
 	<td><%=h participant.not_target_participant %></td>
@@ -223,8 +223,6 @@
 	<td><%=h participant.halal %></td>
 	<td><%=h participant.foster_youth %></td>
 	<td><%=h participant.plans_after_high_school %></td>
-	<td><%=h participant.live_with_mother %></td>
-	<td><%=h participant.live_with_father %></td>
 	<td><%=h participant.parent_graduated_college %></td>
 	<td><%=h participant.family_members_who_went_to_college %></td>
 	<td><%=h participant.family_members_graduated %></td>
@@ -250,7 +248,7 @@
 	<td><%=h participant.can_receive_texts %></td>
 	<td><%=h participant.unlimited_texting %></td>
 	<td><%=h participant.college_bound_scholarship %></td>
-	<td><%=h participant.other_college_programs %></td>
+	<td><%=h participant.programs.collect(&:title).join(", ") %></td>
 	<td><%=h participant.other_location_id %></td>
 	<td><%=h participant.participant_group.try(:title) %></td>
 	<%- for object_filter in Participant.object_filters -%>

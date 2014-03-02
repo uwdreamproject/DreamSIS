@@ -127,6 +127,17 @@ function showAllFilterables() {
 	})
 }
 
+// Adds the "preview_filter" CSS class to the filter elements but doesn't hide them
+function previewFilter(filter_key) {
+	elements = filterables.get(filter_key).get(true)
+	elements.invoke('addClassName', 'preview')
+}
+
+function unpreviewFilter(filter_key) {
+	elements = filterables.get(filter_key).get(true)
+	elements.invoke('removeClassName', 'preview')
+}
+
 // Shows everything and unchecks all the checkboxes
 function clearAllFilters() {
 	showAllFilterables()

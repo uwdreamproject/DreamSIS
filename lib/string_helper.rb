@@ -7,4 +7,8 @@ class String
   def is_integer?
     !(self =~ /\A[+-]?\d+\Z/).nil?
   end
+	
+	def to_title
+		self
+	end
 end

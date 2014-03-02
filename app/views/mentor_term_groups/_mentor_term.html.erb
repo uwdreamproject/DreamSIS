@@ -1,7 +1,7 @@
 <tr id="mentor_term_<%= mentor_term.id %>" class="hoverable <%= "newly_added" if params[:newly_added]==mentor_term.id.to_s %>">
-	<td class="photo"><%= image_tag photo_mentor_path(mentor_term.try(:mentor), :size => :default), 
-						:class => 'student_photo', 
-						:size => "64x83", 
+	<td class="photo"><%= image_tag photo_mentor_path(mentor_term.try(:mentor), :size => :medium), 
+						:class => 'student_photo thumb', 
+						:width => 64, 
 						:alt => "" %>
 		</td>
 		
