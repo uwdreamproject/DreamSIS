@@ -4,6 +4,7 @@
 	<%= "Participants" unless @high_school && @grad_year %>
 	<%=h @high_school.name if @high_school%>
 	<%= "at " + h(@college.name) if @college %>
+	<%= "in " + link_to(h(@program.title), @program) if @program %>
 	<%= "assigned to " + (params[:mentor_id] == "me" ? "me" : h(@mentor.fullname)) if @mentor %>
 	<%=h @grad_year.to_s if @grad_year %>
 </h1>
