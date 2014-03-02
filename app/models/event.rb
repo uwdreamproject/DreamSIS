@@ -2,24 +2,24 @@ class Event < ActiveRecord::Base
   include Comparable
   has_many :attendees, :class_name => "EventAttendance" do
     def all(audience = nil)
-      audience = audience.class if audience.is_a?(Person)
-      al = find(:all, :joins => :person, :order => "lastname, firstname")
-      al.reject! {|att| att.audience != audience.to_s.classify} unless audience.nil?
-      al
+      conditions = ["(audience = :audience) OR (people.type = :audience AND audience = NULL)", {:audience => audience.to_s.classify}] if audience
+      al = find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
     end
     def rsvpd(audience = nil)
-      audience = audience.class if audience.is_a?(Person)
-      conditions = { :rsvp => true }
-      rsvp = find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
-      rsvp.reject!{|att| att.audience != audience.to_s.classify} unless audience.nil?
-      rsvp
+      if audience
+       conditions = ["((audience = :audience) OR (people.type = :audience AND audience = NULL)) AND rsvp=:true", { :audience => audience.to_s.classify, :true => true }]
+      else
+        conditions = { :rsvp => true }
+      end
+      find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
     end
     def attended(audience = nil)
-      audience = audience.class if audience.is_a?(Person)
-      conditions = { :attended => true }
-      attend = find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
-      attend.reject! {|att| att.audience != audience.to_s.classify} unless audience.nil?
-      attend
+      if audience
+       conditions = ["((audience = :audience) OR (people.type = :audience AND audience = NULL)) AND attended=:true", { :audience => audience.to_s.classify, :true => true }]
+      else
+        conditions = { :attended => true }
+      end
+      find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
     end
   end
 
