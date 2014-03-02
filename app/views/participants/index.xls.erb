@@ -119,6 +119,7 @@
 		<th>college_bound_scholarship</th>
 		<th>programs</th>
 		<th>other_location_id</th>
+		<th>assigned_mentors</th>
 		<th>participant_group</th>
 		<%- for object_filter in Participant.object_filters -%>
 			<th><%=h object_filter.title %></th>
@@ -250,6 +251,7 @@
 	<td><%=h participant.college_bound_scholarship %></td>
 	<td><%=h participant.programs.collect(&:title).join(", ") %></td>
 	<td><%=h participant.other_location_id %></td>
+	<td><%=h participant.mentors.collect(&:fullname).join(", ") %></td>
 	<td><%=h participant.participant_group.try(:title) %></td>
 	<%- for object_filter in Participant.object_filters -%>
 		<td><%=h participant.passes_filter?(object_filter) ? "TRUE" : "" %></td>
