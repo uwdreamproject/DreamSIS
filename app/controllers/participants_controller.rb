@@ -176,9 +176,9 @@ class ParticipantsController < ApplicationController
     end
     
 		if @participant.avatar?
-				send_file @participant.avatar.path(params[:style] || :original), :type => @participant.avatar.content_type, :disposition => 'inline'
-		else
-			redirect_to "/images/blank_avatar.png", :status => 301
+			av = params[:size] ? @participant.avatar.versions[params[:size].to_sym] : @participant.avatar
+			return send_default_photo(params[:size]) if av.nil?
+			return send_data(av.read, :disposition => 'inline', :type => 'image/jpeg')
 		end
   end
 	
@@ -268,17 +268,7 @@ class ParticipantsController < ApplicationController
       format.xml  { head :ok }
     end
   end
-  
-  def note
-    @participant = Participant.find(params[:id])
-    @note = @participant.notes.create(params[:note])
-    
-    respond_to do |format|
-      format.html { redirect_to @participant }
-      format.js
-    end    
-  end
-  
+
   # Checks for a duplicate participant based on the parameters passed. Used in an AJAX query on the participant form.
   def check_duplicate
     @duplicates = Participant.possible_duplicates(params[:participant], 10)
@@ -371,5 +361,12 @@ class ParticipantsController < ApplicationController
 	def set_title_prefix
 		@title = ["Participants"]
 	end
+
+  def send_default_photo(size)
+		filename = size == "thumb" ? "blank_avatar_thumb.png" : "blank_avatar.png"
+    send_file File.join(RAILS_ROOT, "public", "images", filename), 
+              :disposition => 'inline', :type => 'image/png', :status => 404
+  end  
+
     
 end

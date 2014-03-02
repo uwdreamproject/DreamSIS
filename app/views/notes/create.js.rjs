@@ -1,0 +1,11 @@
+page.if("$('notes_container_#{@note.notable_id}')") do
+	page.replace_html "notes_container_#{@note.notable_id}", 
+											:partial => 'shared/notes',
+											:object => @note.notable,
+											:locals => { 	:start_date => params[:start_date], 
+																		:end_date => params[:end_date] }
+end
+
+page << "$('new_note').reset()"
+
+page.visual_effect :highlight, "note_#{@note.id}"

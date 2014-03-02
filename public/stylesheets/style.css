@@ -1017,6 +1017,10 @@ td.college-logo {
 	background-image: url(../images/icons/silk/page_edit.png);
 }
 
+.info-section#paperwork td {
+	height: 2em;
+}
+
 .info-section#parents h2 {
 	background-image: url(../images/icons/silk/user_suit.png);
 }
@@ -3340,7 +3344,11 @@ div.notes.editable, p.notes.editable {
 	font-size: 90%;
 	color: #656565;
 	padding-right: 1em;
-	min-width: 13em;
+	min-width: 10em;
+}
+
+#notes .note-body {
+	width: 100%;
 }
 
 #notes table {
@@ -3349,6 +3357,56 @@ div.notes.editable, p.notes.editable {
 
 #notes .metadata .username {
 	font-weight: bold;
+}
+
+#notes table td.functions a {
+	visibility: hidden;
+}
+
+#notes table tr:hover td.functions a {
+	visibility: visible;
+}
+
+table.documents strong {
+	margin: 0;
+	margin-top: 0.5em;
+}
+
+table.documents strong a {
+	text-decoration: none;
+	font-weight: bold;
+}
+
+table.documents p {
+	margin-top: 0;
+	margin-bottom: 0.5em;
+}
+
+table.documents td.content_type {
+	width: 42px;
+}
+
+table.documents .timestamp {
+	font-size: 80%;
+}
+
+table.documents .timestamp .username {
+	font-weight: bold;
+}
+
+table.documents td.functions a {
+	visibility: hidden;
+}
+
+table.documents tr:hover td.functions a {
+	visibility: visible;
+}
+
+#new_document_form {
+	background: #f5f5f5;
+	padding: 1em;
+	margin-bottom: 1em;
+	padding-bottom: 1em;
 }
 
 .hoverable .show_on_hover {
