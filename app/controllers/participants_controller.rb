@@ -117,6 +117,20 @@ class ParticipantsController < ApplicationController
       format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
     end
   end
+
+  def program
+    @program = Program.find(params[:program_id])
+    @participants = @program.participants
+		@title << @program.try(:title)
+    
+    respond_to do |format|
+      format.html { render :action => 'index' }
+      format.xml  { render :xml => @participants }
+      format.js { render 'index'}
+      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+    end
+  end
+
   
   def group
     @participant_group = ParticipantGroup.find(params[:id])

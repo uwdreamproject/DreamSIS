@@ -4,20 +4,22 @@
   <tr>
     <th>Title</th>
     <th>Abbreviation</th>
+	<th><%= Customer.participants_Label %> Count</th>
 	<th colspan=3></th>
   </tr>
 
 <% for program in @programs %>
   <tr>
-    <td><%=h program.title %></td>
+    <td class="name"><%= link_to h(program.title), program %></td>
     <td><%=h program.abbreviation %></td>
-    <td><%= link_to 'Show', program %></td>
-    <td><%= link_to 'Edit', edit_program_path(program) %></td>
-    <td><%= link_to 'Destroy', program, :confirm => 'Are you sure?', :method => :delete %></td>
+	<td><%= link_to pluralize(program.participants.count, "participant"), program_participants_path(program) %></td>
+    <td class="functions"><%= link_to 'Show', program %></td>
+    <td class="functions"><%= link_to 'Edit', edit_program_path(program) %></td>
+    <td class="functions"><%= link_to 'Destroy', program, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
-<br />
-
-<%= link_to 'New program', new_program_path, :class => "add button" %>
+<div id="sidebar">
+	<%= link_to 'Add new program', new_program_path, :class => "add button" %>
+</div>

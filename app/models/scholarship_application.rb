@@ -1,6 +1,6 @@
 class ScholarshipApplication < ActiveRecord::Base
   belongs_to :scholarship
-  belongs_to :participant
+  belongs_to :participant, :touch => true
   
   validates_presence_of :scholarship_id, :participant_id
   # validates_uniqueness_of :scholarship_id, :scope => :participant_id  # Deprecated. Students can earn the same scholarship more than once.
