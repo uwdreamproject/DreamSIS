@@ -30,7 +30,9 @@ class Institution
 	def to_title
 		title
 	end
-  
+	
+	attr_accessor :count
+
   def [](attribute)
     matching_aliases = self.class::ATTRIBUTE_ALIASES.collect{|k,v| k unless v.select{|a| a.to_s == attribute.to_s}.empty?}.compact
     aliases = ([attribute.to_s] + matching_aliases).flatten.compact
