@@ -56,7 +56,7 @@
 				<ul>
 					<li class="primary list"><%= link_to "All locations &amp; Colleges", locations_url %></li>
 					<% for college in CollegeApplication.top_institutions(10) %>
-						<li><%= link_to "#{truncate(college.name)} (#{college.count})", college_url(college), :title => college.name %></li>
+						<li><%= link_to "#{truncate(college.name)} (#{college.count})", college_url(college.try(:id)), :title => college.name %></li>
 					<% end -%>
 				</ul>
 			</div>
