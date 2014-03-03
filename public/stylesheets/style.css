@@ -3858,6 +3858,48 @@ div.auto_complete ul {
   left: 0;
 }
 
+.menu div.auto_complete {
+/*	width: 100%;
+	position: relative !important;*/
+/*	display: block;
+	margin: 0;
+	padding: 0;
+	left: 0;
+	top: 0;
+	text-shadow: none;*/
+}
+
+.menu div.auto_complete ul {
+	width: 100%;
+	position: relative !important;
+	display: block;
+	margin-left: -7px;
+	padding: 0;
+	padding-right: 12px;
+	left: 0;
+	top: 0;
+	z-index: 100;
+	text-shadow: none;
+}
+
+.menu div.auto_complete li:hover {
+	background: #415994;
+	cursor: pointer;
+}
+
+.menu li.search {
+	margin-left: -4px !important;
+	padding-right: 0;
+}
+
+.menu li.search input.search {
+	border: none;
+	box-shadow: none;
+	margin: 0;
+	width: 100%;
+	border-bottom: 1px dotted #dadada;
+}
+
 div.auto_complete.right ul {
 	right: 0;
 	left: auto;
