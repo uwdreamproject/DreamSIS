@@ -73,8 +73,8 @@ textables << "Send" if @participant.can_send_texts?
 textables << "Receive" if @participant.can_receive_texts?
 textables = ["Unlimited"] if @participant.unlimited_texting?
 -%>
-<br />Texting: <%= textables.empty? ? content_tag(:span, "None", :class => "light") : textables.join("<br />") %>
-<%= content_tag(:div, "Preferred", :class => 'preferred-note') if @participant.preferred_contact_method == 'Text' %>
+<%= "<br />Texting: " + textables.join("<br />") unless textables.empty? %>
+<%= content_tag(:div, "Texting Preferred", :class => 'preferred-note') if @participant.preferred_contact_method == 'Text' %>
 
 
 <%= content_tag(:div, "Phone Preferred", :class => 'preferred-note') if @participant.preferred_contact_method == 'Phone' %>
