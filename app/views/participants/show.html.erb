@@ -1,11 +1,12 @@
-<%- cache @participant do -%>
-
+<%- cache [@participant.cache_key, "details"].join("/") do -%>
 	<div id="column1">
 		<%= render :partial => "details" %>
 	</div>
+<% end %>
 
 	<div id="column2">
-
+		
+	<%- cache [@participant.cache_key, "column2-a"].join("/") do -%>
 		<div class="info-section" id="filter_results">
 			<h2>Current Stats</h2>
 			<%= render :partial => 'filter_results' %>
@@ -71,44 +72,44 @@
 				<%= render :partial => 'college_degrees' %>
 			</div>
 		<% end -%>
+	<% end %>
 
-
-		<%- if @participant.respond_to?(:mentors) -%>
-			<div class="info-section" id="mentors">
+	<%- if @participant.respond_to?(:mentors) -%>
+		<div class="info-section" id="mentors">
+			<%- cache [@participant.cache_key, "mentors"].join("/") do -%>
 				<h2><%= Customer.mentors_Label %></h2>
 				<%= render :partial => 'mentors' %>
-				<br>
-				<%= render :partial => 'add_mentor_form' %>
-			
+			<% end %>
+			<br>
+			<%= render :partial => 'add_mentor_form' %>
+
+			<%- cache [@participant.cache_key, "former-mentors"].join("/") do -%>			
 				<%- unless @participant.former_mentor_participants.empty? -%>
 					<br>
 					<h4>Former <%= Customer.mentors_Label %></h4>
 					<%= render :partial => 'former_mentors' %>
 				<% end %>
-			</div>
-		<% end -%>
-
-		<%- if @participant.respond_to?(:events) -%>
-			<div class="info-section" id="events">
-				<h2>Events</h2>
-				<%= render :partial => 'events' %>
-			</div>
-		<% end -%>
-
-
-	
-		<%- if @participant.respond_to?(:submitted_fafsa?) -%>
-			<div class="info-section" id="paperwork">
-				<%= render :partial => 'paperwork_status' %>
-			</div>
-		<% end -%>
-	
-		<div class="info-section" id="notes">
-			<%= render :partial => "notes" %>
+			<% end %>
 		</div>
+	<% end -%>
 
+	<%- if @participant.respond_to?(:events) -%>
+		<div class="info-section" id="events">
+			<h2>Events</h2>
+			<%= render :partial => 'events' %>
+		</div>
+	<% end -%>
+
+	<%- if @participant.respond_to?(:submitted_fafsa?) -%>
+		<div class="info-section" id="paperwork">
+			<%= render :partial => 'paperwork_status' %>
+		</div>
+	<% end -%>
+
+	<div class="info-section" id="notes">
+		<%= render :partial => "notes" %>
 	</div>
 
-	<%= render :partial => "sidebar" %>
+</div>
 
-<% end %>
+<%= render :partial => "sidebar" %>
