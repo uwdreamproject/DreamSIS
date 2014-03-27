@@ -97,6 +97,10 @@ a:visited {
 	clear: both;
 }
 
+.weak {
+  font-weight: normal !important;
+}
+
 .activity_logs.weekly_summary .highlight_container {
 	clear: left;
 	padding-bottom: 1em;
@@ -287,6 +291,15 @@ table td.functions a:active {
 	border-style: inset;
 	background-color: #f2f2f2;
 }
+
+/*table td.functions a:not(.default) {
+  visibility: hidden;
+}
+
+table tr:hover td.functions a:not(.default) {
+  visibility: visible;
+}
+*/
 
 table.quarter_status table td {
 	border-bottom: none;
@@ -1233,6 +1246,7 @@ ul.crimes-list li {
 
 .error-message.no-icon {
 	background: none;
+  padding-left: inherit;
 }
 
 
@@ -2524,6 +2538,14 @@ ul.filter-results {
 	background-image: url(../images/icons/silk/cross.png);	
 }
 
+span.icon.world {
+  background-image: url(../images/icons/silk/world.png);
+}
+
+span.icon.asterisk {
+  background-image: url(../images/icons/silk/asterisk_yellow.png);
+}
+
 .filterable {
 	-webkit-transition: all 0.2s ease-in-out;
 }
@@ -2920,6 +2942,10 @@ code.change_value {
 	color: #999;
 	position: relative;
 	top: -1px;
+}
+
+:first-child .tag {
+	margin-left: 0 !important;
 }
 
 .admin.tag {

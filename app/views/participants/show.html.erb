@@ -6,13 +6,13 @@
 
 	<div id="column2">
 		
-	<%- cache [@participant.cache_key, "column2-a"].join("/") do -%>
+	<%- cache [@participant.cache_key, "filter_results"].join("/") do -%>
 		<div class="info-section" id="filter_results">
-			<h2>Current Stats</h2>
 			<%= render :partial => 'filter_results' %>
 		</div>
+	<% end %>
 	
-		<%- if @participant.respond_to?(:college_applications) -%>
+	<%- if @participant.respond_to?(:college_applications) -%>
 			<div class="info-section" id="college_applications">
 				<h2>College Applications
 					<%= content_tag :em, "Synced with CollegeMapper", :class => "right synced-with-collegemapper-note" if @participant.college_mapper_id %>
@@ -22,9 +22,15 @@
 				<%= link_to 'Add college', 
 							new_participant_college_application_path(@participant),
 							:class => "add button" %>
+				
+				<span id="postsecondary_plan_add_link" <%= "style='display:none'" unless @participant.postsecondary_plan.blank? %>>
+					<%= separator %>
+					<%= link_to_function "Add a different postsecondary plan", "$('postsecondary_plan_tr').show(); $('postsecondary_plan_display').hide(); $('postsecondary_plan_form').show(); $('postsecondary_plan_change_button').hide()" %>
+				</span>
 			</div>
-		<% end -%>
-
+	<% end %>
+	
+	<%- cache [@participant.cache_key, "column2-a"].join("/") do -%>
 		<%- if @participant.respond_to?(:scholarship_applications) -%>
 			<div class="info-section" id="scholarship_applications">
 				<h2>Scholarship Applications</h2>

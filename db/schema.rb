@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140215041211) do
+ActiveRecord::Schema.define(:version => 20140326192359) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -503,7 +503,7 @@ ActiveRecord::Schema.define(:version => 20140215041211) do
     t.boolean  "kosher"
     t.boolean  "halal"
     t.boolean  "foster_youth"
-    t.string   "plans_after_high_school"
+    t.string   "postsecondary_goal"
     t.boolean  "live_with_mother"
     t.boolean  "live_with_father"
     t.boolean  "parent_graduated_college"
@@ -609,6 +609,7 @@ ActiveRecord::Schema.define(:version => 20140215041211) do
     t.string   "resume_status"
     t.string   "activity_log_status"
     t.string   "avatar"
+    t.string   "postsecondary_plan"
   end
 
   add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"
