@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140326192359) do
+ActiveRecord::Schema.define(:version => 20140402051425) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(:version => 20140326192359) do
     t.string   "choice"
     t.boolean  "personal_statement_started"
     t.boolean  "personal_statement_completed"
+    t.datetime "date_deposit_sent"
   end
 
   create_table "customers", :force => true do |t|
