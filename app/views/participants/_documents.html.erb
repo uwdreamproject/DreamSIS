@@ -18,6 +18,8 @@
 	<%= link_to_function "Cancel", "$('new_document_form').hide(); $('new_document_button').show();", :class => "cancel button" %>
 <% end -%>
 
-<div>
-	<%= render :partial => "shared/documents", :object => participant, :locals => locals %>
-</div>
+<%- cache [@participant, "documents"] do -%>
+	<div>
+		<%= render :partial => "shared/documents", :object => participant, :locals => locals %>
+	</div>
+<% end %>

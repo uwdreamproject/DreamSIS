@@ -1,4 +1,4 @@
-<%- cache ["shared/nav", Customer.cache_key, Date.today.to_s].join("/") do -%>
+<%- cache ["shared/nav", Customer.cache_key, @current_user.cache_key, Date.today.to_s].join("/") do -%>
 	<div class="menu" id="main-nav">
 
 	<ul>

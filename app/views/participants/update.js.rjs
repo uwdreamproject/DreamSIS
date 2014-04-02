@@ -1,6 +1,12 @@
 if @college_application
-  page.replace "college_applications", :partial => "college_applications"
+  page.replace "college_applications_table", :partial => "college_applications"
   page.visual_effect :highlight, "college_application_#{@college_application.id}"
+	page << "$('postsecondary_plan_add_link')." + (@participant.postsecondary_plan.blank? ? 'show' : 'hide') + "()"
+end
+
+if params[:participant] && params[:participant][:postsecondary_plan]
+  page.replace "college_applications_table", :partial => "college_applications"
+	page << "$('postsecondary_plan_add_link')." + (@participant.postsecondary_plan.blank? ? 'show' : 'hide') + "()"
 end
 
 if params[:participant] && params[:participant][:received_binder]
@@ -24,3 +30,7 @@ if params[:participant] && params[:participant][:submitted_fafsa]
                       (@participant.fafsa_submitted_date.nil? ? "" : @participant.fafsa_submitted_date.to_s(:db))
   end
 end
+
+# Always replace the details partial and the stats at top.
+page.replace_html "column1", :partial => "details"
+page.replace_html	"filter_results", :partial => "filter_results"

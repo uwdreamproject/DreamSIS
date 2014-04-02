@@ -12,6 +12,12 @@ class Institution
     :gentele   => [:phone],
     :webaddr   => [:website_url]
   }
+	
+	ICLEVEL_DESCRIPTIONS = {
+		"1" => "4-year college/university",
+		"2" => "2-year college",
+		"3" => "Less than 2-year college"
+	}
 
   def geocoded?
     false
@@ -62,6 +68,17 @@ class Institution
   def location_detail
     [self.city, self.state].join(", ")
   end
+	
+	# Returns the ICLEVEL description for this Institution:
+	# 
+	# 1: 	4-year college/university
+	# 2: 	2-year college
+	# 3: 	Less than 2-year college
+	# 
+	# Any other values return nil
+	def iclevel_description
+		ICLEVEL_DESCRIPTIONS[iclevel.to_s]
+	end
 
   # Finds an Intitution record by "unitid" (the unique identifier provided by Dept of Ed's API).
   # If a negative integer is provided, this will find a College object instead (see note at College).
