@@ -1,0 +1,21 @@
+<tr id="postsecondary_plan_tr" class="<%= "current" if participant.college_attending_id.nil? %>" style="<%= "display:none" if participant.postsecondary_plan.blank? %>">
+	<td><span class="asterisk icon">Other</span></td>
+	<td colspan="4">
+		Postsecondary plan: 
+			<strong id="postsecondary_plan_display"><%=h participant.postsecondary_plan %></strong>
+			<span id="postsecondary_plan_form" style="display:none">
+				<%- remote_form_for participant, :method => :put, :html => { :style => "display: inline;" } do |f| -%>
+					<%= f.select :postsecondary_plan, options_for_select([nil,
+						h(participant.postsecondary_plan),
+						Participant::POSTSECONDARY_GOAL_OPTIONS].flatten.uniq, participant.postsecondary_plan) %>
+					<%= f.submit "Save" %>
+					<%= separator %>
+					<%= link_to_function "Cancel", "$('postsecondary_plan_display').show(); $('postsecondary_plan_form').hide(); $('postsecondary_plan_change_button').show()" %>
+				<% end %>
+				<%= content_tag :div, "Note: Changing the postsecondary plan will unset the college that #{h(participant.firstname)} is planning to attend.", :class => "weak error-message no-icon small" unless participant.college_attending_id.nil? %>
+			</span>
+		</td>
+	<td class="functions">
+		<%= link_to_function "Change", "this.hide(); $('postsecondary_plan_display').hide(); $('postsecondary_plan_form').show()", :id => "postsecondary_plan_change_button" %>
+	</td>
+</tr>

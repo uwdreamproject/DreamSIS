@@ -1,4 +1,4 @@
-<tr id="college_application_<%= college_application.id %>">
+<tr id="college_application_<%= college_application.id %>" class="<%= "current" if college_application.attending? %>">
 	<%= render :partial => 'college_applications/columns', :locals => { :college_application => college_application, :participant => @participant } %>
 	
 	<td class="functions">

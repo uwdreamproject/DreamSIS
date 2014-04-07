@@ -87,6 +87,7 @@ ActionController::Routing::Routes.draw do |map|
   map.mentor_participants '/participants/mentor/:mentor_id.:format', :controller => 'participants', :action => 'mentor'
   map.college_participants_cohort '/participants/college/:college_id/cohort/:year.:format', :controller => 'participants', :action => 'college_cohort'
   map.college_participants '/participants/college/:college_id.:format', :controller => 'participants', :action => 'college'
+  map.program_participants '/participants/program/:program_id.:format', :controller => 'participants', :action => 'program'
   map.high_school_cohort '/participants/high_school/:high_school_id/cohort/:year.:format', 
     :controller => 'participants', 
     :action => 'high_school_cohort'

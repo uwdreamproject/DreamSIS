@@ -23,4 +23,5 @@
 	<p>Track the decision sent back from the institution to the student.</p>
 	<%= f.input :decision, :as => :select, :collection => ["Accepted", "Denied", "Waitlisted", "Deferred", "No Longer Applying"], :include_blank => true %>
 	<%= f.input :date_notified, :as => :date, :include_blank => true, :hint => link_to_now('college_application_date_notified') %>
+	<%= f.input :date_deposit_sent, :as => :date, :include_blank => true, :hint => link_to_now('college_application_date_deposit_sent') %>
 <% end -%>

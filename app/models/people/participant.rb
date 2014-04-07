@@ -31,6 +31,16 @@ class Participant < Person
   after_save :college_mapper_student, :if => :create_college_mapper_student_after_save?
   after_create :link_to_current_user, :if => :link_to_current_user_after_save?
   before_save :update_filter_cache!
+	before_save :adjust_postsecondary_plan_to_match_college_attending
+
+	POSTSECONDARY_GOAL_OPTIONS = [
+		"Vocational school", 
+		"Military service", 
+		"Job",
+		"Not attend college",
+		"Earn GED",
+		"Don't know"
+	]
 
   def validate_name?
     true
@@ -151,6 +161,15 @@ class Participant < Person
     return nil unless college_attending_id
     Institution.find(college_attending_id)
   end
+
+	# Automatically unsets +postsecondary_plan+ if +college_attending_id+ is changed.
+	def adjust_postsecondary_plan_to_match_college_attending
+		if college_attending_id_changed? && !college_attending_id.nil?
+			self.postsecondary_plan = college_attending.try(:iclevel_description)
+		elsif postsecondary_plan_changed? && !postsecondary_plan.blank?
+			self.college_attending_id = nil
+		end
+	end
 
   # Calculates the current grade based on grad_year.
   def grade

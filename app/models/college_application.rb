@@ -1,7 +1,7 @@
 class CollegeApplication < ActiveRecord::Base
   
   # belongs_to :institution
-  belongs_to :participant
+  belongs_to :participant, :touch => true
   
   validates_presence_of :institution_id, :participant_id
   validates_uniqueness_of :institution_id, :scope => :participant_id, :message => "is already assigned to another college application for this participant"
@@ -43,11 +43,20 @@ class CollegeApplication < ActiveRecord::Base
   # Returns an array of the most commonly selected institution codes. Specify a number to limit.
   # Default is 10.
   def self.top_institutions(limit = 10)
-    @top_institutions ||= CollegeApplication.find(:all, 
+		return @top_institutions[limit] if @top_institutions && @top_institutions[limit]
+		@top_institutions ||= []
+		@top_institutions[limit] = []
+    raw = CollegeApplication.find(:all, 
       :group => :institution_id, 
       :select => "institution_id, COUNT(institution_id) AS count", 
       :limit => limit,
-      :order => "count DESC").collect(&:institution).compact
+      :order => "count DESC")
+		raw.each do |college_application|
+			i = college_application.institution
+			i.count = college_application.count
+			@top_institutions[limit] << i
+		end
+		@top_institutions[limit].compact
   end
 
   # Fetches the CollegeMapperCollege resource associated with this object.

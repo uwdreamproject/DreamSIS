@@ -1,6 +1,6 @@
 class EventAttendance < ActiveRecord::Base
   belongs_to :event
-  belongs_to :person
+  belongs_to :person, :touch => true
   belongs_to :event_shift
   
   validates_presence_of :person_id, :event_id

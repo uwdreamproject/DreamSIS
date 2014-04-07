@@ -91,7 +91,8 @@
 		<th>kosher</th>
 		<th>halal</th>
 		<th>foster_youth</th>
-		<th>plans_after_high_school</th>
+		<th>postsecondary_goal</th>
+		<th>postsecondary_plan</th>
 		<th>parent_graduated_college</th>
 		<th>family_members_who_went_to_college</th>
 		<th>family_members_graduated</th>
@@ -119,6 +120,7 @@
 		<th>college_bound_scholarship</th>
 		<th>programs</th>
 		<th>other_location_id</th>
+		<th>assigned_mentors</th>
 		<th>participant_group</th>
 		<%- for object_filter in Participant.object_filters -%>
 			<th><%=h object_filter.title %></th>
@@ -222,7 +224,8 @@
 	<td><%=h participant.kosher %></td>
 	<td><%=h participant.halal %></td>
 	<td><%=h participant.foster_youth %></td>
-	<td><%=h participant.plans_after_high_school %></td>
+	<td><%=h participant.postsecondary_goal %></td>
+	<td><%=h participant.postsecondary_plan %></td>
 	<td><%=h participant.parent_graduated_college %></td>
 	<td><%=h participant.family_members_who_went_to_college %></td>
 	<td><%=h participant.family_members_graduated %></td>
@@ -250,6 +253,7 @@
 	<td><%=h participant.college_bound_scholarship %></td>
 	<td><%=h participant.programs.collect(&:title).join(", ") %></td>
 	<td><%=h participant.other_location_id %></td>
+	<td><%=h participant.mentors.collect(&:fullname).join(", ") %></td>
 	<td><%=h participant.participant_group.try(:title) %></td>
 	<%- for object_filter in Participant.object_filters -%>
 		<td><%=h participant.passes_filter?(object_filter) ? "TRUE" : "" %></td>

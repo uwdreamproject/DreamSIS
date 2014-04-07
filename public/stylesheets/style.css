@@ -97,6 +97,10 @@ a:visited {
 	clear: both;
 }
 
+.weak {
+  font-weight: normal !important;
+}
+
 .activity_logs.weekly_summary .highlight_container {
 	clear: left;
 	padding-bottom: 1em;
@@ -288,7 +292,16 @@ table td.functions a:active {
 	background-color: #f2f2f2;
 }
 
-table.term_status table td {
+/*table td.functions a:not(.default) {
+  visibility: hidden;
+}
+
+table tr:hover td.functions a:not(.default) {
+  visibility: visible;
+}
+*/
+
+table.quarter_status table td {
 	border-bottom: none;
 }
 
@@ -1233,6 +1246,7 @@ ul.crimes-list li {
 
 .error-message.no-icon {
 	background: none;
+  padding-left: inherit;
 }
 
 
@@ -2070,6 +2084,10 @@ a.offsite {
 	box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
+.button.no-icon {
+  padding-left: 10px;
+}
+
 a.button:hover {
 	
 }
@@ -2520,6 +2538,14 @@ ul.filter-results {
 	background-image: url(../images/icons/silk/cross.png);	
 }
 
+span.icon.world {
+  background-image: url(../images/icons/silk/world.png);
+}
+
+span.icon.asterisk {
+  background-image: url(../images/icons/silk/asterisk_yellow.png);
+}
+
 .filterable {
 	-webkit-transition: all 0.2s ease-in-out;
 }
@@ -2916,6 +2942,10 @@ code.change_value {
 	color: #999;
 	position: relative;
 	top: -1px;
+}
+
+:first-child .tag {
+	margin-left: 0 !important;
 }
 
 .admin.tag {
@@ -3865,6 +3895,48 @@ div.auto_complete ul {
   background: #fff;
   position: absolute;
   left: 0;
+}
+
+.menu div.auto_complete {
+/*	width: 100%;
+	position: relative !important;*/
+/*	display: block;
+	margin: 0;
+	padding: 0;
+	left: 0;
+	top: 0;
+	text-shadow: none;*/
+}
+
+.menu div.auto_complete ul {
+	width: 100%;
+	position: relative !important;
+	display: block;
+	margin-left: -7px;
+	padding: 0;
+	padding-right: 12px;
+	left: 0;
+	top: 0;
+	z-index: 100;
+	text-shadow: none;
+}
+
+.menu div.auto_complete li:hover {
+	background: #415994;
+	cursor: pointer;
+}
+
+.menu li.search {
+	margin-left: -4px !important;
+	padding-right: 0;
+}
+
+.menu li.search input.search {
+	border: none;
+	box-shadow: none;
+	margin: 0;
+	width: 100%;
+	border-bottom: 1px dotted #dadada;
 }
 
 div.auto_complete.right ul {

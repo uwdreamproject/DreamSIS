@@ -5,9 +5,10 @@ if @all_schools
 					:hide_title => (params[:hide_title] || false)
 				}
 	page << "$('participant_stats_all').removeClassName('loading')"	
+	page << "$('participant_stats_all').show()"	
 	
 	page.if("$('show_participants_stats_all_link')") do
-		page << "$('show_participants_stats_all_link').update('All #{(@cohort.to_s)} Participants')"
+		page << "$('show_participants_stats_all_link').update('Hide')"
 	end
 	
 else
@@ -18,5 +19,10 @@ else
 						:hide_title => (params[:hide_title] || false)
 					}
 		page << "$('participant_stats_#{high_school.id}').removeClassName('loading')"
+		page << "$('participant_stats_#{high_school.id}').show()"
+
+		page.if("$('show_participants_stats_#{high_school.id}_link')") do
+			page << "$('show_participants_stats_#{high_school.id}_link').update('Hide')"
+		end		
 	end
 end

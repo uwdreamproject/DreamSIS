@@ -1,7 +1,7 @@
 <%- participant ||= @participant -%>
 <%- locals = { :start_date => start_date, :end_date => end_date } rescue {} -%>
 
-<h2>Notes (<%= participant.notes.size %>)</h2>
+<h2>Notes</h2>
 	
 <% remote_form_for participant.notes.new, :url => notes_path(locals.merge(:return_to => request.request_uri)) do |f| -%>
 	<h4 style="margin-bottom: 2px">Add New Note</h4>
@@ -11,6 +11,8 @@
 	<%= f.submit "Add Note", :disable_with => 'Adding note...', :class => 'add notes' %>
 <% end -%>
 
-<div id="notes_container_<%= participant.id %>">
-	<%= render :partial => "shared/notes", :object => participant, :locals => locals %>
-</div>
+<%- cache [@participant.cache_key, "notes"].join("/") do -%>
+	<div id="notes_container_<%= participant.id %>">
+		<%= render :partial => "shared/notes", :object => participant, :locals => locals %>
+	</div>
+<% end %>
