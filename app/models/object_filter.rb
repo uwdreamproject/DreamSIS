@@ -1,6 +1,7 @@
 class ObjectFilter < CustomerScoped
   validates_presence_of :object_class, :title, :criteria  
   validate :validate_criteria
+  validates_format_of :title, :with => /\A[^.]+\Z/, :message => "cannot include a period"
   
   belongs_to :earliest_grade_level, :class_name => "GradeLevel", :primary_key => 'level', :foreign_key => 'earliest_grade_level_level'
   belongs_to :latest_grade_level, :class_name => "GradeLevel", :primary_key => 'level', :foreign_key => 'latest_grade_level_level'

@@ -58,12 +58,13 @@ class Report < CustomerScoped
 		raise AlreadyGeneratingError, "The report is already being generated." if status == 'generating'
 		reset_to_ungenerated
     begin
-	    xlsx_package = object_class.to_xlsx(:data => objects)
 			update_attribute :status, "generating"
+	    xlsx_package = object_class.to_xlsx(:data => objects)
+			raise StandardError, "Test error"
 			file = File.new(path, 'w')
 			xlsx_package.serialize file.path
 		rescue => e
-			update_attributes :status => "error", :generated_at => nil
+			update_attributes :status => "error: #{e.message}", :generated_at => nil
 			logger.warn { "ERROR generating file: #{e.message}" }
 		else # no errors
 			update_attributes :file_path => file.path, :status => "generated", :generated_at => Time.now
@@ -82,7 +83,7 @@ class Report < CustomerScoped
 	end
 	
 	def error?
-		status == 'error'
+		status.starts_with? 'error'
 	end
 	
 	# Kicks off a rake task to generate this report
