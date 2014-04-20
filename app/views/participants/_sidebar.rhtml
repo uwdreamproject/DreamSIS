@@ -47,7 +47,7 @@
 		
 	<%- if @export -%>	
 		<p id="xlsx_status">
-			<%= @export.status.try(:titleize) %> <%= relative_timestamp @export.updated_at %>
+			<%=h @export.status.try(:titleize) %> <%=h relative_timestamp @export.updated_at %>
 			<%= link_to_remote "Regenerate", :url => { :generate => true, :format => 'xlsx' } %>
 		</p>
 		<%= javascript_tag("checkXlsxStatus = true; xlsxReportId = '#{@export.id.to_s}';") unless @export.generated? %>
