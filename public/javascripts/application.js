@@ -1,9 +1,14 @@
-
+var checkXlsxStatus = false;
+var showAjaxIndicator = true;
+var loadCount = 0;
 
 Ajax.Responders.register({
 	onCreate: function() {
-		if (Ajax.activeRequestCount > 0)
-			$('indicator').addClassName("visible")
+		if (Ajax.activeRequestCount > 0) {
+      if (showAjaxIndicator)
+		    $('indicator').addClassName("visible")
+      showAjaxIndicator = true;
+    }
 	},
 	onException: function(request, exception) {
 		$('indicator').removeClassName("visible")

@@ -1,39 +1,35 @@
-<thead>
-	<tr>
-		<th>id</th>
-	    <th>title</th>
-	    <th>organization_name</th>
-	    <th>default_amount</th>
-	    <th>default_renewable_years</th>
-	    <th>default_full_ride</th>
-	    <th>default_gap_funding</th>
-	    <th>default_living_stipend</th>
-	    <th>default_renewable</th>
-		<th>applications</th>
-		<th>applications_awarded</th>
-		<th>applications_awarded_amount</th>
-		<th>created_at</th>
-		<th>updated_at</th>
-	</tr>
-</thead>
+<ss:Row ss:StyleID="1">
+	<ss:Cell><ss:Data ss:Type="String">id</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">title</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">organization_name</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">default_amount</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">default_renewable_years</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">default_full_ride</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">default_gap_funding</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">default_living_stipend</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">default_renewable</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">applications</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">applications_awarded</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">applications_awarded_amount</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">created_at</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">updated_at</ss:Data></ss:Cell>
+</ss:Row>
 
-<tbody>
 <% for scholarship in @scholarships %>
-	<tr>
-		<td><%=h scholarship.id %></td>
-	    <td><%=h scholarship.title %></td>
-	    <td><%=h scholarship.organization_name %></td>
-	    <td class="currency"><%=h scholarship.default_amount %></td>
-	    <td><%=h scholarship.default_renewable_years %></td>
-	    <td><%=h scholarship.default_full_ride %></td>
-	    <td><%=h scholarship.default_gap_funding %></td>
-	    <td><%=h scholarship.default_living_stipend %></td>
-	    <td><%=h scholarship.default_renewable %></td>
-		<td><%=h scholarship.scholarship_applications.size %></td>
-		<td><%=h scholarship.scholarship_applications.awarded.size %></td>
-		<td class="currency"><%=h scholarship.scholarship_applications.awarded.collect(&:amount).numeric_items.sum %></td>
-		<td><%=h scholarship.created_at %></td>
-		<td><%=h scholarship.updated_at %></td>
-	</tr>
+<ss:Row>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship.id %></ss:Data></ss:Cell>
+    <ss:Cell><ss:Data ss:Type="String"><%=h scholarship.title %></ss:Data></ss:Cell>
+    <ss:Cell><ss:Data ss:Type="String"><%=h scholarship.organization_name %></ss:Data></ss:Cell>
+    <ss:Cell ss:StyleID="Currency"><ss:Data ss:Type="Number"><%=h scholarship.default_amount %></ss:Data></ss:Cell>
+    <ss:Cell><ss:Data ss:Type="String"><%=h scholarship.default_renewable_years %></ss:Data></ss:Cell>
+    <ss:Cell><ss:Data ss:Type="String"><%=h scholarship.default_full_ride %></ss:Data></ss:Cell>
+    <ss:Cell><ss:Data ss:Type="String"><%=h scholarship.default_gap_funding %></ss:Data></ss:Cell>
+    <ss:Cell><ss:Data ss:Type="String"><%=h scholarship.default_living_stipend %></ss:Data></ss:Cell>
+    <ss:Cell><ss:Data ss:Type="String"><%=h scholarship.default_renewable %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship.scholarship_applications.size %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship.scholarship_applications.awarded.size %></ss:Data></ss:Cell>
+	<ss:Cell ss:StyleID="Currency"><ss:Data ss:Type="Number"><%= scholarship.scholarship_applications.awarded.collect(&:amount).numeric_items.sum %></ss:Data></ss:Cell>
+	<ss:Cell ss:StyleID="ShortDate"><ss:Data ss:Type="DateTime"><%=h scholarship.created_at.to_s(:excel) %></ss:Data></ss:Cell>
+	<ss:Cell ss:StyleID="ShortDate"><ss:Data ss:Type="DateTime"><%=h scholarship.updated_at.to_s(:excel) %></ss:Data></ss:Cell>
+</ss:Row>
 <% end %>
-</tbody>

@@ -7,7 +7,8 @@ my_formats = {
   :time_with_seconds      => "%H:%M:%S",
   :short_date             => "%m/%d/%Y",
   :month_year             => "%B %Y",
-  :month_day              => "%B %d"
+  :month_day              => "%B %d",
+	:excel                  => lambda { |time| time.strftime("%Y-%m-%dT%H:%M:%S.000") }
 }
 
 ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.merge!(my_formats)

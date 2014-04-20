@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140402051425) do
+ActiveRecord::Schema.define(:version => 20140416041847) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -636,6 +636,19 @@ ActiveRecord::Schema.define(:version => 20140402051425) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "website_url"
+  end
+
+  create_table "reports", :force => true do |t|
+    t.string   "key"
+    t.text     "object_ids"
+    t.string   "format"
+    t.string   "type"
+    t.string   "file_path"
+    t.string   "status"
+    t.integer  "customer_id"
+    t.datetime "generated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "scholarship_applications", :force => true do |t|

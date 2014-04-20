@@ -927,6 +927,32 @@ a.redirect-link:hover {
 	border-color: rgba(0,0,0,0.3);
 }
 
+#xlsx_status {
+	margin-top: -0.5em;
+	margin-left: 5px;
+	font-size: 85%;
+	line-height: 125%;
+}
+
+#xlsx_status a:before {
+	content: "(";
+}
+
+#xlsx_status a:after {
+	content: ")";
+}
+
+#xlsx_download_button.generating {
+	background-image: url(../images/indicator.gif);
+	border-color: rgba(153,153,153,.15);
+}
+
+#xlsx_status.error {
+	background: url(../images/caution.png) left top / 16px no-repeat;
+	padding-left: 22px;
+	margin-left: 0;
+}
+
 .info-section {
 	padding-bottom: 2em;
 	margin-bottom: 2em;

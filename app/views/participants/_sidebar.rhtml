@@ -37,7 +37,30 @@
 <% end %>
 
 <% if @controller.action_name != 'show' %>
-	<p><%= link_to "Download in Excel", { :format => :xls }, :class => 'button xls' %></p>
+
+	<%- xlsx_url = @controller.action_name == 'index' ? { :action => 'all', :format => :xlsx } : { :format => :xlsx }  -%>
+	<p><%= link_to_remote "Download in Excel", 
+							:url => xlsx_url, 
+							:html => { :class => 'button xls', :id => "xlsx_download_button" } %></p>
+	
+	<%= javascript_tag("checkXlsxStatus = false; xlsxReportId = '';") %>
+		
+	<%- if @export -%>	
+		<p id="xlsx_status">
+			<%= @export.status.try(:titleize) %> <%= relative_timestamp @export.updated_at %>
+			<%= link_to_remote "Regenerate", :url => { :generate => true, :format => 'xlsx' } %>
+		</p>
+		<%= javascript_tag("checkXlsxStatus = true; xlsxReportId = '#{@export.id.to_s}';") unless @export.generated? %>
+	<%- else -%>
+		<p id="xlsx_status"></p>
+	<% end %>
+
+	<%= periodically_call_remote(:url => check_export_status_participants_url, 
+								:frequency => 3, 
+								:condition => "checkXlsxStatus == true", 
+								:with => "'id=' + xlsxReportId",
+								:before => "showAjaxIndicator = false;") %>
+
 	
 	<%- if @high_school %>
 		<form>

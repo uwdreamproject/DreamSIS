@@ -207,6 +207,11 @@ class Person < CustomerScoped
   def survey_id
     generate_survey_id unless new_record?
   end
+	
+	# Returns the survey_id without generating it if it doesn't exist.
+	def raw_survey_id
+		read_attribute(:survey_id)
+	end
   
   # Returns the class standing if possible.
   # def class_standing
