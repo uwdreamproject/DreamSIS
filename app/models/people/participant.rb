@@ -16,7 +16,9 @@ class Participant < Person
   has_many :college_degrees
   
   serialize :filter_cache
-  
+
+	acts_as_xlsx
+	
   validates_presence_of :birthdate, :high_school_id, :if => :validate_ready_to_rsvp?
 
   attr_accessor :override_binder_date, :override_fafsa_date, :create_college_mapper_student_after_save, :link_to_current_user_after_save
@@ -90,6 +92,19 @@ class Participant < Person
     self.filter_cache
   end
   
+  def method_missing(method_name, *args)
+    if m = method_name.to_s.match(/\Apasses_filter_(\d+)\Z/)
+			object_filter = ObjectFilter.find(m[1])
+			passes_filter? object_filter
+		elsif m = method_name.to_s.match(/\AFilter: (.+)\Z/)
+			object_filter = ObjectFilter.find_by_title(m[1])
+			return super unless object_filter
+			passes_filter? object_filter			
+		else
+      super(method_name, *args)
+    end
+  end
+	
   # Tries to find duplicate records based on name and high school. Pass an array of participant data straight from your params
   # hash. Second parameter is a limit on the number of records to return (defaults to 50).
   def self.possible_duplicates(data, limit = 50)
@@ -192,6 +207,46 @@ class Participant < Person
 		end_date = Date.commercial(date.year, date.cweek, 7)
 		Visit.find(:all, :conditions => ["date >= ? AND date <= ? AND location_id = ?", start_date, end_date, high_school_id])
 	end
+	
+	# Determines the columns that are exported into xlsx pacakages. Includes most model columns
+	# plus some extra attributes defined by methods. Also includes all ObjectFilters.
+	def self.xlsx_columns
+		columns = []
+		columns << self.column_names.map { |c| c = c.to_sym }		
+		columns << [:high_school_name, :raw_survey_id, :college_attending_name, 
+								:family_income_level_title, :program_titles, :assigned_mentor_names, 
+								:participant_group_title]
+		columns << Participant.object_filters.collect { |f| "Filter: #{f.title}" }
+		remove_columns = [:filter_cache, :login_token, :login_token_expires_at, :customer_id, 
+								:avatar, :college_mapper_id, :avatar_image_url, :college_mapper_id, :husky_card_rfid,
+								:survey_id, :relationship_to_child, :occupation,	:annual_income,	:needs_interpreter,
+								:meeting_availability, :child_id]
+		columns.flatten - remove_columns
+	end
+	
+	def college_attending_name
+		college_attending.try(:name) 
+	end
+	
+	def high_school_name
+		high_school.try(:name)
+	end
+	
+	def family_income_level_title
+		family_income_level.try(:title)
+	end
+	
+	def program_titles
+		programs.collect(&:title).join(", ")
+	end
+	
+	def assigned_mentor_names
+		mentors.collect(&:fullname).join(", ")
+	end
+	
+	def participant_group_title
+		participant_group.try(:title)
+	end	
 
   # Returns the CollegeMapperStudent record for this individual if we have a college_mapper_id stored.
   # By default, if the record doesn't exist, we create it. You can override that by passing +false+ for
