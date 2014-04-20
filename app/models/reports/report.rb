@@ -60,7 +60,6 @@ class Report < CustomerScoped
     begin
 			update_attribute :status, "generating"
 	    xlsx_package = object_class.to_xlsx(:data => objects)
-			raise StandardError, "Test error"
 			file = File.new(path, 'w')
 			xlsx_package.serialize file.path
 		rescue => e
