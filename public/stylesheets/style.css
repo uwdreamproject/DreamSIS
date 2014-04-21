@@ -135,10 +135,6 @@ tr {
 	/*-webkit-transition: background-color 0.15s ease-in-out;*/
 }
 
-tr:hover, tr.odd:hover, tr.even:hover, tr.highlight {
-	background: #fffde7;
-}
-
 table.multirow tbody:hover td.multirow-highlight {
 	background: #fffde7;
 }
@@ -163,6 +159,15 @@ td {
 	border-bottom: 1px solid #eee;
 	color: #424242;
 }
+
+tr:hover, tr.odd:hover, tr.even:hover, tr.highlight {
+	background: #fffde7;
+}
+
+/*tr:hover td, tr.odd:hover td, tr.even:hover td, tr.highlight td {
+	background: #fffde7;
+}
+*/
 
 table td:first-child, table th:first-child {
 	padding-left: 30px !important;
@@ -811,19 +816,24 @@ body.new.session #content {
 	margin: 2em auto;
 	width: 50%;
 	min-width: 450px;
+	background: none;
 }
 
 body.new.session #content-wrap {
 	padding: 2em 4em 1em 4em;
 	background: white url(../images/backgrounds/uw-purple-header.jpg) repeat-x 0 -1px;
 	border-radius: 10px;
+	margin: 0;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
 }
 
 body.new.session h1 {
 	height: 50px;
-	background: url(../images/dreamsis-logo-transparent.png) no-repeat;
-	padding-left: 240px;
-	padding-top: 16px;
+	background: url(../images/dreamsis-logo-transp-2x.png) no-repeat;
+	background-size: 192px;
+	padding-left: 200px !important;
+	padding-top: 12px;
 	color: #e0e0e0;
 	font: normal 160% Helvetica, Arial, Geneva, sans-serif;
 	margin-bottom: 1.5em;
@@ -835,6 +845,9 @@ body.new.session h1:before {
 
 body.new.session #footer {
 	text-align: center;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background: rgba(248, 203, 63, 1);
 }
 
 .right {
