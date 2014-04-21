@@ -5,6 +5,12 @@ class Person < CustomerScoped
     def future_attending
       find :all, :joins => [:event], :conditions => ["events.date >= ? AND rsvp = ?", Time.now.midnight, true]
     end
+		def non_visits
+			find :all, :joins => [:event], :conditions => ["type = ?", nil]
+		end
+		def visits
+			find :all, :joins => [:event], :conditions => ["type = ?", "Visit"]
+		end
   end
   has_many :events, :through => :event_attendances do
     def future
@@ -14,6 +20,7 @@ class Person < CustomerScoped
   # has_many :how_did_you_hear_people
   # has_many :how_did_you_hear_options, :through => :how_did_you_hear_people
   has_and_belongs_to_many :how_did_you_hear_options
+	belongs_to :highest_education_level, :class_name => "EducationLevel"
   
   has_many :users
   
@@ -23,13 +30,16 @@ class Person < CustomerScoped
   validates_format_of :email2, :with => /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i, :allow_blank => true
   validates_presence_of :firstname, :lastname, :email, :sex, :phone_mobile, :birthdate, :if => :validate_ready_to_rsvp?
 
-  has_many :notes, :as => :notable
+  has_many :notes, :as => :notable, :conditions => "document_file_name IS NULL"
+  has_many :documents, :as => :notable, :class_name => "Note", :conditions => "document_file_name IS NOT NULL AND title IS NOT NULL"
 
   has_many :training_completions
   has_many :trainings, :through => :training_completions, :source => :training
 
   has_and_belongs_to_many :programs
 
+  mount_uploader :avatar, AvatarUploader
+  
   after_create :generate_survey_id
 
   attr_accessor :validate_name
@@ -125,6 +135,13 @@ class Person < CustomerScoped
     event_attendances.find_by_event_id(event.id).rsvp?
   end
 
+  # Checks if this Person has an attendance option set for the specified event, and returns the value if so.
+  def attendance_option(event)
+    return false unless event.is_a?(Event)
+    return false unless events.include?(event)
+    event_attendances.find_by_event_id(event.id).attendance_option
+  end
+
   # Automatically capitalizes the first letter of +firstname+
   def firstname=(new_firstname)
     write_attribute(:firstname, uppercase_first_letter(new_firstname))
@@ -190,6 +207,11 @@ class Person < CustomerScoped
   def survey_id
     generate_survey_id unless new_record?
   end
+	
+	# Returns the survey_id without generating it if it doesn't exist.
+	def raw_survey_id
+		read_attribute(:survey_id)
+	end
   
   # Returns the class standing if possible.
   # def class_standing
@@ -254,6 +276,12 @@ class Person < CustomerScoped
   # Strips all non digits from the phone number before storing it
   def phone_work=(new_number)
     write_attribute :phone_work, new_number.gsub(/[^0-9]/i, '')
+  end
+	
+  # Strip out non-digit characters in annual_income if needed, like "$" or "," or other text.
+  def annual_income=(new_amount)
+    new_amount = new_amount.gsub(/[^0-9.]/i, '') unless new_amount.is_a?(Numeric)
+    self.write_attribute(:annual_income, new_amount)
   end
   
   # Returns true if this person has completed the specified training

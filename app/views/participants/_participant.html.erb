@@ -1,7 +1,7 @@
 <% dom_id = "participant_#{participant.id}" %>
 <%- report ||= "basics" -%>
 <%- @participant_row_index = 1 -%>
-<tbody id="<%= dom_id %>">
+<tbody id="<%= dom_id %>" class="filterable">
 	
 	<%- 
 	collection ||= (participant.instance_eval(report.pluralize) rescue []) 
@@ -25,5 +25,3 @@
 <% Participant.object_filters.each do |object_filter| %>
 	<%= javascript_tag "filterable('#{dom_id}', #{object_filter.id}, #{participant.passes_filter?(object_filter)})" if object_filter.display_now? %>
 <% end -%>
-
-<%= draggable_element dom_id, :ghosting => true %>

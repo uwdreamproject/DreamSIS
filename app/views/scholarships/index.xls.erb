@@ -1,0 +1,35 @@
+<ss:Row ss:StyleID="1">
+	<ss:Cell><ss:Data ss:Type="String">id</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">title</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">organization_name</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">default_amount</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">default_renewable_years</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">default_full_ride</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">default_gap_funding</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">default_living_stipend</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">default_renewable</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">applications</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">applications_awarded</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">applications_awarded_amount</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">created_at</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">updated_at</ss:Data></ss:Cell>
+</ss:Row>
+
+<% for scholarship in @scholarships %>
+<ss:Row>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship.id %></ss:Data></ss:Cell>
+    <ss:Cell><ss:Data ss:Type="String"><%=h scholarship.title %></ss:Data></ss:Cell>
+    <ss:Cell><ss:Data ss:Type="String"><%=h scholarship.organization_name %></ss:Data></ss:Cell>
+    <ss:Cell ss:StyleID="Currency"><ss:Data ss:Type="Number"><%=h scholarship.default_amount %></ss:Data></ss:Cell>
+    <ss:Cell><ss:Data ss:Type="String"><%=h scholarship.default_renewable_years %></ss:Data></ss:Cell>
+    <ss:Cell><ss:Data ss:Type="String"><%=h scholarship.default_full_ride %></ss:Data></ss:Cell>
+    <ss:Cell><ss:Data ss:Type="String"><%=h scholarship.default_gap_funding %></ss:Data></ss:Cell>
+    <ss:Cell><ss:Data ss:Type="String"><%=h scholarship.default_living_stipend %></ss:Data></ss:Cell>
+    <ss:Cell><ss:Data ss:Type="String"><%=h scholarship.default_renewable %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship.scholarship_applications.size %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship.scholarship_applications.awarded.size %></ss:Data></ss:Cell>
+	<ss:Cell ss:StyleID="Currency"><ss:Data ss:Type="Number"><%= scholarship.scholarship_applications.awarded.collect(&:amount).numeric_items.sum %></ss:Data></ss:Cell>
+	<ss:Cell ss:StyleID="ShortDate"><ss:Data ss:Type="DateTime"><%=h scholarship.created_at.to_s(:excel) %></ss:Data></ss:Cell>
+	<ss:Cell ss:StyleID="ShortDate"><ss:Data ss:Type="DateTime"><%=h scholarship.updated_at.to_s(:excel) %></ss:Data></ss:Cell>
+</ss:Row>
+<% end %>

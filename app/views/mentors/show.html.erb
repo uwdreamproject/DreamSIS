@@ -1,9 +1,8 @@
 <div class="content-block">
 
 	<div align="right" style="float:right" class="photo">
-		<%= image_tag photo_mentor_path(@mentor, :size => :large), 
+		<%= image_tag photo_mentor_path(@mentor, :size => :medium), 
 				:class => 'student_photo', 
-				:size => "100x130", 
 				:alt => "" %>
 	</div>
 
@@ -51,7 +50,10 @@
 
 <%- if @participants -%>
 	<div class="content-block">
-		<h1 class="mentees"><%= Customer.mentees_Label %></h1>
+		<%= link_to "See all #{Customer.mentees_label}", mentor_participants_path(@mentor), :class => "right list button" %>
+		<h1 class="mentees"><%= Customer.mentees_Label %>
+			<small class="light" id="total_record_count"></small>
+		</h1>
 		<%= render :partial => 'mentors/mentees' %>
 	</div>
 <% end -%>

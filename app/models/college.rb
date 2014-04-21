@@ -27,4 +27,14 @@ class College < Location
 		nil
 	end
 
+  # IClevel always returns blank because College objects aren't connected to IPEDS.
+    def iclevel
+      ""
+    end
+    
+  # IClevel always returns blank because College objects aren't connected to IPEDS.
+  def iclevel_description
+    ""
+  end
+    
 end

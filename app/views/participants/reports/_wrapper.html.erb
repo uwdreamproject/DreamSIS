@@ -1,11 +1,12 @@
-<tr class="<%= "deselected" if participant.inactive? %> <%= "not-target" if participant.not_target_participant? %> filterable participant">
+<tr class="<%= "deselected" if participant.inactive? %> <%= "not-target" if participant.not_target_participant? %> participant">
 
 	<%- if row_index == 1 -%>
 		<td class="check_box_td multirow-highlight" rowspan="<%= row_count %>">
-			<input type="checkbox" name="selected[Participant][<%= participant.id %>]" class="index_check_box" value="1" />
+			<input type="checkbox" name="selected[Participant][<%= participant.id %>]" class="index_check_box" value="1" onClick="updateWithSelectedActions()" />
 		</td>
 		<td rowspan="<%= row_count %>" class="name multirow-highlight">
-			<%= link_to participant.lastname_first, participant %>
+			<%#= image_tag participant_avatar_path(participant, :thumb), :class => "avatar" %>
+			<%= link_to h(participant.lastname_first), participant %>
 			<small class="inactive-note">(inactive)</small>
 			<small class="not-target-note">(<%= Customer.not_target_label %>)</small>
 		</td>

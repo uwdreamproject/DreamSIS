@@ -11,16 +11,21 @@
 
 	<%= f.input :after_school_activities, :label => "Other extracurricular activities", :input_html => { :rows => 5 } %>
 
-	<%= f.input :plans_after_high_school, :as => :select, :collection => [
-		"Vocational school", 
-		"Military service", 
-		"Community College",
-		"4-year college/university", 
-		"Job (not attend college)", 
-		"Job",
-		"Not attend college",
-		"Earn GED",
-		"Don't know"
-	] %>
+	<%= f.input :postsecondary_goal, :as => :select, 
+				:hint => "What is the student's hope to do after graduating high school?", 
+				:collection => [
+					h(f.object.postsecondary_goal),
+					Institution::ICLEVEL_DESCRIPTIONS.values,
+					Participant::POSTSECONDARY_GOAL_OPTIONS
+				].flatten.uniq %>
+
+	<%= f.input :postsecondary_plan, :as => :select, 
+				:hint => "What is the student's plan after high school? This field likely won't be filled in until close to high school graduation time." + ("<br />" + content_tag(:span, "Note: Changing the postsecondary plan will unset the college that #{h(f.object.firstname)} is planning to attend.", :class => "weak error-message") unless f.object.college_attending_id.nil?).to_s, 
+				:collection => [
+					h(f.object.postsecondary_plan),
+					Institution::ICLEVEL_DESCRIPTIONS.values,
+					Participant::POSTSECONDARY_GOAL_OPTIONS
+				].flatten.uniq %>
+
 
 <% end %>

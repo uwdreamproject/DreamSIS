@@ -1,9 +1,14 @@
-
+var checkXlsxStatus = false;
+var showAjaxIndicator = true;
+var loadCount = 0;
 
 Ajax.Responders.register({
 	onCreate: function() {
-		if (Ajax.activeRequestCount > 0)
-			$('indicator').addClassName("visible")
+		if (Ajax.activeRequestCount > 0) {
+      if (showAjaxIndicator)
+		    $('indicator').addClassName("visible")
+      showAjaxIndicator = true;
+    }
 	},
 	onException: function(request, exception) {
 		$('indicator').removeClassName("visible")
@@ -105,7 +110,8 @@ function executeFilters() {
 		elements = pair.value.get(false)
 		if (appliedFilters.get(filter_key) == true && elements) {
 			// window.console.log("   Filter " + filter_key + ": Hiding " + filter_key + "/false (" + elements.size() + " elements)")
-			elements.invoke('hide')
+			// elements.invoke('hide')
+			elements.invoke('addClassName', 'hidden')
 		} else if (elements) {
 			// window.console.log("   Filter " + filter_key + ": Keeping " + filter_key + "/true visible (" + elements.size() + " elements)")
 		} else {
@@ -120,9 +126,21 @@ function showAllFilterables() {
 	// window.console.log("   Showing all filterables")
 	filterables.each(function(filter_keys) {
 		filter_keys.value.each(function(elements) {
-			elements.value.invoke('show')
+			// elements.value.invoke('show')
+			elements.value.invoke('removeClassName', 'hidden')
 		})
 	})
+}
+
+// Adds the "preview_filter" CSS class to the filter elements but doesn't hide them
+function previewFilter(filter_key) {
+	elements = filterables.get(filter_key).get(true)
+	elements.invoke('addClassName', 'preview')
+}
+
+function unpreviewFilter(filter_key) {
+	elements = filterables.get(filter_key).get(true)
+	elements.invoke('removeClassName', 'preview')
 }
 
 // Shows everything and unchecks all the checkboxes
@@ -140,18 +158,12 @@ function updateRecordCount(filter_key) {
 		if ($('record_count_' + filter_key)) {
 			filterables_count = filterables.get(filter_key).get(true)
 			filterables_count = filterables_count == undefined ? "0" : filterables_count.size()
-			$('record_count_' + filter_key).innerHTML = filterables_count
+			$('record_count_' + filter_key).update(filterables_count)
 		}
 	} else {		
 		if ($('filtered_record_count')) {
-			n = 0
-			elements = $$('.filterable')
-			for (var i = 0; i < elements.size(); i++) {
-				if (elements[i].visible()) {
-					n++
-				}
-			}
-			$('filtered_record_count').innerHTML = n + " of "
+			$('filtered_record_count').update($$('.filterable:not(.hidden)').size() + " of")
+			updateWithSelectedActions()
 		}
 		filterables.each(function(pair) {
 			filter_key = pair.key
@@ -183,6 +195,53 @@ function setFilter(type, filter_key, value) {
 	}
 	executeFilters();
 }
+
+// Returns the currently selected rows
+function selectedElements() {
+	return $$('tbody:not(.hidden) input.index_check_box:checked')
+}
+
+// Shows the actions that can be performed, if any rows are selected.
+function updateWithSelectedActions() {
+	if($("with_selected_actions")) {
+		if(selectedElements().length > 0) {
+			$("with_selected_actions").show()
+			$("with_selected_actions_count").update(selectedElements().length)
+		} else {
+			$("with_selected_actions").hide()
+		}
+	}
+}
+
+// For merging records on an index screen.
+function addMergeTarget(element) {
+	if($('merge_form') && $('merge_form').visible()) {
+		if($F('merge_source_id') == '') {
+			selectMergeItem(element, "source")
+		} else if($F('merge_target_id') != '') {
+			selectMergeItem(element, "source")
+			selectMergeItem(null, "target")
+		} else {
+			selectMergeItem(element, "target")
+		}
+	}
+}
+
+function selectMergeItem(element, part) {
+	if(element == null) {
+		$('merge_' + part + '_id').value = ''
+		$('merge_' + part + '_name').update('(Not selected)')
+		$$('.merge_' + part).invoke('removeClassName', 'merge_' + part)
+	} else {
+		$('merge_' + part + '_id').value = element.getAttribute('data-id')
+		$('merge_' + part + '_name').update(element.down('.name').innerHTML)
+		$$('.merge_' + part).invoke('removeClassName', 'merge_' + part)
+		element.addClassName('merge_' + part)
+	}
+}
+
+
+
 
 function setToNow(element_id) {
 	d = new Date()

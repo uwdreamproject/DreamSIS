@@ -2,3 +2,8 @@ page.replace "participants_table", :partial => "participants_table", :locals => 
 page << "$('participants_table').removeClassName('loading')"
 page << "$('participants_table').addClassName('#{h(@report)}')"
 page << "history.pushState({'report' : '#{h(@report)}'}, '#{h(@report.titleize)}', '?report=#{h(@report)}');"
+
+page.if("$('total_record_count')") do
+	total_count = @participants.respond_to?(:current_page) ? Participant.count : @participants.count
+	page.replace_html "total_record_count", :text => pluralize(total_count, Customer.participant_label)
+end

@@ -1,21 +1,20 @@
-# Any object within DreamSIS can be notated with a Note. Note accepts a polymorphic association called +notable+ that can be used to add notes to another model.
-# 
-# A note can have different access levels (determined by the +access_level+ attribute):
-# 
-# * everyone (or blank) - any admin user can see the note
-# * creator - only the creator of the note can see it
+# Any object within DreamSIS can be notated with a Note. Note accepts a polymorphic association called +notable+ that can be used to add notes to another model. Notes can also have arbitrary documents attached to them, which are stored on S3 using CarrierWave. If you want to validate that a Note has a valid document, use the +validate_document+ method (say, if you have a form that you want to collect a document with).
 class Note < CustomerScoped
-  belongs_to :notable, :polymorphic => true
+  belongs_to :notable, :polymorphic => true, :touch => true
   belongs_to :user, :class_name => "User", :foreign_key => "creator_id"
-  # belongs_to :contact_type  
+  validates_presence_of :notable_type, :notable_id
+	validates_presence_of :note, :unless => :validate_document?
+	validates_presence_of :document, :title, :if => :validate_document?
 
-  validates_presence_of :note, :notable_type, :notable_id
-
-  before_create :update_creator_id
+  before_create :update_creator_id  
+  default_scope :order => "created_at DESC", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
   
-  default_scope :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
-  
-  has_attached_file :document, :path => ":rails_root/files/note/:attachment/:id/:style/:filename"
+  mount_uploader :document, DocumentUploader, :mount_on => :document_file_name
+	
+  attr_accessor :validate_document
+  def validate_document?
+    validate_document
+  end
 	
   def update_creator_id
     self.creator_id = Thread.current['user'].try(:id)

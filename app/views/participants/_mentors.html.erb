@@ -2,11 +2,11 @@
 	<tr>
 		<th>Name</th>
 		<th>E-mail</th>
-		<th></th>
+		<th>Assigned Dates</th>
 		<th>Functions</th>
 	</tr>
 
-	<%= render :partial => "mentors/mentor", :collection => @participant.mentors %>
+	<%= render :partial => "mentors/mentor_participant", :collection => @participant.mentor_participants %>
 				
 	<%- if @participant.mentors.empty? -%>
 	<tr class="empty">

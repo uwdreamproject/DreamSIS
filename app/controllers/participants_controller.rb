@@ -4,6 +4,7 @@ class ParticipantsController < ApplicationController
   skip_before_filter :check_if_enrolled, :only => [:college_mapper_callback]
   skip_before_filter :check_authorization, :except => [:index, :cohort, :destroy, :bulk]
   
+	before_filter :set_title_prefix
   before_filter :set_report_type
 
   # GET /participants
@@ -11,44 +12,52 @@ class ParticipantsController < ApplicationController
   def index
     return redirect_to Participant.find(params[:id]) if params[:id]
     @participants = Participant.paginate(:all, :page => params[:page])
+		@cache_key = fragment_cache_key(:action => :index, :format => :xlsx)
+    @export = ParticipantsReport.for_key(@cache_key)
 
     respond_to do |format|
       format.html # index.html.erb
       format.xml { render :xml => @participants }
       format.js { render 'index'}
-      format.xls { 
+		  format.xlsx {
         @participants = Participant.all
-        render :action => 'index', :layout => 'basic' 
-      }
+      	respond_to_xlsx
+			}
     end
   end
 
   def high_school
-    @high_school = HighSchool.find(params[:id])
+    @high_school = HighSchool.find(params[:id] || params[:high_school_id])
+		@title << @high_school
     
     unless @current_user && @current_user.can_view?(@high_school)
       return render_error("You are not allowed to view that high school.")
     end
     
     @participants = @high_school.participants
+		@cache_key = fragment_cache_key(:action => :high_school, :id => @high_school.id, :format => :xlsx)
+    @export = ParticipantsReport.for_key(@cache_key)
 
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
       format.js { render 'index'}
-      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+      format.xlsx { respond_to_xlsx }
     end
   end
 
   def cohort
     @grad_year = params[:id]
     @participants = Participant.in_cohort(params[:id])
+		@title << @grad_year
+		@cache_key = fragment_cache_key(:action => :cohort, :id => @grad_year, :format => :xlsx)
+    @export = ParticipantsReport.for_key(@cache_key)
     
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
       format.js { render 'index'}
-      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+		  format.xlsx { respond_to_xlsx }
     end
   end
 
@@ -56,31 +65,38 @@ class ParticipantsController < ApplicationController
     return redirect_to(high_school_cohort_path(:high_school_id => params[:high_school_id], :year => params[:cohort])) if params[:cohort]
     @grad_year = params[:year]
     @high_school = HighSchool.find(params[:high_school_id])
+		@title << @high_school
+		@title << @grad_year
     
     unless @current_user && @current_user.can_view?(@high_school)
       return render_error("You are not allowed to view that high school.")
     end
     
-    @participants = Participant.in_cohort(@grad_year).in_high_school(@high_school.try(:id))
+    @participants = request.html? ? [] : Participant.in_cohort(@grad_year).in_high_school(@high_school.try(:id))
     @participant_groups = ParticipantGroup.find(:all, :conditions => { :location_id => @high_school, :grad_year => @grad_year })
+		@cache_key = fragment_cache_key(:action => :high_school_cohort, :id => @high_school.id, :cohort => @grad_year, :format => :xlsx)
+    @export = ParticipantsReport.for_key(@cache_key)
 
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
       format.js { render 'index'}
-      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+		  format.xlsx { respond_to_xlsx }
     end    
   end
 
   def college
     @college = Institution.find(params[:college_id].to_i)
     @participants = Participant.attending_college(@college.try(:id))
+		@title << @college
+		@cache_key = fragment_cache_key(:action => :college, :id => @college.try(:id), :format => :xlsx)
+    @export = ParticipantsReport.for_key(@cache_key)
     
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
       format.js { render 'index'}
-      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+		  format.xlsx { respond_to_xlsx }
     end
   end
 
@@ -88,26 +104,49 @@ class ParticipantsController < ApplicationController
     @college = Institution.find(params[:college_id].to_i)
     @grad_year = params[:year]
     @participants = Participant.in_cohort(@grad_year).attending_college(@college.try(:id))
+		@title << @college
+		@title << @grad_year
+		@cache_key = fragment_cache_key(:action => :college_cohort, :id => @college.try(:id), :cohort => @grad_year, :format => :xlsx)
+    @export = ParticipantsReport.for_key(@cache_key)
     
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
       format.js { render 'index'}
-      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+		  format.xlsx { respond_to_xlsx }
     end
   end
 
   def mentor
     @mentor = Mentor.find(params[:mentor_id] == "me" ? User.current_user.try(:person_id) : params[:mentor_id])
     @participants = Participant.assigned_to_mentor(@mentor.try(:id))
+		@title << "Assigned to #{@mentor.try(:fullname)}"
+		@cache_key = fragment_cache_key(:action => :mentor, :id => @mentor.id, :format => :xlsx)
+    @export = ParticipantsReport.for_key(@cache_key)
+		
+		respond_to do |format|
+      format.html { render :action => 'index' }
+      format.xml  { render :xml => @participants }
+      format.js 	{ render 'index'}
+		  format.xlsx { respond_to_xlsx }
+    end
+  end
+
+  def program
+    @program = Program.find(params[:program_id])
+    @participants = @program.participants
+		@title << @program.try(:title)
+		@cache_key = fragment_cache_key(:action => :program, :id => @program.id, :format => :xlsx)
+    @export = ParticipantsReport.for_key(@cache_key)
     
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
       format.js { render 'index'}
-      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+		  format.xlsx { respond_to_xlsx }
     end
   end
+
   
   def group
     @participant_group = ParticipantGroup.find(params[:id])
@@ -120,12 +159,14 @@ class ParticipantsController < ApplicationController
     
     @participants = @participant_group.participants
     @participant_groups = ParticipantGroup.find(:all, :conditions => { :location_id => @high_school, :grad_year => @grad_year })
+		@cache_key = fragment_cache_key(:action => :group, :id => @particiant_group.id, :format => :xlsx)
+    @export = ParticipantsReport.for_key(@cache_key)
     
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
       format.js { render 'index'}
-      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+		  format.xlsx { respond_to_xlsx }
     end    
   end
   
@@ -147,7 +188,9 @@ class ParticipantsController < ApplicationController
     @participant = Participant.find(params[:id]) rescue Student.find(params[:id])
     @high_school = @participant.high_school
     @grad_year = @participant.grad_year
-    
+		@term = Term.current_term
+    @title = @participant.try(:fullname)
+		
     unless @current_user && @current_user.can_view?(@participant)
       return render_error("You are not allowed to view that participant.")
     end
@@ -157,6 +200,20 @@ class ParticipantsController < ApplicationController
       format.xml  { render :xml => @participant }
     end
   end
+	
+  def avatar
+    @participant = Participant.find(params[:id]) rescue Student.find(params[:id])
+    unless @current_user && @current_user.can_view?(@participant)
+      return render_error("You are not allowed to view that participant.")
+    end
+    
+		if @participant.avatar?
+			av = params[:size] ? @participant.avatar.versions[params[:size].to_sym] : @participant.avatar
+			return send_default_photo(params[:size]) if av.nil?
+			return send_data(av.read, :disposition => 'inline', :type => 'image/jpeg')
+		end
+  end
+	
 
   # GET /participants/new
   # GET /participants/new.xml
@@ -243,17 +300,7 @@ class ParticipantsController < ApplicationController
       format.xml  { head :ok }
     end
   end
-  
-  def note
-    @participant = Participant.find(params[:id])
-    @note = @participant.notes.create(params[:note])
-    
-    respond_to do |format|
-      format.html { redirect_to @participant }
-      format.js
-    end    
-  end
-  
+
   # Checks for a duplicate participant based on the parameters passed. Used in an AJAX query on the participant form.
   def check_duplicate
     @duplicates = Participant.possible_duplicates(params[:participant], 10)
@@ -336,11 +383,62 @@ class ParticipantsController < ApplicationController
     render :text => "Error\r\n", :status => 500
   end
 
+	def check_export_status
+		@export = ParticipantsReport.find(params[:id])
+		respond_to do |format|
+			format.html { render :text => (@export.try(:status) || "does not exist") }
+			format.js
+		end
+	end
+
   protected
 
   # Stores the value from +params[:report]+ and stores it in +@report+ for use in views.
   def set_report_type
     @report = params[:report] || "basics"
   end
+
+	def set_title_prefix
+		@title = ["Participants"]
+	end
+
+  def send_default_photo(size)
+		filename = size == "thumb" ? "blank_avatar_thumb.png" : "blank_avatar.png"
+    send_file File.join(RAILS_ROOT, "public", "images", filename), 
+              :disposition => 'inline', :type => 'image/png', :status => 404
+  end  
+
+	def respond_to_xlsx
+		@export = ParticipantsReport.find_or_initialize_by_key(@cache_key)
+		if @export.generated? && params[:generate].nil?
+			if request.xhr?
+				headers["Content-Type"] = "text/javascript"
+				render :js => "window.location = '#{url_for(:format => 'xlsx')}'"
+			else
+				send_file @export.path, :filename => (@filename || "participants.xlsx"), :type => @export.mime_type.to_s
+			end
+		else
+			respond_to_generate_xlsx
+		end
+	end
+  
+	def respond_to_generate_xlsx
+		@export = ParticipantsReport.find_or_initialize_by_key(@cache_key)
+		@export.format = "xlsx"
+		@export.object_ids = @participants.collect(&:id)
+		@export.reset_to_ungenerated
+		@export.status = "initializing"
+		@export.save
+		@export.generate_in_background!
+		flash[:notice] = "We are generating your Excel file for you. Please wait."
+		
+		if request.xhr?
+			headers["Content-Type"] = "text/javascript"
+			return render(:template => "participants/check_export_status.js.rjs", :format => 'js')
+		else
+			return redirect_to(:back, :format => 'html')
+		end
+	end
+
     
 end

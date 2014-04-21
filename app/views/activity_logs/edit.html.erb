@@ -1,3 +1,4 @@
+<%= content_tag :h3, "Submitted by " + link_to(h(@activity_log.try(:mentor).try(:fullname)), @activity_log.try(:mentor)), :class => "pre-title" unless @activity_log.belongs_to?(@current_user) %>
 <h1>Activity Log
 	<small class="light">&raquo; <%= @activity_log.this_week? ? "This Week #{(Date.today.beginning_of_week.to_s(:short))}" : "Week of #{@activity_log.start_date.to_s(:short)}" %></small></h1>
 
@@ -14,18 +15,19 @@
 	<% end -%>
 
 <% end %>
-
 <%= observe_form "edit_activity_log_#{@activity_log.id.to_s}", :url => activity_log_path(@activity_log), :method => :put %>
+
+<%= render :partial => "participants" if @participants && !@participants.empty? %>
 
 <div id="sidebar">
 	
 	<p><%= link_to "Back to Dashboard", my_dashboard_path, :class => "photo-tile button" %></p>
 	
-	<p><%= link_to "Previous Week", my_activity_log_path(@activity_log.start_date.year, (@activity_log.start_date - 7.days).month, (@activity_log.start_date - 7.days).day), :class => "back button" %></p>
+	<p><%= link_to "Previous Week", my_activity_log_path((@activity_log.start_date - 7.days).year, (@activity_log.start_date - 7.days).month, (@activity_log.start_date - 7.days).day), :class => "back button" %></p>
 	
 	<p><%= link_to "This Week", my_current_activity_log_path, :class => "calendar_day button" unless @activity_log.this_week? %></p>
 	
-	<p><%= link_to "Next Week", my_activity_log_path(@activity_log.start_date.year, (@activity_log.start_date + 7.days).month,(@activity_log.start_date + 7.days).day), :class => "forward button" %></p>
+	<p><%= link_to "Next Week", my_activity_log_path((@activity_log.start_date + 7.days).year, (@activity_log.start_date + 7.days).month,(@activity_log.start_date + 7.days).day), :class => "forward button" %></p>
 	
 	<%- if @current_user.admin? -%>
 		<h3>Admin View</h3>

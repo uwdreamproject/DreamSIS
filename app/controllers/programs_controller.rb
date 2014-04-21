@@ -1,4 +1,6 @@
 class ProgramsController < ApplicationController
+  skip_before_filter :check_authorization, :only => [:index, :show]
+
   
   def index
     @programs = Program.find :all

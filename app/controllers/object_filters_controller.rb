@@ -74,6 +74,16 @@ class ObjectFiltersController < ApplicationController
     end
   end
 
+  def formatted_criteria
+    @object_filter = ObjectFilter.find(params[:id])
+    code = @object_filter.criteria
+    request = Net::HTTP.post_form(URI.parse('http://pygments.appspot.com/'), {'lang' => 'ruby', 'code' => code})
+
+    respond_to do |format|
+      format.js { render :text => request.body }
+    end
+  end
+
   protected 
   
   def check_authorization

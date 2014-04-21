@@ -11,6 +11,9 @@
     <dt>Website</dt>
     <dd><%= auto_link h(@program.website_url) %></dd>
 
+	<dt>Participants</dt>
+	<dd><%= link_to pluralize(@program.participants.count, "participant"), program_participants_path(@program) %></dd>
+
 </dl>
 
 <div id="sidebar">
