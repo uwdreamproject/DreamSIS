@@ -52,6 +52,26 @@
 				</td><% end %>
 		</tr>
 		
+		<!-- <tr>
+			<td>FAFSA (multiyear)</td>
+			<td colspan=2>
+				<%#- remote_form_for @participant do |f| %>
+				<table>
+					<%- for year in (@participant.grad_year || @participant.created_at.year)..Time.now.year -%>
+						<%#- fafsa = @participant.fafsa(year) -%>
+						<tr>
+							<td><%#= year %></td>
+							<td><%#= f.check_box "fafsa[#{year}][submitted_fafsa]", :onChange => "this.form.onsubmit()" %>
+							<%#= f.label "#{item}_status_#{option.to_param}", h(option) %></td>
+						</tr>
+					<% end %>
+				</table>
+				<%# end %>
+			</td>
+		</tr> -->
+						
+		
+		
 		<%- for item in %w[personal_statement resume activity_log] %>
 		<tr>
 			<td><%= item.titleize %></td>

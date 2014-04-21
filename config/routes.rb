@@ -13,7 +13,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :test_types
   map.resources :scholarships, :collection => { :auto_complete_for_scholarship_title => :any, :merge => :post }, :member => { :applications => :get }
   map.resources :customers
-  map.resources :object_filters
+  map.resources :object_filters, :member => { :formatted_criteria => :post }
   map.resources :locations, :collection => { :auto_complete_for_location_name => :any }
   map.resources :colleges, :controller => "locations", :collection => { :auto_complete_for_institution_name => :any }, :member => { :applications => :get }
   map.resources :terms, :member => { :sync => :put }

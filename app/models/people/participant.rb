@@ -14,6 +14,7 @@ class Participant < Person
   has_many :test_scores
   has_many :college_enrollments
   has_many :college_degrees
+  has_many :fafsas, :class_name => "PersonFafsa", :foreign_key => :person_id
   
   serialize :filter_cache
 
@@ -169,6 +170,10 @@ class Participant < Person
   # Returns true if there is a value in the fafsa_submitted_date field
   def submitted_fafsa?
     !fafsa_submitted_date.nil?
+  end
+  
+  def fafsa(year = Time.now.year)
+    fafsa = fafsas.find_or_initialize_by_year(year)
   end
 
   # Returns the Institution or College record for this Participant.

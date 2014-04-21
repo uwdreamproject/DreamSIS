@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140416041847) do
+ActiveRecord::Schema.define(:version => 20140420221901) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -620,6 +620,18 @@ ActiveRecord::Schema.define(:version => 20140416041847) do
   add_index "people", ["grad_year"], :name => "index_people_on_grad_year"
   add_index "people", ["lastname"], :name => "index_people_on_lastname"
   add_index "people", ["uw_net_id"], :name => "index_people_on_uw_net_id"
+
+  create_table "people_fafsas", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "year"
+    t.datetime "fafsa_submitted_at"
+    t.datetime "wasfa_submitted_at"
+    t.boolean  "not_applicable"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "people_fafsas", ["person_id", "year"], :name => "index_people_fafsas_on_person_id_and_year"
 
   create_table "people_programs", :id => false, :force => true do |t|
     t.integer  "person_id"
