@@ -42,7 +42,7 @@
 			</div>
 		<% end -%>
 
-		<%- if @participant.respond_to?(:parents) && Customer.experimental? -%>
+		<%- if @participant.respond_to?(:parents) -%>
 			<div class="info-section" id="parents">
 				<h2>Parents/Guardians &amp; Contacts</h2>
 				<%= render :partial => 'parents' %>
@@ -54,7 +54,7 @@
 		<% end -%>
 
 
-		<%- if @participant.respond_to?(:test_scores) && Customer.experimental? -%>
+		<%- if @participant.respond_to?(:test_scores) -%>
 			<div class="info-section" id="test_scores">
 				<h2>Tests</h2>
 				<%= render :partial => 'test_scores' %>
@@ -65,14 +65,14 @@
 			</div>
 		<% end -%>
 
-		<%- if @participant.respond_to?(:college_enrollments) && Customer.experimental? -%>
+		<%- if @participant.respond_to?(:college_enrollments) -%>
 			<div class="info-section" id="college_enrollments">
 				<h2>College Enrollment</h2>
 				<%= render :partial => 'college_enrollments' %>
 			</div>
 		<% end -%>
 
-		<%- if @participant.respond_to?(:college_degrees) && Customer.experimental? -%>
+		<%- if @participant.respond_to?(:college_degrees) -%>
 			<div class="info-section" id="college_degrees">
 				<h2>College Degrees</h2>
 				<%= render :partial => 'college_degrees' %>
@@ -106,7 +106,7 @@
 		</div>
 	<% end -%>
 
-	<%- if @participant.respond_to?(:submitted_fafsa?) -%>
+	<%- if @participant.respond_to?(:submitted_fafsa?) || @participant.respond_to?(:fafsas) -%>
 		<div class="info-section" id="paperwork">
 			<%= render :partial => 'paperwork_status' %>
 		</div>

@@ -18,6 +18,7 @@ class PersonFafsa < ActiveRecord::Base
     else
       write_attribute(:fafsa_submitted_at, nil)
     end
+    save
   end
   
   # Returns true if there is a value in the +wasfa_submitted_at+ field.
@@ -31,6 +32,17 @@ class PersonFafsa < ActiveRecord::Base
     else
       write_attribute(:wasfa_submitted_at, nil)
     end
+    save
   end
+
+  def not_applicable=(na_boolean)
+    if na_boolean == true || na_boolean == "true"
+      write_attribute(:not_applicable, true)
+    else
+      write_attribute(:not_applicable, nil)
+    end
+    save
+  end
+
   
 end

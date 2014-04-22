@@ -101,10 +101,21 @@ class Participant < Person
 			object_filter = ObjectFilter.find_by_title(m[1])
 			return super unless object_filter
 			passes_filter? object_filter			
+    elsif m = method_name.to_s.match(/\Afafsa_(\d{4})_(.+)\Z/)
+      fafsa(m[1]).send m[2], *args
 		else
       super(method_name, *args)
     end
   end
+
+  def respond_to?(method_sym, include_private = false)
+    if method_sym.to_s =~ /\Afafsa_(\d{4})_(.+)\Z/
+      true
+    else
+      super
+    end
+  end
+
 	
   # Tries to find duplicate records based on name and high school. Pass an array of participant data straight from your params
   # hash. Second parameter is a limit on the number of records to return (defaults to 50).
@@ -165,11 +176,6 @@ class Participant < Person
     else
       write_attribute(:fafsa_submitted_date, nil)
     end
-  end
-  
-  # Returns true if there is a value in the fafsa_submitted_date field
-  def submitted_fafsa?
-    !fafsa_submitted_date.nil?
   end
   
   def fafsa(year = Time.now.year)
