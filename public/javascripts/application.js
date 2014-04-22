@@ -12,7 +12,9 @@ Ajax.Responders.register({
 	},
 	onException: function(request, exception) {
 		$('indicator').removeClassName("visible")
-		updateFlashes( { "error" : "There was a problem processing your request. Your data was not saved." })
+    if(exception.message != "'undefined' is not an object (evaluating 'entry.autocompleteIndex = i')")
+      updateFlashes( { "error" : "There was a problem processing your request. Your data was not saved." })
+    console.log(exception)
 	},
 	onComplete: function(event, request) {	
 		if (Ajax.activeRequestCount == 0)
