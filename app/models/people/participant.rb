@@ -75,6 +75,11 @@ class Participant < Person
   def self.object_filters
     ObjectFilter.find_all_by_object_class("Participant").select(&:display_now?)
   end
+  
+  # Returns the number of filters that this Participant doesn't pass. Useful for quick view of status.
+  def filter_results_count
+    filter_cache.select{|k,v| v == false }.count
+  end
 
   # Checks the +filter_cache+ to see whether or not this person passes the specified filter.
   # If the +filter_cache+ doesn't exist, it creates it.
@@ -146,6 +151,7 @@ class Participant < Person
     ethnicities << "african_american" if african_american?
     ethnicities << "american_indian" if american_indian?
     ethnicities << "asian" if asian?
+    ethnicities << "asian_american" if asian_american?
     ethnicities << "pacific_islander" if pacific_islander?
     ethnicities << "caucasian" if caucasian?
     ethnicities << "middle_eastern" if middle_eastern?
