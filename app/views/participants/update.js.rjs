@@ -20,17 +20,6 @@ if params[:participant] && params[:participant][:received_binder]
   end
 end
 
-if params[:participant] && params[:participant][:submitted_fafsa]
-  page.if "$('status_#{@participant.id}_submitted_fafsa')" do
-    page.replace_html "status_#{@participant.id}_submitted_fafsa", "<span id='status_text_#{@participant.id}_submitted_fafsa'>Saved</span>"
-    page.visual_effect :fade, "status_text_#{@participant.id}_submitted_fafsa"
-  end
-  page.if "$('participant_#{@participant.id}_fafsa_submitted_date')" do
-    page.replace_html "participant_#{@participant.id}_fafsa_submitted_date", 
-                      (@participant.fafsa_submitted_date.nil? ? "" : @participant.fafsa_submitted_date.to_s(:db))
-  end
-end
-
 # Always replace the details partial and the stats at top.
 page.replace_html "column1", :partial => "details"
 page.replace_html	"filter_results", :partial => "filter_results"
