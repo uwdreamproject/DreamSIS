@@ -22,7 +22,7 @@ class Participant < Person
 	
   validates_presence_of :birthdate, :high_school_id, :if => :validate_ready_to_rsvp?
 
-  attr_accessor :override_binder_date, :override_fafsa_date, :create_college_mapper_student_after_save, :link_to_current_user_after_save
+  attr_accessor :override_binder_date, :override_fafsa_date, :override_wasfa_date, :create_college_mapper_student_after_save, :link_to_current_user_after_save
   
   named_scope :in_cohort, lambda {|grad_year| {:conditions => { :grad_year => grad_year }}}
   named_scope :in_high_school, lambda {|high_school_id| {:conditions => { :high_school_id => high_school_id }}}
@@ -74,6 +74,11 @@ class Participant < Person
   # Returns all Filter objects that list Participant as the object_class
   def self.object_filters
     ObjectFilter.find_all_by_object_class("Participant").select(&:display_now?)
+  end
+  
+  # Returns the number of filters that this Participant doesn't pass. Useful for quick view of status.
+  def filter_results_count
+    filter_cache.select{|k,v| v == false }.count
   end
 
   # Checks the +filter_cache+ to see whether or not this person passes the specified filter.
@@ -146,6 +151,7 @@ class Participant < Person
     ethnicities << "african_american" if african_american?
     ethnicities << "american_indian" if american_indian?
     ethnicities << "asian" if asian?
+    ethnicities << "asian_american" if asian_american?
     ethnicities << "pacific_islander" if pacific_islander?
     ethnicities << "caucasian" if caucasian?
     ethnicities << "middle_eastern" if middle_eastern?
@@ -153,11 +159,6 @@ class Participant < Person
     ethnicities << ethnicity_details if !ethnicity_details.blank? && options[:include_details]
     return ethnicities if separator.nil?
     ethnicities.join(separator)
-  end
-
-  # Returns true if there is a value in the +fafsa_submitted_date+ field.
-  def submitted_fafsa?
-    !fafsa_submitted_date.nil?
   end
   
   # Automatically updates the +binder_date+ to Time.now if the value is true or to nil if the value is false.
@@ -167,14 +168,6 @@ class Participant < Person
       write_attribute(:binder_date, override_binder_date || Time.now)
     else
       write_attribute(:binder_date, nil)
-    end
-  end
-  
-  def submitted_fafsa=(fafsa_boolean)
-    if fafsa_boolean == true || fafsa_boolean == "true"
-      write_attribute(:fafsa_submitted_date, override_fafsa_date || Time.now)
-    else
-      write_attribute(:fafsa_submitted_date, nil)
     end
   end
   
@@ -226,12 +219,14 @@ class Participant < Person
 		columns << self.column_names.map { |c| c = c.to_sym }		
 		columns << [:high_school_name, :raw_survey_id, :college_attending_name, 
 								:family_income_level_title, :program_titles, :assigned_mentor_names, 
-								:participant_group_title]
+								:participant_group_title, :multiracial?, 
+                "fafsa_#{Time.now.year}_fafsa_submitted_at", "fafsa_#{Time.now.year}_wasfa_submitted_at", 
+                "fafsa_#{Time.now.year}_not_applicable"]
 		columns << Participant.object_filters.collect { |f| "Filter: #{f.title}" }
 		remove_columns = [:filter_cache, :login_token, :login_token_expires_at, :customer_id, 
 								:avatar, :college_mapper_id, :avatar_image_url, :college_mapper_id, :husky_card_rfid,
 								:survey_id, :relationship_to_child, :occupation,	:annual_income,	:needs_interpreter,
-								:meeting_availability, :child_id]
+								:meeting_availability, :child_id, :fafsa_submitted_date, :fafsa_not_applicable]
 		columns.flatten - remove_columns
 	end
 	
@@ -258,6 +253,21 @@ class Participant < Person
 	def participant_group_title
 		participant_group.try(:title)
 	end	
+  
+  # Returns a collection of EventAttendance objects to be displayed on a Participant's detail page.
+  # Starting with all existing event_attendances, this method adds in Event objects with a grade level range that
+  # matches this Participant's grade level, if a grade level is assigned. If an EventAttendance record
+  # does not exist for these Events, a new record is initialized and included (but not saved).
+  def relevant_event_attendances
+    return @eas if @eas
+    @eas = event_attendances.non_visits
+    return @eas if grad_year.nil? # If no grade level, then we're done
+    event_ids = @eas.collect(&:event_id)
+    Event.for_grade_level(grade).each do |event|
+      @eas << event_attendances.new(:event_id => event.id) unless event_ids.include?(event.id)
+    end
+    @eas
+  end
 
   # Returns the CollegeMapperStudent record for this individual if we have a college_mapper_id stored.
   # By default, if the record doesn't exist, we create it. You can override that by passing +false+ for

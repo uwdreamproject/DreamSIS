@@ -187,6 +187,7 @@ class ParticipantsController < ApplicationController
   def show
     @participant = Participant.find(params[:id]) rescue Student.find(params[:id])
     @high_school = @participant.high_school
+    @event_attendances = @participant.respond_to?(:relevant_event_attendances) ? @participant.relevant_event_attendances : @participant.event_attendences.non_visits
     @grad_year = @participant.grad_year
 		@term = Term.current_term
     @title = @participant.try(:fullname)

@@ -79,6 +79,7 @@ class EventAttendancesController < EventsController
         format.xml  { render :xml => @attendee, :status => :created, :location => @attendee }
       else
         format.html { render :action => "new" }
+        format.js   { flash[:error] = @attendee.errors.full_messages.to_sentence }
         format.xml  { render :xml => @attendee.errors, :status => :unprocessable_entity }
       end
     end

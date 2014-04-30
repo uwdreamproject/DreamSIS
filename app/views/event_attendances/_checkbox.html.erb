@@ -1,0 +1,25 @@
+<%- event_attendance ||= checkbox -%>
+
+<td id="<%= "td_#{event_attendance.person_id}_#{event_attendance.event_id}_attended" %>" class="centered functions">
+	<%- if event_attendance.new_record? -%>
+		<%= link_to_remote "Check-in", 
+				{ :url => event_event_attendances_path(event_attendance.event, 
+					:attendee => { :person_id => event_attendance.person_id, :attended => true }),
+					:method => :post } %>
+				
+	<%- elsif !event_attendance.new_record? && event_attendance.attended? -%>
+		<%= link_to_remote "Remove", 
+			{ :url => event_event_attendance_path(event_attendance.event, event_attendance, 
+				:attendee => { :attended => false }), 
+				:method => :put } %>
+
+	<%- else -%>
+		<%= link_to_remote "Check-in", 
+			{ :url => event_event_attendance_path(event_attendance.event, event_attendance, 
+				:attendee => { :attended => true }), 
+				:method => :put } %>
+
+	<% end %>
+</td>
+
+
