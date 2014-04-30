@@ -43,7 +43,8 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.xml
   def create
-    @event = Event.new(params[:event] || params[:visit])
+    klass = params[:event].try(:[], :type) == "Visit" ? Visit : Event
+    @event = klass.new(params[:event] || params[:visit])
 
     respond_to do |format|
       if @event.save
@@ -61,6 +62,8 @@ class EventsController < ApplicationController
   # PUT /events/1.xml
   def update
     @event = Event.find(params[:id])
+    klass = params[:event].try(:[], :type) == "Visit" ? Visit : Event
+    @event.write_attribute(:type, klass.to_s) if @event.type != klass
 
     respond_to do |format|
       if @event.update_attributes(params[:event] || params[:visit])

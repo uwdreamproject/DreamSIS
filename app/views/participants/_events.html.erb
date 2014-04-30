@@ -6,15 +6,16 @@
 			<th>Time</th>
 			<th class="centered">RSVP</th>
 			<th class="centered">Attended</th>
+			<th>Functions</th>
 		</tr>
 	</thead>
 
 	<tbody>
-		<%= render :partial => "event_attendances/event_row", :collection => @participant.event_attendances.non_visits %>
+		<%= render :partial => "event_attendances/event_row", :collection => @event_attendances %>
 		
-		<%- if @participant.event_attendances.non_visits.empty? -%>
+		<%- if @event_attendances.empty? -%>
 			<tr class="empty">
-				<td colspan=10>You haven't attended any events.</td>
+				<td colspan=10>No events to show.</td>
 			</tr>
 		<% end -%>
 	</tbody>

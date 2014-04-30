@@ -48,14 +48,19 @@
 
 	<%- if @event.event_group -%>
 		<dt>Event Group</dt>
-		<dd><%= link_to @event.event_group.try(:name), @event.event_group %></dd>
+		<dd><%= link_to h(@event.event_group.try(:name)), @event.event_group %></dd>
 	<% end -%>
 	
 	<%- if @event.event_type -%>
 		<dt>Event Type</dt>
-		<dd><%= link_to @event.event_type.try(:name), @event.event_type %></dd>
+		<dd><%= link_to h(@event.event_type.try(:name)), @event.event_type %></dd>
 	<% end -%>
-
+	
+	<%- if !@event.grade_levels_list_string.blank? -%>
+		<dt>Grade Levels</dt>
+		<dd><%= @event.grade_levels_list_string %></dd>
+	<% end %>
+			
 	<dt>RSVP URL</dt>
 	<dd><%= @event.allow_rsvps? ? link_to(event_rsvp_url(@event), event_rsvp_path(@event)) : "<span class='light'>RSVP's disabled</span>" %></dd>
 

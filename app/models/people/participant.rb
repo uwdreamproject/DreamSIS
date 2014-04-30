@@ -253,6 +253,21 @@ class Participant < Person
 	def participant_group_title
 		participant_group.try(:title)
 	end	
+  
+  # Returns a collection of EventAttendance objects to be displayed on a Participant's detail page.
+  # Starting with all existing event_attendances, this method adds in Event objects with a grade level range that
+  # matches this Participant's grade level, if a grade level is assigned. If an EventAttendance record
+  # does not exist for these Events, a new record is initialized and included (but not saved).
+  def relevant_event_attendances
+    return @eas if @eas
+    @eas = event_attendances.non_visits
+    return @eas if grad_year.nil? # If no grade level, then we're done
+    event_ids = @eas.collect(&:event_id)
+    Event.for_grade_level(grade).each do |event|
+      @eas << event_attendances.new(:event_id => event.id) unless event_ids.include?(event.id)
+    end
+    @eas
+  end
 
   # Returns the CollegeMapperStudent record for this individual if we have a college_mapper_id stored.
   # By default, if the record doesn't exist, we create it. You can override that by passing +false+ for

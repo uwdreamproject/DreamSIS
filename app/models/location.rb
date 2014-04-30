@@ -18,7 +18,7 @@ class Location < CustomerScoped
   default_scope :order => "name", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
 
   # Returns all the events that we should show on the attendance page for the requested term
-  def events(term = nil, audience = nil)
+  def events(term = nil, audience = nil, visits_only = true)
     conditions = ""
     conditions_values = {} 
     conditions << "date >= '#{term.start_date.to_s(:db)}' AND date <= '#{term.end_date.to_s(:db)}'" if term
@@ -27,6 +27,7 @@ class Location < CustomerScoped
       conditions << " AND show_for_participants = :sfp " && conditions_values[:sfp] = true if audience.include?(:participants)
     end
     conditions << " AND (location_id = '#{id}' OR location_id IS NULL)"
+    conditions << " AND type = 'Visit' " if visits_only
     Event.find(:all, :conditions => [conditions, conditions_values])
   end
 
