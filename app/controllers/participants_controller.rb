@@ -416,7 +416,13 @@ class ParticipantsController < ApplicationController
 				headers["Content-Type"] = "text/javascript"
 				render :js => "window.location = '#{url_for(:format => 'xlsx')}'"
 			else
-				send_file @export.path, :filename => (@filename || "participants.xlsx"), :type => @export.mime_type.to_s
+        begin
+          filename = @filename || "participants.xlsx"
+          send_data @export.file.read, :filename => filename, :disposition => 'inline', :type => @export.mime_type.to_s
+        rescue
+          flash[:error] = "The file could not be read from the server. Please try regenerating the export."
+          redirect_to :back
+        end
 			end
 		else
 			respond_to_generate_xlsx
