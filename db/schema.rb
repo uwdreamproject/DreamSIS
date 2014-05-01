@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140429040606) do
+ActiveRecord::Schema.define(:version => 20140501043856) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -258,6 +258,7 @@ ActiveRecord::Schema.define(:version => 20140429040606) do
     t.integer  "customer_id"
     t.integer  "earliest_grade_level_level"
     t.integer  "latest_grade_level_level"
+    t.boolean  "send_attendance_emails"
   end
 
   add_index "events", ["customer_id"], :name => "index_events_on_customer_id"
