@@ -1,7 +1,3 @@
-<div class="right">
-	<label for="show_criteria"><input id="show_criteria" type="checkbox" onClick="$$('tt.criteria').invoke('toggle')"> Show criteria</label>
-</div>
-
 <h1>Stat Filters</h1>
 <p>Filters are used to dynamically limit the students displayed on list pages, based on certain criteria defined here.</p>
 
@@ -36,6 +32,13 @@
 
 <div id="sidebar">
 	<p><%= link_to 'New stat filter', new_object_filter_path, :class => "add button" %></p>
+
+	<p>
+		<label for="show_criteria">
+			<input id="show_criteria" type="checkbox" onClick="$$('tt.criteria').invoke('toggle')"> Show criteria
+		</label>
+	</p>
+	
 </div>
 
 <%- javascript_tag do -%>
