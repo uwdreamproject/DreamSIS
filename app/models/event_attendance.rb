@@ -34,7 +34,7 @@ class EventAttendance < ActiveRecord::Base
   
   # Sends the rsvp email or cancel email if the RSVP has changed.
   def send_email
-    if rsvp_changed?
+    if event.send_attendance_emails? && rsvp_changed?
       if rsvp?
         RsvpMailer.deliver_rsvp!(self)
       else

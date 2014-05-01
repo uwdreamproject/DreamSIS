@@ -8,6 +8,8 @@ class Report < CustomerScoped
 	validates_uniqueness_of :key, :scope => [ :customer_id, :format ]
 	serialize :object_ids
   default_scope :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
+
+  mount_uploader :file, ReportUploader, :mount_on => :file_path
   
 	# Finds the most recent Report object that corresponds to this cache_key.
 	# Returns nil if one doesn't exist.
@@ -60,16 +62,20 @@ class Report < CustomerScoped
     begin
 			update_attribute :status, "generating"
 	    xlsx_package = object_class.to_xlsx(:data => objects)
-			file = File.new(path, 'w')
-			xlsx_package.serialize file.path
+			temp_file = Tempfile.new("report_#{id.to_s}_#{Time.now.to_i}")
+			xlsx_package.serialize temp_file.path
 		rescue => e
 			update_attributes :status => "error: #{e.message}", :generated_at => nil
 			logger.warn { "ERROR generating file: #{e.message}" }
 		else # no errors
-			update_attributes :file_path => file.path, :status => "generated", :generated_at => Time.now
+      self.file = temp_file
+      self.status = "generated"
+      self.generated_at = Time.now
+      self.save
+      # update_attributes :file_path => file.path, :status => "generated", :generated_at => Time.now
 			logger.info { "Output file at: #{file.path}" }
     ensure
-      file.close if file
+      temp_file.close if temp_file
     end
 	end
 	

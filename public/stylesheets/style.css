@@ -1910,7 +1910,7 @@ form.formtastic li#participant_zip_input input, form.formtastic li#parent_zip_in
 
 
 form.formtastic fieldset p:first-child {
-	margin: -10px -2px 2em -7px;
+	margin: -1.8em -2px 2em -7px;
 	padding: 7px;
 	background: rgba(0,0,0,0.03);
 }
