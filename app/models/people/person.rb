@@ -20,6 +20,7 @@ class Person < CustomerScoped
   # has_many :how_did_you_hear_people
   # has_many :how_did_you_hear_options, :through => :how_did_you_hear_people
   has_and_belongs_to_many :how_did_you_hear_options
+	belongs_to :highest_education_level, :class_name => "EducationLevel"
   
   has_many :users
   
@@ -29,18 +30,16 @@ class Person < CustomerScoped
   validates_format_of :email2, :with => /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i, :allow_blank => true
   validates_presence_of :firstname, :lastname, :email, :sex, :phone_mobile, :birthdate, :if => :validate_ready_to_rsvp?
 
-  has_many :notes, :as => :notable
+  has_many :notes, :as => :notable, :conditions => "document_file_name IS NULL"
+  has_many :documents, :as => :notable, :class_name => "Note", :conditions => "document_file_name IS NOT NULL AND title IS NOT NULL"
 
   has_many :training_completions
   has_many :trainings, :through => :training_completions, :source => :training
 
   has_and_belongs_to_many :programs
 
-  has_attached_file :avatar, 
-										:path => ":rails_root/files/person/:attachment/:id/:style/:filename", 
-										:styles => { :medium => "175", :thumb => "32x32>" }, 
-										:default_url => "blank_avatar.png"
-
+  mount_uploader :avatar, AvatarUploader
+  
   after_create :generate_survey_id
 
   attr_accessor :validate_name
@@ -208,6 +207,11 @@ class Person < CustomerScoped
   def survey_id
     generate_survey_id unless new_record?
   end
+	
+	# Returns the survey_id without generating it if it doesn't exist.
+	def raw_survey_id
+		read_attribute(:survey_id)
+	end
   
   # Returns the class standing if possible.
   # def class_standing

@@ -1,10 +1,10 @@
 class MentorParticipant < ActiveRecord::Base
 
-  belongs_to :mentor
-  belongs_to :participant
+  belongs_to :mentor, :touch => true
+  belongs_to :participant, :touch => true
   
   validates_presence_of :mentor_id, :participant_id
-  validates_uniqueness_of :mentor_id, :scope => :participant_id
+  validates_uniqueness_of :mentor_id, :scope => [:participant_id, :deleted_at]
 
   default_scope :order => "people.lastname, people.firstname", :joins => :participant
   

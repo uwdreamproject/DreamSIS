@@ -3,6 +3,8 @@ class EventAttendancesController < EventsController
   before_filter :declare_audience, :only => [:index, :checkin, :auto_complete_for_person_fullname]
   skip_before_filter :redirect_to_rsvp_if_not_admin
 
+  protect_from_forgery :only => [:create, :update, :destroy] 
+
   # def index
   #   @attendees = @event.attendees
   # 

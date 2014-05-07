@@ -6,8 +6,12 @@
 	<h3 class="pre-title"><%= @participant.class.to_s %></h3>
 	<h1><%=h @participant.fullname(:middlename => false) %></h1>
 
-	<%= content_tag :h2, "** Inactive **", :class => "inactive-note" if @participant.inactive? %>
-	<%= content_tag :h2, "** #{Customer.not_target_Label} **", :class => "not-target-note" if @participant.not_target_participant? %>
+	<%- if @participant.inactive? || @participant.not_target_participant? -%>
+	<div class="note-band">
+		<%= content_tag :h2, "Inactive", :class => "inactive-note" if @participant.inactive? %>
+		<%= content_tag :h2, "#{Customer.not_target_Label}", :class => "not-target-note" if @participant.not_target_participant? %>
+	</div>
+	<% end %>
 </div>
 
 <div class="details">
@@ -38,7 +42,8 @@
 			<dt>College</dt>
 			<dd><%= @participant.college_attending.name %></dd>
 		<% end -%>
-		
-	</dl>
 
+	</dl>
 </div>
+
+<div class="clear"></div>

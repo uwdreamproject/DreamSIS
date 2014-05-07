@@ -1,5 +1,5 @@
 <%- f.inputs(:name => "Scholarship") do -%>
-	<p>Choose the scholarship by searching by name below.</p>
+	<p>Choose the scholarship by searching by name below. If you can't find the scholarship you're looking for, <%= link_to "create a new one", new_scholarship_path, :popup => true %>.</p>
 	<%= render :partial => 'scholarship_select', 
 				:locals => { 
 					:attribute_name => "scholarship_id", 

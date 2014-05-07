@@ -1,51 +1,47 @@
-<thead>
-	<tr>
-		<th>id</th>
-		<th>firstname</th>
-		<th>middlename</th>
-		<th>lastname</th>
-		<th>nickname</th>
-		<th>display_name</th>
-		<th>email</th>
-		<th>birthdate</th>
-		<th>sex</th>
-		<th>type</th>
-		<th>previous_participant_id</th>
-		<th>ferpa_agreement_signed_at</th>
-		<th>passed_background_check?</th>
-		<th>risk_form_signed_at</th>
-		<th>reg_id</th>
-		<th>uw_student_no</th>
-		<th>uw_net_id</th>
-		<th>terms_count</th>
-		<th>created_at</th>
-		<th>updated_at</th>
-	</tr>
-</thead>
+<ss:Row ss:StyleID="1">
+	<ss:Cell><ss:Data ss:Type="String">id</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">firstname</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">middlename</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">lastname</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">nickname</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">display_name</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">email</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">birthdate</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">sex</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">type</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">previous_participant_id</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">ferpa_agreement_signed_at</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">passed_background_check?</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">risk_form_signed_at</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">reg_id</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">uw_student_no</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">uw_net_id</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">terms_count</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">created_at</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">updated_at</ss:Data></ss:Cell>
+</ss:Row>
 
-<tbody>
 <% @mentors.each do |mentor| %>
-	<tr>
-		<td><%=h mentor.id %></td>
-		<td><%=h mentor.firstname %></td>
-		<td><%=h mentor.middlename %></td>
-		<td><%=h mentor.lastname %></td>
-		<td><%=h mentor.nickname %></td>
-		<td><%=h mentor.display_name %></td>
-		<td><%=h mentor.email %></td>
-		<td><%=h mentor.birthdate %></td>
-		<td><%=h mentor.sex %></td>
-		<td><%=h mentor.type %></td>
-		<td><%=h mentor.previous_participant_id %></td>
-		<td><%=h mentor.ferpa_agreement_signed_at %></td>
-		<td><%=h mentor.passed_background_check? %></td>
-		<td><%=h mentor.risk_form_signed_at %></td>
-		<td><%=h mentor.reg_id %></td>
-		<td><%=h mentor.uw_student_no %></td>
-		<td><%=h mentor.uw_net_id %></td>
-		<td><%=h mentor.mentor_term_groups.collect(&:term_id).flatten.uniq.size %></td>
-		<td><%=h mentor.created_at %></td>
-		<td><%=h mentor.updated_at %></td>
-	</tr>
+<ss:Row>
+	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.id %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.firstname %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.middlename %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.lastname %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.nickname %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.display_name %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.email %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.birthdate %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.sex %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.type %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.previous_participant_id %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.ferpa_agreement_signed_at %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.passed_background_check? %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.risk_form_signed_at %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.reg_id %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.uw_student_no %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.uw_net_id %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.mentor_term_groups.collect(&:term_id).flatten.uniq.size %></ss:Data></ss:Cell>
+	<ss:Cell ss:StyleID="ShortDate"><ss:Data ss:Type="DateTime"><%=h mentor.created_at.to_s(:excel) %></ss:Data></ss:Cell>
+	<ss:Cell ss:StyleID="ShortDate"><ss:Data ss:Type="DateTime"><%=h mentor.updated_at.to_s(:excel) %></ss:Data></ss:Cell>
+</ss:Row>
 <% end %>
-</tbody>

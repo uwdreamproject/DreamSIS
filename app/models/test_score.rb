@@ -1,6 +1,6 @@
 # Models an instance of a participant taking a test represented by TestType. For example, the SAT or ACT tests.
 class TestScore < CustomerScoped  
-  belongs_to :participant
+  belongs_to :participant, :touch => true
   belongs_to :test_type
   
   delegate :name, :to => :test_type

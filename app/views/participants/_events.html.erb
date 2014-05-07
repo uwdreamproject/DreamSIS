@@ -33,3 +33,13 @@
 	</tr>
 	
 </table>
+
+<%- @events_by_date = {} -%>
+<%- for month in [Date.today.last_month.last_month, Date.today.last_month, Date.today] -%>
+	<div class="mini calendar-container span4">
+		<h3><%= Date::MONTHNAMES[month.month] %></h3>
+		<%- calendar(month) do |date| -%>
+			<%= date.day %>
+		<% end %>
+	</div>
+<% end %>

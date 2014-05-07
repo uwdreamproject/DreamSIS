@@ -3,16 +3,14 @@
 		<tr>
 			<th><input type="checkbox" onClick="$$('input.index_check_box').each(function(e) { e.checked = this.checked }, this)"></th>
 			<th>Name</th>
-			<th>Email</th>
 			<th>Cohort</th>
-			<th>Colleges</th>
-			<th>Scholarships</th>
+			<th>Last Updated</th>
 			<th colspan=3></th>
 		</tr>
 	</thead>
 
 	<tbody>
-		<%= render :partial => 'participants/participant', :collection => @my_mentees || @participants %>
+		<tr class="empty"><td class="loading" colspan=10></td></tr>
 	
 		<%- if (@my_mentees || @participants).empty? -%>
 			<tr class="empty">
@@ -21,4 +19,8 @@
 		<% end -%>
 	</tbody>
 	
+	<%= javascript_tag "document.observe('dom:loaded', function() { #{remote_function(:url => mentor_participants_url(@mentor, :report => 'basics'), :method => :get) } });" %>
+	
 </table>
+
+

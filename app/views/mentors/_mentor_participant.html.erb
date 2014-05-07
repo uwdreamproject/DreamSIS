@@ -1,0 +1,26 @@
+<%- include_image ||= false -%>
+
+<tr id="mentor_participant_<%= mentor_participant.mentor_id %>">
+	
+	<%- if include_image -%>
+		<td class="mini photo-list"><%= image_tag photo_mentor_path(mentor_participant.mentor, :size => "50"), :size => "", :class => 'photo' %></td>
+	<% end %>
+	
+	<td class="name">
+		<%= link_to highlight(h(mentor_participant.mentor.fullname(:skip_update => true)), (params[:mentor][:fullname] rescue nil)),
+			 		mentor_participant.mentor %></td>
+
+	<td><%= auto_link Customer.link_to_uw? ? h(mentor_participant.mentor.uw_net_id) : h(mentor_participant.mentor.email) %></td>
+
+	<td>
+		<%= mentor_participant.created_at.to_s(:month_year) %>
+		&ndash;
+		<%= mentor_participant.deleted_at.nil? ? "now" : mentor_participant.deleted_at.to_s(:month_year) %>
+	</td>
+
+	<td class="functions">
+		<%= link_to 'Show', mentor_participant.mentor %>
+		<%= link_to 'Edit', edit_mentor_path(mentor_participant.mentor) %>
+		<%= link_to 'Delete', remove_participant_mentor_path(mentor_participant.mentor, :mentor_participant_id => mentor_participant.id), :method => :delete, :confirm => "Are you sure you want to unassign this #{Customer.mentor_label}?" if @current_user.admin? && !mentor_participant.deleted? %>
+	</td>
+</tr>

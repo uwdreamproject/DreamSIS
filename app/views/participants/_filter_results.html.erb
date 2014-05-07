@@ -1,4 +1,4 @@
-<ul class="filter-results">
+<ul class="filter-results" id="filter_results_container">
 	<%- for object_filter in Participant.object_filters -%>
 		<%= content_tag :li, h(object_filter.title), :class => (@participant.passes_filter?(object_filter) ? "pass" : "fail") if object_filter.display_for?(@participant) %>
 	<% end %>

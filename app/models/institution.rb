@@ -12,6 +12,12 @@ class Institution
     :gentele   => [:phone],
     :webaddr   => [:website_url]
   }
+	
+	ICLEVEL_DESCRIPTIONS = {
+		"1" => "4-year college/university",
+		"2" => "2-year college",
+		"3" => "Less than 2-year college"
+	}
 
   def geocoded?
     false
@@ -30,7 +36,9 @@ class Institution
 	def to_title
 		title
 	end
-  
+	
+	attr_accessor :count
+
   def [](attribute)
     matching_aliases = self.class::ATTRIBUTE_ALIASES.collect{|k,v| k unless v.select{|a| a.to_s == attribute.to_s}.empty?}.compact
     aliases = ([attribute.to_s] + matching_aliases).flatten.compact
@@ -60,6 +68,17 @@ class Institution
   def location_detail
     [self.city, self.state].join(", ")
   end
+	
+	# Returns the ICLEVEL description for this Institution:
+	# 
+	# 1: 	4-year college/university
+	# 2: 	2-year college
+	# 3: 	Less than 2-year college
+	# 
+	# Any other values return nil
+	def iclevel_description
+		ICLEVEL_DESCRIPTIONS[iclevel.to_s]
+	end
 
   # Finds an Intitution record by "unitid" (the unique identifier provided by Dept of Ed's API).
   # If a negative integer is provided, this will find a College object instead (see note at College).
@@ -159,7 +178,7 @@ class Institution
   # Returns an array of all Institutions as objects and caches the data for quick retrieval.
   def self.all(options = {})
     fancy_log ":all", "Find"
-    @all ||= RESULTS_CACHE.fetch("all_objects", {:expires_in => 30.days}.merge(options)) do
+    @all ||= RESULTS_CACHE.fetch("all_objects", {:expires_in => 180.days}.merge(options)) do
       all = []
       for unitid,raw_attributes in Institution.raw_dataset(options)
         all << Institution.new(raw_attributes)
@@ -176,7 +195,7 @@ class Institution
   protected
   
   def self.indexes(options = {})
-    @indexes ||= RESULTS_CACHE.fetch("indexes", {:expires_in => 30.days}.merge(options)) do
+    @indexes ||= RESULTS_CACHE.fetch("indexes", {:expires_in => 180.days}.merge(options)) do
       fancy_log ":all", "Index"
       indexes = { :unitid => {}, :opeid => {}, :name => {}}
       for object in Institution.all(options)
@@ -213,7 +232,7 @@ class Institution
   # and stores it as a hash of hashes into the RESULTS_CACHE. The hash keys are the "unitid" identifiers
   # for the school and the hash values are the raw data hashes returned from the API.
   def self.raw_dataset(options = {})
-    RESULTS_CACHE.fetch("raw_data", {:expires_in => 30.days}.merge(options)) do
+    RESULTS_CACHE.fetch("raw_data", {:expires_in => 180.days}.merge(options)) do
       url = "http://explore.data.gov/api/views/uc4u-xdrd/rows.json"
       fancy_log ":raw_data => #{url}", "Fetch"
       puts "Fetching institution directory listing dataset from #{url}"
@@ -237,11 +256,13 @@ class Institution
   end
 
   def self.fancy_log(msg, method = "Fetch", time = nil)
-    caller_class_s = "Institution"
-    message = "  \e[4;33;1m#{caller_class_s} #{method}"
-    message << " (#{'%.1f' % (time*1000)}ms)" if time
-    message << "\e[0m   #{msg}"
-    RAILS_DEFAULT_LOGGER.info message
+    if Rails.env == 'development'
+      caller_class_s = "Institution"
+      message = "  \e[4;33;1m#{caller_class_s} #{method}"
+      message << " (#{'%.1f' % (time*1000)}ms)" if time
+      message << "\e[0m   #{msg}"
+      RAILS_DEFAULT_LOGGER.info message
+    end
   end
 
   

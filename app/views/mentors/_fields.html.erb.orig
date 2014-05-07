@@ -1,0 +1,37 @@
+<%- f.inputs :name => "Contact Information &amp; Details" do -%>
+	
+	<%- f.inputs :name => "Name", :class => "inline" do -%>
+		<%= f.input :firstname, :label => "First" %>
+		<%= f.input :middlename, :label => "Middle", :input_html => { :size => 5 } %>
+		<%= f.input :lastname, :label => "Last" %>
+	<% end %>
+	
+	<%- f.inputs :name => "Other Names", :class => "inline" do -%>
+		<%= f.input :nickname %>
+		<%= f.input :aliases, :as => :string %>
+	<% end %>
+	
+	<%= f.input :email, :label => "E-mail Address" %>
+	<%= f.input :sex, :label => "Gender", :as => :select, :collection => {"Male" => "M", "Female" => "F", "No Response" => "NR"} %>
+	<%= f.input :phone_mobile, :label => "Phone", :input_html => { :value => number_to_phone(f.object.phone_mobile), :size => 12 } %>
+	<%= f.input :birthdate, :label => "Birth Date", :start_year => Time.now.year-13, :end_year => 1930 %>
+	<%= f.input :shirt_size, :as => :select, :collection => %w[XS S M L XL XXL 3XL] %>
+<<<<<<< HEAD
+	<%= f.input :avatar, :label => "Picture" %>
+=======
+	<%= f.input :avatar, :as => :file %>
+>>>>>>> matt-develop
+	
+<% end %>
+
+
+<%- f.inputs :name => "Administrative Information" do -%>
+	<%= f.input :background_check_run_at, :hint => link_to_now("mentor_background_check_run_at") %>
+	<%= f.input :background_check_result, 
+					:hint => "Enter #{link_to_function('NO RECORD FOUND', 
+									"$('mentor_background_check_result').value='NO RECORD FOUND [#{@current_user.login}]'")} 
+								or #{link_to_function('OK', 
+									"$('mentor_background_check_result').value='OK  [#{@current_user.login}]'")}
+								(include an explanation) if the mentor passed the check." %>
+	<%= f.input :van_driver_training_completed_at, :hint => link_to_now("mentor_van_driver_training_completed_at"), :label => "Driver Training" %>
+<% end -%>

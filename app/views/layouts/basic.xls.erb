@@ -1,27 +1,26 @@
-<html xmlns:x="urn:schemas-microsoft-com:office:excel">
-<head>
-	<style type="text/css">
-	<!--table
-	td, th { 
-		font: 11pt "Arial", "Helvetica";
-		border: thin solid #dddddd;
-		height: 18pt;
-		vertical-align: middle;
-	}
-	thead th {
-		background: #ccc;
-	}
-	.currency {
-	  mso-number-format:"Currency";
-	}
-	.date {
-	  mso-number-format:"Short Date";
-	}
-	-->
-	</style>
-</head>
-<body>
-	<table border=1>
-	<%= yield %>
-	</table>
-</body>
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <ss:Styles>
+      <ss:Style ss:ID="1">
+          <ss:Font ss:Bold="1"/>
+      </ss:Style>
+      <ss:Style ss:ID="Default">
+          <ss:Font ss:Bold="0"/>
+      </ss:Style>
+	  <ss:Style ss:ID="ShortDate">
+          <ss:NumberFormat ss:Format="Short Date" />
+	  </ss:Style>
+	  <ss:Style ss:ID="Currency">
+	      <ss:NumberFormat ss:Format="Currency" />
+	  </ss:Style>
+  </ss:Styles>  
+  <ss:Worksheet ss:Name="Sheet1">
+    <ss:Table>
+		<%= yield %>
+    </ss:Table>
+  </ss:Worksheet>
+</ss:Workbook>

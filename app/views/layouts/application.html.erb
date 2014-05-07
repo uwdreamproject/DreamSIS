@@ -62,7 +62,7 @@
 
 </head>
 
-<body class="<%= "admin" if @current_user.try(:admin?) || @current_user.try(:person).try(:current_lead?) %> <%= controller.action_name %> <%= controller.controller_name %> <%= @current_user.try(:person).try(:type) || @audience.to_s %> <%= @body_class %>">
+<body class="<%= "admin" if @current_user.try(:admin?) || @current_user.try(:person).try(:current_lead?) %> <%= controller.action_name %> <%= controller.controller_name %> <%= @current_user.try(:person).try(:type) || @audience.to_s %> <%= @body_class %>" id="body">
 
 	<div id="header">
 		<h1><%= link_to "<strong>DreamSIS</strong>", root_url %></h1>

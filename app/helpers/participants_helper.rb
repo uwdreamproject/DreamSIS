@@ -8,7 +8,8 @@ module ParticipantsHelper
     if collection_name
       count = participant.try("#{collection_name}_count") if participant.respond_to?("#{collection_name}_count")
       count ||= participant.instance_eval("#{collection_name}.count") if participant.respond_to?("#{collection_name}")
-      link_title << content_tag(:span, count, :class => "count") if count && !count.zero?
+      link_title << content_tag(:span, count, :class => "count #{'zero' if count.zero?}") if count
+      link_title << content_tag(:span, count, :class => "count-bar count-#{h(count)}") if count
     end
     content_tag :li, link_to_function(link_title, "switchToTab('#{dom_id}')", :class => "#{(active ? "active" : "")} #{dom_id}", :id => "#{dom_id}_tab_link")
   end

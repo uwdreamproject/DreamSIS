@@ -1,0 +1,25 @@
+<%- participant ||= @participant -%>
+<%- locals = { :start_date => start_date, :end_date => end_date } rescue {} -%>
+
+<p><%= link_to_function "Add another document", "$('new_document_form').show(); this.hide();", :id => "new_document_button", :class => "add button" %></p>
+
+<% semantic_form_for participant.notes.new, :url => notes_path(:return_to => request.request_uri + "#paperwork"), :html => { :multipart => true, :style => "display:none;", :id => "new_document_form" } do |f| -%>
+	<h4 style="margin-bottom: 2px">Add New Document</h4>
+	<%- f.inputs do -%>
+		<%= f.input :title %>
+		<%= f.input :note, :input_html => {:rows => 3}, :label => "Additional Notes" %>
+		<%= f.input :document %>
+		<%= f.input :notable_type, :as => :hidden, :value => "Person" %>
+		<%= f.input :notable_id, :as => :hidden, :value => participant.id %>
+		<%= f.input :validate_document, :as => :hidden, :value => "true"  %>
+	<% end %>
+	<%= f.submit "Add document", :disable_with => 'Adding document...', :class => 'add notes' %>
+	<%= separator %>
+	<%= link_to_function "Cancel", "$('new_document_form').hide(); $('new_document_button').show();", :class => "cancel button" %>
+<% end -%>
+
+<%- cache [@participant, "documents"] do -%>
+	<div>
+		<%= render :partial => "shared/documents", :object => participant, :locals => locals %>
+	</div>
+<% end %>

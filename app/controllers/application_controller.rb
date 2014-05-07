@@ -120,7 +120,7 @@ class ApplicationController < ActionController::Base
   def check_if_enrolled
     unless @current_user.admin? || !@current_user.is_a?(Mentor) || @current_user.person.currently_enrolled?
       if Term.allowing_signups.empty?
-        render_error("You aren't signed up for the Dream Project and sign ups are disabled for now. Please come back later.")
+        render_error("You aren't signed up for the #{Customer.name_label} and sign ups are disabled for now. Please come back later.")
       else
         return redirect_to(mentor_signup_path)
       end

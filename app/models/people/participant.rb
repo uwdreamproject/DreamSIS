@@ -7,15 +7,19 @@ class Participant < Person
   belongs_to :family_income_level, :class_name => "IncomeLevel"
   belongs_to :participant_group, :counter_cache => true
 
-  has_many :mentor_participants
-  has_many :mentors, :through => :mentor_participants
+  has_many :mentor_participants, :conditions => { :deleted_at => nil }
+  has_many :former_mentor_participants, :class_name => "MentorParticipant", :conditions => "deleted_at IS NOT NULL"
+	has_many :mentors, :through => :mentor_participants
   has_many :parents, :foreign_key => :child_id
   has_many :test_scores
   has_many :college_enrollments
   has_many :college_degrees
+  has_many :fafsas, :class_name => "PersonFafsa", :foreign_key => :person_id
   
   serialize :filter_cache
-  
+
+	acts_as_xlsx
+	
   validates_presence_of :birthdate, :high_school_id, :if => :validate_ready_to_rsvp?
 
   attr_accessor :override_binder_date, :override_fafsa_date, :create_college_mapper_student_after_save, :link_to_current_user_after_save
@@ -23,12 +27,23 @@ class Participant < Person
   named_scope :in_cohort, lambda {|grad_year| {:conditions => { :grad_year => grad_year }}}
   named_scope :in_high_school, lambda {|high_school_id| {:conditions => { :high_school_id => high_school_id }}}
   named_scope :active, :conditions => ["inactive IS NULL OR inactive = ?", false]
+  named_scope :target, :conditions => ["not_target_participant IS NULL OR not_target_participant = ?", false]
   named_scope :attending_college, lambda {|college_id| { :conditions => { :college_attending_id => college_id }}}
   named_scope :assigned_to_mentor, lambda {|mentor_id| { :joins => :mentor_participants, :conditions => { :mentor_participants => { :mentor_id => mentor_id }}}}
 
   after_save :college_mapper_student, :if => :create_college_mapper_student_after_save?
   after_create :link_to_current_user, :if => :link_to_current_user_after_save?
   before_save :update_filter_cache!
+	before_save :adjust_postsecondary_plan_to_match_college_attending
+
+	POSTSECONDARY_GOAL_OPTIONS = [
+		"Vocational school", 
+		"Military service", 
+		"Job",
+		"Not attend college",
+		"Earn GED",
+		"Don't know"
+	]
 
   def validate_name?
     true
@@ -60,6 +75,11 @@ class Participant < Person
   def self.object_filters
     ObjectFilter.find_all_by_object_class("Participant").select(&:display_now?)
   end
+  
+  # Returns the number of filters that this Participant doesn't pass. Useful for quick view of status.
+  def filter_results_count
+    filter_cache.select{|k,v| v == false }.count
+  end
 
   # Checks the +filter_cache+ to see whether or not this person passes the specified filter.
   # If the +filter_cache+ doesn't exist, it creates it.
@@ -78,6 +98,19 @@ class Participant < Person
     self.filter_cache
   end
   
+  def method_missing(method_name, *args)
+    if m = method_name.to_s.match(/\Apasses_filter_(\d+)\Z/)
+			object_filter = ObjectFilter.find(m[1])
+			passes_filter? object_filter
+		elsif m = method_name.to_s.match(/\AFilter: (.+)\Z/)
+			object_filter = ObjectFilter.find_by_title(m[1])
+			return super unless object_filter
+			passes_filter? object_filter			
+		else
+      super(method_name, *args)
+    end
+  end
+	
   # Tries to find duplicate records based on name and high school. Pass an array of participant data straight from your params
   # hash. Second parameter is a limit on the number of records to return (defaults to 50).
   def self.possible_duplicates(data, limit = 50)
@@ -143,12 +176,25 @@ class Participant < Person
   def submitted_fafsa?
     !fafsa_submitted_date.nil?
   end
+  
+  def fafsa(year = Time.now.year)
+    fafsa = fafsas.find_or_initialize_by_year(year)
+  end
 
   # Returns the Institution or College record for this Participant.
   def college_attending
     return nil unless college_attending_id
     Institution.find(college_attending_id)
   end
+
+	# Automatically unsets +postsecondary_plan+ if +college_attending_id+ is changed.
+	def adjust_postsecondary_plan_to_match_college_attending
+		if college_attending_id_changed? && !college_attending_id.nil?
+			self.postsecondary_plan = college_attending.try(:iclevel_description)
+		elsif postsecondary_plan_changed? && !postsecondary_plan.blank?
+			self.college_attending_id = nil
+		end
+	end
 
   # Calculates the current grade based on grad_year.
   def grade
@@ -171,6 +217,46 @@ class Participant < Person
 		end_date = Date.commercial(date.year, date.cweek, 7)
 		Visit.find(:all, :conditions => ["date >= ? AND date <= ? AND location_id = ?", start_date, end_date, high_school_id])
 	end
+	
+	# Determines the columns that are exported into xlsx pacakages. Includes most model columns
+	# plus some extra attributes defined by methods. Also includes all ObjectFilters.
+	def self.xlsx_columns
+		columns = []
+		columns << self.column_names.map { |c| c = c.to_sym }		
+		columns << [:high_school_name, :raw_survey_id, :college_attending_name, 
+								:family_income_level_title, :program_titles, :assigned_mentor_names, 
+								:participant_group_title]
+		columns << Participant.object_filters.collect { |f| "Filter: #{f.title}" }
+		remove_columns = [:filter_cache, :login_token, :login_token_expires_at, :customer_id, 
+								:avatar, :college_mapper_id, :avatar_image_url, :college_mapper_id, :husky_card_rfid,
+								:survey_id, :relationship_to_child, :occupation,	:annual_income,	:needs_interpreter,
+								:meeting_availability, :child_id]
+		columns.flatten - remove_columns
+	end
+	
+	def college_attending_name
+		college_attending.try(:name) 
+	end
+	
+	def high_school_name
+		high_school.try(:name)
+	end
+	
+	def family_income_level_title
+		family_income_level.try(:title)
+	end
+	
+	def program_titles
+		programs.collect(&:title).join(", ")
+	end
+	
+	def assigned_mentor_names
+		mentors.collect(&:fullname).join(", ")
+	end
+	
+	def participant_group_title
+		participant_group.try(:title)
+	end	
 
   # Returns the CollegeMapperStudent record for this individual if we have a college_mapper_id stored.
   # By default, if the record doesn't exist, we create it. You can override that by passing +false+ for

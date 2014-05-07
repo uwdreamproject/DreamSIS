@@ -1,13 +1,20 @@
-
+var checkXlsxStatus = false;
+var showAjaxIndicator = true;
+var loadCount = 0;
 
 Ajax.Responders.register({
 	onCreate: function() {
-		if (Ajax.activeRequestCount > 0)
-			$('indicator').addClassName("visible")
+		if (Ajax.activeRequestCount > 0) {
+      if (showAjaxIndicator)
+		    $('indicator').addClassName("visible")
+      showAjaxIndicator = true;
+    }
 	},
 	onException: function(request, exception) {
 		$('indicator').removeClassName("visible")
-		updateFlashes( { "error" : "There was a problem processing your request. Your data was not saved." })
+    if(exception.message != "'undefined' is not an object (evaluating 'entry.autocompleteIndex = i')")
+      updateFlashes( { "error" : "There was a problem processing your request. Your data was not saved." })
+    console.log(exception)
 	},
 	onComplete: function(event, request) {	
 		if (Ajax.activeRequestCount == 0)
@@ -23,6 +30,18 @@ Ajax.Responders.register({
 			updateFlashes(flash)
 		}
 	}
+});
+
+document.observe("dom:loaded", function() {
+  Event.observe(window, "scroll", function() { 
+    if ( $('body').scrollTop > $('header').getHeight() ){
+      $('body').addClassName('scrolled-past-header');
+    } else {
+      $('body').removeClassName('scrolled-past-header');
+      var newtop = $('header').getHeight() - $('body').scrollTop
+      $('sidebar').setStyle({ top: newtop + 'px' });
+    }
+  });
 });
 
 function clearFlashes() {
@@ -314,6 +333,7 @@ function switchToTab(tab_id) {
   $$('.info-section-container .active').each(function(n) { n.removeClassName('active') })
   $(tab_id).addClassName('active');
   $(tab_id + '_tab_link').addClassName('active');
+  window.location.hash = tab_id
 }
 
 // Switch to the "next" tab
