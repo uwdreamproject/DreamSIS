@@ -1,6 +1,8 @@
 <h1><%=h @audiences.collect(&:to_s).join("/") %> Check-in
 	<small class="light">&raquo; <%= @event.name %></small></h1>
 
+<%= content_tag :p, "This event has passed... are you sure you want to be checking in attendees?", :class => "weak error-message" if @event.date.far_past? %>
+
 <% form_for :person, :html => { :onSubmit => "return false;" } do |f| %>
 	<h4>Search for a <%=h @audiences.collect(&:to_s).join("/") %>:</h4>
 	<input id="person_fullname" name="person[fullname]" size="30" type="search" results="5" autosave="person_fullname_search" placeholder="Search" />

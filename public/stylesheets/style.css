@@ -2968,6 +2968,7 @@ code.change_value {
 	color: #999;
 	position: relative;
 	top: -1px;
+  white-space: nowrap;
 }
 
 :first-child .tag {
