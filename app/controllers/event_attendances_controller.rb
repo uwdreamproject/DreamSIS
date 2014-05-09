@@ -3,6 +3,9 @@ class EventAttendancesController < EventsController
   before_filter :declare_audience, :only => [:index, :checkin, :auto_complete_for_person_fullname]
   skip_before_filter :redirect_to_rsvp_if_not_admin
 
+  skip_before_filter :check_authorization, :only => [:checkin, :create, :update, :auto_complete_for_person_fullname]
+  before_filter :check_checkin_authorization, :only => [:checkin, :create, :update, :auto_complete_for_person_fullname]
+
   protect_from_forgery :only => [:create, :update, :destroy] 
 
   # def index
@@ -15,8 +18,6 @@ class EventAttendancesController < EventsController
   # end
 
   def checkin    
-    flash[:error] = "This event has passed... are you sure you want to be checking in attendees?" if @event.date.past?
-    
     respond_to do |format|
       format.html
     end
@@ -147,6 +148,13 @@ class EventAttendancesController < EventsController
     else
       @audiences = [Participant, Student]
     end 
+  end
+  
+  def check_checkin_authorization
+    unless @current_user && (@current_user.admin? || (@current_user.person.try(:respond_to?, :passed_basics?) && @current_user.person.try(:passed_basics?)))
+      render_error("You are not allowed to access that page.")
+    end
+    
   end
   
 end

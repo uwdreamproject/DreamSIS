@@ -1,0 +1,65 @@
+<dt>Name</dt>
+<dd><%=h details.name %></dd>
+
+<dt>Date/Time</dt>
+<dd><%= details.time_detail %>
+	<%= content_tag(:span, "Time TBA", :class => 'outline tag') if details.time_tba? %></dd>
+
+<%- unless details.location_text.blank? -%>
+	<dt>Location</dt>
+	<dd><%=h details.location_text %></dd>
+<% end %>
+
+<%- unless details.description.blank? -%>
+	<dt>Description</dt>
+	<dd><%= sanitize textilize(details.description) %></dd>
+<% end -%>
+
+<dt>Capacity</dt>
+<dd>
+	<%- if details.capacity && details.capacity > 0 -%>
+		<div class="signup-meter <%= "full" if details.full? %>">
+			<div class="capacity" 
+				 style="width: 30%;"
+				 title="<%= number_to_percentage details.percent_full, :precision => 0 %> full">
+
+				<div class="size" style="width: <%= details.percent_full %>%">
+					<%= details.full? ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
+				</div>					
+			</div>
+		</div>
+		&nbsp;
+		<div class="signup-numbers">
+			<%= content_tag :span, details.attendees.rsvpd.size %>
+			of
+			<%= content_tag :span, details.capacity %>
+		</div>
+	<% else %>
+	  	<span class="light">No limit</span>
+	<% end -%>
+</dd>
+
+<%- unless details.shifts.empty? -%>
+	<dt>Shifts</dt>
+	<dd><%= link_to pluralize(details.shifts.size, "shift"), event_event_shifts_path(details) %></dd>
+<% end %>
+
+<%- if details.event_coordinator -%>
+	<dt>Coordinator</dt>
+	<dd><%=h details.event_coordinator.fullname %> (<%= auto_link h(details.event_coordinator.email) %>)</dd>
+<% end -%>
+
+<%- if details.event_group -%>
+	<dt>Event Group</dt>
+	<dd><%= link_to h(details.event_group.try(:name)), details.event_group %></dd>
+<% end -%>
+
+<%- if details.event_type -%>
+	<dt>Event Type</dt>
+	<dd><%= link_to h(details.event_type.try(:name)), details.event_type %></dd>
+<% end -%>
+
+<%- if !details.grade_levels_list_string.blank? -%>
+	<dt>Grade Levels</dt>
+	<dd><%= details.grade_levels_list_string %></dd>
+<% end %>
