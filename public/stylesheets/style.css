@@ -3466,6 +3466,16 @@ table.documents tr:hover td.functions a {
 	padding-bottom: 1em;
 }
 
+#new_participant_form_container h2, new_volunteer_form_container h2 {
+	margin: 0;
+	padding-bottom: 0.25em;
+	border-bottom: 1px solid #eee;
+}
+
+#new_participant_form_container {
+	background: rgba(255,255,255,0.4);
+}
+
 table.object_filters td {
 	vertical-align: text-bottom;
 }
