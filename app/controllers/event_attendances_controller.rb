@@ -17,7 +17,9 @@ class EventAttendancesController < EventsController
   #   end
   # end
 
-  def checkin    
+  def checkin
+    @layout_in_blocks = true
+    
     respond_to do |format|
       format.html
     end

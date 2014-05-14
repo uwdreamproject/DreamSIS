@@ -1,6 +1,8 @@
 <h2>Current Stats</h2>
-<ul class="filter-results">
-	<%- for object_filter in Participant.object_filters -%>
-		<%= content_tag :li, h(object_filter.title), :class => (@participant.passes_filter?(object_filter) ? "pass" : "fail") if object_filter.display_for?(@participant) %>
-	<% end %>
-</ul>
+<%- if @participant.respond_to?(:passes_filter?) -%>
+	<ul class="filter-results">
+		<%- for object_filter in Participant.object_filters -%>
+			<%= content_tag :li, h(object_filter.title), :class => (@participant.passes_filter?(object_filter) ? "pass" : "fail") if object_filter.display_for?(@participant) %>
+		<% end %>
+	</ul>
+<% end %>

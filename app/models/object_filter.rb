@@ -63,7 +63,7 @@ class ObjectFilter < CustomerScoped
   
   def display_for?(participant)
     return false unless display_now?
-    return true if participant.grade.nil?
+    return true if participant.respond_to?(:grade) && participant.grade.nil?
     valid = true
     valid = participant.grade >= earliest_grade_level_level unless earliest_grade_level_level.nil?
     valid = participant.grade <= latest_grade_level_level unless latest_grade_level_level.nil?
