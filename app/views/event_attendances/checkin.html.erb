@@ -32,6 +32,8 @@
 
 <div id="new_participant_form_container" style="display:none" class="content-block">
 	<h2>Quick Add New Student</h2>
+	<p>This will add a new student to the database. Only use this option to check-in students who don't 
+		already exist in DreamSIS as a <%=h Customer.name_label %> <%=h Customer.participant_label %>.</p>
 	<span class="error-message no-icon" id="new_participant_error"></span>
 	<% remote_form_for(:new_participant, :url => checkin_new_participant_event_event_attendances_path(@event), :method => :put, :html => { :id => 'new_participant_form' }) do |f| %>
 		First Name: <%= f.text_field :firstname %>
