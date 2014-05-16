@@ -9,6 +9,7 @@ class ScholarshipApplication < ActiveRecord::Base
   after_destroy :update_filter_cache
 
 	named_scope :awarded, :conditions => { "awarded" => true }
+  named_scope :awarded_to_cohort, lambda { |grad_year| { :joins => [:participant], :conditions => { :people => { :grad_year => grad_year } } } }
 
   # Updates the participant filter cache
   def update_filter_cache

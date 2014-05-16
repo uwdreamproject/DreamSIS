@@ -129,20 +129,21 @@
 
 	<%- if @participant.respond_to?(:event_attendances) -%>
 		<div class="info-section" id="events">
+			<h2>Events &amp; Activities</h2>
 			<%= render :partial => 'events' %>
 		</div>
 	<% end -%>
-	
-	<%- if @participant.respond_to?(:submitted_fafsa?) -%>
+
+	<%- if @participant.respond_to?(:submitted_fafsa?) || @participant.respond_to?(:fafsas) -%>
 		<div class="info-section" id="paperwork">
 			<%= render :partial => 'paperwork_status' %>
 		</div>
 	<% end -%>
-	
+
 	<div class="info-section" id="notes">
 		<%= render :partial => "notes" %>
 	</div>
-	
+
 </div>
 
 <%= render :partial => "sidebar" %>

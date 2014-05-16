@@ -1,26 +1,39 @@
-<h1><%=h @audiences.collect(&:to_s).join("/") %> Check-in
-	<small class="light">&raquo; <%= @event.name %></small></h1>
+<div class="content-block">
+	<h1><%=h @audiences.collect(&:to_s).join("/") %> Check-in
+		<small class="light">&raquo; <%= @event.name %></small></h1>
 
-<% form_for :person, :html => { :onSubmit => "return false;" } do |f| %>
-	<h4>Search for a <%=h @audiences.collect(&:to_s).join("/") %>:</h4>
-	<input id="person_fullname" name="person[fullname]" size="30" type="search" results="5" autosave="person_fullname_search" placeholder="Search" />
-	<div class="auto_complete" id="person_fullname_auto_complete"></div>
+	<%= content_tag :p, "This event has passed... are you sure you want to be checking in attendees?", :class => "weak error-message" if @event.date.far_past? %>
+
+	<% form_for :person, :html => { :onSubmit => "return false;" } do |f| %>
+		<input id="person_fullname" name="person[fullname]" size="30" placeholder="Search for a <%=h @audiences.collect(&:to_s).join("/") %>" class="wide search"/>
+		<div class="auto_complete" id="person_fullname_auto_complete"></div>
 	
-	<%= javascript_tag "var person_fullname_auto_completer = new Ajax.Autocompleter('person_fullname', 'person_fullname_auto_complete', '#{auto_complete_for_person_fullname_event_event_attendances_path(:audience => @audience.to_s)}', { minChars: 3 })" %>
+		<%= javascript_tag "var person_fullname_auto_completer = new Ajax.Autocompleter('person_fullname', 'person_fullname_auto_complete', '#{auto_complete_for_person_fullname_event_event_attendances_path(:audience => @audience.to_s)}', { minChars: 3 })" %>
 		
-	<%#= observe_field('person_fullname', 
-		:frequency => 0.25,
-		:function => "if($F('person_fullname')=='') { $('original_mentors').show(); $$('.pagination').invoke('show'); $('person_search_results').update(); return true; }") %>
+	<% end %>
+	<br />
 
-<% end %>
+	<table>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Cohort</th>
+				<th>Status</th>
+				<th>Functions</th>
+			</tr>
+		</thead>
+		<tbody id="person_search_results">
+			<tr class="empty">
+				<td colspan="10">Search for a person's name above to check-in for this event.</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 
-
-<table>
-	<tbody id="person_search_results"></tbody>
-</table>
-
-<div id="new_participant_form_container" style="display:none">
-	<h5>Quick Add New Student</h5>
+<div id="new_participant_form_container" style="display:none" class="content-block">
+	<h2>Quick Add New Student</h2>
+	<p>This will add a new student to the database. Only use this option to check-in students who don't 
+		already exist in DreamSIS as a <%=h Customer.name_label %> <%=h Customer.participant_label %>.</p>
 	<span class="error-message no-icon" id="new_participant_error"></span>
 	<% remote_form_for(:new_participant, :url => checkin_new_participant_event_event_attendances_path(@event), :method => :put, :html => { :id => 'new_participant_form' }) do |f| %>
 		First Name: <%= f.text_field :firstname %>
@@ -30,8 +43,8 @@
 	<% end -%>
 </div>
 
-<div id="new_volunteer_form_container" style="display:none">
-	<h5>Quick Add New Volunteer</h5>
+<div id="new_volunteer_form_container" style="display:none" class="content-block">
+	<h2>Quick Add New Volunteer</h2>
 	<span class="error-message no-icon" id="new_volunteer_error"></span>
 	<% remote_form_for(:new_volunteer, :url => checkin_new_volunteer_event_event_attendances_path(@event), :method => :put, :html => { :id => 'new_volunteer_form' }) do |f| %>
 		First Name: <%= f.text_field :firstname %>

@@ -81,4 +81,8 @@ class Date
 	def this_week?
 		beginning_of_week == Date.today.beginning_of_week
 	end
+  
+  def far_past?
+    self < ::Date.current - 1.month
+  end
 end

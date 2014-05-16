@@ -1,33 +1,37 @@
-<%#= render :partial => @audience.to_s.underscore, :object => person %>
+<tr id="person_<%= person.id %>" class="<%= "deselected" if person.inactive? %> <%= "not-target" if person.not_target_participant? %> participant">
+	
+	<td class="name">
+		<%= link_to h(person.fullname), person, :target => "_blank" %>
+		<%= content_tag :span, "Non-Participant", :class => "outline tag" unless person.is_a?(Participant) %>
+		<small class="inactive-note">(inactive)</small>
+		<small class="not-target-note">(<%= Customer.not_target_label %>)</small>
+	</td>
 
-<tr id="person_<%= person.id %>">
-	
-	<td><%= link_to h(person.fullname), person, :target => "_blank" %></td>
-	
-	<td><%= person.try(:high_school).try(:name) if person.is_a?(Participant) || person.is_a?(Student) %></td>
+	<td class="cohort">
+		<%= "#{truncate(person.high_school.name, :length => 30)} #{person.grad_year}" if person.respond_to?(:high_school) && !person.high_school.nil? %>
+	</td>
 	
 	<td><% e = person.event_attendances.find_by_event_id(@event.id) %>
 		<% if e && e.attended? %>
-			<span class="green">Checked in at <%= e.updated_at.to_s(:time12) %></span> -
-			<%= link_to_remote "Undo",
+			<span class="green">Checked in at <%= e.updated_at.to_s(:time12) %></span></td>
+			<td><%= button_to_remote "Undo",
 			 					{ :url => event_event_attendance_path(@event, e, :attendee => { :attended => false }), :method => :put },
-								:html => {:disable_with => "Undoing..."} %>
+								:html => {:disable_with => "Undoing..."} %></td>
 		<% elsif e && e.rsvp? %>
-		  	<span class="light">RSVP'd, but not checked in.</span>
-			<%= button_to_remote "Check-in", 
+		  	<span class="light">RSVP'd, but not checked in.</span></td>
+			<td><%= button_to_remote "Check-in", 
 								{ :url => event_event_attendance_path(@event, e, :attendee => { :attended => true }), :method => :put },
-								:html => {:disable_with => "Checking in..."} %>
+								:html => {:disable_with => "Checking in..."} %></td>
 		<% elsif e %>
-		  	<span class="light">Not checked in.</span>
-			<%= button_to_remote "Check-in", 
+		  	<span class="light">Not checked in.</span></td>
+			<td><%= button_to_remote "Check-in", 
 								{ :url => event_event_attendance_path(@event, e, :attendee => { :attended => true }), :method => :put },
-								:html => {:disable_with => "Checking in..."} %>
+								:html => {:disable_with => "Checking in..."} %></td>
 		<% else %>
-		  	<span class="light">Not checked in.</span>
-			<%= button_to_remote "Check-in", 
+		  	<span class="light">Not checked in.</span></td>
+			<td><%= button_to_remote "Check-in", 
 								{ :url => event_event_attendances_path(@event, :attendee => { :person_id => person.id, :attended => true }), :method => :post },
-								:html => {:disable_with => "Checking in..."} %>
+								:html => {:disable_with => "Checking in..."} %></td>
 		<% end -%>
-		</td>
 		
 </tr>

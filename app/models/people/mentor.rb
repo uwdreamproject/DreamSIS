@@ -27,7 +27,7 @@ class Mentor < Person
     new_mentor
   end
   
-  # Returns true if +passed_background_check?+ and +signed_risk_form?+ both return true.
+  # Returns true if +passed_background_check?+ and +signed_risk_form?+ and +currently_enrolled?+ all return true.
   def passed_basics?
     (!Customer.require_background_checks? || passed_background_check?) && (!Customer.require_risk_form? || signed_risk_form?) && currently_enrolled?
   end

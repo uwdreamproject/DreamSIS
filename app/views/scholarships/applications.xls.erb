@@ -2,6 +2,8 @@
 	<ss:Cell><ss:Data ss:Type="String">id</ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String">participant_id</ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String">participant_fullname</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">participant_grad_year</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">participant_high_school_name</ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String">scholarship_id</ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String">scholarship_title</ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String">scholarship_organization_name</ss:Data></ss:Cell>
@@ -34,6 +36,8 @@
 	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.id %></ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.participant_id %></ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.participant.try(:fullname) %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.participant.try(:grad_year) %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.participant.try(:high_school_name) %></ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.scholarship_id %></ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.title %></ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.scholarship.organization_name %></ss:Data></ss:Cell>

@@ -1312,8 +1312,8 @@ body.participants.show #content-wrap {
 }
 
 #xlsx_status {
-	margin-top: 0.5em;
-	margin-left: 0;
+	margin-top: -0.5em;
+	margin-left: 5px;
 	font-size: 85%;
 	line-height: 125%;
 }
@@ -3310,9 +3310,9 @@ div.photo {
 }
 
 img.student_photo {
-	border: none;
-	border-radius: 0;
-	width: 100%;
+	border: 1px solid #f2f2f2;
+	border-radius: 7px;
+	max-width: 150px;
 }
 
 img.student_photo.thumb {
@@ -3446,6 +3446,7 @@ code.change_value {
 	top: -1px;
 	box-shadow: rgb(203, 210, 217) 0px -1px 0px 0px inset;
 	border: none;
+  white-space: nowrap;
 }
 
 :first-child .tag {
@@ -3943,6 +3944,16 @@ table.documents tr:hover td.functions a {
 	padding: 1em;
 	margin-bottom: 1em;
 	padding-bottom: 1em;
+}
+
+#new_participant_form_container h2, new_volunteer_form_container h2 {
+	margin: 0;
+	padding-bottom: 0.25em;
+	border-bottom: 1px solid #eee;
+}
+
+#new_participant_form_container {
+	background: rgba(255,255,255,0.4);
 }
 
 table.object_filters td {

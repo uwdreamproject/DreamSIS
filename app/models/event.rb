@@ -33,6 +33,9 @@ class Event < ActiveRecord::Base
     end
   end
   
+  belongs_to :earliest_grade_level, :class_name => "GradeLevel", :primary_key => 'level', :foreign_key => 'earliest_grade_level_level'
+  belongs_to :latest_grade_level, :class_name => "GradeLevel", :primary_key => 'level', :foreign_key => 'latest_grade_level_level'
+  
   validates_presence_of :date
   
   default_scope :order => "date, start_time"
@@ -85,6 +88,26 @@ class Event < ActiveRecord::Base
   # Returns true if there's no Location assigned to this event.
   def program_wide?
     location_id.nil?
+  end
+  
+  # Returns a string of the valid grade levels for this filter.
+  def grade_levels_list_string(html = true)
+    return "" unless !earliest_grade_level.nil? || !latest_grade_level.nil?
+    delimiter = html ? "&ndash;" : "-"
+    [earliest_grade_level_level, latest_grade_level_level].join(delimiter)
+  end
+  
+  def display_for?(participant)
+    return false if participant.grade.nil?
+    valid = true
+    valid = participant.grade >= earliest_grade_level_level unless earliest_grade_level_level.nil?
+    valid = participant.grade <= latest_grade_level_level unless latest_grade_level_level.nil?
+    return valid
+  end
+  
+  # Returns all Events that are relevant to the requested GradeLevel.
+  def self.for_grade_level(level)
+    find(:all, :conditions => ["? >= earliest_grade_level_level AND ? <= latest_grade_level_level", level, level])
   end
   
   def past?
