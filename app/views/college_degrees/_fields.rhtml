@@ -10,7 +10,7 @@
 
 
 <%- f.inputs :name => "Degree Details" do -%>
-	<%= f.input :graduated_on, :label => "Graduation Date" %>
+	<%= f.input :graduated_on, :label => "Graduation Date", :start_year => 2000, :end_year => Time.now.year+2 %>
 	<%= f.input :degree_title %>
 	
 	<%- for index in %w[1 2 3 4] -%>	
