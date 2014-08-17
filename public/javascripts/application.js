@@ -1,3 +1,12 @@
+/*
+ *
+ *
+  THIS IS NOW SUPERCEDED BY /app/assets/javascripts/dreamsis.js
+ *
+ *
+*/
+
+
 var checkXlsxStatus = false;
 var showAjaxIndicator = true;
 var loadCount = 0;

@@ -1,23 +1,12 @@
-# Filters added to this controller apply to all controllers in the application.
-# Likewise, all the methods added will be available for all controllers.
-
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
-  protect_from_forgery # :secret => 'd73a2fb5c7f692711c9685574a115b86'
+  protect_from_forgery
   
-  # See ActionController::Base for details 
-  # Uncomment this to filter the contents of submitted sensitive data parameters
-  # from your application log (in this case, all fields with names like "password"). 
-  # filter_parameter_logging :password
-  
-  # include AuthenticatedSystem #, ExceptionNotifiable
   require 'array_math'
 
-  before_filter :handle_subdomain, :except => %w[ ping ]
-  before_filter :require_ssl, :except => %w[ ping ]
   before_filter :authenticated?, :except => %w[ ping ]
   before_filter :login_required, :except => [ 'remove_vicarious_login', 'ping' ]
   before_filter :save_user_in_current_thread, :except => %w[ ping ]
@@ -57,47 +46,16 @@ class ApplicationController < ActionController::Base
   def local_request?
     false
   end
-  # consider_local "172.28.99.10"
 
   protected
 
-  # In DreamSIS, subdomains are used simply as shortcuts to login in a specific customer's 
-  # sandboxed "space" in DreamSIS. This allows the login screen to be customized for a certain
-  # customer, which might want to restrict or allow certain login methods. When a subdomain
-  # is detected in the request, it is handled as such:
-  # 
-  # 1. Find a customer record matching the subdomain. Halt and error if the subdomain is invalid.
-  # 2. Strip the subdomain and navigate to /customer_login/:customer_id
-  # 3. Reset the current session and destroy the auth token (effectively logout)
-  # 4. Load the login form using the new customer's preferences.
-  # 5. Process the login for the user, which will be limited to the requested customer. (This
-  #    allows someone to use the same omniauth identity for multiple customers if needed.)
-  # 6. Proceed as normal.
-  def handle_subdomain
-		if !request.subdomains.empty? && request.subdomains.first == "www"
-      new_url = (request.ssl? ? "https://" : "http://") + request.host.gsub(/\Awww\./, "")
-      return redirect_to(new_url)
-		end
-    # if !request.subdomains.empty? && request.subdomains.first != "www"
-    #   @customer = Customer.find :first, :conditions => { :url_shortcut => request.subdomains.first }
-    #   if @customer
-    #     new_url = request.ssl? ? "https://" : "http://"
-    #     new_url << request.host.gsub(/\A#{request.subdomains.first}\./, "")
-    #     new_url << login_path(:customer_id => @customer.id)
-    #     return redirect_to(new_url)
-    #   else
-    #     render_error "Please specify a valid subdomain.", "Invalid subdomain."
-    #   end
-    # end
-  end
-
-  def require_ssl
-    unless request.ssl? || RAILS_ENV == 'development'
-      redirect_to "https://" + request.host + request.request_uri
-      flash.keep
-      return false
-    end
-  end
+  # def require_ssl
+  #   unless request.ssl? || Rails.env == 'development'
+  #     redirect_to "https://" + request.host + request.fullpath
+  #     flash.keep
+  #     return false
+  #   end
+  # end
   
   def authenticated?
     @current_user ||= User.find(session[:user_id]) if session[:user_id] rescue nil
@@ -106,7 +64,7 @@ class ApplicationController < ActionController::Base
   
   def login_required
     unless authenticated?
-      session[:return_to] = request.request_uri
+      session[:return_to] = request.url
       return redirect_to(login_path)
     end
   end

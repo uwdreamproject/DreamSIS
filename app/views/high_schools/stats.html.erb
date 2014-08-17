@@ -1,6 +1,6 @@
 <div class="content-block">
 	<div class="right">
-				<%= link_to_remote "Show", 
+				<%= link_to "Show", :remote => true,
 									:url => stats_high_schools_path(:cohort => @cohort, :hide_title => true),
 									:method => :get,
 									:html => { 
@@ -25,7 +25,7 @@
 	<%- for high_school in @high_schools -%>
 		<div style="margin-bottom: 2em">
 			<div class="right">
-				<%= link_to_remote "Show", 
+				<%= link_to "Show", :remote => true,
 									:url => stats_high_school_path(high_school, :cohort => @cohort, :hide_title => true),
 									:method => :get,
 									:html => { 

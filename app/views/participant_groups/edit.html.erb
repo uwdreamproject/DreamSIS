@@ -1,8 +1,8 @@
 <h1>Editing group</h1>
 
-<% semantic_form_for(@participant_group, :url => participant_group_path(@participant_group)) do |f| %>
+<%= semantic_form_for(@participant_group, :url => participant_group_path(@participant_group)) do |f| %>
 
-	<%= f.error_messages %>
+	<%= f.semantic_errors %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 

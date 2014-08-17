@@ -2,17 +2,9 @@
 	<p><%= link_to "Download in Excel", { :format => :xls }, :class => 'button xls' %></p>
 	<p><%= link_to "Add new #{Customer.mentor_label}", new_mentor_path, :class => "add button" %>
 	
-	<% form_for :mentor, :html => { :method => :get } do |f| %>
-		<%= model_auto_completer "mentor[fullname]", "", "id", nil,
-								{ 
-									:url => auto_complete_for_mentor_fullname_mentors_path, 
-									:submit_on_return => true, 
-									:after_update_element => "function(text_field, selection, hidden_field, id) { text_field.form.submit() }" 
-								},
-								{ :autocomplete => false, :class => "search", :placeholder => "Search #{Customer.mentors_label}" },
-								{ :skip_style => true } %>
-
-
-
-	<% end %>
+	<div class="auto_complete">
+		<input type="input" class="search autocomplete-search" placeholder="Search <%= Customer.mentors_Label %>" data-source="<%= auto_complete_for_mentor_fullname_mentors_url %>" data-target="<%= mentor_url("id") %>" />
+	</div>
+	
+	
 </div>

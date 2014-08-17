@@ -1,10 +1,9 @@
 # This controller handles the login/logout function of the site.  
 class SessionController < ApplicationController
   skip_before_filter :login_required, :check_authorization, :check_for_limited_login, :check_if_enrolled
-  before_filter :fetch_customer
+  # before_filter :fetch_customer
   before_filter :login_required, :only => [ :map_to_person ]
 
-  # render new.rhtml
   def new
   end
   
@@ -12,24 +11,8 @@ class SessionController < ApplicationController
     @identity = request.env["omniauth.identity"]
   end
 
-  # def create
-  #   if params[:uwnetid_button]
-  #     uwnetid_authentication
-  #     return
-  #   end
-  #   password_authentication(params[:login], params[:password])
-  # end
-  # 
-  # def destroy
-  #   self.current_user.forget_me if logged_in?
-  #   cookies.delete :auth_token
-  #   reset_session
-  #   flash[:notice] = "You have been logged out."
-  #   redirect_back_or_default('/')
-  # end
-
-
   def create
+    reset_session
     auth = request.env["omniauth.auth"]
     # raise auth.to_yaml
     if auth["provider"] == "shibboleth"
@@ -37,13 +20,15 @@ class SessionController < ApplicationController
       user = PubcookieUser.authenticate(auth["uid"], nil, nil, attach_mentor_record)
       return redirect_to login_url, :error => "Could not login. Please try again." unless user
     else
-      user = User.find_by_provider_and_uid_and_customer_id(auth["provider"], auth["uid"], Customer.current_customer.id) || User.create_with_omniauth(auth)
-      user.update_avatar_from_provider!(auth)
+      # user = User.find_by_provider_and_uid_and_customer_id(auth["provider"], auth["uid"], Customer.current_customer.id) || User.create_with_omniauth(auth)
+      user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.create_with_omniauth(auth)
+      # Apartment::Tenant.switch(user.customer.tenant_name) if user
+      user.update_avatar_from_provider!(auth) if user
     end
     # self.current_user = user
     session[:user_id] = user.id
-    session[:customer_id] = nil
-    Customer.remove_temporary_current_customer
+    # session[:customer_id] = nil
+    # Customer.remove_temporary_current_customer
     flash[:notice] = "Signed in!"
     redirect_back_or_default(root_url)
   end
@@ -56,11 +41,12 @@ class SessionController < ApplicationController
   end
 
   def destroy
-    keep_customer = Customer.current_customer rescue nil
+    # keep_customer = Customer.current_customer rescue nil
     session[:user_id] = nil
     cookies.delete :auth_token
     reset_session
-    redirect_to login_url(:customer_id => keep_customer.try(:id)), :notice => "Signed out!"
+    # redirect_to login_url(:customer_id => keep_customer.try(:id)), :notice => "Signed out!"
+    redirect_to login_url, :notice => "Signed out!"
   end
   
   def map_login
@@ -95,40 +81,17 @@ class SessionController < ApplicationController
 
   protected  
   
-  def fetch_customer
-    # logger.info { "Customer Fetch: session => #{session[:customer_id].inspect}, params => #{params[:customer_id].inspect}" }
-    @customer = Customer.find(session[:customer_id]) if session[:customer_id]
-    @customer = Customer.find(params[:customer_id]) if params[:customer_id]
-    if @customer
-      cookies.delete :auth_token
-      reset_session
-      Customer.current_customer = @customer
-      session[:customer_id] = @customer.id
-      session[:user_id] = nil
-    end
-  end
+  # def fetch_customer
+  #   # logger.info { "Customer Fetch: session => #{session[:customer_id].inspect}, params => #{params[:customer_id].inspect}" }
+  #   @customer = Customer.find(session[:customer_id]) if session[:customer_id]
+  #   @customer = Customer.find(params[:customer_id]) if params[:customer_id]
+  #   if @customer
+  #     cookies.delete :auth_token
+  #     reset_session
+  #     Customer.current_customer = @customer
+  #     session[:customer_id] = @customer.id
+  #     session[:user_id] = nil
+  #   end
+  # end
 
-  # def password_authentication(login, password)
-  #   self.current_user = User.authenticate(login, password)
-  #   if logged_in?
-  #     successful_login
-  #   else
-  #     failed_login
-  #   end
-  # end
-  #   
-  # def failed_login(message = "Authentication failed.")
-  #   flash.now[:error] = message
-  #   render :action => 'new'
-  # end
-  # 
-  # def successful_login
-  #   if params[:remember_me] == "1"
-  #     self.current_user.remember_me
-  #     cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
-  #   end
-  #   session[:limit_login_to] = nil
-  #   redirect_back_or_default(root_url)
-  #   flash[:notice] = "Logged in successfully"
-  # end
 end

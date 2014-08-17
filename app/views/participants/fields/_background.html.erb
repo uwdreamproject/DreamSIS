@@ -1,6 +1,6 @@
-<%- f.inputs :name => "Background Information" do -%>
+<%= f.inputs :name => "Background Information" do -%>
 
-	<%- f.inputs :name => "Dietary Restrictions", :class => "inline" do -%>
+	<%= f.inputs :name => "Dietary Restrictions", :class => "inline" do -%>
 		<%= f.inputs :vegetarian, :vegan, :kosher, :halal, :gluten_free %>
 		<%= f.input :dietary_restrictions, :label => "Other:" %>
 	<% end %>

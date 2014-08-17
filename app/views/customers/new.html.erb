@@ -1,8 +1,8 @@
 <h1>New customer</h1>
 
-<% semantic_form_for @customer do |f| %>
+<%= semantic_form_for @customer do |f| %>
 
-	<%= f.error_messages %>
+	<%= f.semantic_errors %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 	

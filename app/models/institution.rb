@@ -2,7 +2,7 @@ require 'open-uri'
 
 # Models an Institution record, pulled from the Department of Education's list.
 class Institution
-  RESULTS_CACHE = FileStoreWithExpiration.new(File.join(RAILS_ROOT, "files", "institution", "cache"))
+  RESULTS_CACHE = FileStoreWithExpiration.new(File.join(Rails.root, "files", "institution", "cache"))
   ATTRIBUTE_ALIASES = {
     :instnm    => [:name, :title],
     :longitud  => [:longitude],
@@ -36,6 +36,12 @@ class Institution
 	def to_title
 		title
 	end
+  
+  # Uses Addressable::URI.heuristic_parse to return a valid URL from the +webaddr+ attribute of this Institution.
+  def formatted_website_url
+    first_url = self.webaddr.is_a?(Array) ? self.webaddr.first : self.webaddr
+    Addressable::URI.heuristic_parse(first_url).to_s
+  end
 	
 	attr_accessor :count
 
@@ -261,7 +267,7 @@ class Institution
       message = "  \e[4;33;1m#{caller_class_s} #{method}"
       message << " (#{'%.1f' % (time*1000)}ms)" if time
       message << "\e[0m   #{msg}"
-      RAILS_DEFAULT_LOGGER.info message
+      Rails.logger.info message
     end
   end
 

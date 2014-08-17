@@ -10,7 +10,7 @@ module ActionView
         end
 
         asset_id = rails_asset_id(source)
-        return source if RAILS_ENV == 'development'
+        return source if Rails.env == 'development'
         if asset_id.blank?
           source
         else

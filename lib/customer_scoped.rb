@@ -2,9 +2,9 @@ class CustomerScoped < ActiveRecord::Base
   self.abstract_class = true
   @columns = []
 
-  belongs_to :customer
-  attr_protected :customer_id
-  validates_presence_of :customer_id
+  # belongs_to :customer
+  # attr_protected :customer_id
+  # validates_presence_of :customer_id
   
   # before_save :append_customer_id
 

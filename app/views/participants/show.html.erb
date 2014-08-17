@@ -27,7 +27,7 @@
 
 	<%- cache [@participant.cache_key, "filter_results"].join("/") do -%>
 		<div class="info-section active" id="filter_results">
-			<div class="right"><%= link_to_remote "Recalculate stats", :url => refresh_filter_cache_participant_path(@participant) %></div>
+			<div class="right"><%= link_to "Recalculate stats", refresh_filter_cache_participant_path(@participant), :remote => true, :method => :post %></div>
 			<h2>Current Stats</h2>
 			<%= render :partial => 'filter_results' %>
 		</div>
@@ -149,16 +149,18 @@
 <%= render :partial => "sidebar" %>
 
 <%= javascript_tag("
-$(document).observe('keydown', function (e) {
-    switch (e.keyCode) {
-        case Event.KEY_DOWN:
-            e.stop();
+$( document ).keydown(function (event) {
+    switch (event.which) {
+        case $.ui.keyCode.DOWN:
+            event.preventDefault();
             nextTab();
             break;
-        case Event.KEY_UP:
-            e.stop();
+        case $.ui.keyCode.UP:
+            event.preventDefault();
             previousTab();
             break;
+		default: return;
     }
 });
-") %>
+
+$( switchToHashTab )") %>

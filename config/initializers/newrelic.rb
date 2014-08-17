@@ -1,9 +1,9 @@
 # Writes the newrelic config file to /config/newrelic.yml and then loads the config file through NewRelic.
-# config_file_path = File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "newrelic.yml")
+# config_file_path = File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "newrelic.yml")
 # File.open(config_file_path, 'w') {|f| f.write("
 # common: &default_settings
-#   license_key: '#{API_KEYS["newrelic"][RAILS_ENV]["license_key"]}'
-#   app_name: '#{API_KEYS["newrelic"][RAILS_ENV]["app_name"]}'
+#   license_key: '#{API_KEYS["newrelic"][Rails.env]["license_key"]}'
+#   app_name: '#{API_KEYS["newrelic"][Rails.env]["app_name"]}'
 #   monitor_mode: true
 #   developer_mode: false
 #   log_level: info

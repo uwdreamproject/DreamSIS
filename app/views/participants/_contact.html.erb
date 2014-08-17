@@ -46,7 +46,7 @@
 	<dt>Date of Birth</dt>
 	<dd>
 		<%= @participant.birthdate.try(:to_s, :long) rescue nil %>
-		<%= "<br /><span class=\"light\">Age #{@participant.age}</span>" if @participant.age %>
+		<%= content_tag(:p, "Age #{@participant.age}", :class => 'light') if @participant.age %>
 	</dd>
 
 	<dt>Plans after high school</dt>

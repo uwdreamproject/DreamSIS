@@ -1,8 +1,8 @@
 <h1>Editing Location</h1>
 
-<% semantic_form_for @location, :html => { :method => :put } do |f| %>
+<%= semantic_form_for @location, :html => { :method => :put } do |f| %>
 
-	<%= f.error_messages %>
+	<%= f.semantic_errors %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 	

@@ -1,4 +1,4 @@
-class Person < CustomerScoped
+class Person < ActiveRecord::Base
   include Comparable
 
   has_many :event_attendances do
@@ -55,7 +55,7 @@ class Person < CustomerScoped
 
   PERSON_RESOURCE_CACHE_LIFETIME = 1.day
 
-  default_scope :order => "lastname, firstname, middlename", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
+  default_scope :order => "lastname, firstname, middlename" #, :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
   # default_scope lambda { |person| { :conditions => { :customer_id => Customer.current_customer.id } } }
   
 

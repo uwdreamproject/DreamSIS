@@ -18,9 +18,10 @@
 			</tr>
 		<% end -%>
 	</tbody>
-	
-	<%= javascript_tag "document.observe('dom:loaded', function() { #{remote_function(:url => mentor_participants_url(@mentor, :report => 'basics'), :method => :get) } });" %>
-	
+		
 </table>
 
+<%= javascript_tag "$( function() {
+	 $.ajax({ url: '#{mentor_participants_path(@mentor, :report => 'basics')}', dataType: 'script' });
+})" %>
 

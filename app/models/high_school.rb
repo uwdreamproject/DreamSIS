@@ -2,7 +2,7 @@ class HighSchool < Location
 
   default_scope :order => "name", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
   
-  named_scope :partners, :conditions => { :partner_school => true }
+  scope :partners, :conditions => { :partner_school => true }
 
   has_many :participants do
     def in_participating_cohort(term)

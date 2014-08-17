@@ -7,7 +7,7 @@ class ActivityLog < CustomerScoped
   
   default_scope :order => "start_date DESC", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
 	
-	named_scope :submitted, :conditions => "updated_at > created_at"
+	scope :submitted, :conditions => "updated_at > created_at"
 	
 	serialize :student_time
 	serialize :non_student_time

@@ -3960,7 +3960,7 @@ table.object_filters td {
 	vertical-align: text-bottom;
 }
 
-tt.criteria {
+code.criteria {
 	display: block;
 	margin-top: 0.1em;
 	font: 85%/170% "Menlo", "Courier New", Courier, mono;
@@ -3968,7 +3968,7 @@ tt.criteria {
 	border-top: 1px dotted #eee;
 }
 
-tt.criteria pre {
+code.criteria pre {
 	display: inline;
 	white-space: normal;
 	font-family: inherit;

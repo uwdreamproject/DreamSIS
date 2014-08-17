@@ -14,7 +14,7 @@ races = {
 }
  -%>
 
-<%- f.inputs :name => "Race/Ethnicity" do -%>
+<%= f.inputs :name => "Race/Ethnicity" do -%>
 <p>For each, enter the specific ethnicity or heritage, if known.</p>
  
 	<%- for race, title in races.sort_by{|r,t| t.gsub("Other", "ZOther")} -%>

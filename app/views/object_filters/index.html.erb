@@ -17,7 +17,7 @@
     <td><%=h object_filter.object_class %></td>
     <td class="name">
 		<%= link_to h(object_filter.title), object_filter_path(object_filter), :title => h(object_filter.criteria) %>
-		<tt class="criteria syntax" id="criteria_<%= object_filter.id %>" style="display:none"><%=h object_filter.criteria %></tt>
+		<code class="criteria syntax" id="criteria_<%= object_filter.id %>" style="display:none"><%=h object_filter.criteria %></code>
 	</td>
 	<td><%=h number_to_percentage object_filter.target_percentage, :precision => 0 %></td>
 	<td><%=h number_to_percentage object_filter.warning_threshold, :precision => 0 %></td>
@@ -35,7 +35,7 @@
 
 	<p>
 		<label for="show_criteria">
-			<input id="show_criteria" type="checkbox" onClick="$$('tt.criteria').invoke('toggle')"> Show criteria
+			<input id="show_criteria" type="checkbox" onClick="$$('code.criteria').invoke('toggle')"> Show criteria
 		</label>
 	</p>
 	

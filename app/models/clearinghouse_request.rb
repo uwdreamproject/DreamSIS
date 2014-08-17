@@ -22,7 +22,7 @@ class ClearinghouseRequest < CustomerScoped
   
   serialize :participant_ids
   
-  named_scope :awaiting_retrieval, :conditions => "submitted_at IS NOT NULL AND retrieved_at IS NULL"
+  scope :awaiting_retrieval, :conditions => "submitted_at IS NOT NULL AND retrieved_at IS NULL"
   
   attr_accessor :plain_ftp_password
   

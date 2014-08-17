@@ -1,3 +1,4 @@
+page << "alert('loading js.rjs')"
 page.replace "participants_table", :partial => "participants_table", :locals => { :html_class => 'loading' }
 page << "$('participants_table').removeClassName('loading')"
 page << "$('participants_table').addClassName('#{h(@report)}')"

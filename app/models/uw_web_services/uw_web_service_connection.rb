@@ -33,7 +33,7 @@ class UwWebServiceConnection < ActiveResource::Connection
       message = "  \e[4;33;1m#{caller_class_s} Fetch"
       message << " (#{'%.1f' % (time*1000)}ms)" if time
       message << "\e[0m   #{msg}"
-      RAILS_DEFAULT_LOGGER.info message
+      Rails.logger.info message
     end
   
 end

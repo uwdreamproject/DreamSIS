@@ -11,9 +11,7 @@
 <h3 class="light" style="margin-top: 0">
 	Listing 
 	<span id="filtered_record_count"></span> 
-	<span id="total_record_count">
-		...<%#= pluralize (@participants.respond_to?(:current_page) ? Participant.count : @participants.count), Customer.participant_label %>
-	</span>
+	<span id="total_record_count"><%= @participants.count %></span>
 </h3>
 
 <%- if @participant_group -%>
@@ -23,15 +21,14 @@
 	</h2>
 <% end -%>
 
-<%= javascript_tag "initFilters([#{Participant.object_filters.collect(&:id).join(",")}]);" %>	
-
 <%= will_paginate @participants if @participants.respond_to?(:current_page) %>
 	<table id="participants_table">
 		<tr class="empty"><td class="loading"></td></tr>
-	</table>
-	<%= javascript_tag "document.observe('dom:loaded', function() { #{remote_function(:url => {:report => 'basics', :page => params[:page]}, :method => :get, :loaded => "setTimeout('updateRecordCount()', 100)")} });" %>
-
+	</table>	
 <%= will_paginate @participants if @participants.respond_to?(:current_page) %>
 
 <%= render :partial => "sidebar" %>
-<%= javascript_tag "updateRecordCount()" %>
+
+<%= javascript_tag "$( function() {
+	$.ajax({ url: '#{url_for(:report => @report, :page => params[:page])}', dataType: 'script' });
+})" %>

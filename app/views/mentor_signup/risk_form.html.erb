@@ -1,19 +1,19 @@
 <h1>Consent Form for <%= Customer.mentors_Label %></h1>
 
-<% semantic_form_for @mentor, :url => { :action => 'risk_form' } do |f| %>
+<%= semantic_form_for @mentor, :url => { :action => 'risk_form' } do |f| %>
 
-	<%= f.error_messages %>
+	<%= f.semantic_errors %>
 
 	<%= textilize h(Customer.risk_form_content) %>
 
 <hr>
     
-	<% f.inputs do %>
+	<%= f.inputs do %>
 		<%= f.input :risk_form_signature, :label => "Enter your full legal name as signature" %>
 		<%= f.input :risk_form_signed_at, :as => :boolean, :label => "I understand the statements above." %>
 	<% end -%>
 
-	<% f.buttons do %>
+	<% f.actions do %>
 		<%= f.submit %>
 	<% end -%>
 <% end -%>

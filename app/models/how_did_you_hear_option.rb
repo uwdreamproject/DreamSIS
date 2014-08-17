@@ -5,8 +5,8 @@ class HowDidYouHearOption < CustomerScoped
   
   default_scope :order => "name", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
   
-  named_scope :for_participants, :conditions => { :show_for_participants => true }
-  named_scope :for_mentors, :conditions => { :show_for_mentors => true }
+  scope :for_participants, :conditions => { :show_for_participants => true }
+  scope :for_mentors, :conditions => { :show_for_mentors => true }
   
   validates_presence_of :name
   validates_uniqueness_of :name

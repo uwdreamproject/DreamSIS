@@ -90,9 +90,16 @@ class CollegeApplicationsController < ParticipantsController
 
   def auto_complete_for_institution_name
     @institutions = Institution.find_all_by_name(params[:college_application][:institution_name].to_s.downcase)[0..10]
-    render :partial => "shared/auto_complete_institution_name", 
-            :object => @institutions, 
-            :locals => { :highlight_phrase => params[:college_application][:institution_name].to_s }
+    
+    render :json => @institutions.map { |result| 
+      {
+        :id => result.id, 
+        :value => result.name,
+        :klass => result.class.to_s.underscore, 
+        :fullname => result.name, 
+        :secondary => result.location_detail
+      }
+    }
   end
 
   

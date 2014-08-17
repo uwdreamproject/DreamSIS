@@ -9,7 +9,7 @@
 	</td>
 
 	<td class="note-body">
-		<%= auto_link textilize_without_paragraph(note.note) %>
+		<%= auto_link RedCloth.new(note.note).to_html %>
 		
 		<% if note.restricted? %>
 			<p class="privacy_note <%= note.access_level %>">
@@ -20,11 +20,12 @@
 	
 	<%- if note.user == @current_user -%>
 		<td class="note_edit_buttons functions">
-			<%= link_to "Edit", edit_note_path(note, :return_to => params[:return_to] || request.request_uri) %>
+			<%= link_to "Edit", edit_note_path(note, :return_to => params[:return_to] || request.url) %>
 		</td>
 		<td class="note_edit_buttons functions">
-			<%= link_to_remote "Delete", 
-						:url => note_path(note, :return_to => params[:return_to] || request.request_uri),
+			<%= link_to "Delete", 
+						:url => note_path(note, :return_to => params[:return_to] || request.url),
+						:remote => true,
 						:indicator => true, 
 						:method => :delete, 
 						:confirm => "Are you sure you want to delete this note?" %>

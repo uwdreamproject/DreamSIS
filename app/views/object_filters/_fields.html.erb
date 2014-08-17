@@ -1,10 +1,10 @@
-<%- f.inputs do -%>
+<%= f.inputs do -%>
 
 	<%= f.input :title, :title => "Title", :hint => "A quick phrase identifying this filter. For example, \"applied to 3 colleges.\"" %>
 	<%= f.input :object_class, :as => :select, :collection => ["Participant"], :include_blank => true, :hint => "Choose the object type that this filter relates to." %>
 	<%= f.input :criteria, :input_html => {:rows => 3, :class => "code"}, :hint => "Use Ruby code that evaluates to either true or false." %>
 
-	<%- f.inputs(:name => "Reporting Thresholds", :class => "inline") do -%>
+	<%= f.inputs(:name => "Reporting Thresholds", :class => "inline") do -%>
 	
 		<li class="numeric optional"><label for="default_threshold">Caution (Default)</label><input class="caution-threshold" id="default-threshold" name="default-threshold" size="3" type="text" value="&mdash;" disabled /></li>
 		
@@ -18,18 +18,18 @@
 
 <% end -%>
 
-<%- f.inputs(:title => "Display Options") do %>
+<%= f.inputs(:title => "Display Options") do %>
 	
 	<%= f.input :opposite_title, :hint => "If you want this to show as an opposite filter in participant lists, enter a title here so that
 											the semantics will make sense. This might be useful so that you can filter for the people who 
 											have NOT completed this stat." %>
 								
-	<%- f.inputs :name => "Display Period", :class => "inline" do -%>			
+	<%= f.inputs :name => "Display Period", :class => "inline" do -%>			
 		<%= f.input :start_display_at, :label => "From", :order => [:month, :day] %>
 		<%= f.input :end_display_at, :label => "To", :order => [:month, :day] %>
 	<% end %>
 
-	<%- f.inputs :name => "Relevant Grade Levels", :class => "inline" do -%>			
+	<%= f.inputs :name => "Relevant Grade Levels", :class => "inline" do -%>			
 		<%= f.input :earliest_grade_level_level, :label => "From", :as => :select, :collection => GradeLevel.all.collect{|g| [g.title, g.level]} %>
 		<%= f.input :latest_grade_level_level, :label => "To", :as => :select, :collection => GradeLevel.all.collect{|g| [g.title, g.level]} %>
 	<% end %>

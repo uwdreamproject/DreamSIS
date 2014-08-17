@@ -1,13 +1,13 @@
 <h1>Editing <%= @user.login %></h1>
 
-<% semantic_form_for @user, :as => :user, :url => user_path(@user) do |f| %>
-	<%= f.error_messages %>
+<%= semantic_form_for @user, :as => :user, :url => user_path(@user) do |f| %>
+	<%= f.semantic_errors %>
 	
-	<%- f.inputs do -%>
+	<%= f.inputs do -%>
 		<%= f.input :admin unless @user.is_a?(AnonymousUser) %>
 	<% end -%>
 	
-	<%- f.buttons do -%>
+	<%= f.actions do -%>
 		<%= f.submit %>
 		<%= link_to "Cancel", user_path(@user), :class => 'cancel button' %>
 	<% end -%>

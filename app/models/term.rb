@@ -1,15 +1,15 @@
 # Models a specific period of time, usually aligning to an academic calendar. This used to be called "Quarter" to model the academic quarters of the UW, but was renamed to Term to handle other types of calendars, such as semesters. The change also allows customers to use completely arbitrary calendar terms, like a full year or more.
 # 
 # Quarter is now available as a subclass of this model so that quarter-specific funcationality can be retained.
-class Term < CustomerScoped
+class Term < ActiveRecord::Base
   has_many :mentor_term_groups, :include => { :mentor_terms => :mentor }
 
   validates_presence_of :start_date
   validates_presence_of :end_date
 
-  default_scope :order => "year, quarter_code, title", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
+  default_scope :order => "year, quarter_code, title" #, :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
   
-  named_scope :allowing_signups, :conditions => { :allow_signups => true }
+  scope :allowing_signups, :conditions => { :allow_signups => true }
   
   # Overrides find to allow you to find a Term with any of the following types of ID's:
   # 

@@ -3,7 +3,7 @@
 
 <h2>Notes</h2>
 	
-<% remote_form_for participant.notes.new, :url => notes_path(locals.merge(:return_to => request.request_uri)) do |f| -%>
+<% form_for participant.notes.new, :remote => true, :url => notes_path(locals.merge(:return_to => request.url)) do |f| -%>
 	<h4 style="margin-bottom: 2px">Add New Note</h4>
 	<%= f.text_area :note, :style => "width:99%", :rows => 4, :placeholder => "Add your note here" %>
 	<%= f.hidden_field :notable_type, :value => "Person" %>
