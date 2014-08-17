@@ -1,0 +1,17 @@
+*.DS_Store
+config/certs
+config/exceptional.yml
+db/*.sqlite3
+db/*.sqlite3-journal
+db/bak/
+log/*.log
+tmp/
+doc/*
+doc.zip
+config/initializers/action_mailer.rb
+.elasticbeanstalk/
+files
+config/api-keys.yml
+vendor/plugins/rails_upgrade/
+.bundle
+.sass-cache/
