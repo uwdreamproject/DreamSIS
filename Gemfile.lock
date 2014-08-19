@@ -288,7 +288,7 @@ DEPENDENCIES
   mandrill-api
   mime-types
   mini_magick
-  mysql2
+  mysql2 (~> 0.3.7)
   net-sftp
   newrelic_rpm
   nokogiri

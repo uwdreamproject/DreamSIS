@@ -42,11 +42,11 @@ gem 'rails_autolink', '~> 1.0.0'
 gem 'rails3-jquery-autocomplete'
 
 group :production do
-  gem 'mysql2' #, '< 0.3'
+  gem 'mysql2', '~> 0.3.7'
 end
 
 group :staging do
-  gem 'mysql2' #, '< 0.3'
+  gem 'mysql2', '~> 0.3.7'
 end
 
 group :development do
