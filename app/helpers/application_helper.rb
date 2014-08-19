@@ -65,4 +65,14 @@ module ApplicationHelper
     @template.concat(Calendar.new(@template, date, block).table)
   end
   
+  def default_form_actions(form)
+    content_tag(:fieldset, :class => "actions") do
+      content_tag(:ol) do
+        form.action(:submit, :label => "Save") +
+        content_tag(:li, separator, :class => "action") +
+        form.action(:cancel, :label => "Cancel")
+      end
+    end
+  end
+  
 end

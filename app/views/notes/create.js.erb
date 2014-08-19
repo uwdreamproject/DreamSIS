@@ -1,0 +1,8 @@
+// Replace the notes container
+$("#notes_container_<%= @note.notable_id %>").html("<%=j render(:partial => 'shared/notes', :object => @note.notable, :locals => { 	:start_date => params[:start_date], :end_date => params[:end_date] }) %>")
+
+// Reset the "new note" form
+$("#new_note")[0].reset()
+
+// Highlight the new note
+$("#note_<%= @note.id %>").effect("highlight")

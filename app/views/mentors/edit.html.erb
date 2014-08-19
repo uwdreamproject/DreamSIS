@@ -5,9 +5,6 @@
 	
 	<%= render :partial => 'fields', :locals => { :f => f } %>
 	
-	<%= f.actions do -%>
-		<%= f.action :submit %>
-		<%= link_to "Cancel", @mentor, :class => 'cancel button' %>
-	<% end -%>
+	<%= default_form_actions(f) %>
 
 <% end %>

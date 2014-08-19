@@ -15,11 +15,7 @@
 	<%= render :partial => 'participants/fields/administrative', :locals => { :f => f } %>
 	<%#= render :partial => 'participants/fields/post_program', :locals => { :f => f } %>
 
-	<%= f.actions do -%>
-        <%= f.submit %>
-        <%= separator %>
-        <%= link_to "Cancel", @participant, :class => "cancel button" %>
-    <% end %>
+	<%= default_form_actions(f) %>
 <% end %>
 
 <div id="sidebar">

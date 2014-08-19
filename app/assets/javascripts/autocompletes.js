@@ -6,8 +6,17 @@ $(function() {
 		source: null,
 		select: function( event, ui ) {
 			$(this).val( ui.item.fullname );
-      var newLocation = $(this).data("target").replace("id", ui.item.id);
-      window.location = newLocation;
+      if ( $(this).data("target") ) {
+        var newLocation = $(this).data("target").replace("id", ui.item.id);
+        window.location = newLocation;
+      }
+      if ( $(this).data("after-select") == 'display-details') {
+        display_autocomplete_details(ui.item, $("#" + $(this).data('details-container')))
+        $(this).hide()
+      }
+      if ( $(this).data("update-with-id") ) {
+        $("#" + $(this).data('update-with-id')).val(ui.item.id)
+      }
       return false;
 		},
     create: function() {
@@ -29,3 +38,11 @@ $(function() {
     event.preventDefault();
   });
 });
+
+function display_autocomplete_details(item, container) {
+  container.find(".primary").html(item.fullname)
+  container.find(".id").html("(#" + item.id + ")")
+  container.find(".secondary").html(item.secondary)
+  container.find(".tertiary").html(item.klass)
+  container.show()
+}

@@ -17,7 +17,8 @@
 		<%= f.input :link_to_current_user_after_save, :as => :boolean, :label => "Automatically link me to this student after creating the student record" %>
 	<% end %>
 
-	<%= f.actions %>
+	<%= default_form_actions(f) %>
+	
 <% end %>
 
 <div id="sidebar">

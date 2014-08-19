@@ -9,7 +9,7 @@ function switchToTab(tab_id) {
 
 // Switches to the tab specified in the URL hash
 function switchToHashTab() {
-  var tabHashMatch = window.location.hash.match(/#!\/section\/(\w+)/)
+  var tabHashMatch = decodeURIComponent(window.location.hash).match(/#!\/section\/(\w+)/)
   if(tabHashMatch && tabHashMatch[1]) {
   	switchToTab(tabHashMatch[1]);
   }

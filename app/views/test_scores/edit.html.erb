@@ -6,11 +6,7 @@
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 
-	<%= f.actions do -%>
-	 	<%= f.submit "Update" %>
-		<%= separator %>
-		<%= link_to 'Back', @participant, :class => 'cancel button' %>
-	<% end -%>
+	<%= default_form_actions(f) %>
 
 	<%= observe_field :test_score_test_type_id, 
 					  :url => update_scores_fields_participant_test_score_path(f.object.try(:participant), f.object), 

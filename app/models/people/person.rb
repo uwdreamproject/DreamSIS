@@ -164,6 +164,11 @@ class Person < ActiveRecord::Base
     now = Time.now.utc.to_date
     now.year - dob.year - ((now.month > dob.month || (now.month == dob.month && now.day >= dob.day)) ? 0 : 1)
   end
+  
+  # Returns true if this person's +followup_note_count+ is greater than zero.
+  def needs_followup?
+    followup_note_count && followup_note_count > 0
+  end
 
   # Pulls in contact info from the Person Web Service and updates our local cache if it hasn't been
   # updated in the amount of time specified in +PERSON_RESOURCE_CACHE_LIFETIME+. Pass +true+ to force a

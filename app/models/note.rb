@@ -8,6 +8,8 @@ class Note < CustomerScoped
 
   before_create :update_creator_id  
   default_scope :order => "created_at DESC", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
+
+  after_save :update_parent_counter_cache
   
   mount_uploader :document, DocumentUploader, :mount_on => :document_file_name
 	
@@ -16,6 +18,12 @@ class Note < CustomerScoped
     validate_document
   end
 	
+  def update_parent_counter_cache
+    if notable.respond_to?(:followup_note_count)
+      notable.update_attribute :followup_note_count, notable.notes.where(:needs_followup => true).count
+    end
+  end
+  
   def update_creator_id
     self.creator_id = Thread.current['user'].try(:id)
   end

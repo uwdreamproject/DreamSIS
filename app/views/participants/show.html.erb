@@ -120,7 +120,7 @@
 			<%- cache [@participant.cache_key, "former-mentors"].join("/") do -%>			
 				<%- unless @participant.former_mentor_participants.empty? -%>
 					<br>
-					<h4>Former <%= Customer.mentors_Label %></h4>
+					<h3>Former <%= Customer.mentors_Label %></h3>
 					<%= render :partial => 'former_mentors' %>
 				<% end %>
 			<% end %>

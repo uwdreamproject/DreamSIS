@@ -7,9 +7,6 @@
 		<%= f.input :admin unless @user.is_a?(AnonymousUser) %>
 	<% end -%>
 	
-	<%= f.actions do -%>
-		<%= f.submit %>
-		<%= link_to "Cancel", user_path(@user), :class => 'cancel button' %>
-	<% end -%>
+	<%= default_form_actions(f) %>
 
 <% end %>

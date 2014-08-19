@@ -25,6 +25,11 @@
 		<%= f.input :major_2_cip, :label => "CIP Code", :input_html => { :size => 6 } %>
 	<% end %>
 	
+	<%= f.inputs :name => "Remedial Courses", :class => "inline" do %>
+		<%= f.input :placed_in_remedial_math, :label => "Math" %>
+		<%= f.input :placed_in_remedial_english, :label => "English" %>
+	<% end %>
+	
 	<%= f.input :source, :as => :select, :collection => %w[manual clearinghouse] %>
 	
 <% end %>

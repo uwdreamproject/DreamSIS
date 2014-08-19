@@ -1566,6 +1566,12 @@ form.formtastic fieldset > ol > li.boolean p.inline-errors {
 	margin-top: 0.5em;
 }
 
+form.formtastic fieldset.actions li {
+	margin-right: 0.25em;
+	float: none;
+	display: inline-block;
+}
+
 li.boolean label {
 	display: block;
 	float: none;
@@ -3080,6 +3086,14 @@ span.icon.asterisk {
   background-image: url(../images/icons/silk/asterisk_yellow.png);
 }
 
+span.icon.needs-followup {
+	background-image: url(/images/icons/silk/flag_orange.png);
+}
+
+td.badges a:hover span.icon {
+	border-bottom: 1px dotted #ddd;
+}
+
 .filterable {
 	-webkit-transition: all 0.2s ease-in-out;
 }
@@ -3927,15 +3941,58 @@ div.notes.editable, p.notes.editable {
 }
 
 #notes .note-body {
-	width: 100%;
+	width: 90%;	
+	vertical-align: top;
+}
+
+#notes .note-body p {
+	margin: 10px 0;
 }
 
 #notes table {
 	margin-top: 1em;
 }
 
+#notes .notes_container {
+	margin: 0;
+}
+
+#notes .notes_container > div:first-child {
+	margin: 0;
+}
+
+#notes .metadata .timestamp {
+	margin: 10px 0;
+}
+
+#notes .metadata .contact-type {
+	margin: 0;
+	font-variant: small-caps;
+	text-transform: uppercase;
+	font-size: 85%;
+	font-weight: bold;
+}
+
 #notes .metadata .username {
 	font-weight: bold;
+}
+
+.needs-followup {
+	background: url(/images/icons/silk/flag_orange.png) no-repeat;
+	display: block;
+	padding-left: 22px;
+	color: #e26900 !important;
+	font-weight: bold;
+	padding-top: 1px;
+}
+
+.needs-followup a {
+	font-weight: normal;
+	visibility: hidden;
+}
+
+.needs-followup:hover a {
+	visibility: visible;
 }
 
 #notes table td.functions a {
@@ -3944,6 +4001,61 @@ div.notes.editable, p.notes.editable {
 
 #notes table tr:hover td.functions a {
 	visibility: visible;
+}
+
+.info-section#notes form {
+	margin: 0;
+	padding: 0;
+	padding-bottom: 5px;
+	border-bottom: 1px solid rgb(176, 183, 226);
+	background-color: rgb(246, 248, 252);
+	overflow: hidden;
+	display: block;
+}
+
+.info-section#notes form h4 {
+	margin-top: 0;
+	display: none;
+}
+
+.info-section#notes form .full {
+	margin: 0;
+	background: rgba(255,255,255,0.65);
+	padding: 10px 30px;	
+}
+
+.info-section#notes form textarea {
+	background: none;
+	border: none;
+	box-shadow: none;
+	font: 13px/130% "Helvetica Neue", Helvetica, Arial, sans-serif;
+	margin: 0;
+	margin-bottom: 5px;
+	display: block;
+	height: 3em;
+}
+
+.info-section#notes form label {
+	margin-left: 30px;
+	font-weight: bold;
+	color: #656565;
+	font-size: 95%;
+}
+
+.info-section#notes form input.add.notes.right {
+	margin-right: 30px;
+	font: 12px/130% "Helvetica Neue", Helvetica, Arial, sans-serif;
+	
+}
+
+.info-section#notes form select {
+	margin-left: 0.5em;
+	font-size: 90%;
+	padding: 5px auto 10px auto;
+}
+
+.info-section#notes form input[type=checkbox] {
+	margin-right: 0.5em;
 }
 
 table.documents strong {

@@ -1,5 +1,5 @@
 class LocationsController < ApplicationController
-  protect_from_forgery :except => [:auto_complete_for_location_name, :auto_complete_for_institution_name] 
+  # protect_from_forgery :except => [:auto_complete_for_location_name, :auto_complete_for_institution_name]
   
   skip_before_filter :check_authorization, :only => [:show]
   
@@ -127,9 +127,9 @@ class LocationsController < ApplicationController
       {
         :id => result.id, 
         :value => result.name,
-        :klass => result.class.to_s.underscore, 
+        :klass => "", 
         :fullname => result.name, 
-        :secondary => result.type.to_s.titleize
+        :secondary => result.location_detail
       }
     }
   end

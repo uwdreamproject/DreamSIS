@@ -8,11 +8,7 @@
   	<%= f.semantic_errors %>
 	<%= render :partial => "fields", :locals => { :f => f } %>
 
-	<%= f.actions do -%>
-	 	<%= f.submit "Update" %>
-		<%= separator %>
-		<%= link_to 'Back', @activity_log, :class => 'cancel button' %>
-	<% end -%>
+	<%= default_form_actions(f) %>
 
 <% end %>
 <%= observe_form "edit_activity_log_#{@activity_log.id.to_s}", :url => activity_log_path(@activity_log), :method => :put %>

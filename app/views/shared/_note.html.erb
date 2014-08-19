@@ -5,6 +5,7 @@
 			<span class="username"><%= note.fullname rescue nil %></span>
 			<br>
 			<%= note.created_at.strftime("%I:%M") %> <%= note.created_at.ampm %>
+			<%= content_tag(:div, note.contact_type, :class => "contact-type") unless note.contact_type.blank? %>
 		</div>
 	</td>
 
@@ -16,6 +17,14 @@
 				<%= note.restriction_in_words %>
 			</p>
 		<% end -%>
+		
+		<%- if note.needs_followup? -%>
+			<p class="needs-followup">
+				Needs Follow-up
+				<%= link_to "(Clear)", note_path(note, :note => { :needs_followup => false }), :method => :put, :remote => true %>
+			</p>
+		<% end %>
+			
 	</td>
 	
 	<%- if note.user == @current_user -%>
@@ -24,9 +33,8 @@
 		</td>
 		<td class="note_edit_buttons functions">
 			<%= link_to "Delete", 
-						:url => note_path(note, :return_to => params[:return_to] || request.url),
+						note_path(note, :return_to => params[:return_to] || request.url),
 						:remote => true,
-						:indicator => true, 
 						:method => :delete, 
 						:confirm => "Are you sure you want to delete this note?" %>
 		</td>

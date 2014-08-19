@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140501043856) do
+ActiveRecord::Schema.define(:version => 20140819223004) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -154,6 +154,8 @@ ActiveRecord::Schema.define(:version => 20140501043856) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "customer_id"
+    t.boolean  "placed_in_remedial_math"
+    t.boolean  "placed_in_remedial_english"
   end
 
   add_index "enrollments", ["customer_id"], :name => "index_enrollments_on_customer_id"
@@ -402,6 +404,8 @@ ActiveRecord::Schema.define(:version => 20140501043856) do
     t.integer  "document_file_size"
     t.string   "document_file_name"
     t.string   "title"
+    t.boolean  "needs_followup"
+    t.string   "contact_type"
   end
 
   add_index "notes", ["customer_id"], :name => "index_notes_on_customer_id"
@@ -618,6 +622,7 @@ ActiveRecord::Schema.define(:version => 20140501043856) do
     t.string   "postsecondary_plan"
     t.boolean  "asian"
     t.string   "asian_heritage"
+    t.integer  "followup_note_count"
   end
 
   add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"
