@@ -46,6 +46,10 @@ group :production do
   gem 'mysql2' #, '< 0.3'
 end
 
+group :staging do
+  gem 'mysql2' #, '< 0.3'
+end
+
 group :development do
   gem 'ruby-debug19', :require => 'ruby-debug'
   gem "sqlite3"
