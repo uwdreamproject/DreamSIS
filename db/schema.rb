@@ -454,7 +454,7 @@ ActiveRecord::Schema.define(:version => 20140819223004) do
     t.string   "phone_work"
     t.string   "screen_name"
     t.string   "screen_name_type"
-    t.date     "birthdate",                             :limit => 255
+    t.date     "birthdate"
     t.string   "sex"
     t.boolean  "free_reduced_lunch"
     t.boolean  "no_internet_at_home"
