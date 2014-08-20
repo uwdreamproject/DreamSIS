@@ -40,18 +40,17 @@ gem 'zip'
 gem 'net-sftp'
 gem 'rails_autolink', '~> 1.0.0'
 gem 'rails3-jquery-autocomplete'
+gem "sqlite3"
 
 group :production do
   gem 'mysql2', '~> 0.3.7'
 end
 
 group :staging do
-  gem 'mysql2', '~> 0.3.7'
 end
 
 group :development do
   gem 'ruby-debug19', :require => 'ruby-debug'
-  gem "sqlite3"
 end
 
 group :assets do
