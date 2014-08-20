@@ -9,7 +9,7 @@
 
 <p><%= Customer.allowable_login_method?(:shibboleth) ? "All other users, log in" : "Log in" %> using one of the following services:</p>
 <div class="login-links">
-	<%= link_to raw("<span>&nbsp;</span> Google"), "auth/google_oauth2", :class => "google login-link" if Customer.allowable_login_method?(:google_oauth2) %>
+	<%= link_to raw("<span>&nbsp;</span> Google"), "auth/google_oauth2", :class => "google login-link" %>
 	<%= link_to raw("<span>&nbsp;</span> Facebook"), "auth/facebook", :class => "facebook login-link" if Customer.allowable_login_method?(:facebook) %>
 	<%= link_to raw("<span>&nbsp;</span> Twitter"), "auth/twitter", :class => "twitter login-link" if Customer.allowable_login_method?(:twitter) %>
 	<%= link_to raw("<span>&nbsp;</span> LinkedIn"), "auth/linkedin", :class => "linkedin login-link" if Customer.allowable_login_method?(:linkedin) %>

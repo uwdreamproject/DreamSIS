@@ -6,7 +6,7 @@ class ObjectFilter < ActiveRecord::Base
   belongs_to :earliest_grade_level, :class_name => "GradeLevel", :primary_key => 'level', :foreign_key => 'earliest_grade_level_level'
   belongs_to :latest_grade_level, :class_name => "GradeLevel", :primary_key => 'level', :foreign_key => 'latest_grade_level_level'
 
-  default_scope :order => "earliest_grade_level_level, title" #, :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
+  default_scope :order => "earliest_grade_level_level, title"
   
   # If there's a value in the +opposite_title+ attribute, then we'll display the opposite perspective on the filters
   # list on the participant list.

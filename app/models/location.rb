@@ -1,4 +1,4 @@
-class Location < CustomerScoped
+class Location < ActiveRecord::Base
 
   validates_presence_of :name
   validates_uniqueness_of :name
@@ -15,7 +15,7 @@ class Location < CustomerScoped
   end  
   after_validation :geocode, :if => :address_changed?
 
-  default_scope :order => "name", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
+  default_scope :order => "name"
 
   # Returns all the events that we should show on the attendance page for the requested term
   def events(term = nil, audience = nil, visits_only = true)

@@ -1,5 +1,5 @@
 # Models an instance of a participant taking a test represented by TestType. For example, the SAT or ACT tests.
-class TestScore < CustomerScoped  
+class TestScore < ActiveRecord::Base  
   belongs_to :participant, :touch => true
   belongs_to :test_type
   
@@ -11,7 +11,7 @@ class TestScore < CustomerScoped
   serialize :section_scores
   before_save :update_section_scores_attribute
 
-  default_scope :joins => :test_type, :order => "test_types.name ASC, taken_at ASC", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
+  default_scope :joins => :test_type, :order => "test_types.name ASC, taken_at ASC"
 
   after_save :update_filter_cache
   after_destroy :update_filter_cache

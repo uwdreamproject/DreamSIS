@@ -23,7 +23,7 @@ class Customer < ActiveRecord::Base
 		:not_target => "not target"
   }
   
-  RESERVED_SUBDOMAINS = %w[www public assets admin identity development production staging test]
+  RESERVED_SUBDOMAINS = %w[www public assets admin identity development production staging test dreamsis]
   validates_uniqueness_of :url_shortcut, :allow_blank => true
   validates_exclusion_of :url_shortcut, :in => RESERVED_SUBDOMAINS, :message => "URL shortcut %s is not allowed"
 

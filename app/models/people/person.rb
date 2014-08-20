@@ -55,8 +55,7 @@ class Person < ActiveRecord::Base
 
   PERSON_RESOURCE_CACHE_LIFETIME = 1.day
 
-  default_scope :order => "lastname, firstname, middlename" #, :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
-  # default_scope lambda { |person| { :conditions => { :customer_id => Customer.current_customer.id } } }
+  default_scope :order => "lastname, firstname, middlename"
   
 
   # Returns the actual person resource object. Specify +true+ as a parameter to fetch the "full" version
