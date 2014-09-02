@@ -10,9 +10,7 @@
 	<div id="participant_stats_<%= @high_school.id %>" class="loading">
 		<%= javascript_tag "document.observe('dom:loaded', function() { #{remote_function(:url => stats_high_school_path(@high_school, :hide_title => true), :method => :get)} });" %>
 	</div>
-</div>
-
-<div class="right panel-block mentor_stats">
+	
 	<%= render :partial => "high_schools/mentor_stats" %>
 </div>
 
@@ -21,16 +19,16 @@
 	<table>
 		<tr>
 			<td class="name"><%= link_to "All Cohorts", high_school_participants_url(@high_school) %></td>
-			<td><%= link_to "<span>Excel</span>", high_school_participants_url(@high_school, :format => :xls), :class => "xls button icon-only right" %></td>
+			<td><%#= link_to "<span>Excel</span>", high_school_participants_url(@high_school, :format => :xlsx), :class => "xls button icon-only right" %></td>
 		</tr>
 		
 		<% for cohort in @high_school.cohorts %>
 			<tr>
 				<td><%= link_to "#{cohort.to_s} Cohort", high_school_cohort_url(@high_school, cohort) %></td>
-				<td><%= link_to "<span>Excel</span>", high_school_cohort_url(@high_school, cohort, :format => :xls), :class => "xls button icon-only right" %></td>
+				<td><%#= link_to "<span>Excel</span>", high_school_cohort_url(@high_school, cohort, :format => :xlsx), :class => "xls button icon-only right" %></td>
 			</tr>
 		<% end -%>
-	</table>
+	</table>	
 </div>
 
 

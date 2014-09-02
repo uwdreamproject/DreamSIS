@@ -1,14 +1,20 @@
-
+var checkXlsxStatus = false;
+var showAjaxIndicator = true;
+var loadCount = 0;
 
 Ajax.Responders.register({
 	onCreate: function() {
-		if (Ajax.activeRequestCount > 0)
-			$('indicator').addClassName("visible")
+		if (Ajax.activeRequestCount > 0) {
+      if (showAjaxIndicator)
+		    $('indicator').addClassName("visible")
+      showAjaxIndicator = true;
+    }
 	},
 	onException: function(request, exception) {
-		$('indicator').removeClassName("visible");
-		if (exception.lineNumber != 276 && exception.lineNumber != 2429) // Kludge to stop flash error on autocomplete_for_fullname
-		  updateFlashes( { "error" : "There was a problem processing your request. Your data was not saved." })
+		$('indicator').removeClassName("visible")
+    if(exception.message != "'undefined' is not an object (evaluating 'entry.autocompleteIndex = i')")
+      updateFlashes( { "error" : "There was a problem processing your request. Your data was not saved." })
+    console.log(exception)
 	},
 	onComplete: function(event, request) {	
 		if (Ajax.activeRequestCount == 0)

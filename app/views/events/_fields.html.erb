@@ -3,6 +3,8 @@
 <% f.inputs do %>
 	<%= f.input :name, :hint => "Leave blank if this is a regular #{Customer.visit_label}." %>
 	
+	<%= f.input :type, :as => :select, :collection => {"Regular Event" => nil, Customer.visit_Label => "Visit"} %>
+	
 	<%= f.input :location, :label => "High School/Location", :hint => "Leave blank if this is a program-wide event. Program-wide events show up on everyone's attendance sheets.", :collection => Location.all %>
 
 	<%= f.input :location_text, :label => "Location Detail", :hint => "Specify the location here if the event is happening at a location that's not in the list, or if you want to add extra location information, like room number." %>
@@ -80,11 +82,34 @@
 <% end -%>
 
 <% f.inputs(:name => "Attendees") do %>
+	
+	
+	<% f.inputs :name => "Show for:", :class => "inline" do %>
+		<%= f.input :show_for_students, :label => "Students" %>
+		<%= f.input :show_for_participants, :label => "#{Customer.participants_Label}" %>
+		<%= f.input :show_for_volunteers, :label => "Volunteers" %>
+		<%= f.input :show_for_mentors, :label => "#{Customer.mentors_Label}" %>
+	<% end %>
+
 	<%= f.input :allow_rsvps, :label => "Allow people to RSVP before this event" %>
-	<%= f.input :show_for_students %>
-	<%= f.input :show_for_participants, :label => "Show for #{Customer.participants_label}" %>
-	<%= f.input :show_for_volunteers %>
-	<%= f.input :show_for_mentors, :label => "Show for #{Customer.mentors_label}" %>
+
+	<%- unless f.object.is_a?(Visit) -%>
+		<%= f.input :send_attendance_emails %>
+		<p class="inline-hints">
+			Select this option to send an email to the attendee when he or she RSVP's or cancels attendance for the event.
+		</p>
+	<% end %>
+	
+	<%- f.inputs :name => "Always Show for Grade Levels", :class => "inline" do -%>			
+		<%= f.input :earliest_grade_level_level, :label => "From", :as => :select, :collection => GradeLevel.all.collect{|g| [g.title, g.level]} %>
+		<%= f.input :latest_grade_level_level, :label => "To", :as => :select, :collection => GradeLevel.all.collect{|g| [g.title, g.level]} %>
+	<% end %>
+	<p class="inline-hints">
+		If you specify grade levels here, this event will always show up in the "Events" section
+		of the participant detail pages when they're in the specified grade levels. This can be
+		useful for tracking many activities that you expect every participant to attend.
+	</p>
+	
 <% end -%>
 
 <% f.inputs(:name => "Capacity Limits") do %>

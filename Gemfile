@@ -31,6 +31,9 @@ gem "mime-types", "1.25"
 gem "carrierwave", "~> 0.4"
 gem "aws"
 gem "mini_magick"
+gem "rubyzip", '~> 0.9.9'
+gem 'axlsx', '~> 1.3.6'
+gem "acts_as_xlsx", '~> 1.0.6'
 
 group :production do
   gem 'mysql2', '< 0.3'

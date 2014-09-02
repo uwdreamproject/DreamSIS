@@ -1,67 +1,67 @@
-<thead>
-	<tr>
-		<th>id</th>
-		<th>participant_id</th>
-		<th>participant_fullname</th>
-		<th>scholarship_id</th>
-	    <th>scholarship_title</th>
-	    <th>scholarship_organization_name</th>
-		<th>amount</th>
-		<th>nominated</th>
-		<th>awarded</th>
-		<th>accepted</th>
-		<th>application_due_date</th>
-		<th>date_applied</th>
-		<th>restrictions</th>
-		<th>notes</th>
-		<th>renewable</th>
-		<th>renewable_years</th>
-		<th>full_ride</th>
-		<th>gap_funding</th>
-		<th>living_stipend</th>
-		<th>institution_id</th>
-	    <th>scholarship_default_amount</th>
-	    <th>scholarship_default_renewable_years</th>
-	    <th>scholarship_default_full_ride</th>
-	    <th>scholarship_default_gap_funding</th>
-	    <th>scholarship_default_living_stipend</th>
-	    <th>scholarship_default_renewable</th>
-		<th>created_at</th>
-		<th>updated_at</th>
-	</tr>
-</thead>
+<ss:Row ss:StyleID="1">
+	<ss:Cell><ss:Data ss:Type="String">id</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">participant_id</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">participant_fullname</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">participant_grad_year</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">participant_high_school_name</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">scholarship_id</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">scholarship_title</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">scholarship_organization_name</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">amount</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">nominated</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">awarded</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">accepted</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">application_due_date</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">date_applied</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">restrictions</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">notes</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">renewable</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">renewable_years</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">full_ride</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">gap_funding</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">living_stipend</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">institution_id</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">scholarship_default_amount</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">scholarship_default_renewable_years</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">scholarship_default_full_ride</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">scholarship_default_gap_funding</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">scholarship_default_living_stipend</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">scholarship_default_renewable</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">created_at</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">updated_at</ss:Data></ss:Cell>
+</ss:Row>
 
-<tbody>
 <% for scholarship_application in @scholarship.scholarship_applications %>
-	<tr>
-		<td><%=h scholarship_application.id %></td>
-		<td><%=h scholarship_application.participant_id %></td>
-		<td><%=h scholarship_application.participant.try(:fullname) %></td>
-		<td><%=h scholarship_application.scholarship_id %></td>
-	    <td><%=h scholarship_application.title %></td>
-	    <td><%=h scholarship_application.scholarship.organization_name %></td>
-		<td class="currency"><%=h scholarship_application.amount %></td>
-		<td><%=h scholarship_application.nominated %></td>
-		<td><%=h scholarship_application.awarded %></td>
-		<td><%=h scholarship_application.accepted %></td>
-		<td><%=h scholarship_application.application_due_date %></td>
-		<td><%=h scholarship_application.date_applied %></td>
-		<td><%=h scholarship_application.restrictions %></td>
-		<td><%=h scholarship_application.notes %></td>
-		<td><%=h scholarship_application.renewable %></td>
-		<td><%=h scholarship_application.renewable_years %></td>
-		<td><%=h scholarship_application.full_ride %></td>
-		<td><%=h scholarship_application.gap_funding %></td>
-		<td><%=h scholarship_application.living_stipend %></td>
-		<td><%=h scholarship_application.institution_id %></td>
-	    <td class="currency"><%=h scholarship_application.scholarship.default_amount %></td>
-	    <td><%=h scholarship_application.scholarship.default_renewable_years %></td>
-	    <td><%=h scholarship_application.scholarship.default_full_ride %></td>
-	    <td><%=h scholarship_application.scholarship.default_gap_funding %></td>
-	    <td><%=h scholarship_application.scholarship.default_living_stipend %></td>
-	    <td><%=h scholarship_application.scholarship.default_renewable %></td>
-		<td><%=h scholarship_application.created_at %></td>
-		<td><%=h scholarship_application.updated_at %></td>
-	</tr>
+<ss:Row>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.id %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.participant_id %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.participant.try(:fullname) %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.participant.try(:grad_year) %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.participant.try(:high_school_name) %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.scholarship_id %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.title %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.scholarship.organization_name %></ss:Data></ss:Cell>
+	<ss:Cell ss:StyleID="Currency"><ss:Data ss:Type="Number"><%=h scholarship_application.amount %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.nominated %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.awarded %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.accepted %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.application_due_date %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.date_applied %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.restrictions %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.notes %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.renewable %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.renewable_years %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.full_ride %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.gap_funding %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.living_stipend %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.institution_id %></ss:Data></ss:Cell>
+	<ss:Cell ss:StyleID="Currency"><ss:Data ss:Type="Number"><%=h scholarship_application.scholarship.default_amount %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.scholarship.default_renewable_years %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.scholarship.default_full_ride %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.scholarship.default_gap_funding %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.scholarship.default_living_stipend %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h scholarship_application.scholarship.default_renewable %></ss:Data></ss:Cell>
+	<ss:Cell ss:StyleID="ShortDate"><ss:Data ss:Type="DateTime"><%=h scholarship_application.created_at.to_s(:excel) %></ss:Data></ss:Cell>
+	<ss:Cell ss:StyleID="ShortDate"><ss:Data ss:Type="DateTime"><%=h scholarship_application.updated_at.to_s(:excel) %></ss:Data></ss:Cell>
+</ss:Row>
 <% end %>
-</tbody>

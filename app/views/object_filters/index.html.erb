@@ -1,11 +1,10 @@
 <h1>Stat Filters</h1>
 <p>Filters are used to dynamically limit the students displayed on list pages, based on certain criteria defined here.</p>
 
-<table>
+<table class="object_filters">
   <tr>
     <th>Object</th>
     <th>Title</th>
-	<th>Criteria</th>
 	<th>Target</th>
 	<th>Warning</th>
 	<th>Dates</th>
@@ -16,8 +15,10 @@
 <% for object_filter in @object_filters %>
   <tr>
     <td><%=h object_filter.object_class %></td>
-    <td><%=h object_filter.title %></td>
-	<td><tt><%=h object_filter.criteria %></tt></td>
+    <td class="name">
+		<%= link_to h(object_filter.title), object_filter_path(object_filter), :title => h(object_filter.criteria) %>
+		<tt class="criteria syntax" id="criteria_<%= object_filter.id %>" style="display:none"><%=h object_filter.criteria %></tt>
+	</td>
 	<td><%=h number_to_percentage object_filter.target_percentage, :precision => 0 %></td>
 	<td><%=h number_to_percentage object_filter.warning_threshold, :precision => 0 %></td>
 	<td><%= object_filter.display_period_string %></td>
@@ -31,4 +32,19 @@
 
 <div id="sidebar">
 	<p><%= link_to 'New stat filter', new_object_filter_path, :class => "add button" %></p>
+
+	<p>
+		<label for="show_criteria">
+			<input id="show_criteria" type="checkbox" onClick="$$('tt.criteria').invoke('toggle')"> Show criteria
+		</label>
+	</p>
+	
 </div>
+
+<%- javascript_tag do -%>
+	document.observe('dom:loaded', function() { 
+		<%- for object_filter in @object_filters -%>
+			<%= remote_function(:url => formatted_criteria_object_filter_path(object_filter), :update => "criteria_#{object_filter.id}") %>;
+		<% end %>
+	});
+<% end %>

@@ -1,5 +1,5 @@
 class NotesController < ApplicationController
-  
+  skip_before_filter :check_authorization
   before_filter :verify_permissions, :only => [:edit, :update, :destroy]
   
   def edit

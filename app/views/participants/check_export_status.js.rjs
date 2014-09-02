@@ -1,0 +1,38 @@
+if @export
+	page << "xlsxReportId = '#{@export.id.to_s}'"
+	
+	if @export.generated?
+		page.replace_html 'xlsx_download_button', "Download is Ready"
+		page << "checkXlsxStatus = false"
+		page << "$('xlsx_download_button').removeClassName('generating')"
+		page << "$('xlsx_status').removeClassName('generating')"
+		page << "$('xlsx_download_button').removeClassName('error')"
+		page << "$('xlsx_status').removeClassName('error')"
+		page.replace_html "xlsx_status", "Ready to download"
+		
+	elsif @export.generating?
+		page.replace_html 'xlsx_download_button', "#{h(@export.status.to_s.titleize)}..."
+		page << "$('xlsx_download_button').addClassName('generating')"
+		page << "$('xlsx_status').addClassName('generating')"
+		page << "$('xlsx_download_button').removeClassName('error')"
+		page << "$('xlsx_status').removeClassName('error')"
+		page << "checkXlsxStatus = true"
+		msg = "Your Excel file is being generated, which may take quite awhile. "
+		msg << "You can leave this page and come back later to download the file. "
+		msg << content_tag(:em, "(#{number_to_human_size(File.size(@export.file_path))})", :id => 'xlsx_filesize') if File.exist?(@export.file_path.to_s)
+		page.replace_html "xlsx_status", msg
+		
+	elsif @export.error?
+		page.replace_html 'xlsx_download_button', "Download in Excel"
+		page << "checkXlsxStatus = false"
+		page << "$('xlsx_download_button').removeClassName('generating')"
+		page << "$('xlsx_status').removeClassName('generating')"
+		page << "$('xlsx_download_button').addClassName('error')"
+		page << "$('xlsx_status').addClassName('error')"
+		page.replace_html "xlsx_status", "There was an error generating the file. Please try again."
+		
+	else
+		page << "checkXlsxStatus = true"
+
+	end
+end

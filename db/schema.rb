@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140402051425) do
+ActiveRecord::Schema.define(:version => 20140501043856) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -234,8 +234,8 @@ ActiveRecord::Schema.define(:version => 20140402051425) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "type"
-    t.boolean  "show_for_participants", :default => true
-    t.boolean  "show_for_mentors",      :default => true
+    t.boolean  "show_for_participants",      :default => true
+    t.boolean  "show_for_mentors",           :default => true
     t.boolean  "allow_rsvps"
     t.integer  "event_type_id"
     t.integer  "event_group_id"
@@ -255,9 +255,12 @@ ActiveRecord::Schema.define(:version => 20140402051425) do
     t.time     "volunteer_end_time"
     t.time     "mentor_start_time"
     t.time     "mentor_end_time"
-    t.boolean  "show_for_students",     :default => true
-    t.boolean  "show_for_volunteers",   :default => true
+    t.boolean  "show_for_students",          :default => true
+    t.boolean  "show_for_volunteers",        :default => true
     t.integer  "customer_id"
+    t.integer  "earliest_grade_level_level"
+    t.integer  "latest_grade_level_level"
+    t.boolean  "send_attendance_emails"
   end
 
   add_index "events", ["customer_id"], :name => "index_events_on_customer_id"
@@ -475,7 +478,7 @@ ActiveRecord::Schema.define(:version => 20140402051425) do
     t.boolean  "hispanic"
     t.boolean  "african_american"
     t.boolean  "american_indian"
-    t.boolean  "asian"
+    t.boolean  "asian_american"
     t.boolean  "pacific_islander"
     t.boolean  "caucasian"
     t.string   "ethnicity_details"
@@ -533,7 +536,7 @@ ActiveRecord::Schema.define(:version => 20140402051425) do
     t.string   "african_american_heritage"
     t.string   "african_heritage"
     t.string   "american_indian_heritage"
-    t.string   "asian_heritage"
+    t.string   "asian_american_heritage"
     t.string   "hispanic_heritage"
     t.string   "latino_heritage"
     t.string   "middle_eastern_heritage"
@@ -613,6 +616,8 @@ ActiveRecord::Schema.define(:version => 20140402051425) do
     t.string   "activity_log_status"
     t.string   "avatar"
     t.string   "postsecondary_plan"
+    t.boolean  "asian"
+    t.string   "asian_heritage"
   end
 
   add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"
@@ -622,6 +627,18 @@ ActiveRecord::Schema.define(:version => 20140402051425) do
   add_index "people", ["grad_year"], :name => "index_people_on_grad_year"
   add_index "people", ["lastname"], :name => "index_people_on_lastname"
   add_index "people", ["uw_net_id"], :name => "index_people_on_uw_net_id"
+
+  create_table "people_fafsas", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "year"
+    t.datetime "fafsa_submitted_at"
+    t.datetime "wasfa_submitted_at"
+    t.boolean  "not_applicable"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "people_fafsas", ["person_id", "year"], :name => "index_people_fafsas_on_person_id_and_year"
 
   create_table "people_programs", :id => false, :force => true do |t|
     t.integer  "person_id"
@@ -638,6 +655,19 @@ ActiveRecord::Schema.define(:version => 20140402051425) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "website_url"
+  end
+
+  create_table "reports", :force => true do |t|
+    t.string   "key"
+    t.text     "object_ids"
+    t.string   "format"
+    t.string   "type"
+    t.string   "file_path"
+    t.string   "status"
+    t.integer  "customer_id"
+    t.datetime "generated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "scholarship_applications", :force => true do |t|

@@ -1,5 +1,7 @@
 <% f.inputs("Attendance") do %>
-	<%= f.input :rsvp, :label => "Attending" %>
+	<p><%= content_tag :span, "Based on this event's settings, changing the values below will trigger an email to the attendee.", :class => "weak error-message" if @event.send_attendance_emails? %></p>
+
+	<%= f.input :rsvp, :label => "Attending/RSVP'd" %>
 	<%= f.input :attended, :label => "Attended" %>
 <% end -%>
 
