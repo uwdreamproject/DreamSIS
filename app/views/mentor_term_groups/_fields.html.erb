@@ -25,7 +25,7 @@
 			section_ids = f.object.term.courses.collect(&:linked_section_ids).flatten rescue {}
 			section_ids = f.object.term.course_ids.split.to_a if section_ids.empty?
 		 %>
-		<%= f.input :course_id, :as => :select, :collection => section_ids, :hint => "Choose the course section that this group is attached to (if applicable)." %>
+		<!-- <%= f.input :course_id, :as => :select, :collection => section_ids, :hint => "Choose the course section that this group is attached to (if applicable)." %> -->
 		
 		<% 
 			linked_groups = {} # :title => :id

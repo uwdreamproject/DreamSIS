@@ -125,6 +125,7 @@ class MentorTermGroup < CustomerScoped
   def sync_with_course!
     return false if course_id.nil?
     return false if skip_sync_after_create
+    return false if course_id.blank?
     begin
       course = CourseResource.find(course_id)
       active_reg_ids = course.active_registrations.collect(&:RegID) rescue []
