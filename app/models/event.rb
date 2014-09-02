@@ -2,11 +2,18 @@ class Event < ActiveRecord::Base
   include Comparable
   has_many :attendees, :class_name => "EventAttendance" do
     def all(audience = nil)
+      if audience.is_a?(Person)
+        audience = audience.class.to_s.classify
+      end
+       
       conditions = ["(audience = :audience) OR (people.type = :audience AND audience = NULL)", {:audience => audience.to_s.classify}] if audience
       al = find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
     end
     def rsvpd(audience = nil)
       if audience
+        if audience.is_a?(Person)
+          audience = audience.class.to_s.classify
+        end
        conditions = ["((audience = :audience) OR (people.type = :audience AND audience = NULL)) AND rsvp=:true", { :audience => audience.to_s.classify, :true => true }]
       else
         conditions = { :rsvp => true }
@@ -15,7 +22,10 @@ class Event < ActiveRecord::Base
     end
     def attended(audience = nil)
       if audience
-       conditions = ["((audience = :audience) OR (people.type = :audience AND audience = NULL)) AND attended=:true", { :audience => audience.to_s.classify, :true => true }]
+        if audience.is_a?(Person)
+          audience = audience.class.to_s.classify
+        end
+        conditions = ["((audience = :audience) OR (people.type = :audience AND audience = NULL)) AND attended=:true", { :audience => audience.to_s.classify, :true => true }]
       else
         conditions = { :attended => true }
       end
@@ -285,3 +295,4 @@ class Event < ActiveRecord::Base
   end
 
 end
+
