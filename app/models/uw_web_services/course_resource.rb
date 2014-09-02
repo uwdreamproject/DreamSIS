@@ -1,5 +1,5 @@
 class CourseResource < UwWebResource
-  self.prefix = "/student/v4/"
+  self.prefix = "/idcard/DreamSISProxy.php?path=student~v4~"
   self.element_name = "course"
   self.collection_name = "course"
   self.caller_class = "CourseResource"
@@ -7,12 +7,22 @@ class CourseResource < UwWebResource
   def self.find(*args)
     if args && args.first.include?("/")
       # Uses /public/ to avoid  attaching certs to standard request
-      fetch = JSON.parse(open(("#{self.site}" + "#{self.prefix}" + "/public/course/" + args.first+".json").sub(' ', '%20')).read)
+      uri = URI.parse(("https://expo.uaa.washington.edu/" + "idcard/dsproxy/" + "coursejson.php?course=" + args.first).sub(' ', '%20'))
+      puts uri.request_uri
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      request = Net::HTTP::Get.new(uri.request_uri)
+      response = http.request(request)
+      fetch = JSON.parse(response.body)
+      puts fetch
       term = fetch["Term"]
       fetch.delete("Term")
       fetch["TermA"] = term
       return CourseResource.new(fetch) 
     else
+      puts args.first
+      RAILS_DEFAULT_LOGGER.info(args.first + "\n\n")
       return super(args.first.gsub(" ", "%20")) if args.size == 1
       sws_log args.inspect, "Find"
       super
