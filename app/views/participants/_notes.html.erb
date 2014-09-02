@@ -11,7 +11,7 @@
 	<%= f.submit "Add Note", :disable_with => 'Adding note...', :class => 'add notes' %>
 <% end -%>
 
-<%- cache [@participant.cache_key, "notes"].join("/") do -%>
+<%- cache [participant.cache_key, "notes"].join("/") do -%>
 	<div id="notes_container_<%= participant.id %>">
 		<%= render :partial => "shared/notes", :object => participant, :locals => locals %>
 	</div>

@@ -13,7 +13,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :test_types
   map.resources :scholarships, :collection => { :auto_complete_for_scholarship_title => :any, :merge => :post }, :member => { :applications => :get }
   map.resources :customers
-  map.resources :object_filters
+  map.resources :object_filters, :member => { :formatted_criteria => :post }
   map.resources :locations, :collection => { :auto_complete_for_location_name => :any }
   map.resources :colleges, :controller => "locations", :collection => { :auto_complete_for_institution_name => :any }, :member => { :applications => :get }
   map.resources :terms, :member => { :sync => :put }
@@ -38,9 +38,10 @@ ActionController::Routing::Routes.draw do |map|
 
 	map.my_participants "/my/mentees", :controller => "participants", :action => "mentor", :mentor_id => "me"
 	map.participant_avatar "/participants/:id/avatar/:style", :controller => "participants", :action => "avatar"
+	map.all_participants "participants/all.:format", :controller => "participants", :action => "index"
   map.resources :participants, 
     :has_many => [:college_applications, :scholarship_applications, :parents, :college_enrollments, :college_degrees], 
-    :collection => { :auto_complete_for_participant_fullname => :any, :check_duplicate => :any, :add_to_group => :post, :fetch_participant_group_options => :any, :college_mapper_callback => :post, :bulk => :post },
+    :collection => { :auto_complete_for_participant_fullname => :any, :check_duplicate => :any, :add_to_group => :post, :fetch_participant_group_options => :any, :college_mapper_callback => :post, :bulk => :post, :check_export_status => :any },
     :member => { :fetch_participant_group_options => :any, :college_mapper_login => :post } do |participant|
     participant.resources :college_applications, :collection => { :auto_complete_for_institution_name => :any }
     participant.resources :test_scores, :collection => { :update_scores_fields => :post }, :member => { :update_scores_fields => :post }

@@ -10,8 +10,8 @@
 
 
 <%- f.inputs :name => "Enrollment Details" do -%>
-	<%= f.input :began_on, :label => "Start Date" %>
-	<%= f.input :ended_on, :label => "End Date" %>
+	<%= f.input :began_on, :label => "Start Date", :start_year => 2000, :end_year => Time.now.year+2 %>
+	<%= f.input :ended_on, :label => "End Date", :start_year => 2000, :end_year => Time.now.year+2 %>
 	<%= f.input :enrollment_status, :as => :select, :collection => CollegeEnrollment::ENROLLMENT_STATUS_NAMES.invert %>
 	<%= f.input :class_level, :as => :select, :collection => CollegeEnrollment::CLASS_LEVEL_NAMES.invert %>
 	

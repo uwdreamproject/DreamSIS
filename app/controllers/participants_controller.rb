@@ -12,15 +12,17 @@ class ParticipantsController < ApplicationController
   def index
     return redirect_to Participant.find(params[:id]) if params[:id]
     @participants = Participant.paginate(:all, :page => params[:page])
+		@cache_key = fragment_cache_key(:action => :index, :format => :xlsx)
+    @export = ParticipantsReport.for_key(@cache_key)
 
     respond_to do |format|
       format.html # index.html.erb
       format.xml { render :xml => @participants }
       format.js { render 'index'}
-      format.xls { 
+		  format.xlsx {
         @participants = Participant.all
-        render :action => 'index', :layout => 'basic' 
-      }
+      	respond_to_xlsx
+			}
     end
   end
 
@@ -33,12 +35,14 @@ class ParticipantsController < ApplicationController
     end
     
     @participants = @high_school.participants
+		@cache_key = fragment_cache_key(:action => :high_school, :id => @high_school.id, :format => :xlsx)
+    @export = ParticipantsReport.for_key(@cache_key)
 
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
       format.js { render 'index'}
-      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+      format.xlsx { respond_to_xlsx }
     end
   end
 
@@ -46,12 +50,14 @@ class ParticipantsController < ApplicationController
     @grad_year = params[:id]
     @participants = Participant.in_cohort(params[:id])
 		@title << @grad_year
+		@cache_key = fragment_cache_key(:action => :cohort, :id => @grad_year, :format => :xlsx)
+    @export = ParticipantsReport.for_key(@cache_key)
     
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
       format.js { render 'index'}
-      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+		  format.xlsx { respond_to_xlsx }
     end
   end
 
@@ -68,12 +74,14 @@ class ParticipantsController < ApplicationController
     
     @participants = request.html? ? [] : Participant.in_cohort(@grad_year).in_high_school(@high_school.try(:id))
     @participant_groups = ParticipantGroup.find(:all, :conditions => { :location_id => @high_school, :grad_year => @grad_year })
+		@cache_key = fragment_cache_key(:action => :high_school_cohort, :id => @high_school.id, :cohort => @grad_year, :format => :xlsx)
+    @export = ParticipantsReport.for_key(@cache_key)
 
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
       format.js { render 'index'}
-      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+		  format.xlsx { respond_to_xlsx }
     end    
   end
 
@@ -81,12 +89,14 @@ class ParticipantsController < ApplicationController
     @college = Institution.find(params[:college_id].to_i)
     @participants = Participant.attending_college(@college.try(:id))
 		@title << @college
+		@cache_key = fragment_cache_key(:action => :college, :id => @college.try(:id), :format => :xlsx)
+    @export = ParticipantsReport.for_key(@cache_key)
     
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
       format.js { render 'index'}
-      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+		  format.xlsx { respond_to_xlsx }
     end
   end
 
@@ -96,12 +106,14 @@ class ParticipantsController < ApplicationController
     @participants = Participant.in_cohort(@grad_year).attending_college(@college.try(:id))
 		@title << @college
 		@title << @grad_year
+		@cache_key = fragment_cache_key(:action => :college_cohort, :id => @college.try(:id), :cohort => @grad_year, :format => :xlsx)
+    @export = ParticipantsReport.for_key(@cache_key)
     
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
       format.js { render 'index'}
-      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+		  format.xlsx { respond_to_xlsx }
     end
   end
 
@@ -109,12 +121,14 @@ class ParticipantsController < ApplicationController
     @mentor = Mentor.find(params[:mentor_id] == "me" ? User.current_user.try(:person_id) : params[:mentor_id])
     @participants = Participant.assigned_to_mentor(@mentor.try(:id))
 		@title << "Assigned to #{@mentor.try(:fullname)}"
-    
-    respond_to do |format|
+		@cache_key = fragment_cache_key(:action => :mentor, :id => @mentor.id, :format => :xlsx)
+    @export = ParticipantsReport.for_key(@cache_key)
+		
+		respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
-      format.js { render 'index'}
-      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+      format.js 	{ render 'index'}
+		  format.xlsx { respond_to_xlsx }
     end
   end
 
@@ -122,12 +136,14 @@ class ParticipantsController < ApplicationController
     @program = Program.find(params[:program_id])
     @participants = @program.participants
 		@title << @program.try(:title)
+		@cache_key = fragment_cache_key(:action => :program, :id => @program.id, :format => :xlsx)
+    @export = ParticipantsReport.for_key(@cache_key)
     
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
       format.js { render 'index'}
-      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+		  format.xlsx { respond_to_xlsx }
     end
   end
 
@@ -143,12 +159,14 @@ class ParticipantsController < ApplicationController
     
     @participants = @participant_group.participants
     @participant_groups = ParticipantGroup.find(:all, :conditions => { :location_id => @high_school, :grad_year => @grad_year })
+		@cache_key = fragment_cache_key(:action => :group, :id => @particiant_group.id, :format => :xlsx)
+    @export = ParticipantsReport.for_key(@cache_key)
     
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
       format.js { render 'index'}
-      format.xls { render :action => 'index', :layout => 'basic' } # index.xls.erb
+		  format.xlsx { respond_to_xlsx }
     end    
   end
   
@@ -169,6 +187,7 @@ class ParticipantsController < ApplicationController
   def show
     @participant = Participant.find(params[:id]) rescue Student.find(params[:id])
     @high_school = @participant.high_school
+    @event_attendances = @participant.respond_to?(:relevant_event_attendances) ? @participant.relevant_event_attendances : @participant.event_attendances.non_visits
     @grad_year = @participant.grad_year
 		@term = Term.current_term
     @title = @participant.try(:fullname)
@@ -365,6 +384,14 @@ class ParticipantsController < ApplicationController
     render :text => "Error\r\n", :status => 500
   end
 
+	def check_export_status
+		@export = ParticipantsReport.find(params[:id])
+		respond_to do |format|
+			format.html { render :text => (@export.try(:status) || "does not exist") }
+			format.js
+		end
+	end
+
   protected
 
   # Stores the value from +params[:report]+ and stores it in +@report+ for use in views.
@@ -381,6 +408,44 @@ class ParticipantsController < ApplicationController
     send_file File.join(RAILS_ROOT, "public", "images", filename), 
               :disposition => 'inline', :type => 'image/png', :status => 404
   end  
+
+	def respond_to_xlsx
+		@export = ParticipantsReport.find_or_initialize_by_key(@cache_key)
+		if @export.generated? && params[:generate].nil?
+			if request.xhr?
+				headers["Content-Type"] = "text/javascript"
+				render :js => "window.location = '#{url_for(:format => 'xlsx')}'"
+			else
+        begin
+          filename = @filename || "participants.xlsx"
+          send_data @export.file.read, :filename => filename, :disposition => 'inline', :type => @export.mime_type.to_s
+        rescue
+          flash[:error] = "The file could not be read from the server. Please try regenerating the export."
+          redirect_to :back
+        end
+			end
+		else
+			respond_to_generate_xlsx
+		end
+	end
+  
+	def respond_to_generate_xlsx
+		@export = ParticipantsReport.find_or_initialize_by_key(@cache_key)
+		@export.format = "xlsx"
+		@export.object_ids = @participants.collect(&:id)
+		@export.reset_to_ungenerated
+		@export.status = "initializing"
+		@export.save
+		@export.generate_in_background!
+		flash[:notice] = "We are generating your Excel file for you. Please wait."
+		
+		if request.xhr?
+			headers["Content-Type"] = "text/javascript"
+			return render(:template => "participants/check_export_status.js.rjs", :format => 'js')
+		else
+			return redirect_to(:back, :format => 'html')
+		end
+	end
 
     
 end

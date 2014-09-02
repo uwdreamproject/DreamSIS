@@ -261,11 +261,13 @@ class Institution
   end
 
   def self.fancy_log(msg, method = "Fetch", time = nil)
-    caller_class_s = "Institution"
-    message = "  \e[4;33;1m#{caller_class_s} #{method}"
-    message << " (#{'%.1f' % (time*1000)}ms)" if time
-    message << "\e[0m   #{msg}"
-    RAILS_DEFAULT_LOGGER.info message
+    if Rails.env == 'development'
+      caller_class_s = "Institution"
+      message = "  \e[4;33;1m#{caller_class_s} #{method}"
+      message << " (#{'%.1f' % (time*1000)}ms)" if time
+      message << "\e[0m   #{msg}"
+      RAILS_DEFAULT_LOGGER.info message
+    end
   end
 
   

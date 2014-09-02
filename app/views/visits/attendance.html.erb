@@ -11,22 +11,6 @@
 	<table>
 		<tr>
 			<th rowspan=2>Name</th>
-			<!-- <%- if @showing.include?(:participants) -%>
-				<th rowspan=2 class="centered">Workbook?<br>
-					<%= link_to_function "(change date)", "Element.toggle('change_override_binder_date')", :class => "small" %>
-					<small id="change_override_binder_date" style="display:none">
-						<br>
-						<%= text_field_tag :override_binder_date, Date.today.to_s(:db) ,:size => 12 %>
-					</small>
-					</th>
-				<th rowspan=2 class="centered">FAFSA?<br>
-					<%= link_to_function "(change date)", "Element.toggle('change_override_fafsa_date')", :class => "small" %>
-					<small id="change_override_fafsa_date" style="display:none">
-						<br>
-						<%= text_field_tag :override_fafsa_date, Date.today.to_s(:db), :size => 12 %>
-					</small>
-					</th>
-			<% end -%> -->
 			<% for visit in @visits %>
 				<% l = link_to h(visit.short_title), edit_event_path(visit), :popup => true %>
 				<% if visit.allow_rsvps? %>
@@ -63,17 +47,6 @@
 				<small class="inactive-note">(inactive)</small>
 				</td>
 				
-			<%- if @showing.include?(:participants) -%>
-				<!-- Workbook checkbox -->
-				<%= render :partial => "visits/_checkboxes/workbook", 
-							:locals => { :participant => participant, :visit => visit, :i => i } if false %>
-
-				<!-- FAFSA checkbox -->
-				<%= render :partial => "visits/_checkboxes/fafsa", 
-							:locals => { :participant => participant, :visit => visit, :i => i } if false %>
-				
-			<% end -%>
-
 			<!-- Visit dates checkboxes -->
 			<% @visits.each_with_index do |visit, i| %>
 
