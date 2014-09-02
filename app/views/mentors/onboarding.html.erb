@@ -37,7 +37,7 @@
 							-
 						<%- end -%>
 						<%- fname = mentor.try(:firstname).split()
-							@background_check_textblocks << [fname[0].to_s.gsub("-",""), fname[1].to_s.gsub("-",""), mentor.try(:lastname), mentor.try(:sex), mentor.try(:birthdate).try(:to_s, :short_date)].join("|") -%>
+							@background_check_textblocks << [fname[0].to_s.gsub("-",""), fname[1].to_s.gsub("-",""), mentor.try(:lastname), mentor.try(:sex), mentor.try(:birthdate).try(:to_s, :short_date)].join("|") if mentor.background_check_authorized -%>
 					<%- elsif mentor.passed_background_check? -%>
 						<%= content_tag(:span, "Y", :class => 'approved tag') %>
 					<%- else -%>
