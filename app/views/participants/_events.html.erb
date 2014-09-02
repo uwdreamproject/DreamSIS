@@ -26,7 +26,7 @@
 <table class="visits attendance">
 	
 	<tr>
-	  <%- visits = @high_school.try(:events, @term, [:participants]) -%>
+	  <%- visits = @high_school.try(:events, @term, [:participants]) rescue nil -%>
     <%- if visits -%>
 		  <%- for visit in visits -%>
 			<!-- Attended Checkbox -->
