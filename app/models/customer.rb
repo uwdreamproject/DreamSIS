@@ -58,7 +58,16 @@ class Customer < ActiveRecord::Base
   def require_risk_form?
     !risk_form_content.blank?
   end
-  
+
+  def require_conduct_form?
+    !risk_form_content.blank?
+  end
+
+  # If there exists an event type with the +name+ "Mentor Workshop", returns it, otherwise nil
+  def mentor_workshop_event_type
+    EventType.find_by_name("Mentor Workshop")
+  end
+
   def allowable_login_methods=(new_allowable_login_methods)
     self.write_attribute :allowable_login_methods, new_allowable_login_methods.select{|provider, result| result != "0"}.collect(&:first)
   end

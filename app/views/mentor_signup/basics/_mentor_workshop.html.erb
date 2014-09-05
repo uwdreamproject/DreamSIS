@@ -1,0 +1,23 @@
+<%- if @mentor.attended_mentor_workshop? -%>
+	<div class="complete">
+		<h2>New Mentor Workshop</h2>
+		<% ev = @mentor.event_attendances.find(:all, 
+                            :include => { :event => :event_type }, 
+                            :conditions => { :attended => true, :event_types => { :name => "Mentor Workshop" }}
+                            ).first %>
+		<p>You attended a new mentor workshop on <%= ev.event.date.to_s(:date_with_day_of_week) %> .</p>
+	</div>
+<%- elsif (evs = @mentor.event_attendances.find(:all, 
+                            :include => { :event => :event_type }, 
+                            :conditions => { :rsvp => true, :event_types => { :name => "Mentor Workshop" }})).any? -%>
+<div class="pending">
+		<h2>New Mentor Workshop</h2>
+		<p>You have RSVP'd for a workshop on <%= evs.first.event.date.to_s(:date_with_day_of_week) %>.</p>
+	</div>
+<%- else -%>
+	<div class="incomplete">
+		<h2>New Mentor Workshop</h2>
+		<p>You must attend a new mentor workshop before you can work with students in <%= Customer.name_label %>.</p>
+		<p><%= link_to "RSVP for a new mentor workshop now &#x2192;", event_type_rsvp_path(EventType.find_by_name("Mentor Workshop")), :class => 'button' %></p>
+	</div>
+<% end -%>

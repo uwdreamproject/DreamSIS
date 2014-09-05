@@ -2922,6 +2922,10 @@ span.highlight, .highlight {
 	color: #b11;
 }
 
+.bright-red-background {
+  background: #FF8080!important;
+}
+
 span.conditional.highlight, .conditional.highlight {
 	font: 80% "Lucida Grande", Lucida, Verdana, sans-serif;
 	color: blue;

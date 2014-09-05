@@ -13,13 +13,15 @@ class Mentor < Person
   
   validates_uniqueness_of :reg_id, :allow_blank => true
 
-  attr_accessor :validate_background_check_form, :validate_risk_form
+  attr_accessor :validate_background_check_form, :validate_risk_form, :validate_conduct_form
 
   validates_inclusion_of :crimes_against_persons_or_financial, :drug_related_crimes, :related_proceedings_crimes, :medicare_healthcare_crimes, :general_convictions, :if => :validate_background_check_form, :in => [true,false], :message => "cannot be left blank"
   validates_presence_of :background_check_authorized_at, :if => :validate_background_check_form
 
   validates_presence_of :risk_form_signed_at, :risk_form_signature, :message => "cannot be left blank", :if => :validate_risk_form
   
+  validates_presence_of :conduct_form_signed_at, :conduct_form_signature, :message => "cannot be left blank", :if => :validate_conduct_form
+
   def self.find_or_create_from_reg_id(reg_id)
     new_mentor = Mentor.find_or_initialize_by_reg_id(reg_id)
     new_mentor.validate_name = false
@@ -27,15 +29,46 @@ class Mentor < Person
     new_mentor
   end
   
-  # Returns true if +passed_background_check?+ and +signed_risk_form?+ and +currently_enrolled?+ all return true.
+  # Returns true if +passed_background_check?+ and +signed_risk_form?+ and +currently_enrolled?+ all return true, and
+  # if has attended mentor workshop (if necessary)
   def passed_basics?
-    (!Customer.require_background_checks? || passed_background_check?) && (!Customer.require_risk_form? || signed_risk_form?) && currently_enrolled?
+    (!Customer.require_background_checks? || (passed_background_check? && passed_sex_offender_check?)) && (!Customer.require_risk_form? || signed_risk_form?) && currently_enrolled? && (!Customer.mentor_workshop_event_type || attended_mentor_workshop?)
   end
-    
+  
+  # Returns a string detailing the steps needed for this mentor
+  # to be ready to mentor
+  def readiness_summary
+    return "Ready to mentor" if passed_basics?
+    summary = ""
+    if Customer.require_risk_form?
+      if !signed_risk_form?
+        summary << "* Must sign risk form  "
+      end
+    end
+    if Customer.require_background_checks?
+      if !passed_background_check?
+        summary << "* Hasn't passed BG Check  "
+      end
+      if !passed_sex_offender_check?
+        summary << "* Hasn't passed SO Check  "
+      end
+    end
+    if !attended_mentor_workshop?
+      summary << "* Must attend mentor workshop"
+    end
+    return summary
+  end
+
   # Returns true if there is a valid date in the +risk_form_signed_at+ attribute and any value in the 
   # +risk_form_signature+ attribute.
   def signed_risk_form?
     !risk_form_signed_at.nil? && !risk_form_signature.blank?
+  end
+
+  # Returns true if there is a valid date in the +conduct_form_signed_at+ attribute and any value in the 
+  # +conduct_form_signature+ attribute.
+  def signed_conduct_form?
+    !conduct_form_signed_at.nil? && !conduct_form_signature.blank?
   end
   
   # This mentor has a valid login token if there is a value in +login_token+ and the timestamp in
@@ -149,9 +182,9 @@ Documentation for each filter:
 =end
 
   def correct_sections?
-    return true if (current_lead? || (self.users.first.admin? rescue false))
+    return true #if (current_lead? || (self.users.first.admin? rescue false)) **Section checking currently disabled
     if currently_enrolled?
-      current_groups = self.current_mentor_term_groups.collect(&:mentor_term_group)
+      current_groups = self.current_mentor_term_groups.select{|m| m.term.id == Term.allowing_signups.first.id}.collect(&:mentor_term_group)
       current_sections = current_groups.collect {|grp| grp.course_string }
       all_groups = self.mentor_term_groups
       prev_groups = all_groups.delete_if{|k,v| current_groups.include? k}

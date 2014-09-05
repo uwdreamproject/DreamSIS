@@ -1,7 +1,7 @@
 class MentorSignupController < ApplicationController
   before_filter :fetch_mentor
-  before_filter :fetch_term, :except => ['background_check_form', 'risk_form']
-	before_filter :check_if_signups_allowed, :except => ['basics', 'background_check_form', 'risk_form']
+  before_filter :fetch_term, :except => ['background_check_form', 'risk_form', 'conduct_form']
+	before_filter :check_if_signups_allowed, :except => ['basics', 'background_check_form', 'risk_form', 'conduct_form']
   skip_before_filter :check_authorization, :check_if_enrolled
 
   def index
@@ -35,6 +35,31 @@ class MentorSignupController < ApplicationController
                                    :background_check_run_at => nil,
                                    :background_check_result => nil
                                   })
+      end
+      if !@mentor.passed_sex_offender_check? && @mentor.background_check_authorized == true
+        @mentor.update_attributes({:background_check_authorized => false,
+                                   :background_check_authorized_at => nil,
+                                   :sex_offender_check_run_at => nil,
+                                   :sex_offender_check_result => nil
+                                  })
+      end
+    end
+  end
+
+  def conduct_form
+    if request.put?
+      if params[:conduct]
+        if params[:conduct][:dream_project] && params[:conduct].count != 19
+          flash[:error] = "You must agree to all statements"
+          return redirect_to :back
+        end
+      end
+      @mentor.validate_conduct_form = true
+      @mentor.conduct_form_signature = params[:mentor][:conduct_form_signature]
+      @mentor.conduct_form_signed_at = params[:mentor][:conduct_form_signed_at] == "1" ? Time.now : nil
+      if @mentor.save
+        flash[:notice] = "Your conduct agreement form was successfully received. Thank you."
+        redirect_to root_url
       end
     end
   end

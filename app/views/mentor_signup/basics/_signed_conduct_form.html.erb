@@ -1,0 +1,14 @@
+<% if @mentor.signed_conduct_form? %>
+	<div class="complete">
+		<h2>Conduct Agreement Signed</h2>
+		<p>You signed the conduct agreement on <%= @mentor.risk_form_signed_at.to_s(:date_with_day_of_week) %>.
+			<br>
+			<%= link_to "Re-read the conduct agreement", {:action => 'conduct_form'} %></p>
+	</div>
+<%- else -%>
+	<div class="incomplete">
+		<h2>Conduct Agreement</h2>
+		<p>You haven't signed the conduct agreement yet. You must do so before you can participate in <%= Customer.name_label %>.</p>
+		<p><%= link_to "Sign your conduct agreement now &#x2192;", {:action => 'conduct_form'}, :class => 'button' %></p>
+	</div>
+<% end -%>

@@ -1,3 +1,9 @@
+<% if !@mentor.passed_basics? %>
+  <div class="bright-red-background content-block">
+    <%= @mentor.readiness_summary %>
+  </div>
+<% end %>
+
 <div class="content-block">
 
 	<div align="right" style="float:right" class="photo">
@@ -113,8 +119,8 @@
 		<%- if Customer.require_background_checks? -%>
 			<dt>Background Check</dt>
 			<dd>
-				<% if @mentor.passed_background_check? %>
-					Passed on <%= @mentor.background_check_run_at.to_s(:short_date) %>
+				<% if @mentor.passed_criminal_checks? %>
+					Passed on <%= @mentor.criminal_checks_run_at.to_s(:short_date) %>
 				<%- else -%>
 					<span class="error-message">Not passed</span>
 				<% end -%>

@@ -14,12 +14,13 @@ class Event < ActiveRecord::Base
         if audience.is_a?(Person)
           audience = audience.class.to_s.classify
         end
-       conditions = ["((audience = :audience) OR (people.type = :audience AND audience = NULL)) AND rsvp=:true", { :audience => audience.to_s.classify, :true => true }]
+        conditions = ["((audience = :audience) OR (people.type = :audience AND audience = NULL)) AND rsvp=:true", { :audience => audience.to_s.classify, :true => true }]
       else
         conditions = { :rsvp => true }
       end
       find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
     end
+
     def attended(audience = nil)
       if audience
         if audience.is_a?(Person)

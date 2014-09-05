@@ -1,0 +1,31 @@
+<h2><%= @mentor.display_name %></h2>
+<% prev = @mentor.previous_residence_jurisdictions %>
+<p><strong>Prev. Lived In:</strong> <%= prev ? sanitize(prev) : "No Response" %></p>
+<hr />
+<% semantic_form_for @mentor, :url => onboarding_update_mentor_path(@mentor.id), :html => {:id => 'onboarding-form'} do |f| %>
+<%- f.inputs :name => "Criminal Background Check" do -%>
+  <%= f.input :background_check_run_at, :hint => link_to_now("mentor_background_check_run_at") %>
+	<%= f.input :background_check_result, 
+					:hint => "Enter #{link_to_function('NO RECORD FOUND', 
+									"$('mentor_background_check_result').value='NO RECORD FOUND [#{@current_user.login}]'")} 
+								or #{link_to_function('OK', 
+									"$('mentor_background_check_result').value='OK  [#{@current_user.login}]'")}
+								(include an explanation) if the mentor passed the check." %>
+<%- end -%>								
+	<hr />
+<%- f.inputs :name => "Sex Offender Check" do -%>	
+  <%= f.input :sex_offender_check_run_at, :hint => link_to_now("mentor_sex_offender_check_run_at") %>
+	<%= f.input :sex_offender_check_result, 
+					:hint => "Enter #{link_to_function('NO RECORD FOUND', 
+									"$('mentor_sex_offender_check_result').value='NO RECORD FOUND [#{@current_user.login}]'")} 
+								or #{link_to_function('OK', 
+									"$('mentor_sex_offender_check_result').value='OK  [#{@current_user.login}]'")}
+								(include an explanation) if the mentor passed the check." %>
+<%- end -%>
+  <%= hidden_field_tag 'm_id', @mentor.id %>
+	<%- f.buttons do -%>
+		<%= f.submit %>
+		<%= link_to "Cancel", "javascript:clearForm()", :class => 'cancel button' %>
+	<% end -%>
+<% end %>
+<script>registerForm(<%= @mentor.id %>)</script>

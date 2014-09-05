@@ -1,7 +1,10 @@
+<%= javascript_include_tag 'onboarding.js' %>
+
 <h3 class="pre-title"><%= @term.title %></h3>
 <h1><%= Customer.mentor_Label %> On-boarding</h1>
 
 <%- @background_check_textblocks = [] -%>
+<%- @so_check_textblocks = [] -%>
 
 <%#= will_paginate @mentors %>
 
@@ -16,40 +19,26 @@
 			<th class="centered">Aliases</th>
 			<th class="centered">AOR Signed?</th>
 			<th class="centered">BG Check Cleared?</th>
+			<th class="centered">SO Check Cleared?</th>
 			<th class="centered">Attended Mentor Workshop?</th>
 		</tr>
 	</thead>
 	
 	<tbody>
-		<%- for mentor in @mentors -%>
-			<tr>
-				<td class="name"><%= link_to h(mentor.fullname), mentor %></td>
-				<td><%=h mentor.email %></td>
-				<td class="centered"><%=h mentor.sex %></td>
-				<td><%=h mentor.birthdate.to_s %></td>
-				<td class="centered"><%= mentor.has_aliases? ? content_tag(:span, "Y", :class => 'red tag') : "-" %></td>
-				<td class="centered"><%= mentor.signed_risk_form? ? content_tag(:span, "Y", :class => 'approved tag') : "-" %></td>
-				<td class="centered">
-					<%- if mentor.background_check_result.blank? -%>
-						<% if mentor.has_background_check_form_responses? || mentor.has_aliases? %>
-							<%= link_to("Check form responses", background_check_form_responses_mentor_path(mentor), :target => "_blank") %>
-						<%- else -%>
-							-
-						<%- end -%>
-						<%- fname = mentor.try(:firstname).split()
-							@background_check_textblocks << [fname[0].to_s.gsub("-",""), fname[1].to_s.gsub("-",""), mentor.try(:lastname), mentor.try(:sex), mentor.try(:birthdate).try(:to_s, :short_date)].join("|") if mentor.background_check_authorized -%>
-					<%- elsif mentor.passed_background_check? -%>
-						<%= content_tag(:span, "Y", :class => 'approved tag') %>
-					<%- else -%>
-						<%= content_tag(:span, "N", :class => 'red tag') %>
-					<% end -%>
-					</td>
-				<td class="centered"><%= mentor.attended_mentor_workshop? ? content_tag(:span, "Y", :class => 'approved tag') : "-" %></td>
-			</tr>
-		<% end -%>
+    <%= render :partial => "mentor_onboarding", :collection => @mentors, :locals => {:append_block => true} %>
 	</tbody>
 </table>
 
 <h3>First 10 students for background checks (in WATCH auto-fill format):</h3>
 <textarea rows=11 cols=60 style="font-family:monospace" onClick="this.select()"><%=h @background_check_textblocks[0..9].join("\n") %></textarea><br>
 <a href="javascript:lines%20=%20prompt('Enter%20names%20block%20in%20proper%20format:').split(/' '|\r\n|\n/);%20var%20inputn%20=%200;%20for%20(var%20i=0;%20i<lines.length;%20i++)%20{%20parts%20=%20lines[i].split('|');%20document.forms[0][inputn].value%20=%20parts[0];%20inputn++;%20document.forms[0][inputn].value%20=%20parts[1];%20inputn++;%20document.forms[0][inputn].value%20=%20parts[2];%20inputn++;%20document.forms[0][inputn].value%20=%20parts[3];%20inputn++;%20document.forms[0][inputn].value%20=%20parts[4];%20inputn++;%20}" class="up button">WATCH Auto-fill Bookmarklet</a>
+<br>
+
+<h3>First 10 students for background checks (in NSOPW auto-fill format):</h3>
+<textarea rows=11 cols=60 style="font-family:monospace" onClick="this.select()"><%=h @so_check_textblocks[0..9].join("\n") %></textarea><br>
+<a href="javascript:lines%20=%20prompt('Enter%20names%20block%20in%20proper%20format:').split(/'%20'|\r\n|\n/);f%20=%20document.forms[0];for(i=0;i<lines.length;i++){names=lines[i].split('|');document.forms[0].target='window'+i;document.getElementById('firstName').value=names[0];document.getElementById('lastName').value=names[1];window.open(f.action,f.target);f.submit();}" class="up button">NSOPW Auto-search Bookmarklet</a>
+
+<div id="sidebar">
+  <h3>Update Mentor Information</h3>
+  <div id="form-container">Click a row to begin editing</div>
+</div>

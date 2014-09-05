@@ -16,7 +16,7 @@
 	<dl class="sidebar">
 
 		<%- if Customer.require_background_checks? -%>
-			<dt>Background Check</dt>
+			<dt>Background Checks</dt>
 			<dd>
 				<% if @mentor.passed_background_check? %>
 					Passed on <%= @mentor.background_check_run_at.to_s(:short_date) %>

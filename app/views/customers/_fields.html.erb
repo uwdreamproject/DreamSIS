@@ -31,6 +31,7 @@
 	<% end %>
 	
 	<%= f.input :risk_form_content, :input_html => { :rows => 5 }, :hint => "Mentors must consent to this statement before using the system. Use Textile for formatting. Leave this blank if mentors don't need to sign anything before gaining access.", :label => "Mentor consent" %>
+		<%= f.input :conduct_form_content, :input_html => { :rows => 5 }, :hint => "Mentors must agree to this statement before using the system. Allowed HTML tags: [p, br, fieldset, input, label, h2]. Leave this blank if mentors don't need to sign anything before gaining access.", :label => "Conduct Agreement" %>
     <%= f.input :college_application_choice_options, :input_html => { :rows => 5 }, :hint => "Specify the options you want to allow for college application choices. Enter one entry per line. By default, the options are 'Reach', 'Solid', and 'Safety.'" %>
     <%= f.input :paperwork_status_options, :input_html => { :rows => 5 }, :hint => "Specify the options you want to allow for paperwork status choices. Enter one entry per line. By default, the options are 'Not Started', 'In Progress', and 'Complete.'" %>
     <%= f.input :visit_attendance_options, :input_html => { :rows => 5 }, :hint => "Specify the options you want to allow for visit attendance. Enter one entry per line. If nothing is specified here, 'Attended' will appear only as a single checkbox." %>
