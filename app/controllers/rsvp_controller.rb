@@ -12,7 +12,7 @@ class RsvpController < ApplicationController
     @hide_description_link = true
     @event_attendance = @current_user.person.event_attendances.find_or_initialize_by_event_id(@event.id) if @current_user
 		@share_links = true
-		@title = @event
+		@title = @event.name
   end
   
   def event_group
