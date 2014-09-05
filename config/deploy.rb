@@ -8,7 +8,7 @@ set :use_sudo, true
 
 $:.unshift(File.expand_path('./lib', ENV['rvm_path'])) # Add RVM's lib directory to the load path.
 #require "rvm/capistrano"                  # Load RVM's capistrano plugin.
-set :rvm_ruby_string, '1.8.7@rails235'        # Or whatever env you want it to run in.
+set :rvm_ruby_string, '1.8.7@rails2318'        # Or whatever env you want it to run in.
 
 default_run_options[:pty] = true
 set :repository, "git@github.com:uwdreamproject/DreamSIS.git"  # Your clone URL
@@ -76,6 +76,7 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/config/omniauth_keys.yml #{release_path}/config/omniauth_keys.yml" 
     run "ln -nfs #{shared_path}/config/college_mapper.yml #{release_path}/config/college_mapper.yml" 
     run "ln -nfs #{shared_path}/config/action_mailer.rb #{release_path}/config/initializers/action_mailer.rb" 
+    run "ln -nfs #{shared_path}/config/api_keys.yml #{release_path}/config/api_keys.yml"
     run "ln -nfs #{shared_path}/config/certs #{release_path}/config/certs" 
     run "ln -nfs #{shared_path}/system/files #{release_path}/files" 
   end
