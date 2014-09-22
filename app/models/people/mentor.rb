@@ -32,7 +32,7 @@ class Mentor < Person
   # Returns true if +passed_background_check?+ and +signed_risk_form?+ and +currently_enrolled?+ all return true, and
   # if has attended mentor workshop (if necessary)
   def passed_basics?
-    (!Customer.require_background_checks? || (passed_background_check? && passed_sex_offender_check?)) && (!Customer.require_risk_form? || signed_risk_form?) && currently_enrolled? && (!Customer.mentor_workshop_event_type || attended_mentor_workshop?)
+    (!Customer.require_background_checks? || (passed_background_check? && passed_sex_offender_check?)) && (!Customer.require_risk_form? || signed_risk_form?) && (!Customer.require_conduct_form? || signed_conduct_form?)&& currently_enrolled? && (!Customer.mentor_workshop_event_type || attended_mentor_workshop?)
   end
   
   # Returns a string detailing the steps needed for this mentor
@@ -44,6 +44,11 @@ class Mentor < Person
       if !signed_risk_form?
         summary << "* Must sign risk form  "
       end
+    end
+    if Customer.require_conduct_form?
+      if !signed_conduct_form?
+        summary << "* Must sign conduct agreement  "
+      end  
     end
     if Customer.require_background_checks?
       if !passed_background_check?
@@ -238,6 +243,7 @@ Documentation for each filter:
   
   # Returns true if the mentor has attended an event in the "Mentor Workshop" type.
   def attended_mentor_workshop?
+    return true if mentor_terms.collect(&:term).uniq.reject {|m| m == Term.current_term}.count > 0 rescue true
     !event_attendances.find(:all, 
                             :include => { :event => :event_type }, 
                             :conditions => { :attended => true, :event_types => { :name => "Mentor Workshop" }}

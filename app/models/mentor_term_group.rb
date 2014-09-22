@@ -128,7 +128,7 @@ class MentorTermGroup < CustomerScoped
     return false if course_id.blank?
     begin
       course = CourseResource.find(course_id)
-      active_reg_ids = course.active_registrations.collect(&:RegID) rescue []
+      active_reg_ids = course.active_registrations.collect(&:RegID)
       # Destroy the ones that shouldn't be in there anymore
       mentor_terms.each{|mq|
         next if mq.volunteer?

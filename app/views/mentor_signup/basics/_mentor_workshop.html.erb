@@ -5,7 +5,7 @@
                             :include => { :event => :event_type }, 
                             :conditions => { :attended => true, :event_types => { :name => "Mentor Workshop" }}
                             ).first %>
-		<p>You attended a new mentor workshop on <%= ev.event.date.to_s(:date_with_day_of_week) %> .</p>
+		<p>You attended a new mentor workshop.</p>
 	</div>
 <%- elsif (evs = @mentor.event_attendances.find(:all, 
                             :include => { :event => :event_type }, 

@@ -4,7 +4,7 @@
 
 	<%= f.error_messages %>
 
-	<%= sanitize Customer.conduct_form_content, :tags => %w(p br fieldset input label h2), :attributes => %w(id name type value for) %>
+	<%= sanitize Customer.conduct_form_content, :tags => %w(p br fieldset input label h2 ol li), :attributes => %w(id name type value for class) %>
 
 <hr />
   <% f.inputs do %> 

@@ -7,7 +7,7 @@
     
 	<% f.inputs do %>
 		<%= f.input :fullname, :label => "Name", :input_html => { :disabled => true } %>
-		<%= f.input :aliases, :label => "Maiden Name/Aliases", :input_html => { :rows => 2 } %>
+		<%= f.input :aliases, :label => "Maiden Name/Aliases", :input_html => { :rows => 2 }, :hint => "Please list one per line." %>
 		<%= f.input :previous_residence_jurisdictions, :label => "Previous US States and/or Countries of Residence", :hint => "Please list all US states and/or other countries you have lived in. Separate your responses with commas." %>
 	<% end -%>
 		
@@ -86,7 +86,10 @@
 			<%= f.input :general_convictions_explanation, :label => "If Yes, indicate all conviction dates, prison release date(s) and the nature of the offense(s)", :input_html => { :rows => 3 } %>
 		<% end -%>
 			
-		<p>I certify that the information contained in the above-stated information is true, correct, and complete to the best of my knowledge. I understand that consideration for participation in <%= Customer.name_label %> and the continuation of subsequent participation depend on true, accurate and complete representation of these facts as stated or implied in all application-related materials. I authorize <%= Customer.name_label %> to make inquiries regarding my education, work experience, references, unless otherwise stated, and criminal conviction history. I understand that participation may be conditioned on <%= Customer.name_label %>’s receipt of a satisfactory Criminal Conviction Report from the Washington State Patrol or other law-enforcement related agency and a satisfactory report from the U.S Department of Justice National Sex Offender Public Website.</p>
+		<p>I certify that the information contained in the above-stated information is true, correct, and complete to the best of my knowledge. I understand that consideration for participation in <%= Customer.name_label %> and the continuation of subsequent participation depend on true, accurate and complete representation of these facts as stated or implied in all application-related materials.</p>
+		<br />
+		<p>I authorize <%= Customer.name_label %> to make inquiries regarding my education, work experience, references, unless otherwise stated, and criminal conviction history. I understand that participation may be conditioned on <%= Customer.name_label %>’s receipt of a satisfactory Criminal Conviction Report from the Washington State Patrol or other law-enforcement related agency and a satisfactory report from the U.S Department of Justice National Sex Offender Public Website.</p>
+
 
 		<% f.inputs do %>
 			<%= f.input :background_check_authorized, :as => :boolean, :label => "I understand the statement above." %>

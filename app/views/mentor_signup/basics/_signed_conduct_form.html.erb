@@ -1,7 +1,7 @@
 <% if @mentor.signed_conduct_form? %>
 	<div class="complete">
 		<h2>Conduct Agreement Signed</h2>
-		<p>You signed the conduct agreement on <%= @mentor.risk_form_signed_at.to_s(:date_with_day_of_week) %>.
+		<p>You signed the conduct agreement on <%= @mentor.conduct_form_signed_at.to_s(:date_with_day_of_week) %>.
 			<br>
 			<%= link_to "Re-read the conduct agreement", {:action => 'conduct_form'} %></p>
 	</div>

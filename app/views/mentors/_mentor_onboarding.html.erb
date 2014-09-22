@@ -1,5 +1,7 @@
 <tr id="mentor-<%= mentor_onboarding.id %>" class="<%= 'bright-red-background' if !mentor_onboarding.passed_basics?%>" onClick="loadForm(<%= mentor_onboarding.id %>)">
-				<td class="name"><%= link_to h(mentor_onboarding.fullname), mentor_onboarding %></td>
+				<td class="name"><%= link_to h(mentor_onboarding.fullname), mentor_onboarding %>
+				<p><%= h(mentor_onboarding.current_mentor_term_groups.collect(&:mentor_term_group).collect{|m| " * " + m.location.name if m.location}.join()) %></p>
+				</td>
 				<td><%=h mentor_onboarding.email %></td>
 				<td class="centered"><%=h mentor_onboarding.sex %></td>
 				<td><%=h mentor_onboarding.birthdate.to_s %></td>
@@ -8,7 +10,7 @@
 				<td class="centered">
 					<%- if mentor_onboarding.background_check_result.blank? -%>
 						<% if mentor_onboarding.has_background_check_form_responses? || mentor_onboarding.has_aliases? %>
-							<%= link_to("Check form responses", background_check_form_responses_mentor_path(mentor), :target => "_blank") %>
+							<%= link_to("Check form responses", background_check_form_responses_mentor_path(mentor_onboarding), :target => "_blank") %>
 						<%- else -%>
 							-
 						<%- end -%>
@@ -23,9 +25,27 @@
 			  <td class="centered">
 			    <% if mentor_onboarding.sex_offender_check_result.blank? %>
 			      -
-			      <% fname = mentor_onboarding.try(:firstname).split()
-			         (0..fname.count-1).each do |i|
-						     @so_check_textblocks << [fname[0..i].join(" "), mentor_onboarding.try(:lastname)].join("|") end if mentor_onboarding.background_check_authorized && append_block %>
+			      <% if mentor_onboarding.background_check_authorized && append_block && @so_block_count <= 5 
+                                   fname = mentor_onboarding.try(:firstname).split()
+			           (0..fname.count-1).each do |i|
+				       @so_check_textblocks << [fname[0..i].join(" "), mentor_onboarding.try(:lastname)].join("|") 
+                                       @so_block_count = @so_block_count + 1 end
+                                   aliases = mentor_onboarding.try(:aliases)
+                                   if aliases && !aliases.try(:first).blank?
+                                     aliases.lines.each do |line|
+                                       names =  line.split(" ")
+                                       last = names[names.count - 1]
+                                       if names.count > 1
+                                         (0..names.count-2).each do |i|
+                                           @so_check_textblocks << [names[0..i].join(" "), last].join("|")
+                                           @so_block_count = @so_block_count + 1
+                                         end
+                                       else
+                                         @so_check_textblocks << names.first
+                                       end
+                                     end
+                                   end 
+                                 end%>
 			    <% elsif mentor_onboarding.passed_sex_offender_check? %>
 			      <%= content_tag(:span, "Y", :class => 'approved tag') %>
 			    <% else %>
