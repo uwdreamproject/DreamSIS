@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140904233003) do
+ActiveRecord::Schema.define(:version => 20140924024308) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -99,6 +99,8 @@ ActiveRecord::Schema.define(:version => 20140904233003) do
     t.text     "visit_attendance_options"
     t.integer  "background_check_validity_length"
     t.text     "conduct_form_content"
+    t.text     "driver_form_content"
+    t.boolean  "send_driver_form_emails"
   end
 
   create_table "degrees", :force => true do |t|
@@ -624,6 +626,11 @@ ActiveRecord::Schema.define(:version => 20140904233003) do
     t.datetime "conduct_form_signed_at"
     t.string   "conduct_form_signature"
     t.string   "previous_residence_jurisdictions"
+    t.string   "driver_form_signature"
+    t.datetime "driver_form_signed_at"
+    t.string   "driver_form_offense_response"
+    t.boolean  "has_previous_driving_convictions"
+    t.string   "driver_form_remarks"
   end
 
   add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"

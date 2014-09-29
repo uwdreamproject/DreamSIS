@@ -1,0 +1,29 @@
+<h1>Driving Agreement Form for <%= Customer.name_label %></h1>
+
+<% semantic_form_for @mentor, :url => { :action => 'driver_form' } do |f| %>
+
+    <%= f.error_messages %>
+
+    <%= sanitize Customer.driver_form_content, :tags => %w(p br fieldset input label h2 ol li), :attributes => %w(id name type value for class) %>
+
+    <hr />
+    <p>Have you ever been convicted of a driving related criminal offense by either a civilian or military court?</p>
+    <% f.inputs do %>
+      <%= f.input :has_previous_driving_convictions, :as => :radio, :label => false %>
+      <p>
+        If yes, please provide date and name of offense. A Dream Project staff member will be in contact with you to
+        set up a meeting to discuss your Dream Project staff member will be in contact with you to set up a meeting to
+        discuss your participation in the program.
+      </p>
+      <br />
+      <%= f.input :driver_form_offense_response, :label => "Date/Name of offense (if yes)" %>
+    <% end %>
+    <hr />
+    <% f.inputs do %>
+        <%= f.input :driver_form_signature, :label => "Enter your full legal name as signature" %>
+        <%= f.input :driver_form_signed_at, :as => :boolean, :label => "I understand the statements above." %>
+    <% end -%>
+    <% f.buttons do %>
+        <%= f.submit %>
+    <% end -%>
+<% end -%>

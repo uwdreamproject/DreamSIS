@@ -13,7 +13,7 @@ class Mentor < Person
   
   validates_uniqueness_of :reg_id, :allow_blank => true
 
-  attr_accessor :validate_background_check_form, :validate_risk_form, :validate_conduct_form
+  attr_accessor :validate_background_check_form, :validate_risk_form, :validate_conduct_form, :validate_driver_form
 
   validates_inclusion_of :crimes_against_persons_or_financial, :drug_related_crimes, :related_proceedings_crimes, :medicare_healthcare_crimes, :general_convictions, :if => :validate_background_check_form, :in => [true,false], :message => "cannot be left blank"
   validates_presence_of :background_check_authorized_at, :if => :validate_background_check_form
@@ -21,6 +21,10 @@ class Mentor < Person
   validates_presence_of :risk_form_signed_at, :risk_form_signature, :message => "cannot be left blank", :if => :validate_risk_form
   
   validates_presence_of :conduct_form_signed_at, :conduct_form_signature, :message => "cannot be left blank", :if => :validate_conduct_form
+
+  validates_presence_of :driver_form_signed_at, :driver_form_signature, :message => "cannot be left blank", :if => :validate_driver_form
+
+  after_save :send_driver_email
 
   def self.find_or_create_from_reg_id(reg_id)
     new_mentor = Mentor.find_or_initialize_by_reg_id(reg_id)
@@ -250,10 +254,12 @@ Documentation for each filter:
                             ).empty?
   end
   
-  # Returns true if this user's +van_driver_training_completed_at+ is within the last two years.
+  # Returns true if this user's +van_driver_training_completed_at+ is not null and the current customer
+  # requiring mentors to complete a driver form implies the mentor has OK in +driver_form_remarks+ if they have
+  # previous driving convictions
   def valid_van_driver?
-    return false if van_driver_training_completed_at.nil?
-    van_driver_training_completed_at > 2.years.ago
+    van_driver_training_completed_at && (!Customer.require_driver_form? ||
+        !has_previous_driving_convictions || driver_form_remarks["OK"])
   end
   
   # Returns true if the +aliases+ attribute has anything other than blank, nil, "none", "n/a" or "no"
@@ -265,7 +271,7 @@ Documentation for each filter:
   
   # Returns all mentors who are valid van drivers.
   def self.valid_van_drivers
-    find(:all, :conditions => ["van_driver_training_completed_at > ?", 2.years.ago])
+    find(:all, :conditions => ["van_driver_training_completed_at IS NOT NULL"])
   end
   
   # Returns true if there's a non-blank value in +huksy_card_rfid+
@@ -355,7 +361,13 @@ Documentation for each filter:
   end
   
   protected
-  
+
+  def send_driver_email
+    if Customer.send_driver_form_emails && van_driver_training_completed_at_changed?
+      MentorMailer.deliver_driver!(self)
+    end
+  end
+
   # Handles the logic of course dependencies
   def check_dependency(current_sections, prev_sections, course, rules)
     correct = true

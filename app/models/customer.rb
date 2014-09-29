@@ -63,6 +63,10 @@ class Customer < ActiveRecord::Base
     !risk_form_content.blank?
   end
 
+  def require_driver_form?
+    !driver_form_content.blank?
+  end
+
   # If there exists an event type with the +name+ "Mentor Workshop", returns it, otherwise nil
   def mentor_workshop_event_type
     EventType.find_by_name("Mentor Workshop")

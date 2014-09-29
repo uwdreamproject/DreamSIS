@@ -1,4 +1,6 @@
-<h1>Current Valid Trained Drivers</h1>
+<%= javascript_include_tag 'driver_form.js' %>
+
+<h1>Current Trained Drivers</h1>
 
 <table>
 	<thead>
@@ -6,21 +8,14 @@
 			<th>Name</th>
 			<th>E-mail</th>
 			<th>Training Date</th>
+            <th class="centered">Signed Form?</th>
+            <th class="centered">Convictions?</th>
 			<th colspan=4>Functions</th>
 		</tr>
 	</thead>
 
 	<tbody>
-		<%- for mentor in @mentors -%>
-			<tr id="mentor_<%= mentor.id %>">
-				<td class="name"><%= link_to h(mentor.fullname), mentor %></td>
-				<td><%= auto_link h(mentor.email) %></td>
-				<td><%= mentor.van_driver_training_completed_at.to_s(:short_date) rescue nil %></td>
-				<td class="functions"><%= link_to 'Details', mentor %></td>
-				<td class="functions"><%= link_to 'Edit', edit_mentor_path(mentor) %></td>
-			</tr>
-		<% end -%>
-		
+		<%= render :partial => "mentor_driver", :collection => @mentors %>
 		<%- if @mentors.empty? -%>
 			<tr class="empty">
 				<td colspan=10>No <%= Customer.mentors_label %> are currently trained to drive.</td>
@@ -28,3 +23,8 @@
 		<% end -%>
 	</tbody>
 </table>
+
+<div id="sidebar">
+  <h3>Update Driver Status</h3>
+  <div id="form-container">Click a row to begin editing</div>
+</div>

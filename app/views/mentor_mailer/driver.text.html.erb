@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Complete your <%= Customer.name_label %> Driver Conduct Agreement</h1>
+
+    <p>
+      Please complete the <%= link_to "driver conduct agreement", url_for(:controller => 'mentor_signup', :action => 'driver_form', :only_path => false) %> to confirm your status as a driver
+      for <%= Customer.name_label %>. You will not be able to drive until you have done so.
+    </p>
+
+    <hr />
+
+    <p class="footer">
+      Sent to you by DreamSIS. You are receiving this message because you have been marked as a driver by a
+      <%= Customer.name_label %> representative.
+    </p>
+  </body>
+</html>

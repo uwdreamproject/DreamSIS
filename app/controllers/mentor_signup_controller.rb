@@ -46,6 +46,26 @@ class MentorSignupController < ApplicationController
     end
   end
 
+  def driver_form
+    if request.put?
+      if params[:driver]
+        if params[:driver][:checkboxes] && params[:driver].count != (params[:driver][:checkboxes].to_i + 1)
+          flash[:error] = "You must agree to all statements"
+          return redirect_to :back
+        end
+      end
+      @mentor.validate_driver_form = true
+      @mentor.driver_form_signature = params[:mentor][:driver_form_signature]
+      @mentor.driver_form_signed_at = params[:mentor][:driver_form_signed_at] == "1" ? Time.now : nil
+      @mentor.has_previous_driving_convictions = params[:mentor][:has_previous_driving_convictions]
+      @mentor.driver_form_offense_response = params[:mentor][:driver_form_offense_response]
+      if @mentor.save
+        flash[:notice] = "Your conduct agreement form was successfully received. Thank you."
+        redirect_to root_url
+      end
+    end
+  end
+
   def conduct_form
     if request.put?
       if params[:conduct]

@@ -55,7 +55,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users, :collection => { :auto_complete_for_user_login => :any, :admin => :get }
 
   map.resources :mentors, 
-    :member => { :photo => :any, :remove_participant => :delete, :background_check_form_responses => :get, :send_login_link => :put, :login_link => :get, :onboarding_form => :get, :onboarding_update => :any }, 
+    :member => { :photo => :any, :remove_participant => :delete, :background_check_form_responses => :get, :send_login_link => :put, :login_link => :get, :onboarding_form => :get, :onboarding_update => :any, :driver_edit_form => :get, :driver_update => :any },
     :collection => { :auto_complete_for_mentor_fullname => :any, :onboarding => :any, :event_status => :any, :leads => :any, :van_drivers => :any, :check_if_valid_van_driver => :get }
   map.resources :mentor_term_groups, 
     :member => { :sync => :put, :photo_tile => :get }, 
@@ -75,6 +75,7 @@ ActionController::Routing::Routes.draw do |map|
   map.mentor_signup_risk_form 'mentor_signup/risk_form', :controller => 'mentor_signup', :action => 'risk_form'
   map.mentor_signup_background_check_form 'mentor_signup/background_check_form', :controller => 'mentor_signup', :action => 'background_check_form'
   map.mentor_signup_conduct_form 'mentor_signup/conduct_form', :controller => 'mentor_signup', :action => 'conduct_form'
+  map.mentor_signup_driver_form 'mentor_signup/driver_form', :controller => 'mentor_signup', :action => 'driver_form'
   map.mentor_signup_term_drop 'mentor_signup/:term_id/drop/:id', :controller => 'mentor_signup', :action => 'drop', :conditions => {:method => :delete}
   map.mentor_signup_term_volunteer 'mentor_signup/:term_id/volunteer/:id', :controller => 'mentor_signup', :action => 'volunteer', :conditions => {:method => :put}
   map.mentor_signup_term 'mentor_signup/:term_id', :controller => 'mentor_signup', :action => 'index'

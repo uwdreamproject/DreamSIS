@@ -43,4 +43,7 @@
 	<hr />
 
 	<%= f.input :van_driver_training_completed_at, :hint => link_to_now("mentor_van_driver_training_completed_at"), :label => "Driver Training" %>
+    <%= f.input :driver_form_remarks, :hint => "Enter #{link_to_function('OK',
+                                                   "$('mentor_driver_form_remarks').value='OK  [#{@current_user.login}]'")}
+								(include an explanation if necessary) if the mentor is qualified to drive." %>
 <% end -%>
