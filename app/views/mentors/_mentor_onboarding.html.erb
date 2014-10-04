@@ -11,6 +11,8 @@
 					<%- if mentor_onboarding.background_check_result.blank? -%>
 						<% if mentor_onboarding.has_background_check_form_responses? || mentor_onboarding.has_aliases? %>
 							<%= link_to("Check form responses", background_check_form_responses_mentor_path(mentor_onboarding), :target => "_blank") %>
+						<%- elsif mentor_onboarding.background_check_authorized -%>
+							<%= content_tag(:span, "P", :class => 'tag') %>
 						<%- else -%>
 							-
 						<%- end -%>
@@ -24,7 +26,11 @@
 			  </td>
 			  <td class="centered">
 			    <% if mentor_onboarding.sex_offender_check_result.blank? %>
-			      -
+			      <%- if mentor_onboarding.background_check_authorized -%>
+			        <%= content_tag(:span, "P", :class => 'tag') %>
+			      <%- else -%>
+			        -
+			      <%- end -%>
 			      <% if mentor_onboarding.background_check_authorized && append_block && @so_block_count <= 5 
                                    fname = mentor_onboarding.try(:firstname).split()
 			           (0..fname.count-1).each do |i|
