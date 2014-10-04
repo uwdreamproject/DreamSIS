@@ -4,7 +4,7 @@ gem "system_timer", '1.2.4'
 gem "i18n", '0.4.2'
 gem 'formtastic', '~> 1.1.0'
 gem "capistrano", '~> 2.15.5'
-#gem 'net-ssh', '~> 2.8.1', :git => "https://github.com/net-ssh/net-ssh"
+gem 'net-ssh', '~> 2.7.0'
 gem "will_paginate", '~> 2.3.11'
 gem "nokogiri", '~> 1.5.9'
 gem 'json'
