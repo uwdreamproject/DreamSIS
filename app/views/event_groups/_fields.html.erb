@@ -11,6 +11,10 @@
 	<%= f.input :allow_external_volunteers, :label => "Allow external volunteers to sign up" %>
 <% end -%>
 
+<% f.inputs "Access to Mentors" do %>
+    <%= f.input :open_to_mentors, :label => "Open to All #{Customer.mentors_Label}", :hint => "If marked, events in this event group will appear on the #{link_to "upcoming events", mentor_available_rsvp_path} page for #{Customer.mentors_label}." %>
+<% end -%>
+
 <% f.inputs "Audience-Specific Descriptions" do %>
 	<p>Descriptions entered here will be used instead of the description above for members of the specified audience. Otherwise, the default from above will be displayed.</p>
 	<%= f.input :student_description, :input_html => { :rows => 6 }, :hint => "Note: The student description is shown for both Students and Participants." %>
@@ -23,12 +27,12 @@
 	<%= f.input :hide_description_in_confirmation_message, :hint => "Set this option to suppress the descriptions above in your confirmation message. That way only the text below will be included in the confirmation message." %>
 	<%= f.input :student_confirmation_message, :input_html => { :rows => 6 }, :hint => "Note: The student confirmation message is shown for both Students and Participants." %>
 	<%= f.input :volunteer_confirmation_message, :input_html => { :rows => 6 } %>
-	<%= f.input :mentor_confirmation_message, :input_html => { :rows => 6 } %>
+	<%= f.input :mentor_confirmation_message, :input_html => { :rows => 6 }, :label => "#{Customer.mentor_Label} confirmation message" %>
 <% end -%>
 
 <% f.inputs "Training" do %>
-	<%= f.input :mentor_training_id, :as => :select, :collection => Training.all %>
-	<%= f.input :mentor_training_optional %>
+	<%= f.input :mentor_training_id, :label => "#{Customer.mentor_Label} training", :as => :select, :collection => Training.all %>
+	<%= f.input :mentor_training_optional, :label => "#{Customer.mentor_Label} training optional" %>
 	<%= f.input :volunteer_training_id, :as => :select, :collection => Training.all %>
 	<%= f.input :volunteer_training_optional %>
 <% end -%>

@@ -2,6 +2,7 @@
 
 	<p><%= link_to "My #{Customer.mentees_label}", my_participants_path, :class => "people button" %></p>
 	<%= content_tag :p, link_to("Track my week", my_current_activity_log_path, :class => "calendar button") if Customer.uses_activity_logs? %>
+    <%= content_tag :p, link_to("RSVP for an event", mentor_available_rsvp_path, :class => "add button") %>
 
 	<h3>Contact Info</h3>
 	

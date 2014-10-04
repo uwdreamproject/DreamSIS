@@ -3727,10 +3727,18 @@ table.rsvp tr.attending td {
 	background: -webkit-linear-gradient(bottom, rgba(0,255,0,0.1), rgba(0,255,0,0) 40%);
 }
 
-table.rsvp tr td:first-child {
+table.rsvp tr:not(.empty) td:first-child {
 	background: url(../images/icons/grey-check-with-shadow.png) no-repeat 10px 2em;
 	padding-left: 60px;
 	/*border-left: 10px solid rgba(0,0,0,0.1);*/
+}
+
+tr.rowspan-header > th > p {
+    font-weight: normal;
+    width: 80%;
+    min-width: 150px;
+    padding-left: 10px;
+    color: #424242;
 }
 
 table.rsvp tr.attending td:first-child {

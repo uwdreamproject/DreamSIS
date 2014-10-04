@@ -1,6 +1,6 @@
 class RsvpController < ApplicationController
   skip_before_filter :check_authorization, :check_if_enrolled
-  skip_before_filter :login_required, :except => [:event_type]
+  skip_before_filter :login_required, :except => [:event_type, :mentor_available]
   before_filter :load_audience
   
   def event
@@ -46,7 +46,12 @@ class RsvpController < ApplicationController
     @event_type = EventType.find(params[:id])
     check_if_external_users_allowed(@event_type)
   end
-  
+
+  def mentor_available
+    @event_groups = EventGroup.find_all_by_open_to_mentors(true)
+    @title = "Upcoming Events"
+  end
+
   def rsvp
     @event = Event.find(params[:id])
     check_if_external_users_allowed(@event)
