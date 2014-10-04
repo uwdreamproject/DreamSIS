@@ -5,7 +5,7 @@
 
 <div class="when-and-where">
 	<h3>When &amp; Where</h3>
-	<%= image_tag "https://maps.google.com/maps/api/staticmap?size=250x250&sensor=false&zoom=12&markers=#{@event.location.try(:latitude)}%2C#{@event.location.try(:longitude)}" if @event.location.try(:geocoded?) %>
+	<%= image_tag "https://maps.google.com/maps/api/staticmap?size=250x250&sensor=false&zoom=12&markers=#{@event.location.try(:latitude)}%2C#{@event.location.try(:longitude)}" if @event.location.try(:geocoded?) rescue nil %>
 	
 	<%- if @event.location -%>
 		<p class="location"><strong><%= @event.location.name %></strong></p>

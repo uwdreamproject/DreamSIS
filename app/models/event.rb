@@ -214,6 +214,7 @@ class Event < ActiveRecord::Base
   def start_time(person_or_type = nil)
     generic_start_time = read_attribute(:start_time)
     return generic_start_time if person_or_type.nil?
+    person_or_type = person_or_type.constantize if person_or_type.is_a?(String)
     klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type
     if klass == Student || klass == Participant
       custom_start_time = student_start_time
@@ -229,6 +230,7 @@ class Event < ActiveRecord::Base
   def end_time(person_or_type = nil)
     generic_end_time = read_attribute(:end_time)
     return generic_end_time if person_or_type.nil?
+    person_or_type = person_or_type.constantize if person_or_type.is_a?(String)
     klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type
     if klass == Student || klass == Participant
       custom_end_time = student_end_time
