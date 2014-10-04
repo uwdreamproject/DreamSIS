@@ -259,7 +259,7 @@ Documentation for each filter:
   # previous driving convictions
   def valid_van_driver?
     van_driver_training_completed_at && (!Customer.require_driver_form? ||
-        !has_previous_driving_convictions || driver_form_remarks["OK"])
+        (driver_form_signature && (!has_previous_driving_convictions || driver_form_remarks["OK"])))
   end
   
   # Returns true if the +aliases+ attribute has anything other than blank, nil, "none", "n/a" or "no"
