@@ -5,7 +5,7 @@ class MentorSignupController < ApplicationController
   skip_before_filter :check_authorization, :check_if_enrolled
 
   def index
-    @mentor_terms = @mentor.mentor_terms.for_term(@term.id)
+    @mentor_terms = @mentor.mentor_terms.for_term(@term.id) rescue []
     @mentor_term_groups = @term.mentor_term_groups.select {|mtg| !(mtg.none_option == true)}
     @max_term_cap = @mentor_term_groups.collect(&:capacity).numeric_items.max
     @max_term_size = @mentor_term_groups.collect(&:mentor_terms_count).numeric_items.max
