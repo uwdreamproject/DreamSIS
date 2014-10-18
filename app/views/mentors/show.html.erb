@@ -1,4 +1,4 @@
-<% if !@mentor.passed_basics? %>
+<% if @mentor.is_a?(Mentor) && !@mentor.passed_basics? %>
   <div class="bright-red-background content-block">
     <%= @mentor.readiness_summary %>
   </div>
