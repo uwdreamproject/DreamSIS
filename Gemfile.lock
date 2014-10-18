@@ -55,7 +55,7 @@ GEM
     geocoder (1.1.9)
     hashie (3.3.1)
     highline (1.6.21)
-    htmlentities (4.3.2)
+    htmlentities (4.3.1)
     http_connection (1.4.4)
     httpauth (0.2.1)
     i18n (0.4.2)
@@ -151,6 +151,7 @@ DEPENDENCIES
   fastercsv
   formtastic (~> 1.1.0)
   geocoder (= 1.1.9)
+  htmlentities (= 4.3.1)
   i18n (= 0.4.2)
   json
   mail_style
