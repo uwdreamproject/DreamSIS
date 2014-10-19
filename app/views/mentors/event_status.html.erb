@@ -18,18 +18,7 @@
 	
 	<tbody>
 		<%- for mentor in @mentors -%>
-		<%- event_attendances = mentor.event_attendances.find(
-									:all, 
-									:joins => "LEFT OUTER JOIN events ON event_attendances.event_id = events.id
-												LEFT OUTER JOIN event_types ON events.event_type_id = event_types.id", 
-									:conditions => ["events.date >= ? 
-										AND events.date <= ? 
-										AND (rsvp = ? OR attended = ?) 
-										AND (event_type_id IS NULL OR event_types.name != ?)
-										AND events.type IS NULL
-										AND events.name != ?", 
-										@term.start_date, @term.end_date, true, true, "Mentor Workshop", 'Class']
-								)
+		<%- event_attendances = mentor.event_attendances_for_term(@term)
 			rsvp_count = event_attendances.select(&:rsvp?).size
 			attended_count = event_attendances.select(&:attended?).size
 			@rsvp_counts << rsvp_count
