@@ -61,7 +61,6 @@ class Report < CustomerScoped
 		reset_to_ungenerated
     begin
 			update_attribute :status, "generating"
-	    xlsx_package = object_class.to_xlsx(:data => objects)
 			temp_file = Tempfile.new("report_#{id.to_s}_#{Time.now.to_i}")
 			xlsx_package.serialize temp_file.path
 		rescue => e
@@ -79,6 +78,10 @@ class Report < CustomerScoped
     end
 	end
 	
+	def xlsx_package
+	  object_class.to_xlsx(:data => objects)
+	end
+
 	def generated?
 		!generated_at.blank? && !file_path.blank? && status == 'generated'
 	end

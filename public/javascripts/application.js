@@ -2,7 +2,7 @@ var checkXlsxStatus = false;
 var showAjaxIndicator = true;
 var loadCount = 0;
 
-Ajax.Responders.register({
+var responder = {
 	onCreate: function() {
 		if (Ajax.activeRequestCount > 0) {
       if (showAjaxIndicator)
@@ -30,7 +30,9 @@ Ajax.Responders.register({
 			updateFlashes(flash)
 		}
 	}
-});
+}
+
+Ajax.Responders.register(responder);
 
 function clearFlashes() {
 	$('notice_notification').removeClassName('visible')

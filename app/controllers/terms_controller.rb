@@ -17,9 +17,13 @@ class TermsController < ApplicationController
       @term = Term.find(params[:id])
     end
 
+     @cache_key = fragment_cache_key(:action => :show, :id => @term.id, :format => :xlsx)
+
     respond_to do |format|
       format.html { redirect_to edit_term_path(@term) }
       format.xml  { render :xml => @term }
+      format.xlsx { @mentors = @term.mentors
+                    respond_to_xlsx }
     end
   end
   
@@ -34,6 +38,19 @@ class TermsController < ApplicationController
 
   def edit
     @term = Term.find(params[:id])
+    @cache_key = fragment_cache_key(:action => :show, :id => @term.id, :format => :xlsx)
+    @export = TermMentorsReport.for_key(@cache_key)
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def check_export_status
+    @export = TermMentorsReport.find(params[:id])
+    respond_to do |format|
+      format.html { render :text => (@export.try(:status) || "does not exist") }
+      format.js
+    end
   end
 
   def create
@@ -99,6 +116,43 @@ class TermsController < ApplicationController
       render_error("You are not allowed to access that page.")
     end
   end
-  
-  
+
+  def respond_to_xlsx
+    @export = TermMentorsReport.find_or_initialize_by_key(@cache_key)
+    if @export.generated? && params[:generate].nil?
+      if request.xhr?
+        headers["Content-Type"] = "text/javascript"
+        render :js => "window.location = '#{url_for(:format => 'xlsx')}'"
+      else
+        begin
+          filename = @filename || "term.xlsx"
+          send_data @export.file.read, :filename => filename, :disposition => 'inline', :type => @export.mime_type.to_s
+        rescue
+          flash[:error] = "The file could not be read from the server. Please try regenerating the export."
+          redirect_to :back
+        end
+      end
+    else
+      respond_to_generate_xlsx
+    end
+  end
+
+  def respond_to_generate_xlsx
+    @export = TermMentorsReport.find_or_initialize_by_key(@cache_key)
+    @export.format = "xlsx"
+    @export.object_ids = @mentors.collect(&:id)
+    @export.reset_to_ungenerated
+    @export.status = "initializing"
+    @export.save
+    @export.generate_in_background!
+    flash[:notice] = "We are generating your Excel file for you. Please wait."
+
+    if request.xhr?
+      headers["Content-Type"] = "text/javascript"
+      return render(:template => "terms/check_export_status.js.erb", :format => 'js')
+    else
+      return redirect_to(term_path(@term))
+    end
+  end
+
 end

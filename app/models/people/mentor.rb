@@ -26,19 +26,21 @@ class Mentor < Person
 
   after_save :send_driver_email
 
+  acts_as_xlsx
+
   def self.find_or_create_from_reg_id(reg_id)
     new_mentor = Mentor.find_or_initialize_by_reg_id(reg_id)
     new_mentor.validate_name = false
     new_mentor.update_resource_cache!(true)
     new_mentor
   end
-  
+
   # Returns true if +passed_background_check?+ and +signed_risk_form?+ and +currently_enrolled?+ all return true, and
   # if has attended mentor workshop (if necessary)
   def passed_basics?
     (!Customer.require_background_checks? || (passed_background_check? && passed_sex_offender_check?)) && (!Customer.require_risk_form? || signed_risk_form?) && (!Customer.require_conduct_form? || signed_conduct_form?)&& currently_enrolled? && (!Customer.mentor_workshop_event_type || attended_mentor_workshop?)
   end
-  
+
   # Returns a string detailing the steps needed for this mentor
   # to be ready to mentor
   def readiness_summary
@@ -79,7 +81,7 @@ class Mentor < Person
   def signed_conduct_form?
     !conduct_form_signed_at.nil? && !conduct_form_signature.blank?
   end
-  
+
   # This mentor has a valid login token if there is a value in +login_token+ and the timestamp in
   # +login_token_expires_at+ is in the future.
   def has_valid_login_token?
@@ -87,7 +89,7 @@ class Mentor < Person
     return true if login_token_expires_at.future?
     false
   end
-  
+
   # Generates a new random login token and stores it in the record, along with an expiry date of
   # 1 week from now.
   def generate_login_token!
@@ -95,11 +97,11 @@ class Mentor < Person
     update_attributes(:login_token => new_login_token, :login_token_expires_at => 1.week.from_now)
     new_login_token
   end
-  
+
   def invalidate_login_token!
     update_attributes(:login_token => nil, :login_token_expires_at => nil)
   end
-  
+
   def send_login_link(login_link)
     mandrill = Mandrill::API.new(MANDRILL_API_KEY)
     
@@ -121,7 +123,7 @@ class Mentor < Person
       puts "A mandrill error occurred: #{e.class} - #{e.message}"
       raise    
   end
-    
+
   # Returns true if the mentor is enrolled for the current term.
   def currently_enrolled?
     !current_mentor_term_groups.empty?
@@ -129,7 +131,7 @@ class Mentor < Person
 
 =begin
 Returns whether the mentor is signed up for the correct sections
-as layed out in the current term's course dependencies
+as layed out in the given term's course dependencies
   
 MentorTermGroup.course_dependencies outline:
   
@@ -190,7 +192,7 @@ Documentation for each filter:
  
 =end
 
-  def correct_sections?
+  def correct_sections? (term = Term.current_term)
     return true #if (current_lead? || (self.users.first.admin? rescue false)) **Section checking currently disabled
     if currently_enrolled?
       current_groups = self.current_mentor_term_groups.select{|m| m.term.id == Term.allowing_signups.first.id}.collect(&:mentor_term_group)
@@ -217,13 +219,13 @@ Documentation for each filter:
       return false
     end
   end
-  
+
   # Returns a string of the titles of current mentor term groups for this mentor.
   def current_mentor_term_groups_string
     return "no groups" if current_mentor_term_groups.nil?
     current_mentor_term_groups.collect(&:title).to_sentence
   end
-  
+
   # "Current" mentor term groups are defined as groups from either the current term AND any term marked
   # as allowing signups. To limit this to a particular location, pass that as an option parameter.
   def current_mentor_term_groups(location = nil)
@@ -234,17 +236,17 @@ Documentation for each filter:
     conditions[:mentor_term_groups][:location_id] = location.try(:id) if location
     mentor_terms.find :all, :joins => [:mentor_term_group], :conditions => conditions
   end
-  
+
   # Returns the high school records for the high schools at which this mentor is a high school lead.
   def current_lead_at
     current_mentor_term_groups.select(&:lead?).collect(&:location)
   end
-  
+
   # Returns true if +current_lead_at+ is not empty.
   def current_lead?
     !current_lead_at.empty?
   end
-  
+
   # Returns true if the mentor has attended an event in the "Mentor Workshop" type.
   def attended_mentor_workshop?
     return true if mentor_terms.collect(&:term).uniq.reject {|m| m == Term.current_term}.count > 0 rescue true
@@ -253,7 +255,17 @@ Documentation for each filter:
                             :conditions => { :attended => true, :event_types => { :name => "Mentor Workshop" }}
                             ).empty?
   end
-  
+
+  # Returns true if +van_driver_training_completed_at+ is not null
+  def driver_trained?
+    van_driver_training_completed_at == true
+  end
+
+  # Returns true if +driver_form_signature+ is not null
+  def signed_driver_form?
+    driver_form_signature == true
+  end
+
   # Returns true if this user's +van_driver_training_completed_at+ is not null and the current customer
   # requiring mentors to complete a driver form implies the mentor has OK in +driver_form_remarks+ if they have
   # previous driving convictions
@@ -261,24 +273,24 @@ Documentation for each filter:
     van_driver_training_completed_at && (!Customer.require_driver_form? ||
         (driver_form_signature && (!has_previous_driving_convictions || driver_form_remarks["OK"])))
   end
-  
+
   # Returns true if the +aliases+ attribute has anything other than blank, nil, "none", "n/a" or "no"
   def has_aliases?
     return false if aliases.blank? || aliases.nil?
     return false if aliases.downcase == "none" || aliases.downcase == "n/a" || aliases.downcase == "no"
     true
   end
-  
+
   # Returns all mentors who are valid van drivers.
   def self.valid_van_drivers
     find(:all, :conditions => ["van_driver_training_completed_at IS NOT NULL"])
   end
-  
+
   # Returns true if there's a non-blank value in +huksy_card_rfid+
   def husky_card_registered?
     !husky_card_rfid.blank?
   end
-  
+
   # Determines what objects this mentor can view.
   # 
   # * A mentor can view a participant if they can edit it (See #can_edit?) or they are a current lead at any location.
@@ -295,7 +307,7 @@ Documentation for each filter:
     end
     false
   end
-  
+
   # Determines the access level that this mentor has to certain objects.
   # 
   # A mentor can edit a participant if:
@@ -322,7 +334,7 @@ Documentation for each filter:
     end
     false
   end
-  
+
   # Used to generate UNIQID for MPR surveys. To de-identify the survey results, we strip out
   # any personally-identifiable info (name, email, uwnetid) and replace that with a uniqid that
   # can be used to compare responses from previous surveys to new surveys. The uniqid is a SHA1 digest
@@ -330,7 +342,7 @@ Documentation for each filter:
   def self.survey_uniqid(netid)
     Digest::SHA1.hexdigest("--UW--#{netid}--")
   end
-  
+
   # Returns the CollegeMapperCounselor record for this individual if we have a college_mapper_id stored.
   # By default, if the record doesn't exist, we create it. You can override that by passing +false+ for
   # +create_if_nil+.
@@ -358,6 +370,154 @@ Documentation for each filter:
   rescue ActiveResource::BadRequest => e
     logger.info { e.message }
     false
+  end
+
+  # Allows for dynamically created symbols to be sent to mentors,
+  # specifically to generate excel columns for a given term
+  def method_missing(method_name, *args)
+    if m = method_name.to_s.match(/\Asection_summary_for_(\d)\Z/)
+      section_summary Term.find(m[1])
+    elsif m = method_name.to_s.match(/\Asection_status_for_(\d)\Z/)
+      section_status Term.find(m[1])
+    elsif m = method_name.to_s.match(/\Aevent_summary_for_(\d)\Z/)
+      event_summary_for_term Term.find(m[1])
+    elsif m = method_name.to_s.match(/\Aevent_count_for_(\d)\Z/)
+      event_count_for_term Term.find(m[1])
+    elsif m = method_name.to_s.match(/\Aenrollment_status_for_(\d)\Z/)
+      enrollment_status_for_term Term.find(m[1])
+    elsif m = method_name.to_s.match(/\Alocations_for_(\d)\Z/)
+      locations_for_term Term.find(m[1])
+    else
+      super method_name, *args
+    end
+  end
+
+  # Determines columns that are exported into xlsx packages for the given term
+  def self.term_report_columns term_id
+    columns = [:id, :firstname, :middlename, :lastname, :email, :uw_net_id,
+      :uw_student_no, "enrollment_status_for_#{term_id}",  "section_status_for_#{term_id}",
+      "locations_for_#{term_id}", "section_summary_for_#{term_id}", :previous_participant_id, 'is_18?', 
+      :eighteenth_birthday, "event_summary_for_#{term_id}", "event_count_for_#{term_id}",
+      :terms_participated, :date_joined, "current_lead?", :readiness_summary,
+      "valid_van_driver?", "driver_trained?", "signed_driver_form?", "signed_risk_form?",
+      "signed_conduct_form?", "background_check_pending?", "passed_background_check?",
+      "sex_offender_check_pending?", "passed_sex_offender_check?", "passed_criminal_checks?",
+      "attended_mentor_workshop?"]
+  end
+
+  # Gives the locations associated with all MentorTerms for a given term
+  def locations_for_term(term = Term.current_term)
+    mentor_terms.for_term(term).collect do |mt|
+      mt.try(:mentor_term_group).try(:location).try(:name)
+    end.compact.sort.join(", ")
+  end
+
+  # Returns a date representing the first time a mentor was added to any
+  # mentor term
+  def date_joined
+    mentor_terms.collect(&:created_at).sort.first.to_date
+  end
+
+  # Returns the number of terms that this mentor has had an associated
+  # MentorTerm
+  def terms_participated
+    mentor_terms.collect(&:term).uniq.count
+  end
+
+  # Gives a count of the number of events, either RSVP'd or
+  # attended, for a given term. Excludes mentor workshops, class
+  # events, or events where an RSVP was on file, but the event
+  # has passed (AKA a "no-show")
+  def event_count_for_term(term = Term.current_term)
+    es = event_summary_for_term(term)
+    events = es.split("*, ")
+    events.reject do |ev|
+      ev["no-show"]
+    end.count
+  end
+
+  # Returns a string representing EventAttendances for this
+  # mentor for the given term, pairing title with attendance
+  # status ("Attended", "no-show", or "RSVP'd"
+  def event_summary_for_term(term = Term.current_term)
+    attendances = event_attendances_for_term(term)
+    sums = attendances.collect do |att|
+      event = att.event
+      status = if (att.attended)
+                 "Attended"
+               elsif(event.past?)
+                 "no-show"
+               else
+                 "RSVP'd"
+               end
+
+      "#{event.name}:#{status}"
+    end
+    sums.join("*, ")
+  end
+
+  # Returns all event attendances for mentor for the given term.
+  # excluding new mentor workshops and class events
+  def event_attendances_for_term(term = Term.current_term)
+    event_attendances.find(
+      :all,
+      :joins => "LEFT OUTER JOIN events ON event_attendances.event_id = events.id
+                 LEFT OUTER JOIN event_types ON events.event_type_id = event_types.id", 
+      :conditions => ["events.date >= ?
+      AND events.date <= ?
+      AND (rsvp = ? OR attended = ?)
+      AND (event_type_id IS NULL OR event_types.name != ?)
+      AND events.type IS NULL
+      AND events.name != ?",
+      term.start_date, term.end_date, true, true, "Mentor Workshop", 'Class']
+    )
+  end
+
+  # Returns true if this mentor is 18 years old, false otherwise
+  def is_18?
+    Time.now.to_date >= eighteenth_birthday
+  end
+
+  # Returns a date representing this mentor's 18th birthday
+  def eighteenth_birthday
+    birthdate + 18.years
+  end
+
+  # Returns either "Enrolled", "Volunteer", or "Enrolled/Volunteer"
+  # depending on how this mentor registered for MentorTermGroups
+  # for the given term
+  def enrollment_status_for_term(term = Term.current_term)
+    mts = mentor_terms.for_term(term).collect(&:volunteer)
+    cpct = mts.compact
+    status = []
+    if cpct.count < mts.count
+      status << "Enrolled"
+    end
+    if cpct.count > 0
+      status << "Volunteer"
+    end
+    status.join("/")
+  end
+
+  # Returns a string with pairs of MentorTermGroup titles and
+  # whether the associated MentorTerms are volunteer or enrollment
+  # records, or "none" if there are no MentorTerms for the given
+  # quarter
+  def section_summary(term = Term.current_term)
+    mts = mentor_terms.for_term(term).collect do |mt|
+      "#{mt.title}:#{mt.volunteer ? 'Volunteer' : 'Enrolled'}"
+    end
+    if mts.any?
+      mts.join(',')
+    else
+      "none"
+    end
+  end
+
+  # Returns a string representing whether or not this mentor
+  # is signed up for the proper sections
+  def section_status(term = Term.current_term)
+    correct_sections?(term) ? "Correct" : "Incorrect sections"
   end
   
   protected
