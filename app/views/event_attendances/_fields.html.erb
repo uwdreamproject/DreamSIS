@@ -1,11 +1,11 @@
-<% f.inputs("Attendance") do %>
+<%= f.inputs("Attendance") do %>
 	<p><%= content_tag :span, "Based on this event's settings, changing the values below will trigger an email to the attendee.", :class => "weak error-message" if @event.send_attendance_emails? %></p>
 
 	<%= f.input :rsvp, :label => "Attending/RSVP'd" %>
 	<%= f.input :attended, :label => "Attended" %>
 <% end -%>
 
-<% f.inputs("Shift/Role") do %>
+<%= f.inputs("Shift/Role") do %>
 	<div <%= "style='display:none'" unless f.object.event.has_shifts?(f.object.try(:person).try(:class)) %>>
 			<%= label_tag "event_attendance_event_shift_id_#{@event.id}", "Choose a shift/role:" %>
 			<%= collection_select :event_attendance,

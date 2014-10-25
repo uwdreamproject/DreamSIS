@@ -3,9 +3,9 @@
 	<%= content_tag(:span, "Anonymous User", :class => 'outline tag') if @attendee.try(:person).try(:is_anonymous_user?) %>
 	</h1>
 
-<% semantic_form_for(@attendee, :url => event_event_attendance_path(@event, @attendee)) do |f| %>
+<%= semantic_form_for(@attendee, :url => event_event_attendance_path(@event, @attendee)) do |f| %>
 
-	<%= f.error_messages %>
+	<%= f.semantic_errors %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 

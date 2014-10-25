@@ -1,8 +1,8 @@
 <h1>Editing test type</h1>
 
-<% semantic_form_for @test_type, :html => { :method => :put } do |f| %>
+<%= semantic_form_for @test_type, :html => { :method => :put } do |f| %>
 
-	<%= f.error_messages %>
+	<%= f.semantic_errors %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 	

@@ -41,9 +41,9 @@ namespace :dev do
     print "Database name prefix (or enter to cancel): "
     new_prefix = STDIN.gets
     abort("OK, never mind.") if new_prefix.blank?
-    system "rm #{RAILS_ROOT}/db/development.sqlite3"
-    system "ln -s #{RAILS_ROOT}/../shared/db/dreamsis/#{new_prefix.strip}_development.sqlite3 #{RAILS_ROOT}/db/development.sqlite3"
-    system "ls -al #{RAILS_ROOT}/db/development.sqlite3"
-    system "touch #{RAILS_ROOT}/tmp/restart.txt"
+    system "rm #{Rails.root}/db/development.sqlite3"
+    system "ln -s #{Rails.root}/../shared/db/dreamsis/#{new_prefix.strip}_development.sqlite3 #{Rails.root}/db/development.sqlite3"
+    system "ls -al #{Rails.root}/db/development.sqlite3"
+    system "touch #{Rails.root}/tmp/restart.txt"
   end
 end

@@ -7,7 +7,6 @@ class Customer < ActiveRecord::Base
   validates_presence_of :name  
   validates_presence_of :clearinghouse_customer_number, :clearinghouse_contract_start_date, :clearinghouse_number_of_submissions_allowed, :if => :validate_clearinghouse_configuration?
   validates_numericality_of :clearinghouse_customer_number, :if => :validate_clearinghouse_configuration?
-  validates_uniqueness_of :url_shortcut, :allow_blank => true
   
   belongs_to :parent_customer, :class_name => "Customer"
   belongs_to :program
@@ -23,6 +22,12 @@ class Customer < ActiveRecord::Base
     :mentee => "mentee",
 		:not_target => "not target"
   }
+  
+  RESERVED_SUBDOMAINS = %w[www public assets admin identity development production staging test dreamsis]
+  validates_uniqueness_of :url_shortcut, :allow_blank => true
+  validates_exclusion_of :url_shortcut, :in => RESERVED_SUBDOMAINS, :message => "URL shortcut %s is not allowed"
+
+  after_create :create_tenant
 
   has_many :clearinghouse_requests
   
@@ -124,21 +129,33 @@ class Customer < ActiveRecord::Base
     # logger.info { "user: " + User.current_user.try(:customer).inspect }
     # logger.info { "thread: " + Thread.current['customer'].inspect }
     # logger.info { "temp: " + @temporary_current_customer.inspect }
-        
-    customer = User.current_user.try(:customer) || @temporary_current_customer || Customer.first || Customer.create(:name => "New Customer")
-    raise Exception.new("No customer record defined") unless customer && customer.is_a?(Customer)
-    # logger.info { "---current_customer: #{customer.id}" }
-    return customer
+    #
+    # customer = User.current_user.try(:customer) || @temporary_current_customer || Customer.first || Customer.create(:name => "New Customer")
+    # raise Exception.new("No customer record defined") unless customer && customer.is_a?(Customer)
+    # # logger.info { "---current_customer: #{customer.id}" }
+    # return customer
+
+    Customer.where(:url_shortcut => Apartment::Tenant.current).first || Customer.new
+  end
+  
+  # The tenant name used by this Customer for apartment multitenancy.
+  def tenant_name
+    url_shortcut
+  end
+  
+  # Create a new tenant database. Called by #after_create.
+  def create_tenant
+    Apartment::Tenant.create(tenant_name) unless tenant_name.blank?
   end
     
-  def self.current_customer=(customer)
-    @temporary_current_customer = customer if customer.is_a?(Customer)
-  end
-  
-  def self.remove_temporary_current_customer
-    @temporary_current_customer = nil
-  end
-  
+  # def self.current_customer=(customer)
+  #   @temporary_current_customer = customer if customer.is_a?(Customer)
+  # end
+  #
+  # def self.remove_temporary_current_customer
+  #   @temporary_current_customer = nil
+  # end
+
   # Returns the current customer's name
   def self.name_label
     current_customer.try(:name)

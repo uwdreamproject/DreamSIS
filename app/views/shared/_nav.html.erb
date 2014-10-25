@@ -1,0 +1,101 @@
+<%- cache ["shared/nav", Customer.cache_key, @current_user.cache_key, Date.today.to_s].join("/") do -%>
+	<div class="menu" id="main-nav">
+
+	<ul>
+		<li><%= link_to "Dashboard", root_url %>
+			<div>
+				<ul>
+					<li class="primary groups"><%= link_to "My #{Customer.mentees_label}", my_participants_url %></li>
+					<%- if Customer.uses_activity_logs? -%>
+						<li class="calendar"><%= link_to "Track my week", my_current_activity_log_url %></li>
+					<% end %>
+				</ul>
+			</div>
+		</li>
+		<li class="trigger-autocomplete"><%= link_to Customer.participants_Label, "#" %>
+			<div>
+				<ul>
+					<li class="search auto_complete">
+						<input type="input" class="search autocomplete-search" placeholder="Search <%= Customer.participants_label %>" data-source="<%= auto_complete_for_participant_fullname_participants_url %>" data-target="<%= participant_url("id") %>" />
+					</li>
+					<li class="primary list"><%= link_to "All #{Customer.participants_Label}", participants_url %></li>
+					<li class="add"><%= link_to "Add new #{Customer.participant_label}", new_participant_url %></li>
+					<%- if Customer.uses_clearinghouse? && @current_user.admin? -%>
+						<li class="nsc"><%= link_to raw("National Student Clearinghouse&reg; Requests"), clearinghouse_requests_url %></li>
+					<% end %>
+					<% for cohort in Participant.cohorts %>
+						<li><%= link_to "#{cohort.to_s} Cohort", cohort_url(cohort) %></li>
+					<% end -%>
+				</ul>
+			</div>
+		</li>
+		<li class="trigger-autocomplete"><%= link_to Customer.mentors_Label, "#" %>
+			<div>
+				<ul>
+					<li class="search auto_complete">
+						<input type="input" class="search autocomplete-search" placeholder="Search <%= Customer.mentors_label %>" data-source="<%= auto_complete_for_mentor_fullname_mentors_url %>" data-target="<%= mentor_url("id") %>" />
+					</li>
+					<li class="primary list"><%= link_to "All #{Customer.mentors_Label}", mentors_url %></li>
+					<li class="add"><%= link_to "Add new #{Customer.mentor_label}", new_mentor_url %></li>
+					<li class="groups"><%= link_to "#{Customer.mentor_Label} Groups", mentor_term_groups_url %></li>
+					<li><%= link_to "On-boarding", onboarding_mentors_url(:term_id => Term.current_term) %></li>
+					<li><%= link_to "Event Status", event_status_mentors_url(:term_id => Term.current_term) %></li>
+					<li><%= link_to Customer.leads_Label, leads_mentors_url(:term_id => Term.current_term) %></li>
+					<li><%= link_to "Drivers", van_drivers_mentors_url %></li>
+				</ul>
+			</div>
+		</li>
+		<li><%= link_to "High Schools", "#", :onClick => "return false" %>
+			<div class="double-wide">
+				<ul>
+					<li class="primary list"><%= link_to "Partner High Schools", high_schools_url %></li>
+					<li class="primary report"><%= link_to "Current Stats", stats_high_schools_url %></li>
+					<% for high_school in HighSchool.partners %>
+						<li><%= link_to "#{high_school.name}", high_school_url(high_school) %></li>
+					<% end -%>
+				</ul>
+			</div>
+		</li>
+		<li class="trigger-autocomplete"><%= link_to "Colleges", "#" %>
+			<div class="double-wide">
+				<ul>
+					<li class="search auto_complete">
+						<input type="input" class="search autocomplete-search" placeholder="Search colleges" data-source="<%= auto_complete_for_institution_name_colleges_url %>" data-target="<%= college_url("id") %>" />
+					</li>
+					<li class="primary list"><%= link_to raw("All locations &amp; Colleges"), locations_url %></li>
+					<% for college in CollegeApplication.top_institutions(10) %>
+						<li><%= link_to "#{truncate(college.name)} (#{college.count})", college_url(college.try(:id)), :title => college.name %></li>
+					<% end -%>
+				</ul>
+			</div>
+		</li>
+		<li><%= link_to "Events", "#", :onClick => "return false" %>
+			<div>
+				<ul>
+					<li class="primary list"><%= link_to "All Events", events_url %></li>
+					<li class="add"><%= link_to "Add new event", new_event_url %></li>
+					<li><%= link_to "Groups", event_groups_url %></li>
+					<li><%= link_to "Types", event_types_url %></li>
+				</ul>
+			</div>
+		</li>	
+		<li><%= link_to "Other", "#", :onClick => "return false" %>
+			<div>
+				<ul>
+					<li class="locations"><%= link_to raw("Locations &amp; Colleges"), locations_url %></li>
+					<li class="groups"><%= link_to "Participant Groups", participant_groups_url %></li>
+					<li class="programs"><%= link_to "Programs", programs_url %></li>
+					<li class="scholarships"><%= link_to "Scholarships", scholarships_url %></li>
+					<li class="filters"><%= link_to "Stat Filters", object_filters_url %></li>
+					<li class="terms"><%= link_to "Terms", terms_url %></li>
+					<li class="tests"><%= link_to "Tests", test_types_url %></li>
+					<li class="trainings"><%= link_to "Trainings", trainings_url %></li>
+					<li class="trash"><%= link_to "Trashed Records", deleted_records_url %></li>
+					<li class="users"><%= link_to "Users", users_url %></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+
+	</div>
+<% end %>

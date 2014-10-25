@@ -1,5 +1,5 @@
 # Any object within DreamSIS can be notated with a Note. Note accepts a polymorphic association called +notable+ that can be used to add notes to another model. Notes can also have arbitrary documents attached to them, which are stored on S3 using CarrierWave. If you want to validate that a Note has a valid document, use the +validate_document+ method (say, if you have a form that you want to collect a document with).
-class Note < CustomerScoped
+class Note < ActiveRecord::Base
   belongs_to :notable, :polymorphic => true, :touch => true
   belongs_to :user, :class_name => "User", :foreign_key => "creator_id"
   validates_presence_of :notable_type, :notable_id
@@ -7,7 +7,9 @@ class Note < CustomerScoped
 	validates_presence_of :document, :title, :if => :validate_document?
 
   before_create :update_creator_id  
-  default_scope :order => "created_at DESC", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
+  default_scope :order => "created_at DESC"
+
+  after_save :update_parent_counter_cache
   
   mount_uploader :document, DocumentUploader, :mount_on => :document_file_name
 	
@@ -16,6 +18,12 @@ class Note < CustomerScoped
     validate_document
   end
 	
+  def update_parent_counter_cache
+    if notable.respond_to?(:followup_note_count)
+      notable.update_attribute :followup_note_count, notable.notes.where(:needs_followup => true).count
+    end
+  end
+  
   def update_creator_id
     self.creator_id = Thread.current['user'].try(:id)
   end

@@ -1,13 +1,9 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  name: MyString
-  abbreviation: MyString
-  maximum_total_score: 9.99
-  sections: MyText
+  name: SAT
+  maximum_total_score: 2400
 
 two:
-  name: MyString
-  abbreviation: MyString
-  maximum_total_score: 9.99
-  sections: MyText
+  name: ACT
+  maximum_total_score: 36

@@ -1,6 +1,6 @@
-<%- f.inputs :name => "Family Financial Information" do -%>
+<%= f.inputs :name => "Family Financial Information" do -%>
 
-	<%- f.inputs :name => "Free- or reduced-price lunch", :class => "inline" do -%>
+	<%= f.inputs :name => "Free- or reduced-price lunch", :class => "inline" do -%>
 		<%= f.input :free_reduced_lunch, :label => "Qualifies" %>
 		<%= f.input :free_reduced_lunch_signed_up, :label => "Signed up" %>
 	<% end %>

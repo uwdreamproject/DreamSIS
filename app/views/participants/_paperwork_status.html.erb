@@ -1,6 +1,6 @@
 	<h2>Paperwork</h2>
 	
-	<table>
+	<table class="highlightless">
 		<tr class="rowset-header">
 			<th>Item</th>
 			<th>Status</th>
@@ -34,19 +34,19 @@
 		<tr>
 			<td>FAFSA</td>
 			<td colspan=2>
-				<table>
+				<table class="borderless highlightless">
 					<%- for year in (@participant.grad_year || @participant.created_at.year)..Time.now.year -%>
 						<%- fafsa = @participant.fafsa(year) -%>
 						<tr>
 							<td><%= year %></td>
 							<%- for attribute in %w[Submitted_FAFSA Submitted_WASFA Not_Applicable] -%>
 							<td>
-								<%- remote_form_for @participant do |f| %>
+								<%= form_for @participant, :remote => true do |f| %>
 									<%= hidden_field_tag "participant[fafsa_#{year}_#{attribute.downcase}]", false, :id => nil %>
 									<%= check_box_tag "participant[fafsa_#{year}_#{attribute.downcase}]", 
 														true, 
 														@participant.fafsa(year).try("#{attribute.downcase}?"), 
-														:onChange => "this.form.onsubmit()",
+														:class => "submit-on-change",
 														:id => "fafsa_#{year}_#{attribute.downcase}" %>
 									<%= label_tag "fafsa_#{year}_#{attribute.downcase}", attribute.gsub("_", " ") %>
 								<% end %>
@@ -57,19 +57,19 @@
 				</table>
 			</td>
 		</tr>		
-		
+				
 		<%- for item in %w[personal_statement resume activity_log] %>
 		<tr>
 			<td><%= item.titleize %></td>
 			<td colspan="2">
-				<%- remote_form_for @participant do |f| %>
+				<%= form_for @participant, :remote => true do |f| %>
 				<table class="borderless">
 					<tr>
 					<%- for option in Customer.paperwork_status_options_array %>
 						<td>
 							<%= f.radio_button "#{item}_status", h(option), 
 									:id => "participant_#{item}_status_#{option.to_param}", 
-									:onChange => "this.form.onsubmit()" %>
+									:class => "submit-on-change" %>
 							<%= f.label "#{item}_status_#{option.to_param}", h(option) %>
 						</td>
 					<% end %>

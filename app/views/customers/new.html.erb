@@ -1,13 +1,11 @@
 <h1>New customer</h1>
 
-<% semantic_form_for @customer do |f| %>
+<%= semantic_form_for @customer do |f| %>
 
-	<%= f.error_messages %>
+	<%= f.semantic_errors %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 	
-	<%= f.submit "Create", :disable_with => 'Creating...' %>
-	<span class="separator">&mdash; or &mdash;</span>
-	<%= link_to 'Cancel', customers_path %>
+	<%= default_form_actions(f) %>
 
 <% end %>

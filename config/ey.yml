@@ -1,0 +1,3 @@
+environments:
+  multitenant2:
+    precompile_assets: true

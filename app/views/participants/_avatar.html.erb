@@ -5,7 +5,7 @@
 	<%= image_tag participant_avatar_url(@participant, :medium) %>
 	
 	<% form_for(@participant, :html => {:id => "avatar_form", :multipart => true}) do |f| %>
-		<%= f.error_messages %>
+		<%= f.semantic_errors %>
 
 		<%= f.file_field :avatar %>
         <%= f.submit "Save" %>

@@ -61,7 +61,7 @@ class RsvpController < ApplicationController
     
     if !@current_user || !@current_user.person.ready_to_rsvp?(@event)
       session[:return_to_after_rsvp] = request.env["HTTP_REFERER"]
-      session[:return_to_after_profile] = request.request_uri
+      session[:return_to_after_profile] = request.url
       session[:profile_validations_required] = "ready_to_rsvp"
       flash[:notice] = "Before you can RSVP for events, please login and complete your profile."
       respond_to do |format|

@@ -1,36 +1,22 @@
 require 'digest/sha1'
 class User < ActiveRecord::Base
   belongs_to :person
-  
-  # model_stamper
-  
-  # Virtual attribute for the unencrypted password
-  # attr_accessor :password
-
-  validates_presence_of     :login
-  # validates_presence_of     :password,                   :if => :password_required?
-  # validates_presence_of     :password_confirmation,      :if => :password_required?
-  # validates_length_of       :password, :within => 6..40, :if => :password_required?
-  # validates_confirmation_of :password,                   :if => :password_required?
-  # validates_presence_of     :person
-  # validates_length_of       :login,    :within => 3..40
-  # validates_uniqueness_of   :login, :scope => :type, :case_sensitive => false
-  # before_save               :encrypt_password
-
   belongs_to :customer
-  validates_presence_of :customer_id  
+  attr_protected :customer_id
+  validates_presence_of :login, :customer_id
+  validates_uniqueness_of :uid, :scope => [:provider, :customer_id]
   before_save :append_customer_id
-  
-  # Adds the current customer ID to the record, which is used +before_create+.
-  def append_customer_id
-    self.customer_id = Customer.current_customer.id
-  end
 
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
   attr_accessible :login, :email, :password, :password_confirmation, :identity_url, :person_attributes
 
   default_scope :order => 'login'
+  
+  # Adds the current customer ID to the record, which is used +before_create+.
+  def append_customer_id
+    self.customer_id = Customer.current_customer.id
+  end
 
   # Pulls the current user out of Thread.current. We try to avoid this when possible, but sometimes we need 
   # to access the current user in a model (e.g., to check EmailQueue#messages_waiting?).
@@ -58,7 +44,6 @@ class User < ActiveRecord::Base
     u = find_by_login(login) # need to get the salt
     u && u.authenticated?(password) ? u : nil
   end
-
 
   # Creates a new user based on the auth data passed from OmniAuth.
   def self.create_with_omniauth(auth)
@@ -91,7 +76,12 @@ class User < ActiveRecord::Base
   def update_avatar_from_provider!(auth)
     person.update_attributes({
       :avatar_image_url => auth["info"]["image"] || auth["extra"]["raw_info"]["profile_image_url_https"],
-    })
+    }) if person
+  end
+  
+  # Returns all User records with the same provider and UID combination. Useful for switching to another customer identity.
+  def identities
+    User.where(:provider => provider, :uid => uid)
   end
 
   # Encrypts some data with the salt.
@@ -107,32 +97,6 @@ class User < ActiveRecord::Base
   def authenticated?(password)
     crypted_password == encrypt(password)
   end
-
-  def remember_token?
-    remember_token_expires_at && Time.now.utc < remember_token_expires_at 
-  end
-
-  # These create and unset the fields required for remembering users between browser closes
-  def remember_me
-    remember_me_for 2.weeks
-  end
-
-  def remember_me_for(time)
-    remember_me_until time.from_now.utc
-  end
-
-  def remember_me_until(time)
-    self.remember_token_expires_at = time
-    self.remember_token            = encrypt("#{email}--#{remember_token_expires_at}")
-    save(false)
-  end
-
-  def forget_me
-    self.remember_token_expires_at = nil
-    self.remember_token            = nil
-    save(false)
-  end
-
 
   def can_view?(object)
     return true if admin?

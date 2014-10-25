@@ -62,6 +62,8 @@ class Quarter < Term
       :start_date => term_resource.try(:FirstDay),
       :end_date => term_resource.try(:LastFinalExamDay)
     }) if term_resource
+  rescue
+    false
   end
   
   # Finds or creates a GroupResource based on this term. Name format is like this: u_uwdrmprj_mentors_spring2011

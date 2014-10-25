@@ -40,7 +40,7 @@ class NonstandardWebServiceResult
 
   # Returns an encapsulated object of xhtml data returned by the service. Also manages the
   # cache and requeries the service if needed. Caches of the raw xhtml are stored in
-  # RAILS_ROOT/tmp/cache/web_service_result/<class_name>/<primary_key><extension>
+  # Rails.root/tmp/cache/web_service_result/<class_name>/<primary_key><extension>
   def document(options = {})
     cache = FileStoreWithExpiration.new("tmp/cache/web_service_result/#{self.class.to_s}")
     cache_key = options[:extension] ? "#{@id.to_s}#{options[:extension]}" : @id.to_s
@@ -180,18 +180,18 @@ class NonstandardWebServiceResult
     def ssl_options
       return {} unless check_cert_paths!
       @ssl_options ||= {
-        :cert         => OpenSSL::X509::Certificate.new(File.open(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:cert]))),
-        :key          => OpenSSL::PKey::RSA.new(File.open(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:key]))),
-        :ca_file      => File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:ca_file]),
-        :verify_mode  => OpenSSL::SSL::VERIFY_NONE
+        :cert         => OpenSSL::X509::Certificate.new(File.open(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:cert]))),
+        :key          => OpenSSL::PKey::RSA.new(File.open(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:key]))),
+        :ca_file      => File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:ca_file]),
+        :verify_mode  => OpenSSL::SSL::VERIFY_PEER
       }
     end
   
-    # All configuration options are stored in RAILS_ROOT/config/web_services.yml. This allows us to use different
+    # All configuration options are stored in Rails.root/config/web_services.yml. This allows us to use different
     # hosts, certs, etc. in different Rails environments.
     def config_options
-      config_file_path = File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "web_services.yml")
-      @config_options ||= YAML::load(ERB.new((IO.read(config_file_path))).result)[(RAILS_ENV)].symbolize_keys
+      config_file_path = File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "web_services.yml")
+      @config_options ||= YAML::load(ERB.new((IO.read(config_file_path))).result)[(Rails.env)].symbolize_keys
     end
   
     def headers
@@ -210,7 +210,7 @@ class NonstandardWebServiceResult
     message = "  \e[4;33;1m#{self.class.to_s} Fetch"
     message << " (#{'%.1f' % (time*1000)}ms)" if time
     message << "\e[0m   #{msg}"
-    RAILS_DEFAULT_LOGGER.info message
+    Rails.logger.info message
   end
 
   # Encapsulates the raw data from the service into a Nokogiri::HTML object. Override in subclasses to do something else.
@@ -220,9 +220,9 @@ class NonstandardWebServiceResult
 
   # Raises an error if the cert, key, or CA file does not exist.
   def self.check_cert_paths!
-    raise ActiveResource::SSLError, "Could not find cert file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:cert]))
-    raise ActiveResource::SSLError, "Could not find key file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:key]))
-    raise ActiveResource::SSLError, "Could not find CA file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:ca_file]))
+    raise ActiveResource::SSLError, "Could not find cert file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:cert]))
+    raise ActiveResource::SSLError, "Could not find key file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:key]))
+    raise ActiveResource::SSLError, "Could not find CA file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:ca_file]))
     return true
   rescue ActiveResource::SSLError => e
     puts Rails.logger.warn "[WARN] ActiveResource::SSLError: #{e.message}\n #{e.backtrace.try(:first)}"

@@ -1,4 +1,4 @@
-<%- f.inputs do -%>
+<%= f.inputs do -%>
 	<%= f.input :name %>
 	<%= f.input :address %>
 	<%= f.input :phone, :input_html => { :value => number_to_phone(f.object.phone) } %>
@@ -6,7 +6,7 @@
 <% end -%>
 
 <%- if f.object.is_a?(HighSchool) -%>
-	<%- f.inputs "High Schools" do -%>
+	<%= f.inputs "High Schools" do -%>
 		<%= f.input :partner_school, :hint => "Mark this school as a partner school to make it appear in the \"High Schools\" drop down menu." %>
 		<%= f.input :district, :hint => "Enter the full district name, e.g., \"Tukwila School District\"" %>
 		<%= f.input :enable_college_mapper_integration, :hint => "With this option enabled, new students and mentors will have user accounts automatically providioned with the CollegeMapper API." %>
@@ -14,7 +14,7 @@
 <% end -%>
 
 <%- if f.object.is_a?(College) -%>
-	<%- f.inputs "Colleges" do -%>
+	<%= f.inputs "Colleges" do -%>
 		<%= f.input :institution_id, :as => :string, :hint => "Enter the IPEDS ID for this college if it exists in the IPEDS database.", :input_html => { :size => 5 } %>
 		<%= f.input :country, :include_blank => true %>
 	<% end -%>

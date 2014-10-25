@@ -4,7 +4,7 @@ class MentorsController < ApplicationController
   
   def index
     return redirect_to Mentor.find(params[:id]) if params[:id]
-    @mentors = Mentor.paginate :all, :page => params[:page]
+    @mentors = Mentor.page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -143,19 +143,23 @@ class MentorsController < ApplicationController
   end
   
   def auto_complete_for_mentor_fullname
-    @mentors = Mentor.find(:all, 
-                          :conditions => ["LOWER(firstname) LIKE :fullname 
+    @mentors = Mentor.find(:all,
+                          :conditions => ["LOWER(firstname) LIKE :fullname
                                             OR LOWER(lastname) LIKE :fullname
                                             OR LOWER(display_name) LIKE :fullname
-                                            OR LOWER(uw_net_id) LIKE :fullname", 
-                                          {:fullname => "%#{params[:mentor][:fullname].downcase}%"}])
-    respond_to do |format|
-      format.js { 
-        render :partial => "shared/auto_complete_person_fullname", 
-                :object => @mentors, 
-                :locals => { :highlight_phrase => params[:mentor][:fullname] }
-       }
-    end
+                                            OR LOWER(uw_net_id) LIKE :fullname",
+                                          {:fullname => "%#{params[:term].downcase}%"}])
+
+    render :json => @mentors.map { |mentor| 
+      {
+        :id => mentor.id, 
+        :value => mentor.fullname,
+        :klass => mentor.class.to_s.underscore, 
+        :fullname => mentor.fullname, 
+        :secondary => mentor.email,
+        :tertiary => (Customer.current_customer.customer_label(mentor.class.to_s.underscore, :titleize => true) || result.class.to_s).titleize
+      }
+    }    
   end
   
   def onboarding
@@ -232,7 +236,7 @@ class MentorsController < ApplicationController
   
   def send_default_photo(size)
 		filename = size == "thumb" ? "blank_avatar_thumb.png" : "blank_avatar.png"
-    send_file File.join(RAILS_ROOT, "public", "images", filename), 
+    send_file File.join(Rails.root, "public", "images", filename), 
               :disposition => 'inline', :type => 'image/png', :status => 404
   end  
   

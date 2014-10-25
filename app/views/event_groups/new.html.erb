@@ -1,8 +1,8 @@
 <h1>New event group</h1>
 
-<% semantic_form_for(@event_group) do |f| %>
+<%= semantic_form_for(@event_group) do |f| %>
 
-	<%= f.error_messages %>
+	<%= f.semantic_errors %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 

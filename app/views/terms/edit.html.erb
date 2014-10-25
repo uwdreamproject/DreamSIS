@@ -1,8 +1,8 @@
 <h1><%= @term.title %></h1>
 
-<% semantic_form_for @term, :html => { :method => :put } do |f| %>
+<%= semantic_form_for @term, :html => { :method => :put } do |f| %>
 
-	<%= f.error_messages %>
+	<%= f.semantic_errors %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 	

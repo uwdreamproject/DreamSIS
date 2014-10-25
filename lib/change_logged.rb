@@ -8,4 +8,4 @@ module ChangeLogged
 end
 
 # include the extension 
-ActiveRecord::Base.send(:include, ChangeLogged)
+#ActiveRecord::Base.send(:include, ChangeLogged)

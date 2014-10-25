@@ -1,4 +1,4 @@
-class MentorTermGroup < CustomerScoped
+class MentorTermGroup < ActiveRecord::Base
   belongs_to :term 
   belongs_to :location
   
@@ -18,7 +18,7 @@ class MentorTermGroup < CustomerScoped
   after_create :sync_with_course!
   attr_accessor :skip_sync_after_create
 
-  default_scope :order => "title IS NULL, title, course_id", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
+  default_scope :order => "title IS NULL, title, course_id"
 
   PERMISSION_LEVELS = {
 		:current_school_current_cohort => "only participants in the current-year cohort for this high school (the default)",

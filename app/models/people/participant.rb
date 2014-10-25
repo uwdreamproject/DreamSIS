@@ -24,12 +24,12 @@ class Participant < Person
 
   attr_accessor :override_binder_date, :override_fafsa_date, :override_wasfa_date, :create_college_mapper_student_after_save, :link_to_current_user_after_save
   
-  named_scope :in_cohort, lambda {|grad_year| {:conditions => { :grad_year => grad_year }}}
-  named_scope :in_high_school, lambda {|high_school_id| {:conditions => { :high_school_id => high_school_id }}}
-  named_scope :active, :conditions => ["inactive IS NULL OR inactive = ?", false]
-  named_scope :target, :conditions => ["not_target_participant IS NULL OR not_target_participant = ?", false]
-  named_scope :attending_college, lambda {|college_id| { :conditions => { :college_attending_id => college_id }}}
-  named_scope :assigned_to_mentor, lambda {|mentor_id| { :joins => :mentor_participants, :conditions => { :mentor_participants => { :mentor_id => mentor_id }}}}
+  scope :in_cohort, lambda {|grad_year| {:conditions => { :grad_year => grad_year }}}
+  scope :in_high_school, lambda {|high_school_id| {:conditions => { :high_school_id => high_school_id }}}
+  scope :active, :conditions => ["inactive IS NULL OR inactive = ?", false]
+  scope :target, :conditions => ["not_target_participant IS NULL OR not_target_participant = ?", false]
+  scope :attending_college, lambda {|college_id| { :conditions => { :college_attending_id => college_id }}}
+  scope :assigned_to_mentor, lambda {|mentor_id| { :joins => :mentor_participants, :conditions => { :mentor_participants => { :mentor_id => mentor_id }}}}
 
   after_save :college_mapper_student, :if => :create_college_mapper_student_after_save?
   after_create :link_to_current_user, :if => :link_to_current_user_after_save?
@@ -120,7 +120,6 @@ class Participant < Person
       super
     end
   end
-
 	
   # Tries to find duplicate records based on name and high school. Pass an array of participant data straight from your params
   # hash. Second parameter is a limit on the number of records to return (defaults to 50).
@@ -169,6 +168,10 @@ class Participant < Person
     else
       write_attribute(:binder_date, nil)
     end
+  end
+  
+  def fafsa(year = Time.now.year)
+    fafsa = fafsas.find_or_initialize_by_year(year)
   end
   
   def fafsa(year = Time.now.year)

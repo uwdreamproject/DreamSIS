@@ -1,9 +1,9 @@
-<%- f.inputs :name => "Name and Program" do -%>
+<%= f.inputs :name => "Name and Program" do -%>
 	<%= f.inputs :name, :parent_customer, :program %>
 	<%= f.input :url_shortcut, :label => "URL Shortcut" %>
 <% end %>
 
-<%- f.inputs :name => "Settings" do -%>
+<%= f.inputs :name => "Settings" do -%>
 	<%= f.input :term_system, :collection => %w(Quarters) %>
 	<%= f.input :link_to_uw, :label => "Link to University of Washington systems" %>
 	<%= f.input :require_background_checks, :label => "Require background checks for mentors" %>
@@ -11,7 +11,7 @@
 	<%= f.input :background_check_validity_length, :label => "Background Checks valid for:", :as => :select, :collection => {"90 Days" =>90, "180 Days" => 180, "1 Year" => 365, "2 Years" => 730, "Forever" => -1} %>
 <% end %>
 
-<%- f.inputs :name => "Allowed Login Methods" do -%>
+<%= f.inputs :name => "Allowed Login Methods" do -%>
 	<%- for provider in %w[facebook twitter google_oauth2 shibboleth windowslive linkedin] -%>
 		<%= f.input "allowable_login_methods", 
 					:as => :boolean, 
@@ -24,9 +24,9 @@
 	<% end %>
 <% end %>
 
-<%- f.inputs :name => "Custom Labels and Content" do -%>
+<%= f.inputs :name => "Custom Labels and Content" do -%>
 	<p>Enter each label as a single, lower-cased word.</p>
-	<%- f.inputs :name => "Labels", :class => "inline" do %>
+	<%= f.inputs :name => "Labels", :class => "inline" do %>
 		<%= f.inputs :mentor_label, :lead_label, :participant_label, :mentee_label, :workbook_label, :intake_survey_label, :visit_label, :not_target_label %>
 	<% end %>
 	
@@ -38,13 +38,13 @@
     <%= f.input :paperwork_status_options, :input_html => { :rows => 5 }, :hint => "Specify the options you want to allow for paperwork status choices. Enter one entry per line. By default, the options are 'Not Started', 'In Progress', and 'Complete.'" %>
     <%= f.input :visit_attendance_options, :input_html => { :rows => 5 }, :hint => "Specify the options you want to allow for visit attendance. Enter one entry per line. If nothing is specified here, 'Attended' will appear only as a single checkbox." %>
 	
-	<%- f.inputs :name => "Activity Log Time Categories", :class => "inline" do %>
+	<%= f.inputs :name => "Activity Log Time Categories", :class => "inline" do %>
 		<%= f.input :activity_log_student_time_categories, :input_html => { :rows => 10}, :label => "Student Time" %>
 		<%= f.input :activity_log_non_student_time_categories, :input_html => { :rows => 10}, :label => "Non-Student Time" %>
 	<% end %>
 <% end %>
 
-<%- f.inputs :name => "National Student Clearinghouse Integration" do -%>
+<%= f.inputs :name => "National Student Clearinghouse Integration" do -%>
 	<p>If you have a contract with the National Student Clearinghouse, enter your account information here and 
 		DreamSIS can perform automatic queries about your participants.</p>
 		<%= f.input :clearinghouse_customer_number, 

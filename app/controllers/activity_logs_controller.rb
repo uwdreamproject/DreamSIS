@@ -2,7 +2,7 @@ class ActivityLogsController < ApplicationController
   skip_before_filter :check_authorization, :only => [:my_week, :my_current_week, :update]
 	
   def index
-    @activity_logs = ActivityLog.paginate :all, :page => params[:page]
+    @activity_logs = ActivityLog.page(params[:page])
   
     respond_to do |format|
       format.html # index.html.erb

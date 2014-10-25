@@ -1,8 +1,8 @@
 <h1>New event type</h1>
 
-<% semantic_form_for(@event_type) do |f| %>
+<%= semantic_form_for(@event_type) do |f| %>
 
-	<%= f.error_messages %>
+	<%= f.semantic_errors %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 

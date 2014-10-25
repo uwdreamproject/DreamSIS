@@ -1,13 +1,11 @@
 <h1>Editing customer</h1>
 
-<% semantic_form_for @customer, :html => { :method => :put } do |f| %>
+<%= semantic_form_for @customer, :html => { :method => :put } do |f| %>
 
-	<%= f.error_messages %>
+	<%= f.semantic_errors %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 	
-	<%= f.submit "Save", :disable_with => 'Saving...' %>
-	<span class="separator">&mdash; or &mdash;</span>
-	<%= link_to 'Cancel', @customer %>
+	<%= default_form_actions(f) %>
 
 <% end %>

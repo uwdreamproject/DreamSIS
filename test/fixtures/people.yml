@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  firstname: John
+  lastname: Smith
+  type: Participant
+  high_school_id: 1
+
+two:
+  firstname: Susie
+  lastname: Johnson
+  type: Participant
+  high_school_id: 1
