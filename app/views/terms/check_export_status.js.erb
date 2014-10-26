@@ -26,7 +26,7 @@
 		$j('#xlsx_download_button').html("Download in Excel");
 		checkXlsxStatus = false;
 	  $j('#xlsx_download_button').removeClass('generating');
-		$j('#xlsx_status').removeClassName('generating');
+		$j('#xlsx_status').removeClass('generating');
 		$j('#xlsx_download_button').addClass('error');
 		$j('#xlsx_status').addClass('error');
 		$j("#xlsx_status").html("There was an error generating the file. Please try again.");
