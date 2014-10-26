@@ -17,7 +17,7 @@ Dreamsis::Application.routes.draw do
       match :show
     end
   end
-  resources :quarters
+  resources :quarters, :controller => 'terms'
   resources :notes do  
     member do
       get :document
@@ -212,7 +212,7 @@ Dreamsis::Application.routes.draw do
   match 'mentor_signup/basics' => 'mentor_signup#basics', :as => :mentor_signup_basics
   match 'mentor_signup/risk_form' => 'mentor_signup#risk_form', :as => :mentor_signup_risk_form
   match 'mentor_signup/conduct_form' => 'mentor_signup#conduct_form', :as => :mentor_signup_conduct_form
-  match 'mentor_signup/driver_form' => 'mentor_signup#driver_form', :as :mentor_signup_conduct_form
+  match 'mentor_signup/driver_form' => 'mentor_signup#driver_form', :as => :mentor_signup_conduct_form
   match 'mentor_signup/background_check_form' => 'mentor_signup#background_check_form', :as => :mentor_signup_background_check_form
   match 'mentor_signup/:term_id/drop/:id' => 'mentor_signup#drop', :as => :mentor_signup_term_drop, :via => :delete
   match 'mentor_signup/:term_id/volunteer/:id' => 'mentor_signup#volunteer', :as => :mentor_signup_term_volunteer, :via => :put
