@@ -375,17 +375,17 @@ Documentation for each filter:
   # Allows for dynamically created symbols to be sent to mentors,
   # specifically to generate excel columns for a given term
   def method_missing(method_name, *args)
-    if m = method_name.to_s.match(/\Asection_summary_for_(\d)\Z/)
+    if m = method_name.to_s.match(/\Asection_summary_for_(\d+)\Z/)
       section_summary Term.find(m[1])
-    elsif m = method_name.to_s.match(/\Asection_status_for_(\d)\Z/)
+    elsif m = method_name.to_s.match(/\Asection_status_for_(\d+)\Z/)
       section_status Term.find(m[1])
-    elsif m = method_name.to_s.match(/\Aevent_summary_for_(\d)\Z/)
+    elsif m = method_name.to_s.match(/\Aevent_summary_for_(\d+)\Z/)
       event_summary_for_term Term.find(m[1])
-    elsif m = method_name.to_s.match(/\Aevent_count_for_(\d)\Z/)
+    elsif m = method_name.to_s.match(/\Aevent_count_for_(\d+)\Z/)
       event_count_for_term Term.find(m[1])
-    elsif m = method_name.to_s.match(/\Aenrollment_status_for_(\d)\Z/)
+    elsif m = method_name.to_s.match(/\Aenrollment_status_for_(\d+)\Z/)
       enrollment_status_for_term Term.find(m[1])
-    elsif m = method_name.to_s.match(/\Alocations_for_(\d)\Z/)
+    elsif m = method_name.to_s.match(/\Alocations_for_(\d+)\Z/)
       locations_for_term Term.find(m[1])
     else
       super method_name, *args
