@@ -421,7 +421,7 @@ Documentation for each filter:
   # Returns the number of terms that this mentor has had an associated
   # MentorTerm
   def terms_participated
-    mentor_terms.collect(&:term).uniq.count
+    mentor_terms.collect{|mt| mt.try(:mentor_term_group).try(:term)}.uniq.count
   end
 
   # Gives a count of the number of events, either RSVP'd or
