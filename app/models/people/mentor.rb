@@ -467,7 +467,6 @@ Documentation for each filter:
       AND events.date <= ?
       AND (rsvp = ? OR attended = ?)
       AND (event_type_id IS NULL OR event_types.name != ?)
-      AND events.type IS NULL
       AND events.name != ?",
       term.start_date, term.end_date, true, true, "Mentor Workshop", 'Class']
     )
