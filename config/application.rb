@@ -1,7 +1,6 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
-require 'apartment/elevators/subdomain'
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
@@ -46,9 +45,7 @@ module Dreamsis
     config.assets.enabled = true
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
+    config.assets.version = '1.1'
     
-    # Custom elevator config for apartment multitenancy
-    config.middleware.use 'Apartment::Elevators::Subdomain'
   end
 end

@@ -1,7 +1,8 @@
 class VisitsController < ApplicationController
-
   before_filter :fetch_high_school
   before_filter :fetch_term
+  
+  skip_before_filter :check_authorization, :only => [:attendance, :update_attendance]
   
   def index
     @visits = @high_school.visits.for(@term)
@@ -36,11 +37,13 @@ class VisitsController < ApplicationController
   
   def attendance
     return redirect_to attendance_high_school_visits_path(@high_school, @term) if params[:term_id] == "new"
+    # TODO avoid this type of redirection
     @participants = []
     @showing = []
+    @current_cohort = params[:cohort] || @term.participating_cohort
     if !params[:show] || params[:show].include?("participants")
       @participants << @high_school.participants.find(:all, 
-                                                      :conditions => { :grad_year => @term.participating_cohort },
+                                                      :conditions => { :grad_year => @current_cohort },
                                                       :order => "inactive")
       @showing << :participants
     end                              
@@ -49,8 +52,8 @@ class VisitsController < ApplicationController
       @showing << :mentors
     end
     @participants.flatten!
-
-    @visits = @high_school.events(@term, @showing)
+    limit = params[:limit] || 10
+    @visits = @high_school.events(@term, @showing, true, limit)
   end
 
   def update_attendance

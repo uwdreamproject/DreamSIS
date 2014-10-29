@@ -4,7 +4,7 @@
 The main purpose of the Customer model is to sandbox multiple organizations' data within the same DreamSIS instance. The current Customer is stored in the current thread so that customer details are accessible system-wide for each request. For convenience, all of the Customer instance methods are available through class methods on Customer. For example, +Customer.mentor_label+ is equivalent to +Customer.find(Thread.current['customer_id']).mentor_label+.
 =end
 class Customer < ActiveRecord::Base
-  validates_presence_of :name  
+  validates_presence_of :name
   validates_presence_of :clearinghouse_customer_number, :clearinghouse_contract_start_date, :clearinghouse_number_of_submissions_allowed, :if => :validate_clearinghouse_configuration?
   validates_numericality_of :clearinghouse_customer_number, :if => :validate_clearinghouse_configuration?
   
@@ -24,7 +24,8 @@ class Customer < ActiveRecord::Base
   }
   
   RESERVED_SUBDOMAINS = %w[www public assets admin identity development production staging test dreamsis]
-  validates_uniqueness_of :url_shortcut, :allow_blank => true
+  validates_presence_of :url_shortcut
+  validates_uniqueness_of :url_shortcut
   validates_exclusion_of :url_shortcut, :in => RESERVED_SUBDOMAINS, :message => "URL shortcut %s is not allowed"
 
   after_create :create_tenant
@@ -63,10 +64,11 @@ class Customer < ActiveRecord::Base
   def require_risk_form?
     !risk_form_content.blank?
   end
-  
-  def allowable_login_methods=(new_allowable_login_methods)
-    self.write_attribute :allowable_login_methods, new_allowable_login_methods.select{|provider, result| result != "0"}.collect(&:first)
-  end
+
+  # TODO make this work again
+  # def allowable_login_methods=(new_allowable_login_methods)
+  #   self.write_attribute :allowable_login_methods, new_allowable_login_methods.select{|provider, result| result != "0"}.collect(&:first)
+  # end
 
   def allowable_login_method?(provider)
     # logger.info { "allowable_login_methods: " + allowable_login_methods.inspect }
@@ -76,23 +78,23 @@ class Customer < ActiveRecord::Base
   # Parses the text in +college_application_choice_options+ and returns an array that is split on newlines.
   def college_application_choice_options_array
     return %w[Reach Solid Safety] if college_application_choice_options.blank?
-    college_application_choice_options.split("\n").collect(&:strip)
+    college_application_choice_options.try(:split, "\n").try(:collect, &:strip).to_a
   end
 
   # Parses the text in +paperwork_status_options+ and returns an array that is split on newlines.
   def paperwork_status_options_array
     return ["Not Started", "In Progress", "Complete"] if paperwork_status_options.blank?
-    paperwork_status_options.split("\n").collect(&:strip)
+    paperwork_status_options.try(:split, "\n").try(:collect, &:strip).to_a
   end
 
   # Parses the text in +activity_log_student_time_categories+ and returns an array that is split on newlines.
   def activity_log_student_time_categories_array
-    activity_log_student_time_categories.split("\n").collect(&:strip)
+    activity_log_student_time_categories.try(:split, "\n").try(:collect, &:strip).to_a
   end
 
   # Parses the text in +activity_log_non_student_time_categories+ and returns an array that is split on newlines.
   def activity_log_non_student_time_categories_array
-    activity_log_non_student_time_categories.split("\n").collect(&:strip)
+    activity_log_non_student_time_categories.try(:split, "\n").try(:collect, &:strip).to_a
   end
 	
 	# Returns true if there is anything in the acitivity log categories fields.
@@ -109,7 +111,7 @@ class Customer < ActiveRecord::Base
 	# Visit attendance always includes "Attended" as an option, but this allows customers to provide
 	# other options that might also count when reporting attendance.
 	def visit_attendance_options_array
-		(["Attended"] + visit_attendance_options.split("\n").collect(&:strip)).flatten.uniq
+		(["Attended"] + visit_attendance_options.try(:split, "\n").try(:collect, &:strip).to_a).flatten.uniq
 	end
   
   def self.current_customer

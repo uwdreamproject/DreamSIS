@@ -96,8 +96,8 @@ class TestScore < ActiveRecord::Base
     results = {}
     results[:all] = scores
     results[:earliest_total] = scores.sort_by(&:taken_at).first
-    results[:highest_total] = scores.sort_by(&:total_score).last
-    results[:highest_total_after_earliest] = scores.dup.reject{|s| s == results[:earliest_total]}.sort_by(&:total_score).last
+    results[:highest_total] = scores.sort_by{|s| s.total_score || 0}.last
+    results[:highest_total_after_earliest] = scores.dup.reject{|s| s == results[:earliest_total]}.sort_by{|s| s.total_score || 0}.last
     results[:gain_or_loss] = results[:highest_total_after_earliest].try(:total_score) - results[:earliest_total].try(:total_score) rescue nil
     results[:gain_or_loss_trend] = results[:gain_or_loss] > 0 ? "up" : results[:gain_or_loss] < 0 ? "down" : "same" rescue nil
     return results
