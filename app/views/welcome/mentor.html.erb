@@ -15,11 +15,16 @@
 
 	<%= render :partial => 'mentors/mentees' %>
 	
-	<p>
+	<dl class="inline-definitions">
 	<%- for high_school in @high_schools -%>
-		<%= link_to "See all #{high_school.name} mentees", high_school_cohort_path(high_school, Participant.current_cohort), :class => "list button" %>
+		<dt><%=h high_school.name %>:</dt>
+		<dd>
+			<%= link_to "All #{Customer.mentees_label}", high_school_cohort_path(high_school, Participant.current_cohort), :class => "list button" %>
+			<%= link_to "Take Attendance", attendance_high_school_visits_path(high_school, Term.current_term), :class => "edit button" %>
+			<%= link_to "Statistics", stats_high_school_path(high_school), :class => "stats button" %>
+		</dd>
 	<% end -%>
-	</p>
+	</dl>
 </div>
 
 <%- unless @events.empty? -%>

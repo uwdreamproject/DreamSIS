@@ -1,7 +1,3 @@
-/* @override 
-	http://dreamsis.dev/stylesheets/style.css
-	http://can.dreamsis3.dev/assets/dreamsis.css?body=1
-*/
 
 @import url(https://fonts.googleapis.com/css?family=Oxygen:400,300,700);
 
@@ -2784,6 +2780,10 @@ a.button:active {
 
 .button.trash, .button.delete {
   background-image: url(../images/icons/silk/bin_closed.png);
+}
+
+.button.stats {
+  background-image: url(../images/icons/silk/chart_pie.png);
 }
 
 /*table.schedule {
