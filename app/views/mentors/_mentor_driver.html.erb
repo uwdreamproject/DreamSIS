@@ -1,0 +1,21 @@
+<tr id="mentor_<%= mentor_driver.id %>" class="<%= 'bright-red-background' if !mentor_driver.valid_van_driver?%>" onClick="loadForm(<%= mentor_driver.id %>)">
+  <td class="name"><%= link_to h(mentor_driver.fullname), mentor_driver %></td>
+  <td><%= auto_link h(mentor_driver.email) %></td>
+  <td><%= mentor_driver.van_driver_training_completed_at.to_s(:short_date) rescue nil %></td>
+  <td class="centered">
+    <%- if mentor_driver.driver_form_signature -%>
+      <%= content_tag(:span, "Y", :class => 'approved tag') %>
+    <%- else -%>
+      <%= content_tag(:span, "N", :class => 'red tag') %>
+    <%- end -%>
+  </td>
+  <td class="centered">
+    <%- if mentor_driver.has_previous_driving_convictions -%>
+        <%= content_tag(:span, "Y", :class => 'red tag') %>
+    <%- else -%>
+        -
+    <%- end -%>
+  </td>
+  <td class="functions"><%= link_to 'Details', mentor_driver %></td>
+  <td class="functions"><%= link_to 'Edit', edit_mentor_path(mentor_driver) %></td>
+</tr>
