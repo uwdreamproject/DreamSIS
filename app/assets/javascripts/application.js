@@ -5,7 +5,7 @@
 // the compiled file.
 //
 //= require jquery
-//= require jquery_ujs
+//= require jquery-ui
 //= require autocomplete-rails
 //= require dreamsis.js
 //=  require_tree .
