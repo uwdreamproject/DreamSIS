@@ -1,3 +1,4 @@
 environments:
-  multitenant2:
+  production:
     precompile_assets: true
+    
