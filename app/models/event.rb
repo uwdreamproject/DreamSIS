@@ -1,13 +1,12 @@
 class Event < ActiveRecord::Base
   include Comparable
-  has_many :attendees, :class_name => "EventAttendance" do
+  has_many :attendees, :inverse_of => :event, :class_name => "EventAttendance" do
     def all(audience = nil)
       if audience.is_a?(Person)
         audience = audience.class.to_s.classify
       end
-       
       conditions = ["(audience = :audience) OR (people.type = :audience AND audience = NULL)", {:audience => audience.to_s.classify}] if audience
-      al = find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+      al = EventAttendance.find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
     end
     def rsvpd(audience = nil)
       if audience
@@ -18,7 +17,7 @@ class Event < ActiveRecord::Base
       else
         conditions = { :rsvp => true }
       end
-      find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+      EventAttendance.find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
     end
 
     def attended(audience = nil)
@@ -30,7 +29,7 @@ class Event < ActiveRecord::Base
       else
         conditions = { :attended => true }
       end
-      find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+      EventAttendance.find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
     end
   end
 
@@ -46,7 +45,7 @@ class Event < ActiveRecord::Base
       find(:all, :conditions => { "show_for_#{h(audience.to_s.pluralize)}" => true })
     end
   end
-  
+
   belongs_to :earliest_grade_level, :class_name => "GradeLevel", :primary_key => 'level', :foreign_key => 'earliest_grade_level_level'
   belongs_to :latest_grade_level, :class_name => "GradeLevel", :primary_key => 'level', :foreign_key => 'latest_grade_level_level'
   
@@ -54,6 +53,11 @@ class Event < ActiveRecord::Base
   
   default_scope :order => "date, start_time"
   
+  # Allows overwriting of type in controller, default is [+id+, +type+]
+  def self.attributes_protected_by_default
+    ["id"]
+  end
+
   # Returns the number of attended
   def attended_count
     attendees.attended.size

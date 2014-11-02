@@ -27,23 +27,31 @@ placeholder_text <<  "all #{Customer.participants_label}" if !@grad_year || !@hi
 	
 <% if controller.action_name != 'show' %>
 
-	<%- xlsx_url = controller.action_name == 'index' ? { :action => 'all', :format => :xlsx } : { :format => :xlsx }  -%>
-	<p><%= link_to "Download in Excel", 
-							:remote => true,
-							:url => xlsx_url, 
-							:html => { :class => 'button xls', :id => "xlsx_download_button" } %></p>
+	<%- xlsx_url = controller.action_name == 'index' ? { :action => 'index', :format => :xlsx } : { :format => :xlsx }  -%>
+	<p><%= link_to "Download in Excel", xlsx_url, html_options = { :class => 'button xls', :id => "xlsx_download_button", :remote => true } %></p>
 	
 	<%= javascript_tag("checkXlsxStatus = false; xlsxReportId = '';") %>
 		
 	<%- if @export -%>	
 		<p id="xlsx_status">
 			<%=h @export.status.try(:titleize) %> <%=h relative_timestamp @export.updated_at %>
-			<%= link_to "Regenerate", :remote => true, :url => { :generate => true, :format => 'xlsx' } %>
+			<%= link_to "Regenerate", { :generate => true, :format => 'xlsx' }, url_options = { :remote => true } %>
 		</p>
 		<%= javascript_tag("checkXlsxStatus = true; xlsxReportId = '#{@export.id.to_s}';") unless @export.generated? %>
 	<%- else -%>
 		<p id="xlsx_status"></p>
 	<% end %>
+	<%= javascript_tag(
+		"var worker = function() {
+			if (checkXlsxStatus == true) {
+				$.ajax({
+					url: '#{check_export_status_participants_url(:format => 'js')}?id='+xlsxReportId+'&authenticity_token='+document.getElementsByTagName('meta')[2].getAttribute('content'),
+					cache: false,
+				});
+			}
+		};
+		$( document ).ready(function() {worker(); setInterval(function() { worker() }, 3000) });") %>
+
 
 	<%#= periodically_call_remote(:url => check_export_status_participants_url, 
 								:frequency => 3, 

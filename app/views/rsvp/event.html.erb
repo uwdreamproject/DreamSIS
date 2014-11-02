@@ -39,13 +39,13 @@
 		<%- unless @event.description(event_audience).blank? -%>
 			<dt>About</dt>
 			<dd class="description">
-				<%= sanitize textilize_without_paragraph(@event.description(event_audience)) %>
+				<%= sanitize RedCloth.new(@event.description(event_audience), [:lite_mode]).to_html %>
 			</dd>
 		<% end -%>
 
 		<%- if @event.event_group && !@event.event_group.description(event_audience).blank? -%>
 			<dt>More Info</dt>
-			<dd class="event_group description"><%= sanitize textilize_without_paragraph(@event.event_group.description(event_audience)) %></dd>
+			<dd class="event_group description"><%= sanitize RedCloth.new(@event.event_group.description(event_audience), [:lite_mode]).to_html %></dd>
 		<% end -%>
 	
 		<%- if @event.event_coordinator -%>

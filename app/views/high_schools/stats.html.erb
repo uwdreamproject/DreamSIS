@@ -91,7 +91,7 @@
 
 <div id="sidebar">
 	<%- if params[:id] -%>
-		<p><%= link_to "All high schools", url_for(:cohort => @cohort), :class => 'list button' %></p>
+		<p><%= link_to "All high schools", url_for(:cohort => @cohort, :id => nil), :class => 'list button' %></p>
 	<% end %>
 	
 	<h3>Other Cohorts</h3>
