@@ -14,7 +14,7 @@
 <span id="player1-mode"></span>
 
 <script>
-$j('video').mediaelementplayer({
+$('video').mediaelementplayer({
 	success: function(media, node, player) {
 		var events = ['loadstart', 'play','pause', 'ended'];
 		
@@ -23,7 +23,7 @@ $j('video').mediaelementplayer({
 			var eventName = events[i];
 			
 			media.addEventListener(events[i], function(e) {
-				$j('#output').append( $j('<div>' + e.type + '</div>') );
+				$('#output').append( $('<div>' + e.type + '</div>') );
 				
 				if(e.type == 'ended') {
 					<%= remote_function :url => complete_training_path(@training), :method => :post %>

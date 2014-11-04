@@ -5,7 +5,7 @@
 <% 
 filter_html_attributes = []
 Participant.object_filters.each do |object_filter|
-	filter_html_attributes << "data-filter-#{object_filter.id}='#{participant.passes_filter?(object_filter)}'" if object_filter.display_now?
+	filter_html_attributes << "data-filter-#{object_filter.id}=#{participant.passes_filter?(object_filter)}" if object_filter.display_now?
 end
 -%>
 <tbody id="<%= dom_id %>" class="filterable" <%= filter_html_attributes.join(" ") %>>
