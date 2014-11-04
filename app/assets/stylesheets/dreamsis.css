@@ -4229,7 +4229,7 @@ ul.mini_participants li {
 }
 
 div.complete, div.incomplete, div.pending {
-	padding-left: 55px;
+	padding-left: 55px !important;
 	background-repeat: no-repeat;
 }
 
