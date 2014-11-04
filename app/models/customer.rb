@@ -28,7 +28,8 @@ class Customer < ActiveRecord::Base
   validates_uniqueness_of :url_shortcut
   validates_exclusion_of :url_shortcut, :in => RESERVED_SUBDOMAINS, :message => "URL shortcut %s is not allowed"
 
-  after_create :create_tenant
+  validate :tenant_database_must_exist
+  after_create :initialize_tenant!
 
   has_many :clearinghouse_requests
   
@@ -132,9 +133,34 @@ class Customer < ActiveRecord::Base
     url_shortcut
   end
   
-  # Create a new tenant database. Called by #after_create.
-  def create_tenant
+  # Create a new tenant database.
+  def create_tenant!
     Apartment::Tenant.create(tenant_name) unless tenant_name.blank?
+  end
+  
+  # Loads the schema and seeds the Customer's tenant record to the latest migration.
+  def initialize_tenant!
+    @database_schema_file = Rails.root.join('db', 'schema.rb')
+    @database_seeds_file = Rails.root.join('db', 'seeds.rb')
+    
+    Customer.transaction do
+      Apartment::Tenant.process(tenant_name) do
+        load(@database_schema_file)
+        load(@database_seeds_file) if Apartment.seed_after_create
+      end
+    end
+    
+    return true
+  end
+  
+  # Returns true if the tenant database exists, which must be done before creating a new Customer.
+  def tenant_database_must_exist
+    begin
+      Apartment::Tenant.process(tenant_name)
+      true
+    rescue Apartment::DatabaseNotFound => e
+      errors.add :base, "Tenant database must exist before Customer record is created."
+    end
   end
     
   # def self.current_customer=(customer)

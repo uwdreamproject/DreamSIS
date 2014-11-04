@@ -1534,6 +1534,11 @@ abbr[title]:hover {
 	margin: 0;
 }
 
+.warning {
+  background: #FFE482 url("../images/icons/silk/error.png") 7px center no-repeat;
+  padding: 0.5em;
+}
+
 .errorExplanation p {
 	margin: 1em 0 !important;
 }
