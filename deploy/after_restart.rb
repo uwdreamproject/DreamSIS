@@ -1,3 +1,6 @@
+require 'ERB'
+require 'YAML'
+
 on_app_master do
   config_file_path = File.join(config.shared_path, "config", "api-keys.yml")
   API_KEYS = YAML::load(ERB.new((IO.read(config_file_path))).result)
