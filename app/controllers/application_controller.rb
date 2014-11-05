@@ -10,7 +10,6 @@ class ApplicationController < ActionController::Base
   before_filter :authenticated?, :except => %w[ ping ]
   before_filter :login_required, :except => [ 'remove_vicarious_login', 'ping' ]
   before_filter :save_user_in_current_thread, :except => %w[ ping ]
-  before_filter :configure_exceptional, :except => %w[ ping ]
   before_filter :save_return_to, :except => %w[ ping ]
   before_filter :check_authorization, :except => %w[ ping ]
   before_filter :check_if_enrolled, :except => %w[ ping ]
@@ -49,14 +48,6 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  # def require_ssl
-  #   unless request.ssl? || Rails.env == 'development'
-  #     redirect_to "https://" + request.host + request.fullpath
-  #     flash.keep
-  #     return false
-  #   end
-  # end
-  
   def authenticated?
     @current_user ||= User.find(session[:user_id]) if session[:user_id] rescue nil
     !@current_user.nil?
@@ -134,22 +125,5 @@ class ApplicationController < ActionController::Base
     session[:apply_extra_footer_content] = params[:apply_extra_footer_content] if params[:apply_extra_footer_content]
     apply_extra_footer_content if params[:apply_extra_footer_content] || session[:apply_extra_footer_content]
   end
-  
-  def configure_exceptional
-    # Exceptional.context( :user => @current_user.try(:login) )
-  end
-
-  def adjust_format_for_iphone
-    session[:skip_mobile] = true if params[:skip_mobile] == "true"
-    session[:skip_mobile] = nil if params[:skip_mobile] == "false"
-    if iphone_request? && !session[:skip_mobile]
-      request.format = :iphone
-    end
-  end
-
-  def iphone_request?
-    request.user_agent =~ /(Mobile\/.+Safari)/
-  end
-  helper_method :iphone_request?
-  
+    
 end
