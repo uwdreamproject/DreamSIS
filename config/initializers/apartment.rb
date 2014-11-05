@@ -17,7 +17,7 @@ Apartment.configure do |config|
   #
   # config.excluded_models = %w{Tenant}
   #
-  config.excluded_models = %w[Customer Identity]
+  config.excluded_models = %w[Customer Identity Institution]
 
   # use postgres schemas?
   config.use_schemas = false
@@ -33,7 +33,7 @@ Apartment.configure do |config|
   # config.append_environment = true
 
   # supply list of database names for migrations to run on
-  config.tenant_names = lambda{ Customer.pluck :tenant_name }
+  config.tenant_names = lambda{ Customer.pluck :url_shortcut }
 end
 
 ##
