@@ -20,7 +20,7 @@ class Institution < ActiveRecord::Base
 		"3" => "Less than 2-year college"
 	}
 
-  set_primary_key :unitid
+  self.primary_key = 'unitid'
 
   def geocoded?
     false
