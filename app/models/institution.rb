@@ -1,6 +1,6 @@
 require 'open-uri'
 
-# Models an Institution record, pulled from the Department of Education's list.
+# Models an Institution record, pulled from the Department of Education's list. You must load the institutions list from a CSV file by calling +Institution#load_from_csv!+.
 class Institution < ActiveRecord::Base
   has_many :college_applications, :foreign_key => "institution_id"
 
@@ -140,7 +140,15 @@ class Institution < ActiveRecord::Base
     end
     second_try.inject(:"&").flatten.uniq[0..(limit-1)]
   end
-  
+
+  # Loads the institutions database from the CSV file provided. Specify the path of the file to load.
+  # The file must conform to the format from IPEDS, which was last retrieved here:
+  # https://inventory.data.gov/dataset/post-secondary-universe-survey-2010-directory-information/resource/38625c3d-5388-4c16-a30f-d105432553a4
+  # The 2013 dataset is available in +/db/institutions-2013.csv+.
+  #
+  # This method will create institution records that don't exist, or update existing records
+  # with new information. Thus, you should be able to re-run this command anytime IPEDS releases
+  # a new data file.
   def self.load_from_csv!(file_path)
     input_arr = CSV.read(file_path, :encoding => "ISO-8859-1:UTF-8") # convert to UTF-8
     headings = input_arr.shift
