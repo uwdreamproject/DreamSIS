@@ -66,14 +66,16 @@ class Customer < ActiveRecord::Base
     !risk_form_content.blank?
   end
 
-  # TODO make this work again
   # def allowable_login_methods=(new_allowable_login_methods)
   #   self.write_attribute :allowable_login_methods, new_allowable_login_methods.select{|provider, result| result != "0"}.collect(&:first)
   # end
 
   def allowable_login_method?(provider)
-    # logger.info { "allowable_login_methods: " + allowable_login_methods.inspect }
-    (allowable_login_methods || "").include?(provider.to_s)
+    (allowable_login_methods || {})[provider.to_s] == "true"
+  end
+  
+  def allowable_login_methods_list
+    allowable_login_methods.try{|h| h.select{ |k,v| v == "true" }.keys } rescue []
   end
   
   # Parses the text in +college_application_choice_options+ and returns an array that is split on newlines.

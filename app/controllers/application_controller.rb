@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   
   require 'array_math'
 
+  before_filter :reset_tenant_if_admin_subdomain
   before_filter :authenticated?, :except => %w[ ping ]
   before_filter :login_required, :except => [ 'remove_vicarious_login', 'ping' ]
   before_filter :save_user_in_current_thread, :except => %w[ ping ]
@@ -93,6 +94,10 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def reset_tenant_if_admin_subdomain
+    Apartment::Tenant.reset if request.subdomain == 'admin'
+  end
 
   def save_user_in_current_thread
     Thread.current['user'] = @current_user

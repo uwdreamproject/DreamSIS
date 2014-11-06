@@ -662,6 +662,10 @@ body.scrolled-past-header #sidebar {
 	margin-top: -1em;
 }
 
+#sidebar a.button.no-icon {
+  padding-left: 20px;
+}
+
 #sidebar p:first-child a.button {
 	border-top: 1px outset #dfdfdf;
 }
@@ -1733,13 +1737,21 @@ body.error #content {
 	margin: 2em auto;
 	width: 50%;
 	min-width: 450px;
+  background: none;
 }
 
 body.error #content-wrap {
 	padding: 2em 4em 1em 4em;
-	background: white url(../images/backgrounds/uw-purple-header.jpg) repeat-x;
+  margin: 0;
+	background: white url(../images/backgrounds/uw-purple-header.jpg) 0 -2px repeat-x;
 	border-radius: 10px;
 }
+
+body.error .content-block > *, body.error #content-wrap > * {
+	padding-left: 0;
+	padding-right: 0;
+}
+
 
 body.error h1 {
 	background: url(../images/dreamsis-logo-transparent.png) no-repeat;
@@ -1749,6 +1761,8 @@ body.error h1 {
 
 body.error #footer {
 	text-align: center;
+  background: none;
+  border: none;
 }
 
 body.error .big.emoticon {
@@ -2789,6 +2803,10 @@ a.button:active {
 
 .button.stats {
   background-image: url(../images/icons/silk/chart_pie.png);
+}
+
+.button.url {
+  background-image: url(../images/icons/silk/world.png);
 }
 
 /*table.schedule {
@@ -4821,6 +4839,7 @@ li.input ul.ui-autocomplete.after_select {
 .menu ul ul li.trainings a { background-image: url(../images/icons/silk/book_open.png); }
 .menu ul ul li.users a { background-image: url(../images/icons/silk/shield.png); }
 .menu ul ul li.trash a { background-image: url(../images/icons/silk/bin_closed.png); }
+.menu ul ul li.settings a { background-image: url(../images/icons/silk/information.png); }
 
 
 .menu ul ul li a {

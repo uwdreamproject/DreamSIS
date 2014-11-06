@@ -19,3 +19,5 @@ vendor/plugins/rails_upgrade/
 *.sqlite3
 
 public/stylesheets/.DS_Store
+
+*.sqlite3 copy
