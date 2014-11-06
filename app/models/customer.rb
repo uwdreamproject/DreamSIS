@@ -20,7 +20,8 @@ class Customer < ActiveRecord::Base
     :workbook => "workbook",
     :intake_survey => "intake survey",
     :mentee => "mentee",
-		:not_target => "not target"
+		:not_target => "not target",
+    :visit => "visit"
   }
   
   RESERVED_SUBDOMAINS = %w[www public assets admin identity development production staging test dreamsis]
