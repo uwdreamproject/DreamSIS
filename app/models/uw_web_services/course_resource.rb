@@ -1,28 +1,34 @@
 class CourseResource < UwWebResource
-  self.prefix = "/idcard/DreamSISProxy.php?path=student~v4~"
+  self.prefix = "/student/v5/"
   self.element_name = "course"
   self.collection_name = "course"
   self.caller_class = "CourseResource"
   
+  # If the course_id contains a "/" (is a section), swaps Term with
+  # TermA in response payload to avoid namespace conflict with
+  # DreamSIS Term model
   def self.find(*args)
     if args && args.first.include?("/")
-      # Uses /public/ to avoid  attaching certs to standard request
-      uri = URI.parse(("https://expo.uaa.washington.edu/" + "idcard/dsproxy/" + "coursejson.php?course=" + args.first).sub(' ', '%20'))
-      puts uri.request_uri
+      # set up the request
+      uri = URI.parse("#{self.site}" + "#{self.prefix}" + "/course/" + args.first + ".json")
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      http.cert = ssl_options[:cert]
+      http.key = ssl_options[:key]
+      http.verify_mode = ssl_options[:verify_mode]
+      http.ca_file = ssl_options[:ca_file]
+
+      # make the request
       request = Net::HTTP::Get.new(uri.request_uri)
       response = http.request(request)
       fetch = JSON.parse(response.body)
-      puts fetch
+
+      # swap Term with TermA
       term = fetch["Term"]
       fetch.delete("Term")
       fetch["TermA"] = term
-      return CourseResource.new(fetch) 
+      return CourseResource.new(fetch)
     else
-      puts args.first
-      RAILS_DEFAULT_LOGGER.info(args.first + "\n\n")
       return super(args.first.gsub(" ", "%20")) if args.size == 1
       sws_log args.inspect, "Find"
       super
