@@ -1,11 +1,11 @@
 require 'digest/sha1'
 class User < ActiveRecord::Base
   belongs_to :person
-  belongs_to :customer
-  attr_protected :customer_id
-  validates_presence_of :login, :customer_id
-  validates_uniqueness_of :uid, :scope => [:provider, :customer_id]
-  before_save :append_customer_id
+  # belongs_to :customer
+  # attr_protected :customer_id
+  validates_presence_of :login #, :customer_id
+  validates_uniqueness_of :uid, :scope => [:provider] #, :customer_id]
+  # before_save :append_customer_id
 
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
@@ -14,9 +14,9 @@ class User < ActiveRecord::Base
   default_scope :order => 'login'
   
   # Adds the current customer ID to the record, which is used +before_create+.
-  def append_customer_id
-    self.customer_id = Customer.current_customer.id
-  end
+  # def append_customer_id
+  #   self.customer_id = Customer.current_customer.id
+  # end
 
   # Pulls the current user out of Thread.current. We try to avoid this when possible, but sometimes we need 
   # to access the current user in a model (e.g., to check EmailQueue#messages_waiting?).
@@ -48,13 +48,13 @@ class User < ActiveRecord::Base
   # Creates a new user based on the auth data passed from OmniAuth.
   def self.create_with_omniauth(auth)
     u = create! do |user|
-      user.customer_id = Customer.current_customer.id
+      # user.customer_id = Customer.current_customer.id
       user.provider = auth["provider"]
       user.uid = auth["uid"]
       user.login = (auth["info"]["nickname"] || auth["uid"]) + "@" + auth["provider"]
       user.person = Person.create!
     end
-    u.person.update_attribute :customer_id, Customer.current_customer.id
+    # u.person.update_attribute :customer_id, Customer.current_customer.id
     u.update_from_provider!(auth)
     return u
   end

@@ -3,7 +3,7 @@
 
 <table>
 	<tr>
-		<th>Section</th>
+		<% if Customer.link_to_uw? %><th>Section</th><% end %>
 		<th>Name</th>
 		<th>Times</th>
 		<th style="width: 10%"></th>
@@ -44,7 +44,7 @@
 <% end %>
 
 <tr class="total">
-	<td colspan="4">Total</td>
+	<td colspan="<%= Customer.link_to_uw? ? 4 : 3 %>">Total</td>
 	<td><%= @mentor_term_groups.collect(&:mentors).flatten.uniq.size %></td>
 	<td><%= @mentor_term_groups.collect(&:capacity).numeric_items.sum %></td>
 	<td></td>

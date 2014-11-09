@@ -21,7 +21,7 @@
 		<dd><% if @mentor.users.empty? -%>
 				<em class="light">None</em>
 			<% else %>
-				<%= raw @mentor.users.collect{|u| link_to h(u.login), user_path(u)}.join(", ") %>
+			  	<%= raw @mentor.users.collect{|u| link_to h(u.login), user_path(u) }.join(", ") %>
 			<% end -%>
 			</dd>
 		

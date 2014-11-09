@@ -1,4 +1,7 @@
 class CustomersController < ApplicationController
+  before_filter :require_admin_tenant, :except => [:show, :edit, :update]
+  before_filter :restrict_to_current_tenant
+  
   def index
     @customers = Customer.find :all
   
@@ -69,4 +72,17 @@ class CustomersController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  protected
+  
+  def require_admin_tenant
+    render_error("You are not allowed to access that page.") unless request.subdomain == 'admin'
+  end
+  
+  def restrict_to_current_tenant
+    return true if request.subdomain == 'admin'
+    @customer = Customer.find(params[:id])
+    render_error("You can only change the settings for your account.", "You are not allowed to access that page.") if @customer.tenant_name != Apartment::Tenant.current
+  end
+  
 end
