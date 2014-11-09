@@ -94,8 +94,7 @@
 		<%= f.inputs do %>
 			<%= f.input :background_check_authorized, :as => :boolean, :label => "I understand the statement above." %>
 		<% end -%>
-		
-	<% f.actions do %>
-		<%= f.submit %>
+	<%= f.actions do %>
+	  <%= f.action :submit, :label => "Submit" %>
 	<% end -%>
 <% end -%>

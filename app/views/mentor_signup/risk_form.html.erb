@@ -4,7 +4,7 @@
 
 	<%= f.semantic_errors %>
 
-	<%= textilize h(Customer.risk_form_content) %>
+	<%= raw textilize h(Customer.risk_form_content) %>
 
 <hr>
     
@@ -13,7 +13,7 @@
 		<%= f.input :risk_form_signed_at, :as => :boolean, :label => "I understand the statements above." %>
 	<% end -%>
 
-	<% f.actions do %>
-		<%= f.submit %>
+	<%= f.actions do %>
+		<%= f.action :submit, :label=> "Submit" %>
 	<% end -%>
 <% end -%>

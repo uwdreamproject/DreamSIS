@@ -10,7 +10,7 @@
 			 title="<%= number_to_percentage mentor_term_group.percent_full, :precision => 0 %> full">
 			
 			<div class="size" style="width: <%= mentor_term_group.percent_full %>%">
-				<%= mentor_term_group.full? ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
+				<%= raw mentor_term_group.full? ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
 			</div>						
 		</div>
 	</td>
