@@ -30,18 +30,18 @@
 	
 	<%= javascript_tag "$('#{klass}_time_tba').onchange()" %>
 	
-	<%= f.input :description, 
+	<%= f.input :description,
 				:input_html => { :rows => 3 }, 
 				:hint => "Use #{link_to("Textile", "http://redcloth.org/", :popup => true)} markup for formatting. You can enter
-						  audience-specific descriptions below." %>
+						  audience-specific descriptions below.".html_safe %>
 	
 	<li class="input">
 		<%= f.label :event_coordinator_id %>
 		
 		<div>
-			<%= model_auto_completer "person[fullname]", (@event.try(:event_coordinator).try(:fullname) if @event.try(:event_coordinator)), 
-									"#{klass}[event_coordinator_id]", 
-									(@event.try(:event_coordinator_id) || nil), 
+			<%#= TODO model_auto_completer "person[fullname]", (@event.try(:event_coordinator).try(:fullname) if @event.try(:event_coordinator)),
+									"#{klass}[event_coordinator_id]",
+									(@event.try(:event_coordinator_id) || nil),
 									{ 
 										:url => { :controller => 'events', :action => 'auto_complete_model_for_person_fullname' },
 										:append_random_suffix => false,

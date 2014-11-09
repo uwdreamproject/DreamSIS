@@ -22,7 +22,7 @@ class MentorsController < ApplicationController
     @event_attendances = @mentor.event_attendances.find(:all, 
                             :include => :event, 
                             :joins => :event, 
-                            :conditions => ["events.type IS NULL AND (rsvp = ? OR attended = ?)", true, true]
+                            :conditions => ["(rsvp = ? OR attended = ?)", true, true]
                           )
     @layout_in_blocks = true
 
@@ -165,6 +165,48 @@ class MentorsController < ApplicationController
   def onboarding
     @term = Term.find(params[:term_id])
     @mentors = @term.mentors
+  end
+
+  def onboarding_update
+    @mentor = Mentor.find(params[:id])
+    @mentor.validate_name = true
+
+    respond_to do |format|
+      if @mentor.update_attributes(params[:mentor])
+        flash[:notice] = 'Mentor was successfully updated.'
+        format.html { render :partial => "mentor_onboarding", :object => @mentor, :locals => {:append_block => false} }
+      else
+        flash[:error] = "Error updating mentor"
+      end
+    end
+  end
+
+  def driver_update
+    @mentor = Mentor.find(params[:id])
+    @mentor.validate_name = true
+
+    respond_to do |format|
+      if @mentor.update_attributes(params[:mentor])
+        flash[:notice] = 'Mentor was successfully updated.'
+        format.html { render :partial => "mentor_driver", :object => @mentor, :locals => {:append_block => false} }
+      else
+        flash[:error] = "Error updating mentor"
+      end
+    end
+  end
+
+  def onboarding_form
+    @mentor = Mentor.find(params[:id])
+    respond_to do |format|
+      format.html { render :partial => "onboarding_form"}
+    end
+  end
+
+  def driver_edit_form
+    @mentor = Mentor.find(params[:id])
+    respond_to do |format|
+      format.html { render :partial => "driver_edit_form"}
+    end
   end
 
   def event_status

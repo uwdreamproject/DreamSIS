@@ -9,11 +9,15 @@ Dreamsis::Application.routes.draw do
     end
   end
   resources :terms do
+    collection do
+      match :check_export_status
+    end
     member do
       put :sync
+      match :show
     end
   end
-  resources :quarters
+  resources :quarters, :controller => 'terms'
   resources :notes do  
     member do
       get :document
@@ -95,6 +99,7 @@ Dreamsis::Application.routes.draw do
   match 'rsvp/event_group/:id/locations' => 'rsvp#event_group_locations', :as => :event_group_locations, :via => :get
   match 'rsvp/event_group/:id' => 'rsvp#event_group', :as => :event_group_rsvp, :via => :get
   match 'rsvp/event_type/:id' => 'rsvp#event_type', :as => :event_type_rsvp, :via => :get
+  match 'rsvp/upcoming' => 'rsvp#mentor_available', :as => :mentor_available_rsvp, :via => :get
 
 
   # Participants
@@ -180,6 +185,10 @@ Dreamsis::Application.routes.draw do
       get :background_check_form_responses
       put :send_login_link
       get :login_link
+      get :onboarding_form
+      match :onboarding_update
+      get :driver_edit_form
+      match :driver_update
     end
   end
   resources :mentor_term_groups do
@@ -202,6 +211,8 @@ Dreamsis::Application.routes.draw do
   match 'mentor_signup/add_my_courses' => 'mentor_signup#add_my_courses', :as => :mentor_signup_schedule_add_my_courses
   match 'mentor_signup/basics' => 'mentor_signup#basics', :as => :mentor_signup_basics
   match 'mentor_signup/risk_form' => 'mentor_signup#risk_form', :as => :mentor_signup_risk_form
+  match 'mentor_signup/conduct_form' => 'mentor_signup#conduct_form', :as => :mentor_signup_conduct_form
+  match 'mentor_signup/driver_form' => 'mentor_signup#driver_form', :as => :mentor_signup_conduct_form
   match 'mentor_signup/background_check_form' => 'mentor_signup#background_check_form', :as => :mentor_signup_background_check_form
   match 'mentor_signup/:term_id/drop/:id' => 'mentor_signup#drop', :as => :mentor_signup_term_drop, :via => :delete
   match 'mentor_signup/:term_id/volunteer/:id' => 'mentor_signup#volunteer', :as => :mentor_signup_term_volunteer, :via => :put

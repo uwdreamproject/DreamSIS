@@ -1,20 +1,39 @@
 class CourseResource < UwWebResource
-  self.prefix = "/student/v4/"
+  self.prefix = "/idcard/DreamSISProxy.php?path=student~v4~"
   self.element_name = "course"
   self.collection_name = "course"
   self.caller_class = "CourseResource"
   
   def self.find(*args)
-    return super(args.first.gsub(" ", "%20")) if args.size == 1
-    sws_log args.inspect, "Find"
-    super
+    if args && args.first.include?("/")
+      # Uses /public/ to avoid  attaching certs to standard request
+      uri = URI.parse(("https://expo.uaa.washington.edu/" + "idcard/dsproxy/" + "coursejson.php?course=" + args.first).sub(' ', '%20'))
+      puts uri.request_uri
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      request = Net::HTTP::Get.new(uri.request_uri)
+      response = http.request(request)
+      fetch = JSON.parse(response.body)
+      puts fetch
+      term = fetch["Term"]
+      fetch.delete("Term")
+      fetch["TermA"] = term
+      return CourseResource.new(fetch) 
+    else
+      puts args.first
+      RAILS_DEFAULT_LOGGER.info(args.first + "\n\n")
+      return super(args.first.gsub(" ", "%20")) if args.size == 1
+      sws_log args.inspect, "Find"
+      super
+    end
   end
   
   # Course ID in the format that SWS uses. For example: "2011,spring,EDUC,360"
   def id(include_section_id = true)
     course = self.attributes["Course"] || self
     curriculum = course.attributes["Curriculum"] || course
-    base_id = [curriculum.Year, curriculum.Term, curriculum.CurriculumAbbreviation, course.CourseNumber].join(",")
+    base_id = [curriculum.Year, curriculum.Quarter, curriculum.CurriculumAbbreviation, course.CourseNumber].join(",")
     base_id << "/" + self.PrimarySection.SectionID if include_section_id && self.PrimarySection.SectionID rescue nil
     return base_id
   end
@@ -44,7 +63,7 @@ class CourseResource < UwWebResource
     curriculum = course.attributes["Curriculum"] || course
     @associated_sections ||= CourseSectionResource.find(:all, :params => {
       :year =>  curriculum.attributes["Year"],
-      :term => curriculum.attributes["Term"],
+      :quarter => curriculum.attributes["Quarter"],
       :curriculum_abbreviation => curriculum.attributes["CurriculumAbbreviation"],
       :course_number => course.CourseNumber
     }).collect(&:course_resource)
@@ -69,7 +88,7 @@ class CourseResource < UwWebResource
     @active_registrations ||= RegistrationResource.find(:all, :params => {
       :curriculum_abbreviation => curriculum.attributes["CurriculumAbbreviation"], 
       :year => curriculum.attributes["Year"], 
-      :term => curriculum.attributes["Term"], 
+      :quarter => curriculum.attributes["Quarter"], 
       :course_number => course.attributes["CourseNumber"], 
       :section_id => self.attributes["SectionID"],
       :is_active => "on"
@@ -109,7 +128,7 @@ class CourseResource < UwWebResource
   end
   
   def meetings_array
-    [attributes["Meetings"].attributes["Meeting"]].flatten
+    [attributes["Meetings"]].flatten
   end
   
   # Returns an array of the multiple lines of the time schedule "comments" field from the student database.

@@ -3,6 +3,8 @@
 	<td>
 		<%= link_to h(event_attendance.try(:person).try(:fullname)), event_attendance.try(:person), :target => "_blank" %>
 		<%= content_tag(:span, "admin", :class => 'admin tag') if event_attendance.admin? %>
+		<% p = event_attendance.try(:person)%>
+		<%= content_tag(:span, "Driver", :class => 'driver tag') if p.type == "Mentor" && p.valid_van_driver? %>
 	</td>
 	
 	<%= "<td>#{event_attendance.try(:person).try(:high_school).try(:name)}</td>" if audience.to_s.downcase == "participant" || audience.to_s.downcase == "student" %>

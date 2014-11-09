@@ -1,5 +1,5 @@
 class RegistrationResource < UwWebResource
-  self.prefix = "/student/v4/"
+  self.prefix = "/idcard/dsproxy/CourseWithParams/"
   self.element_name = "registration"
   self.collection_name = "registration"
   self.caller_class = "RegistrationResource"
@@ -36,7 +36,7 @@ class RegistrationResource < UwWebResource
   # Returns the CourseResource that is linked to this Registration.
   def course_resource
     section = full.attributes["Section"].try(:attributes)
-    @course_resuorce ||= CourseResource.find [section["Year"], section["Term"], section["CurriculumAbbreviation"], section["CourseNumber"]].join(",") + "/" + section["SectionID"]
+    @course_resuorce ||= CourseResource.find [section["Year"], section["Quarter"], section["CurriculumAbbreviation"], section["CourseNumber"]].join(",") + "/" + section["SectionID"]
   end
 
 end

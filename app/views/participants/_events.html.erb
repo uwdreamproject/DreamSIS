@@ -1,4 +1,4 @@
-<table class="events">
+‪<table class="events">
 	<thead>
 		<tr>
 			<th>Event</th>
@@ -26,10 +26,13 @@
 <table class="visits attendance">
 	
 	<tr>
-		<%- for visit in @high_school.try(:events, @term, [:participants]) -%>
+	  <%- visits = @high_school.try(:events, @term, [:participants]) rescue nil -%>
+    <%- if visits -%>
+		  <%- for visit in visits -%>
 			<!-- Attended Checkbox -->
 			<%#= TODO render :partial => "visits/_checkboxes/attended", 
 						:locals => { :participant => @participant, :visit => visit, :i => 0, :show_date => true } %>
+			<% end %> 
 		<% end %>
 	</tr>
 	

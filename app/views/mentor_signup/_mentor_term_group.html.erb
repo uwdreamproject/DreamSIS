@@ -1,12 +1,12 @@
 <tr id="mentor_term_group_<%= mentor_term_group.id %>">
-	<td><%= content_tag :span, h(mentor_term_group.section_id), :class => 'section_id tag' %></td>
+	<td><%= content_tag :span, h(mentor_term_group.course_string), :class => 'section_id tag' %></td>
 	<td><%=h mentor_term_group.title %>
 		<br>
 		<span class="light"><%= mentor_term_group.times %></span>
 		</td>
 	<td class="signup-meter <%= "full" if mentor_term_group.full? %>">
 		<div class="capacity" 
-			 style="width: <%= mentor_term_group.capacity.to_f / @max_term_cap * 100 rescue 0 %>%;"
+			 style="width: 100%;"
 			 title="<%= number_to_percentage mentor_term_group.percent_full, :precision => 0 %> full">
 			
 			<div class="size" style="width: <%= mentor_term_group.percent_full %>%">

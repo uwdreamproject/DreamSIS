@@ -118,7 +118,7 @@
 		
 	</dl>
 	
-	<%= render :partial => 'time_schedule_details', :object => @mentor_term_group.course_resource if @mentor_term_group.course_resource %>
+	<%= render :partial => 'time_schedule_details', :object => @mentor_term_group.course_resource if @mentor_term_group.course_resource rescue [] %>
 	
 	<%- unless @mentor_term_group.mentor_terms.leads.empty? -%>
 		<h3><%= Customer.leads_Label %></h3>

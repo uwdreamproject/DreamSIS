@@ -1,18 +1,22 @@
-<tr id="mentor_term_<%= mentor_term.id %>" class="hoverable <%= "newly_added" if params[:newly_added]==mentor_term.id.to_s %>">
+<tr id="mentor_term_<%= mentor_term.id %>" class="hoverable <%= "newly_added" if params[:newly_added]==mentor_term.id.to_s %>
+<%= "bright-red-background" if !mentor_term.mentor.passed_basics? %>">
 	<td class="photo"><%= image_tag photo_mentor_path(mentor_term.try(:mentor), :size => :medium), 
 						:class => 'student_photo thumb', 
 						:width => 64, 
 						:alt => "" %>
 		</td>
 		
-	<td><strong class="mentor name"><%= link_to mentor_term.fullname(:skip_update => true), mentor_term.mentor %></strong>
+	<td>
+	<strong class="mentor name"><%= link_to mentor_term.fullname(:skip_update => true), mentor_term.mentor %></strong>
 		<br><%= auto_link mentor_term.email %>
 		<div>
 			<%= "#{content_tag :span, Customer.lead_Label, :class => 'admin tag'}" if mentor_term.lead? %>
 			<%= "#{content_tag :span, "Enrolled", :class => 'green tag'}" unless mentor_term.volunteer? %>
-			<%= "#{content_tag :span, "Driver", :class => 'grey tag'}" if mentor_term.driver? %>
+			<%= "#{content_tag :span, "Driver", :class => 'grey tag'}" if mentor_term.driver? || mentor_term.mentor.valid_van_driver? %>
 		</div>
-		
+			<% if !mentor_term.mentor.passed_basics? %>
+	  <div><strong><%= mentor_term.mentor.readiness_summary %></strong></div>
+	<% end %>
 		<%= render :partial => 'note_form', 
 					:locals => { :mentor_term => mentor_term } %>
 

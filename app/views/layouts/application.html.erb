@@ -38,7 +38,7 @@
 		});</script>
 	<% end %>
 
-	<%- if GOOGLE_ANALYTICS_TRACKING_ID && Rails.env == 'production' -%>
+	<%- if Rails.env == 'production' && GOOGLE_ANALYTICS_TRACKING_ID -%>
 		<script type="text/javascript">
 
 		  var _gaq = _gaq || [];

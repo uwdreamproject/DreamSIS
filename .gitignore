@@ -12,6 +12,7 @@ config/initializers/action_mailer.rb
 .elasticbeanstalk/
 files
 config/api-keys.yml
+*~
 vendor/plugins/rails_upgrade/
 .bundle
 .sass-cache/

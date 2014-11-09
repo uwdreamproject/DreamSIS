@@ -13,7 +13,7 @@
 <tr class="<%= "current" if term.current_term? %>">
 	<td class="name"><%= link_to term.title, term_path(term) %></td>
 	<td><%= term.start_date.to_s(:db) %></td>
-	<%- if Customer.link_to_uw? -%><td><%= term.course_ids.collect{|c| "<li>#{h(c)}</li>"} if term.course_ids %></td><% end %>
+	<%- if Customer.link_to_uw? -%><td><%= term.course_ids.collect{|c| "<li>#{h(c)}</li>"} unless term.course_ids.blank? %></td><% end %>
 	<td><%= content_tag :span, "Y", :class => "approved tag" if term.allow_signups? %>
 	<td class="functions">
 		<%= link_to 'Edit', edit_term_path(term) %>
