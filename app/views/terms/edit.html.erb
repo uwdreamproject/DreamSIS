@@ -1,6 +1,6 @@
 <h1><%= @term.title %></h1>
 
-<%= semantic_form_for @term, :html => { :method => :put } do |f| %>
+<%= semantic_form_for @term, :as => :term, :url => term_path(@term), :html => { :method => :put } do |f| %>
 
 	<%= f.semantic_errors %>
 

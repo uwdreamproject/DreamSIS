@@ -7,7 +7,7 @@ Rollbar.configure do |config|
   if Rails.env.test? or Rails.env.development?
     config.enabled = false
   else
-    config.access_token = EY::Config.get('rollbar', 'ROLLBAR_ACCESS_TOKEN')
+    config.access_token = API_KEYS["rollbar"]["server_side_access_token"]
   end
   
 
