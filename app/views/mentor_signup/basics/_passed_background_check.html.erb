@@ -14,6 +14,6 @@
 	<div class="incomplete">
 		<h2>Background Checks</h2>
 		<p>In order to participate in <%= Customer.name_label %>, you must pass a criminal background check.</p>
-		<p><%= link_to "Submit your criminal conviction history form now &#x2192;", {:action => 'background_check_form'}, :class => 'button' %>
+		<p><%= link_to raw("Submit your criminal conviction history form now &#x2192;"), {:action => 'background_check_form'}, :class => 'button' %>
 	</div>	
 <% end -%>
