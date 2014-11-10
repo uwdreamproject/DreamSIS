@@ -1,125 +1,253 @@
-ActionController::Routing::Routes.draw do |map|
-	map.resources :activity_logs
-	map.activity_log_weekly_summary "/activity_logs/summary/week/:year/:month/:day.:format", :controller => "activity_logs", :action => "weekly_summary"
-	map.activity_log_current_week_summary "/activity_logs/summary/week.:format", :controller => "activity_logs", :action => "weekly_summary"
-	map.my_activity_log "/my/week/:year/:month/:day.:format", :controller => "activity_logs", :action => "my_week"
-	map.my_current_activity_log "/my/week.:format", :controller => "activity_logs", :action => "my_current_week"
-	
-	
-	
-  map.resources :trainings, :member => { :take => :get, :complete => :post }
-  map.resources :notes, :member => { :document => :get }
-  map.resources :programs
-  map.resources :test_types
-  map.resources :scholarships, :collection => { :auto_complete_for_scholarship_title => :any, :merge => :post }, :member => { :applications => :get }
-  map.resources :customers
-  map.resources :object_filters, :member => { :formatted_criteria => :post }
-  map.resources :locations, :collection => { :auto_complete_for_location_name => :any }
-  map.resources :colleges, :controller => "locations", :collection => { :auto_complete_for_institution_name => :any }, :member => { :applications => :get }
-  map.resources :terms, :member => { :sync => :put }
-  map.resources :quarters, :path => :quarters, :as => :terms
-  map.resources :clearinghouse_requests, :member => { :submit => :post, :retrieve => :post, :file => :get, :upload => :post }
+Dreamsis::Application.routes.draw do
+
+  # Top-level or Customer-level Objects
+  # ---------------------------------------
+  resources :customers
+  resources :object_filters do
+    member do
+      post :formatted_criteria
+    end
+  end
+  resources :terms do
+    collection do
+      match :check_export_status
+    end
+    member do
+      put :sync
+      match :show
+    end
+  end
+  resources :quarters, :controller => 'terms'
+  resources :notes do  
+    member do
+      get :document
+    end
+  end
+  resources :trainings do  
+    member do
+      get :take
+      post :complete
+    end  
+  end
+  resources :programs
+  resources :test_types
+  resources :scholarships do
+    collection do
+      match :auto_complete_for_scholarship_title
+      post :merge
+    end
+    member do
+      get :applications
+    end  
+  end
+  match 'changes/for/:model_name/:id' => 'changes#for_object', :as => :changes_for_object
+  match 'changes/trash' => 'changes#deleted', :as => :deleted_records
+  match 'changes/undelete/:id' => 'changes#undelete', :as => :undelete_change, :via => :delete
+
   
-  map.resources :events do |events|
-    events.resources :event_attendances, :as => :attendees, :collection => { 
-      :checkin => :get, :auto_complete_for_person_fullname => :any, :checkin_new_participant => :put, :checkin_new_volunteer => :put
-    }
-    events.resources :event_shifts, :as => :shifts
+  # Locations
+  # ---------------------------------------
+  resources :high_schools do
+    collection do
+      get :stats
+      get :in_district
+    end
+    member do
+      get :survey_codes
+      get :survey_code_cards
+      get :stats
+    end
+    resources :visits do
+      collection do
+        get :attendance
+        post :update_attendance
+      end
+    end
   end
-  map.resources :event_types
-  map.resources :event_groups
-  map.resources :high_schools, 
-    :member => { :survey_codes => :get, :survey_code_cards => :get, :stats => :get }, 
-    :collection => { :stats => :get, :in_district => :get } do |high_schools|
-    high_schools.resources :visits, 
-      :collection => { :attendance => :get, :update_attendance => :post }, 
-      :path_prefix  => "/high_schools/:high_school_id/:term_id"
+  resources :locations do
+    collection do
+      match :auto_complete_for_location_name
+    end
   end
+  resources :colleges, :controller => "locations" do
+    collection do
+      match :auto_complete_for_institution_name
+    end
+    member do
+      get :applications
+    end  
+  end
+  
+  
+  # Events
+  # ---------------------------------------
+  resources :events do
+    resources :event_attendances do
+      collection do
+        get :checkin
+        match :auto_complete_for_person_fullname
+        put :checkin_new_participant
+        put :checkin_new_volunteer
+      end
+    end
+    resources :event_shifts
+  end
+  resources :event_types
+  resources :event_groups
+  match 'rsvp/rsvp/:id' => 'rsvp#rsvp', :as => :rsvp, :via => :put
+  match 'rsvp/event/:id' => 'rsvp#event', :as => :event_rsvp, :via => :get
+  match 'rsvp/event_group/:id/locations' => 'rsvp#event_group_locations', :as => :event_group_locations, :via => :get
+  match 'rsvp/event_group/:id' => 'rsvp#event_group', :as => :event_group_rsvp, :via => :get
+  match 'rsvp/event_type/:id' => 'rsvp#event_type', :as => :event_type_rsvp, :via => :get
+  match 'rsvp/upcoming' => 'rsvp#mentor_available', :as => :mentor_available_rsvp, :via => :get
 
-	map.my_participants "/my/mentees", :controller => "participants", :action => "mentor", :mentor_id => "me"
-	map.participant_avatar "/participants/:id/avatar/:style", :controller => "participants", :action => "avatar"
-	map.all_participants "participants/all.:format", :controller => "participants", :action => "index"
-  map.resources :participants, 
-    :has_many => [:college_applications, :scholarship_applications, :parents, :college_enrollments, :college_degrees], 
-    :collection => { :auto_complete_for_participant_fullname => :any, :check_duplicate => :any, :add_to_group => :post, :fetch_participant_group_options => :any, :college_mapper_callback => :post, :bulk => :post, :check_export_status => :any },
-    :member => { :fetch_participant_group_options => :any, :college_mapper_login => :post } do |participant|
-    participant.resources :college_applications, :collection => { :auto_complete_for_institution_name => :any }
-    participant.resources :test_scores, :collection => { :update_scores_fields => :post }, :member => { :update_scores_fields => :post }
-  end  
-    
-  map.resources :students, :controller => :participants, :only => [:show]
 
-  map.resources :participant_groups,
-    :collection => { :high_school_cohort => :get, :high_school => :get }
+  # Participants
+  # ---------------------------------------
+  resources :participants do
+    collection do
+      match :auto_complete_for_participant_fullname
+      match :check_duplicate
+      match :fetch_participant_group_options
+      match :check_export_status
+      # match :cohort
+      # match '/participants/cohort/:id.:format' => 'participants#cohort', :as => :cohort
+      
+      post :add_to_group
+      post :college_mapper_callback
+      post :bulk
+    end
+    member do
+      match :fetch_participant_group_options
+      post :college_mapper_login
+      post :refresh_filter_cache
+    end
+    resources :college_applications do
+      collection do
+        match :auto_complete_for_institution_name
+      end
+    end
+    resources :college_enrollments
+    resources :college_degrees
+    resources :scholarship_applications
+    resources :parents
+    resources :test_scores do
+      collection do
+        post :update_scores_fields
+      end
+      member do
+        post :update_scores_fields
+      end    
+    end
+  end
+  resources :students, :only => [:show]
+  resources :participant_groups do
+    collection do
+      get :high_school_cohort
+      get :high_school
+    end
+  end
+  resources :clearinghouse_requests do
+    member do
+      post :submit
+      post :retrieve
+      get :file
+      post :upload
+    end
+  end
+  match '/my/mentees' => 'participants#mentor', :as => :my_participants, :mentor_id => 'me'
+  match '/participants/:id/avatar/:style' => 'participants#avatar', :as => :participant_avatar
+  match 'participants/all' => 'participants#index', :as => :all_participants
+  match '/participants/mentor/:mentor_id' => 'participants#mentor', :as => :mentor_participants
+  match '/participants/college/:college_id/cohort/:year' => 'participants#college_cohort', :as => :college_participants_cohort
+  match '/participants/college/:college_id' => 'participants#college', :as => :college_participants
+  match '/participants/program/:program_id' => 'participants#program', :as => :program_participants
+  match '/participants/high_school/:high_school_id/cohort/:year' => 'participants#high_school_cohort', :as => :high_school_cohort
+  match '/participants/high_school/:high_school_id' => 'participants#high_school', :as => :high_school_participants
+  match '/participants/cohort/:id' => 'participants#cohort', :as => :cohort
+  match '/participants/groups/:id' => 'participants#group', :as => :participant_group_participants
 
-  map.resources :users, :collection => { :auto_complete_for_user_login => :any, :admin => :get }
 
-  map.resources :mentors, 
-    :member => { :photo => :any, :remove_participant => :delete, :background_check_form_responses => :get, :send_login_link => :put, :login_link => :get }, 
-    :collection => { :auto_complete_for_mentor_fullname => :any, :onboarding => :any, :event_status => :any, :leads => :any, :van_drivers => :any, :check_if_valid_van_driver => :get }
-  map.resources :mentor_term_groups, 
-    :member => { :sync => :put, :photo_tile => :get }, 
-    :collection => { :create_from_linked_sections => :put, :sync => :put },
-    :has_many => :mentor_terms
-  map.mentor_term_groups_term 'mentor_term_groups/term/:term_id', 
-    :controller => 'mentor_term_groups', 
-    :action => 'term'
-  map.resources :volunteers, :controller => :mentors, :only => [:show, :background_check_responses]
+  # Mentors
+  # ---------------------------------------
+  resources :mentors do
+    collection do
+      get :auto_complete_for_mentor_fullname
+      match :onboarding
+      match :event_status
+      match :leads
+      match :van_drivers
+      get :check_if_valid_van_driver
+    end
+    member do
+      match :photo
+      delete :remove_participant
+      get :background_check_form_responses
+      put :send_login_link
+      get :login_link
+      get :onboarding_form
+      match :onboarding_update
+      get :driver_edit_form
+      match :driver_update
+    end
+  end
+  resources :mentor_term_groups do
+    resources :mentor_terms
+    collection do
+      put :create_from_linked_sections
+      put :sync
+    end
+    member do
+      put :sync
+      get :photo_tile
+    end
+  end
+  match 'mentor_term_groups/term/:term_id' => 'mentor_term_groups#term', :as => :mentor_term_groups_term
+  resources :volunteers, :only => [:show, :background_check_responses]
+  resources :activity_logs
+  match '/activity_logs/summary/week/:year/:month/:day' => 'activity_logs#weekly_summary', :as => :activity_log_weekly_summary
+  match '/activity_logs/summary/week' => 'activity_logs#weekly_summary', :as => :activity_log_current_week_summary
+  match '/my/week/:year/:month/:day' => 'activity_logs#my_week', :as => :my_activity_log
+  match '/my/week' => 'activity_logs#my_current_week', :as => :my_current_activity_log
+  match 'mentor_signup/add_my_courses' => 'mentor_signup#add_my_courses', :as => :mentor_signup_schedule_add_my_courses
+  match 'mentor_signup/basics' => 'mentor_signup#basics', :as => :mentor_signup_basics
+  match 'mentor_signup/risk_form' => 'mentor_signup#risk_form', :as => :mentor_signup_risk_form
+  match 'mentor_signup/conduct_form' => 'mentor_signup#conduct_form', :as => :mentor_signup_conduct_form
+  match 'mentor_signup/driver_form' => 'mentor_signup#driver_form', :as => :mentor_signup_conduct_form
+  match 'mentor_signup/background_check_form' => 'mentor_signup#background_check_form', :as => :mentor_signup_background_check_form
+  match 'mentor_signup/:term_id/drop/:id' => 'mentor_signup#drop', :as => :mentor_signup_term_drop, :via => :delete
+  match 'mentor_signup/:term_id/volunteer/:id' => 'mentor_signup#volunteer', :as => :mentor_signup_term_volunteer, :via => :put
+  match 'mentor_signup/:term_id' => 'mentor_signup#index', :as => :mentor_signup_term
+  match 'mentor_signup/' => 'mentor_signup#index', :as => :mentor_signup
+  match 'my/dashboard' => 'welcome#mentor', :as => :my_dashboard
+  
 
-  map.changes_for_object 'changes/for/:model_name/:id', :controller => 'changes', :action => 'for_object'
-  map.deleted_records 'changes/trash', :controller => 'changes', :action => "deleted"
-  map.undelete_change 'changes/undelete/:id', :controller => "changes", :action => "undelete", :conditions => { :method => :delete }
+  # Users
+  # ---------------------------------------
+  resources :users do
+    collection do
+      match :auto_complete_for_user_login
+      get :admin
+    end
+  end
+  match 'map_login/:person_id/:token' => 'session#map_login', :as => :map_login
+  match 'map_to_person/:person_id/:token' => 'session#map_to_person', :as => :map_to_person
+  match 'signup' => 'session#signup', :as => :signup
+  match 'login' => 'session#new', :as => :login
+  match 'logout' => 'session#destroy', :as => :logout
+  match 'profile' => 'users#profile', :as => :profile
+  match 'profile/choose_identity' => 'users#choose_identity', :as => :choose_identity
+  match 'profile/update' => 'users#update_profile', :as => :update_profile, :via => :post
+  match 'profile/update_identity' => 'users#update_identity', :as => :update_identity, :via => :post
+  match '/auth/anonymous/' => 'session#create_anonymous', :as => :anonymous_login_callback
+  match '/auth/:provider/callback' => 'session#create', :as => :omniauth_callback
+  resource :session
+  
 
-  map.mentor_signup_schedule_add_my_courses 'mentor_signup/add_my_courses', :controller => 'mentor_signup', :action => 'add_my_courses'
-  map.mentor_signup_basics 'mentor_signup/basics', :controller => 'mentor_signup', :action => 'basics'
-  map.mentor_signup_risk_form 'mentor_signup/risk_form', :controller => 'mentor_signup', :action => 'risk_form'
-  map.mentor_signup_background_check_form 'mentor_signup/background_check_form', :controller => 'mentor_signup', :action => 'background_check_form'
-  map.mentor_signup_term_drop 'mentor_signup/:term_id/drop/:id', :controller => 'mentor_signup', :action => 'drop', :conditions => {:method => :delete}
-  map.mentor_signup_term_volunteer 'mentor_signup/:term_id/volunteer/:id', :controller => 'mentor_signup', :action => 'volunteer', :conditions => {:method => :put}
-  map.mentor_signup_term 'mentor_signup/:term_id', :controller => 'mentor_signup', :action => 'index'
-  map.mentor_signup 'mentor_signup/', :controller => 'mentor_signup', :action => 'index'
-
-  map.rsvp 'rsvp/rsvp/:id', :controller => 'rsvp', :action => 'rsvp', :conditions => { :method => :put }
-  map.event_rsvp 'rsvp/event/:id', :controller => 'rsvp', :action => 'event', :conditions => { :method => :get }
-  map.event_group_locations 'rsvp/event_group/:id/locations', :controller => 'rsvp', :action => 'event_group_locations', :conditions => { :method => :get }
-  map.event_group_rsvp 'rsvp/event_group/:id', :controller => 'rsvp', :action => 'event_group', :conditions => { :method => :get }
-  map.event_type_rsvp 'rsvp/event_type/:id', :controller => 'rsvp', :action => 'event_type', :conditions => { :method => :get }
-
-  map.mentor_participants '/participants/mentor/:mentor_id.:format', :controller => 'participants', :action => 'mentor'
-  map.college_participants_cohort '/participants/college/:college_id/cohort/:year.:format', :controller => 'participants', :action => 'college_cohort'
-  map.college_participants '/participants/college/:college_id.:format', :controller => 'participants', :action => 'college'
-  map.program_participants '/participants/program/:program_id.:format', :controller => 'participants', :action => 'program'
-  map.high_school_cohort '/participants/high_school/:high_school_id/cohort/:year.:format', 
-    :controller => 'participants', 
-    :action => 'high_school_cohort'
-	map.high_school_participants '/participants/high_school/:high_school_id.:format', :controller => 'participants', :action => 'high_school'
-  map.cohort '/participants/cohort/:id.:format', :controller => 'participants', :action => 'cohort'
-  map.participant_group_participants '/participants/groups/:id.:format', :controller => 'participants', :action => 'group'
-
-  # Users and Sessions
-  map.map_login 'map_login/:person_id/:token', :controller => 'session', :action => 'map_login'
-  map.map_to_person 'map_to_person/:person_id/:token', :controller => 'session', :action => 'map_to_person'
-  map.signup 'signup', :controller => 'session', :action => 'signup'
-  map.login 'login', :controller => 'session', :action => 'new'
-  map.logout 'logout', :controller => 'session', :action => 'destroy'
-  map.profile 'profile', :controller => 'users', :action => 'profile'
-  map.choose_identity 'profile/choose_identity', :controller => 'users', :action => 'choose_identity'
-  map.update_profile 'profile/update', :controller => 'users', :action => 'update_profile', :conditions => { :method => :post }
-  map.update_identity 'profile/update_identity', :controller => 'users', :action => 'update_identity', :conditions => { :method => :post }
-  # map.reset_password 'session/reset/:user_id/:token', :controller => 'session', :action => 'reset_password'
-  # map.open_id_complete 'session', :controller => "session", :action => "create", :requirements => { :method => :get }
-  map.resource :session
-  map.anonymous_login_callback "/auth/anonymous/", :controller => 'session', :action => 'create_anonymous'
-  map.omniauth_callback "/auth/:provider/callback", :controller => 'session', :action => 'create'  
-
-  map.my_dashboard "my/dashboard", :controller => "welcome", :action => "mentor"
-  map.root :controller => "welcome"
-
-  map.connect "ping", :controller => "application", :action => "ping"
-
-  # Install the default routes as the lowest priority.
-  # Note: These default routes make all actions in every controller accessible via GET requests. You should
-  # consider removing the them or commenting them out if you're using named routes and resources.
-  map.connect ':controller/:action/:id.:format'
-  map.connect ':controller/:action/:id'
+  # Other
+  # ---------------------------------------
+  match '/' => 'welcome#index'
+  match 'ping' => 'application#ping'
+  root :to => 'welcome#index'
+  
 end

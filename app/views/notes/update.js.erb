@@ -1,0 +1,6 @@
+$("#note_<%= @note.id %>").replaceWith("<%=j render :partial => 'shared/note', :object => @note %>")
+$("#note_<%= @note.id %>").effect("highlight")
+
+<%- if (!@note.notable.needs_followup? rescue false) -%>
+  $(".record-header .needs-followup").hide("fade")
+<%- end %>

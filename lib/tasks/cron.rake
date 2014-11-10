@@ -35,7 +35,7 @@ namespace :cron do
     
     desc "Reload and cache IPEDS database (if needed)"
     task :load => :environment do
-      RAILS_DEFAULT_LOGGER = Logger.new(STDOUT)
+      Rails.logger = Logger.new(STDOUT)
       STDOUT.sync = true
       bt = Benchmark.realtime do 
         puts "Reloading IPEDS database into Institutions..."

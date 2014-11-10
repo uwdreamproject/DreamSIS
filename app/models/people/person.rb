@@ -1,4 +1,4 @@
-class Person < CustomerScoped
+class Person < ActiveRecord::Base
   include Comparable
 
   has_many :event_attendances do
@@ -55,8 +55,7 @@ class Person < CustomerScoped
 
   PERSON_RESOURCE_CACHE_LIFETIME = 1.day
 
-  default_scope :order => "lastname, firstname, middlename", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
-  # default_scope lambda { |person| { :conditions => { :customer_id => Customer.current_customer.id } } }
+  default_scope :order => "lastname, firstname, middlename"
   
 
   # Returns the actual person resource object. Specify +true+ as a parameter to fetch the "full" version
@@ -163,6 +162,11 @@ class Person < CustomerScoped
     dob = birthdate.is_a?(Date) ? birthdate : Date.parse(birthdate)
     now = Time.now.utc.to_date
     now.year - dob.year - ((now.month > dob.month || (now.month == dob.month && now.day >= dob.day)) ? 0 : 1)
+  end
+  
+  # Returns true if this person's +followup_note_count+ is greater than zero.
+  def needs_followup?
+    followup_note_count && followup_note_count > 0
   end
 
   # Pulls in contact info from the Person Web Service and updates our local cache if it hasn't been
@@ -292,20 +296,59 @@ class Person < CustomerScoped
   end
   
   
-  # Returns true if the text of the +background_check_result+ attribute includes either "OK" or "NO 
-  # RECORD FOUND". This allows staff to allow a student to participate even if a conviction history has
-  # been found but the school has approved that student's participation. In that case, the background
-  # check result text will include these details but also include to the text "OK".
+  # Returns true if the text of the +background_check_result+ attribute 
+  # includes either "OK" or "NO RECORD FOUND". This allows staff to allow a 
+  # student to participate even if a conviction history has been found but 
+  # the school has approved that student's participation. In that case, the
+  # background check result text will include these details but also include 
+  # to the text "OK".
   def passed_background_check?
     return false if background_check_result.nil?
-    return false if background_check_run_at.nil?
+    valid_length = Customer.current_customer.background_check_validity_length
+    return true if valid_length < 0
+    return false if (background_check_run_at.nil? || background_check_run_at < valid_length.days.ago)
     background_check_result.include?("OK") || background_check_result.include?("NO RECORD FOUND")
   end
   
   # Returns true if the +background_check_authorized_at+ is not nil but the person hasn't passed the background
   # check yet. This means that a staff person hasn't yet run the check and entered it into the system yet.
   def background_check_pending?
-    !background_check_authorized_at.nil? && !passed_background_check?
+    !background_check_authorized_at.nil? && (!passed_background_check? && background_check_run_at.nil?)
+  end
+ 
+  # Returns true if the text of the +sex_offender_check_result+ attribute 
+  # includes either "OK" or "NO RECORD FOUND". This allows staff to allow a 
+  # student to participate even if a conviction history has been found but 
+  # the school has approved that student's participation. In that case, the
+  # sex offender check result text will include these details but also include 
+  # to the text "OK". 
+  def passed_sex_offender_check?
+    return false if sex_offender_check_result.nil?
+    valid_length = Customer.current_customer.background_check_validity_length
+    return true if valid_length < 0
+    return false if (sex_offender_check_run_at.nil? || sex_offender_check_run_at < valid_length.days.ago)
+    sex_offender_check_result.include?("OK") || sex_offender_check_result.include?("NO RECORD FOUND")
+  end
+    
+  # Returns true if a staff person hasn't yet run the check and entered it into the system.
+  def sex_offender_check_pending?
+    !background_check_authorized_at.nil? && (!passed_sex_offender_check? && sex_offender_check_run_at.nil?)
+  end
+  
+  # Returns true if both SO and BG checks passed, false otherwise
+  def passed_criminal_checks?
+    passed_sex_offender_check? && passed_background_check?
+  end
+  
+  # If both SO and criminal background checks were run, returns later of the two
+  # dates on which the checks were run. Useful for displaying a single date
+  # for when background checks were passed
+  def criminal_checks_run_at
+    if sex_offender_check_run_at && background_check_run_at
+      [sex_offender_check_run_at, background_check_run_at].max
+    else
+      nil
+    end
   end
   
   # Returns true if there are any responses "Yes" on the background check form from mentor signup.

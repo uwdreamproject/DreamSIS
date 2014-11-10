@@ -2,7 +2,7 @@ class StudentPhoto < NonstandardWebServiceResult
   
   SWS_VERSION = "v1"
 
-  self.element_path = "idcard/#{SWS_VERSION}/photo"  
+  self.element_path = "idcard/#{SWS_VERSION}/photo"
   self.cache_lifetime = 1.month
   
   def self.encapsulate_data(data)
@@ -51,7 +51,7 @@ class StudentPhoto < NonstandardWebServiceResult
 
   def file_path(size = nil)
     filename = (size.nil? || size.to_s == 'default') ? "default" : size.to_s
-    file_path = File.join("#{RAILS_ROOT}", "tmp", "cache", "web_service_result", "StudentPhoto", @id.to_s, "#{filename}.jpg")
+    file_path = File.join("#{Rails.root}", "tmp", "cache", "web_service_result", "StudentPhoto", @id.to_s, "#{filename}.jpg")
   end
   
 end

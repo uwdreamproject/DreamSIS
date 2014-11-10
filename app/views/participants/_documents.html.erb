@@ -3,9 +3,9 @@
 
 <p><%= link_to_function "Add another document", "$('new_document_form').show(); this.hide();", :id => "new_document_button", :class => "add button" %></p>
 
-<% semantic_form_for participant.notes.new, :url => notes_path(:return_to => request.request_uri + "#paperwork"), :html => { :multipart => true, :style => "display:none;", :id => "new_document_form" } do |f| -%>
+<%= semantic_form_for participant.notes.new, :url => notes_path(:return_to => request.url + "#paperwork"), :html => { :multipart => true, :style => "display:none;", :id => "new_document_form" } do |f| -%>
 	<h4 style="margin-bottom: 2px">Add New Document</h4>
-	<%- f.inputs do -%>
+	<%= f.inputs do -%>
 		<%= f.input :title %>
 		<%= f.input :note, :input_html => {:rows => 3}, :label => "Additional Notes" %>
 		<%= f.input :document %>

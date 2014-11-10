@@ -1,8 +1,8 @@
 <h1>New Mentor Group</h1>
 
-<% semantic_form_for @mentor_term_group do |f| %>
+<%= semantic_form_for @mentor_term_group do |f| %>
 
-	<%= f.error_messages %>
+	<%= f.semantic_errors %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 	

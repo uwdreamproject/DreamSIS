@@ -1,0 +1,7 @@
+.formtastic .stringish input {
+  width: 72%;
+}
+
+.formtastic .input .label {
+  width: 22%;
+}

@@ -2,7 +2,9 @@
     <td class="name"><%= link_to h(location.name), location %></td>
     <td style="min-width: 8em"><%= content_tag :span, location.type.to_s.titleize, :class => 'outline tag' unless location.type.nil? %></td>
     <td><%=h location.address %></td>
-    <td><%=h location.to_coordinates.join(", ") if location.geocoded? %></td>
+    <% # TODO: Figure out why to_coordinates raises error %>
+    <td><% c = location.geocoded? ? location.to_coordinates : nil rescue nil %>
+        <%=h(c) if c %></td>
     <td><%=h location.county %></td>
     <td><%=h number_to_phone location.phone %></td>
     <td class="functions"><%= link_to 'Show', location %></td>

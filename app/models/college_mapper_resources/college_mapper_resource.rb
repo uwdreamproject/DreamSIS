@@ -25,12 +25,12 @@ class CollegeMapperResource < ActiveResource::Base
 
     attr_accessor :caller_class
   
-    # All configuration options are stored in RAILS_ROOT/config/web_services.yml. This allows us to use different
+    # All configuration options are stored in Rails.root/config/web_services.yml. This allows us to use different
     # hosts, certs, etc. in different Rails environments.
     def config_options
-      # config_file_path = File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "college_mapper.yml")
-      # @config_options ||= YAML::load(ERB.new((IO.read(config_file_path))).result)[(RAILS_ENV)].symbolize_keys      
-      @config_options ||= API_KEYS['collegemapper'][RAILS_ENV].symbolize_keys
+      # config_file_path = File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "college_mapper.yml")
+      # @config_options ||= YAML::load(ERB.new((IO.read(config_file_path))).result)[(Rails.env)].symbolize_keys      
+      @config_options ||= API_KEYS['collegemapper'][Rails.env].symbolize_keys
     end
 
     def headers
@@ -45,7 +45,7 @@ class CollegeMapperResource < ActiveResource::Base
       message = "  \e[4;33;1m#{caller_class_s} #{method}"
       message << " (#{'%.1f' % (time*1000)}ms)" if time
       message << "\e[0m   #{msg}"
-      RAILS_DEFAULT_LOGGER.info message
+      Rails.logger.info message
     end
         
   end

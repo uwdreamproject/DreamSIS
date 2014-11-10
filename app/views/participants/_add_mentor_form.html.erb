@@ -1,7 +1,7 @@
 <div style="position:relative">
 	<% form_for @participant do |f| %>
 	
-		<%= model_auto_completer "mentor[fullname]", "", "participant[new_mentor_id]", nil,
+		<%#= model_auto_completer "mentor[fullname]", "", "participant[new_mentor_id]", nil,
 								{ 
 									:url => auto_complete_for_mentor_fullname_mentors_path, 
 									:submit_on_return => true,

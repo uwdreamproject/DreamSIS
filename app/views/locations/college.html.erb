@@ -1,13 +1,37 @@
-<h3 class="pre-title"><%=h @location.type.to_s.titleize %></h3>
+<h3 class="pre-title"><%=h @location.class.to_s.titleize %></h3>
 <h1><%=h @location.name %></h1>
 
 <div class="when-and-where">
+	<h3>Location</h3>
 	<%= image_tag "https://maps.google.com/maps/api/staticmap?size=250x250&sensor=false&zoom=12&markers=#{@location.try(:latitude)}%2C#{@location.try(:longitude)}" %>
 	<p class="address">
 		<%=h @location.address %>
 		<br><%=h [@location.city, @location.state].join(", ") %> <%=h @location.zip %>
 	</p>
 </div>
+
+<ul class="stat-numbers progression">
+	<li>
+		<%= link_to content_tag(:strong, @location.college_applications.count) + content_tag(:p, "interested"),
+					applications_college_path(@location.id) %>
+	</li>
+
+	<li>
+		<%= link_to content_tag(:strong, Participant.attending_college(@location.id).count) + content_tag(:p, "planning"),
+					college_participants_path(@location.id) %>
+	</li>
+
+	<li>
+		<%= link_to content_tag(:strong, "N") + content_tag(:p, "enrolled"),
+					college_participants_path(@location.id) %>
+	</li>
+
+	<li>
+		<%= link_to content_tag(:strong, "N") + content_tag(:p, "graduated"),
+					college_participants_path(@location.id) %>
+	</li>
+
+</ul>
 
 <dl class="inline-definitions">
 
@@ -20,9 +44,7 @@
 	<dd><%= number_to_phone @location.phone %></dd>
 
 	<dt>Website URL</dt>
-	<dd><%= link_to h(@location.try(:webaddr)), 
-					Addressable::URI.heuristic_parse(h(@location.try(:webaddr))).to_s, 
-					:target => "_blank" %>
+	<dd><%= link_to @location.try(:formatted_website_url), @location.try(:formatted_website_url), :target => "_blank" %>
 		</dd>
 
 	<%- if @location.respond_to?(:college_navigator_url) && !@location.try(:college_navigator_url).nil? %>
@@ -35,30 +57,13 @@
 		</dd>
 	<% end -%>
 
-	<dt>Applicants</dt>
-	<dd><%= link_to pluralize(@location.college_applications.count, Customer.participant_label),
-					applications_college_path(@location.id) %>,
-					
-		<%= link_to pluralize(Participant.attending_college(@location.id).count, "attendee"),
-					college_participants_path(@location.id) %>
-		</dd>
-
 </dl>
 
 <div id="sidebar">
 	<p><%= link_to 'Back to all locations', locations_path, :class => 'back button' %></p>
 	
-	<% form_for :college, :url => colleges_path, :html => { :method => :get } do |f| %>
-
-		<%= model_auto_completer "college[institution_name]", "", "id", nil,
-								{ 
-									:url => auto_complete_for_institution_name_colleges_path, 
-									:submit_on_return => true, 
-									:after_update_element => "function(text_field, selection, hidden_field, id) { text_field.form.submit() }" 
-								},
-								{ :autocomplete => false, :class => "search", :placeholder => "Search colleges" },
-								{ :skip_style => true } %>
-								
-	<% end %>
+	<div class="auto_complete">
+		<input type="input" class="search autocomplete-search" placeholder="Search colleges" data-source="<%= auto_complete_for_institution_name_colleges_url %>" data-target="<%= college_url("id") %>" />
+	</div>
 	
 </div>

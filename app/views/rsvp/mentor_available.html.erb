@@ -1,0 +1,28 @@
+<%- any_events = false -%>
+<%- aud = @audience || @current_user.try(:person) -%>
+<h1>Upcoming Events</h1>
+<table class="highlightless rsvp">
+  <%- @event_groups.each do |event_group| -%>
+    <%- if (ev_grp = event_group.future_events(aud)).any? -%>
+      <%- any_events = true -%>
+      <tr class="rowspan-header">
+        <th colspan=5>
+          <%= h event_group.name %>
+          <%- if (desc = event_group.description(aud)) -%>
+          <p>
+            <%= h desc %>
+          </p>
+          <%- end %>
+        </th>
+      </tr>
+      <%= render :partial => 'event', :collection => ev_grp %>
+    <%- end -%>
+  <%- end -%>
+  <%- unless any_events -%>
+      <tr class="empty">
+        <td colspan=10>There aren't any events available for RSVP right now.</td>
+      </tr>
+  <% end -%>
+</table>
+
+<%= render :partial => 'sidebar' %>

@@ -1,0 +1,18 @@
+<%- disabled = !@participant.mentors.include?(@current_user.try(:person)) -%>
+<p><%= link_to_remote "Open in CollegeMapper", 
+		:url => college_mapper_login_participant_path(@participant), 
+		:method => :post, 
+		:html => {
+			:class => "college_mapper button #{"disabled" if disabled}", 
+			:title => "#{"You must be linked to this student to view his/her CollegeMapper record." if disabled}"
+		} %></p>
+<form id="college_mapper_login_form" method="GET" target="_blank" style="display:none" class="centered-modal">
+	<h2>You're leaving the DreamSIS website.</h2>
+	<p>Clicking the button below will open the CollegeMapper website in a new tab.</p>
+	<input type="hidden" name="userId" id="college_mapper_userId">
+	<input type="hidden" name="token" id="college_mapper_token">
+	<input type="hidden" name="redirect_to" id="college_mapper_redirect_to" value="<%= "/counselors/timeline/#{@participant.college_mapper_id}" %>">
+	<input type="submit" value="Go to CollegeMapper website" onClick="this.form.hide(); return true;">
+	<%= separator %>
+	<%= link_to_function "Cancel", "this.parentElement.hide()" %>
+</form>

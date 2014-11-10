@@ -1,5 +1,5 @@
 class TermResource < UwWebResource
-  self.prefix = "/student/v4/"
+  self.prefix = "/student/v5/"
   self.element_name = "term"
   self.collection_name = "term"
   self.caller_class = "TermResource"

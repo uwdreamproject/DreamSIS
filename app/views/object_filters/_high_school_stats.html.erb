@@ -19,7 +19,7 @@ hide_title ||= false
 	</tr>
 	
 	<tr>
-		<td class="title">Active <%= "&amp; #{Customer.not_target_opposite_Label}" unless Customer.not_target_label.blank? %> students
+		<td class="title">Active <%= "& #{Customer.not_target_opposite_Label}" unless Customer.not_target_label.blank? %> students
 		</td>
 		<td class="number"><%= active_participants.size %></td>
 		<td></td>

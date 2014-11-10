@@ -4,7 +4,7 @@ class MentorsController < ApplicationController
   
   def index
     return redirect_to Mentor.find(params[:id]) if params[:id]
-    @mentors = Mentor.paginate :all, :page => params[:page]
+    @mentors = Mentor.page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -22,7 +22,7 @@ class MentorsController < ApplicationController
     @event_attendances = @mentor.event_attendances.find(:all, 
                             :include => :event, 
                             :joins => :event, 
-                            :conditions => ["events.type IS NULL AND (rsvp = ? OR attended = ?)", true, true]
+                            :conditions => ["(rsvp = ? OR attended = ?)", true, true]
                           )
     @layout_in_blocks = true
 
@@ -143,24 +143,70 @@ class MentorsController < ApplicationController
   end
   
   def auto_complete_for_mentor_fullname
-    @mentors = Mentor.find(:all, 
-                          :conditions => ["LOWER(firstname) LIKE :fullname 
+    @mentors = Mentor.find(:all,
+                          :conditions => ["LOWER(firstname) LIKE :fullname
                                             OR LOWER(lastname) LIKE :fullname
                                             OR LOWER(display_name) LIKE :fullname
-                                            OR LOWER(uw_net_id) LIKE :fullname", 
-                                          {:fullname => "%#{params[:mentor][:fullname].downcase}%"}])
-    respond_to do |format|
-      format.js { 
-        render :partial => "shared/auto_complete_person_fullname", 
-                :object => @mentors, 
-                :locals => { :highlight_phrase => params[:mentor][:fullname] }
-       }
-    end
+                                            OR LOWER(uw_net_id) LIKE :fullname",
+                                          {:fullname => "%#{params[:term].downcase}%"}])
+
+    render :json => @mentors.map { |mentor| 
+      {
+        :id => mentor.id, 
+        :value => mentor.fullname,
+        :klass => mentor.class.to_s.underscore, 
+        :fullname => mentor.fullname, 
+        :secondary => mentor.email,
+        :tertiary => (Customer.current_customer.customer_label(mentor.class.to_s.underscore, :titleize => true) || result.class.to_s).titleize
+      }
+    }    
   end
   
   def onboarding
     @term = Term.find(params[:term_id])
     @mentors = @term.mentors
+  end
+
+  def onboarding_update
+    @mentor = Mentor.find(params[:id])
+    @mentor.validate_name = true
+
+    respond_to do |format|
+      if @mentor.update_attributes(params[:mentor])
+        flash[:notice] = 'Mentor was successfully updated.'
+        format.html { render :partial => "mentor_onboarding", :object => @mentor, :locals => {:append_block => false} }
+      else
+        flash[:error] = "Error updating mentor"
+      end
+    end
+  end
+
+  def driver_update
+    @mentor = Mentor.find(params[:id])
+    @mentor.validate_name = true
+
+    respond_to do |format|
+      if @mentor.update_attributes(params[:mentor])
+        flash[:notice] = 'Mentor was successfully updated.'
+        format.html { render :partial => "mentor_driver", :object => @mentor, :locals => {:append_block => false} }
+      else
+        flash[:error] = "Error updating mentor"
+      end
+    end
+  end
+
+  def onboarding_form
+    @mentor = Mentor.find(params[:id])
+    respond_to do |format|
+      format.html { render :partial => "onboarding_form"}
+    end
+  end
+
+  def driver_edit_form
+    @mentor = Mentor.find(params[:id])
+    respond_to do |format|
+      format.html { render :partial => "driver_edit_form"}
+    end
   end
 
   def event_status
@@ -190,7 +236,7 @@ class MentorsController < ApplicationController
   
   def send_default_photo(size)
 		filename = size == "thumb" ? "blank_avatar_thumb.png" : "blank_avatar.png"
-    send_file File.join(RAILS_ROOT, "public", "images", filename), 
+    send_file File.join(Rails.root, "public", "images", filename), 
               :disposition => 'inline', :type => 'image/png', :status => 404
   end  
   

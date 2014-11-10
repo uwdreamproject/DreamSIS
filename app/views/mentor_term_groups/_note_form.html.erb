@@ -12,7 +12,7 @@
 	<% end -%>
 
 	<div class="notes editable" id="note_form_<%= mentor_term.id %>" style="display:none">
-		<% remote_form_for [mentor_term.mentor_term_group, mentor_term] do |f| %>
+		<% form_for [mentor_term.mentor_term_group, mentor_term], :remote => true do |f| %>
 			<%= f.text_area :notes, :rows => 3, :id => "mentor_term_notes_#{mentor_term.id}" %>
 			<br />
 			<%= f.submit "Save", :disable_with => "Saving..." %>

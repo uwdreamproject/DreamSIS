@@ -1,5 +1,4 @@
 require 'change_logged'
-require 'customer_scoped' if ActiveRecord::Base.connection.tables.include?("customers")
 
 module ActiveRecord
 	class Base
@@ -10,15 +9,5 @@ module ActiveRecord
 			nil
 		end
 		
-	end
-end
-
-module ActionController
-	class Request
-		
-		def html?
-			template_format == :html
-		end
-	
 	end
 end

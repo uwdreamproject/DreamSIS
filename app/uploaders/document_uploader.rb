@@ -1,7 +1,7 @@
 class DocumentUploader < CarrierWave::Uploader::Base
   include CarrierWave::Compatibility::Paperclip
 
-  storage :s3
+  storage :fog
 
   process :save_content_type_and_size_in_model
 

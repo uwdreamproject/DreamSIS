@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   before_filter :apply_extra_footer_content_if_requested
   
   def index
-    @users = User.paginate :all, :page => params[:page]
+    @users = User.page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb

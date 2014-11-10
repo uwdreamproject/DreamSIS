@@ -13,7 +13,12 @@ class WelcomeController < ApplicationController
 
   def mentor
     @mentor = @current_user.person
-    redirect_to mentor_signup_basics_path unless @mentor.passed_basics?
+    if !@mentor.passed_basics?
+      redirect_to mentor_signup_basics_path 
+    elsif Customer.link_to_uw? && !@mentor.correct_sections?
+      flash[:error] = "You are not signed up for the correct sections. See information below."
+      redirect_to mentor_signup_path
+    end
     @my_mentees = @mentor.try(:participants)
     @layout_in_blocks = true
     @high_schools = @mentor.current_mentor_term_groups.collect(&:location).flatten.uniq.compact

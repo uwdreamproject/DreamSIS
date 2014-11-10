@@ -50,7 +50,7 @@ class CollegeApplicationsController < ParticipantsController
     respond_to do |format|
       if @college_application.save
         flash[:notice] = 'College Application was successfully created.'
-        format.html { redirect_to(@participant) }
+        format.html { redirect_to(participant_path(@participant, :anchor => "!/section/college_applications")) }
         format.xml  { render :xml => @college_application, :status => :created, :location => @participant }
       else
         format.html { render :action => "new" }
@@ -67,7 +67,7 @@ class CollegeApplicationsController < ParticipantsController
     respond_to do |format|
       if @college_application.update_attributes(params[:college_application])
         flash[:notice] = 'College Application was successfully updated.'
-        format.html { redirect_to(@participant) }
+        format.html { redirect_to(participant_path(@participant, :anchor => "!/section/college_applications")) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -83,16 +83,23 @@ class CollegeApplicationsController < ParticipantsController
     @college_application.destroy
 
     respond_to do |format|
-      format.html { redirect_to(participant_college_applications_url) }
+      format.html { redirect_to(participant_path(@participant, :anchor => "!/section/college_applications")) }
       format.xml  { head :ok }
     end
   end
 
   def auto_complete_for_institution_name
     @institutions = Institution.find_all_by_name(params[:college_application][:institution_name].to_s.downcase)[0..10]
-    render :partial => "shared/auto_complete_institution_name", 
-            :object => @institutions, 
-            :locals => { :highlight_phrase => params[:college_application][:institution_name].to_s }
+    
+    render :json => @institutions.map { |result| 
+      {
+        :id => result.id, 
+        :value => result.name,
+        :klass => result.class.to_s.underscore, 
+        :fullname => result.name, 
+        :secondary => result.location_detail
+      }
+    }
   end
 
   

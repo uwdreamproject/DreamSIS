@@ -2,7 +2,9 @@
 <p>In order to participate as a <%= Customer.mentor_label %> in <%= Customer.name_label %>, you must complete a few important steps:</p>
 
 	<%= render :partial => 'mentor_signup/basics/currently_enrolled' %>
-	<%= render :partial => 'mentor_signup/basics/passed_background_check' if Customer.require_background_checks? %>
 	<%= render :partial => 'mentor_signup/basics/signed_risk_form' if Customer.require_risk_form? %>
+	<%= render :partial => 'mentor_signup/basics/signed_conduct_form' if Customer.require_conduct_form? %>
+	<%= render :partial => 'mentor_signup/basics/mentor_workshop' if Customer.mentor_workshop_event_type %>
+	<%= render :partial => 'mentor_signup/basics/passed_background_check' if Customer.require_background_checks? %>
 
 <p>As soon as the steps above are complete, you'll be able to access DreamSIS.</p>
