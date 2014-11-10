@@ -27,10 +27,19 @@ class UwWebResource < ActiveResource::Base
 
     # All configuration options are stored in Rails.root/config/web_services.yml. This allows us to use different
     # hosts, certs, etc. in different Rails environments.
-    def config_options
+    def global_config_options
       config_file_path = "#{Rails.root}/config/web_services.yml"
-      @config_options ||= YAML.load_file(config_file_path)[Rails.env]
-      @config_options[Apartment::Tenant.current].nil? ? {} : @config_options[Apartment::Tenant.current].symbolize_keys
+      @global_config_options ||= YAML.load_file(config_file_path)[Rails.env]
+    end
+    
+    # Returns config options for the current Tenant.
+    def config_options
+      tenant_options = global_config_options["tenant_options"][Apartment::Tenant.current]
+      if tenant_options.nil?
+        return {}
+      else
+        tenant_options.tap{ |t| t[:host] = global_config_options["host"] }.symbolize_keys
+      end
     end
 
     def headers
@@ -47,11 +56,7 @@ class UwWebResource < ActiveResource::Base
         
   end
 
-  # Set the site dynamically based on the current tenant. Returns nil if the tenant has no options 
-  # configured in web_services.yml.
-  def self.site
-    UwWebResource.config_options[:host].nil? ? nil : "https://#{UwWebResource.config_options[:host]}"
-  end
+  self.site = "https://#{UwWebResource.global_config_options[:host]}" if UwWebResource.global_config_options[:host]
   
   protected
   
