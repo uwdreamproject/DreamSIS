@@ -1,7 +1,7 @@
 <h1>New <%= Customer.participant_label %></h1>
 
-<% semantic_form_for(@participant, :html => {:id => "participant_form", :multipart => true}) do |f| %>
-	<%= f.error_messages %>
+<%= semantic_form_for(@participant, :html => {:id => "participant_form", :multipart => true}) do |f| %>
+	<%= f.semantic_errors %>
 	
 	<%= render :partial => 'participants/fields/name_and_personal', :locals => { :f => f } %>
 	<%= render :partial => 'participants/fields/contact', :locals => { :f => f } %>
@@ -13,11 +13,12 @@
 	<%= render :partial => 'participants/fields/financial', :locals => { :f => f } %>
 	<%= render :partial => 'participants/fields/administrative', :locals => { :f => f } %>	
 
-	<%- f.inputs :name => "Create Record" do -%>
+	<%= f.inputs :name => "Create Record" do -%>
 		<%= f.input :link_to_current_user_after_save, :as => :boolean, :label => "Automatically link me to this student after creating the student record" %>
 	<% end %>
 
-	<%= f.buttons %>
+	<%= default_form_actions(f) %>
+	
 <% end %>
 
 <div id="sidebar">

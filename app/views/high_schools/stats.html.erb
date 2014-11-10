@@ -1,21 +1,41 @@
 <div class="content-block">
 	<div class="right">
-				<%= link_to_remote "Show", 
-									:url => stats_high_schools_path(:cohort => @cohort, :hide_title => true),
-									:method => :get,
-									:html => { 
-										:onclick => "if (this.innerHTML == 'Hide') { $('participant_stats_all').hide(); this.update('Show'); return false; } else { this.update('Loading...'); $('participant_stats_all').show(); }",
-										:id => "show_participants_stats_all_link",
-										:class => "no-icon button"
-									} if params[:id] %>		
+		<%= link_to("Show", "#", html_options = {
+				:id => "show_participants_stats_all_link",
+				:class => "no-icon button"
+			}) if params[:id] %>
+		<%= javascript_tag "
+			$('#show_participants_stats_all_link').click(
+				function(e) {
+					a = e.target;
+					if (a.innerHTML == 'Hide') {
+						$('#participant_stats_all').hide();
+						a.innerHTML = 'Show';
+						return false;
+					} else {
+						a.innerHTML = 'Loading...';
+						$('#participant_stats_all').show();
+						$.ajax({
+							url: '#{stats_high_schools_path(:cohort => @cohort, :hide_title => true, :format => 'js')}',
+							cache: false
+						});
+						return false;
+					}
+				}
+			);
+		" if params[:id] %>
 	</div>
 	<h1><%=h @cohort.to_s %> Participant Stats</h1>
 
 	<div>
-		<div id="participant_stats_all" class="loading" <%= "style='display:none'" if params[:id] %>>
-			<%= javascript_tag "document.observe('dom:loaded', function() { #{remote_function(
-				:url => stats_high_schools_path(:cohort => @cohort, :hide_title => true), :method => :get
-			)} });" unless params[:id] %>
+		<div id="participant_stats_all" class="loading" <%= raw "style='display:none'" if params[:id] %>>
+			<%= javascript_tag "
+				$( document ).ready( function() {
+					$.ajax({
+						url: '#{stats_high_schools_path(:cohort => @cohort, :hide_title => true, :format => 'js')}',
+						cache: false
+					});
+				});" unless params[:id] %>
 		</div>
 	</div>
 </div>
@@ -25,28 +45,53 @@
 	<%- for high_school in @high_schools -%>
 		<div style="margin-bottom: 2em">
 			<div class="right">
-				<%= link_to_remote "Show", 
-									:url => stats_high_school_path(high_school, :cohort => @cohort, :hide_title => true),
-									:method => :get,
-									:html => { 
-										:onclick => "if (this.innerHTML == 'Hide') { $('participant_stats_#{high_school.id}').hide(); this.update('Show'); return false; } else { this.update('Loading...'); $('participant_stats_#{high_school.id}').show(); }",
-										:id => "show_participants_stats_#{high_school.id}_link",
-										:class => "no-icon button"
-									} unless params[:id] %>
+				<%= link_to("Show", "#", html_options = {
+								:id => "show_participants_stats_#{high_school.id}_link",
+								:class => "no-icon button",
+								:data => {:show => "#{high_school.id}"}
+							}) unless params[:id] %>
 									
 				<%= link_to "Show alone", url_for(:cohort => @cohort, :id => high_school), :class => "no-icon button" unless params[:id] %>
 			</div>
 			<h2><%=h high_school.name %></h2>
 			<div id="participant_stats_<%= high_school.id %>" class="loading" style="display:none">
-				<%= javascript_tag "document.observe('dom:loaded', function() { #{remote_function(:url => stats_high_school_path(high_school, :cohort => @cohort, :hide_title => true), :method => :get)} });" if params[:id] %>
+				<%= javascript_tag "
+				$( document ).ready( function() {
+					$.ajax({
+						url: '#{stats_high_school_path(high_school, :cohort => @cohort, :hide_title => true, :format => 'js')
+						}',
+						cache: false
+					});
+				});" if params[:id] %>
 			</div>
 		</div>
 	<% end -%>
+	<%= javascript_tag "
+		$('a[data-show]').click(
+			function(e) {
+				a = e.target;
+				hs_id = a.getAttribute('data-show');
+				if (a.innerHTML == 'Hide') {
+					$('#participant_stats_'+hs_id).hide();
+					a.innerHTML = 'Show';
+					return false;
+				} else {
+					a.innerHTML = 'Loading...';
+					$('#participant_stats_'+hs_id).show();
+					$.ajax({
+						url: '#{stats_high_school_path(HighSchool.first, :cohort => @cohort, :hide_title => true, :format => 'js')}'.replace(/\\/\\d+\\//, '/' + hs_id + '/'),
+						cache: false
+					});
+					return false;
+				}
+			}
+		);
+	" unless params[:id] %>
 </div>
 
 <div id="sidebar">
 	<%- if params[:id] -%>
-		<p><%= link_to "All high schools", url_for(:cohort => @cohort), :class => 'list button' %></p>
+		<p><%= link_to "All high schools", url_for(:cohort => @cohort, :id => nil), :class => 'list button' %></p>
 	<% end %>
 	
 	<h3>Other Cohorts</h3>

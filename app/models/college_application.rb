@@ -7,6 +7,7 @@ class CollegeApplication < ActiveRecord::Base
   validates_uniqueness_of :institution_id, :scope => :participant_id, :message => "is already assigned to another college application for this participant"
   validates_numericality_of :institution_id
   validates_exclusion_of :institution_id, :in => [0], :message => "ID can't be set to zero" # make sure this doesn't get set to zero, but allow any other positive or negative integer
+  validates :institution, presence: true
   
   delegate :name, :to => :institution
   
@@ -18,6 +19,8 @@ class CollegeApplication < ActiveRecord::Base
   after_save :update_filter_cache
   after_destroy :update_filter_cache
 
+  belongs_to :institution
+
   # Updates the participant filter cache
   def update_filter_cache
     participant.save
@@ -26,10 +29,6 @@ class CollegeApplication < ActiveRecord::Base
   # Returns true if this application represents the college that the student is actually attending.
   def attending?
     institution_id == participant.try(:college_attending_id)
-  end
-  
-  def institution
-    @institution ||= Institution.find(institution_id)
   end
   
   def applied?

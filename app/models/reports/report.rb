@@ -1,4 +1,4 @@
-class Report < CustomerScoped
+class Report < ActiveRecord::Base
 	class AlreadyGeneratingError < StandardError
 	end
 
@@ -7,7 +7,6 @@ class Report < CustomerScoped
 	validates_presence_of :key, :format, :model_name
 	validates_uniqueness_of :key, :scope => [ :customer_id, :format ]
 	serialize :object_ids
-  default_scope :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
 
   mount_uploader :file, ReportUploader, :mount_on => :file_path
   
@@ -61,7 +60,6 @@ class Report < CustomerScoped
 		reset_to_ungenerated
     begin
 			update_attribute :status, "generating"
-	    xlsx_package = object_class.to_xlsx(:data => objects)
 			temp_file = Tempfile.new("report_#{id.to_s}_#{Time.now.to_i}")
 			xlsx_package.serialize temp_file.path
 		rescue => e
@@ -79,6 +77,10 @@ class Report < CustomerScoped
     end
 	end
 	
+	def xlsx_package
+	  object_class.to_xlsx(:data => objects)
+	end
+
 	def generated?
 		!generated_at.blank? && !file_path.blank? && status == 'generated'
 	end
@@ -95,7 +97,7 @@ class Report < CustomerScoped
 	def generate_in_background!
 		logger.info { "Generating report ID #{id} via background rake process" }
 		task = "reports:generate"
-	  options = { :rails_env => Rails.env, :id => id }
+	  options = { :rails_env => Rails.env, :id => id, :tenant => Customer.tenant_name }
 	  args = options.map { |n, v| "#{n.to_s.upcase}='#{v}'" }
 		cmd = "bundle exec rake #{task} #{args.join(' ')} --trace 2>&1 &"
 	  system cmd

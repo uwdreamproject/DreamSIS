@@ -4,7 +4,7 @@
 		Postsecondary plan: 
 			<strong id="postsecondary_plan_display"><%=h participant.postsecondary_plan %></strong>
 			<span id="postsecondary_plan_form" style="display:none">
-				<%- remote_form_for participant, :method => :put, :html => { :style => "display: inline;" } do |f| -%>
+				<%- form_for participant, :remote => true, :method => :put, :html => { :style => "display: inline;" } do |f| -%>
 					<%= f.select :postsecondary_plan, options_for_select([nil,
 						h(participant.postsecondary_plan),
 						Participant::POSTSECONDARY_GOAL_OPTIONS].flatten.uniq, participant.postsecondary_plan) %>

@@ -3,17 +3,6 @@
 one:
   name: MyString
   program_id: 1
-  parent_customer_id: 1
-  link_to_uw: false
-  use_term_system: false
-  risk_form_content: MyText
-  require_background_checks: false
 
 two:
   name: MyString
-  program_id: 1
-  parent_customer_id: 1
-  link_to_uw: false
-  use_term_system: false
-  risk_form_content: MyText
-  require_background_checks: false

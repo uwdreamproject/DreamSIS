@@ -1,9 +1,9 @@
 <h1>New event shift</h1>
 <h2><%= @event.name %></h2>
 
-<% semantic_form_for(:event_shift, @event_shift, :url => event_event_shifts_path(@event)) do |f| %>
+<%= semantic_form_for(:event_shift, @event_shift, :url => event_event_shifts_path(@event)) do |f| %>
 
-	<%= f.error_messages %>
+	<%= f.semantic_errors %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 

@@ -1,0 +1,4 @@
+environments:
+  production:
+    precompile_assets: true
+    

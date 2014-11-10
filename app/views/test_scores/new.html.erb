@@ -1,16 +1,12 @@
 <h3 class="pre-title"><%=h @participant.fullname %></h3>
 <h1>Add test</h1>
 
-<% semantic_form_for([@participant, @test_score]) do |f| %>
-  	<%= f.error_messages %>
+<%= semantic_form_for([@participant, @test_score]) do |f| %>
+  	<%= f.semantic_errors %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 
-	<%- f.buttons do -%>
-	 	<%= f.submit "Create" %>
-		<%= separator %>
-		<%= link_to 'Back', @participant, :class => 'cancel button' %>
-	<% end -%>
+	<%= default_form_actions(f) %>
 
 	<%= observe_field :test_score_test_type_id, 
 					  :url => update_scores_fields_participant_test_scores_path(f.object.try(:participant)), 

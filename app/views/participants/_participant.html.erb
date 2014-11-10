@@ -1,7 +1,14 @@
 <% dom_id = "participant_#{participant.id}" %>
 <%- report ||= "basics" -%>
 <%- @participant_row_index = 1 -%>
-<tbody id="<%= dom_id %>" class="filterable">
+
+<% 
+filter_html_attributes = []
+Participant.object_filters.each do |object_filter|
+	filter_html_attributes << "data-filter-#{object_filter.id}=#{participant.passes_filter?(object_filter)}" if object_filter.display_now?
+end
+-%>
+<tbody id="<%= dom_id %>" class="filterable" <%= filter_html_attributes.join(" ") %>>
 	
 	<%- 
 	collection ||= (participant.instance_eval(report.pluralize) rescue []) 
@@ -21,7 +28,3 @@
 	<% end %>
 	
 </tbody>
-
-<% Participant.object_filters.each do |object_filter| %>
-	<%= javascript_tag "filterable('#{dom_id}', #{object_filter.id}, #{participant.passes_filter?(object_filter)})" if object_filter.display_now? %>
-<% end -%>

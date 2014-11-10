@@ -90,7 +90,16 @@ class ScholarshipApplicationsController < ParticipantsController
     @scholarships = Scholarship.find(:all, 
                       :conditions => ["LOWER(title) LIKE ?", '%' + params[:scholarship_application][:title].downcase + '%'],
                       :limit => 10)
-    render :inline => "<%= auto_complete_result @scholarships, 'title' %>"
+    render :json => @scholarships.map { |result| 
+      {
+        :id => result.id, 
+        :value => result.name,
+        :klass => result.class.to_s.underscore, 
+        :fullname => result.name, 
+        :secondary => result.email,
+        :tertiary => (Customer.current_customer.customer_label(result.class.to_s.underscore, :titleize => true) || result.class.to_s).titleize
+      }
+    }
   end
   
   protected

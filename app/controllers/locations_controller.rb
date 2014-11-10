@@ -1,5 +1,5 @@
 class LocationsController < ApplicationController
-  protect_from_forgery :except => [:auto_complete_for_location_name, :auto_complete_for_institution_name] 
+  # protect_from_forgery :except => [:auto_complete_for_location_name, :auto_complete_for_institution_name]
   
   skip_before_filter :check_authorization, :only => [:show]
   
@@ -7,7 +7,7 @@ class LocationsController < ApplicationController
   # GET /locations.xml
   def index
     return redirect_to(request.env['REQUEST_URI'].include?("colleges") ? college_path(params[:id]) : location_path(params[:id])) if params[:id]
-    @locations = Location.paginate(:all, :page => params[:page])
+    @locations = Location.page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -109,20 +109,30 @@ class LocationsController < ApplicationController
   end
 
   def auto_complete_for_location_name
-    @locations = Location.find(:all, :conditions => ["LOWER(name) LIKE ?", "%#{params[:location][:name].to_s.downcase}%"])
-    render :partial => "shared/auto_complete_location_name", 
-            :object => @locations, 
-            :locals => { :highlight_phrase => params[:location][:name] }
+    @locations = Location.find(:all, :conditions => ["LOWER(name) LIKE ?", "%#{params[:term].to_s.downcase}%"])
+    render :json => @institutions.map { |result| 
+      {
+        :id => result.id, 
+        :value => result.name,
+        :klass => result.class.to_s.underscore, 
+        :fullname => result.name, 
+        :secondary => result.type.to_s.titleize
+      }
+    }
   end
 
   def auto_complete_for_institution_name
-    @institutions = Institution.find_all_by_name(params[:college][:institution_name].to_s.downcase)[0..10]
-    render :partial => "shared/auto_complete_institution_name", 
-            :object => @institutions, 
-            :locals => { :highlight_phrase => params[:college][:institution_name].to_s }
+    @institutions = Institution.find_all_by_name(params[:term].to_s.downcase)[0..10]
+    render :json => @institutions.map { |result| 
+      {
+        :id => result.id, 
+        :value => result.name,
+        :klass => "", 
+        :fullname => result.name, 
+        :secondary => result.location_detail
+      }
+    }
   end
-
-
   
   protected 
   

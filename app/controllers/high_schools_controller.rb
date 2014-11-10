@@ -1,5 +1,6 @@
 class HighSchoolsController < ApplicationController
   skip_before_filter :login_required, :check_authorization, :only => [:in_district]
+  skip_before_filter :check_authorization, :only => [:stats]
   
   # GET /high_schools
   # GET /high_schools.xml

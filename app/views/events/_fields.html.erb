@@ -1,6 +1,6 @@
 <%- klass = f.object.is_a?(Visit) ? "visit" : "event" -%>
 
-<% f.inputs do %>
+<%= f.inputs do %>
 	<%= f.input :name, :hint => "Leave blank if this is a regular #{Customer.visit_label}." %>
 	
 	<%= f.input :type, :as => :select, :collection => {"Regular Event" => nil, Customer.visit_Label => "Visit"} %>
@@ -30,18 +30,18 @@
 	
 	<%= javascript_tag "$('#{klass}_time_tba').onchange()" %>
 	
-	<%= f.input :description, 
+	<%= f.input :description,
 				:input_html => { :rows => 3 }, 
 				:hint => "Use #{link_to("Textile", "http://redcloth.org/", :popup => true)} markup for formatting. You can enter
-						  audience-specific descriptions below." %>
+						  audience-specific descriptions below.".html_safe %>
 	
 	<li class="input">
 		<%= f.label :event_coordinator_id %>
 		
 		<div>
-			<%= model_auto_completer "person[fullname]", (@event.try(:event_coordinator).try(:fullname) if @event.try(:event_coordinator)), 
-									"#{klass}[event_coordinator_id]", 
-									(@event.try(:event_coordinator_id) || nil), 
+			<%#= TODO model_auto_completer "person[fullname]", (@event.try(:event_coordinator).try(:fullname) if @event.try(:event_coordinator)),
+									"#{klass}[event_coordinator_id]",
+									(@event.try(:event_coordinator_id) || nil),
 									{ 
 										:url => { :controller => 'events', :action => 'auto_complete_model_for_person_fullname' },
 										:append_random_suffix => false,
@@ -81,10 +81,10 @@
 
 <% end -%>
 
-<% f.inputs(:name => "Attendees") do %>
+<%= f.inputs(:name => "Attendees") do %>
 	
 	
-	<% f.inputs :name => "Show for:", :class => "inline" do %>
+	<%= f.inputs :name => "Show for:", :class => "inline" do %>
 		<%= f.input :show_for_students, :label => "Students" %>
 		<%= f.input :show_for_participants, :label => "#{Customer.participants_Label}" %>
 		<%= f.input :show_for_volunteers, :label => "Volunteers" %>
@@ -100,7 +100,7 @@
 		</p>
 	<% end %>
 	
-	<%- f.inputs :name => "Always Show for Grade Levels", :class => "inline" do -%>			
+	<%= f.inputs :name => "Always Show for Grade Levels", :class => "inline" do -%>			
 		<%= f.input :earliest_grade_level_level, :label => "From", :as => :select, :collection => GradeLevel.all.collect{|g| [g.title, g.level]} %>
 		<%= f.input :latest_grade_level_level, :label => "To", :as => :select, :collection => GradeLevel.all.collect{|g| [g.title, g.level]} %>
 	<% end %>
@@ -112,7 +112,7 @@
 	
 <% end -%>
 
-<% f.inputs(:name => "Capacity Limits") do %>
+<%= f.inputs(:name => "Capacity Limits") do %>
 <p>Leave capacity limits blank or 0 for no limit.</p>
 	<%= f.input :capacity, :hint => "Use this to set a combined limit regardless of audience type.", :input_html => {:size => 3}, :label => "Overall Capacity" %>
 	<%= f.input :student_capacity, :hint => "Student capacity applies to Students and #{Customer.participants_Label}.", :input_html => {:size => 3} %>
@@ -120,14 +120,14 @@
 	<%= f.input :volunteer_capacity, :input_html => {:size => 3} %>
 <% end -%>
 
-<% f.inputs "Audience-Specific Descriptions" do %>
+<%= f.inputs "Audience-Specific Descriptions" do %>
 	<p>Descriptions entered here will be used instead of the description above for members of the specified audience. Otherwise, the default from above will be displayed.</p>
 	<%= f.input :student_description, :input_html => { :rows => 6 }, :hint => "Note: The student description is shown for both Students and  #{Customer.participants_Label}." %>
 	<%= f.input :volunteer_description, :input_html => { :rows => 6 } %>
 	<%= f.input :mentor_description, :input_html => { :rows => 6 }, :label => "#{Customer.mentor_Label} Description" %>
 <% end -%>
 
-<% f.inputs(:name => "Audience-Specific Times", :id => "audience_specific_times") do %>
+<%= f.inputs(:name => "Audience-Specific Times", :id => "audience_specific_times") do %>
 	<p>These times will be used instead of the event and start times above for members of the specific audience. Otherwise, the default from above will be displayed.</p>
 	<%- for audience in %w(student volunteer mentor) -%>
 	<li class="string optional">

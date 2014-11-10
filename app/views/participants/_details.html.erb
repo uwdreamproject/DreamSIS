@@ -1,0 +1,50 @@
+<div class="photo">
+	<%= render :partial => "avatar" if @participant.avatar? %>
+</div>
+
+<div class="name">
+	<h3 class="pre-title"><%= @participant.class.to_s %></h3>
+	<h1><%=h @participant.fullname(:middlename => false) %></h1>
+	<%- if @participant.inactive? || @participant.not_target_participant? -%>
+		<div class="note-band">
+			<%= content_tag :h2, "Inactive", :class => "inactive-note" if @participant.inactive? %>
+			<%= content_tag :h2, "#{Customer.not_target_Label}", :class => "not-target-note" if @participant.not_target_participant? %>
+		</div>
+	<% end %>
+
+	<%= link_to "Needs Follow-up", "", :onclick => "switchToTab('notes'); return false;", :class => "needs-followup" if @participant.needs_followup? %>
+</div>
+
+<div class="details">
+	<dl>
+		<dt>High School</dt>
+		<dd>
+			<%= link_to h(@participant.high_school.name), 
+					high_school_cohort_path(@participant.high_school, (@participant.grad_year || 0)), 
+					:class => 'redirect-link' unless @participant.high_school.nil? %>
+		</dd>
+
+		<dt>Graduation Year</dt>
+		<dd>
+			<%= link_to "Class of #{@participant.grad_year}",
+		 			high_school_cohort_path(@participant.high_school, (@participant.grad_year || 0)),
+					:class => 'redirect-link' unless @participant.grad_year.blank? %>
+		</dd>
+
+		<%- if @participant.respond_to?(:participant_group) && @participant.participant_group -%>
+			<dt>Group</dt>
+			<dd>
+				<%= link_to @participant.participant_group.try(:title), 
+							participant_group_path(@participant.participant_group.try(:id)), :class => 'redirect-link' %>
+			</dd>
+		<% end -%>
+
+		<% if @participant.respond_to?(:college_attending) && @participant.college_attending %>
+			<dt>College</dt>
+			<dd><%= @participant.college_attending.name %></dd>
+		<% end -%>
+
+	</dl>
+</div>
+
+<div class="clear"></div>

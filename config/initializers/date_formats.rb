@@ -11,5 +11,5 @@ my_formats = {
 	:excel                  => lambda { |time| time.strftime("%Y-%m-%dT%H:%M:%S.000") }
 }
 
-ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.merge!(my_formats)
-ActiveSupport::CoreExtensions::Date::Conversions::DATE_FORMATS.merge!(my_formats)
+Time::DATE_FORMATS.merge!(my_formats)
+Date::DATE_FORMATS.merge!(my_formats)

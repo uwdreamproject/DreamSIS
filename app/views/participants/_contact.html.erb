@@ -1,0 +1,55 @@
+<dl class="inline-definitions">
+	
+	<dt>Address</dt>
+	<dd>
+		<%= content_tag(:div, "BAD ADDRESS", :class => 'error-message') if @participant.bad_address? %>
+		<%= @participant.street unless @participant.street.blank? %>
+		<%= "<br />#{@participant.city}, #{@participant.state} #{@participant.zip}" unless @participant.city.blank? %>
+	</dd>
+
+	<dt>Phone</dt>
+	<dd>
+		<%= content_tag(:div, "BAD PHONE", :class => 'error-message') if @participant.bad_phone? %>
+		<%= number_to_phone_pretty(@participant.phone_home, :type => 'home') unless @participant.phone_home.blank? %>
+		<%= "<br />" + number_to_phone_pretty(@participant.phone_mobile, :type => 'mobile') unless @participant.phone_mobile.blank? %>
+		<%= "<br />" + number_to_phone_pretty(@participant.phone_work, :type => 'work') unless @participant.phone_work.blank? %>
+		<%- 
+		textables = []
+		textables << "Send" if @participant.can_send_texts?
+		textables << "Receive" if @participant.can_receive_texts?
+		textables = ["Unlimited"] if @participant.unlimited_texting?
+		-%>
+		<br />Texting: <%= textables.empty? ? content_tag(:span, "None", :class => "light") : textables.join("<br />") %>
+		<%= content_tag(:div, "Preferred", :class => 'preferred-note') if @participant.preferred_contact_method == 'Text' %>
+
+		<%= content_tag(:div, "Phone Preferred", :class => 'preferred-note') if @participant.preferred_contact_method == 'Phone' %>
+		<%= content_tag(:div, "Texting Preferred", :class => 'preferred-note') if @participant.preferred_contact_method == 'Text' %>
+	</dd>
+
+	<dt>E-mail</dt>
+	<dd>
+		<%= content_tag(:div, "BAD E-MAIL", :class => 'error-message') if @participant.bad_email? %>
+		<%= auto_link h(@participant.email) %>
+		<%= content_tag :span, "(Primary)<br />#{mail_to(h(@participant.email2))} (Backup)", :class => 'light email' unless @participant.email2.blank? %>
+
+		<%= content_tag(:div, "E-mail Preferred", :class => 'preferred-note') if @participant.preferred_contact_method == 'Email' %>
+	</dd>
+
+	<%- unless @participant.facebook_id.blank? -%>
+    <dt>Facebook</dt>
+    <dd>
+		<%= link_to h(@participant.facebook_id), "http://facebook.com/" + h(@participant.facebook_id), :class => "facebook-mini" %>
+		<%= content_tag(:div, "Facebook Preferred", :class => 'preferred-note') if @participant.preferred_contact_method == 'Facebook' %>
+	</dd>
+	<% end %>
+
+	<dt>Date of Birth</dt>
+	<dd>
+		<%= @participant.birthdate.try(:to_s, :long) rescue nil %>
+		<%= content_tag(:p, "Age #{@participant.age}", :class => 'light') if @participant.age %>
+	</dd>
+
+	<dt>Plans after high school</dt>
+	<dd><%=h @participant.postsecondary_plan %></dd>
+	
+</dl>

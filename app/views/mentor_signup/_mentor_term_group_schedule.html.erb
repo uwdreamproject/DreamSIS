@@ -22,14 +22,14 @@ style_height = mentor_term_group.length.to_i
 	
 	<p class="signup-link">
 		<%- if mentor_term.nil? -%>
-			<%= link_to_remote "Sign up as a volunteer", 
+			<%= link_to "Sign up as a volunteer", :remote => true,
 								:url => mentor_signup_term_volunteer_path(@term, mentor_term_group, :splitpos => splitpos), 
 								:html => { :class => "add" }, 
 								:method => :put unless mentor_term_group.full? %>
 								
 		<%- elsif mentor_term.volunteer? -%>
 			<span class="orange tag">Volunteer</span>
-			<%= link_to_remote "Leave this group", 
+			<%= link_to "Leave this group", :remote => true,
 								:url => mentor_signup_term_drop_path(@term, mentor_term, :splitpos => splitpos), 
 								:method => :delete, 
 								:html => { :class => "cancel" },
@@ -42,7 +42,7 @@ style_height = mentor_term_group.length.to_i
 	</p>
 
 	<p class="light"><%= mentor_term_group.times %></p>
-	<p class="light"><%= "Section #{h(mentor_term_group.section_id)}" unless mentor_term_group.section_id.blank? %></p>
+	<p class="light"><%= h(mentor_term_group.course_string) unless mentor_term_group.section_id.blank? %></p>
 	<p class="spots_left"><%= "#{pluralize(mentor_term_group.spots_left, "spot")} left" if mentor_term_group.spots_left %></p>
 	
 </li>

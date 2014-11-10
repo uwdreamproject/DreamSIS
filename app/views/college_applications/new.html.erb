@@ -1,14 +1,10 @@
 <h3 class="pre-title"><%=h @participant.fullname %></h3>
 <h1>Add college</h1>
 
-<% semantic_form_for([@participant, @college_application]) do |f| %>
-  	<%= f.error_messages %>
+<%= semantic_form_for([@participant, @college_application]) do |f| %>
+  	<%= f.semantic_errors %>
 	<%= render :partial => "fields", :locals => { :f => f } %>
 
-	<%- f.buttons do -%>
-	 	<%= f.submit "Create" %>
-		<%= separator %>
-		<%= link_to 'Back', @participant, :class => 'cancel button' %>
-	<% end -%>
+	<%= default_form_actions(f) %>
 
 <% end %>

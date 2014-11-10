@@ -1,3 +1,9 @@
+<% if @mentor.is_a?(Mentor) && !@mentor.passed_basics? %>
+  <div class="bright-red-background content-block">
+    <%= @mentor.readiness_summary %>
+  </div>
+<% end %>
+
 <div class="content-block">
 
 	<div align="right" style="float:right" class="photo">
@@ -15,7 +21,7 @@
 		<dd><% if @mentor.users.empty? -%>
 				<em class="light">None</em>
 			<% else %>
-			  	<%= @mentor.users.collect{|u| link_to u.login, user_path(u)}.join(", ") %>
+			  	<%= raw @mentor.users.collect{|u| link_to h(u.login), user_path(u) }.join(", ") %>
 			<% end -%>
 			</dd>
 		
@@ -84,18 +90,9 @@
 	</p>
 	<% end %>
 	
-	<% form_for :mentor, :html => { :method => :get }, :url => mentors_path do |f| %>
-		<%= model_auto_completer "mentor[fullname]", "", "id", nil,
-								{ 
-									:url => auto_complete_for_mentor_fullname_mentors_path, 
-									:submit_on_return => true, 
-									:after_update_element => "function(text_field, selection, hidden_field, id) { text_field.form.submit() }" 
-								},
-								{ :autocomplete => false, :class => "search", :placeholder => "Search #{Customer.mentors_label}" },
-								{ :skip_style => true } %>
-
-	<% end %>
-	
+	<div class="auto_complete">
+		<input type="input" class="search autocomplete-search" placeholder="Search <%= Customer.mentors_Label %>" data-source="<%= auto_complete_for_mentor_fullname_mentors_url %>" data-target="<%= mentor_url("id") %>" />
+	</div>
 	
 	
 	<h3>Contact Info</h3>
@@ -113,8 +110,8 @@
 		<%- if Customer.require_background_checks? -%>
 			<dt>Background Check</dt>
 			<dd>
-				<% if @mentor.passed_background_check? %>
-					Passed on <%= @mentor.background_check_run_at.to_s(:short_date) %>
+				<% if @mentor.passed_criminal_checks? %>
+					Passed on <%= @mentor.criminal_checks_run_at.to_s(:short_date) %>
 				<%- else -%>
 					<span class="error-message">Not passed</span>
 				<% end -%>

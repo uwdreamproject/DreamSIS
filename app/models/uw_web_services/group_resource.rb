@@ -109,18 +109,18 @@ class GroupResource < NonstandardWebServiceResult
   end
   
   # Prepares the XHTML for a new group request from the web service. The template is stored in
-  # RAILS_ROOT/app/views/web_services/group/new.html.erb
+  # Rails.root/app/views/web_services/group/new.html.erb
   def self.new_group_xhtml(group_identifier, options = {})
     @group_identifier = group_identifier
     @options = options
-    ERB.new(File.read(File.join(RAILS_ROOT, "app", "views", "web_services", "group", "new.html.erb"))).result(binding)
+    ERB.new(File.read(File.join(Rails.root, "app", "views", "web_services", "group", "new.html.erb"))).result(binding)
   end
 
   # Prepares the XHTML for a request to update the group members. The template is stored in
-  # RAILS_ROOT/app/views/web_services/group/update_members.html.erb
+  # Rails.root/app/views/web_services/group/update_members.html.erb
   def update_members_xhtml(members)
     @members = members
-    ERB.new(File.read(File.join(RAILS_ROOT, "app", "views", "web_services", "group", "update_members.html.erb"))).result(binding)
+    ERB.new(File.read(File.join(Rails.root, "app", "views", "web_services", "group", "update_members.html.erb"))).result(binding)
   end
 
 

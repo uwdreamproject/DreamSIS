@@ -8,7 +8,7 @@ class ScholarshipsController < ResourceController
   def index
     return redirect_to Scholarship.find(params[:id]) if params[:id]
 		per_page = request.format.xls? ? 1000000 : params[:per_page]
-    @scholarships = Scholarship.paginate :all, :page => params[:page], :per_page => per_page
+    @scholarships = Scholarship.page(params[:page]) #.per_page(per_page)
     
     respond_to do |format|
       format.html # index.html.erb

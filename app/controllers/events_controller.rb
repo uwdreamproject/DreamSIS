@@ -5,7 +5,7 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.xml
   def index
-    @events = Event.paginate(:all, :order => "date desc", :page => params[:page])
+    @events = Event.page(params[:page]).order("date desc")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -63,7 +63,7 @@ class EventsController < ApplicationController
   def update
     @event = Event.find(params[:id])
     klass = params[:event].try(:[], :type) == "Visit" ? Visit : Event
-    @event.write_attribute(:type, klass.to_s) if @event.type != klass
+    @event.update_attribute(:type, klass.to_s) if @event.type != klass
 
     respond_to do |format|
       if @event.update_attributes(params[:event] || params[:visit])

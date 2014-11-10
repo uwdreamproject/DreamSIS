@@ -1,8 +1,8 @@
 <h1>New High School</h1>
 
-<% semantic_form_for @high_school do |f| %>
+<%= semantic_form_for @high_school do |f| %>
 
-	<%= f.error_messages %>
+	<%= f.semantic_errors %>
 
 	<%= render :partial => "locations/fields", :locals => { :f => f } %>
 	

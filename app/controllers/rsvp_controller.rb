@@ -1,6 +1,6 @@
 class RsvpController < ApplicationController
   skip_before_filter :check_authorization, :check_if_enrolled
-  skip_before_filter :login_required, :except => [:event_type]
+  skip_before_filter :login_required, :except => [:event_type, :mentor_available]
   before_filter :load_audience
   
   def event
@@ -12,7 +12,7 @@ class RsvpController < ApplicationController
     @hide_description_link = true
     @event_attendance = @current_user.person.event_attendances.find_or_initialize_by_event_id(@event.id) if @current_user
 		@share_links = true
-		@title = @event
+		@title = @event.name
   end
   
   def event_group
@@ -46,7 +46,12 @@ class RsvpController < ApplicationController
     @event_type = EventType.find(params[:id])
     check_if_external_users_allowed(@event_type)
   end
-  
+
+  def mentor_available
+    @event_groups = EventGroup.find_all_by_open_to_mentors(true)
+    @title = "Upcoming Events"
+  end
+
   def rsvp
     @event = Event.find(params[:id])
     check_if_external_users_allowed(@event)
@@ -56,7 +61,7 @@ class RsvpController < ApplicationController
     
     if !@current_user || !@current_user.person.ready_to_rsvp?(@event)
       session[:return_to_after_rsvp] = request.env["HTTP_REFERER"]
-      session[:return_to_after_profile] = request.request_uri
+      session[:return_to_after_profile] = request.url
       session[:profile_validations_required] = "ready_to_rsvp"
       flash[:notice] = "Before you can RSVP for events, please login and complete your profile."
       respond_to do |format|
@@ -66,6 +71,7 @@ class RsvpController < ApplicationController
     end
     @event_attendance = @current_user.person.event_attendances.find_or_initialize_by_event_id(@event.id)
     @event_attendance.event_shift_id = params[:event_attendance].try(:[], :event_shift_id)
+    @event_attendance.audience = params[:event_attendance].try(:[], :audience) || @event_attendance.person.class.to_s
     if request.put? || (request.get? && (params[:rsvp] == true || params[:rsvp] == "true"))
       @event_attendance.rsvp = true
       @event_attendance.enforce_rsvp_limits = true
@@ -87,13 +93,13 @@ class RsvpController < ApplicationController
       else
         if @event_attendance.errors.on(:enforce_rsvp_limits)
           flash[:error] = "Sorry, but the capacity for that event has been reached."
-          format.html { redirect_to(event_rsvp_path(@event)) }
-          format.js
+        elsif @event_attendance.errors.on(:audience)
+          flash[:error] = "Invalid Audience, check that you are using the correct RSVP link."
         else
           flash[:error] = "We couldn't save your RSVP. Please complete the required information."
+        end
           format.html { redirect_to(event_rsvp_path(@event)) }
           format.js
-        end
       end
     end
     

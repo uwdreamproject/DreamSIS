@@ -4,10 +4,9 @@
 The main purpose of the Customer model is to sandbox multiple organizations' data within the same DreamSIS instance. The current Customer is stored in the current thread so that customer details are accessible system-wide for each request. For convenience, all of the Customer instance methods are available through class methods on Customer. For example, +Customer.mentor_label+ is equivalent to +Customer.find(Thread.current['customer_id']).mentor_label+.
 =end
 class Customer < ActiveRecord::Base
-  validates_presence_of :name  
+  validates_presence_of :name
   validates_presence_of :clearinghouse_customer_number, :clearinghouse_contract_start_date, :clearinghouse_number_of_submissions_allowed, :if => :validate_clearinghouse_configuration?
   validates_numericality_of :clearinghouse_customer_number, :if => :validate_clearinghouse_configuration?
-  validates_uniqueness_of :url_shortcut, :allow_blank => true
   
   belongs_to :parent_customer, :class_name => "Customer"
   belongs_to :program
@@ -21,8 +20,17 @@ class Customer < ActiveRecord::Base
     :workbook => "workbook",
     :intake_survey => "intake survey",
     :mentee => "mentee",
-		:not_target => "not target"
+		:not_target => "not target",
+    :visit => "visit"
   }
+  
+  RESERVED_SUBDOMAINS = %w[www public assets admin identity development production staging test dreamsis]
+  validates_presence_of :url_shortcut
+  validates_uniqueness_of :url_shortcut
+  validates_exclusion_of :url_shortcut, :in => RESERVED_SUBDOMAINS, :message => "URL shortcut %s is not allowed"
+
+  validate :tenant_database_must_exist
+  after_create :initialize_tenant!
 
   has_many :clearinghouse_requests
   
@@ -58,36 +66,53 @@ class Customer < ActiveRecord::Base
   def require_risk_form?
     !risk_form_content.blank?
   end
-  
-  def allowable_login_methods=(new_allowable_login_methods)
-    self.write_attribute :allowable_login_methods, new_allowable_login_methods.select{|provider, result| result != "0"}.collect(&:first)
+
+  def require_conduct_form?
+    !risk_form_content.blank?
   end
 
+  def require_driver_form?
+    !driver_form_content.blank?
+  end
+
+  # If there exists an event type with the +name+ "Mentor Workshop", returns it, otherwise nil
+  def mentor_workshop_event_type
+    EventType.find_by_name("Mentor Workshop")
+  end
+
+  # TODO make this work again
+  # def allowable_login_methods=(new_allowable_login_methods)
+  #   self.write_attribute :allowable_login_methods, new_allowable_login_methods.select{|provider, result| result != "0"}.collect(&:first)
+  # end
+
   def allowable_login_method?(provider)
-    # logger.info { "allowable_login_methods: " + allowable_login_methods.inspect }
-    (allowable_login_methods || "").include?(provider.to_s)
+    (allowable_login_methods || {})[provider.to_s] == "true"
+  end
+  
+  def allowable_login_methods_list
+    allowable_login_methods.try{|h| h.select{ |k,v| v == "true" }.keys } rescue []
   end
   
   # Parses the text in +college_application_choice_options+ and returns an array that is split on newlines.
   def college_application_choice_options_array
     return %w[Reach Solid Safety] if college_application_choice_options.blank?
-    college_application_choice_options.split("\n").collect(&:strip)
+    college_application_choice_options.try(:split, "\n").try(:collect, &:strip).to_a
   end
 
   # Parses the text in +paperwork_status_options+ and returns an array that is split on newlines.
   def paperwork_status_options_array
     return ["Not Started", "In Progress", "Complete"] if paperwork_status_options.blank?
-    paperwork_status_options.split("\n").collect(&:strip)
+    paperwork_status_options.try(:split, "\n").try(:collect, &:strip).to_a
   end
 
   # Parses the text in +activity_log_student_time_categories+ and returns an array that is split on newlines.
   def activity_log_student_time_categories_array
-    activity_log_student_time_categories.split("\n").collect(&:strip)
+    activity_log_student_time_categories.try(:split, "\n").try(:collect, &:strip).to_a
   end
 
   # Parses the text in +activity_log_non_student_time_categories+ and returns an array that is split on newlines.
   def activity_log_non_student_time_categories_array
-    activity_log_non_student_time_categories.split("\n").collect(&:strip)
+    activity_log_non_student_time_categories.try(:split, "\n").try(:collect, &:strip).to_a
   end
 	
 	# Returns true if there is anything in the acitivity log categories fields.
@@ -104,28 +129,65 @@ class Customer < ActiveRecord::Base
 	# Visit attendance always includes "Attended" as an option, but this allows customers to provide
 	# other options that might also count when reporting attendance.
 	def visit_attendance_options_array
-		(["Attended"] + visit_attendance_options.split("\n").collect(&:strip)).flatten.uniq
+		(["Attended"] + visit_attendance_options.try(:split, "\n").try(:collect, &:strip).to_a).flatten.uniq
 	end
   
   def self.current_customer
     # logger.info { "user: " + User.current_user.try(:customer).inspect }
     # logger.info { "thread: " + Thread.current['customer'].inspect }
     # logger.info { "temp: " + @temporary_current_customer.inspect }
-        
-    customer = User.current_user.try(:customer) || @temporary_current_customer || Customer.first || Customer.create(:name => "New Customer")
-    raise Exception.new("No customer record defined") unless customer && customer.is_a?(Customer)
-    # logger.info { "---current_customer: #{customer.id}" }
-    return customer
+    #
+    # customer = User.current_user.try(:customer) || @temporary_current_customer || Customer.first || Customer.create(:name => "New Customer")
+    # raise Exception.new("No customer record defined") unless customer && customer.is_a?(Customer)
+    # # logger.info { "---current_customer: #{customer.id}" }
+    # return customer
+
+    Customer.where(:url_shortcut => Apartment::Tenant.current).first || Customer.new
+  end
+  
+  # The tenant name used by this Customer for apartment multitenancy.
+  def tenant_name
+    url_shortcut
+  end
+  
+  # Create a new tenant database.
+  def create_tenant!
+    Apartment::Tenant.create(tenant_name) unless tenant_name.blank?
+  end
+  
+  # Loads the schema and seeds the Customer's tenant record to the latest migration.
+  def initialize_tenant!
+    @database_schema_file = Rails.root.join('db', 'schema.rb')
+    @database_seeds_file = Rails.root.join('db', 'seeds.rb')
+    
+    Customer.transaction do
+      Apartment::Tenant.process(tenant_name) do
+        load(@database_schema_file)
+        load(@database_seeds_file) if Apartment.seed_after_create
+      end
+    end
+    
+    return true
+  end
+  
+  # Returns true if the tenant database exists, which must be done before creating a new Customer.
+  def tenant_database_must_exist
+    begin
+      Apartment::Tenant.process(tenant_name)
+      true
+    rescue Apartment::DatabaseNotFound => e
+      errors.add :base, "Tenant database must exist before Customer record is created."
+    end
   end
     
-  def self.current_customer=(customer)
-    @temporary_current_customer = customer if customer.is_a?(Customer)
-  end
-  
-  def self.remove_temporary_current_customer
-    @temporary_current_customer = nil
-  end
-  
+  # def self.current_customer=(customer)
+  #   @temporary_current_customer = customer if customer.is_a?(Customer)
+  # end
+  #
+  # def self.remove_temporary_current_customer
+  #   @temporary_current_customer = nil
+  # end
+
   # Returns the current customer's name
   def self.name_label
     current_customer.try(:name)

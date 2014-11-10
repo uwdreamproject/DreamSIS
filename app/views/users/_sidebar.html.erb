@@ -5,7 +5,7 @@
 		
 		<%= javascript_tag "var user_login_auto_completer = new Ajax.Autocompleter('user_login', 'user_login_auto_complete', '#{auto_complete_for_user_login_users_path}', { minChars: 3 })" %>
 			
-		<%= observe_field('user_login', 
+		<%#= observe_field('user_login', 
 			:frequency => 0.25,
 			:function => "if($F('user_login')=='') { $('original_users').show(); $$('.pagination').invoke('show'); $('user_search_results').update(); return true; }") %>
 
@@ -15,7 +15,7 @@
 		<%- if controller.action_name == 'admin' -%>
 			<%= link_to "All Users", users_path, :class => 'list button' %>
 		<% else %>
-			<%= link_to "<span class='admin tag'>Admin</span> Users", admin_users_path, :class => "list button" %>
+			<%= link_to raw("<span class='admin tag'>Admin</span> Users"), admin_users_path, :class => "list button" %>
 		<% end -%>
 	</p>
 	

@@ -1,8 +1,8 @@
 <h1>New scholarship</h1>
 
-<% semantic_form_for @scholarship do |f| %>
+<%= semantic_form_for @scholarship do |f| %>
 
-	<%= f.error_messages %>
+	<%= f.semantic_errors %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 	
