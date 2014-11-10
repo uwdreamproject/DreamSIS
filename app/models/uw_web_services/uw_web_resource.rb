@@ -29,7 +29,8 @@ class UwWebResource < ActiveResource::Base
     # hosts, certs, etc. in different Rails environments.
     def config_options
       config_file_path = "#{Rails.root}/config/web_services.yml"
-      @config_options ||= YAML::load(ERB.new((IO.read(config_file_path))).result)[(Rails.env)][Apartment::Tenant.current].symbolize_keys
+      @config_options ||= YAML.load_file(config_file_path)[Rails.env]
+      @config_options[Apartment::Tenant.current].nil? ? {} : @config_options[Apartment::Tenant.current].symbolize_keys
     end
 
     def headers
@@ -46,7 +47,7 @@ class UwWebResource < ActiveResource::Base
         
   end
 
-  self.site = "https://#{UwWebResource.config_options[:host]}"
+  self.site = "https://#{UwWebResource.config_options[:host]}" if UwWebResource.config_options[:host]
   
   protected
   
