@@ -22,7 +22,7 @@
 					 title="<%= number_to_percentage event.percent_full(event_audience), :precision => 0 %> full">
 
 					<div class="size" style="width: <%= event.percent_full(event_audience) %>%">
-						<%= event.full?(event_audience) ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
+						<%= raw event.full?(event_audience) ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
 					</div>					
 				</div>
 			</div>
