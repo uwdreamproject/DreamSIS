@@ -95,7 +95,7 @@ Dreamsis::Application.routes.draw do
   end
   resources :event_types
   resources :event_groups
-  match 'rsvp/rsvp/:id' => 'rsvp#rsvp', :as => :rsvp, :via => :put
+  match 'rsvp/rsvp/:id' => 'rsvp#rsvp', :as => :rsvp, :via => [:get, :put, :delete, :post]
   match 'rsvp/event/:id' => 'rsvp#event', :as => :event_rsvp, :via => :get
   match 'rsvp/event_group/:id/locations' => 'rsvp#event_group_locations', :as => :event_group_locations, :via => :get
   match 'rsvp/event_group/:id' => 'rsvp#event_group', :as => :event_group_rsvp, :via => :get

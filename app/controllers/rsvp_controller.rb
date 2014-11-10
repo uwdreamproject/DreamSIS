@@ -91,9 +91,9 @@ class RsvpController < ApplicationController
           format.js
         end
       else
-        if @event_attendance.errors.on(:enforce_rsvp_limits)
+        if @event_attendance.errors[:enforce_rsvp_limits] && @event_attendance.errors[:enforce_rsvp_limits].any?
           flash[:error] = "Sorry, but the capacity for that event has been reached."
-        elsif @event_attendance.errors.on(:audience)
+        elsif @event_attendance.errors[:audience] && @event_attendance.errors[:audience].any?
           flash[:error] = "Invalid Audience, check that you are using the correct RSVP link."
         else
           flash[:error] = "We couldn't save your RSVP. Please complete the required information."
