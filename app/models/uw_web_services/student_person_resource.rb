@@ -14,6 +14,7 @@ class StudentPersonResource < UwWebResource
     http.use_ssl = true
     http.cert = ssl_options[:cert]
     http.key = ssl_options[:key]
+    http.ssl_version = :TLSv1
     http.ca_file = ssl_options[:ca_file]
     http.verify_mode = ssl_options[:verify_mode]
     request = Net::HTTP::Get.new(uri.request_uri)
