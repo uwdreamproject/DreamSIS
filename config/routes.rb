@@ -241,6 +241,7 @@ Dreamsis::Application.routes.draw do
   match 'profile/update_identity' => 'users#update_identity', :as => :update_identity, :via => :post
   match '/auth/anonymous/' => 'session#create_anonymous', :as => :anonymous_login_callback
   match '/auth/:provider/callback' => 'session#create', :as => :omniauth_callback
+  match '/auth/failure' => 'session#failure'
   resource :session
   
 

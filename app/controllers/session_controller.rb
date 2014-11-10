@@ -6,9 +6,9 @@ class SessionController < ApplicationController
   def new
   end
   
-  def signup
-    @identity = request.env["omniauth.identity"]
-  end
+  # def signup
+  #   @identity = request.env["omniauth.identity"]
+  # end
 
   def create
     return_to = session[:return_to]
@@ -71,6 +71,11 @@ class SessionController < ApplicationController
     else
       render_error "Invalid login token."
     end
+  end
+
+  def failure
+    flash[:error] = "There was an error while trying to log you in. Please try again or come back later."
+    redirect_to login_url
   end
 
 end
