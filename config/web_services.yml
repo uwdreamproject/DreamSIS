@@ -1,14 +1,16 @@
 development:
-  uwdp:
-    host: ucswseval1.cac.washington.edu
-    cert: uwdp.crt
-    key: uwdp.key
-    ca_file: uwca.pem
-    act_as_user: dreamsis
+  host: ucswseval1.cac.washington.edu
+  tenant_options:
+    uwdp:
+      cert: uwdp.crt
+      key: uwdp.key
+      ca_file: uwca.pem
+      act_as_user: dreamsis
 production:
-  uwdp:
-    host: ws.admin.washington.edu
-    cert: uwdp.crt
-    key: uwdp.key
-    ca_file: uwca.pem
-    act_as_user: dreamsis
+  host: ws.admin.washington.edu
+  tenant_options:
+    uwdp:
+      cert: uwdp.crt
+      key: uwdp.key
+      ca_file: uwca.pem
+      act_as_user: dreamsis

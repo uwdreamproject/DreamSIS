@@ -178,20 +178,13 @@ class NonstandardWebServiceResult
   
     # Attaches our cert, key, and CA file based on the config options in web_services.yml.
     def ssl_options
-      return {} unless check_cert_paths!
-      @ssl_options ||= {
-        :cert         => OpenSSL::X509::Certificate.new(File.open(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:cert]))),
-        :key          => OpenSSL::PKey::RSA.new(File.open(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:key]))),
-        :ca_file      => File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:ca_file]),
-        :verify_mode  => OpenSSL::SSL::VERIFY_PEER
-      }
+      UwWebResource.ssl_options
     end
   
     # All configuration options are stored in Rails.root/config/web_services.yml. This allows us to use different
     # hosts, certs, etc. in different Rails environments.
     def config_options
-      config_file_path = File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "web_services.yml")
-      @config_options ||= YAML::load(ERB.new((IO.read(config_file_path))).result)[(Rails.env)][Apartment::Tenant.current].symbolize_keys
+      UwWebResource.config_options
     end
   
     def headers
