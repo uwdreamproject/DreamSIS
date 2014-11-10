@@ -41,7 +41,7 @@
   <%= javascript_tag(
   "var worker = function() {
      if (checkXlsxStatus == true) {
-       $j.ajax({
+       $.ajax({
          url: '#{check_export_status_terms_url(:format => 'js')}?id='+xlsxReportId+'&authenticity_token='+document.getElementsByTagName('meta')[2].getAttribute('content'),
          cache: false,
          success: function(data) {
@@ -49,6 +49,6 @@
        });
      }
    };
-  $j( document ).ready(function() {worker(); setInterval(function() { worker() }, 3000) });") %>
+  $( document ).ready(function() {worker(); setInterval(function() { worker() }, 3000) });") %>
 
 </div>
