@@ -13,6 +13,7 @@ Dreamsis::Application.routes.draw do
       match :check_export_status
     end
     member do
+      put :update
       put :sync
       match :show
     end
