@@ -101,7 +101,7 @@ class NonstandardWebServiceResult
 
     # Gets the URI of the REST resources to map for this class.
     def site
-      @site || "https://#{config_options[:host]}"
+      @site || "https://#{global_config_options["host"]}"
     end
 
     # Sets the URI of the REST resources to map for this class to the value in the +site+ argument.
@@ -115,7 +115,7 @@ class NonstandardWebServiceResult
         if site.is_a?(URI)
           @site = site.dup
         else
-          @site = site.include?("http") ? site : "https://#{config_options[:host]}"
+          @site = site.include?("http") ? site : "https://#{global_config_options["host"]}"
         end
       end
     end
@@ -186,6 +186,10 @@ class NonstandardWebServiceResult
     def config_options
       UwWebResource.config_options
     end
+    
+    def global_config_options
+      UwWebResource.global_config_options
+    end
   
     def headers
       { "x-uw-act-as" => config_options[:act_as_user], "Accept" => "application/xhtml" }
@@ -217,7 +221,7 @@ class NonstandardWebServiceResult
     raise ActiveResource::SSLError, "Could not find key file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:key]))
     raise ActiveResource::SSLError, "Could not find CA file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:ca_file]))
     return true
-  rescue ActiveResource::SSLError => e
+  rescue => e
     puts Rails.logger.warn "[WARN] ActiveResource::SSLError: #{e.message}\n #{e.backtrace.try(:first)}"
     return false
   end

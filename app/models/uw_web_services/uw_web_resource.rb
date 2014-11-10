@@ -56,7 +56,7 @@ class UwWebResource < ActiveResource::Base
         
   end
 
-  self.site = "https://#{UwWebResource.global_config_options[:host]}" if UwWebResource.global_config_options[:host]
+  self.site = "https://#{UwWebResource.global_config_options["host"]}" if UwWebResource.global_config_options["host"]
   
   protected
   
@@ -66,7 +66,7 @@ class UwWebResource < ActiveResource::Base
     raise ActiveResource::SSLError, "Could not find key file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:key]))
     raise ActiveResource::SSLError, "Could not find CA file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:ca_file]))
     return true
-  rescue ActiveResource::SSLError => e
+  rescue => e
     puts Rails.logger.warn "[WARN] ActiveResource::SSLError: #{e.message}\n #{e.backtrace.try(:first)}"
     return false
   end
