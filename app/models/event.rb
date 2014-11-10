@@ -6,7 +6,7 @@ class Event < ActiveRecord::Base
         audience = audience.class.to_s.classify
       end
       conditions = ["(audience = :audience) OR (people.type = :audience AND audience = NULL)", {:audience => audience.to_s.classify}] if audience
-      al = EventAttendance.find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+      al = EventAttendance.find_all_by_event_id(proxy_association.owner.id, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
     end
     def rsvpd(audience = nil)
       if audience
@@ -17,7 +17,7 @@ class Event < ActiveRecord::Base
       else
         conditions = { :rsvp => true }
       end
-      EventAttendance.find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+      EventAttendance.find_all_by_event_id(proxy_association.owner.id, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
     end
 
     def attended(audience = nil)
@@ -29,7 +29,7 @@ class Event < ActiveRecord::Base
       else
         conditions = { :attended => true }
       end
-      EventAttendance.find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+      EventAttendance.find_all_by_event_id(proxy_association.owner.id, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
     end
   end
 
