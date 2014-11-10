@@ -191,7 +191,7 @@ class NonstandardWebServiceResult
     # hosts, certs, etc. in different Rails environments.
     def config_options
       config_file_path = File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "web_services.yml")
-      @config_options ||= YAML::load(ERB.new((IO.read(config_file_path))).result)[(Rails.env)].symbolize_keys
+      @config_options ||= YAML::load(ERB.new((IO.read(config_file_path))).result)[(Rails.env)][Apartment::Tenant.current].symbolize_keys
     end
   
     def headers
