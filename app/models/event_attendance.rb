@@ -1,10 +1,11 @@
 class EventAttendance < ActiveRecord::Base
-  belongs_to :event
+  belongs_to :event, :inverse_of => :attendees
   belongs_to :person, :touch => true
   belongs_to :event_shift
-  
+
   validates_presence_of :person_id, :event_id
   validates_uniqueness_of :person_id, :scope => :event_id, :message => "already has an event attendance record for this event"
+  validates_format_of :audience, :with => /(^Mentor$)|(^Volunteer$)|(^Participant$)|(^Student$)/
 
   validate :validate_event_shift
   
@@ -64,4 +65,10 @@ class EventAttendance < ActiveRecord::Base
     event_shift.nil? ? event.name : "#{event.name} (#{event_shift.title})"
   end
   
+  # Returns a string representation of the person type 
+  # this event attendance will be displayed under
+  # Override
+  def audience
+    read_attribute(:audience) || person.class.to_s
+  end
 end

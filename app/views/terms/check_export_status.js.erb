@@ -1,0 +1,38 @@
+<% if @export %>
+	xlsxReportId = <%= "#{@export.id.to_s}" %>;
+
+	<% if @export.generated? %>
+		$('#xlsx_download_button').html("Download is Ready");
+		checkXlsxStatus = false;
+		$('#xlsx_download_button').removeClass('generating');
+		$('#xlsx_status').removeClass('generating');
+		$('#xlsx_download_button').removeClass('error');
+		$('#xlsx_status').removeClass('error');
+		$("#xlsx_status").html("Ready to download");
+
+	<% elsif @export.generating? %>
+		$('#xlsx_download_button').html('<%= "#{h(@export.status.to_s.titleize)}..." %>');
+		$('#xlsx_download_button').addClass('generating');
+		$('#xlsx_status').addClass('generating');
+		$('#xlsx_download_button').removeClass('error');
+		$('#xlsx_status').removeClass('error');
+		checkXlsxStatus = true;
+		<% msg = "Your Excel file is being generated, which may take quite awhile. "
+		msg << "You can leave this page and come back later to download the file. "
+		msg << content_tag(:em, "(#{number_to_human_size(File.size(@export.file_path))})", :id => 'xlsx_filesize') if File.exist?(@export.file_path.to_s) %>
+		$("#xlsx_status").html('<%= msg %>');
+
+	<% elsif @export.error? %>
+		$('#xlsx_download_button').html("Download in Excel");
+		checkXlsxStatus = false;
+	  $('#xlsx_download_button').removeClass('generating');
+		$('#xlsx_status').removeClass('generating');
+		$('#xlsx_download_button').addClass('error');
+		$('#xlsx_status').addClass('error');
+		$("#xlsx_status").html("There was an error generating the file. Please try again.");
+
+	<% else %>
+		checkXlsxStatus = true;
+
+	<% end %>
+<% end %>

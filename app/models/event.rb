@@ -1,25 +1,38 @@
 class Event < ActiveRecord::Base
   include Comparable
-  has_many :attendees, :class_name => "EventAttendance" do
+  has_many :attendees, :inverse_of => :event, :class_name => "EventAttendance" do
     def all(audience = nil)
-      audience = audience.class if audience.is_a?(Person)
-      conditions = {}
-      conditions.merge!({ :people => { :type => audience.to_s.classify }}) if audience
-      find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+      if audience.is_a?(Person)
+        audience = audience.class.to_s.classify
+      end
+      conditions = ["(audience = :audience) OR (people.type = :audience AND audience = NULL)", {:audience => audience.to_s.classify}] if audience
+      al = EventAttendance.find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
     end
     def rsvpd(audience = nil)
-      audience = audience.class if audience.is_a?(Person)
-      conditions = { :rsvp => true }
-      conditions.merge!({ :people => { :type => audience.to_s.classify }}) if audience
-      find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+      if audience
+        if audience.is_a?(Person)
+          audience = audience.class.to_s.classify
+        end
+        conditions = ["((audience = :audience) OR (people.type = :audience AND audience = NULL)) AND rsvp=:true", { :audience => audience.to_s.classify, :true => true }]
+      else
+        conditions = { :rsvp => true }
+      end
+      EventAttendance.find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
     end
+
     def attended(audience = nil)
-      audience = audience.class if audience.is_a?(Person)
-      conditions = { :attended => true }
-      conditions.merge!({ :people => { :type => audience.to_s.classify }}) if audience
-      find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
+      if audience
+        if audience.is_a?(Person)
+          audience = audience.class.to_s.classify
+        end
+        conditions = ["((audience = :audience) OR (people.type = :audience AND audience = NULL)) AND attended=:true", { :audience => audience.to_s.classify, :true => true }]
+      else
+        conditions = { :attended => true }
+      end
+      EventAttendance.find(:all, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
     end
   end
+
   has_many :people, :through => :attendees
   belongs_to :location
   belongs_to :event_type
@@ -32,7 +45,7 @@ class Event < ActiveRecord::Base
       find(:all, :conditions => { "show_for_#{h(audience.to_s.pluralize)}" => true })
     end
   end
-  
+
   belongs_to :earliest_grade_level, :class_name => "GradeLevel", :primary_key => 'level', :foreign_key => 'earliest_grade_level_level'
   belongs_to :latest_grade_level, :class_name => "GradeLevel", :primary_key => 'level', :foreign_key => 'latest_grade_level_level'
   
@@ -40,6 +53,11 @@ class Event < ActiveRecord::Base
   
   default_scope :order => "date, start_time"
   
+  # Allows overwriting of type in controller, default is [+id+, +type+]
+  def self.attributes_protected_by_default
+    ["id"]
+  end
+
   # Returns the number of attended
   def attended_count
     attendees.attended.size
@@ -55,13 +73,12 @@ class Event < ActiveRecord::Base
   def capacity(person_or_type = nil)
     overall_capacity = read_attribute(:capacity)
     return overall_capacity if person_or_type.nil?
-
-    klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type
-    if klass == Student || klass == Participant
+    klass = person_or_type.is_a?(Person) ? person_or_type.class.to_s : person_or_type.to_s
+    if (klass.eql? "Student") || (klass.eql? "Participant")
       custom_capacity = student_capacity
-    elsif klass == Volunteer
+    elsif klass.eql? "Volunteer"
       custom_capacity = volunteer_capacity
-    elsif klass == Mentor
+    elsif klass.eql? "Mentor"
       custom_capacity = mentor_capacity
     end    
     (custom_capacity.nil? || custom_capacity <= 0) ? overall_capacity : custom_capacity
@@ -201,6 +218,7 @@ class Event < ActiveRecord::Base
   def start_time(person_or_type = nil)
     generic_start_time = read_attribute(:start_time)
     return generic_start_time if person_or_type.nil?
+    person_or_type = person_or_type.constantize if person_or_type.is_a?(String)
     klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type
     if klass == Student || klass == Participant
       custom_start_time = student_start_time
@@ -216,6 +234,7 @@ class Event < ActiveRecord::Base
   def end_time(person_or_type = nil)
     generic_end_time = read_attribute(:end_time)
     return generic_end_time if person_or_type.nil?
+    person_or_type = person_or_type.constantize if person_or_type.is_a?(String)
     klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type
     if klass == Student || klass == Participant
       custom_end_time = student_end_time
@@ -283,3 +302,4 @@ class Event < ActiveRecord::Base
   end
 
 end
+

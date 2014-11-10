@@ -2,8 +2,7 @@
     <td><strong><%= change[:created_at].to_s(:date_with_full_month) %></strong>
         <br>
         <%= change[:created_at].to_s(:time_with_seconds) %>
-        </td>
-
+       </td>
     <td><%= change.user.nil? ? "The system" : link_to(h(change.user.try(:fullname)), change.user) %>
         <%=h change[:action_type] %>d
 		<%= change[:action_type] == 'delete' ? "a" : "the" %>
@@ -24,7 +23,6 @@
             <% end %>
         </ul>
     </td>
-	
 	<td class="functions">
 		<%- if change[:action_type] == 'delete' %>
 			<%- if change.restored? %>

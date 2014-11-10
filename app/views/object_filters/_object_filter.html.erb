@@ -1,6 +1,6 @@
 <% 
 # Setup the initial calculations
-filtered_participants = active_participants.select{|p| object_filter.passes?(p, :purpose => :stats)} 
+filtered_participants = active_participants.select{|p| object_filter.passes?(p)} 
 active_percentage = filtered_participants.size.to_f / active_participants.size.to_f * 100
 total_percentage = filtered_participants.size.to_f / participants.size.to_f * 100
 

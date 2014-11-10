@@ -17,7 +17,7 @@ class SessionController < ApplicationController
     # raise auth.to_yaml
     if auth["provider"] == "shibboleth"
       attach_mentor_record = session[:external_login_context].nil? ? true : false
-      user = PubcookieUser.authenticate(auth["uid"], nil, nil, attach_mentor_record)
+      user = PubcookieUser.authenticate(auth[:info][:email][/[^@]+/], nil, nil, attach_mentor_record)
       return redirect_to login_url, :error => "Could not login. Please try again." unless user
     else
       user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.create_with_omniauth(auth)

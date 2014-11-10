@@ -1,0 +1,54 @@
+<tr id="change_<%= change.id.to_s %>" class="change_value">
+    <td><strong><%= change[:created_at].to_s(:date_with_full_month) %></strong>
+        <br>
+        <%= change[:created_at].to_s(:time_with_seconds) %>
+<<<<<<< HEAD
+        </td>
+    <td><%= change.user.nil? ? "The system" : link_to(h(change.user.try(:fullname)), user_path(change.user)) %>
+=======
+       </td>
+    <td><%= change.user.nil? ? "The system" : link_to(h(change.user.try(:fullname)), change.user) %>
+>>>>>>> uwdp-develop
+        <%=h change[:action_type] %>d
+		<%= change[:action_type] == 'delete' ? "a" : "the" %>
+        <%= link_to change.change_loggable_type, change.change_loggable rescue change.change_loggable_type %> record.
+        
+        <ul>
+            <%- for attribute_name, change_array in change[:changes] -%>
+				<%- if change_array.is_a?(Array) %>
+	                <li><strong><%=h attribute_name %></strong> changed
+	                    from <%= prep_change_value(change_array[0]) rescue "#err" %> 
+	                    to <%= prep_change_value(change_array[1]) rescue "#err" %>
+	                </li>
+				<% else %>
+	                <li><strong><%=h attribute_name %></strong> was
+	                    <%= prep_change_value(change_array) rescue "#err" %> 
+	                </li>
+				<% end %>
+            <% end %>
+        </ul>
+    </td>
+<<<<<<< HEAD
+<<<<<<< HEAD
+	
+=======
+>>>>>>> uwdp-develop
+	<td class="functions">
+		<%- if change[:action_type] == 'delete' %>
+			<%- if change.restored? %>
+				Restored by
+				<%= change.restored_user.nil? ? "The system" : link_to(h(change.restored_user.try(:fullname)), change.restored_user, :class => "default") %>
+		        <br>
+		        <%= change[:restored_at].try(:to_s, :date_time12) %>
+			<% else %>
+				<%= link_to "Undelete", undelete_change_path(change), :method => :delete, :confirm => "Are you sure you want to undelete this record?" %>
+			<% end %>
+		<% end %>
+	</td>
+</tr>
+<<<<<<< HEAD
+=======
+</tr>
+>>>>>>> origin/uwdp-deploy
+=======
+>>>>>>> uwdp-develop

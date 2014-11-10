@@ -1,20 +1,20 @@
 <% if @mentor.currently_enrolled? %>
-	<div class="complete">
-		<h2>Choose a <%= Customer.mentor_label %> group</h2>
-		<p>You're currently signed up for <%= @mentor.current_mentor_term_groups_string %>.
-			<br>
-			<%= link_to "Change your group selection(s)", {:action => 'index'} %></p>
-	</div>
+<div class="complete">
+<h2>Choose a <%= Customer.mentor_label %> group</h2>
+<p>You're currently signed up for <%= @mentor.current_mentor_term_groups_string %>.
+<br>
+<%= link_to "Change your group selection(s)", {:action => 'index'} %></p>
+</div>
 <%- else -%>
-	<div class="incomplete">
-		<h2>Choose a <%= Customer.mentor_label %> group</h2>
-		<p>You need to choose a <%= Customer.mentor_label %> group before you can participate in <%= Customer.name_label %>.</p>
-		
-		<%- if @term.allow_signups? -%>
-			<p><%= link_to "Choose a group now &#x2192;", {:action => 'index'}, :class => 'button add' %></p>
-		<% else %>
-			<p class="error-message">You can't choose your own group right now. 
-				Please talk to your <%= Customer.lead_Label %> to get assigned to a group.</p>
-		<% end %>
-	</div>
+<div class="incomplete">
+<h2>Choose a <%= Customer.mentor_label %> group</h2>
+<p>You need to choose a <%= Customer.mentor_label %> group before you can participate in <%= Customer.name_label %>.</p>
+
+<%- if @term.allow_signups? -%>
+<p><%= link_to "Choose a group now &#x2192;", {:action => 'index'}, :class => 'button add' %></p>
+<% else %>
+<p class="error-message">You can't choose your own group right now.
+Please talk to your <%= Customer.lead_Label %> to get assigned to a group.</p>
+<% end %>
+</div>
 <% end -%>

@@ -60,7 +60,6 @@ class Report < ActiveRecord::Base
 		reset_to_ungenerated
     begin
 			update_attribute :status, "generating"
-	    xlsx_package = object_class.to_xlsx(:data => objects)
 			temp_file = Tempfile.new("report_#{id.to_s}_#{Time.now.to_i}")
 			xlsx_package.serialize temp_file.path
 		rescue => e
@@ -78,6 +77,10 @@ class Report < ActiveRecord::Base
     end
 	end
 	
+	def xlsx_package
+	  object_class.to_xlsx(:data => objects)
+	end
+
 	def generated?
 		!generated_at.blank? && !file_path.blank? && status == 'generated'
 	end
@@ -94,7 +97,7 @@ class Report < ActiveRecord::Base
 	def generate_in_background!
 		logger.info { "Generating report ID #{id} via background rake process" }
 		task = "reports:generate"
-	  options = { :Rails.env => Rails.env, :id => id }
+	  options = { :rails_env => Rails.env, :id => id, :tenant => Customer.tenant_name }
 	  args = options.map { |n, v| "#{n.to_s.upcase}='#{v}'" }
 		cmd = "bundle exec rake #{task} #{args.join(' ')} --trace 2>&1 &"
 	  system cmd

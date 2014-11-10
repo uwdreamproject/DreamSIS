@@ -11,7 +11,7 @@ var checkXlsxStatus = false;
 var showAjaxIndicator = true;
 var loadCount = 0;
 
-Ajax.Responders.register({
+var responder = {
 	onCreate: function() {
 		if (Ajax.activeRequestCount > 0) {
       if (showAjaxIndicator)
@@ -39,7 +39,9 @@ Ajax.Responders.register({
 			updateFlashes(flash)
 		}
 	}
-});
+}
+
+Ajax.Responders.register(responder);
 
 document.observe("dom:loaded", function() {
   Event.observe(window, "scroll", function() { 

@@ -322,20 +322,20 @@ table.quarter_status table td {
 	border-bottom: none;
 }
 
-table.quarter_status td.status_tag {
+table.term_status td.status_tag {
 	width: 7em;
 	text-align: center;
 }
 
-table.quarter_status td.quarter_title {
+table.term_status td.term_title {
 	vertical-align: top;
 	padding-top: 0.5em;
 	font-weight: bold;
 	text-transform: uppercase;
 }
 
-table.quarter_status td.section_id {
-	width: 4em;
+table.term_status td.section_id {
+	width: 12em;
 }
 
 tr.total td {
@@ -3398,6 +3398,10 @@ span.highlight, .highlight {
 	color: #b11;
 }
 
+.bright-red-background {
+  background: #FF8080!important;
+}
+
 span.conditional.highlight, .conditional.highlight {
 	font: 80% "Lucida Grande", Lucida, Verdana, sans-serif;
 	color: blue;
@@ -3546,6 +3550,10 @@ h1 .session_identifier.tag {
 	color: #fc0012;
 	background: url(../images/icons/occupied.png) no-repeat 0 0;
 	padding-left: 16px;
+}
+
+.driver.tag {
+        color: #505050;
 }
 
 .archived.tag {
@@ -3715,6 +3723,11 @@ td.signup-meter {
 }
 
 .signup-meter div.size {
+        background: rgba(0, 150, 0, 0.1);
+        background: -linear-gradient(top, rgba(0, 150, 0, 0.1) 0%, rgba(0,150,0,0.5) 100%) rgba(0,150,0,0.5);
+        background: -moz-linear-gradient(top, rgba(0, 150, 0, 0.1) 0%, rgba(0,150,0,0.5) 100%) rgba(0,150,0,0.5);
+        background: -o-linear-gradient(top, rgba(0, 150, 0, 0.1) 0%, rgba(0,150,0,0.5) 100%) rgba(0,150,0,0.5);
+        background: -ms-linear-gradient(top, rgba(0, 150, 0, 0.1) 0%, rgba(0,150,0,0.5) 100%) rgba(0,150,0,0.5);
 	background: -webkit-linear-gradient(top, rgba(0, 150, 0, 0.1) 0%, rgba(0,150,0,0.5) 100%) rgba(0,150,0,0.5);
 	z-index: 11;
 	float: left;
@@ -4194,10 +4207,18 @@ table.rsvp tr.attending td {
 	background: -webkit-linear-gradient(bottom, rgba(0,255,0,0.1), rgba(0,255,0,0) 40%);
 }
 
-table.rsvp tr td:first-child {
+table.rsvp tr:not(.empty) td:first-child {
 	background: url(../images/icons/grey-check-with-shadow.png) no-repeat 10px 2em;
 	padding-left: 60px;
 	/*border-left: 10px solid rgba(0,0,0,0.1);*/
+}
+
+tr.rowspan-header > th > p {
+    font-weight: normal;
+    width: 80%;
+    min-width: 150px;
+    padding-left: 10px;
+    color: #424242;
 }
 
 table.rsvp tr.attending td:first-child {
@@ -5291,27 +5312,27 @@ table.participants tr {
 	border-bottom: 1px solid #eee;
 }
 
-table.quarter_status > tbody > tr > td {
+table.term_status > tbody > tr > td {
 	clear: left;
 	display: block;
 	border-bottom: none;
 }
 
-table.quarter_status td.quarter_title {
+table.term_status td.term_title {
 	display: block;
 	border-bottom: 1px solid #eee;
 }
 
-table.quarter_status a.edit.button {
+table.term_status a.edit.button {
 	margin-left: 2em;
 	margin-bottom: 0.5em;
 }
 
-table.mentor_quarter_group.signup td {
+table.mentor_term_group.signup td {
 	padding-bottom: 3em;
 }
 
-table.mentor_quarter_group.signup td.signup-link {
+table.mentor_term_group.signup td.signup-link {
 	display: block;
 	position: absolute;
 	left: 5em;

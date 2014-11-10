@@ -63,7 +63,7 @@ class EventsController < ApplicationController
   def update
     @event = Event.find(params[:id])
     klass = params[:event].try(:[], :type) == "Visit" ? Visit : Event
-    @event.write_attribute(:type, klass.to_s) if @event.type != klass
+    @event.update_attribute(:type, klass.to_s) if @event.type != klass
 
     respond_to do |format|
       if @event.update_attributes(params[:event] || params[:visit])

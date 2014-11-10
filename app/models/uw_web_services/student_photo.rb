@@ -2,7 +2,7 @@ class StudentPhoto < NonstandardWebServiceResult
   
   SWS_VERSION = "v1"
 
-  self.element_path = "idcard/#{SWS_VERSION}/photo"  
+  self.element_path = "idcard/#{SWS_VERSION}/photo"
   self.cache_lifetime = 1.month
   
   def self.encapsulate_data(data)

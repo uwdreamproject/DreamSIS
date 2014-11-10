@@ -38,7 +38,7 @@
 		});</script>
 	<% end %>
 
-	<%- if GOOGLE_ANALYTICS_TRACKING_ID && Rails.env == 'production' -%>
+	<%- if Rails.env == 'production' && GOOGLE_ANALYTICS_TRACKING_ID -%>
 		<script type="text/javascript">
 
 		  var _gaq = _gaq || [];
@@ -126,7 +126,7 @@
 
 		<%- if Rails.env == 'development' -%>
 		<div id="dev-inspector-container">
-			<%= link_to_function "Dev", "$('dev-inspector').toggle()", :id => "dev-inspector-link" %>
+			<%= link_to_function "Dev", "$('#dev-inspector').toggle()", :id => "dev-inspector-link" %>
 			<div class="git branch <%= `git rev-parse --symbolic-full-name --abbrev-ref HEAD` %>">Branch <strong><%= `git rev-parse --symbolic-full-name --abbrev-ref HEAD` %></strong></div>
 			<div class="git branch">Rails <strong><%= Rails.version %></strong></div>
 			<div class="git branch">User <strong><%= @current_user.try(:id) || "nil" %></strong></div>

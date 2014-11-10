@@ -33,12 +33,12 @@ class EventGroup < ActiveRecord::Base
   def description(person_or_type = nil)
     generic_description = read_attribute(:description)
     return generic_description if person_or_type.nil?
-    klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type
-    if klass == Student || klass == Participant
+    klass = person_or_type.is_a?(Person) ? person_or_type.to_s : person_or_type
+    if klass == "Student" || klass == "Participant"
       custom_description = student_description
-    elsif klass == Volunteer
+    elsif klass == "Volunteer"
       custom_description = volunteer_description
-    elsif klass == Mentor
+    elsif klass == "Mentor"
       custom_description = mentor_description
     end
     custom_description.blank? ? generic_description : custom_description
@@ -50,12 +50,13 @@ class EventGroup < ActiveRecord::Base
   # a single block of rendered text.
   def confirmation_message(person_or_type = nil)
     custom_description = hide_description_in_confirmation_message? ? "" : description(person_or_type)
-    klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type
-    if klass == Student || klass == Participant
+    klass = person_or_type.is_a?(Person) ? person_or_type.to_s : person_or_type
+    custom_confirmation_message = ""
+    if klass == "Student" || klass == "Participant"
       custom_confirmation_message = student_confirmation_message
-    elsif klass == Volunteer
+    elsif klass == "Volunteer"
       custom_confirmation_message = volunteer_confirmation_message
-    elsif klass == Mentor
+    elsif klass == "Mentor"
       custom_confirmation_message = mentor_confirmation_message
     end
     custom_description.to_s + custom_confirmation_message.to_s

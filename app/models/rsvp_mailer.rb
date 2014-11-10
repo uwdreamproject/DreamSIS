@@ -8,9 +8,9 @@ class RsvpMailer < ActionMailer::Base
     
     @event_attendance = event_attendance
     @event = @event_attendance.event
-    @time_detail = @event.time_detail(:audience => event_attendance.person.class)
-    @event_description = @event.description(event_attendance.person.class)
-    @confirmation_message = @event.event_group.confirmation_message(event_attendance.person.class) if @event.event_group
+    @time_detail = @event.time_detail(:audience => event_attendance.audience)
+    @event_description = @event.description(event_attendance.audience)
+    @confirmation_message = @event.event_group.confirmation_message(event_attendance.audience) if @event.event_group
     subject    "Thanks for registering: #{@event.name}"
     recipients "#{@event_attendance.person.try(:fullname)} <#{@event_attendance.person.email}>"
     from       "do-not-reply@dreamsis.org"

@@ -14,8 +14,8 @@
 
 <% for mentor_term_group in @mentor_term_groups %>
 <tr>
-	<% if Customer.link_to_uw? %><td><%= content_tag :span, h(mentor_term_group.section_id), :class => 'section_id tag' %></td><% end %>
-	<td class="name">
+	<td><%= content_tag :span, h(mentor_term_group.course_string), :class => 'section_id tag' %></td>
+	<td>
 		<%= link_to h(mentor_term_group.title), mentor_term_group, :title => mentor_term_group.course_id %>
 		<%= content_tag :abbr, mentor_term_group.permissions_level.titleize, 
 						:title => "Permissions Level: #{h(mentor_term_group.permissions_level.titleize)} (#{h(mentor_term_group.permissions_level_description)})", 
@@ -24,11 +24,11 @@
 	<td><%= mentor_term_group.times %></td>
 	<td class="signup-meter <%= "full" if mentor_term_group.full? %>">
 		<div class="capacity" 
-			 style="width: <%= mentor_term_group.capacity.to_f / @max_term_cap * 100 rescue 0 %>%;"
+		         style="width: 100%"
 			 title="<%= number_to_percentage mentor_term_group.percent_full, :precision => 0 %> full">
 			
 			<div class="size" style="width: <%= mentor_term_group.percent_full %>%">
-				<%= mentor_term_group.full? ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
+				<%= raw mentor_term_group.full? ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
 			</div>						
 		</div>
 	</td>

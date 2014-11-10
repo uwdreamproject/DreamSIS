@@ -1,7 +1,7 @@
 <%= f.inputs :name => "Test Details" do -%>
 	<%= f.input :test_type_id, :collection => TestType.all %>
-	<%= f.input :taken_at, :as => :date, :label => "Test Date", :hint => link_to_now(:test_score_taken_at) %>
-	<%= f.input :registered_at, :as => :date, :hint => link_to_now(:test_score_registered_at) %>
+	<%= f.input :taken_at, :as => :date_select, :label => "Test Date", :hint => link_to_now(:test_score_taken_at) %>
+	<%= f.input :registered_at, :as => :date_select, :hint => link_to_now(:test_score_registered_at) %>
 <% end %>
 
 <%= render :partial => 'scores_fields', :locals => { :f => f } %>

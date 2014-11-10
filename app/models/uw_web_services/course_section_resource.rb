@@ -1,5 +1,5 @@
 class CourseSectionResource < UwWebResource
-  self.prefix = "/student/v4/"
+  self.prefix = "/student/v5/"
   self.element_name = "section"
   self.collection_name = "section"
   self.caller_class = "CourseSectionResource"
@@ -12,7 +12,7 @@ class CourseSectionResource < UwWebResource
 
   # Course ID in the format that SWS uses. For example: "2011,spring,EDUC,360/A"
   def course_id
-    [[self.Year, self.Term, self.CurriculumAbbreviation, self.CourseNumber].join(","), self.SectionID].join("/")
+    [[self.Year, self.Quarter, self.CurriculumAbbreviation, self.CourseNumber].join(","), self.SectionID].join("/")
   end
 
   # Alias for #course_id.
