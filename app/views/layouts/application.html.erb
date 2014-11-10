@@ -6,7 +6,7 @@
 	<title><%= @title.blank? ? "" : "#{@title.is_a?(Array) ? @title.collect(&:to_title).join(" - ") : @title.to_title} - " %>DreamSIS
 		<%= " 🆔" if Rails.env == "development" %></title>
 	<meta name="viewport" content="width=device-width">
-	<link rel="shortcut icon" href="<%= request.protocol + request.host_with_port + "/" + image_path("favicon.ico") %>" type="image/x-icon">
+	<%= favicon_link_tag %>
 	<link rel="apple-touch-icon" href="<%= image_path("dreamsis-logo-icon.png") %>"/>
 
 	<%= csrf_meta_tags %>
