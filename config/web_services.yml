@@ -6,7 +6,7 @@ development:
     act_as_user: dreamsis
 
 production:
-    host: ucswseval1.cac.washington.edu
+    host: ws.admin.washington.edu
     cert: uwdp.crt
     key: uwdp.key
     ca_file: uwca.pem
