@@ -122,6 +122,8 @@
 			Student data provided in this system are protected by 
 				<%= link_to "FERPA", "http://www.washington.edu/students/reg/ferpafac.html", :target => "_blank" %>.
 				You are expected to understand and abide by these protections.
+				
+			<code class="git branch">[<%= `git rev-parse --short HEAD`.strip %>]</code>
 		</div>
 
 		<%- if Rails.env == 'development' -%>

@@ -27,9 +27,19 @@ class UwWebResource < ActiveResource::Base
 
     # All configuration options are stored in Rails.root/config/web_services.yml. This allows us to use different
     # hosts, certs, etc. in different Rails environments.
-    def config_options
+    def global_config_options
       config_file_path = "#{Rails.root}/config/web_services.yml"
-      @config_options ||= YAML::load(ERB.new((IO.read(config_file_path))).result)[(Rails.env)][Apartment::Tenant.current].symbolize_keys
+      @global_config_options ||= YAML.load_file(config_file_path)[Rails.env]
+    end
+    
+    # Returns config options for the current Tenant.
+    def config_options
+      tenant_options = global_config_options["tenant_options"][Apartment::Tenant.current]
+      if tenant_options.nil?
+        return {}
+      else
+        tenant_options.tap{ |t| t[:host] = global_config_options["host"] }.symbolize_keys
+      end
     end
 
     def headers
@@ -46,7 +56,7 @@ class UwWebResource < ActiveResource::Base
         
   end
 
-  self.site = "https://#{UwWebResource.config_options[:host]}"
+  self.site = "https://#{UwWebResource.global_config_options["host"]}" if UwWebResource.global_config_options["host"]
   
   protected
   
@@ -56,7 +66,7 @@ class UwWebResource < ActiveResource::Base
     raise ActiveResource::SSLError, "Could not find key file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:key]))
     raise ActiveResource::SSLError, "Could not find CA file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:ca_file]))
     return true
-  rescue ActiveResource::SSLError => e
+  rescue => e
     puts Rails.logger.warn "[WARN] ActiveResource::SSLError: #{e.message}\n #{e.backtrace.try(:first)}"
     return false
   end

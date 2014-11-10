@@ -101,7 +101,7 @@ class NonstandardWebServiceResult
 
     # Gets the URI of the REST resources to map for this class.
     def site
-      @site || "https://#{config_options[:host]}"
+      @site || "https://#{global_config_options["host"]}"
     end
 
     # Sets the URI of the REST resources to map for this class to the value in the +site+ argument.
@@ -115,7 +115,7 @@ class NonstandardWebServiceResult
         if site.is_a?(URI)
           @site = site.dup
         else
-          @site = site.include?("http") ? site : "https://#{config_options[:host]}"
+          @site = site.include?("http") ? site : "https://#{global_config_options["host"]}"
         end
       end
     end
@@ -178,20 +178,17 @@ class NonstandardWebServiceResult
   
     # Attaches our cert, key, and CA file based on the config options in web_services.yml.
     def ssl_options
-      return {} unless check_cert_paths!
-      @ssl_options ||= {
-        :cert         => OpenSSL::X509::Certificate.new(File.open(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:cert]))),
-        :key          => OpenSSL::PKey::RSA.new(File.open(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:key]))),
-        :ca_file      => File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:ca_file]),
-        :verify_mode  => OpenSSL::SSL::VERIFY_PEER
-      }
+      UwWebResource.ssl_options
     end
   
     # All configuration options are stored in Rails.root/config/web_services.yml. This allows us to use different
     # hosts, certs, etc. in different Rails environments.
     def config_options
-      config_file_path = File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "web_services.yml")
-      @config_options ||= YAML::load(ERB.new((IO.read(config_file_path))).result)[(Rails.env)][Apartment::Tenant.current].symbolize_keys
+      UwWebResource.config_options
+    end
+    
+    def global_config_options
+      UwWebResource.global_config_options
     end
   
     def headers
@@ -224,7 +221,7 @@ class NonstandardWebServiceResult
     raise ActiveResource::SSLError, "Could not find key file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:key]))
     raise ActiveResource::SSLError, "Could not find CA file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:ca_file]))
     return true
-  rescue ActiveResource::SSLError => e
+  rescue => e
     puts Rails.logger.warn "[WARN] ActiveResource::SSLError: #{e.message}\n #{e.backtrace.try(:first)}"
     return false
   end
