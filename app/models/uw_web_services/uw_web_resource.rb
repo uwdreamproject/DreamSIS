@@ -47,7 +47,11 @@ class UwWebResource < ActiveResource::Base
         
   end
 
-  self.site = "https://#{UwWebResource.config_options[:host]}" if UwWebResource.config_options[:host]
+  # Set the site dynamically based on the current tenant. Returns nil if the tenant has no options 
+  # configured in web_services.yml.
+  def self.site
+    UwWebResource.config_options[:host].nil? ? nil : "https://#{UwWebResource.config_options[:host]}"
+  end
   
   protected
   
