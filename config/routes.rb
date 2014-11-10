@@ -192,6 +192,7 @@ Dreamsis::Application.routes.draw do
     end
   end
   resources :mentor_term_groups do
+    resources :mentor_terms
     collection do
       put :create_from_linked_sections
       put :sync
