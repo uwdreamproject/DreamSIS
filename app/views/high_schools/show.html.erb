@@ -8,7 +8,13 @@
 	</h2>
 	
 	<div id="participant_stats_<%= @high_school.id %>" class="loading">
-		<%= javascript_tag "document.observe('dom:loaded', function() { #{remote_function(:url => stats_high_school_path(@high_school, :hide_title => true), :method => :get)} });" %>
+		<%= javascript_tag "$( document ).ready(function() {
+			$.ajax({
+				url: '#{stats_high_school_path(@high_school, :hide_title => true, :format => :js)}',
+				method: 'GET' }
+			);
+		});" %>
+
 	</div>
 	
 	<%= render :partial => "high_schools/mentor_stats" %>
