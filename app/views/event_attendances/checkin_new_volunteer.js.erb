@@ -1,0 +1,10 @@
+<% if @person && @attendee && @person.valid? && @attendee.valid? -%>
+  document.getElementById('new_volunteer_form').reset();
+  $("#person_search_results").html("<%= j render :partial => 'event_attendances/person', :object => @person %>");
+  //page.visual_effect :highlight, "person_#{@person.id}"
+  $('#person_fullname').val("<%= "#{@person.fullname}" %>");
+  $('#person_fullname').select();
+  $("#new_volunteer_error").html("");
+<%- else -%>
+    $("#new_volunteer_error").html("Error creating new participant. Please try again.");
+<%- end %>
