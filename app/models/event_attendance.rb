@@ -37,9 +37,9 @@ class EventAttendance < ActiveRecord::Base
   def send_email
     if event.send_attendance_emails? && rsvp_changed?
       if rsvp?
-        RsvpMailer.deliver_rsvp!(self)
+        RsvpMailer.rsvp(self).deliver
       else
-        RsvpMailer.deliver_cancel!(self)
+        RsvpMailer.cancel(self).deliver
       end
     end
   end
