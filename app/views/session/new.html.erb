@@ -3,7 +3,7 @@
 <%- if Customer.allowable_login_method?(:shibboleth) -%>
 	<p>UW students, staff, faculty and alumni:</p>
 	<div class="login-links">
-		<p>If you are having trouble logging in, please visit <%= link_to "this page", "https://uwnetid.washington.edu/manage/?google" %> <span class="red">and turn on Google Apps for your NetID</span>, and make sure you <span class="red">change your email forwarding to your original email address.</span></p>
+		<p>If you are having trouble logging in, please visit <%= link_to "this page", "https://uwnetid.washington.edu/manage/?google", :target => "_blank" %> <span class="red">and turn on Google Apps for your NetID</span>, and make sure you <span class="red">change your email forwarding to your original email address.</span></p>
 		<p>Contact <%= link_to "mwh12@uw.edu", "mailto:mwh12@uw.edu" %> with questions.</p>
 		<%= link_to raw("<span>&nbsp;</span>Login with your UW NetID"), "auth/shibboleth", :class => "uwnetid login-link" %>
 	</div>
