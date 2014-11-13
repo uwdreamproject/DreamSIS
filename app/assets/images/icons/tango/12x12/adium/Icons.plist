@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AdiumSetVersion</key>
+	<integer>1</integer>
+	<key>List</key>
+	<dict>
+		<key>Generic Available</key>
+		<string>available.png</string>
+		<key>Free for Chat</key>
+		<string>free for chat.png</string>
+		<key>Available for Friends Only</key>
+		<string>available for friends only.png</string>
+		<key>Away for Friends Only</key>
+		<string>away for friends only.png</string>
+		<key>Not Available</key>
+		<string>not available.png</string>
+		<key>Generic Away</key>
+		<string>away.png</string>
+		<key>Extended Away</key>
+		<string>extended away.png</string>
+		<key>Busy</key>
+		<string>busy.png</string>
+		<key>Idle</key>
+		<string>idle.png</string>
+		<key>Lunch</key>
+		<string>lunch.png</string>
+		<key>Phone</key>
+		<string>phone.png</string>
+		<key>BRB</key>
+		<string>brb.png</string>
+		<key>DND</key>
+		<string>dnd.png</string>
+		<key>Occupied</key>
+		<string>occupied.png</string>
+		<key>Invisible</key>
+		<string>invisible.png</string>
+		<key>Not At Home</key>
+		<string>not at home.png</string>
+		<key>Vacation</key>
+		<string>vacation.png</string>
+		<key>Not In Office</key>
+		<string>not in office.png</string>
+		<key>Not At Desk</key>
+		<string>not at desk.png</string>
+		<key>Offline</key>
+		<string>offline.png</string>
+		<key>Unknown</key>
+		<string>unknown.png</string>
+		<key>content</key>
+		<string>content.png</string>
+		<key>typing</key>
+		<string>typing.png</string>
+		<key>enteredtext</key>
+		<string>enteredtext.png</string>
+	</dict>
+	<key>Tabs</key>
+	<dict>
+		<key>Generic Available</key>
+		<string>available.png</string>
+		<key>Not Available</key>
+		<string>not available.png</string>
+		<key>Free for Chat</key>
+		<string>free for chat.png</string>
+		<key>Available for Friends Only</key>
+		<string>available for friends only.png</string>
+		<key>Away for Friends Only</key>
+		<string>away for friends only.png</string>
+		<key>Generic Away</key>
+		<string>away.png</string>
+		<key>Extended Away</key>
+		<string>extended away.png</string>
+		<key>Busy</key>
+		<string>busy.png</string>
+		<key>Lunch</key>
+		<string>lunch.png</string>
+		<key>Phone</key>
+		<string>phone.png</string>
+		<key>BRB</key>
+		<string>brb.png</string>
+		<key>DND</key>
+		<string>dnd.png</string>
+		<key>Occupied</key>
+		<string>occupied.png</string>
+		<key>Idle</key>
+		<string>idle.png</string>
+		<key>Not At Home</key>
+		<string>not at home.png</string>
+		<key>Vacation</key>
+		<string>vacation.png</string>
+		<key>Not At Desk</key>
+		<string>not at desk.png</string>
+		<key>Not In Office</key>
+		<string>not in office.png</string>
+		<key>Invisible</key>
+		<string>invisible.png</string>
+		<key>Offline</key>
+		<string>offline.png</string>
+		<key>Unknown</key>
+		<string>unknown.png</string>
+		<key>content</key>
+		<string>content.png</string>
+		<key>typing</key>
+		<string>typing.png</string>
+		<key>enteredtext</key>
+		<string>enteredtext.png</string>
+	</dict>
+</dict>
+</plist>
