@@ -14,24 +14,24 @@
 	<td><% e = person.event_attendances.find_by_event_id(@event.id) %>
 		<% if e && e.attended? %>
 			<span class="green">Checked in at <%= e.updated_at.to_s(:time12) %></span></td>
-			<td><%= button_to_remote "Undo",
-			 					{ :url => event_event_attendance_path(@event, e, :attendee => { :attended => false }), :method => :put },
-								:html => {:disable_with => "Undoing..."} %></td>
+			<td><%= button_to( "Undo",
+				{ :action => :update, :event_id => @event.id, :id => e.id, :attendee => { :attended => false }, :format => :js},
+				{:disable_with => "Undoing...", :remote => true, :method => 'put'}) %></td>
 		<% elsif e && e.rsvp? %>
 		  	<span class="light">RSVP'd, but not checked in.</span></td>
-			<td><%= button_to_remote "Check-in", 
-								{ :url => event_event_attendance_path(@event, e, :attendee => { :attended => true }), :method => :put },
-								:html => {:disable_with => "Checking in..."} %></td>
+			<td><%= button_to( "Check-in",
+                                { :action => :update, :event_id => @event.id, :id => e.id, :attendee => { :attended => true }},
+                                {:disable_with => "Checking in...", :remote => true, :method => 'put'}) %></td>
 		<% elsif e %>
 		  	<span class="light">Not checked in.</span></td>
-			<td><%= button_to_remote "Check-in", 
-								{ :url => event_event_attendance_path(@event, e, :attendee => { :attended => true }), :method => :put },
-								:html => {:disable_with => "Checking in..."} %></td>
+			<td><%= button_to( "Check-in",
+                                { :action => :update, :event_id => @event.id, :id => e.id, :attendee => { :attended => true }, :format => :js},
+                                {:disable_with => "Checking in...", :remote => true, :method => 'put'}) %></td>
 		<% else %>
 		  	<span class="light">Not checked in.</span></td>
-			<td><%= button_to_remote "Check-in", 
-								{ :url => event_event_attendances_path(@event, :attendee => { :person_id => person.id, :attended => true }), :method => :post },
-								:html => {:disable_with => "Checking in..."} %></td>
+			<td><%= button_to( "Check-in",
+                                { :action => :create, :event_id => @event.id, :attendee => { :person_id => person.id, :attended => true }, :format => :js},
+                                {:disable_with => "Checking in...", :remote => true, :method => 'post'}) %></td>
 		<% end -%>
 		
 </tr>

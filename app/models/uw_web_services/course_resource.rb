@@ -16,6 +16,7 @@ class CourseResource < UwWebResource
       http.cert = ssl_options[:cert]
       http.key = ssl_options[:key]
       http.verify_mode = ssl_options[:verify_mode]
+      http.ssl_version = :TLSv1
       http.ca_file = ssl_options[:ca_file]
 
       # make the request
