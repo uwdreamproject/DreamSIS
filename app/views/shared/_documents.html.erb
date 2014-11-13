@@ -1,5 +1,5 @@
 <div>
-	<table class="documents" id="documents_<%= documents.id %>">
+	<table class="notes documents" id="documents_<%= documents.id %>">
 		<% for document in documents.documents %>
 			<%= render :partial => "/shared/document", :object => document if document.allows?(@current_user) %>
 		<% end -%>
