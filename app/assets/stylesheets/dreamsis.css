@@ -1639,7 +1639,7 @@ ul.crimes-list li {
 
 #notifications {
 	position: fixed;
-	top: 10px;
+	top: 60px;
 	text-align: center;
 	z-index: 100;
 	width: 70%;
@@ -1653,9 +1653,9 @@ ul.crimes-list li {
 	border: 1px solid #031;
 	padding: 10px 20px;
 	padding-left: 35px;
-	border-color: green;
+	border-color: rgba(0, 200, 0, 0.5);
 	border-radius: 3px;
-	-webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+	-webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.35);
 	margin-bottom: 20px;
 	opacity: 0;
 	-webkit-transition: all 0.5s ease-in-out;
@@ -1664,6 +1664,9 @@ ul.crimes-list li {
 	top: -50px !important;
 	position: absolute;	
 	width: auto;
+  border-top: none;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
 }
 
 #notifications .visible {
@@ -2206,7 +2209,7 @@ input.search {
 	margin: 0.5em 0;
 	text-shadow: none;
 	padding: 5px;
-	padding-left: 25px;
+	padding-left: 25px !important;
 	background: white url(../images/icons/silk/magnifier.png) no-repeat 4px center;
 	font: 13px/130% Helvetica, Arial, sans-serif;
 	font-weight: lighter;
