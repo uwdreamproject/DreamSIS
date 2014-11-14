@@ -78,6 +78,7 @@ class Participant < Person
   
   # Returns the number of filters that this Participant doesn't pass. Useful for quick view of status.
   def filter_results_count
+    update_filter_cache! unless filter_cache
     filter_cache.select{|k,v| v == false }.count
   end
 
