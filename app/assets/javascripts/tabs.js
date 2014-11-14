@@ -1,3 +1,28 @@
+$(function() {
+  if($('ul.tabs').length > 0) {
+    bindKeyboardShortcutsForTabs();
+    switchToHashTab();
+  }
+});
+
+// Binds the event handlers for the up and down keys to switch betwen tabs.
+function bindKeyboardShortcutsForTabs() {
+  $( document ).keydown(function (event) {
+    if($(document.activeElement).is('textarea,input,select')) { return; }
+    switch (event.which) {
+    case $.ui.keyCode.DOWN:
+      event.preventDefault();
+      nextTab();
+      break;
+    case $.ui.keyCode.UP:
+      event.preventDefault();
+      previousTab();
+      break;
+    default: return;
+    }
+  });
+}
+
 // Moves to a particular tab
 function switchToTab(tab_id) {
   $('.info-section-container .active').removeClass('active')

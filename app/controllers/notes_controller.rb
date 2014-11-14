@@ -48,18 +48,18 @@ class NotesController < ApplicationController
     end
   end
     
-  def document
-		@note = Note.find(params[:id])
-		
-		if @note.notable.is_a?(Person)
-			@person = @note.notable
-			unless @current_user && @current_user.can_view?(@person)
-				return render_error("You are not allowed to view documents for that person.")
-	    end
-		end
-
-		send_data @note.document.read, :type => @note.document_content_type, :filename => @note.document_file_name
-  end
+  # def document
+  #     @note = Note.find(params[:id])
+  #
+  #     if @note.notable.is_a?(Person)
+  #       @person = @note.notable
+  #       unless @current_user && @current_user.can_view?(@person)
+  #         return render_error("You are not allowed to view documents for that person.")
+  #       end
+  #     end
+  #
+  #     send_data @note.document.read, :type => @note.document_content_type, :filename => @note.document_file_name
+  # end
 
   protected
   

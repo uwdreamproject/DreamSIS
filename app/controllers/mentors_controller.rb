@@ -106,12 +106,12 @@ class MentorsController < ApplicationController
     respond_to do |format|
       if @mentor_participant.destroy
         flash[:notice] = "#{@mentor_participant.participant.fullname} was removed from #{@mentor.fullname}'s list of mentees."
-        format.html { redirect_to :back }
+        format.html { redirect_back_or_default(:back) }
         format.xml  { head :ok }
         format.js
       else
         flash[:error] = "Sorry, but we couldn't remove the mentee successfully."
-        format.html { redirect_to :back }
+        format.html { redirect_back_or_default(:back) }
         format.xml  { render :xml => @mentor_participant.errors, :status => :unprocessable_entity }
       end
     end

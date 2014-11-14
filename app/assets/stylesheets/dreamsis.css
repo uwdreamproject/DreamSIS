@@ -1361,6 +1361,13 @@ body.participants.show #content-wrap {
 	margin-top: 20px;
 }
 
+.info-section > a.marginless, .info-section div.marginless, .info-section > form.marginless {
+	margin-left: 0;
+	margin-right: 0;
+	margin-top: 0;
+}
+
+
 .info-section h2 {
 	margin-top: 0;
 	background-repeat: no-repeat;
@@ -1483,6 +1490,10 @@ td.college-logo {
 
 .info-section#notes h2, .tabs a.notes {
 	background-image: url(../images/icons/silk/note.png);
+}
+
+.info-section#documents h2, .tabs a.documents {
+	background-image: url(../images/icons/silk/book_open.png);
 }
 
 .info-section#events h2, .tabs a.events {
@@ -1628,7 +1639,7 @@ ul.crimes-list li {
 
 #notifications {
 	position: fixed;
-	top: 10px;
+	top: 60px;
 	text-align: center;
 	z-index: 100;
 	width: 70%;
@@ -1642,9 +1653,9 @@ ul.crimes-list li {
 	border: 1px solid #031;
 	padding: 10px 20px;
 	padding-left: 35px;
-	border-color: green;
+	border-color: rgba(0, 200, 0, 0.5);
 	border-radius: 3px;
-	-webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+	-webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.35);
 	margin-bottom: 20px;
 	opacity: 0;
 	-webkit-transition: all 0.5s ease-in-out;
@@ -1653,6 +1664,9 @@ ul.crimes-list li {
 	top: -50px !important;
 	position: absolute;	
 	width: auto;
+  border-top: none;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
 }
 
 #notifications .visible {
@@ -2195,7 +2209,7 @@ input.search {
 	margin: 0.5em 0;
 	text-shadow: none;
 	padding: 5px;
-	padding-left: 25px;
+	padding-left: 25px !important;
 	background: white url(../images/icons/silk/magnifier.png) no-repeat 4px center;
 	font: 13px/130% Helvetica, Arial, sans-serif;
 	font-weight: lighter;
@@ -3976,15 +3990,15 @@ div.notes.editable, p.notes.editable {
 	margin-top: 1em;
 }
 
-#notes .notes_container {
+#notes .notes_container, #documents .documents_container {
 	margin: 0;
 }
 
-#notes .notes_container > div:first-child {
+#notes .notes_container > div:first-child, #documents .documents_container > div:first-child {
 	margin: 0;
 }
 
-#notes .metadata .timestamp {
+#notes .metadata .timestamp, #documents .metadata .timestamp {
 	margin: 10px 0;
 }
 
@@ -3996,7 +4010,7 @@ div.notes.editable, p.notes.editable {
 	font-weight: bold;
 }
 
-#notes .metadata .username {
+#notes .metadata .username, #documents .metadata .username {
 	font-weight: bold;
 }
 
@@ -4026,7 +4040,7 @@ div.notes.editable, p.notes.editable {
 	visibility: visible;
 }
 
-.info-section#notes form {
+.info-section#notes form, .info-section#documents form {
 	margin: 0;
 	padding: 0;
 	padding-bottom: 5px;
@@ -4036,18 +4050,18 @@ div.notes.editable, p.notes.editable {
 	display: block;
 }
 
-.info-section#notes form h4 {
+.info-section#notes form h4, .info-section#documents form h4 {
 	margin-top: 0;
 	display: none;
 }
 
-.info-section#notes form .full {
+.info-section form .full {
 	margin: 0;
 	background: rgba(255,255,255,0.65);
 	padding: 10px 30px;	
 }
 
-.info-section#notes form textarea {
+.info-section form .full textarea, .info-section form .full input {
 	background: none;
 	border: none;
 	box-shadow: none;
@@ -4058,20 +4072,24 @@ div.notes.editable, p.notes.editable {
 	height: 3em;
 }
 
-.info-section#notes form label {
+.info-section form .full input {
+  height: auto;
+  width: 99%;
+}
+
+.info-section#notes form label, .info-section#documents form label {
 	margin-left: 30px;
 	font-weight: bold;
 	color: #656565;
 	font-size: 95%;
 }
 
-.info-section#notes form input.add.notes.right {
+.info-section#notes form input.add.right, .info-section#documents form input.add.right {
 	margin-right: 30px;
 	font: 12px/130% "Helvetica Neue", Helvetica, Arial, sans-serif;
-	
 }
 
-.info-section#notes form select {
+.info-section#notes form select, .info-section#documents form select {
 	margin-left: 0.5em;
 	font-size: 90%;
 	padding: 5px auto 10px auto;
@@ -4096,18 +4114,18 @@ table.documents p {
 	margin-bottom: 0.5em;
 }
 
-table.documents td.content_type {
-	width: 42px;
+/*table.documents td.content_type {
+  width: 42px;
 }
-
-table.documents .timestamp {
-	font-size: 80%;
+*/
+/*table.documents .timestamp {
+  font-size: 80%;
 }
 
 table.documents .timestamp .username {
-	font-weight: bold;
+  font-weight: bold;
 }
-
+*/
 table.documents td.functions a {
 	visibility: hidden;
 }
@@ -4165,6 +4183,10 @@ code.criteria pre {
 
 a.add.notes {
 	background-image: url(../images/icons/silk/note_add.png);
+}
+
+a.add.documents {
+  background-image: url(../images/icons/silk/book_add.png);
 }
 
 .mentors td a.add.notes {
