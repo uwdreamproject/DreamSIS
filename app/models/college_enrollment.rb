@@ -4,6 +4,7 @@ class CollegeEnrollment < Enrollment
   
   belongs_to :clearinghouse_request
   belongs_to :grade_level, :foreign_key => :abbreviation, :primary_key => :class_level
+  belongs_to :institution
 
   CLASS_LEVEL_NAMES = {
     "C" => "Certificate (Undergraduate)",
@@ -31,10 +32,6 @@ class CollegeEnrollment < Enrollment
     "A" => "Leave of Absence",
     "D" => "Deceased"
   }
-
-  def institution
-    @institution ||= Institution.find(institution_id)
-  end
   
   # Returns a printable String of the names of the majors for this record.
   def majors_list
