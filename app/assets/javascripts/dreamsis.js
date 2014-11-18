@@ -95,7 +95,18 @@ function updateActivityTimeDescription(elem) {
 }
 
 $( function() {
+  
+  // A form element with .submit-on-change will submit the enclosing form when changed.
   $(".submit-on-change").change( function() {
     $( this ).parents("form").submit()
   })
-})
+  
+  // A form element with .send-on-change and a data-url attribute will send that data to the url.
+  $(".send-on-change").change( function() {
+    $.post(
+      $( this ).attr('data-url'), 
+      $( this ).serialize()
+    );
+  })
+  
+});
