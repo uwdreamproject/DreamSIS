@@ -51,22 +51,14 @@
 	<%= render :partial => "mentor_term", :collection => @mentor_term_group.deleted_mentor_terms %>
 </table>
 
-<%= form_tag mentor_term_group_path(@mentor_term_group), :method => :post, :style => "display: inline", :id => "add_mentor_form" do %>
-<h3>Add another <%= Customer.mentor_label %> to this group: </h3>
+<%= form_tag mentor_term_group_mentor_terms_path(@mentor_term_group), :method => :post, :id => "add_mentor_form" do %>
+	<h3>Add another <%= Customer.mentor_label %> to this group: </h3>
 	
-	<%#= model_auto_completer "mentor[fullname]", "", "mentor_term[mentor_id]", nil,
-							{ 
-								:url => auto_complete_for_mentor_fullname_mentors_path, 
-								:submit_on_return => true, 
-								:after_update_element => "function(text_field, selection, hidden_field, id) { text_field.form.submit() }" 
-							},
-							{ :autocomplete => false, :class => "search", :placeholder => "Search for #{Customer.mentor_label}", :style => "display:inline" },
-							{ :skip_style => true } %>
-	
-	
-	<input type="input" class="search autocomplete-search" placeholder="Search <%= Customer.mentors_label %>" data-source="<%= auto_complete_for_mentor_fullname_mentors_url %>" data-target="" />
+		<input type="input" class="search autocomplete-search" placeholder="Search <%= Customer.mentors_label %>" data-source="<%= auto_complete_for_mentor_fullname_mentors_url %>" data-update-with-id="mentor_term_mentor_id" />		
 		
-	<%= submit_tag "Add", :style => "display: inline" %>
+		<%= hidden_field_tag "mentor_term[mentor_id]" %>
+		<%= submit_tag "Add", :style => "display: inline" %>
+		
 <% end -%>
 
 

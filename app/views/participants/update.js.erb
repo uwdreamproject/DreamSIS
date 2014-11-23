@@ -20,3 +20,5 @@ $('#postsecondary_plan_add_link').<%=j @participant.postsecondary_plan.blank? ? 
 // Always replace the details partial and the stats at top.
 $("#filter_results_container").replaceWith("<%=j render :partial => 'participants/filter_results' %>")
 $("#filter_results_tab_link").children('.count').html('<%= @participant.filter_results_count %>')
+
+$("table#mentors").replaceWith("<%=j render :partial => 'participants/mentors' %>")

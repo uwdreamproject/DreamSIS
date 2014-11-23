@@ -1,16 +1,11 @@
 <div style="position:relative">
-	<% form_for @participant do |f| %>
+	<%= form_for @participant, :remote => true do |f| %>
 	
-		<%#= model_auto_completer "mentor[fullname]", "", "participant[new_mentor_id]", nil,
-								{ 
-									:url => auto_complete_for_mentor_fullname_mentors_path, 
-									:submit_on_return => true,
-									:after_update_element => "function(text_field, selection, hidden_field, id) { text_field.form.submit() }" 
-								},
-								{ :autocomplete => false, :class => "search wide", :placeholder => "Add another #{Customer.mentor_label}" },
-								{ :skip_style => true } %>
+		<input type="input" class="search autocomplete-search wide" placeholder="Assign another <%= Customer.mentor_label %>" data-source="<%= auto_complete_for_mentor_fullname_mentors_url %>" data-update-with-id="participant_new_mentor_id" />		
 	
+		<%= hidden_field_tag "participant[new_mentor_id]" %>
 		<%= f.submit "Add", :disable_with => "Adding..." %>
 
+		<%= hidden_field_tag "return_to", url_for(:anchor => "!/section/mentors") %>
 	<% end -%>
 </div>

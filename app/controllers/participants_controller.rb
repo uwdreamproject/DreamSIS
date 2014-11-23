@@ -279,7 +279,7 @@ class ParticipantsController < ApplicationController
     respond_to do |format|
       if @participant.update_attributes(params[:participant])
         flash[:notice] = 'Participant was successfully updated.'
-        format.html { redirect_to(@participant) }
+        format.html { redirect_back_or_default(@participant) }
         format.xml  { head :ok }
         format.js
       else

@@ -6,7 +6,7 @@ class MentorParticipant < ActiveRecord::Base
   validates_presence_of :mentor_id, :participant_id
   validates_uniqueness_of :mentor_id, :scope => [:participant_id, :deleted_at]
 
-  default_scope :order => "people.lastname, people.firstname", :joins => :participant
+  default_scope :order => "people.lastname, people.firstname", :include => :participant #, :joins => :participant
   
   after_save :update_college_mapper_association, :if => :college_mapper_student_exists?
 
@@ -20,7 +20,6 @@ class MentorParticipant < ActiveRecord::Base
   
   def destroy
     update_attribute :deleted_at, Time.now
-    # MentorTermGroup.decrement_counter(:mentor_terms_count, mentor_term_group.id)
   end
   
   def deleted?
