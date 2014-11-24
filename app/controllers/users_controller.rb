@@ -125,7 +125,7 @@ class UsersController < ApplicationController
   end
   
   def admin
-    @users = User.paginate :all, :conditions => { :admin => true }, :page => params[:page], :per_page => 100
+    @users = User.paginate :conditions => { :admin => true }, :page => params[:page], :per_page => 100
     
     respond_to do |format|
       format.html { render :action => 'index' }

@@ -88,10 +88,10 @@ function setToClear(element_id) {
 
 // Used for activity logs.
 function updateActivityTimeDescription(elem) {
-	values = new Array("", "Some", "Lots", "Nearly all")
-	elem.next("span.value").update(values[elem.value])
-	elem.up("li").removeClass("time0").removeClass("time1").removeClass("time2").removeClass("time3")
-	elem.up("li").addClass("time" + elem.value)
+	values = new Array("", "Some", "Lots", "Nearly all");
+	elem.next("span.value").html(values[elem.val()]);
+	elem.parent("li").removeClass("time0").removeClass("time1").removeClass("time2").removeClass("time3");
+	elem.parent("li").addClass("time" + elem.val());
 }
 
 $( function() {
