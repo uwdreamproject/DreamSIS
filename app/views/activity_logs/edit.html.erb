@@ -11,7 +11,16 @@
 	<%= default_form_actions(f) %>
 
 <% end %>
-<%= observe_form "edit_activity_log_#{@activity_log.id.to_s}", :url => activity_log_path(@activity_log), :method => :put %>
+<%= javascript_tag("$( document ).ready(function() {
+			$('#edit_activity_log_#{@activity_log.id.to_s}').change(function() {
+				$.ajax({
+					url: '#{activity_log_path(@activity_log)}',
+					method: 'PUT',
+					cache: false,
+					data: $( this ).serialize()
+				});
+			});
+});") %>
 
 <%= render :partial => "participants" if @participants && !@participants.empty? %>
 
