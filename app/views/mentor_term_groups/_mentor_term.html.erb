@@ -26,7 +26,7 @@
 		<ul id="participants_<%= mentor_term.id %>" class="mini_participants">
 			<%- mini_participants = mentor_term.mentor_participants -%>
 			<%= render :partial => 'mini_participant', 
-						:collection => mini_participants[0..4],
+						:collection => mini_participants[0..4].select{|m| !m.participant.nil? },
 						:locals => { :mentor_term => mentor_term } %>
 			<%= content_tag :li, "#{mini_participants.size-5} more", :class => 'extra note' if mini_participants.size > 5 %>
 		</ul>

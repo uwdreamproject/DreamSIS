@@ -1,0 +1,5 @@
+<% unless params[:user][:login].blank? %>
+  $('#original_users').hide();
+  $('.pagination').hide();
+  $('#user_search_results').html("<%= j render :partial => 'user', :collection => @users %>");
+<% end %>
