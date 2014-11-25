@@ -2,7 +2,7 @@
 <%= f.label attribute_name %>
 
 <div id="institution_name_auto_complete">
-	<input type="input" class="search autocomplete-search wide" placeholder="Search colleges" data-source="<%= auto_complete_for_institution_name_colleges_url %>" data-after-select="display-details" data-details-container="institution_details" data-update-with-id="college_application_institution_id" <%= "style='display:none'" if parent_object.try(:institution) %> />
+	<input type="input" class="search autocomplete-search wide" placeholder="Search colleges" data-source="<%= auto_complete_for_institution_name_colleges_url %>" data-after-select="display-details" data-details-container="institution_details" data-update-with-id="<%= parent_name || "college_application" %>_<%= attribute_name || "institution_id" %>" <%= "style='display:none'" if parent_object.try(:institution) %> />
 
 	<div id="institution_details" class="auto_complete after_select" <%= "style='display:none'" unless parent_object.try(:institution) %>>
 		<div id="institution_details_content" class="content">
