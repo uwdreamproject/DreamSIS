@@ -1,7 +1,7 @@
 # Send emails for event RSVP's.
 class RsvpMailer < ActionMailer::Base  
 
-  default :from => "dreamsis.com"
+  default :from => "events@dreamsis.com", "X-MC-Subaccount" => Apartment::Tenant.current
 
   def rsvp(event_attendance, sent_at = Time.now)
     
@@ -11,7 +11,7 @@ class RsvpMailer < ActionMailer::Base
     @event_description = @event.description(event_attendance.audience)
     @confirmation_message = @event.event_group.confirmation_message(event_attendance.audience) if @event.event_group
     mail(:subject =>"Thanks for registering: #{@event.name}",
-    :recipients => "#{@event_attendance.person.try(:fullname)} <#{@event_attendance.person.email}>",
+    :to => "#{@event_attendance.person.try(:fullname)} <#{@event_attendance.person.try(:email)}>",
     :from =>      "do-not-reply@dreamsis.com",
     :sent_on  =>  sent_at,
     :css => :email)
@@ -23,7 +23,7 @@ class RsvpMailer < ActionMailer::Base
     @event = @event_attendance.event
     mail(
     :subject =>    "Registration canceled: #{@event.name}",
-    :recipients => "#{@event_attendance.person.try(:fullname)} <#{@event_attendance.person.email}>",
+    :to => "#{@event_attendance.person.try(:fullname)} <#{@event_attendance.person.try(:email)}>",
     :from =>      "do-not-reply@dreamsis.com",
     :sent_on =>    sent_at,
     :css => :email)
@@ -34,7 +34,7 @@ class RsvpMailer < ActionMailer::Base
     @event = @event_attendance.event
     mail(
     :subject =>   "Event Reminder: #{@event.name}",
-    :recipients => "#{@event_attendance.person.try(:fullname)} <#{@event_attendance.person.email}>",
+    :to => "#{@event_attendance.person.try(:fullname)} <#{@event_attendance.person.try(:email)}>",
     :from  =>     "do-not-reply@dreamsis.com",
     :sent_on =>   sent_at)
   end
