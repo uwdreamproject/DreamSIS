@@ -1,7 +1,7 @@
 # Send emails for event RSVP's.
 class RsvpMailer < ActionMailer::Base  
 
-  default :from => "events@dreamsis.com", "X-MC-Subaccount" => Apartment::Tenant.current
+  default :from => "events@dreamsis.com" #, "X-MC-Subaccount" => Apartment::Tenant.current
 
   def rsvp(event_attendance, sent_at = Time.now)
     
