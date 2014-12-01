@@ -61,7 +61,7 @@ Dreamsis::Application.configure do
   # Setup ActionMailer
   config_file_path = File.join(Rails.root, "config", "api-keys.yml")
   temp_api_keys = YAML.load_file(config_file_path)
-  mandrill_password = temp_api_keys["mandrill"][Rails.env]
+  mandrill_password = temp_api_keys["mandrill"][Rails.env]["key"]
   config.action_mailer.smtp_settings = {
     :address => "smtp.mandrillapp.com",
     :port => 587,
