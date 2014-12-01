@@ -10,7 +10,7 @@ class PubcookieUser < User
     return false if uwnetid.nil?
     u = self.find_by_login uwnetid
     if u.nil?
-      pr = PersonResource.find_by_uwnetid(uwnetid)
+      pr = PersonResource.find(uwnetid) rescue nil
       return false if pr.nil?
       u = PubcookieUser.create :login => uwnetid
       if attach_mentor_record
@@ -29,12 +29,12 @@ class PubcookieUser < User
       update_attribute(:person_id, p.id)
       return true
     else
-      pr = PersonResource.find_by_uwnetid(login)
+      pr = PersonResource.find(login)
       if pr
         p = Mentor.create(
-          :reg_id         => pr.attributes["UWRegID"],
-          :firstname      => pr.attributes["RegisteredFirstMiddleName"],
-          :lastname       => pr.attributes["RegisteredSurname"]
+          :reg_id         => pr.UWRegID,
+          :firstname      => pr.RegisteredFirstMiddleName,
+          :lastname       => pr.RegisteredSurname
         )
         if p.valid?
           update_attribute(:person_id, p.id)
