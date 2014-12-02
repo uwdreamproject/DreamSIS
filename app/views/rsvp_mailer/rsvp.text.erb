@@ -10,12 +10,12 @@ Location:
 
 <%- unless @event_description.blank? -%>
 About the Event:
-<%= sanitize textilize_without_paragraph(@event_description) %>
+<%= sanitize @event_description %>
 <% end -%>
 
 <%- unless @confirmation_message.blank? -%>
 <%= "About #{h(@event.event_group.name)}" unless @event.event_group && @event.event_group.hide_description_in_confirmation_message? %>
-<%= sanitize textilize_without_paragraph(@confirmation_message) %>
+<%= sanitize @confirmation_message %>
 <% end -%>
 
 			

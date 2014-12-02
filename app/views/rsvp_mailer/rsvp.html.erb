@@ -17,12 +17,12 @@
 
 			<%- unless @event_description.blank? -%>
 				<h3>About the Event</h3>
-				<p class="description"><%= sanitize textilize_without_paragraph(@event_description) %></p>
+				<p class="description"><%= sanitize @event_description %></p>
 			<% end -%>
 
 			<%- unless @confirmation_message.blank? -%>
 				<%= content_tag(:h3, "About #{h(@event.event_group.name)}") unless @event.event_group && @event.event_group.hide_description_in_confirmation_message? %>
-				<p class="event_group description confirmation-message"><%= sanitize textilize_without_paragraph(@confirmation_message) %></p>
+				<p class="event_group description confirmation-message"><%= sanitize @confirmation_message %></p>
 			<% end -%>
 
 			<%- if @event_attendance -%>
