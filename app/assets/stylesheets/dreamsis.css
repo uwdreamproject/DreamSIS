@@ -3491,6 +3491,10 @@ span.highlight, .highlight {
 	color: #b11;
 }
 
+.bright-red-background {
+	background: #FF8080!important;
+}
+
 span.conditional.highlight, .conditional.highlight {
 	font: 80% "Lucida Grande", Lucida, Verdana, sans-serif;
 	color: blue;
@@ -3589,6 +3593,10 @@ h1 .tag {
 	/*border: 1px solid #61e18c;*/
 	color: #078b34;
 	box-shadow: 0px -1px 0 0 #61e18c inset;
+}
+
+.driver.tag {
+	color: #505050;
 }
 
 .inactive.tag, .red.tag {
@@ -4378,6 +4386,15 @@ table.rsvp h2 {
 table.rsvp .description {
 	padding: 1em;
 }
+
+tr.rowspan-header > th > p {
+	font-weight: normal;
+	width: 80%;
+	min-width: 150px;
+	padding-left: 10px;
+	color: #424242;
+}
+
 
 body.mentor.welcome table.rsvp {
 	width: 100%;
