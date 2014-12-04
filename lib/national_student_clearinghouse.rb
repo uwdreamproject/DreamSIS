@@ -25,7 +25,7 @@ class NationalStudentClearinghouse
     f << @customer.clearinghouse_customer_number.to_s
     f << "send"
     f << @request.created_at.to_date.to_s(:number)
-    f << "TEST" if RAILS_ENV == 'development'
+    f << "TEST" if Rails.env == 'development'
     f.join("_") + ".txt"
   end
   

@@ -10,9 +10,9 @@ class Change < ActiveRecord::Base
   
   NON_TRACKED_ATTRIBUTES = %w(created_at updated_at deleted_at creator_id updater_id deleter_id resource_cache_updated_at filter_cache)
   
-  named_scope :for, lambda { |klasses| { :conditions => self.conditions_for(klasses) } }  
-  named_scope :last50, :order => "created_at DESC", :limit => 50
-  named_scope :since, lambda { |time_ago| { :conditions => ['created_at > ?', time_ago] } }
+  scope :for, lambda { |klasses| { :conditions => self.conditions_for(klasses) } }  
+  scope :last50, :order => "created_at DESC", :limit => 50
+  scope :since, lambda { |time_ago| { :conditions => ['created_at > ?', time_ago] } }
 
   default_scope :order => "created_at DESC"
 
@@ -101,7 +101,7 @@ class Change < ActiveRecord::Base
     h.reject{|key,val| NON_TRACKED_ATTRIBUTES.include?(key)}
   end
   
-  # Used in the +for+ named_scope. Generates a valid array for use as a SQL :conditions paramater. Can accept an array of
+  # Used in the +for+ scope. Generates a valid array for use as a SQL :conditions paramater. Can accept an array of
   # Class names or a single Class name, and will automatically include the class's deleted_class equivalent if the model
   # is setup to use acts_as_soft_deletable (this way we can retrieve changes from the changelog that include deleted records).
   def self.conditions_for(klasses)

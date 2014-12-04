@@ -1,5 +1,5 @@
 class RegistrationResource < UwWebResource
-  self.prefix = "/idcard/dsproxy/CourseWithParams/"
+  self.prefix = "/student/v5/"
   self.element_name = "registration"
   self.collection_name = "registration"
   self.caller_class = "RegistrationResource"

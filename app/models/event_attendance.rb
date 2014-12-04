@@ -1,8 +1,8 @@
 class EventAttendance < ActiveRecord::Base
-  belongs_to :event
+  belongs_to :event, :inverse_of => :attendees
   belongs_to :person, :touch => true
   belongs_to :event_shift
-  
+
   validates_presence_of :person_id, :event_id
   validates_uniqueness_of :person_id, :scope => :event_id, :message => "already has an event attendance record for this event"
   validates_format_of :audience, :with => /(^Mentor$)|(^Volunteer$)|(^Participant$)|(^Student$)/
@@ -37,9 +37,9 @@ class EventAttendance < ActiveRecord::Base
   def send_email
     if event.send_attendance_emails? && rsvp_changed?
       if rsvp?
-        RsvpMailer.deliver_rsvp!(self)
+        RsvpMailer.rsvp(self).deliver
       else
-        RsvpMailer.deliver_cancel!(self)
+        RsvpMailer.cancel(self).deliver
       end
     end
   end

@@ -1,0 +1,24 @@
+<td class="college-logo">
+	<img src="https://getfavicon.appspot.com/<%= college_application.institution.try(:formatted_website_url) %>" width=16 height=16>
+	</td>
+<td class="name">
+	<span class="primary">
+		<%=h link_to college_application.institution.try(:name), college_path(college_application.institution.try(:id)) rescue "#err" %>
+		</span>
+	<span class="secondary location"><%=h college_application.institution.try(:location_detail) %></span> 
+	
+	<%- if college_application.attending? -%>
+		<span class="primary">
+			<%= content_tag(:span, "Planning to Attend", :class => "green attending tag") %>
+			<%= separator + link_to('Not Attending', 
+								participant_url(@participant, :participant => { :college_attending_id => nil }),
+								:method => :put,
+								:confirm => "Are you sure this student is no longer attending this college?",
+								:class => 'small weak') %>
+		</span>
+	<% end %>
+
+	</td>
+<td><%=h college_application.choice %></td>
+<td class="centered"><%= content_tag :span, "Y", :class => "icon pass" if college_application.applied? %></td>
+<td><%=h college_application.decision %></td>

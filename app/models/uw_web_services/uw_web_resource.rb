@@ -18,18 +18,28 @@ class UwWebResource < ActiveResource::Base
     def ssl_options
       return {} unless check_cert_paths!
       @ssl_options ||= {
-        :cert         => OpenSSL::X509::Certificate.new(File.open(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:cert]))),
-        :key          => OpenSSL::PKey::RSA.new(File.open(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:key]))),
-        :ca_file      => File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:ca_file]),
-        :verify_mode  => OpenSSL::SSL::VERIFY_NONE
+        :cert         => OpenSSL::X509::Certificate.new(File.open(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:cert]))),
+        :key          => OpenSSL::PKey::RSA.new(File.open(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:key]))),
+        :ca_file      => File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:ca_file]),
+        :verify_mode  => OpenSSL::SSL::VERIFY_PEER
       }
     end
 
-    # All configuration options are stored in RAILS_ROOT/config/web_services.yml. This allows us to use different
+    # All configuration options are stored in Rails.root/config/web_services.yml. This allows us to use different
     # hosts, certs, etc. in different Rails environments.
+    def global_config_options
+      config_file_path = "#{Rails.root}/config/web_services.yml"
+      @global_config_options ||= YAML.load_file(config_file_path)[Rails.env]
+    end
+    
+    # Returns config options for the current Tenant.
     def config_options
-      config_file_path = "#{RAILS_ROOT}/config/web_services.yml"
-      @config_options ||= YAML::load(ERB.new((IO.read(config_file_path))).result)[(RAILS_ENV)].symbolize_keys
+      tenant_options = global_config_options["tenant_options"][Apartment::Tenant.current]
+      if tenant_options.nil?
+        return {}
+      else
+        tenant_options.tap{ |t| t[:host] = global_config_options["host"] }.symbolize_keys
+      end
     end
 
     def headers
@@ -41,22 +51,22 @@ class UwWebResource < ActiveResource::Base
       message = "  \e[4;33;1m#{caller_class_s} #{method}"
       message << " (#{'%.1f' % (time*1000)}ms)" if time
       message << "\e[0m   #{msg}"
-      RAILS_DEFAULT_LOGGER.info message
+      Rails.logger.info message
     end
         
   end
 
-  self.site = "https://#{UwWebResource.config_options[:host]}"
+  self.site = "https://#{UwWebResource.global_config_options["host"]}" if UwWebResource.global_config_options["host"]
   
   protected
   
   # Raises an error if the cert, key, or CA file does not exist.
   def self.check_cert_paths!
-    raise ActiveResource::SSLError, "Could not find cert file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:cert]))
-    raise ActiveResource::SSLError, "Could not find key file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:key]))
-    raise ActiveResource::SSLError, "Could not find CA file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{RAILS_ROOT}/config", "certs", config_options[:ca_file]))
+    raise ActiveResource::SSLError, "Could not find cert file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:cert]))
+    raise ActiveResource::SSLError, "Could not find key file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:key]))
+    raise ActiveResource::SSLError, "Could not find CA file" unless File.exist?(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:ca_file]))
     return true
-  rescue ActiveResource::SSLError => e
+  rescue => e
     puts Rails.logger.warn "[WARN] ActiveResource::SSLError: #{e.message}\n #{e.backtrace.try(:first)}"
     return false
   end

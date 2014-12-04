@@ -1,21 +1,12 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  login: MyString
+admin:
+  login: TestAdminUser
+  customer_id: 1
   crypted_password: MyString
   salt: MyString
   remember_token: MyString
   remember_token_expires_at: MyString
   identity_url: MyString
-  type: MyString
   person_id: 1
-
-two:
-  login: MyString
-  crypted_password: MyString
-  salt: MyString
-  remember_token: MyString
-  remember_token_expires_at: MyString
-  identity_url: MyString
-  type: MyString
-  person_id: 1
+  admin: true

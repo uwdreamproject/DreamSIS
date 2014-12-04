@@ -2,7 +2,9 @@
 
 <p><%= link_to "Add new #{Customer.participant_label}", new_participant_path(:high_school_id => @high_school.try(:id) || @participant.try(:high_school_id)), :class => "add button" %></p>
 
-<% if @controller.action_name == 'show' && @current_user.can_view?(@participant.high_school) %>
+<% if controller.action_name == 'show' && @current_user.can_view?(@participant.high_school) %>
+	
+	<p><%= link_to 'Edit this participant', edit_participant_path(@participant), :class => 'edit button' %></p>
 	
 	<p><%= link_to "Return to #{@participant.high_school.try(:name)} #{@participant.grad_year} list",
 	 				high_school_cohort_path(@participant.high_school, (@participant.grad_year || 0)),
@@ -15,47 +17,43 @@
     
 <% end -%>
 
-<% form_for :participant, :url => participants_path, :html => { :method => :get } do |f| %>
-	<%- 
-	placeholder_text = ["Search"]
-	placeholder_text << h(@grad_year.to_s) if @grad_year
-	placeholder_text << h(@high_school.name) if @high_school
-	placeholder_text <<  "all #{Customer.participants_label}" if !@grad_year || !@high_school
-	 -%>
+<%- 
+placeholder_text = ["Search"]
+placeholder_text << h(@grad_year.to_s) if @grad_year
+placeholder_text << h(@high_school.name) if @high_school
+placeholder_text <<  "all #{Customer.participants_label}" if !@grad_year || !@high_school
+ -%>
+<input type="input" class="search autocomplete-search" placeholder="<%= placeholder_text.join(" ") %>" data-source="<%= auto_complete_for_participant_fullname_participants_url %>" data-target="<%= participant_url("id") %>" />
 	
-	<%= model_auto_completer "participant[fullname]", "", "id", nil,
-							{ 
-								:url => auto_complete_for_participant_fullname_participants_path(
-									:high_school_id => @high_school.try(:id),
-									:grad_year => @grad_year), 
-								:submit_on_return => true, 
-								:after_update_element => "function(text_field, selection, hidden_field, id) { text_field.form.submit() }",
-							},
-							{ :autocomplete => false, :class => "search", :placeholder => placeholder_text.join(" ") },
-							{ :skip_style => true } %>
+<% if controller.action_name != 'show' %>
 
-<% end %>
-
-<% if @controller.action_name != 'show' %>
-
-	<%- xlsx_url = @controller.action_name == 'index' ? { :action => 'all', :format => :xlsx } : { :format => :xlsx }  -%>
-	<p><%= link_to_remote "Download in Excel", 
-							:url => xlsx_url, 
-							:html => { :class => 'button xls', :id => "xlsx_download_button" } %></p>
+	<%- xlsx_url = controller.action_name == 'index' ? { :action => 'index', :format => :xlsx } : { :format => :xlsx }  -%>
+	<p><%= link_to "Download in Excel", xlsx_url, html_options = { :class => 'button xls', :id => "xlsx_download_button", :remote => true } %></p>
 	
 	<%= javascript_tag("checkXlsxStatus = false; xlsxReportId = '';") %>
 		
 	<%- if @export -%>	
 		<p id="xlsx_status">
 			<%=h @export.status.try(:titleize) %> <%=h relative_timestamp @export.updated_at %>
-			<%= link_to_remote "Regenerate", :url => { :generate => true, :format => 'xlsx' } %>
+			<%= link_to "Regenerate", { :generate => true, :format => 'xlsx' }, url_options = { :remote => true } %>
 		</p>
 		<%= javascript_tag("checkXlsxStatus = true; xlsxReportId = '#{@export.id.to_s}';") unless @export.generated? %>
 	<%- else -%>
 		<p id="xlsx_status"></p>
 	<% end %>
+	<%= javascript_tag(
+		"var worker = function() {
+			if (checkXlsxStatus == true) {
+				$.ajax({
+					url: '#{check_export_status_participants_url(:format => 'js')}?id='+xlsxReportId+'&authenticity_token='+document.getElementsByTagName('meta')[2].getAttribute('content'),
+					cache: false,
+				});
+			}
+		};
+		$( document ).ready(function() {worker(); setInterval(function() { worker() }, 3000) });") %>
 
-	<%= periodically_call_remote(:url => check_export_status_participants_url, 
+
+	<%#= periodically_call_remote(:url => check_export_status_participants_url, 
 								:frequency => 3, 
 								:condition => "checkXlsxStatus == true", 
 								:with => "'id=' + xlsxReportId",
@@ -81,7 +79,7 @@
 	<div class="with_selected_actions" id="with_selected_actions" style="display:none">
 		<h3>With Selected <span id="with_selected_actions_count"></span></h3>
 		<ul>
-			<li><%= link_to_remote "Send e-mail", :url => bulk_participants_path(:task => :send_email), :with => "Form.serializeElements(selectedElements())" %></li>
+			<li><%= link_to "Send e-mail", :remote => true, :url => bulk_participants_path(:task => :send_email), :with => "Form.serializeElements(selectedElements())" %></li>
 		</ul>
 	</div>
 	<% end %>
@@ -98,15 +96,12 @@
 			    dom_id = "filter_#{object_filter.id.to_s}_true"
 			    check_box_str = check_box_tag dom_id, true, false, 
 									:class => "#{object_filter.id.to_s}_filter_checkbox filter_checkbox", 
-									:onClick => "changeFilter(this, '#{object_filter.id.to_s}', this.checked)"
+									"data-target-filter-id" => object_filter.id.to_s
 				record_count_str = "<small id='record_count_#{object_filter.id}'>&nbsp;</small>"
 				%>
-				<%= label_tag(dom_id, "#{check_box_str}#{record_count_str}#{object_filter.opposite_title}") %>
+				<%= label_tag(dom_id, raw("#{check_box_str}#{record_count_str}#{object_filter.opposite_title}")) %>
 			
 			</li>
-			
-			<%= javascript_tag "$('filter_li_#{object_filter.id.to_s}').on('mouseover', function() { previewFilter('#{object_filter.id.to_s}') })" %>
-			<%= javascript_tag "$('filter_li_#{object_filter.id.to_s}').on('mouseout', function() { unpreviewFilter('#{object_filter.id.to_s}') })" %>
 		
 		<% end -%>
 		</ul>
@@ -119,7 +114,7 @@
 			<li id="participant_group_dropzone_<%= participant_group.id %>">
 				<%= link_to participant_group.try(:title), participant_group_path(participant_group), :class => 'redirect-link' %>
 			</li>
-			<%= drop_receiving_element "participant_group_dropzone_#{participant_group.id}",
+			<%#= TODO drop_receiving_element "participant_group_dropzone_#{participant_group.id}",
 			 							:url => add_to_group_participants_path(:participant_group_id => participant_group.id),
 										:accept => 'participant',
 										:hoverclass => 'dropzone' %>

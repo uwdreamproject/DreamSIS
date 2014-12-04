@@ -1,8 +1,8 @@
 <h1><%= @term.title %></h1>
 
-<% semantic_form_for @term, :html => { :method => :put } do |f| %>
+<%= semantic_form_for @term, :as => :term, :url => term_path(@term), :html => { :method => :put } do |f| %>
 
-	<%= f.error_messages %>
+	<%= f.semantic_errors %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 	
@@ -24,16 +24,14 @@
 				
 
 				<%- xlsx_url = { :action => :show, :format => :xlsx }  -%>
-	<p><%= link_to_remote "Download Mentors in Excel",
-							:url => xlsx_url,
-							:html => { :class => 'button xls', :id => "xlsx_download_button" } %></p>
+	<p><%= link_to "Download Mentors in Excel", xlsx_url, {:class=> "button xls", :id => "xlsx_download_button", :remote => true} %>
 
 	<%= javascript_tag("checkXlsxStatus = false; xlsxReportId = '';") %>
 
 	<%- if @export -%>
 		<p id="xlsx_status">
 			<%=h @export.status.try(:titleize) %> <%=h relative_timestamp @export.updated_at %>
-			<%= link_to_remote "Regenerate", :url => { :action => :show, :generate => true, :format => 'xlsx' } %>
+			<%= link_to "Regenerate", { :action => :show, :generate => true, :format => 'xlsx' }, url_options = {:remote => true} %>
 		</p>
 		<%= javascript_tag("checkXlsxStatus = true; xlsxReportId = '#{@export.id.to_s}';") unless @export.generated? %>
 	<%- else -%>
@@ -41,10 +39,9 @@
 	<% end %>
 
   <%= javascript_tag(
-  "Ajax.Responders.unregister(responder);
-   var worker = function() {
+  "var worker = function() {
      if (checkXlsxStatus == true) {
-       $j.ajax({
+       $.ajax({
          url: '#{check_export_status_terms_url(:format => 'js')}?id='+xlsxReportId+'&authenticity_token='+document.getElementsByTagName('meta')[2].getAttribute('content'),
          cache: false,
          success: function(data) {
@@ -52,6 +49,6 @@
        });
      }
    };
-  $j( document ).ready(function() {setInterval(function() { worker() }, 3000) });") %>
+  $( document ).ready(function() {worker(); setInterval(function() { worker() }, 3000) });") %>
 
 </div>

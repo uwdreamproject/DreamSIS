@@ -5,7 +5,7 @@
 	<%= render :partial => "details", :object => @event %>
 			
 	<dt>RSVP URL</dt>
-	<dd><%= @event.allow_rsvps? ? link_to(event_rsvp_url(@event), event_rsvp_path(@event)) : "<span class='light'>RSVP's disabled</span>" %></dd>
+	<dd><%= raw @event.allow_rsvps? ? link_to(event_rsvp_url(@event), event_rsvp_path(@event)) : "<span class='light'>RSVP's disabled</span>" %></dd>
 
 </dl>
 

@@ -3,14 +3,26 @@
 		<small class="light">&raquo; <%= @event.name %></small></h1>
 
 	<%= content_tag :p, "This event has passed... are you sure you want to be checking in attendees?", :class => "weak error-message" if @event.date.far_past? %>
+	  <div>
+			<input type="text" size="30" id="person_fullname" class="search" placeholder="Search for a <%= @audiences.collect(&:to_s).join("/") %>" />
+	  </div>
+		<%= javascript_tag("$( document ).ready(function(){
+			var thread = null;
 
-	<% form_for :person, :html => { :onSubmit => "return false;" } do |f| %>
-		<input id="person_fullname" name="person[fullname]" size="30" placeholder="Search for a <%=h @audiences.collect(&:to_s).join("/") %>" class="wide search"/>
+			$('#person_fullname').on('keyup', function() {
+				if (this.value.length > 2) {
+					clearTimeout(thread);
+					var target = $(this);
+					thread = setTimeout(function() {
+						$.ajax({
+							url: '#{auto_complete_for_person_fullname_event_event_attendances_url(:format => :js)}?audience=#{@audience.to_s}&person[fullname]=' + target.val(),
+							cache: false
+						});
+					}, 500);
+				}
+			});
+		});") %>
 		<div class="auto_complete" id="person_fullname_auto_complete"></div>
-	
-		<%= javascript_tag "var person_fullname_auto_completer = new Ajax.Autocompleter('person_fullname', 'person_fullname_auto_complete', '#{auto_complete_for_person_fullname_event_event_attendances_path(:audience => @audience.to_s)}', { minChars: 3 })" %>
-		
-	<% end %>
 	<br />
 
 	<table>
@@ -35,7 +47,7 @@
 	<p>This will add a new student to the database. Only use this option to check-in students who don't 
 		already exist in DreamSIS as a <%=h Customer.name_label %> <%=h Customer.participant_label %>.</p>
 	<span class="error-message no-icon" id="new_participant_error"></span>
-	<% remote_form_for(:new_participant, :url => checkin_new_participant_event_event_attendances_path(@event), :method => :put, :html => { :id => 'new_participant_form' }) do |f| %>
+	<%= form_for(:new_participant, :url => checkin_new_participant_event_event_attendances_path(@event), :method => :put, :html => { :id => 'new_participant_form' }, :remote => true) do |f| %>
 		First Name: <%= f.text_field :firstname %>
 		Last Name: <%= f.text_field :lastname %>
 		High School: <%= f.collection_select :high_school_id, HighSchool.all, :id, :name, :prompt => true %>
@@ -46,7 +58,7 @@
 <div id="new_volunteer_form_container" style="display:none" class="content-block">
 	<h2>Quick Add New Volunteer</h2>
 	<span class="error-message no-icon" id="new_volunteer_error"></span>
-	<% remote_form_for(:new_volunteer, :url => checkin_new_volunteer_event_event_attendances_path(@event), :method => :put, :html => { :id => 'new_volunteer_form' }) do |f| %>
+	<%= form_for(:new_volunteer, :url => checkin_new_volunteer_event_event_attendances_path(@event), :method => :put, :html => { :id => 'new_volunteer_form' }, :remote => true) do |f| %>
 		First Name: <%= f.text_field :firstname %>
 		Last Name: <%= f.text_field :lastname %>
 		<%= f.submit "Check-in" %>

@@ -12,7 +12,7 @@
 		<tr>
 			<th rowspan=2>Name</th>
 			<% for visit in @visits %>
-				<% l = link_to h(visit.short_title), edit_event_path(visit), :popup => true %>
+				<% l = link_to h(visit.short_title), event_path(visit), :popup => true %>
 				<% if visit.allow_rsvps? %>
 					<th colspan=2 class="centered borderless"><%= l %></th>
 				<% else %>
@@ -67,14 +67,25 @@
 <% end -%>
 
 <div id="sidebar">
-	<%= render :partial => "shared/term_select", 
-				:locals => { :form_url => attendance_high_school_visits_path(@high_school, "new")},
-				:object => @term %>
+
+	<form>
+
+		<h3>Term</h3>	
+		<p>Select a different term:
+		<br>
+		<%= select_tag "new_term_id", options_from_collection_for_select(Term.all, :id, :title, :selected => @term.id) %>
+		<%= submit_tag "Go" %>
+		</p>
+
+	    <h3>Cohort</h3>
+	    <p><%= select_tag :cohort, options_for_select(@high_school.cohorts.collect(&:to_s), @current_cohort.to_s) %>
+	    <%= submit_tag "Go" %>
+		</p>
+	
+	</form>
 				
 	<p>This page allows you to track attendance for your <%= @showing.to_sentence %> at various events.
 		Only events that are pertinent to this group of people are shown.</p>
-	<p>To mark someone as present, click the checkbox. You can also use the "tab" key and your spacebar 
-		to quickly mark the boxes without using your mouse.</p>
 	
 	<p><%= link_to "Add new high school visit", 
 					new_high_school_visit_path(@high_school, @term), 

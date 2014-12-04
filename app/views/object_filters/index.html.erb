@@ -17,7 +17,7 @@
     <td><%=h object_filter.object_class %></td>
     <td class="name">
 		<%= link_to h(object_filter.title), object_filter_path(object_filter), :title => h(object_filter.criteria) %>
-		<tt class="criteria syntax" id="criteria_<%= object_filter.id %>" style="display:none"><%=h object_filter.criteria %></tt>
+		<code class="criteria syntax" id="criteria_<%= object_filter.id %>" style="display:none"><%=h object_filter.criteria %></code>
 	</td>
 	<td><%=h number_to_percentage object_filter.target_percentage, :precision => 0 %></td>
 	<td><%=h number_to_percentage object_filter.warning_threshold, :precision => 0 %></td>
@@ -35,16 +35,25 @@
 
 	<p>
 		<label for="show_criteria">
-			<input id="show_criteria" type="checkbox" onClick="$$('tt.criteria').invoke('toggle')"> Show criteria
+			<input id="show_criteria" type="checkbox" onClick="$('code.criteria').toggle()"> Show criteria
 		</label>
 	</p>
 	
 </div>
 
-<%- javascript_tag do -%>
-	document.observe('dom:loaded', function() { 
-		<%- for object_filter in @object_filters -%>
-			<%= remote_function(:url => formatted_criteria_object_filter_path(object_filter), :update => "criteria_#{object_filter.id}") %>;
-		<% end %>
-	});
+<%= javascript_tag do %>
+	<%- for object_filter in @object_filters -%>
+	
+		$( function() {
+			$.ajax({ 
+				url: '<%= formatted_criteria_object_filter_path(object_filter) %>', 
+				dataType: 'text', 
+				type: 'post',
+				success: function(data) {
+					$("#criteria_<%= object_filter.id %>").html(data)
+				}
+			});
+		});
+	
+	<% end %>
 <% end %>

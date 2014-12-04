@@ -1,4 +1,4 @@
-<%- f.inputs :name => "Administrative Information" do -%>
+<%= f.inputs :name => "Administrative Information" do -%>
 	<%= f.input :binder_date, :label => "#{Customer.workbook_Label} Date", :hint => link_to_now(:participant_binder_date) %>
 	<%= f.input :intake_survey_date, :label => "#{Customer.intake_survey_Label} Date", :hint => link_to_now(:participant_intake_survey_date) %>
 	<%= f.input :photo_release_date, :hint => link_to_now(:participant_photo_release_date) %>
@@ -9,7 +9,7 @@
 		<%= render :partial => 'participant_group_select' %>
 	</li>
 	
-	<%- f.inputs :name => "Status", :class => "inline" do -%>
+	<%= f.inputs :name => "Status", :class => "inline" do -%>
 		<%= f.input :inactive, :onClick => "$('participant_inactive_explanation_input').toggle()" %>
 		<%= f.input :inactive_explanation, :label => "Explanation", :as => :string, :wrapper_html => { :style => ("display:none" unless f.object.inactive?) } %>
 		<%= f.input :not_target_participant, :label => "#{Customer.not_target_Label}" %>

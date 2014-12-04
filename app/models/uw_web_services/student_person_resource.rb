@@ -1,5 +1,5 @@
 class StudentPersonResource < UwWebResource
-  self.prefix = "/idcard/DreamSISProxy.php?path=student~v4"
+  self.prefix = "/student/v5/"
   self.element_name = "person"
   self.collection_name = "person"
   self.primary_key = "UWRegID"
@@ -9,13 +9,14 @@ class StudentPersonResource < UwWebResource
   # model, creates new http request, changes TestScore attribute to TS in
   # the response payload, then creates manually creates a new StudentPersonResource
   def self.find(*args)
-    uri = URI.parse("#{self.site}" + "#{self.prefix}" + "~" + "#{self.element_name}" + "~" + args.first+".json")
+    uri = URI.parse("#{self.site}" + "#{self.prefix}" + "/" + "#{self.element_name}" + "/" + args.first+".json")
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
     http.cert = ssl_options[:cert]
     http.key = ssl_options[:key]
+    http.ssl_version = :TLSv1
     http.ca_file = ssl_options[:ca_file]
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    http.verify_mode = ssl_options[:verify_mode]
     request = Net::HTTP::Get.new(uri.request_uri)
     response = http.request(request)
     payload = JSON.parse(response.body)

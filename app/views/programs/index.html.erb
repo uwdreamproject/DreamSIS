@@ -9,13 +9,13 @@
   </tr>
 
 <% for program in @programs %>
-  <tr>
+  <tr id="program_<%= program.id %>">
     <td class="name"><%= link_to h(program.title), program %></td>
     <td><%=h program.abbreviation %></td>
 	<td><%= link_to pluralize(program.participants.count, "participant"), program_participants_path(program) %></td>
     <td class="functions"><%= link_to 'Show', program %></td>
     <td class="functions"><%= link_to 'Edit', edit_program_path(program) %></td>
-    <td class="functions"><%= link_to 'Destroy', program, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td class="functions"><%= link_to 'Destroy', program, :confirm => 'Are you sure?', :method => :delete, :remote => true %></td>
   </tr>
 <% end %>
 </table>

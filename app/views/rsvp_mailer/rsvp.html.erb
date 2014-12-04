@@ -1,0 +1,72 @@
+<table border=0 class="body rsvp event">
+	<tr>
+		<td colspan=2>
+			<h1>Thank you for registering!</h1>
+			<h2><%= @event.name %></h2>
+		</td>
+	</tr>
+	
+	<tr>
+		<td class="details">
+			
+			<h3>Date &amp; Time</h3>
+			<p class="date"><%= @time_detail %></p>
+
+			<h3>Location</h3>
+			<p class="location"><%=h @event.location_string %></p>
+
+			<%- unless @event_description.blank? -%>
+				<h3>About the Event</h3>
+				<p class="description"><%= sanitize @event_description %></p>
+			<% end -%>
+
+			<%- unless @confirmation_message.blank? -%>
+				<%= content_tag(:h3, "About #{h(@event.event_group.name)}") unless @event.event_group && @event.event_group.hide_description_in_confirmation_message? %>
+				<p class="event_group description confirmation-message"><%= sanitize @confirmation_message %></p>
+			<% end -%>
+
+			<%- if @event_attendance -%>
+				<h3>Your RSVP</h3>
+				<%- if @event_attendance.rsvp.nil? -%>
+					<em class="rsvp_status no_response">No Response</em>
+				<%- elsif @event_attendance.rsvp? -%>
+					<em class="rsvp_status attending">Attending</em>
+				<%- else -%>
+					<em class="rsvp_status not_attending">Not Attending</em>
+				<% end -%>
+				<br /><br />
+				<p style="margin-top: 1em"><%= link_to "Change your RSVP", event_rsvp_url(@event), :class => "edit button" %></p>
+			<% end -%>
+			
+			<%- if @event.training_required?(@event_attendance.person) -%>
+				<%- completed = @event_attendance.person.completed_training?(@event.training_for(@event_attendance.person)) -%>
+
+				<div class="training_required_note <%= "completed" if completed %>">
+					<h3>Training <%= completed ? "Completed" : "Required" %></h3>
+
+					<%- if completed -%>
+						<p>You've already completed the necessary training for this event. Thank you!</p>
+						<p><%= link_to "Watch the training again", take_training_url(@event.training_for(@event_attendance.person)), :class => "view button", :target => "_blank" %></p>
+					<% else %>	  
+						<p>Participating in this event requires that you watch a training video before the event.</p>
+						<p><%= link_to "Watch the training now", take_training_url(@event.training_for(@event_attendance.person)), :class => "view button", :target => "_blank" %></p>
+					<% end -%>
+
+				</div>
+			<% end -%>
+			
+		</td>	
+
+		<td class="when-and-where">
+			<h3>When &amp; Where</h3>
+			<%= image_tag "http://maps.google.com/maps/api/staticmap?size=250x250&sensor=false&zoom=12&markers=#{@event.location.try(:latitude)}%2C#{@event.location.try(:longitude)}", :id => "map" if @event.location.try(:geocoded?) rescue nil %>
+
+			<%- if @event.location -%>
+				<p class="location"><strong><%= @event.location.name %></strong></p>
+				<p class="address"><%= @event.location.address %></p>
+			<% end -%>
+			<p class="location_text"><%= @event.location_text %></p>
+			<p class="time"><%= @time_detail %></p>
+		</td>
+	</tr>
+</table>

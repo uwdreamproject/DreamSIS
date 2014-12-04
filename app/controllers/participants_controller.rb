@@ -11,18 +11,18 @@ class ParticipantsController < ApplicationController
   # GET /participants.xml
   def index
     return redirect_to Participant.find(params[:id]) if params[:id]
-    @participants = Participant.paginate(:all, :page => params[:page])
+    @participants = Participant.page(params[:page])
 		@cache_key = fragment_cache_key(:action => :index, :format => :xlsx)
     @export = ParticipantsReport.for_key(@cache_key)
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html
       format.xml { render :xml => @participants }
-      format.js { render 'index'}
-		  format.xlsx {
+      format.js
+      format.xlsx {
         @participants = Participant.all
-      	respond_to_xlsx
-			}
+        respond_to_xlsx
+      }
     end
   end
 
@@ -72,7 +72,7 @@ class ParticipantsController < ApplicationController
       return render_error("You are not allowed to view that high school.")
     end
     
-    @participants = request.html? ? [] : Participant.in_cohort(@grad_year).in_high_school(@high_school.try(:id))
+    @participants = request.format == Mime::HTML ? [] : Participant.in_cohort(@grad_year).in_high_school(@high_school.try(:id))
     @participant_groups = ParticipantGroup.find(:all, :conditions => { :location_id => @high_school, :grad_year => @grad_year })
 		@cache_key = fragment_cache_key(:action => :high_school_cohort, :id => @high_school.id, :cohort => @grad_year, :format => :xlsx)
     @export = ParticipantsReport.for_key(@cache_key)
@@ -127,7 +127,7 @@ class ParticipantsController < ApplicationController
 		respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @participants }
-      format.js 	{ render 'index'}
+      format.js { render 'index'}
 		  format.xlsx { respond_to_xlsx }
     end
   end
@@ -279,7 +279,7 @@ class ParticipantsController < ApplicationController
     respond_to do |format|
       if @participant.update_attributes(params[:participant])
         flash[:notice] = 'Participant was successfully updated.'
-        format.html { redirect_to(@participant) }
+        format.html { redirect_back_or_default(@participant) }
         format.xml  { head :ok }
         format.js
       else
@@ -307,6 +307,18 @@ class ParticipantsController < ApplicationController
     @duplicates = Participant.possible_duplicates(params[:participant], 10)
     
     respond_to do |format|
+      format.js
+    end
+  end
+  
+  # Forces a refresh of the filter cache for this participant.
+  def refresh_filter_cache
+    @participant = Participant.find(params[:id])
+    @participant.update_filter_cache!
+    flash[:notice] = "Stats successfully updated." if @participant.save
+    
+    respond_to do |format|
+      format.html { redirect_to :back }
       format.js
     end
   end
@@ -346,17 +358,20 @@ class ParticipantsController < ApplicationController
     
     @participants = Participant.find(:all, 
                                       :conditions => [conditions.join(" AND "), 
-                                                      {:fullname => "%#{params[:participant][:fullname].downcase}%",
+                                                      {:fullname => "%#{params[:term].downcase}%",
                                                       :grad_year => params[:grad_year],
                                                       :high_school_id => params[:high_school_id]
                                                       }])
-    respond_to do |format|
-      format.js { 
-        render :partial => "shared/auto_complete_person_fullname", 
-                :object => @participants, 
-                :locals => { :highlight_phrase => params[:participant][:fullname] }
-       }
-    end
+    render :json => @participants.map { |result| 
+      {
+        :id => result.id, 
+        :value => result.fullname,
+        :klass => result.class.to_s.underscore, 
+        :fullname => result.fullname, 
+        :secondary => result.email,
+        :tertiary => (Customer.current_customer.customer_label(result.class.to_s.underscore, :titleize => true) || result.class.to_s).titleize
+      }
+    }
   end
   
   def college_mapper_login
@@ -405,7 +420,7 @@ class ParticipantsController < ApplicationController
 
   def send_default_photo(size)
 		filename = size == "thumb" ? "blank_avatar_thumb.png" : "blank_avatar.png"
-    send_file File.join(RAILS_ROOT, "public", "images", filename), 
+    send_file File.join(Rails.root, "public", "images", filename), 
               :disposition => 'inline', :type => 'image/png', :status => 404
   end  
 

@@ -1,12 +1,12 @@
 <h1>About You</h1>
 <p class="intro">Tell us about yourself so that we can communicate with you effectively. We promise we won't sell your information or send you spam.</p>
 
-<% semantic_form_for :person, @person, :url => update_profile_path, :html => { :method => :post } do |f| %>
+<%= semantic_form_for @person, :as => :person, :url => update_profile_path, :method => :post do |f| %>
 
-	<%= f.error_messages :header_message => "Oops, there was a problem." %>
+	<%= f.semantic_errors :header_message => "Oops, there was a problem." %>
 
-	<%- f.inputs do -%>
-        <%- f.inputs(:name => "First Name", :class => "inline") do -%>
+	<%= f.inputs do -%>
+        <%= f.inputs(:name => "First Name", :class => "inline") do -%>
     		<%= f.input :firstname, :label => "Legal/Given Name", :disabled => @person.is_a?(Mentor) %>
     		<%= f.input :nickname, :label => "Preferred/Nickname", :input_html => { :size => 10 } %>
         <% end %>
@@ -40,13 +40,13 @@
 		<% end -%>
 	<% end -%>
 	
-	<%- f.inputs("Program Affiliations") do -%>
+	<%= f.inputs("Program Affiliations") do -%>
 		<p>Which of the following programs are you affiliated with or do you participate in?</p>
 		<%= f.input :programs, :as => :check_boxes %>
 	<% end -%>
 	
 	<%- if @person.is_a?(Volunteer) -%>
-		<% f.inputs("Criminal Conviction History") do %>
+		<%= f.inputs("Criminal Conviction History") do %>
 			<label>Have you ever been convicted of any crimes against persons?</label>
 			<!-- <ul class="crimes-list">
 				<li>Arson (1st degree)</li><li>Assault, Custodial</li><li>Assault, Simple (or 4th Degree Assault) </li><li>Assault (1st/2nd/3rd Degree)</li><li>Assault of a Child (1st/2nd/3rd Degree) </li><li>Burglary (1st Degree)</li><li>Child Abandonment</li><li>Child Abuse or Neglect (RCW 26.44.020) </li><li>Child Buying or Selling</li><li>Child Molestation (1st,2nd,3rd Degree) </li><li>Communication with a Minor</li><li>Criminal Abandonment</li><li>Criminal Mistreatment (1st/2nd Degree)</li><li>Custodial Interference (1st/2nd Degree) </li><li>Extortion (1st/2nd/3rd* Degree) </li><li>Forgery*</li><li>Incest</li><li>Indecent Exposure - Felony Indecent Liberties</li><li>Kidnapping (1st/2nd Degree) </li><li>Malicious Harassment </li><li>Manslaughter (1st/2nd Degree) </li><li>Murder, Aggravated</li><li>Murder (1st/2nd Degree) </li><li>Patronizing a Juvenile Prostitute </li><li>Promoting Pornography</li><li>Promoting Prostitution (1st Degree) </li><li>Prostitution</li><li>Robbery (1st/2nd Degree)</li><li>Rape (1st/2nd/3rd Degree)</li><li>Rape of a Child (1st/2nd/3rd Degree) </li><li>Selling/Distributing Erotic Material to a Minor </li><li>Sexual Exploitation of a Minor</li><li>Sexual Misconduct with a Minor (1st/2nd Degree) </li><li>Theft (1st/2nd/3rd* Degree)</li><li>Unlawful Imprisonment</li><li>Vehicular Homicide</li><li>Violation of Child Abuse Restraining Order</li>
@@ -60,7 +60,7 @@
 
 		<p>I certify that the information contained in the above-stated information is true, correct, and complete to the best of my knowledge. I understand that consideration for participation in Dream Project activities and the continuation of subsequent participation depend on true, accurate and complete representation of these facts as stated or implied in all application-related materials. I authorize the University of Washington to make inquiries regarding my criminal conviction history. I understand that participation may be conditioned on the University’s receipt of a satisfactory Criminal Conviction Report from the Washington State Patrol or other law-enforcement related agency.</p>
 
-		<% f.inputs do %>
+		<%= f.inputs do %>
 			<%= f.input :background_check_authorized, :as => :boolean, :label => "I understand the statement above." %>
 		<% end -%>
 			

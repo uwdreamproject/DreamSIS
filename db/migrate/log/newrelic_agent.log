@@ -1,0 +1,19 @@
+# Logfile created on Thu Sep 04 14:26:35 -0700 2014 by logger.rb/1.2.6
+[09/04/14 14:26:35 -0700 dreamdev.uaa.washington.edu (14492)] INFO : Starting the New Relic agent in "development" environment.
+[09/04/14 14:26:35 -0700 dreamdev.uaa.washington.edu (14492)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[09/04/14 14:26:35 -0700 dreamdev.uaa.washington.edu (14492)] INFO : Reading configuration from /home/mitchell/Documents/DPAdmin/DreamSIS/config/newrelic.yml (/home/mitchell/Documents/DPAdmin/DreamSIS/db/migrate)
+[09/04/14 14:26:35 -0700 dreamdev.uaa.washington.edu (14492)] INFO : New Relic Agent Developer Mode enabled.
+[09/04/14 14:26:35 -0700 dreamdev.uaa.washington.edu (14492)] ERROR : No application name configured.
+[09/04/14 14:26:35 -0700 dreamdev.uaa.washington.edu (14492)] ERROR : The Agent cannot start without at least one. Please check your 
+[09/04/14 14:26:35 -0700 dreamdev.uaa.washington.edu (14492)] ERROR : newrelic.yml and ensure that it is valid and has at least one 
+[09/04/14 14:26:35 -0700 dreamdev.uaa.washington.edu (14492)] ERROR : value set for app_name in the development 
+[09/04/14 14:26:35 -0700 dreamdev.uaa.washington.edu (14492)] ERROR : environment.
+[09/04/14 14:26:35 -0700 dreamdev.uaa.washington.edu (14492)] WARN : Refusing to re-register DependencyDetection block with name 'sinatra'
+[09/04/14 14:26:35 -0700 dreamdev.uaa.washington.edu (14492)] INFO : Installing deferred Rack instrumentation
+[09/04/14 14:26:35 -0700 dreamdev.uaa.washington.edu (14492)] INFO : Installing Rack::Builder middleware instrumentation
+[09/04/14 14:26:35 -0700 dreamdev.uaa.washington.edu (14492)] INFO : Installing ActiveRecord instrumentation
+[09/04/14 14:26:35 -0700 dreamdev.uaa.washington.edu (14492)] INFO : Installing Net instrumentation
+[09/04/14 14:26:35 -0700 dreamdev.uaa.washington.edu (14492)] INFO : Installing Rails 2.2 - 2.3 View instrumentation
+[09/04/14 14:26:35 -0700 dreamdev.uaa.washington.edu (14492)] INFO : Installing Rails 2 Controller instrumentation
+[09/04/14 14:26:35 -0700 dreamdev.uaa.washington.edu (14492)] INFO : Installing Rails 2 Error instrumentation
+[09/04/14 14:26:35 -0700 dreamdev.uaa.washington.edu (14492)] INFO : Finished instrumentation

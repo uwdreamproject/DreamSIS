@@ -1,6 +1,6 @@
 class EventGroupsController < ApplicationController
   def index
-    @event_groups = EventGroup.paginate :all, :page => params[:page]
+    @event_groups = EventGroup.page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb

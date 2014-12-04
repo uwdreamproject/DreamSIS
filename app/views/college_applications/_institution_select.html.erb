@@ -1,0 +1,25 @@
+<li class="input">
+<%= f.label attribute_name %>
+
+<div id="institution_name_auto_complete">
+	<input type="input" class="search autocomplete-search wide" placeholder="Search colleges" data-source="<%= auto_complete_for_institution_name_colleges_url %>" data-after-select="display-details" data-details-container="institution_details" data-update-with-id="college_application_institution_id" <%= "style='display:none'" if parent_object.try(:institution) %> />
+
+	<div id="institution_details" class="auto_complete after_select" <%= "style='display:none'" unless parent_object.try(:institution) %>>
+		<div id="institution_details_content" class="content">
+			<span class="primary">  <%=h parent_object.institution.try(:name) %></span>
+			<small class="light id"> (#<%=h parent_object.institution.try(:id) %>)</small>
+			<span class="secondary location"><%=h parent_object.institution.try(:location_detail) %></span>
+			<span class="tertiary"> <%= link_to h(parent_object.institution.try(:formatted_website_url)), 
+										h(parent_object.institution.try(:formatted_website_url)), :popup => true %></span>
+		</div>
+		<small><%= link_to "Choose a different institution", "", :onclick => 
+								"$('#institution_details').hide(); 
+								 $('#institution_name_auto_complete input.autocomplete-search').show().val('').focus();
+								 return false;" %></small>
+
+	</div>
+	
+</div>
+</li>
+
+<%= f.input :institution_id, :as => :hidden %>

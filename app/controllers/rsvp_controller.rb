@@ -61,7 +61,7 @@ class RsvpController < ApplicationController
     
     if !@current_user || !@current_user.person.ready_to_rsvp?(@event)
       session[:return_to_after_rsvp] = request.env["HTTP_REFERER"]
-      session[:return_to_after_profile] = request.request_uri
+      session[:return_to_after_profile] = request.url
       session[:profile_validations_required] = "ready_to_rsvp"
       flash[:notice] = "Before you can RSVP for events, please login and complete your profile."
       respond_to do |format|
@@ -91,9 +91,9 @@ class RsvpController < ApplicationController
           format.js
         end
       else
-        if @event_attendance.errors.on(:enforce_rsvp_limits)
+        if @event_attendance.errors[:enforce_rsvp_limits] && @event_attendance.errors[:enforce_rsvp_limits].any?
           flash[:error] = "Sorry, but the capacity for that event has been reached."
-        elsif @event_attendance.errors.on(:audience)
+        elsif @event_attendance.errors[:audience] && @event_attendance.errors[:audience].any?
           flash[:error] = "Invalid Audience, check that you are using the correct RSVP link."
         else
           flash[:error] = "We couldn't save your RSVP. Please complete the required information."

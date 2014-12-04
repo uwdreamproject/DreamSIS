@@ -1,0 +1,2 @@
+$('<%= "#event_#{@event.id}" %>').replaceWith("<%= j render :partial => 'event', :object => @event %>");
+// TODO replicate in jquery: page.visual_effect :highlight, "event_#{@event.id}"

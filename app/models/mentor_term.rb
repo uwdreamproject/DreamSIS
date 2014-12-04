@@ -1,4 +1,4 @@
-class MentorTerm < CustomerScoped
+class MentorTerm < ActiveRecord::Base
   belongs_to :mentor_term_group, :counter_cache => true
   belongs_to :mentor
   
@@ -8,7 +8,7 @@ class MentorTerm < CustomerScoped
   delegate :term, :term_id, :location, :title, :location_id, :permissions_level, :to => :mentor_term_group
   delegate :fullname, :email, :reg_id, :participants, :mentor_participants, :to => :mentor
   
-  default_scope :order => "people.lastname, people.firstname", :joins => :mentor, :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
+  default_scope :order => "people.lastname, people.firstname", :joins => :mentor
   
   # after_create :add_to_group
   

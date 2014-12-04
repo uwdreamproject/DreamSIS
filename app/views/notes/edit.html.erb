@@ -1,8 +1,8 @@
 <h1>Edit Note</h1>
 
-<% semantic_form_for @note, :html => { :multipart => true } do |f| %>
+<%= semantic_form_for @note, :html => { :multipart => true } do |f| %>
 
-	<%= f.error_messages %>
+	<%= f.semantic_errors %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 	

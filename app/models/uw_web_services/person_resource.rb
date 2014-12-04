@@ -1,5 +1,5 @@
 class PersonResource < UwWebResource
-  self.prefix = "/idcard/DreamSISProxy.php?path=identity/v1/"
+  self.prefix = "/identity/v1/"
   self.element_name = "person"
   self.collection_name = "person"
   self.primary_key = "UWRegID"

@@ -51,5 +51,9 @@
 						options_for_select(["All"] + Term.current_term.mentor_term_groups.collect{|g| [h(g.title), g.id]}, @mentor_term_group.try(:id) ),
 						:id => "mentor_term_group_select" %>
 	</form>
-	<%= observe_field "mentor_term_group_select", :function => "element.form.submit()" %>
+	<%= javascript_tag("
+			$('#mentor_term_group_select').change(function() {
+				this.form.submit();
+			});
+	") %>
 </div>

@@ -1,4 +1,4 @@
-class Person < CustomerScoped
+class Person < ActiveRecord::Base
   include Comparable
 
   has_many :event_attendances do
@@ -55,8 +55,7 @@ class Person < CustomerScoped
 
   PERSON_RESOURCE_CACHE_LIFETIME = 1.day
 
-  default_scope :order => "lastname, firstname, middlename", :conditions => { :customer_id => lambda {Customer.current_customer.id}.call }
-  # default_scope lambda { |person| { :conditions => { :customer_id => Customer.current_customer.id } } }
+  default_scope :order => "lastname, firstname, middlename"
   
 
   # Returns the actual person resource object. Specify +true+ as a parameter to fetch the "full" version
@@ -163,6 +162,11 @@ class Person < CustomerScoped
     dob = birthdate.is_a?(Date) ? birthdate : Date.parse(birthdate)
     now = Time.now.utc.to_date
     now.year - dob.year - ((now.month > dob.month || (now.month == dob.month && now.day >= dob.day)) ? 0 : 1)
+  end
+  
+  # Returns true if this person's +followup_note_count+ is greater than zero.
+  def needs_followup?
+    followup_note_count && followup_note_count > 0
   end
 
   # Pulls in contact info from the Person Web Service and updates our local cache if it hasn't been
