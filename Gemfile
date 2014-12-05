@@ -43,6 +43,7 @@ gem 'rails3-jquery-autocomplete'
 gem "sqlite3"
 gem 'rollbar', '~> 1.2.4'
 gem 'addressable'
+gem 'sucker_punch', '~> 1.0'
 
 group :production do
   gem 'mysql2', '~> 0.3.7'

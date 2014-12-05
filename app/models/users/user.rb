@@ -1,23 +1,13 @@
 require 'digest/sha1'
 class User < ActiveRecord::Base
   belongs_to :person
-  # belongs_to :customer
-  # attr_protected :customer_id
-  validates_presence_of :login #, :customer_id
-  validates_uniqueness_of :uid, :scope => [:provider] #, :customer_id]
-  # before_save :append_customer_id
-
-  # prevents a user from submitting a crafted form that bypasses activation
-  # anything else you want your user to change should be added here.
+  validates_presence_of :login
+  validates_uniqueness_of :uid, :scope => [:provider]
   attr_accessible :login, :email, :password, :password_confirmation, :identity_url, :person_attributes
-
   default_scope :order => 'login'
+  alias_attribute :username, :login
+  delegate :email, :to => :person
   
-  # Adds the current customer ID to the record, which is used +before_create+.
-  # def append_customer_id
-  #   self.customer_id = Customer.current_customer.id
-  # end
-
   # Pulls the current user out of Thread.current. We try to avoid this when possible, but sometimes we need 
   # to access the current user in a model (e.g., to check EmailQueue#messages_waiting?).
   def self.current_user
