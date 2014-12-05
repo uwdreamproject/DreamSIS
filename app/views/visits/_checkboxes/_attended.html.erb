@@ -47,9 +47,10 @@ if Customer.uses_visit_attendance_options?
 				 $('td_#{participant.id}_#{visit.id}').removeClassName('last');
 				 $('td_#{participant.id}_#{visit.id}').addClassName(klass);
 				 
-		  		 #{remote_function :url => update_attendance_high_school_visits_path(high_school, term),
-					:with => "'attendance_option[#{participant.id}][#{visit.id}]=' + $F('attendance_option_#{participant.id}_#{visit.id}')",
-					:failure => "alert('Could not save. Please try again or contact support.')"};				  
+		  		 #{#remote_function :url => update_attendance_high_school_visits_path(high_school, term),
+					# :with => "'attendance_option[#{participant.id}][#{visit.id}]=' + $F('attendance_option_#{participant.id}_#{visit.id}')",
+					# :failure => "alert('Could not save. Please try again or contact support.')"
+					};
 					
 				  return false;"
 end
@@ -72,7 +73,7 @@ end
 						:onClick => "this.focus()" %>
 	<%= hidden_field_tag "attendance[#{participant.id}][#{visit.id}]", "0", :id => nil %>
 
-	<%= observe_field "attendance_#{participant.id}_#{visit.id}",
+	<%#= observe_field "attendance_#{participant.id}_#{visit.id}",
 						:url => update_attendance_high_school_visits_path(high_school, term),
 						:with => "attendance[#{participant.id}][#{visit.id}]",
 						:failure => "alert('Could not save. Please try again or contact support.')" %>
@@ -89,7 +90,7 @@ end
 						:onBlur => "this.up('tr').toggleClassName('highlight')"
 						%>
 					
-		<%= observe_field "attendance_option_#{participant.id}_#{visit.id}",
+		<%#= observe_field "attendance_option_#{participant.id}_#{visit.id}",
 							:url => update_attendance_high_school_visits_path(high_school, term),
 							:with => "attendance_option[#{participant.id}][#{visit.id}]",
 							:failure => "alert('Could not save. Please try again or contact support.')" %>

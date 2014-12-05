@@ -60,7 +60,7 @@ Dreamsis::Application.routes.draw do
     end
     resources :visits do
       collection do
-        get :attendance
+        get :attendance, :path => ":term_id"
         post :update_attendance
       end
     end

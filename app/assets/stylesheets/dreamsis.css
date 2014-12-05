@@ -38,11 +38,14 @@ h1 {
 }
 
 h2 {
-	font-size: 125%;
+	font-size: 100%;
+  text-transform: uppercase;
+  font-weight: 800;
 }
 
 h3 {
-	font-size: 110%;
+	font-size: 90%;
+  text-transform: uppercase;
 }
 
 h3.pre-title {
@@ -504,6 +507,7 @@ h4 {
 	
 	/*border-bottom: 5px solid #e0e0e0;*/
 	/*border-top: 5px solid #e0e0e0;*/
+  clear: both;
 }
 
 #footer a {
@@ -1279,6 +1283,10 @@ body.participants.show #content-wrap {
 	width: 25%;
 }
 
+.span8 {
+  width: 65%;
+}
+
 .spanhalf.left {
 	margin-right: 2%;
 }
@@ -1412,6 +1420,7 @@ body.participants.show #content-wrap {
 	margin-bottom: 0;
 	background-color: rgb(236, 241, 245);
 	border-bottom: 1px solid rgb(229, 231, 241);	
+  text-transform: none;
 }
 
 .info-section#college_applications h2, .info-section#college_enrollments h2, .tabs a.college_applications, .tabs a.college_enrollments {
@@ -4092,6 +4101,11 @@ div.notes.editable, p.notes.editable {
 	margin: 0;
 	background: rgba(255,255,255,0.65);
 	padding: 10px 30px;	
+}
+
+form.full {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 .info-section form .full textarea, .info-section form .full input {
