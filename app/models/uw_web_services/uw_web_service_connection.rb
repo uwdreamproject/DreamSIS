@@ -8,10 +8,11 @@ class UwWebServiceConnection < ActiveResource::Connection
   def get(path, headers = {})
     begin
       body = nil
-      time = Benchmark::realtime { body = request(:get, path, build_request_headers(headers, :get)).body }
+      time = Benchmark::realtime { body = super.body }
       sws_log "GET #{path}", time
       body
-    rescue
+    rescue => e
+      Rails.logger.warn "Error retrieving UW Web Resource: #{e.message}"
       nil
     end
   end
