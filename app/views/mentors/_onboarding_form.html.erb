@@ -54,4 +54,16 @@
 		<%= link_to "Cancel", "javascript:clearForm()", :class => 'cancel button' %>
 	<% end -%>
 <% end %>
-<script>registerForm(<%= @mentor.id %>)</script>
+
+<%= javascript_tag("
+  registerForm(#{@mentor.id});
+  $(function() {
+    $('.link-to-now').click(function(event) {
+      setToNow($(event.target).data('target'))
+      event.preventDefault();
+    });
+    $('.link-to-clear').click(function(event) {
+      setToClear($(event.target).data('target'))
+      event.preventDefault();
+    });
+  })") %>

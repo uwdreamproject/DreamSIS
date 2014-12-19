@@ -110,8 +110,14 @@ class Term < ActiveRecord::Base
   end
   
   # Pulls all the mentors from the mentor_term_groups and returns a single, flattened array of Mentors.
-  def mentors
+  # If sort is a symbol representing a Mentor attribute, returns these mentors sorted by that attribute
+  def mentors(sort = false)
     @mentors ||= mentor_term_groups.collect(&:mentors).flatten.compact.uniq
+    if sort
+      @mentors.sort_by &sort
+    else
+      @mentors
+    end
   end
   
 end

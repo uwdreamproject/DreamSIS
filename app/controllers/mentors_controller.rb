@@ -164,7 +164,7 @@ class MentorsController < ApplicationController
   
   def onboarding
     @term = Term.find(params[:term_id])
-    @mentors = @term.mentors
+    @mentors = @term.mentors(sort = :lastname)
   end
 
   def onboarding_update
