@@ -193,7 +193,6 @@ Documentation for each filter:
 =end
 
   def correct_sections? (term = Term.current_term)
-    return true #if (current_lead? || (self.users.first.admin? rescue false)) **Section checking currently disabled
     if currently_enrolled?
       current_groups = self.current_mentor_term_groups.select{|m| m.term.id == Term.allowing_signups.first.id}.collect(&:mentor_term_group)
       current_sections = current_groups.collect {|grp| grp.course_string }
