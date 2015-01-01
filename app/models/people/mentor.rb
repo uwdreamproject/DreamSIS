@@ -5,8 +5,7 @@ class Mentor < Person
       find :all, :joins => [:mentor_term_group], :conditions => { :mentor_term_groups => { :term_id => term_id }, :deleted_at => nil }
     end
   end
-
-  has_many :mentor_term_groups, :through => :mentor_terms
+  has_many :mentor_term_groups, :through => :mentor_terms, :include => :mentors
   
   has_many :mentor_participants, :conditions => { :deleted_at => nil }
   has_many :participants, :through => :mentor_participants
