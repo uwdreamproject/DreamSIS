@@ -17,7 +17,7 @@
 				return false;
 			});
 		") %>
-		<%= link_to "Update <span class='hide_when_small'>my RSVP</span>".html_safe, rsvp_path(event, format: :js),
+		<%= link_to "Update <span class='hide_when_small'>my RSVP</span>".html_safe, rsvp_path(event),
 						{:class => 'submit button',
 						:id => "save_button_#{event.id}",
 						:style => "display:none" } %>
@@ -35,7 +35,7 @@
 		") %>
 
 	<%- elsif !event.full?(@current_user.try(:person)) -%>
-		<%= link_to "RSVP <span class='hide_when_small'>for this event</span>".html_safe, event_rsvp_path(event, format: :js), 
+		<%= link_to "RSVP <span class='hide_when_small'>for this event</span>".html_safe, event_rsvp_path(event),
 						{ :method => :put,
 						:class => 'add button',
 						:id => "rsvp_button_#{event.id}" } %>
