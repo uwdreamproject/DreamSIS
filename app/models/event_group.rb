@@ -33,7 +33,7 @@ class EventGroup < ActiveRecord::Base
   def description(person_or_type = nil)
     generic_description = read_attribute(:description)
     return generic_description if person_or_type.nil?
-    klass = person_or_type.is_a?(Person) ? person_or_type.to_s : person_or_type
+    klass = person_or_type.is_a?(Person) ? person_or_type.class.to_s : person_or_type
     if klass == "Student" || klass == "Participant"
       custom_description = student_description
     elsif klass == "Volunteer"
