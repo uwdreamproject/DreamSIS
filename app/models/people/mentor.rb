@@ -196,7 +196,7 @@ Documentation for each filter:
     if !(mts = mentor_terms.for_term(term)).empty?
       current_groups = mts.collect(&:mentor_term_group)
       current_sections = current_groups.collect {|grp| grp.course_string }
-      all_groups = self.mentor_term_groups
+      all_groups = self.mentor_terms.collect(&:mentor_term_group).flatten.compact.uniq
       prev_groups = all_groups.delete_if{|k,v| current_groups.include? k}
       prev_sections = prev_groups.collect {|grp| grp.course_string }
       yaml = term.course_dependencies
@@ -411,7 +411,11 @@ Documentation for each filter:
   # Returns a date representing the first time a mentor was added to any
   # mentor term
   def date_joined
-    mentor_terms.collect(&:created_at).sort.first.to_date
+    if !(mt = mentor_terms).empty?
+      mentor_terms.collect(&:created_at).compact.sort.first.to_date
+    else
+      nil
+    end
   end
 
   # Returns the number of terms that this mentor has had an associated
