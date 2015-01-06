@@ -525,7 +525,7 @@ Documentation for each filter:
 
   def send_driver_email
     if Customer.send_driver_form_emails && van_driver_training_completed_at_changed?
-      MentorMailer.deliver_driver!(self)
+      MentorMailer.driver(self).deliver
     end
   end
 
