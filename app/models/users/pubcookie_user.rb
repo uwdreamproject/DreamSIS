@@ -12,7 +12,7 @@ class PubcookieUser < User
     if u.nil?
       pr = PersonResource.find(uwnetid) rescue nil
       return false if pr.nil?
-      u = PubcookieUser.create :login => uwnetid
+      u = PubcookieUser.create :login => uwnetid, :provider => 'shibboleth', :uid => uwnetid
       if attach_mentor_record
         u.attach_person_record 
       else
