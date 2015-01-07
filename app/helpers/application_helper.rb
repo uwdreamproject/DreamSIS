@@ -76,4 +76,15 @@ module ApplicationHelper
     end
   end
   
+  def default_form_errors(form)
+    raise Exception.new("This helper method can only be used with Formtastic forms") unless form.is_a?(Formtastic::FormBuilder)
+      unless form.object.errors.empty?
+        content_tag :div, :class => "errorExplanation" do
+          concat content_tag(:h2, "There are some problems with this record.")
+          concat content_tag(:p, "Please correct the errors below and try to save the record again.")
+          concat form.semantic_errors(*form.object.errors.keys)
+        end
+      end
+  end
+  
 end

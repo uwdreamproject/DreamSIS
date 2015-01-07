@@ -1538,11 +1538,12 @@ abbr[title]:hover {
 }
 
 .errorExplanation {
-	background: url("../images/caution.png") 10px 10px no-repeat;
+	background: rgba(255,0,0,0.05) url("../images/caution.png") 20px 1em no-repeat;
 	padding: 1em;
-	padding-left: 90px;
-	border: 1px dashed red;
-	margin: 10px 0;
+	padding-left: 100px;
+	border: 1px solid rgba(255,0,0,0.5);
+  border-width: 1px 0;
+	margin: 2em -30px;
 }
 
 .errorExplanation h2 {
