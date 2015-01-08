@@ -26,6 +26,18 @@ class User < ActiveRecord::Base
   def fullname(options = {})
     person.nil? ? login : (person.fullname(options).blank? ? login : person.fullname(options))
   end
+  
+  # Returns a username string useful for error reporting by concatenating the user's login and the
+  # tenant name, like "test1/bobloblaw@facebook"
+  def error_username
+    Apartment::Tenant.current.to_s + "/" + login
+  end
+
+  # Returns a user ID useful for error reporting by concatenating the user's ID and the
+  # tenant name, like "test1/17"
+  def error_id
+    Apartment::Tenant.current.to_s + "/" + id.to_s
+  end
     
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil. Note that this method is
   # case-insensitive, so "Mike" and "mike" will both return the same user object.
