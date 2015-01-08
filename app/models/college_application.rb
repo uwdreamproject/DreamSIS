@@ -52,8 +52,8 @@ class CollegeApplication < ActiveRecord::Base
       :order => "count DESC")
 		raw.each do |college_application|
 			i = college_application.institution
-			i.count = college_application.count
-			@top_institutions[limit] << i
+			i.count = college_application.count if i
+			@top_institutions[limit] << i if i
 		end
 		@top_institutions[limit].compact
   end
