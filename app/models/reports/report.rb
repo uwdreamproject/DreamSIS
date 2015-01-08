@@ -1,4 +1,5 @@
 class Report < ActiveRecord::Base
+  
 	class AlreadyGeneratingError < StandardError
 	end
 
@@ -95,13 +96,7 @@ class Report < ActiveRecord::Base
 	
 	# Kicks off a rake task to generate this report
 	def generate_in_background!
-		logger.info { "Generating report ID #{id} via background rake process" }
-		task = "reports:generate"
-	  options = { :rails_env => Rails.env, :id => id, :tenant => Customer.tenant_name }
-	  args = options.map { |n, v| "#{n.to_s.upcase}='#{v}'" }
-		cmd = "bundle exec rake #{task} #{args.join(' ')} --trace 2>&1 &"
-	  system cmd
-		cmd
-	end
-	
+    ReportJob.new.async.perform(self.id)
+	end  
+  
 end

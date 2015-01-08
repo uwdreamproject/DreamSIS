@@ -204,7 +204,7 @@ Dreamsis::Application.routes.draw do
     end
   end
   match 'mentor_term_groups/term/:term_id' => 'mentor_term_groups#term', :as => :mentor_term_groups_term
-  resources :volunteers, :only => [:show, :background_check_responses]
+  resources :volunteers, :only => [:show, :background_check_responses], :controller => 'mentors'
   resources :activity_logs
   match '/activity_logs/summary/week/:year/:month/:day' => 'activity_logs#weekly_summary', :as => :activity_log_weekly_summary
   match '/activity_logs/summary/week' => 'activity_logs#weekly_summary', :as => :activity_log_current_week_summary

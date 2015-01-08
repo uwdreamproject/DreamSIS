@@ -5,7 +5,7 @@ class Mentor < Person
       find :all, :joins => [:mentor_term_group], :conditions => { :mentor_term_groups => { :term_id => term_id }, :deleted_at => nil }
     end
   end
-  has_many :mentor_term_groups, :through => :mentor_terms
+  has_many :mentor_term_groups, :through => :mentor_terms, :include => :mentors
   
   has_many :mentor_participants, :conditions => { :deleted_at => nil }
   has_many :participants, :through => :mentor_participants
@@ -135,7 +135,7 @@ as layed out in the given term's course dependencies
   
 MentorTermGroup.course_dependencies outline:
   
-(Dept Abv) (Course Number)(Letter optional):<--------------------|
+(Dept Abv) (Course Number)(Letter optional):<----------------------|
   never any: [(C.N.), (C.N.),..., (C.N.)]  <------| As many        | Repeat 
   not currently: [(C.N.), (C.N.),..., (C.N.)]     | as             | as
   require: [(C.N.), (C.N.),..., (C.N.)]           | needed         | needed
@@ -193,28 +193,24 @@ Documentation for each filter:
 =end
 
   def correct_sections? (term = Term.current_term)
-    return true #if (current_lead? || (self.users.first.admin? rescue false)) **Section checking currently disabled
-    if currently_enrolled?
-      current_groups = self.current_mentor_term_groups.select{|m| m.term.id == Term.allowing_signups.first.id}.collect(&:mentor_term_group)
+    if !(mts = mentor_terms.for_term(term)).empty?
+      current_groups = mts.collect(&:mentor_term_group)
       current_sections = current_groups.collect {|grp| grp.course_string }
-      all_groups = self.mentor_term_groups
+      all_groups = self.mentor_terms.collect(&:mentor_term_group).flatten.compact.uniq
       prev_groups = all_groups.delete_if{|k,v| current_groups.include? k}
       prev_sections = prev_groups.collect {|grp| grp.course_string }
-      yaml = current_groups.first.term.course_dependencies
-      dependencies = 0
-      if yaml
-        dependencies = YAML.load(yaml)
-      else
-        return true
-      end
+      yaml = term.course_dependencies
+      return true if !yaml || yaml.blank?
+
+      dependencies = YAML.load(yaml)
       correct = true
       dependencies.each do |dep, rules|
         if current_sections.any? { |cur_sec| cur_sec.include? dep }
           correct = check_dependency(current_sections, prev_sections, dep, rules) 
         end
-        return correct if !correct
+        return false if !correct
       end
-    return correct
+      return correct
     else
       return false
     end
@@ -256,14 +252,14 @@ Documentation for each filter:
                             ).empty?
   end
 
-  # Returns true if +van_driver_training_completed_at+ is not null
+  # Returns true if +van_driver_training_completed_at+ is not nil
   def driver_trained?
-    van_driver_training_completed_at == true
+    !van_driver_training_completed_at.nil?
   end
 
-  # Returns true if +driver_form_signature+ is not null
+  # Returns true if +driver_form_signature+ is not nil
   def signed_driver_form?
-    driver_form_signature == true
+    !driver_form_signature.nil?
   end
 
   # Returns true if this user's +van_driver_training_completed_at+ is not null and the current customer
@@ -415,7 +411,11 @@ Documentation for each filter:
   # Returns a date representing the first time a mentor was added to any
   # mentor term
   def date_joined
-    mentor_terms.collect(&:created_at).sort.first.to_date
+    if !(mt = mentor_terms).empty?
+      mentor_terms.collect(&:created_at).compact.sort.first.to_date
+    else
+      nil
+    end
   end
 
   # Returns the number of terms that this mentor has had an associated
@@ -486,13 +486,15 @@ Documentation for each filter:
   # depending on how this mentor registered for MentorTermGroups
   # for the given term
   def enrollment_status_for_term(term = Term.current_term)
-    mts = mentor_terms.for_term(term).collect(&:volunteer)
-    cpct = mts.compact
+    mts = mentor_terms.for_term(term)
+    return "Not Enrolled" if mts.empty?
+
+    volunteers = mts.select(&:volunteer)
     status = []
-    if cpct.count < mts.count
+    if volunteers.count < mts.count
       status << "Enrolled"
     end
-    if cpct.count > 0
+    if volunteers.count > 0
       status << "Volunteer"
     end
     status.join("/")
@@ -506,10 +508,10 @@ Documentation for each filter:
     mts = mentor_terms.for_term(term).collect do |mt|
       "#{mt.title}:#{mt.volunteer ? 'Volunteer' : 'Enrolled'}"
     end
-    if mts.any?
-      mts.join(',')
-    else
+    if mts.empty?
       "none"
+    else
+      mts.join(',')
     end
   end
 
@@ -523,7 +525,7 @@ Documentation for each filter:
 
   def send_driver_email
     if Customer.send_driver_form_emails && van_driver_training_completed_at_changed?
-      MentorMailer.deliver_driver!(self)
+      MentorMailer.driver(self).deliver
     end
   end
 

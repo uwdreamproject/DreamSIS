@@ -61,12 +61,21 @@ class RsvpController < ApplicationController
     
     if !@current_user || !@current_user.person.ready_to_rsvp?(@event)
       session[:return_to_after_rsvp] = request.env["HTTP_REFERER"]
-      session[:return_to_after_profile] = request.url
+      session[:return_to_after_profile] = request.original_url
+      unless request.get?
+        session[:return_to_after_profile] << '?' + params.except(:format).to_query
+        if request.put?
+          session[:return_to_after_profile] << '&rsvp=true'
+        end
+      end
       session[:profile_validations_required] = "ready_to_rsvp"
       flash[:notice] = "Before you can RSVP for events, please login and complete your profile."
       respond_to do |format|
         format.html { return redirect_to(profile_path(:apply_extra_styles => true, :apply_extra_footer_content => true)) }
-        format.js   { return render(:js => "window.location.href = '#{profile_path(:apply_extra_styles => true, :apply_extra_footer_content => true)}'") }
+        format.js   {
+          session[:return_to_after_profile].sub!(/.js(\Z|\?|\#)/, '\1')
+          return render(:js => "window.location.href = '#{profile_path(:apply_extra_styles => true, :apply_extra_footer_content => true)}'")
+        }
       end
     end
     @event_attendance = @current_user.person.event_attendances.find_or_initialize_by_event_id(@event.id)

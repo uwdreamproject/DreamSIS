@@ -41,24 +41,6 @@ placeholder_text <<  "all #{Customer.participants_label}" if !@grad_year || !@hi
 	<%- else -%>
 		<p id="xlsx_status"></p>
 	<% end %>
-	<%= javascript_tag(
-		"var worker = function() {
-			if (checkXlsxStatus == true) {
-				$.ajax({
-					url: '#{check_export_status_participants_url(:format => 'js')}?id='+xlsxReportId+'&authenticity_token='+document.getElementsByTagName('meta')[2].getAttribute('content'),
-					cache: false,
-				});
-			}
-		};
-		$( document ).ready(function() {worker(); setInterval(function() { worker() }, 3000) });") %>
-
-
-	<%#= periodically_call_remote(:url => check_export_status_participants_url, 
-								:frequency => 3, 
-								:condition => "checkXlsxStatus == true", 
-								:with => "'id=' + xlsxReportId",
-								:before => "showAjaxIndicator = false;") %>
-
 	
 	<%- if @high_school %>
 		<form>

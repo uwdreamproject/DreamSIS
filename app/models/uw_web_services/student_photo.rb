@@ -40,7 +40,7 @@ class StudentPhoto < NonstandardWebServiceResult
     suffix = (size.nil? || size.to_s == 'default') ? ".jpg" : "-#{size.to_s}.jpg"
     raw = connection.get(constructed_path(suffix))
     FileUtils.mkdir_p(File.dirname(file_path(size))) unless File.exists?(File.dirname(file_path(size)))
-    File.open(file_path(size), 'w') {|f| f.write(raw) }
+    File.open(file_path(size), 'wb') {|f| f.write(raw) }
   end
   
   def expired?(size)

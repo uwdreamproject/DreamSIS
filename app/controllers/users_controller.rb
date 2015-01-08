@@ -94,7 +94,7 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    new_admin_value = @user.is_a?(PubcookieUser) ? params[:pubcookie_user][:admin] : params[:user][:admin]
+    new_admin_value = params[:user][:admin]
     @user.admin = new_admin_value if @current_user && @current_user.admin?
 
     respond_to do |format|

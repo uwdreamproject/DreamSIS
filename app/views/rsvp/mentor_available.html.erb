@@ -10,7 +10,7 @@
           <%= h event_group.name %>
           <%- if (desc = event_group.description(aud)) -%>
           <p>
-            <%= h desc %>
+            <%= sanitize textilize(desc), :tags => %w(table tr td h2 p a ul li strong em), :attributes => %w(id class style href) %>
           </p>
           <%- end %>
         </th>
