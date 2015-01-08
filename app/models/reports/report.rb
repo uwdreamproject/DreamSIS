@@ -66,12 +66,12 @@ class Report < ActiveRecord::Base
 		rescue => e
 			update_attributes :status => "error: #{e.message}", :generated_at => nil
 			logger.warn { "ERROR generating file: #{e.message}" }
+      Rollbar.warning(e, :report_id => self.id)
 		else # no errors
       self.file = temp_file
       self.status = "generated"
       self.generated_at = Time.now
       self.save
-      # update_attributes :file_path => file.path, :status => "generated", :generated_at => Time.now
 			logger.info { "Output file at: #{file.path}" }
     ensure
       temp_file.close if temp_file
@@ -94,7 +94,7 @@ class Report < ActiveRecord::Base
 		status.starts_with? 'error'
 	end
 	
-	# Kicks off a rake task to generate this report
+	# Kicks off a sucker_punch task to generate this report
 	def generate_in_background!
     ReportJob.new.async.perform(self.id)
 	end  

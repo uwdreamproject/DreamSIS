@@ -662,6 +662,18 @@ body.scrolled-past-header #sidebar {
 	background-color: rgba(0,0,0,0.03);
 }
 
+#sidebar a.button.with-below {
+/*  border-bottom: 1px dashed #dfdfdf;*/
+  border-bottom: none;
+  padding-bottom: 0.15em;
+}
+
+#sidebar p.below {
+	border-bottom: 1px inset #dfdfdf;
+  margin: 0 -20px;
+  padding: 5px 10px 10px 45px;
+}
+
 #sidebar p a.button {
 	margin-top: -1em;
 }
@@ -1365,27 +1377,27 @@ body.participants.show #content-wrap {
 	border-color: rgba(0,0,0,0.3);
 }
 
-#xlsx_status {
+#export_status {
 	margin-top: -0.5em;
 	margin-left: 5px;
 	font-size: 85%;
 	line-height: 125%;
 }
 
-#xlsx_status a:before {
+#export_status a:before {
 	content: "(";
 }
 
-#xlsx_status a:after {
+#export_status a:after {
 	content: ")";
 }
 
-#xlsx_download_button.generating {
+#export_download_button.generating {
 	background-image: url(../images/indicator.gif);
 	border-color: rgba(153,153,153,.15);
 }
 
-#xlsx_status.error {
+#export_status.error {
 	background: url(../images/caution.png) left top / 16px no-repeat;
 	padding-left: 22px;
 	margin-left: 0;
@@ -1644,7 +1656,9 @@ form.formtastic label {
 
 .required abbr {
 	padding-left: 0.25em;
-	font-weight: normal;
+	font-weight: bold;
+  color: red;
+  border-bottom: none;
 }
 
 .fieldWithErrors {

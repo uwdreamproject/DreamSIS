@@ -304,7 +304,7 @@ class Person < ActiveRecord::Base
   # to the text "OK".
   def passed_background_check?
     return false if background_check_result.nil?
-    valid_length = Customer.current_customer.background_check_validity_length
+    valid_length = Customer.current_customer.background_check_validity_length || 0
     return true if valid_length < 0
     return false if (background_check_run_at.nil? || background_check_run_at < valid_length.days.ago)
     background_check_result.include?("OK") || background_check_result.include?("NO RECORD FOUND")

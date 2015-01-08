@@ -1,6 +1,7 @@
-var checkXlsxStatus = false;
+var checkExportStatus = false;
 var showAjaxIndicator = true;
 var loadCount = 0;
+var debug = false;
 
 
 // Observe window scroll to readjust when we scroll past the header

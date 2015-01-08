@@ -456,7 +456,7 @@ class ParticipantsController < ApplicationController
 		
 		if request.xhr?
 			headers["Content-Type"] = "text/javascript"
-			return render(:template => "participants/check_export_status.js.rjs", :format => 'js')
+			return render(:template => "participants/check_export_status.js.erb", :format => 'js')
 		else
 			return redirect_to(:back, :format => 'html')
 		end

@@ -7,7 +7,7 @@
 */
 
 
-var checkXlsxStatus = false;
+var checkExportStatus = false;
 var showAjaxIndicator = true;
 var loadCount = 0;
 

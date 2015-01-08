@@ -1,29 +1,36 @@
-// If a document defines the checkXlsxStatusUrl variable, automatic report checking will turn on.
+// If a document defines the checkExportStatusUrl variable, automatic report checking will turn on.
 $(document).ready( function() {
-  if (typeof checkXlsxStatusUrl !== 'undefined') {
-    var xlsxStatusWorder = function() {
-    	if (checkXlsxStatus == true) {
-    		$.ajax({ url: checkXlsxStatusUrl, dataType: 'script' });
-    	};
-    };
-    xlsxStatusWorker();
-    setInterval('xlsxStatusWorker', 3000);
+  if (typeof checkExportStatusUrl !== 'undefined') {
+    exportStatusWorker();
+    setInterval('exportStatusWorker()', 3000);
   }
 })
 
+// Setup the export status checker, which will be called with setInterval.
+function exportStatusWorker() {
+  if (checkExportStatus == true && typeof(exportReportId) !== 'undefined') {
+    urlToCheck = checkExportStatusUrl.replace("__id__", exportReportId);
+    if (debug) console.log("[exportStatusWorker] checkExportStatus: " + checkExportStatus + ", urlToCheck: " + urlToCheck)
+		$.ajax({ url: urlToCheck, dataType: 'script' });
+	} else {
+    if (debug) console.log("[exportStatusWorker] checkExportStatus: " + checkExportStatus)
+	}
+};
+
 // Refresh the export status of the requested report
 function refreshExportStatus(exportId, exportStatus, button_dom_id, status_dom_id) {
-  console.log("Checking export status")
+  if (debug) console.log("[refreshExportStatus] exportId: " + exportId + ", exportStatus: " + exportStatus)
   var button_elem = $('#' + button_dom_id);
   var status_elem = $('#' + status_dom_id);
 
   button_elem.removeClass("generating").removeClass("error")
   status_elem.removeClass("generating").removeClass("error")
-  checkXlsxStatus = false;
+  exportReportId = exportId;
+  checkExportStatus = false;
   
   switch (exportStatus) {
   case 'generating':
-    checkXlsxStatus = true;
+    checkExportStatus = true;
     button_elem.addClass("generating").html("Generating...")
     status_elem.addClass("generating").html("Your file is being generated, which may take quite awhile. You can leave this page and come back later to download the file.")
     break;
@@ -36,6 +43,17 @@ function refreshExportStatus(exportId, exportStatus, button_dom_id, status_dom_i
   case 'error':
     button_elem.addClass("error").html("Download in Excel")
     status_elem.addClass("error").html("There was an error generating the file. Please try again.")
+    break;
+    
+  case 'expired':
+    button_elem.html("Download in Excel")
+    status_elem.html("Export expired.")
+    break;
+    
+  case 'initializing':
+    checkExportStatus = true;
+    button_elem.html("Generating...")
+    status_elem.children("a").html("Restart")
     break;
     
   default:
