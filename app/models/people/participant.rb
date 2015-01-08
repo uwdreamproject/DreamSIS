@@ -211,8 +211,8 @@ class Participant < Person
 	
 	# Returns the Visits that happened during the week of the requested date at this student's HighSchool.
 	def visits_during_week(date = Date.today)
-		start_date = Date.commercial(date.year, date.cweek, 1)
-		end_date = Date.commercial(date.year, date.cweek, 7)
+		start_date = date.beginning_of_week
+		end_date = date.end_of_week
 		Visit.find(:all, :conditions => ["date >= ? AND date <= ? AND location_id = ?", start_date, end_date, high_school_id])
 	end
 	
