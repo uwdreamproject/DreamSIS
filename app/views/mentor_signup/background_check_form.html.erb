@@ -3,7 +3,7 @@
 
 <%= semantic_form_for @mentor, :url => { :action => 'background_check_form' } do |f| %>
 
-	<%= f.semantic_errors %>
+	<%= default_form_errors(f) %>
     
 	<%= f.inputs do %>
 		<%= f.input :fullname, :label => "Name", :input_html => { :disabled => true } %>

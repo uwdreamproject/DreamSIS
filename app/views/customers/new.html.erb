@@ -4,7 +4,7 @@
 
 <%= semantic_form_for @customer do |f| %>
 
-	<%= f.semantic_errors %>
+	<%= default_form_errors(f) %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 	

@@ -1,7 +1,7 @@
 <h1>Editing <%=h @mentor.fullname %></h1>
 
 <%= semantic_form_for @mentor, :html => { :multipart => true } do |f| %>
-	<%= f.semantic_errors %>
+	<%= default_form_errors(f) %>
 	
 	<%= render :partial => 'fields', :locals => { :f => f } %>
 	

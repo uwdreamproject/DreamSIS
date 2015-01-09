@@ -5,7 +5,7 @@
 	<p class="intro">Use the activity log to track how you spent your time this week. This information will be available to program staff as well.</p>
 	
 <%= semantic_form_for(@activity_log) do |f| %>
-  	<%= f.semantic_errors %>
+  	<%= default_form_errors(f) %>
 	<%= render :partial => "fields", :locals => { :f => f } %>
 
 	<%= default_form_actions(f) %>

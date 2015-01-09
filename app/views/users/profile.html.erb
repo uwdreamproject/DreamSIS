@@ -3,7 +3,7 @@
 
 <%= semantic_form_for @person, :as => :person, :url => update_profile_path, :method => :post do |f| %>
 
-	<%= f.semantic_errors :header_message => "Oops, there was a problem." %>
+	<%= default_form_errors(f) %>
 
 	<%= f.inputs do -%>
         <%= f.inputs(:name => "First Name", :class => "inline") do -%>

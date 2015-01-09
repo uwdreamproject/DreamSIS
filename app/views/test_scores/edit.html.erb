@@ -2,7 +2,7 @@
 <h1>Editing test</h1>
 
 <%= semantic_form_for([@participant, @test_score]) do |f| %>
-  	<%= f.semantic_errors %>
+  	<%= default_form_errors(f) %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 
