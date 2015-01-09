@@ -7,7 +7,7 @@
 
 <%= f.inputs(:name => "Default Settings") do -%>
 	<p>These defaults are used when creating a scholarship application for a student. These can be overidden for each application separately.</p>
-	<%= f.input :default_amount, :label => "Amount", :input_html => { :size => 7, :class => "currency" } %>
+	<%= f.input :default_amount, :as => :string, :label => "Amount", :input_html => { :size => 7, :class => "currency" } %>
 
 	<%= f.inputs(:name => "Renewable", :class => "inline") do -%>
 		<%= f.input :default_renewable, :label => "Renewable" %>

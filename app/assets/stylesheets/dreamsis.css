@@ -899,6 +899,10 @@ body.new.session #footer {
   text-align: right;
 }
 
+td.align-right, th.align-right {
+  padding-right: 2em;
+}
+
 .content-block .right {
 	margin-right: 30px;
 }
@@ -2529,11 +2533,19 @@ form.formtastic > fieldset > ol > li > label {
 	padding-right: 3%;
 }
 
-input.currency:before {
-	content: "$ ";
-	float: left;
-	margin-right: 0.25em;
-	color: rgba(0,0,0,0.5);
+/*input.currency:before {
+  content: "$ ";
+  float: left;
+  margin-right: 0.25em;
+  color: rgba(0,0,0,0.5);
+}
+*/
+
+input.currency {
+	background-image: url(../images/icons/silk/money_dollar.png) !important;
+  background-repeat: no-repeat !important;
+  background-position: left center !important;
+  min-width: 7em;
 }
 
 input.currency {
