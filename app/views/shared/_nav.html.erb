@@ -64,7 +64,11 @@
 					</li>
 					<li class="primary list"><%= link_to raw("All locations &amp; Colleges"), locations_url %></li>
 					<% for college in CollegeApplication.top_institutions(10) %>
-						<li><%= link_to "#{college.name.truncate(40, :separator => ' ')} (#{college.count})", college_url(college.try(:id)), :title => college.name %></li>
+						<li>
+							<%= link_to "#{college.name.truncate(40, :separator => ' ')} (#{college.count})",
+								 		college_url(college.try(:id)), 
+										:title => college.name,
+										:style => "background-image: url('#{fetch_favicon_tag(college.try(:formatted_website_url), :return_url_only => true)}')" %></li>
 					<% end -%>
 				</ul>
 			</div>

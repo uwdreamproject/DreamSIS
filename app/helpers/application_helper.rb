@@ -15,6 +15,17 @@ module ApplicationHelper
     # extension = "_blank" unless File.exists?(image_path(File.join(filename)))
 		image_tag File.join(filename), :title => title
 	end  
+  
+  # Fetch the favicon for a requested site, like a college home page.
+  def fetch_favicon_tag(url, options = {})
+    options.merge({ :size => 16 })
+    url_parsed = Addressable::URI.heuristic_parse(h(url)).to_s
+    # service_prefix = "https://getfavicon.appspot.com/" # this service is perpetually over quota :-(
+    service_prefix = "https://www.google.com/s2/favicons?domain="
+    image_url = service_prefix + url_parsed
+    return image_url if options[:return_url_only] == true
+    image_tag image_url, :width => options[:size], :height => options[:size]
+  end
 
   # Print pretty phone numbers
   def number_to_phone_pretty(number, options = { })

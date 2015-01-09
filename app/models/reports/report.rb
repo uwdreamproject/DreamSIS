@@ -1,4 +1,5 @@
 class Report < ActiveRecord::Base
+  
 	class AlreadyGeneratingError < StandardError
 	end
 
@@ -65,12 +66,12 @@ class Report < ActiveRecord::Base
 		rescue => e
 			update_attributes :status => "error: #{e.message}", :generated_at => nil
 			logger.warn { "ERROR generating file: #{e.message}" }
+      Rollbar.warning(e, :report_id => self.id)
 		else # no errors
       self.file = temp_file
       self.status = "generated"
       self.generated_at = Time.now
       self.save
-      # update_attributes :file_path => file.path, :status => "generated", :generated_at => Time.now
 			logger.info { "Output file at: #{file.path}" }
     ensure
       temp_file.close if temp_file
@@ -93,15 +94,9 @@ class Report < ActiveRecord::Base
 		status.starts_with? 'error'
 	end
 	
-	# Kicks off a rake task to generate this report
+	# Kicks off a sucker_punch task to generate this report
 	def generate_in_background!
-		logger.info { "Generating report ID #{id} via background rake process" }
-		task = "reports:generate"
-	  options = { :rails_env => Rails.env, :id => id, :tenant => Customer.tenant_name }
-	  args = options.map { |n, v| "#{n.to_s.upcase}='#{v}'" }
-		cmd = "bundle exec rake #{task} #{args.join(' ')} --trace 2>&1 &"
-	  system cmd
-		cmd
-	end
-	
+    ReportJob.new.async.perform(self.id)
+	end  
+  
 end

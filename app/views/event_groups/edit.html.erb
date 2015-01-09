@@ -2,7 +2,7 @@
 
 <%= semantic_form_for(@event_group, :url => event_group_path(@event_group)) do |f| %>
 
-	<%= f.semantic_errors %>
+	<%= default_form_errors(f) %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 

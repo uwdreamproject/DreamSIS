@@ -131,7 +131,7 @@
 			<%= link_to_function "Dev", "$('#dev-inspector').toggle()", :id => "dev-inspector-link" %>
 			<div class="git branch <%= `git rev-parse --symbolic-full-name --abbrev-ref HEAD` %>">Branch <strong><%= `git rev-parse --symbolic-full-name --abbrev-ref HEAD` %></strong></div>
 			<div class="git branch">Rails <strong><%= Rails.version %></strong></div>
-			<div class="git branch">User <strong><%= @current_user.try(:id) || "nil" %></strong></div>
+			<div class="git branch">User <strong><%= current_user.try(:id) || "nil" %></strong></div>
 			<div class="git branch">Customer <strong><%= Customer.name_label rescue nil %></strong></div>
 			<div class="git branch">Tenant <strong><%= Apartment::Tenant.current_tenant rescue nil %></strong></div>
 			<div id="dev-inspector" style="display:none">

@@ -38,11 +38,14 @@ h1 {
 }
 
 h2 {
-	font-size: 125%;
+	font-size: 100%;
+  text-transform: uppercase;
+  font-weight: 800;
 }
 
 h3 {
-	font-size: 110%;
+	font-size: 90%;
+  text-transform: uppercase;
 }
 
 h3.pre-title {
@@ -497,13 +500,11 @@ h4 {
 	color: rgb(116, 116, 116);
 	font-size: 90%;
 	margin: 0;
-	/*background-color: #f5f5f5;*/
 	background: rgba(248, 203, 63, 0.65);
 	padding: 3em 20px;
+  margin-right: 230px;
 	border-top: 1px outset rgb(248, 203, 63);
-	
-	/*border-bottom: 5px solid #e0e0e0;*/
-	/*border-top: 5px solid #e0e0e0;*/
+  clear: both;
 }
 
 #footer a {
@@ -607,7 +608,7 @@ body.full #sidebar-header {
 	top: 65px;
 	right: 0;
 	width: 190px;
-	/*background: #e7e7e7;*/
+  background: #f7f7f7;
 	padding: 20px;
 	padding-top: 13px;
 	bottom: 20px;
@@ -617,6 +618,8 @@ body.full #sidebar-header {
 	z-index: 25;
 	color: #4c4c4c;
 	clear: both;
+  height: 100%;
+  border-left: 1px solid #e0e0e0;
 }
 
 .admin #sidebar {
@@ -624,6 +627,15 @@ body.full #sidebar-header {
 }
 
 body.scrolled-past-header #sidebar {
+  top: 0;
+}
+
+body.scrolled-past-header #notifications .alert.visible {
+  position: fixed;
+  top: 0;
+}
+
+body.scrolled-past-header ul.tabs {
   top: 0;
 }
 
@@ -656,6 +668,18 @@ body.scrolled-past-header #sidebar {
 
 #sidebar a.button:hover {
 	background-color: rgba(0,0,0,0.03);
+}
+
+#sidebar a.button.with-below {
+/*  border-bottom: 1px dashed #dfdfdf;*/
+  border-bottom: none;
+  padding-bottom: 0.15em;
+}
+
+#sidebar p.below {
+	border-bottom: 1px inset #dfdfdf;
+  margin: 0 -20px;
+  padding: 5px 10px 10px 45px;
 }
 
 #sidebar p a.button {
@@ -871,6 +895,14 @@ body.new.session #footer {
 	float: right;
 }
 
+.align-right {
+  text-align: right;
+}
+
+td.align-right, th.align-right {
+  padding-right: 2em;
+}
+
 .content-block .right {
 	margin-right: 30px;
 }
@@ -1053,7 +1085,6 @@ body.scrolled-past-header .record-header .photo {
 }*/
 
 .info-section-container.vertical ul.tabs {
-	position: absolute;
 	margin: 0 0 0 -30px;
 	list-style: none;
 	padding: 0;
@@ -1063,6 +1094,8 @@ body.scrolled-past-header .record-header .photo {
 	-webkit-transition: box-shadow 0.2s ease-in-out;
 	-webkit-transition: top 0.25s ease-out;
 	z-index: 100;
+  overflow: scroll;
+  max-height: 100%;
 }
 
 .info-section-container.vertical ul.tabs:hover {
@@ -1229,6 +1262,39 @@ body.scrolled-past-header .record-header .photo {
 	display: block;
 }
 
+.info-section-container.vertical ul.tabs .tips {
+  height: 0;
+}
+
+.info-section-container.vertical ul.tabs:hover .tips {
+  height: auto;
+}
+
+.info-section-container.vertical ul.tabs .tips a {
+  -webkit-transition: opacity 0.5s ease-in-out;
+  opacity: 0;
+  padding-left: 15px;
+  font-size: 70%;
+  font-weight: normal;
+}
+
+.info-section-container.vertical ul.tabs:hover .tips a {
+  opacity: 1;
+}
+
+.info-section-container.vertical ul.tabs:hover .tips a:hover {
+  background: inherit;
+}
+
+.keyboard {
+  display: inline-block;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.02) 100%);
+  padding: 0 5px 1px 5px;
+  border-radius: 3px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 .info-section > p, .info-section > h3 {
 	margin: 20px;
 }
@@ -1244,6 +1310,10 @@ body.participants.show #content-wrap {
 
 .span4 {
 	width: 25%;
+}
+
+.span8 {
+  width: 65%;
 }
 
 .spanhalf.left {
@@ -1324,27 +1394,27 @@ body.participants.show #content-wrap {
 	border-color: rgba(0,0,0,0.3);
 }
 
-#xlsx_status {
+#export_status {
 	margin-top: -0.5em;
 	margin-left: 5px;
 	font-size: 85%;
 	line-height: 125%;
 }
 
-#xlsx_status a:before {
+#export_status a:before {
 	content: "(";
 }
 
-#xlsx_status a:after {
+#export_status a:after {
 	content: ")";
 }
 
-#xlsx_download_button.generating {
+#export_download_button.generating {
 	background-image: url(../images/indicator.gif);
 	border-color: rgba(153,153,153,.15);
 }
 
-#xlsx_status.error {
+#export_status.error {
 	background: url(../images/caution.png) left top / 16px no-repeat;
 	padding-left: 22px;
 	margin-left: 0;
@@ -1379,6 +1449,7 @@ body.participants.show #content-wrap {
 	margin-bottom: 0;
 	background-color: rgb(236, 241, 245);
 	border-bottom: 1px solid rgb(229, 231, 241);	
+  text-transform: none;
 }
 
 .info-section#college_applications h2, .info-section#college_enrollments h2, .tabs a.college_applications, .tabs a.college_enrollments {
@@ -1550,6 +1621,10 @@ abbr[title]:hover {
 	margin: 0;
 }
 
+.errorExplanation ul.errors {
+  margin-left: 1em;
+}
+
 .warning {
   background: #FFE482 url("../images/icons/silk/error.png") 7px center no-repeat;
   padding: 0.5em;
@@ -1602,7 +1677,9 @@ form.formtastic label {
 
 .required abbr {
 	padding-left: 0.25em;
-	font-weight: normal;
+	font-weight: bold;
+  color: red;
+  border-bottom: none;
 }
 
 .fieldWithErrors {
@@ -2456,11 +2533,19 @@ form.formtastic > fieldset > ol > li > label {
 	padding-right: 3%;
 }
 
-input.currency:before {
-	content: "$ ";
-	float: left;
-	margin-right: 0.25em;
-	color: rgba(0,0,0,0.5);
+/*input.currency:before {
+  content: "$ ";
+  float: left;
+  margin-right: 0.25em;
+  color: rgba(0,0,0,0.5);
+}
+*/
+
+input.currency {
+	background-image: url(../images/icons/silk/money_dollar.png) !important;
+  background-repeat: no-repeat !important;
+  background-position: left center !important;
+  min-width: 7em;
 }
 
 input.currency {
@@ -3452,6 +3537,7 @@ table.mentors .mentor.name {
   font-weight: bold;
 	background: url(../images/check-mini.gif) no-repeat 0;
 	padding-left: 15px;
+  margin: 0;
 }
 
 .green {
@@ -4068,6 +4154,11 @@ div.notes.editable, p.notes.editable {
 	margin: 0;
 	background: rgba(255,255,255,0.65);
 	padding: 10px 30px;	
+}
+
+form.full {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 .info-section form .full textarea, .info-section form .full input {

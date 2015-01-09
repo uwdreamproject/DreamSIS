@@ -3,7 +3,7 @@
 
 <%= semantic_form_for(@event_shift, :url => event_event_shifts_path(@event)) do |f| %>
 
-	<%= f.semantic_errors %>
+	<%= default_form_errors(f) %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 

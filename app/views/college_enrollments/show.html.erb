@@ -19,6 +19,13 @@
 
 	<dt>Majors</dt>
 	<dd><%=h @college_enrollment.majors_list %></dd>
+	
+	<dt>Remedial Courses</dt>
+	<dd><ul>
+			<%= content_tag(:li, "Math") if @college_enrollment.placed_in_remedial_math? %>
+			<%= content_tag(:li, "English") if @college_enrollment.placed_in_remedial_english? %>
+		</ul>
+	</dd>
 
 	<dt>Source</dt>
 	<dd><%=h @college_enrollment.source.try(:titleize) %>
@@ -27,3 +34,6 @@
 
 </dl>
 
+<div id="sidebar">
+	<%= link_to "Edit this enrollment", edit_participant_college_enrollment_path(@participant, @college_enrollment), :class => 'edit button' %>
+</div>

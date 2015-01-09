@@ -371,17 +371,17 @@ Documentation for each filter:
   # Allows for dynamically created symbols to be sent to mentors,
   # specifically to generate excel columns for a given term
   def method_missing(method_name, *args)
-    if m = method_name.to_s.match(/\Asection_summary_for_(\d+)\Z/)
+    if m = method_name.to_s.match(/\Asection_summary_for_(.+)\Z/)
       section_summary Term.find(m[1])
-    elsif m = method_name.to_s.match(/\Asection_status_for_(\d+)\Z/)
+    elsif m = method_name.to_s.match(/\Asection_status_for_(.+)\Z/)
       section_status Term.find(m[1])
-    elsif m = method_name.to_s.match(/\Aevent_summary_for_(\d+)\Z/)
+    elsif m = method_name.to_s.match(/\Aevent_summary_for_(.+)\Z/)
       event_summary_for_term Term.find(m[1])
-    elsif m = method_name.to_s.match(/\Aevent_count_for_(\d+)\Z/)
+    elsif m = method_name.to_s.match(/\Aevent_count_for_(.+)\Z/)
       event_count_for_term Term.find(m[1])
-    elsif m = method_name.to_s.match(/\Aenrollment_status_for_(\d+)\Z/)
+    elsif m = method_name.to_s.match(/\Aenrollment_status_for_(.+)\Z/)
       enrollment_status_for_term Term.find(m[1])
-    elsif m = method_name.to_s.match(/\Alocations_for_(\d+)\Z/)
+    elsif m = method_name.to_s.match(/\Alocations_for_(.+)\Z/)
       locations_for_term Term.find(m[1])
     else
       super method_name, *args
@@ -474,11 +474,13 @@ Documentation for each filter:
 
   # Returns true if this mentor is 18 years old, false otherwise
   def is_18?
+    return nil unless birthdate
     Time.now.to_date >= eighteenth_birthday
   end
 
   # Returns a date representing this mentor's 18th birthday
   def eighteenth_birthday
+    return nil unless birthdate
     birthdate + 18.years
   end
 

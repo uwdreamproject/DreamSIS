@@ -56,7 +56,23 @@ class Person < ActiveRecord::Base
   PERSON_RESOURCE_CACHE_LIFETIME = 1.day
 
   default_scope :order => "lastname, firstname, middlename"
+
+  geocoded_by :address do |obj, results|
+    if geo = results.first
+      obj.latitude = geo.latitude
+      obj.longitude = geo.longitude
+    end
+    [geo.latitude, geo.longitude] if geo
+  end  
+  after_validation :geocode, :if => :address_changed?
   
+  def address_changed?
+    street_changed? || city_changed? || state_changed? || zip_changed?
+  end
+  
+  def address
+    [street, city, state, zip].compact.join(', ')
+  end
 
   # Returns the actual person resource object. Specify +true+ as a parameter to fetch the "full" version
   # of the resource (only use this when more data is needed than the basics).
@@ -83,16 +99,18 @@ class Person < ActiveRecord::Base
   # Returns the person's fullname in the form: Firstname Middlename Lastname
   # If we have a valid +person_resource+, then pass back +person_resource.DisplayName+ instead.
   def fullname(opt = {})
-    options = { :middlename => true, :skip_update => false, :override_with_local => true }.merge(opt)
+    options = { :middlename => true, :skip_update => false, :override_with_local => true, :ignore_nickname => false }.merge(opt)
     if person_resource? && !options[:skip_update]
       update_resource_cache! rescue nil
       return display_name unless options[:override_with_local]
     end
     return display_name if firstname.blank? && lastname.blank?
-    if options[:middlename]
-      middlename_string = middlename.length == 1 ? " #{middlename.to_s.strip}." : " #{middlename.to_s.strip}" unless middlename.blank?
-    end
-    "#{firstname.to_s.strip}#{middlename_string.to_s} #{lastname.to_s.strip}"
+    parts = []
+    parts << (options[:ignore_nickname] ? read_attribute(:firstname) : firstname)
+    parts << "(#{nickname})" if !Customer.display_nicknames_by_default? && !options[:ignore_nickname] && !nickname.blank?
+    parts << (middlename.length == 1 ? "#{middlename.to_s}." : middlename.to_s) if options[:middlename] && !middlename.blank?
+    parts << lastname
+    parts.join(" ")
   end
   
   def lastname_first(options = {})
@@ -144,6 +162,16 @@ class Person < ActiveRecord::Base
   # Automatically capitalizes the first letter of +firstname+
   def firstname=(new_firstname)
     write_attribute(:firstname, uppercase_first_letter(new_firstname))
+  end
+  
+  # Returns the user's firstname or nickname based on Customer preference.
+  def firstname
+    Customer.display_nicknames_by_default? ? (nickname.blank? ? read_attribute(:firstname) : nickname) : read_attribute(:firstname)
+  end
+  
+  # Read the first name out of the database without converting to a nickname.
+  def formal_firstname
+    read_attribute :firstname
   end
 
   # Automatically capitalizes the first letter of +middlename+
@@ -304,7 +332,7 @@ class Person < ActiveRecord::Base
   # to the text "OK".
   def passed_background_check?
     return false if background_check_result.nil?
-    valid_length = Customer.current_customer.background_check_validity_length
+    valid_length = Customer.current_customer.background_check_validity_length || 0
     return true if valid_length < 0
     return false if (background_check_run_at.nil? || background_check_run_at < valid_length.days.ago)
     background_check_result.include?("OK") || background_check_result.include?("NO RECORD FOUND")

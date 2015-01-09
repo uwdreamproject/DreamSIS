@@ -1,5 +1,5 @@
 <td class="college-logo">
-	<img src="https://getfavicon.appspot.com/<%= Addressable::URI.heuristic_parse(h(college_application.institution.try(:webaddr))).to_s %>" width=16 height=16>
+	<%= fetch_favicon_tag college_application.institution.try(:formatted_website_url) %>
 </td>
 <td class="college-name"><%=h college_application.institution.try(:name) %></td>
 <td><%=h college_application.choice %></td>

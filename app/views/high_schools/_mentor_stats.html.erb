@@ -1,10 +1,10 @@
 <% for term in Term.current_and_allowing_signups %>
-
-	<h2><%= term.title %> <%= Customer.mentors_Label %></h2>
+	<%- mentor_term_groups = @high_school.mentor_term_groups.for(term) -%>
+	<%= content_tag :h2, "#{term.title} #{Customer.mentors_Label}" unless mentor_term_groups.empty? %>
 
 	<ul class="mentor_stats_summary">
 
-	<% for mentor_term_group in @high_school.mentor_term_groups.for(term) %>
+	<% for mentor_term_group in mentor_term_groups %>
 		<li><%= content_tag :span, h(mentor_term_group.section_id), :class => 'section_id tag', :align => 'left' %>
 			<%= link_to h(mentor_term_group.title), mentor_term_group, :title => mentor_term_group.course_id %>
 			<br><%= mentor_term_group.times %>

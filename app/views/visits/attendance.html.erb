@@ -6,7 +6,7 @@
 <h1>Attendance: <%= @showing.collect{|s| s.to_s.titleize }.to_sentence %></h1>
 <h2><%= @high_school.name %> &bull; <%= @term.title %></h2>
 
-<% form_for :attendance, :url => update_attendance_high_school_visits_path(@high_school) do |f| %>
+<%= form_for :attendance, :url => update_attendance_high_school_visits_path(@high_school), :html => { :class => "full" } do |f| %>
 
 	<table>
 		<tr>
@@ -51,7 +51,7 @@
 			<% @visits.each_with_index do |visit, i| %>
 
 				<!-- RSVP Checkbox -->
-				<%= render :partial => "visits/_checkboxes/rsvp", 
+				<%#= render :partial => "visits/_checkboxes/rsvp", 
 							:locals => { :participant => participant, :visit => visit, :i => i } if visit.allow_rsvps? %>
 			
 				<!-- Attended Checkbox -->

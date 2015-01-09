@@ -1,6 +1,9 @@
+<h3 class="pre-title"><%= @user.class %></h3>
 <h1><%= @user.login %></h1>
-<%= content_tag :span, @user.type, :class => 'outline tag' if @user.type %>
-<%= content_tag :span, "admin", :class => 'admin tag' if @user.admin? %>
+
+<p>
+	<%= content_tag :span, "admin", :class => 'admin tag' if @user.admin? %>
+</p>
 
 <p>Linked to <%= link_to_unless @user.person.class == Person, h(@user.person.fullname), @user.person rescue nil %></p>
 
