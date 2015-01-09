@@ -4,7 +4,7 @@
 
 <div class="name">
 	<h3 class="pre-title"><%= @participant.class.to_s %></h3>
-	<h1><%=h @participant.fullname(:middlename => false) %></h1>
+	<h1><%=h @participant.fullname(:middlename => false, :nickname => true) %></h1>
 	<%- if @participant.inactive? || @participant.not_target_participant? -%>
 		<div class="note-band">
 			<%= content_tag :h2, "Inactive", :class => "inactive-note" if @participant.inactive? %>

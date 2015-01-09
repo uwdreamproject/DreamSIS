@@ -11,7 +11,6 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141105012609) do
 ActiveRecord::Schema.define(:version => 20150109013053) do
 
   create_table "activity_logs", :force => true do |t|
@@ -104,6 +103,7 @@ ActiveRecord::Schema.define(:version => 20150109013053) do
     t.text     "conduct_form_content"
     t.text     "driver_form_content"
     t.boolean  "send_driver_form_emails"
+    t.boolean  "display_nicknames_by_default"
   end
 
   create_table "degrees", :force => true do |t|

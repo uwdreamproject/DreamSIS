@@ -1,5 +1,9 @@
 <%= image_tag "https://maps.google.com/maps/api/staticmap?size=250x250&sensor=false&zoom=12&markers=#{@participant.try(:latitude)}%2C#{@participant.try(:longitude)}", :align => 'right', :class => 'map', :width => 250, :height => 250 if @participant.try(:geocoded?) %>
+
 <dl class="inline-definitions">
+
+	<dt>Full Legal Name</dt>
+	<dd><%= @participant.fullname(:middlename => true, :ignore_nickname => true) %></dd>
 	
 	<dt>Address</dt>
 	<dd>
