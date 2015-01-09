@@ -1,5 +1,5 @@
-class ReportJob
-  include SuckerPunch::Job
+class ReportWorker
+  include Sidekiq::Worker
 
   def perform(report_id)
     begin
@@ -14,4 +14,5 @@ class ReportJob
       Rollbar.error(e, :report_id => report_id)
     end
   end
+
 end

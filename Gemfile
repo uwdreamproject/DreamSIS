@@ -44,6 +44,10 @@ gem "sqlite3"
 gem 'rollbar', '~> 1.2.4'
 gem 'addressable'
 gem 'sucker_punch', '~> 1.0'
+gem 'sidekiq'
+gem 'apartment-sidekiq'
+# gem 'sinatra', require: false  # for sidekiq monitor
+# gem 'slim'  # for sidekiq monitor
 
 group :production do
   gem 'mysql2', '~> 0.3.7'
