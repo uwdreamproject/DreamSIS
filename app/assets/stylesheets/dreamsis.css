@@ -3537,6 +3537,7 @@ table.mentors .mentor.name {
   font-weight: bold;
 	background: url(../images/check-mini.gif) no-repeat 0;
 	padding-left: 15px;
+  margin: 0;
 }
 
 .green {
