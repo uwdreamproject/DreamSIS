@@ -1,6 +1,6 @@
 class ReportJob
   include SuckerPunch::Job
-  workers 4
+  workers 1
 
   def perform(report_id)
     begin
