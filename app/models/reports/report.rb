@@ -33,7 +33,7 @@ class Report < ActiveRecord::Base
 	end
 		
 	def container_path
-		File.join(Rails.root, "tmp", "reports", "tenant-#{Apartment::tenant.current}", self.id.to_s)
+		File.join(Rails.root, "tmp", "reports", "tenant-#{Apartment::Tenant.current}", self.id.to_s)
 	end
 	
 	def filename

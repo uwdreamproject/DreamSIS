@@ -22,3 +22,5 @@ vendor/plugins/rails_upgrade/
 public/stylesheets/.DS_Store
 
 *.sqlite3 copy
+
+pid/sidekiq.pid
