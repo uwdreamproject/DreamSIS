@@ -58,23 +58,25 @@ class Report < ActiveRecord::Base
 	# Generate the file ready for sending to the user and change status to "generated".
 	def generate!
 		raise AlreadyGeneratingError, "The report is already being generated." if status == 'generating'
-		reset_to_ungenerated
-    begin
-			update_attribute :status, "generating"
-			temp_file = Tempfile.new("report_#{id.to_s}_#{Time.now.to_i}")
-			xlsx_package.serialize temp_file.path
-		rescue => e
-			update_attributes :status => "error: #{e.message}", :generated_at => nil
-			logger.warn { "ERROR generating file: #{e.message}" }
-      Rollbar.warning(e, :report_id => self.id)
-		else # no errors
-      self.file = temp_file
-      self.status = "generated"
-      self.generated_at = Time.now
-      self.save
-			logger.info { "Output file at: #{file.path}" }
-    ensure
-      temp_file.close if temp_file
+    ActiveRecord::Base.connection_pool.with_connection do
+  		reset_to_ungenerated
+      begin
+  			update_attribute :status, "generating"
+  			temp_file = Tempfile.new("report_#{id.to_s}_#{Time.now.to_i}")
+  			xlsx_package.serialize temp_file.path
+  		rescue => e
+  			update_attributes :status => "error: #{e.message}", :generated_at => nil
+  			logger.warn { "ERROR generating file: #{e.message}" }
+        Rollbar.warning(e, :report_id => self.id)
+  		else # no errors
+        self.file = temp_file
+        self.status = "generated"
+        self.generated_at = Time.now
+        self.save
+  			logger.info { "Output file at: #{file.path}" }
+      ensure
+        temp_file.close if temp_file
+      end
     end
 	end
 	

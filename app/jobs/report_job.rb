@@ -7,9 +7,7 @@ class ReportJob
       ActiveRecord::Base.connection_pool.with_connection do
         report = Report.find(report_id)
         Rails.logger.info { "[Report #{report_id.to_s}] Generating report id #{report.id.to_s}" }
-        Report.transaction do
-          report.generate!
-        end
+        report.generate!
         Rails.logger.info { "[Report #{report_id.to_s}] Done." }
       end
     rescue => e
