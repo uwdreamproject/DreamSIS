@@ -33,7 +33,7 @@ class Report < ActiveRecord::Base
 	end
 		
 	def container_path
-		File.join(Rails.root, "tmp", "reports", self.id.to_s)
+		File.join(Rails.root, "tmp", "reports", "tenant-#{Apartment::tenant.current}", self.id.to_s)
 	end
 	
 	def filename
@@ -98,7 +98,12 @@ class Report < ActiveRecord::Base
 	
 	# Kicks off a sucker_punch task to generate this report
 	def generate_in_background!
-    ReportJob.new.async.perform(self.id)
-	end  
+    Rollbar.warning "Sidekiq not running" unless Report.sidekiq_ready?
+    ReportWorker.perform_async(self.id)
+	end
+  
+  def self.sidekiq_ready?
+    Sidekiq::ProcessSet.new.size > 0
+  end
   
 end
