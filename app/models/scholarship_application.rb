@@ -29,7 +29,7 @@ class ScholarshipApplication < ActiveRecord::Base
   # Strip out non-digit characters if needed, like "$" or "," or other text.
   def amount=(new_amount)
     new_amount = new_amount.gsub(/[^0-9.]/i, '') unless new_amount.is_a?(Numeric)
-    self.write_attribute(:amount, new_amount)
+    self[:amount] = new_amount
   end
   
 end
