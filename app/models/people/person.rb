@@ -56,7 +56,23 @@ class Person < ActiveRecord::Base
   PERSON_RESOURCE_CACHE_LIFETIME = 1.day
 
   default_scope :order => "lastname, firstname, middlename"
+
+  geocoded_by :address do |obj, results|
+    if geo = results.first
+      obj.latitude = geo.latitude
+      obj.longitude = geo.longitude
+    end
+    [geo.latitude, geo.longitude] if geo
+  end  
+  after_validation :geocode, :if => :address_changed?
   
+  def address_changed?
+    street_changed? || city_changed? || state_changed? || zip_changed?
+  end
+  
+  def address
+    [street, city, state, zip].compact.join(', ')
+  end
 
   # Returns the actual person resource object. Specify +true+ as a parameter to fetch the "full" version
   # of the resource (only use this when more data is needed than the basics).
