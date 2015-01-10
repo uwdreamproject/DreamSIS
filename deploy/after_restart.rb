@@ -8,6 +8,6 @@ on_app_servers do
 end
 
 on_app_servers do
-  sudo "sidekiqctl stop #{config.shared_path}/pid/DreamSIS_sidekiq.pid"
-  sudo "cd #{config.current_path} && bundle exec sidekiq -d -l #{config.shared_path}/log/DreamSIS_sidekiq.log -P #{config.shared_path}/pid/DreamSIS_sidekiq.pid"
+  sudo "cd #{config.current_path} && bundle exec sidekiqctl stop #{config.shared_path}/pid/DreamSIS_sidekiq.pid"
+  sudo "cd #{config.current_path} && bundle exec sidekiq -d -e #{config.environment} -l #{config.shared_path}/log/DreamSIS_sidekiq.log -P #{config.shared_path}/pid/DreamSIS_sidekiq.pid"
 end
