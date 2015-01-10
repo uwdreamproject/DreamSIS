@@ -255,6 +255,7 @@ Dreamsis::Application.routes.draw do
   # Other
   # ---------------------------------------
   # mount Sidekiq::Web, at: "/sidekiq"
+  match 'sidekiq/status' => 'application#sidekiq_status'
   match '/' => 'welcome#index'
   match 'ping' => 'application#ping'
   root :to => 'welcome#index'

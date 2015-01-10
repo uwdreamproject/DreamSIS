@@ -29,6 +29,11 @@ class ApplicationController < ActionController::Base
   def ping
     render :text => "200 OK", :status => :ok
   end
+  
+  def sidekiq_status
+    statusHash = { :process_size => Sidekiq::ProcessSet.new.size }
+    render :json => statusHash, :status => (statusHash[:process_size] > 0 ? :ok : :not_found)
+  end
 
   # Add return_to to session if it's been requested
   def save_return_to
