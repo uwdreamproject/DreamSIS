@@ -1,15 +1,12 @@
-class ReportJob
-  include SuckerPunch::Job
-  workers 4
+class ReportWorker
+  include Sidekiq::Worker
 
   def perform(report_id)
     begin
       ActiveRecord::Base.connection_pool.with_connection do
         report = Report.find(report_id)
         Rails.logger.info { "[Report #{report_id.to_s}] Generating report id #{report.id.to_s}" }
-        Report.transaction do
-          report.generate!
-        end
+        report.generate!
         Rails.logger.info { "[Report #{report_id.to_s}] Done." }
       end
     rescue => e
@@ -17,4 +14,5 @@ class ReportJob
       Rollbar.error(e, :report_id => report_id)
     end
   end
+
 end

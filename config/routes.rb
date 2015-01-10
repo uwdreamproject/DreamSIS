@@ -1,3 +1,6 @@
+# require 'sidekiq/web'
+require 'sidekiq/api'
+
 Dreamsis::Application.routes.draw do
 
   # Top-level or Customer-level Objects
@@ -247,11 +250,12 @@ Dreamsis::Application.routes.draw do
   match '/auth/anonymous/' => 'session#create_anonymous', :as => :anonymous_login_callback
   match '/auth/:provider/callback' => 'session#create', :as => :omniauth_callback
   match '/auth/failure' => 'session#failure'
-  resource :session
-  
+  resource :session  
 
   # Other
   # ---------------------------------------
+  # mount Sidekiq::Web, at: "/sidekiq"
+  match 'sidekiq/status' => 'application#sidekiq_status'
   match '/' => 'welcome#index'
   match 'ping' => 'application#ping'
   root :to => 'welcome#index'
