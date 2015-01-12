@@ -2,7 +2,7 @@
 
 <%= semantic_form_for @mentor, :url => { :action => 'risk_form' } do |f| %>
 
-	<%= f.semantic_errors %>
+	<%= default_form_errors(f) %>
 
 	<%= raw sanitize textilize h(Customer.risk_form_content) %>
 

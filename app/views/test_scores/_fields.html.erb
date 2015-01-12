@@ -1,5 +1,11 @@
 <%= f.inputs :name => "Test Details" do -%>
-	<%= f.input :test_type_id, :collection => TestType.all %>
+	<%= f.input :test_type_id, :as => :select, :collection => TestType.all, :input_html => { 
+			:class => "send-on-change", 
+			"data-url" => (f.object.new_record? ? 
+							update_scores_fields_participant_test_scores_path(f.object.try(:participant)) :
+							update_scores_fields_participant_test_score_path(f.object.try(:participant), f.object)
+						  ) 
+		} %>
 	<%= f.input :taken_at, :as => :date_select, :label => "Test Date", :hint => link_to_now(:test_score_taken_at) %>
 	<%= f.input :registered_at, :as => :date_select, :hint => link_to_now(:test_score_registered_at) %>
 <% end %>

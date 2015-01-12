@@ -2,7 +2,7 @@
 <h1>Add parent/guardian/contact</h1>
 
 <%= semantic_form_for([@participant, @parent]) do |f| %>
-  	<%= f.semantic_errors %>
+  	<%= default_form_errors(f) %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 

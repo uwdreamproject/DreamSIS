@@ -3,10 +3,7 @@ class CollegeDegree < Degree
   validates_presence_of :institution_id
   
   belongs_to :clearinghouse_request
-
-  def institution
-    @institution ||= Institution.find(institution_id)
-  end
+  belongs_to :institution
 
   # Returns a printable String of the names of the majors for this record.
   def majors_list

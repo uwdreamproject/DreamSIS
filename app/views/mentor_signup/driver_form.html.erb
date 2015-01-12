@@ -2,7 +2,7 @@
 
 <%= semantic_form_for @mentor, :url => { :action => 'driver_form' } do |f| %>
 
-    <%= f.semantic_errors %>
+    <%= default_form_errors(f) %>
 
     <%= sanitize Customer.driver_form_content, :tags => %w(p br fieldset input label h2 ol li), :attributes => %w(id name type value for class) %>
 

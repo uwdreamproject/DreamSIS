@@ -1,23 +1,13 @@
 require 'digest/sha1'
 class User < ActiveRecord::Base
   belongs_to :person
-  # belongs_to :customer
-  # attr_protected :customer_id
-  validates_presence_of :login #, :customer_id
-  validates_uniqueness_of :uid, :scope => [:provider] #, :customer_id]
-  # before_save :append_customer_id
-
-  # prevents a user from submitting a crafted form that bypasses activation
-  # anything else you want your user to change should be added here.
+  validates_presence_of :login
+  validates_uniqueness_of :uid, :scope => [:provider]
   attr_accessible :login, :email, :password, :password_confirmation, :identity_url, :person_attributes
-
   default_scope :order => 'login'
+  alias_attribute :username, :login
+  delegate :email, :to => :person
   
-  # Adds the current customer ID to the record, which is used +before_create+.
-  # def append_customer_id
-  #   self.customer_id = Customer.current_customer.id
-  # end
-
   # Pulls the current user out of Thread.current. We try to avoid this when possible, but sometimes we need 
   # to access the current user in a model (e.g., to check EmailQueue#messages_waiting?).
   def self.current_user
@@ -35,6 +25,18 @@ class User < ActiveRecord::Base
   # Returns the associated person's fullname, or +login+ if there's no person record.
   def fullname(options = {})
     person.nil? ? login : (person.fullname(options).blank? ? login : person.fullname(options))
+  end
+  
+  # Returns a username string useful for error reporting by concatenating the user's login and the
+  # tenant name, like "test1/bobloblaw@facebook"
+  def error_username
+    Apartment::Tenant.current.to_s + "/" + login
+  end
+
+  # Returns a user ID useful for error reporting by concatenating the user's ID and the
+  # tenant name, like "test1/17"
+  def error_id
+    Apartment::Tenant.current.to_s + "/" + id.to_s
   end
     
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil. Note that this method is

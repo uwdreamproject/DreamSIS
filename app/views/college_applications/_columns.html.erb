@@ -1,6 +1,6 @@
 <td class="college-logo">
-	<img src="https://getfavicon.appspot.com/<%= college_application.institution.try(:formatted_website_url) %>" width=16 height=16>
-	</td>
+	<%= fetch_favicon_tag college_application.institution.try(:formatted_website_url) %>
+</td>
 <td class="name">
 	<span class="primary">
 		<%=h link_to college_application.institution.try(:name), college_path(college_application.institution.try(:id)) rescue "#err" %>

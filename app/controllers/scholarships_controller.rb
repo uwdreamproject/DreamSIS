@@ -7,8 +7,8 @@ class ScholarshipsController < ResourceController
   
   def index
     return redirect_to Scholarship.find(params[:id]) if params[:id]
-		per_page = request.format.xls? ? 1000000 : params[:per_page]
-    @scholarships = Scholarship.page(params[:page]) #.per_page(per_page)
+		per_page = request.format.xls? ? 1000000 : (params[:per_page] || 30)
+    @scholarships = Scholarship.page(params[:page]).per_page(per_page)
     
     respond_to do |format|
       format.html # index.html.erb
@@ -42,14 +42,21 @@ class ScholarshipsController < ResourceController
   end
 
   def auto_complete_for_scholarship_title
-		if params[:scholarship][:title].is_integer?
-			@scholarships = [Scholarship.find(params[:scholarship][:title])]
+    term = params[:term] || params[:scholarship][:title]
+		if term.is_integer?
+			@scholarships = [Scholarship.find(term)]
 		else
-	    @scholarships = Scholarship.find(:all, :conditions => ["LOWER(title) LIKE ?", "%#{params[:scholarship][:title].to_s.downcase}%"], :limit => 20)
+	    @scholarships = Scholarship.find(:all, :conditions => ["LOWER(title) LIKE ?", "%#{term.to_s.downcase}%"], :limit => 20)
 		end
-    render :partial => "shared/auto_complete_scholarship_title", 
-            :object => @scholarships, 
-            :locals => { :highlight_phrase => params[:scholarship][:title] }
+    render :json => @scholarships.map { |result| 
+      {
+        :id => result.id, 
+        :value => result.title,
+        :klass => "", 
+        :fullname => result.title, 
+        :secondary => result.organization_name
+      }
+    }
   end
   
 	protected

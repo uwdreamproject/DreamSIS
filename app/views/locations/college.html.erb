@@ -1,5 +1,6 @@
 <h3 class="pre-title"><%=h @location.class.to_s.titleize %></h3>
-<h1><%=h @location.name %></h1>
+<h1><%= fetch_favicon_tag @location.try(:formatted_website_url), :size => 20 %>
+	<%=h @location.name %></h1>
 
 <div class="when-and-where">
 	<h3>Location</h3>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141105012609) do
+ActiveRecord::Schema.define(:version => 20150109013053) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -103,6 +103,7 @@ ActiveRecord::Schema.define(:version => 20141105012609) do
     t.text     "conduct_form_content"
     t.text     "driver_form_content"
     t.boolean  "send_driver_form_emails"
+    t.boolean  "display_nicknames_by_default"
   end
 
   create_table "degrees", :force => true do |t|
@@ -711,6 +712,8 @@ ActiveRecord::Schema.define(:version => 20141105012609) do
     t.boolean  "has_previous_driving_convictions"
     t.string   "driver_form_remarks"
     t.boolean  "driver_license_on_file"
+    t.float    "latitude"
+    t.float    "longitude"
   end
 
   add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"

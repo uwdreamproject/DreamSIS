@@ -13,7 +13,7 @@
 <%= f.inputs(:name => "Award Details") do -%>
 <p>These details are specific to this student's award process, and could differ from the defaults set for this scholarship.</p>
 	<%= f.inputs :name => "Award Amount", :class => "inline" do -%>
-		<%= f.input :amount, :input_html => {:size => 7, :class => "currency"} %>
+		<%= f.input :amount, :as => :string, :input_html => {:size => 7, :class => "currency"} %>
 		<%= f.input :renewable %>
 		<%= f.input :renewable_years, :label => "Years Renewable", :input_html => { :size => 2 } %>
 	<% end %>

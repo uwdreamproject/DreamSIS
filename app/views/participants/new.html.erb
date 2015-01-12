@@ -1,7 +1,7 @@
 <h1>New <%= Customer.participant_label %></h1>
 
 <%= semantic_form_for(@participant, :html => {:id => "participant_form", :multipart => true}) do |f| %>
-	<%= f.semantic_errors %>
+	<%= default_form_errors(f) %>
 	
 	<%= render :partial => 'participants/fields/name_and_personal', :locals => { :f => f } %>
 	<%= render :partial => 'participants/fields/contact', :locals => { :f => f } %>

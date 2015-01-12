@@ -17,6 +17,10 @@ class ApplicationController < ActionController::Base
   after_filter :flash_to_headers, :except => %w[ ping ]
   
   helper_method :current_user
+  
+  def current_user
+    @current_user
+  end
 
   def forbidden
     # render forbidden.html.erb
@@ -24,6 +28,11 @@ class ApplicationController < ActionController::Base
   
   def ping
     render :text => "200 OK", :status => :ok
+  end
+  
+  def sidekiq_status
+    statusHash = { :process_size => Sidekiq::ProcessSet.new.size }
+    render :json => statusHash, :status => (statusHash[:process_size] > 0 ? :ok : :not_found)
   end
 
   # Add return_to to session if it's been requested

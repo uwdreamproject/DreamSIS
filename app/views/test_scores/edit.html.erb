@@ -1,15 +1,11 @@
-<h3 class="pre-title"><%=h @participant.fullname %></h3>
+<h3 class="pre-title"><%= link_to @participant.fullname, @participant %></h3>
 <h1>Editing test</h1>
 
 <%= semantic_form_for([@participant, @test_score]) do |f| %>
-  	<%= f.semantic_errors %>
+  	<%= default_form_errors(f) %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
 
 	<%= default_form_actions(f) %>
-
-	<%= observe_field :test_score_test_type_id, 
-					  :url => update_scores_fields_participant_test_score_path(f.object.try(:participant), f.object), 
-					  :with => 'test_score[test_type_id]' %>
 
 <% end %>

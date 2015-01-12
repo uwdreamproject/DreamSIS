@@ -13,18 +13,17 @@ class ActivityLog < ActiveRecord::Base
 	serialize :non_student_time
   
 	# Finds or creates a new ActivityLog for the mentor based on the year
-	# and week number provided (based on Monday-start weeks).
-	def self.find_or_create_by_mentor_and_week_and_year(mentor, week_number, year)
+	# and date provided (based on Monday-start weeks).
+	def self.find_or_create_by_mentor_and_date(mentor, date)
 		mentor_id = mentor.is_a?(Mentor) ? mentor.try(:id) : mentor
-		start_date = Date.commercial(year, week_number, 1)
-		end_date = Date.commercial(year, week_number, 7)
+		start_date = date.beginning_of_week
+		end_date = date.end_of_week
 		ActivityLog.find_or_create_by_mentor_id_and_start_date_and_end_date(mentor_id, start_date, end_date)
 	end
 	
 	# Finds or creates the ActivityLog for the mentor for the current week.
 	def self.current_for(mentor)
-		week_number = Date.today.cweek
-		ActivityLog.find_or_create_by_mentor_and_week_and_year(mentor, week_number, Date.today.year)
+		ActivityLog.find_or_create_by_mentor_and_date(mentor, Date.today)
 	end
   
 	# Returns true if this activity log "belongs to" the user or person passed as a parameter.
@@ -43,16 +42,16 @@ class ActivityLog < ActiveRecord::Base
 	
 	# Finds or creates an ActivityLog for the mentor for next week.
 	def next_week_log
-		next_week_start = (start_date + 1.week).beginning_of_week
-		week_number = next_week_start.cweek
-		ActivityLog.find_or_create_by_mentor_and_week_and_year(mentor_id, week_number, next_week_start.year)
+    # next_week_start = (start_date + 1.week).beginning_of_week
+    # week_number = next_week_start.cweek
+		ActivityLog.find_or_create_by_mentor_and_date(mentor_id, (start_date + 1.week))
 	end
 
 	# Finds or creates an ActivityLog for the mentor for last week.
 	def previous_week_log
-		previous_week_start = (start_date - 1.week - 1.day).beginning_of_week
-		week_number = previous_week_start.cweek
-		ActivityLog.find_or_create_by_mentor_and_week_and_year(mentor_id, week_number, previous_week_start.year)
+    # previous_week_start = (start_date - 1.week - 1.day).beginning_of_week
+    # week_number = previous_week_start.cweek
+		ActivityLog.find_or_create_by_mentor_and_date(mentor_id, (start_date - 1.week))
 	end
 	
 	# Returns true if the start date for this activity log is in the current week.

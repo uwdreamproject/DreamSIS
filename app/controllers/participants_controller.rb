@@ -190,7 +190,7 @@ class ParticipantsController < ApplicationController
     @event_attendances = @participant.respond_to?(:relevant_event_attendances) ? @participant.relevant_event_attendances : @participant.event_attendances.non_visits
     @grad_year = @participant.grad_year
 		@term = Term.current_term
-    @title = @participant.try(:fullname)
+    @title = @participant.try(:fullname, :middlename => false)
 		
     unless @current_user && @current_user.can_view?(@participant)
       return render_error("You are not allowed to view that participant.")
@@ -456,7 +456,7 @@ class ParticipantsController < ApplicationController
 		
 		if request.xhr?
 			headers["Content-Type"] = "text/javascript"
-			return render(:template => "participants/check_export_status.js.rjs", :format => 'js')
+			return render(:template => "participants/check_export_status.js.erb", :format => 'js')
 		else
 			return redirect_to(:back, :format => 'html')
 		end

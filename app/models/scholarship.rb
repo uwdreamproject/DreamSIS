@@ -4,7 +4,16 @@ class Scholarship < ActiveRecord::Base
   
   default_scope :order => "title"
 
-	ATTRIBUTES_TO_MERGE = %w[title organization_name description default_amount default_renewable_years default_full_ride default_gap_funding default_living_stipend default_renewable]
+	ATTRIBUTES_TO_MERGE = %w[
+    title organization_name description default_amount default_renewable_years default_full_ride 
+    default_gap_funding default_living_stipend default_renewable
+  ]
+
+  # Strip out non-digit characters if needed, like "$" or "," or other text.
+  def default_amount=(new_amount)
+    new_amount = new_amount.gsub(/[^0-9.]/i, '') unless new_amount.is_a?(Numeric)
+    self[:default_amount] = new_amount
+  end
 
 	# Merges this scholarship into another one. That Scholarship becomes the "master" scholarship
 	# and any ScholarshipApplication records with this scholarship_id is reassigned to that scholarship.

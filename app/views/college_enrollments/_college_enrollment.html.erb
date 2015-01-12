@@ -1,6 +1,6 @@
 <tr id="college_enrollment_<%= college_enrollment.id %>">
-	<td><%= college_enrollment.began_on.try(:to_s, :short_date) %></td>
-	<td><%= college_enrollment.ended_on.try(:to_s, :short_date) %></td>
+	<td><%= college_enrollment.began_on.try(:to_s, :short_date) || "Unknown" %></td>
+	<td><%= college_enrollment.ended_on.try(:to_s, :short_date) || "Unknown" %></td>
 	<td><%=h college_enrollment.enrollment_status_name %></td>
 	<td><%=h college_enrollment.class_level_name %></td>
 	<td><%=h college_enrollment.majors_list %></td>

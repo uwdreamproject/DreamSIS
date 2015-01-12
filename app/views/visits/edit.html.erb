@@ -3,7 +3,7 @@
 
 <%= semantic_form_for :visit, @visit, :url => high_school_visit_path(@high_school), :html => { :method => :put } do |f| %>
 
-	<%= f.semantic_errors %>
+	<%= default_form_errors(f) %>
 
 	<%= render :partial => "events/fields", :locals => { :f => f } %>
 	
