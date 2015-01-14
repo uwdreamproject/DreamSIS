@@ -38,11 +38,13 @@ function refreshExportStatus(exportId, exportStatus, button_dom_id, status_dom_i
   case 'generated':
     button_elem.html("Download is Ready")
     status_elem.html("Ready to download")
+    updateFlashes({ "notice": "Your file is ready to download." })
     break;
     
   case 'error':
     button_elem.addClass("error").html("Download in Excel")
     status_elem.addClass("error").html("There was an error generating the file. Please try again.")
+    updateFlashes({ "error": "There was an error generating your file. Please try again." })
     break;
     
   case 'expired':
