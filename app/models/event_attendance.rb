@@ -24,9 +24,18 @@ class EventAttendance < ActiveRecord::Base
   after_save :update_filter_cache
   after_destroy :update_filter_cache
 
+  # default_scope :joins => :person, :order => "lastname, firstname"
+  scope :rsvpd, where(:rsvp => true)
+  scope :attended, where(:attended => true)
+
   # Updates the participant filter cache
   def update_filter_cache
     person.save
+  end
+
+  # Class method to use along with other named scopes to limit results to a specific audience group.
+  def self.audience(audience_name = Person)
+    where(["(audience = :audience) OR (people.type = :audience AND audience = NULL)", {:audience => audience_name.to_s.classify}])
   end
   
   def enforce_rsvp_limits?

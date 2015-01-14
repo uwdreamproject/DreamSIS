@@ -8,14 +8,15 @@ class EventAttendancesController < EventsController
 
   protect_from_forgery :only => [:create, :update, :destroy] 
 
-  # def index
-  #   @attendees = @event.attendees
-  # 
-  #   respond_to do |format|
-  #     format.html # index.html.erb
-  #     format.xml  { render :xml => @attendees }
-  #   end
-  # end
+  def index
+    @attendees = @event.attendees
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render :json => @attendees }
+      format.xml  { render :xml => @attendees }
+    end
+  end
 
   def checkin
     @layout_in_blocks = true
@@ -72,13 +73,14 @@ class EventAttendancesController < EventsController
   end
 
   def create
-    @attendee = @event.attendees.new(params[:attendee])
+    @attendee = @event.attendees.new(params[:attendee] || params[:event_attendance])
 
     respond_to do |format|
       if @attendee.save
         flash[:notice] = "#{@attendee.fullname} was successfully checked in."
         format.html { redirect_to(@attendee) }
         format.js
+        format.json { render :json => @attendee }
         format.xml  { render :xml => @attendee, :status => :created, :location => @attendee }
       else
         format.html { render :action => "new" }
@@ -89,7 +91,8 @@ class EventAttendancesController < EventsController
   end
 
   def update
-    @attendee = @event.attendees.find(params[:id])
+    # @attendee = @event.attendees.find(params[:id])
+    @attendee = EventAttendance.find(params[:id])
     @attendee.admin = params[:event_attendance].try(:[], :admin) if params[:event_attendance].try(:[], :admin)
 
     respond_to do |format|
@@ -97,6 +100,7 @@ class EventAttendancesController < EventsController
         flash[:notice] = "#{@attendee.fullname} was successfully #{ @attendee.attended_changed? ? "checked in" : "updated" }."
         format.html { redirect_to(event_event_attendances_path(@event, :audience => @attendee.try(:person).try(:class))) }
         format.js
+        format.json { render :json => @attendee }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

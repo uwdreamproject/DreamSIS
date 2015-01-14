@@ -1,38 +1,7 @@
 class Event < ActiveRecord::Base
   include Comparable
-  has_many :attendees, :inverse_of => :event, :class_name => "EventAttendance" do
-    def all(audience = nil)
-      if audience.is_a?(Person)
-        audience = audience.class.to_s.classify
-      end
-      conditions = ["(audience = :audience) OR (people.type = :audience AND audience = NULL)", {:audience => audience.to_s.classify}] if audience
-      al = EventAttendance.find_all_by_event_id(proxy_association.owner.id, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
-    end
-    def rsvpd(audience = nil)
-      if audience
-        if audience.is_a?(Person)
-          audience = audience.class.to_s.classify
-        end
-        conditions = ["((audience = :audience) OR (people.type = :audience AND audience = NULL)) AND rsvp=:true", { :audience => audience.to_s.classify, :true => true }]
-      else
-        conditions = { :rsvp => true }
-      end
-      EventAttendance.find_all_by_event_id(proxy_association.owner.id, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
-    end
 
-    def attended(audience = nil)
-      if audience
-        if audience.is_a?(Person)
-          audience = audience.class.to_s.classify
-        end
-        conditions = ["((audience = :audience) OR (people.type = :audience AND audience = NULL)) AND attended=:true", { :audience => audience.to_s.classify, :true => true }]
-      else
-        conditions = { :attended => true }
-      end
-      EventAttendance.find_all_by_event_id(proxy_association.owner.id, :conditions => conditions, :joins => :person, :order => "lastname, firstname")
-    end
-  end
-
+  has_many :attendees, :inverse_of => :event, :class_name => "EventAttendance"
   has_many :people, :through => :attendees
   belongs_to :location
   belongs_to :event_type
@@ -66,6 +35,11 @@ class Event < ActiveRecord::Base
   # Returns the number of RSVP'd (for the given audience, if provided)
   def rsvpd_count(audience)
     attendees.rsvpd(audience).size
+  end
+  
+  # For now, only Visit type events can have attendance options.
+  def attendance_options
+    []
   end
 
   # Return the capacity for this event. If no audience person or type is provided, return the overall capacity

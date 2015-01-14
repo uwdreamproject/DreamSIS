@@ -8,4 +8,8 @@ class Visit < Event
     false
   end
   
+  def attendance_options
+    Customer.uses_visit_attendance_options? ? Customer.visit_attendance_options_array : []
+  end
+  
 end

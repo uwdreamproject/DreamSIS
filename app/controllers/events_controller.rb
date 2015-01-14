@@ -20,6 +20,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
+      format.json { render :json => @event.attributes.merge({ attendance_options: @event.attendance_options }) }
       format.xml  { render :xml => @event }
     end
   end

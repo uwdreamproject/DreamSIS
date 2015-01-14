@@ -6,65 +6,42 @@
 <h1>Attendance: <%= @showing.collect{|s| s.to_s.titleize }.to_sentence %></h1>
 <h2><%= @high_school.name %> &bull; <%= @term.title %></h2>
 
-<%= form_for :attendance, :url => update_attendance_high_school_visits_path(@high_school), :html => { :class => "full" } do |f| %>
+<%= javascript_tag "attendanceEventIds = [#{@visits.collect(&:id).join(", ")}];" %>
 
-	<table>
+<%= will_paginate @visits %>
+<table class="attendance-matrix">
+	<thead>
 		<tr>
-			<th rowspan=2>Name</th>
-			<% for visit in @visits %>
-				<% l = link_to h(visit.short_title), event_path(visit), :popup => true %>
-				<% if visit.allow_rsvps? %>
-					<th colspan=2 class="centered borderless"><%= l %></th>
-				<% else %>
-					<th rowspan=2 class="centered"><%= l %></th>
-				<% end -%>
-			<% end -%>
-			<!-- <th rowspan=2>Name</th> -->
+			<th>Name</th>
+			<%- @visits.each_with_index do |visit, index| -%>
+				<th class="centered" data-column-id="<%= index+1 %>"></th>
+			<% end %>
 		</tr>
-		<tr>
-			<% for visit in @visits %>
-				<% if visit.allow_rsvps? %>
-					<th class="centered small">RSVP'd?</th>
-					<th class="centered small">Attended?</th>
-				<% end -%>
-			<% end -%>
-		</tr>
-			
+	</thead>
 
-	
+	<tbody>
 		<% for participant in @participants %>
 
 		<% section ||= nil %>
 		<% if section != :inactive && participant.inactive? %>
 			<% section = :inactive %>
 			<tr class="rowset-header">
-				<th colspan="<%= @visits.size + 3 %>">Inactive Students</th>
+				<th colspan="20">Inactive Students</th>
 			</tr>
 		<% end -%>
 
-		<tr <%= "class='deselected'" if participant.inactive? %>>
+		<tr <%= "class='deselected'" if participant.inactive? %> id="participant_row_<%= participant.id.to_s %>" data-participant-id="<%= participant.id.to_s %>">
 		    <td class="name"><%= link_to participant.lastname_first, participant, :popup => true %>
 				<small class="inactive-note">(inactive)</small>
 				</td>
-				
-			<!-- Visit dates checkboxes -->
-			<% @visits.each_with_index do |visit, i| %>
-
-				<!-- RSVP Checkbox -->
-				<%#= render :partial => "visits/_checkboxes/rsvp", 
-							:locals => { :participant => participant, :visit => visit, :i => i } if visit.allow_rsvps? %>
-			
-				<!-- Attended Checkbox -->
-				<%= render :partial => "visits/_checkboxes/attended", 
-							:locals => { :participant => participant, :visit => visit, :i => i } %>
-			<% end -%>
-		
+			<%- @visits.each_with_index do |visit, index| -%>
+				<td data-column-id="<%= index+1 %>"></td>
+			<% end %>
 		</tr>		
 		<% end -%>
-	  
-	</table>
-
-<% end -%>
+	</tbody>
+	
+</table>
 
 <div id="sidebar">
 
@@ -88,7 +65,7 @@
 		Only events that are pertinent to this group of people are shown.</p>
 	
 	<p><%= link_to "Add new high school visit", 
-					new_high_school_visit_path(@high_school, @term), 
+					new_high_school_visit_path(@high_school, :term_id => @term), 
 					:class => 'add button' %></p>
 	
 	<%- unless @participants.empty? -%>

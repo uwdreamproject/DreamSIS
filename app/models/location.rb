@@ -28,7 +28,7 @@ class Location < ActiveRecord::Base
     end
     conditions << " AND (location_id = '#{id}' OR location_id IS NULL)"
     conditions << " AND type = 'Visit' " if visits_only
-    Event.find(:all, :conditions => [conditions, conditions_values], :limit => limit)
+    Event.where([conditions, conditions_values]).limit(limit)
   end
 
   # Returns an array of unassigned survey_ids that can be given to students at this location. The codes take this form:
