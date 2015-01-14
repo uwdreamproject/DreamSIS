@@ -42,3 +42,13 @@ s3:
     secret_access_key: 
     bucket: 
 
+rollbar:
+  server_side_access_token: 
+
+redis:
+  development:
+    endpoint: 
+    password: 
+  production:
+    endpoint: 
+    password: 
