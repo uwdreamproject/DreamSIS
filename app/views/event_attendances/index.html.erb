@@ -5,7 +5,7 @@
 	<thead>
 		<tr>
 			<th>Attendee</th>
-			<%= "<th>High School</th>" if @audience.to_s.downcase == "participant" || @audience.to_s.downcase == "student" %>
+			<%= content_tag(:th, "High School") if @audience.to_s.downcase == "participant" || @audience.to_s.downcase == "student" %>
 			<th>Program(s)</th>
 			<th>Phone</th>
 			<th>Shift</th>
@@ -27,7 +27,7 @@
 	</thead>
 
 	<tbody>
-		<%= render :partial => 'event_attendance', :collection => @event.attendees.all(@audience).select{|a| a.rsvp? || a.attended? || a.admin? }, :locals => { :audience => @audience } %>
+		<%= render :partial => 'event_attendance', :collection => @event.attendees.audience(@audience).select{|a| a.rsvp? || a.attended? || a.admin? }, :locals => { :audience => @audience } %>
 
 		<%- if @event.attendees.empty? -%>
 			<tr class="empty">
