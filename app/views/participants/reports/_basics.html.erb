@@ -18,5 +18,7 @@
 	<% end %>
 </td>
 
-<td class="last-updated"><%= time_ago_in_words participant.updated_at %> ago</td>
+<td class="last-updated <%= "old" if participant.updated_at < 3.months.ago %>">
+	<%= time_ago_in_words(participant.updated_at) %> ago
+</td>
 <td class="functions"></td>
