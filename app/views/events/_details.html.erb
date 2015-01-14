@@ -1,5 +1,7 @@
-<dt>Name</dt>
-<dd><%=h details.name %></dd>
+<%- unless details.name.blank? -%>
+	<dt>Name</dt>
+	<dd><%=h details.name %></dd>
+<% end %>
 
 <dt>Date/Time</dt>
 <dd><%= details.time_detail %>

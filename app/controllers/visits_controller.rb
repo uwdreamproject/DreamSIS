@@ -15,9 +15,10 @@ class VisitsController < ApplicationController
 
   def show
     @visit = @high_school.visits.find(params[:id])
+    @event = @visit
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html
       format.xml  { render :xml => @visit }
     end
   end
@@ -36,76 +37,31 @@ class VisitsController < ApplicationController
   end
   
   def attendance
-    return redirect_to attendance_high_school_visits_path(@high_school, @term) if params[:term_id] == "new"
-    # TODO avoid this type of redirection
     @participants = []
     @showing = []
     @current_cohort = params[:cohort] || @term.participating_cohort
     if !params[:show] || params[:show].include?("participants")
-      @participants << @high_school.participants.find(:all, 
+      @participants << @high_school.participants.find(:all,
                                                       :conditions => { :grad_year => @current_cohort },
                                                       :order => "inactive")
       @showing << :participants
-    end                              
+    end
     if params[:show] && params[:show].include?("mentors")
       @participants << @high_school.mentor_term_groups.for(@term).collect(&:mentors)
       @showing << :mentors
     end
     @participants.flatten!
-    limit = params[:limit] || 10
-    @visits = @high_school.events(@term, @showing, true, limit)
+    limit = params[:limit] || 5
+    @visits = @high_school.events(@term, @showing, true, limit).page(params[:page])
   end
-
-  def update_attendance
-    if params[:attendance]
-      params[:attendance].each do |participant_id,attendance_attributes|
-        @participant = Person.find(participant_id)
-        attendance_attributes.each do |event_id,attended|
-          @event = Event.find(event_id)
-          event_attendance = @participant.event_attendances.find_or_create_by_event_id(@event.id)
-          event_attendance.update_attribute(:attended, attended)
-        end
-      end
-      flash[:saved] = "Saved."
-    end
-
-    if params[:attendance_option]
-      params[:attendance_option].each do |participant_id,attendance_attributes|
-        @participant = Person.find(participant_id)
-        attendance_attributes.each do |event_id,attendance_option|
-          @event = Event.find(event_id)
-          event_attendance = @participant.event_attendances.find_or_create_by_event_id(@event.id)
-          event_attendance.update_attribute(:attendance_option, attendance_option)
-        end
-      end
-      flash[:saved] = "Saved."
-    end
-
-    if params[:rsvp]
-      params[:rsvp].each do |participant_id,attendance_attributes|
-        @participant = Person.find(participant_id)
-        attendance_attributes.each do |event_id,rsvp|
-          @event = Event.find(event_id)
-          event_attendance = @participant.event_attendances.find_or_create_by_event_id(@event.id)
-          event_attendance.update_attribute(:rsvp, rsvp)
-        end
-      end
-      flash[:saved] = "Saved."
-    end
-
-    respond_to do |format|
-      format.html { redirect_to :action => "attendance" }
-      format.js
-    end
-  end
-
+  
   def create
     @visit = @high_school.visits.new(params[:visit])
 
     respond_to do |format|
       if @visit.save
         flash[:notice] = 'Visit was successfully created.'
-        format.html { redirect_to(high_school_visit_url(@high_school, @term, @visit)) }
+        format.html { redirect_to(high_school_visit_url(@high_school, @visit)) }
         format.xml  { render :xml => @visit, :status => :created, :location => @visit }
       else
         format.html { render :action => "new" }
@@ -120,7 +76,7 @@ class VisitsController < ApplicationController
     respond_to do |format|
       if @visit.update_attributes(params[:visit])
         flash[:notice] = 'Visit was successfully updated.'
-        format.html { redirect_to(high_school_visit_url(@high_school, @term, @visit)) }
+        format.html { redirect_to(high_school_visit_url(@high_school, @visit)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -134,7 +90,7 @@ class VisitsController < ApplicationController
     @visit.destroy
 
     respond_to do |format|
-      format.html { redirect_to(high_school_visits_url(@high_school, @term)) }
+      format.html { redirect_to(high_school_visits_url(@high_school, :term_id => @term)) }
       format.xml  { head :ok }
     end
   end
@@ -155,7 +111,7 @@ class VisitsController < ApplicationController
     else
       abbrev = params[:term_id]
     end
-    @term = Term.find(abbrev)
+    @term = abbrev.blank? ? Term.current_term : Term.find(abbrev)
   end
   
 end

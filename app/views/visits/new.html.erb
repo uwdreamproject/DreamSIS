@@ -1,7 +1,7 @@
 <h3 class="pre-title"><%= @high_school.name %></h3>
 <h1>New <%= Customer.visit_Label %></h1>
 
-<%= semantic_form_for :visit, @visit, :url => high_school_visits_path do |f| %>
+<%= semantic_form_for [@high_school, @visit] do |f| %>
 
 	<%= default_form_errors(f) %>
 

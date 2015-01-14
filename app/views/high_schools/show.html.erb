@@ -43,11 +43,11 @@
 	<h2><%= Customer.visits_Label %></h2>
 	<table>
 		<tr><td><%= link_to "#{Term.current_term.title} #{Customer.visits_Label}", 
-						high_school_visits_path(@high_school, Term.current_term) %></td></tr>
+						high_school_visits_path(@high_school, :term_id => Term.current_term) %></td></tr>
 		<tr><td><%= link_to "Take Attendance for #{Customer.mentees_Label}", 
-						attendance_high_school_visits_path(@high_school, Term.current_term) %></td></tr>
+						attendance_high_school_visits_path(@high_school, :term_id => Term.current_term) %></td></tr>
 		<tr><td><%= link_to "Take Attendance for #{Customer.mentors_Label}", 
-						attendance_high_school_visits_path(@high_school, Term.current_term, :show => 'mentors') %></td></tr>
+						attendance_high_school_visits_path(@high_school, :term_id => Term.current_term, :show => 'mentors') %></td></tr>
 		
 		<%- if Customer.uses_activity_logs? -%>
 			<tr><td><%= link_to "Weekly Summary", activity_log_current_week_summary_path %></td></tr>

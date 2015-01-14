@@ -15,15 +15,15 @@
 
 <% for visit in @visits %>
 <tr>
-    <td class="name"><%= link_to (visit.name.blank? ? visit.date : h("#{visit.name} (#{visit.date})")), high_school_visit_path(@high_school, @term, visit) %></td>
+    <td class="name"><%= link_to (visit.name.blank? ? visit.date : h("#{visit.name} (#{visit.date})")), high_school_visit_path(@high_school, visit) %></td>
 	<td><%=h visit.start_time.to_s(:time12) if visit.start_time %></td>
 	<td><%=h visit.end_time.to_s(:time12) if visit.end_time %></td>
 	<td><%=h visit.show_for_participants? ? "Yes" : "No" %></td>
 	<td><%=h visit.show_for_mentors? ? "Yes" : "No" %></td>
 	<td><%=h visit.attended_count %></td>
-	<td class="functions"><%= link_to 'Show', high_school_visit_path(@high_school, @term, visit) %></td>
-	<td class="functions"><%= link_to 'Edit', edit_high_school_visit_path(@high_school, @term, visit) %></td>
-	<td class="functions"><%= link_to 'Delete', high_school_visit_path(@high_school, @term, visit), :confirm => 'Are you sure?', :method => :delete %></td>
+	<td class="functions"><%= link_to 'Show', high_school_visit_path(@high_school, visit) %></td>
+	<td class="functions"><%= link_to 'Edit', edit_high_school_visit_path(@high_school, visit) %></td>
+	<td class="functions"><%= link_to 'Delete', high_school_visit_path(@high_school, visit), :confirm => 'Are you sure?', :method => :delete %></td>
 </tr>
 <% end %>
 
@@ -31,13 +31,13 @@
 <tr class="empty">
 	<td colspan=10>
 		You haven't created any <%= Customer.visits_label %>. 
-		<%= link_to "Add a new #{Customer.visit_label}.", new_high_school_visit_path(@high_school, @term) %>
+		<%= link_to "Add a new #{Customer.visit_label}.", new_high_school_visit_path(@high_school, :term_id => @term) %>
 	</td>
 </tr>
 <% end -%>
 
 </table>
 
-<p><%= link_to "Add new #{Customer.visit_label}", new_high_school_visit_path(@high_school, @term), :class => 'add button' %></p>
+<p><%= link_to "Add new #{Customer.visit_label}", new_high_school_visit_path(@high_school, :term_id => @term), :class => 'add button' %></p>
 
 <%= render :partial => "sidebar" %>

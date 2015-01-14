@@ -1,11 +1,43 @@
-<h1><%=h @high_school.name %></h1>
-<h2><%=h @visit.date %> Visit</h2>
+<h3 class="pre-title"><%=h @high_school.name %></h3>
+<h1><%= Customer.visit_Label %> on <%=h @visit.date.to_s(:date_with_day_of_week) %></h1>
 
-<p>Date: <%=h @visit.date %></p>
-<p>Term <%=@term.title %></p>
-<p>Start Time: <%=h @visit.start_time.to_s(:time12) if @visit.start_time %></p>
-<p>End Time: <%=h @visit.end_time.to_s(:time12) if @visit.end_time %></p>
-<p>Attendance Count: <%=h @visit.attended_count %>.
-	<%= link_to "Take Attendance", attendance_high_school_visits_path(@high_school, @term) %></p>
+<dl class="inline-definitions">
 
-<p><%= link_to "Back", high_school_visits_path(@high_school, @term) %></p>
+	<%= render :partial => "events/details", :object => @event %>
+
+</dl>
+
+<h2>Attendees</h2>
+	
+<table>
+	<thead>
+		<tr>
+			<th>Audience</th>
+			<th>RSVP'd</th>
+			<th>Capacity</th>
+			<th>Attended</th>
+			<th>Functions</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+		<%- for audience in [:participant, :mentor, nil] -%>
+			<tr <%= "class=total" if audience.nil? %>>
+				<td><%= audience.nil? ? "Total" : audience.to_s.titleize.pluralize %>
+					<%= content_tag :span, "not shown", :class => 'outline tag' unless @event["show_for_#{audience.to_s.pluralize}"] || audience.nil? %></td>
+				<td><%=h @event.attendees.rsvpd(audience).count %></td>
+				<td><%=h audience ? @event["#{audience.to_s}_capacity"] : @event[:capacity] %></td>
+				<td><%=h @event.attendees.attended(audience).count %></td>
+				<td class="functions"><%= link_to "Details", event_event_attendances_path(@event, :audience => audience) unless audience.nil? %></td>
+			</tr>
+		<% end -%>
+	</tbody>
+</table>	
+	
+<div id="sidebar">
+	<p><%= link_to "Edit this #{Customer.visit_label}", edit_event_path(@event), :class => 'edit button' %></p>
+	<p><%= link_to "Back to #{Customer.visits_label}", high_school_visits_path(@high_school, :term_id => @term), :class => 'back button' %></p>
+	<p><%= link_to "Take Attendance", attendance_high_school_visits_path(@high_school, :term_id => @term), :class => "list button" %></p>
+	<p><%= link_to "Check-in Individuals", checkin_event_event_attendances_path(@event), :class => 'edit button' %>
+</div>
+

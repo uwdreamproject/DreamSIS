@@ -46,6 +46,7 @@ h2 {
 h3 {
 	font-size: 90%;
   text-transform: uppercase;
+  font-weight: 600;
 }
 
 h3.pre-title {
@@ -242,6 +243,10 @@ table.participants.loading td.name {
 
 table.participants.active-report td {
   vertical-align: top;
+}
+
+.last-updated.old {
+  color: rgba(255,0,0,0.75);
 }
 
 .gain_or_loss {
@@ -889,6 +894,7 @@ body.new.session #footer {
 	border-bottom-right-radius: 10px;
 	border-bottom-left-radius: 10px;
 	background: rgba(248, 203, 63, 1);
+  margin-right: inherit;
 }
 
 .right {
@@ -1627,7 +1633,11 @@ abbr[title]:hover {
 
 .warning {
   background: #FFE482 url("../images/icons/silk/error.png") 7px center no-repeat;
-  padding: 0.5em;
+/*  padding: 0.5em;*/
+}
+
+.stats .warning {
+  background: inherit;
 }
 
 .errorExplanation p {
@@ -2109,6 +2119,7 @@ body.attendance .success-marker {
 	background: inherit;
 	border: inherit;
 	padding: inherit;
+  padding-right: 2px;
 	border-radius: inherit;
 	height: inherit;
 	z-index: 20;

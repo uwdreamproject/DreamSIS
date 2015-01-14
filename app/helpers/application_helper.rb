@@ -73,10 +73,6 @@ module ApplicationHelper
 		number == 1 ? noun : noun.pluralize
 	end
   
-  def calendar(date = Date.today, &block)
-    @template.concat(Calendar.new(@template, date, block).table)
-  end
-  
   def default_form_actions(form)
     content_tag(:fieldset, :class => "actions") do
       content_tag(:ol) do

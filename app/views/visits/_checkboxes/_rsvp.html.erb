@@ -12,7 +12,7 @@
 		<%= hidden_field_tag "rsvp[#{participant.id}][#{visit.id}]", "0", :id => nil %>
 	
 		<%= observe_field "rsvp_#{participant.id}_#{visit.id}",
-							:url => update_attendance_high_school_visits_path(@high_school, @term),
+							:url => update_attendance_high_school_visits_path(@high_school, :term_id => @term),
 							:with => "rsvp[#{participant.id}][#{visit.id}]",
 							:failure => "alert('Could not save. Please try again or contact support.')" %>
 		<%= content_tag('span', '', :id => "status_#{participant.id}_#{visit.id}_rsvp", 
