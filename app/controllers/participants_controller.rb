@@ -191,7 +191,7 @@ class ParticipantsController < ApplicationController
     @grad_year = @participant.grad_year
 		@term = Term.current_term
     @title = @participant.try(:fullname, :middlename => false)
-    @visits = @high_school.events(@term, nil, true, limit = 100)
+    @visits = @high_school.events(@term, nil, true, 100)
 		
     unless @current_user && @current_user.can_view?(@participant)
       return render_error("You are not allowed to view that participant.")

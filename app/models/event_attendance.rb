@@ -35,7 +35,7 @@ class EventAttendance < ActiveRecord::Base
 
   # Class method to use along with other named scopes to limit results to a specific audience group.
   def self.audience(audience_name = Person)
-    where(["(audience = :audience) OR (people.type = :audience AND audience = NULL)", {:audience => audience_name.to_s.classify}])
+    joins(:person).where(["(audience = :audience) OR (people.type = :audience AND audience IS NULL)", {:audience => audience_name.to_s.classify}])
   end
   
   def enforce_rsvp_limits?

@@ -27,9 +27,9 @@
 			<tr <%= "class='total'" if audience.nil? %>>
 				<td><%= audience.nil? ? "Total" : audience.to_s.titleize.pluralize %>
 					<%= content_tag :span, "not shown", :class => 'outline tag' unless @event["show_for_#{audience.to_s.pluralize}"] || audience.nil? %></td>
-				<td><%=h @event.attendees.rsvpd(audience).count %></td>
+				<td><%=h @event.attendees.audience(audience).rsvpd.count %></td>
 				<td><%=h audience ? @event["#{audience.to_s}_capacity"] : @event[:capacity] %></td>
-				<td><%=h @event.attendees.attended(audience).count %></td>
+				<td><%=h @event.attendees.audience(audience).attended.count %></td>
 				<td class="functions"><%= link_to "Details", event_event_attendances_path(@event, :audience => audience) unless audience.nil? %></td>
 			</tr>
 		<% end -%>

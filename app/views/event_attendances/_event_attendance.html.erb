@@ -1,15 +1,17 @@
 <tr class="event_attendance" id="event_attendance_<%= event_attendance.id %>" data-shift-id="<%= event_attendance.event_shift_id %>" data-email="<%=h event_attendance.email rescue nil %>" data-attending="<%= event_attendance.rsvp? %>" data-attended="<%= event_attendance.attended? %>">
 	
-	<td>
+	<td class="name">
 		<%= link_to h(event_attendance.try(:person).try(:fullname)), event_attendance.try(:person), :target => "_blank" %>
 		<%= content_tag(:span, "admin", :class => 'admin tag') if event_attendance.admin? %>
 		<% p = event_attendance.try(:person)%>
 		<%= content_tag(:span, "Driver", :class => 'driver tag') if p.type == "Mentor" && p.valid_van_driver? %>
 	</td>
 	
-	<%= "<td>#{event_attendance.try(:person).try(:high_school).try(:name)}</td>" if audience.to_s.downcase == "participant" || audience.to_s.downcase == "student" %>
+	<%= content_tag(:td, event_attendance.try(:person).try(:high_school).try(:name)) if audience.to_s.downcase == "participant" || audience.to_s.downcase == "student" %>
 	
-	<td><%= event_attendance.person.try(:programs).to_a.collect{|p| content_tag(:abbr, h(p.abbreviation), :title => h(p.title), :class => 'initialism')}.join(", ") %></td>
+	<td><%= safe_join(event_attendance.person.try(:programs).to_a.collect{ |p| 
+				content_tag(:abbr, p.abbreviation, :title => p.title.html_safe, :class => 'initialism')
+			}, ", ") %></td>
 	
 	<td><%= number_to_phone event_attendance.person.try(:phone_mobile) %></td>
 	
