@@ -1,5 +1,7 @@
 class Event < ActiveRecord::Base
   include Comparable
+  extend SimpleCalendar
+  has_calendar :attribute => :start_datetime
 
   has_many :attendees, :inverse_of => :event, :class_name => "EventAttendance"
   has_many :people, :through => :attendees
@@ -112,6 +114,13 @@ class Event < ActiveRecord::Base
     else
       "#{name} (#{short_date})"
     end
+  end
+  
+  # Combines the date and start_time into a DateTime object that marks the start of the event.
+  def start_datetime
+    d = date
+    t = start_time || Time.new.midnight
+    DateTime.new(d.year, d.month, d.day, t.hour, t.min, t.sec)
   end
   
   # If this event is attached to a location, use that location name. Otherwise use location_text. If both
