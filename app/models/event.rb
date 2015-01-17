@@ -23,7 +23,7 @@ class Event < ActiveRecord::Base
   validates_presence_of :date
   
   default_scope :order => "date, start_time"
-  
+
   # Allows overwriting of type in controller, default is [+id+, +type+]
   def self.attributes_protected_by_default
     ["id"]
@@ -49,14 +49,8 @@ class Event < ActiveRecord::Base
   def capacity(person_or_type = nil)
     overall_capacity = read_attribute(:capacity)
     return overall_capacity if person_or_type.nil?
-    klass = person_or_type.is_a?(Person) ? person_or_type.class.to_s : person_or_type.to_s
-    if (klass.eql? "Student") || (klass.eql? "Participant")
-      custom_capacity = student_capacity
-    elsif klass.eql? "Volunteer"
-      custom_capacity = volunteer_capacity
-    elsif klass.eql? "Mentor"
-      custom_capacity = mentor_capacity
-    end    
+    aud = Event.process_audience(person_or_type)
+    custom_capacity = attribute_for_audience(:capacity, aud)
     (custom_capacity.nil? || custom_capacity <= 0) ? overall_capacity : custom_capacity
   end
 
@@ -164,36 +158,25 @@ class Event < ActiveRecord::Base
   # Returns true if training is required for this event's EventGroup for the specified person or person type.
   def training_required?(person_or_type)
     return false if event_group.nil?
-    klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type.constantize
-    return false if event_group[klass.to_s.downcase + "_training_optional"]
+    aud = Event.process_audience(person_or_type)
+    return false if event_group[aud.to_s.downcase + "_training_optional"]
     !event_group.training_for(person_or_type).nil?
   end
 
   # Returns the training for this event's EventGroup for the specified person or person type.
   def training_for(person_or_type)
     return false if event_group.nil?
-    klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type.constantize
-    if klass == Volunteer
-      event_group.volunteer_training
-    elsif klass == Mentor
-      event_group.mentor_training
-    else
-      nil
-    end
+    aud = Event.process_audience(person_or_type)
+    return nil unless %i(Volunteer Mentor).include? aud
+    attribute_for_audience(:training, aud)
   end
   
   # See EventGroup#description for details.
   def description(person_or_type = nil)
     generic_description = read_attribute(:description)
     return generic_description if person_or_type.nil?
-    klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type
-    if klass == Student || klass == Participant
-      custom_description = student_description
-    elsif klass == Volunteer
-      custom_description = volunteer_description
-    elsif klass == Mentor
-      custom_description = mentor_description
-    end
+    aud = Event.process_audience(person_or_type)
+    custom_description = attribute_for_audience(:description, aud)
     custom_description.blank? ? generic_description : custom_description
   end
 
@@ -201,15 +184,8 @@ class Event < ActiveRecord::Base
   def start_time(person_or_type = nil)
     generic_start_time = read_attribute(:start_time)
     return generic_start_time if person_or_type.nil?
-    person_or_type = person_or_type.constantize if person_or_type.is_a?(String)
-    klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type
-    if klass == Student || klass == Participant
-      custom_start_time = student_start_time
-    elsif klass == Volunteer
-      custom_start_time = volunteer_start_time
-    elsif klass == Mentor
-      custom_start_time = mentor_start_time
-    end
+    aud = Event.process_audience(person_or_type)
+    custom_start_time = attribute_for_audience(:start_time, aud)
     custom_start_time.blank? ? generic_start_time : custom_start_time
   end
 
@@ -217,15 +193,8 @@ class Event < ActiveRecord::Base
   def end_time(person_or_type = nil)
     generic_end_time = read_attribute(:end_time)
     return generic_end_time if person_or_type.nil?
-    person_or_type = person_or_type.constantize if person_or_type.is_a?(String)
-    klass = person_or_type.is_a?(Person) ? person_or_type.class : person_or_type
-    if klass == Student || klass == Participant
-      custom_end_time = student_end_time
-    elsif klass == Volunteer
-      custom_end_time = volunteer_end_time
-    elsif klass == Mentor
-      custom_end_time = mentor_end_time
-    end
+    aud = Event.process_audience(person_or_type)
+    custom_end_time = attribute_for_audience(:end_time, aud)
     custom_end_time.blank? ? generic_end_time : custom_end_time
   end
   
@@ -282,6 +251,52 @@ class Event < ActiveRecord::Base
     return "#{_start_date}#{separator[:at]} #{_start_time}" if start_time(audience) && end_time(audience).nil?
     return "#{_start_date}#{separator[:from]} #{_start_time}#{separator[:to]} #{_end_time}" if start_time(audience).to_date == end_time(audience).to_date
     return "#{_start_date}#{separator[:at]} #{_start_time}#{separator[:to]} #{_end_date}#{separator[:at]} #{_end_time}"
+  end
+
+  # Takes one argument for which we attempt to determine the associated
+  # auidience: one of Mentor, Volunteer, Student, or Participant
+  #   * A string or symbol matching one of the above audiences
+  #     (case-insensitive)
+  #   * An ActiveRecord object of one of the above 4 types
+  #   * One of the 4 above classes as a constant e.g. `Mentor`
+  #
+  # Raises ArgumentError on nil, as checks for nil audience should
+  # be handled by the caller before invoking this method. Will
+  # also raise ArgumentError if person_or_type cannot be resolved
+  # to an audience.
+  #
+  # Returns a symbol representing the audience, e.g. `:Mentor`
+  def self.process_audience(person_or_type)
+    unless person_or_type.is_a?(Symbol)
+      person_or_type = if person_or_type.is_a?(Person)
+                         person_or_type.class.to_s
+                       elsif person_or_type.is_a?(String)
+                         person_or_type
+                       elsif person_or_type.is_a?(Class)
+                         person_or_type.to_s
+                       else
+                         raise ArgumentError, "Cannot parse audience", caller
+                       end
+
+      person_or_type = person_or_type.to_sym
+    end
+
+    person_or_type = person_or_type.capitalize
+    unless %i(Volunteer Mentor Student Participant).include? person_or_type
+      raise ArgumentError, "Invalid audience type", caller
+    end
+
+    person_or_type
+  end
+
+  protected
+
+  # Helper method for returning attributes prefixed by audience
+  def attribute_for_audience(attr,  audience)
+    return read_attribute(attr) if audience.nil?
+    audience = Event.process_audience(audience)
+    audience = :Student if audience == :Participant
+    read_attribute(audience.to_s.downcase + "_" + attr.to_s)
   end
 
 end
