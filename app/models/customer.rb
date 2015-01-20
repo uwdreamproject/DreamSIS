@@ -80,11 +80,6 @@ class Customer < ActiveRecord::Base
     EventType.find_by_name("Mentor Workshop")
   end
 
-  # TODO make this work again
-  # def allowable_login_methods=(new_allowable_login_methods)
-  #   self.write_attribute :allowable_login_methods, new_allowable_login_methods.select{|provider, result| result != "0"}.collect(&:first)
-  # end
-
   def allowable_login_method?(provider)
     (allowable_login_methods || {})[provider.to_s] == "true"
   end
@@ -132,16 +127,8 @@ class Customer < ActiveRecord::Base
 		(["Attended"] + visit_attendance_options.try(:split, "\n").try(:collect, &:strip).to_a).flatten.uniq
 	end
   
+  # Returns the current customer record by looking up the Customer whose url_shortcut matches the tenant name.
   def self.current_customer
-    # logger.info { "user: " + User.current_user.try(:customer).inspect }
-    # logger.info { "thread: " + Thread.current['customer'].inspect }
-    # logger.info { "temp: " + @temporary_current_customer.inspect }
-    #
-    # customer = User.current_user.try(:customer) || @temporary_current_customer || Customer.first || Customer.create(:name => "New Customer")
-    # raise Exception.new("No customer record defined") unless customer && customer.is_a?(Customer)
-    # # logger.info { "---current_customer: #{customer.id}" }
-    # return customer
-
     Customer.where(:url_shortcut => Apartment::Tenant.current).first || Customer.new
   end
   
@@ -179,14 +166,6 @@ class Customer < ActiveRecord::Base
       errors.add :base, "Tenant database must exist before Customer record is created."
     end
   end
-    
-  # def self.current_customer=(customer)
-  #   @temporary_current_customer = customer if customer.is_a?(Customer)
-  # end
-  #
-  # def self.remove_temporary_current_customer
-  #   @temporary_current_customer = nil
-  # end
 
   # Returns the current customer's name
   def self.name_label

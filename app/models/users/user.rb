@@ -48,7 +48,8 @@ class User < ActiveRecord::Base
   end
 
   # Creates a new user based on the auth data passed from OmniAuth.
-  def self.create_with_omniauth(auth)
+  def self.create_with_omniauth(auth, subdomain = nil)
+    return false if subdomain == 'admin' || subdomain.blank?
     u = create! do |user|
       # user.customer_id = Customer.current_customer.id
       user.provider = auth["provider"]

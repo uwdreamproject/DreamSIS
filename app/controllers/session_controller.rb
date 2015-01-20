@@ -4,26 +4,33 @@ class SessionController < ApplicationController
   before_filter :login_required, :only => [ :map_to_person ]
 
   def new
+    redirect_to locator_url(:subdomain => false) if Customer.current_customer.nil? || Customer.current_customer.new_record?
   end
   
-  # def signup
-  #   @identity = request.env["omniauth.identity"]
-  # end
-
+  def locator
+    @body_class = "new session"
+    
+    unless params[:url_shortcut].blank?
+      if Customer.where(:url_shortcut => params[:url_shortcut]).empty?
+        flash[:error] = "That organization does not exist. Please try again."
+      else
+        redirect_to root_url(:subdomain => params[:url_shortcut])
+      end
+    end
+  end
+  
   def create
     return_to = session[:return_to]
     reset_session
     auth = request.env["omniauth.auth"]
-    # raise auth.to_yaml
     if auth["provider"] == "shibboleth"
       attach_mentor_record = session[:external_login_context].nil? ? true : false
       user = PubcookieUser.authenticate(auth[:info][:email][/[^@]+/], nil, nil, attach_mentor_record)
-      return redirect_to login_url, :error => "Could not login. Please try again." unless user
     else
-      user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.create_with_omniauth(auth)
+      user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.create_with_omniauth(auth, request.subdomain)
       user.update_avatar_from_provider!(auth) if user
     end
-    # self.current_user = user
+    return redirect_to(login_url, :error => "Could not login. Please try again.") unless user
     session[:user_id] = user.id
     flash[:notice] = "Signed in!"
     redirect_back_or_default(return_to || root_url)
