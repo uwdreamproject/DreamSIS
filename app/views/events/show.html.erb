@@ -24,7 +24,7 @@
 	
 	<tbody>
 		<%- for audience in [:participant, :student, :mentor, :volunteer, nil] -%>
-			<tr <%= "class='total'" if audience.nil? %>>
+			<tr <%= "class=total" if audience.nil? %>>
 				<td><%= audience.nil? ? "Total" : audience.to_s.titleize.pluralize %>
 					<%= content_tag :span, "not shown", :class => 'outline tag' unless @event["show_for_#{audience.to_s.pluralize}"] || audience.nil? %></td>
 				<td><%=h @event.attendees.audience(audience).rsvpd.count %></td>
