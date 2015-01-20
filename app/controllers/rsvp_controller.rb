@@ -104,6 +104,8 @@ class RsvpController < ApplicationController
           flash[:error] = "Sorry, but the capacity for that event has been reached."
         elsif @event_attendance.errors[:audience] && @event_attendance.errors[:audience].any?
           flash[:error] = "Invalid Audience, check that you are using the correct RSVP link."
+        elsif @event_attendance.errors[:base] && @event_attendance.errors[:base].any?
+          flash[:error] = @event_attendance.errors[:base].to_sentence
         else
           flash[:error] = "We couldn't save your RSVP. Please complete the required information."
         end

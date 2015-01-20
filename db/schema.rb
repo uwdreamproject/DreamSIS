@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150109013053) do
+ActiveRecord::Schema.define(:version => 20150115013559) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -204,6 +204,12 @@ ActiveRecord::Schema.define(:version => 20150109013053) do
     t.boolean  "hide_description_in_confirmation_message"
     t.integer  "customer_id"
     t.boolean  "open_to_mentors"
+    t.integer  "mentor_hours_prior_disable_cancel"
+    t.integer  "student_hours_prior_disable_cancel"
+    t.integer  "volunteer_hours_prior_disable_cancel"
+    t.text     "mentor_disable_message"
+    t.text     "student_disable_message"
+    t.text     "volunteer_disable_message"
   end
 
   add_index "event_groups", ["customer_id"], :name => "index_event_groups_on_customer_id"
