@@ -235,7 +235,7 @@ Dreamsis::Application.routes.draw do
   end
   match 'map_login/:person_id/:token' => 'session#map_login', :as => :map_login
   match 'map_to_person/:person_id/:token' => 'session#map_to_person', :as => :map_to_person
-  match 'signup' => 'session#signup', :as => :signup
+  match 'locator' => 'session#locator', :as => :locator
   match 'login' => 'session#new', :as => :login
   match 'logout' => 'session#destroy', :as => :logout
   match 'profile' => 'users#profile', :as => :profile
