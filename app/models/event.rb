@@ -47,11 +47,9 @@ class Event < ActiveRecord::Base
   # Return the capacity for this event. If no audience person or type is provided, return the overall capacity
   # for the event (defined by the generic +capacity+ attribute). Otherwise, return the capacity for this audience.
   def capacity(person_or_type = nil)
-    overall_capacity = read_attribute(:capacity)
-    return overall_capacity if person_or_type.nil?
-    aud = Event.process_audience(person_or_type)
-    custom_capacity = attribute_for_audience(:capacity, aud)
-    (custom_capacity.nil? || custom_capacity <= 0) ? overall_capacity : custom_capacity
+    attribute_for_audience_with_generic(:capacity, person_or_type) do |cust_cap|
+      cust_cap && cust_cap > 0
+    end
   end
 
 
@@ -173,29 +171,17 @@ class Event < ActiveRecord::Base
   
   # See EventGroup#description for details.
   def description(person_or_type = nil)
-    generic_description = read_attribute(:description)
-    return generic_description if person_or_type.nil?
-    aud = Event.process_audience(person_or_type)
-    custom_description = attribute_for_audience(:description, aud)
-    custom_description.blank? ? generic_description : custom_description
+    attribute_for_audience_with_generic(:description, person_or_type)
   end
 
   # See EventGroup#description for details.
   def start_time(person_or_type = nil)
-    generic_start_time = read_attribute(:start_time)
-    return generic_start_time if person_or_type.nil?
-    aud = Event.process_audience(person_or_type)
-    custom_start_time = attribute_for_audience(:start_time, aud)
-    custom_start_time.blank? ? generic_start_time : custom_start_time
+    attribute_for_audience_with_generic(:start_time, person_or_type)
   end
 
   # See EventGroup#description for details.
   def end_time(person_or_type = nil)
-    generic_end_time = read_attribute(:end_time)
-    return generic_end_time if person_or_type.nil?
-    aud = Event.process_audience(person_or_type)
-    custom_end_time = attribute_for_audience(:end_time, aud)
-    custom_end_time.blank? ? generic_end_time : custom_end_time
+    attribute_for_audience_with_generic(:end_time, person_or_type)
   end
   
   # Returns true if there is an audience-specific time for the specified audience that is different from the generic event times.
@@ -300,13 +286,31 @@ class Event < ActiveRecord::Base
 
   protected
 
-  # Helper method for returning attributes prefixed by audience
+  # Helper methods for returning attributes prefixed by audience
+
+  # Use this if there is a generic, non-audience attribute
+  # which is the default.
+  #
+  # If a block is passed, calls that block
+  # on the retireved audience-specific attribute and uses
+  # the result of that call to validate the custom attribute.
+  #
+  # If a block is not passed, returns the generic attribute if
+  # the custom attribute is `blank?`
+  def attribute_for_audience_with_generic(attr, person_or_type)
+    generic_attribute = read_attribute(attr)
+    return generic_attribute if person_or_type.nil?
+    aud = Event.process_audience(person_or_type)
+    custom_attribute = attribute_for_audience(attr, aud)
+    valid = block_given? ? yield(custom_attribute) : !custom_attribute.blank?
+    valid ? custom_attribute : generic_attribute
+  end
+
   def attribute_for_audience(attr,  audience)
     return read_attribute(attr) if audience.nil?
     audience = Event.process_audience(audience)
     audience = :Student if audience == :Participant
     read_attribute(audience.to_s.downcase + "_" + attr.to_s)
   end
-
 end
 
