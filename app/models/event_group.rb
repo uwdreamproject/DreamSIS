@@ -7,7 +7,11 @@ class EventGroup < ActiveRecord::Base
   
   belongs_to :event_type
   validates_presence_of :name
-  
+
+  validates_presence_of :mentor_disable_message, :if => :mentor_hours_prior_disable_cancel
+  validates_presence_of :volunteer_disable_message, :if => :volunteer_hours_prior_disable_cancel
+  validates_presence_of :student_disable_message, :if => :student_hours_prior_disable_cancel
+
   belongs_to :volunteer_training, :class_name => "Training"
   belongs_to :mentor_training, :class_name => "Training"
 
@@ -68,6 +72,22 @@ class EventGroup < ActiveRecord::Base
     aud = Event.process_audience(person_or_type)
     return nil unless %i(Volunteer Mentor).include? aud
     attribute_for_audience(:training_for, aud)
+  end
+
+  # Returns the number of hours before group's events to disable
+  # cancellation for the specified person or person type,
+  # or nil if there is no such specified time
+  def hours_prior_disable_cancel(person_or_type)
+    aud = Event.process_audience(person_or_type)
+    attribute_for_audience(:hours_prior_disable_cancel, aud)
+  end
+
+  # Returns the message to display notifying of cancellation
+  # disabling for the specified person_or_type, guaranteed to exist
+  # if there is +hours_prior_disable_cancel+ is set
+  def disable_message(person_or_type)
+    aud = Event.process_audience(person_or_type)
+    attribute_for_audience(:disable_message, aud)
   end
 
   protected

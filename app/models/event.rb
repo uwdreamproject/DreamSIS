@@ -253,6 +253,15 @@ class Event < ActiveRecord::Base
     return "#{_start_date}#{separator[:at]} #{_start_time}#{separator[:to]} #{_end_date}#{separator[:at]} #{_end_time}"
   end
 
+  # Returns whether or not it is too close to the event to cancel RSVPs
+  # for the given audience, if it was set by the +event_group+
+  def rsvps_disabled?(person_or_type)
+    return false unless event_group
+    hours_prior = event_group.hours_prior_disable_cancel(person_or_type)
+    return false if hours_prior.blank?
+    ((start_datetime.to_time - Time.now) / 1.hour) <= hours_prior
+  end
+
   # Takes one argument for which we attempt to determine the associated
   # auidience: one of Mentor, Volunteer, Student, or Participant
   #   * A string or symbol matching one of the above audiences

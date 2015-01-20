@@ -10,6 +10,8 @@ class EventAttendance < ActiveRecord::Base
   validate :validate_event_shift
   
   validate :validate_rsvp_limits, :if => :enforce_rsvp_limits?
+
+  validate :validate_rsvps_not_disabled
   
   delegate :fullname, :email, :to => :person
   delegate :has_shifts?, :to => :event
@@ -63,6 +65,12 @@ class EventAttendance < ActiveRecord::Base
     if event.full?(person) && rsvp_changed? && rsvp?
       errors.add :rsvp, :message => "can't be saved because the capacity limit for this event has been reached"
       errors.add :enforce_rsvp_limits
+    end
+  end
+
+  def validate_rsvps_not_disabled
+    if event.rsvps_disabled?(audience)
+      errors[:base] << "It is too close to the event to cancel your RSVP. #{event.event_group.disable_message(audience)}"
     end
   end
 
