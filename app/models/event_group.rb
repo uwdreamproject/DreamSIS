@@ -19,10 +19,10 @@ class EventGroup < ActiveRecord::Base
   
   # Returns future events that should be displayed for the particular person or audience type.
   def future_events(person_or_type = nil)
-    aud = Event.process_audience(person_or_type)
     conditions_filters = { :date_filter => Time.now.midnight }
     conditions_string = "date >= :date_filter "
-    if aud
+    if person_or_type
+      aud = Event.process_audience(person_or_type)
       conditions_string << "AND show_for_#{aud.to_s.downcase.pluralize} = :audience_filter"
       conditions_filters[:audience_filter] = true
     end
