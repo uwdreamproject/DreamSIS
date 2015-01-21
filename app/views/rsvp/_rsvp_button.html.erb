@@ -3,37 +3,40 @@
 	<% params = "" %>
 	<%- params << "event_attendance[audience]=#{sanitize(audience.to_s)}&" if audience -%>
 	<%- if @current_user && @current_user.person.attending?(event) -%>
-		<%= link_to "Cancel <span class='hide_when_small'>my RSVP</span>".html_safe, rsvp_path(event),
+		<%- if event.rsvps_disabled?(audience) -%>
+			<p>It's too close to the event to cancel your RSVP. <%= event.event_group.disable_message(audience) %></p>
+		<%- else -%>
+			<%= link_to "Cancel <span class='hide_when_small'>my RSVP</span>".html_safe, rsvp_path(event),
 						{ :class => 'cancel button',
 						:id => "cancel_button_#{event.id}" } %>
-		<%= javascript_tag("
-			$('#cancel_button_#{event.id}').click(function() {
-				$.ajax({
-					type: 'DELETE',
-					url: '#{rsvp_path(event, format: :js)}',
-					data: {rsvp: false},
-					cache: false
+			<%= javascript_tag("
+				$('#cancel_button_#{event.id}').click(function() {
+					$.ajax({
+						type: 'DELETE',
+						url: '#{rsvp_path(event, format: :js)}',
+						data: {rsvp: false},
+						cache: false
+					});
+					return false;
 				});
-				return false;
-			});
-		") %>
-		<%= link_to "Update <span class='hide_when_small'>my RSVP</span>".html_safe, rsvp_path(event),
+			") %>
+			<%= link_to "Update <span class='hide_when_small'>my RSVP</span>".html_safe, rsvp_path(event),
 						{:class => 'submit button',
 						:id => "save_button_#{event.id}",
 						:style => "display:none" } %>
-		<%= javascript_tag("
-			$('#save_button_#{event.id}').click(function() {
-				shift = $('#event_attendance_event_shift_id_#{event.id}').val();
+			<%= javascript_tag("
+				$('#save_button_#{event.id}').click(function() {
+					shift = $('#event_attendance_event_shift_id_#{event.id}').val();
 					$.ajax({
-					type: 'POST',
-					url: '#{rsvp_path(event, format: :js)}',
-					data: '#{params}event_attendance[event_shift_id]='+shift,
-					cache: false
+						type: 'POST',
+						url: '#{rsvp_path(event, format: :js)}',
+						data: '#{params}event_attendance[event_shift_id]='+shift,
+						cache: false
+					});
+					return false;
 				});
-				return false;
-			});
-		") %>
-
+			") %>
+		<%- end -%>
 	<%- elsif !event.full?(@current_user.try(:person)) -%>
 		<%= link_to "RSVP <span class='hide_when_small'>for this event</span>".html_safe, event_rsvp_path(event),
 						{ :method => :put,

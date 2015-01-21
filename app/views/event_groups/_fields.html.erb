@@ -12,7 +12,7 @@
 <% end -%>
 
 <%= f.inputs "Access to Mentors" do %>
-    <%= f.input :open_to_mentors, :label => "Open to All #{Customer.mentors_Label}", :hint => "If marked, events in this event group will appear on the #{link_to "upcoming events", mentor_available_rsvp_path} page for #{Customer.mentors_label}." %>
+	<%= f.input :open_to_mentors, :label => "Open to All #{Customer.mentors_Label}", :hint => "If marked, events in this event group will appear on the #{link_to "upcoming events", mentor_available_rsvp_path} page for #{Customer.mentors_label}.".html_safe %>
 <% end -%>
 
 <%= f.inputs "Audience-Specific Descriptions" do %>
@@ -29,6 +29,20 @@
 	<%= f.input :volunteer_confirmation_message, :input_html => { :rows => 6 } %>
 	<%= f.input :mentor_confirmation_message, :input_html => { :rows => 6 }, :label => "#{Customer.mentor_Label} confirmation message" %>
 <% end -%>
+
+<%= f.inputs "RSVP Cancellation Disabling" do %>
+	<p>Setting one of the below will disable members of the specified audience from cancelling their RSVPs for events in this group.
+	<br />
+	<br />
+	Note that a message must be set for that audience if a number of hours is set. This message will be displayed in place of a cancel button, e.g. "Please contact Elmo at Sesame Street to cancel your RSVP."</p>
+
+	<%= f.input :mentor_hours_prior_disable_cancel, :label => "Hours before to disable for #{Customer.mentors_label}" %>
+	<%= f.input :mentor_disable_message, :input_html => { :rows => 3 }, :label => "Cancellation message for #{Customer.mentors_Label}" %>
+	<%= f.input :volunteer_hours_prior_disable_cancel, :label => "Hours before to disable for volunteers" %>
+	<%= f.input :volunteer_disable_message, :input_html => { :rows => 3 }, :label => "Cancellation message for volunteers" %>
+	<%= f.input :student_hours_prior_disable_cancel, :label => "Hours before to disable for students", :hint => "Note: this applies to both Students and Participants." %>
+	<%= f.input :student_disable_message, :input_html => { :rows => 3 }, :label => "Cancellation message for students" %>
+<% end %>
 
 <%= f.inputs "Training" do %>
 	<%= f.input :mentor_training_id, :label => "#{h Customer.mentor_Label} training", :as => :select, :collection => Training.all %>

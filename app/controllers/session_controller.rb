@@ -1,6 +1,6 @@
 # This controller handles the login/logout function of the site.  
 class SessionController < ApplicationController
-  skip_before_filter :login_required, :check_authorization, :check_for_limited_login, :check_if_enrolled
+  skip_before_filter :login_required, :check_authorization, :check_for_limited_login, :check_if_enrolled, :reset_tenant_if_admin_subdomain, :authenticated?, :save_user_in_current_thread
   before_filter :login_required, :only => [ :map_to_person ]
 
   def new
