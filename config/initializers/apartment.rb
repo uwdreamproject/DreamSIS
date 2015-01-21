@@ -17,7 +17,7 @@ Apartment.configure do |config|
   #
   # config.excluded_models = %w{Tenant}
   #
-  config.excluded_models = %w[Customer Identity Institution]
+  config.excluded_models = %w[Customer Identity Institution ActiveRecord::SessionStore::Session]
 
   # use postgres schemas?
   config.use_schemas = false
