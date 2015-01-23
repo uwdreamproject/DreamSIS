@@ -21,8 +21,6 @@ class EventAttendance < ActiveRecord::Base
   alias :shift :event_shift
   attr_accessor :enforce_rsvp_limits
   
-  attr_protected :admin
-
   after_save :update_filter_cache
   after_destroy :update_filter_cache
 
@@ -69,7 +67,7 @@ class EventAttendance < ActiveRecord::Base
   end
 
   def validate_rsvps_not_disabled
-    if event.rsvps_disabled?(audience)
+    if event.rsvps_disabled?(audience) && rsvp_changed? && rsvp == false
       errors[:base] << "It is too close to the event to cancel your RSVP. #{event.event_group.disable_message(audience)}"
     end
   end
