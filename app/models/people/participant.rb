@@ -68,6 +68,7 @@ class Participant < Person
   # * if the current term is Summer, Autumn, or Spring, return current_year + 1
   def self.current_cohort
     q = Term.current_term || Term.allowing_signups.try(:first) || Term.last
+    return q.end_date.year if q.quarter_code.nil? # For year-long terms
     q.quarter_code == 1 ? Time.now.year : Time.now.year + 1
   end
   
