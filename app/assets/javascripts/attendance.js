@@ -226,8 +226,11 @@ function lookupAttendanceEventsByDate(datesArray) {
 }
 
 function addDetailToAttendanceCheckbox(elem, eventData) {
+  d = new Date(eventData.date)
   $("<div />").addClass("details").addClass("arrow-box bottom").append(
-    (new Date(eventData.date)).toDateString()
+    d.getUTCDate() + " " + 
+    ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][d.getUTCMonth()] + " " + 
+    d.getUTCFullYear()
   ).append(
     $("<br /><strong />").text(eventData.name)
   ).appendTo(elem)  
