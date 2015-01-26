@@ -68,6 +68,7 @@ class Participant < Person
   # * if the current term is Summer, Autumn, or Spring, return current_year + 1
   def self.current_cohort
     q = Term.current_term || Term.allowing_signups.try(:first) || Term.last
+    return q.end_date.year if q.quarter_code.nil? # For year-long terms
     q.quarter_code == 1 ? Time.now.year : Time.now.year + 1
   end
   
@@ -220,7 +221,7 @@ class Participant < Person
 	# plus some extra attributes defined by methods. Also includes all ObjectFilters.
 	def self.xlsx_columns
 		columns = []
-		columns << self.column_names.map { |c| c = c.to_sym }		
+		columns << self.column_names.map { |c| c = c.to_sym }
 		columns << [:high_school_name, :raw_survey_id, :college_attending_name, 
 								:family_income_level_title, :program_titles, :assigned_mentor_names, 
 								:participant_group_title, :multiracial?, 
@@ -231,7 +232,10 @@ class Participant < Person
 								:avatar, :college_mapper_id, :avatar_image_url, :college_mapper_id, :husky_card_rfid,
 								:survey_id, :relationship_to_child, :occupation,	:annual_income,	:needs_interpreter,
 								:meeting_availability, :child_id, :fafsa_submitted_date, :fafsa_not_applicable]
-		columns.flatten - remove_columns
+		columns = columns.flatten - remove_columns
+    f1 = columns.index :firstname
+    columns.delete :firstname
+    columns.insert(f1, :formal_firstname)
 	end
 	
 	def college_attending_name

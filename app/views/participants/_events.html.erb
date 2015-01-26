@@ -1,4 +1,4 @@
-‪<table class="events">
+<table class="events">
 	<thead>
 		<tr>
 			<th>Event</th>
@@ -23,16 +23,12 @@
 </table>
 
 <h3><%= Customer.visits_Label %> Attendance</h3>
+<%= javascript_tag "attendancePersonId = '#{@participant.id.to_s}'" %>
 
 <%- for month in [2,1,0].collect{|i| Date.today.beginning_of_month.months_ago(i) } -%>
-<div class="mini calendar calendar-container span4">
-	<%= month_calendar start_date: month, td: ->(start_date, current_calendar_date) {
-			{ 
-				class: "calendar-date", 
-				data: { date: raw(current_calendar_date) } 
-			} 
-		 } do |date| %>	
-		<%= date.day %>
+<div class="mini calendar calendar-container span4 attendance">
+	<%= month_calendar start_date: month, beginning_of_week: :sunday do |date| %>	
+		<%= content_tag :div, date.day, "data-date" => raw(date), :class => "attendance-day" %>
 	<% end %>
 </div>
 <% end %>

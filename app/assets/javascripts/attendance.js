@@ -3,6 +3,10 @@ $(document).ready( function() {
   if (typeof attendanceEventIds !== 'undefined') {
     buildAttendanceTable(attendanceEventIds)
   }
+  
+  if ( typeof attendancePersonId !== 'undefined' && $(".attendance.mini .attendance-day[data-date]")) {
+    populateMiniAttendanceTable()
+  }
 })
 
 /*
@@ -12,6 +16,17 @@ function buildAttendanceTable(attendanceEventIds) {
   $.each(attendanceEventIds, function(index, eventId) {
     addAttendanceColumn(eventId, index + 1)
   })
+}
+
+/*
+  Take a pre-existing mini attendance table and turn the relevant dates into attendance checkboxes.
+*/
+function populateMiniAttendanceTable() {
+  var dates = $('.attendance.mini .current-month .attendance-day[data-date]').map(function(e) { 
+    return $(this).data("date") }
+  ).get()
+  $(".attendance.mini tr").attr("data-participant-id", attendancePersonId)
+  lookupAttendanceEventsByDate(dates)
 }
 
 /*
@@ -53,8 +68,9 @@ it attaches the appropriate click handler to submit the new data every time.
 */
 function attendanceCheckbox(elem, eventId, attendanceData) {
 
-  // Always add the event attendance ID
+  // Always add the event attendance ID and event ID
   elem.attr("data-event-attendance-id", (attendanceData ? attendanceData.id : undefined))
+  elem.attr("data-event-id", eventId)
 
   // Show a normal checkbox
   if (attendanceOptionsFor(elem).length == 0) {
@@ -142,8 +158,12 @@ function nextAttendanceOption(elem) {
   corresponding column's header th.
 */
 function attendanceOptionsFor(tdElem) {
-  var options = $("th[data-column-id=" + tdElem.data("column-id") + "]").data("attendance-options")
-  return (options || [])
+  if (tdElem.data("attendance-options")) {
+    return tdElem.data("attendance-options")
+  } else {
+    var options = $("th[data-column-id=" + tdElem.data("column-id") + "]").data("attendance-options")
+    return (options || [])
+  }
 }
 
 /*
@@ -166,4 +186,52 @@ function colorizeAttendanceOption(elem, index, max) {
   }
   
   elem.removeClass("first").removeClass("middle").removeClass("last").addClass(klass)
+}
+
+/*
+  Lookup the event info for a set of requested dates.
+*/
+function lookupAttendanceEventsByDate(datesArray) {
+  var url = "/events.json"
+  var params = { dates: datesArray, type: "Visit" }
+  $.getJSON( url, params, function( eventsData ) {
+
+    // Fetch the attendance data for this person
+    var url = "/participants/" + attendancePersonId + "/event_attendances.json"
+    var params = { dates: datesArray, type: "Visit" }
+    $.getJSON( url, params, function( attendanceData ) {
+
+      // Populate the empty rows
+      $.each( eventsData, function( date, value ) {
+        var elem = $(".attendance.mini .current-month .attendance-day[data-date='" + date + "']")
+        if ( elem )
+          elem.data("attendance-options", value[0].attendance_options)
+          attendanceCheckbox(elem, value[0].id, null)
+          // elem.children(".emwrap").children("strong").text(
+          //   (new Date(date)).getDay()
+          // ).css("font-weight", "normal")
+          addDetailToAttendanceCheckbox(elem, value[0])
+      })
+      
+      // For each event attendance make a checkbox
+      $.each( attendanceData, function( date, value ) {
+        elem = $(".attendance.mini .current-month .attendance-day[data-date='" + date + "']")
+        attendanceCheckbox(elem, value[0].event_id, value[0])
+        addDetailToAttendanceCheckbox(elem, value[0].event)
+      })
+      
+    });
+    
+  })
+}
+
+function addDetailToAttendanceCheckbox(elem, eventData) {
+  d = new Date(eventData.date)
+  $("<div />").addClass("details").addClass("arrow-box bottom").append(
+    d.getUTCDate() + " " + 
+    ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][d.getUTCMonth()] + " " + 
+    d.getUTCFullYear()
+  ).append(
+    $("<br /><strong />").text(eventData.name)
+  ).appendTo(elem)  
 }
