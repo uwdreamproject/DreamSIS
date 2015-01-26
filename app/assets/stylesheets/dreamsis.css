@@ -1630,6 +1630,31 @@ td.college-logo {
 	font-size: 10000%;
 }
 
+header.calendar-header {
+  margin-bottom: 0.5em;
+  text-align: center;
+}
+
+.mini.calendar header a {
+  display: none;
+}
+
+.calendar .prev-month, .calendar .next-month {
+  color: #ddd;
+}
+
+.calendar .wday-0, .calendar .wday-6 {
+  background: rgba(0,0,0,0.025);
+}
+
+.mini.calendar td:last-child, .mini.calendar th:last-child {
+  padding-right: 5px !important;
+}
+
+.mini.calendar td:first-child, .mini.calendar th:first-child {
+  padding-left: 5px !important;
+}
+
 abbr.initialism {
 	font-size: 90%;
 	text-transform: uppercase;
@@ -1895,6 +1920,7 @@ body.error #footer {
 	text-align: center;
   background: none;
   border: none;
+  margin-right: inherit;
 }
 
 body.error .big.emoticon {
@@ -2113,15 +2139,15 @@ body.attendance .success-marker {
   margin-top: 2px;
 }
 
-.attendance td.optioned input, .attendance td.optioned select {
+.attendance .optioned input, .attendance .optioned select {
 	display: none;
 } 
 
-.attendance td.optioned {
+.attendance .optioned {
 	text-align: left;
 }
 
-.attendance td.optioned .emwrap {
+.attendance .optioned .emwrap {
 	display: block;
 	background: #f9f9f9;
 	padding: 1px;
@@ -2137,10 +2163,10 @@ body.attendance .success-marker {
 	left: 45%;
 }
 
-.attendance td.optioned .emwrap strong {
+.attendance .optioned .emwrap strong {
 	font-style: normal;
 }
-.attendance td.optioned .emwrap em {
+.attendance .optioned .emwrap em {
 	position: absolute;
 	top: -1px;
 	left: -1px;
@@ -2160,35 +2186,35 @@ body.attendance .success-marker {
 	-webkit-transition: opacity 0.15s ease-out;
 }
 
-.attendance td.optioned:hover {
+.attendance .optioned:hover {
 	cursor: pointer;
 }
 
-.attendance td.optioned:hover .emwrap {
+.attendance .optioned:hover .emwrap {
 	width: auto;
 	min-width: 1em;
 }
 
-.attendance td.optioned:hover .emwrap em {
+.attendance .optioned:hover .emwrap em {
 	opacity: 1;
 }
 
 
-.attendance td.optioned.first .emwrap {
+.attendance .optioned.first .emwrap {
 	background: green;
 	color: white;
 	font-weight: bold;
 	border-color: green;
 }
 
-.attendance td.optioned.middle .emwrap {
+.attendance .optioned.middle .emwrap {
 	background: yellow;
 	color: black;
 	font-weight: bold;
 	border-color: #f9de00;
 }
 
-.attendance td.optioned.last .emwrap {
+.attendance .optioned.last .emwrap {
 	background: red;
 	color: white;
 	font-weight: bold;
@@ -2201,11 +2227,41 @@ body.attendance .success-marker {
 	text-align: center;
 }
 
+.attendance.mini .attendance-day {
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.attendance.mini .attendance-day .details {
+	position: absolute;
+  left: -6.5em;
+  bottom: 30px;
+	display: none;
+  width: 10em;
+  text-align: center;
+  white-space: nowrap;
+  height: auto;
+	z-index: 20;
+	font-style: normal;
+	opacity: 0;
+	-webkit-transition: opacity 0.15s ease-out;
+}
+
+.attendance.mini .attendance-day:hover .details {
+  opacity: 1;
+  display: block;
+}
+
+.attendance.mini .optioned .emwrap {
+  left: 0;
+}
+
 .activity_logs td.visits {
 	min-width: 8em;
 }
 
-.activity_logs .attendance td.optioned .emwrap {
+.activity_logs .attendance .optioned .emwrap {
 	display: inline-block;
 	margin: 0;
 	left: 0;
@@ -2257,6 +2313,38 @@ body.attendance .success-marker {
 
 .activity_logs td.notes .rowset-header td {
 	background: none;
+}
+
+.arrow-box {
+	position: relative;
+	border: none;
+	background: white;
+  border: none;
+	padding: 0.25em;
+	border-radius: 3px;
+  box-shadow: 0px 0px 4px rgba(0,0,0,0.3);
+}
+.arrow-box:after, .arrow-box:before {
+	top: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;  
+}
+.arrow-box:after {
+/*  border-color: rgba(255, 255, 255, 0);*/
+	border-top-color: #ffffff;
+	border-width: 7px;
+	margin-left: -7px;
+}
+.arrow-box:before {
+/*  border-color: rgba(17, 25, 245, 0);*/
+  border-top-color: rgba(0,0,0,0.1);
+	border-width: 8px;
+	margin-left: -8px;
 }
 
 input, textarea, select {
@@ -4763,6 +4851,14 @@ div#institution_name_auto_complete ul {
 
 div#scholarship_title_auto_complete ul {
 	width: 350px;
+}
+
+.ui-widget {
+	font: 13px/130% "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.ui-widget-content a {
+  text-decoration: none;
 }
 
 ul.ui-autocomplete {

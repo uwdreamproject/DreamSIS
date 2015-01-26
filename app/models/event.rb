@@ -22,7 +22,8 @@ class Event < ActiveRecord::Base
   
   validates_presence_of :date
   
-  default_scope :order => "date, start_time"
+  default_scope order("date, start_time")
+  scope :visits, where(:type => "Visit")
 
   # Allows overwriting of type in controller, default is [+id+, +type+]
   def self.attributes_protected_by_default
@@ -42,6 +43,10 @@ class Event < ActiveRecord::Base
   # For now, only Visit type events can have attendance options.
   def attendance_options
     []
+  end
+  
+  def visit?
+    false
   end
 
   # Return the capacity for this event. If no audience person or type is provided, return the overall capacity
