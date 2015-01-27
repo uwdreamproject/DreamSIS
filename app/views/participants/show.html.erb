@@ -28,7 +28,7 @@
 	<div class="tab-content">
 
 		<%- cache [@participant.cache_key, "details"].join("/") do -%>
-			<div class="record-header">
+			<div class="record-header" onclick="void(0)">
 					<%= render :partial => "details" %>
 			</div>
 		<% end %>
