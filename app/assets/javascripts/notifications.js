@@ -10,6 +10,7 @@ $(document).ajaxStart(function() {
   var flash = xhr.getResponseHeader('X-Flash-Messages')
   if(!flash) return;
   updateFlashes($.parseJSON(flash))
+  applyMobileTableUpdates()
   
 }).ajaxStop(function() {
 	$('#indicator').removeClass("visible")

@@ -1,12 +1,12 @@
 <tr id="college_degree_<%= college_degree.id %>">
 
-	<td><%=h college_degree.institution.try(:name) %></td>
-	<td><%= college_degree.graduated_on.try(:to_s, :short_date) %></td>
-	<td><%=h college_degree.degree_title %></td>
+	<td class="name"><%=h college_degree.institution.try(:name) %></td>
+	<td class="inline-when-small"><%= college_degree.graduated_on.try(:to_s, :short_date) %></td>
+	<td class="inline-when-small"><%=h college_degree.degree_title %></td>
 	
-	<td class="functions"><%= link_to "Details", [@participant, college_degree] %></td>
-	<td class="functions"><%= link_to "Edit", edit_participant_college_degree_path(@participant, college_degree) %></td>
-	<td class="functions"><%= link_to 'Delete', [@participant, college_degree], :confirm => 'Are you sure?', :method => :delete %></td>
-	
-
+	<td class="functions">
+		<%= link_to "Details", [@participant, college_degree] %>
+		<%= link_to "Edit", edit_participant_college_degree_path(@participant, college_degree) %>
+		<%= link_to 'Delete', [@participant, college_degree], :confirm => 'Are you sure?', :method => :delete %>
+	</td>
 </tr>

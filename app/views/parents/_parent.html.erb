@@ -1,8 +1,8 @@
 <tr id="parent_<%= parent.id %>">
 
 	<td class="name"><%= link_to h(parent.fullname), [@participant, parent] %></td>
-	<td><%=h parent.parent_type %></td>
-	<td><%= auto_link h(parent.preferred_contact_detail) %></td>
+	<td class="inline-when-small"><%=h parent.parent_type %></td>
+	<td class="inline-when-small"><%= auto_link h(parent.preferred_contact_detail) %></td>
 	
 	<td class="functions">
 		<%= link_to 'Details', [@participant, parent] %>
