@@ -1,18 +1,22 @@
 <table id="college_degrees">
-	<tr>
-		<th>College</th>
-		<th>Date</th>
-		<th>Degree</th>
-		<th colspan=3>Functions</th>
-	</tr>
+	<thead>
+		<tr>
+			<th>College</th>
+			<th>Date</th>
+			<th>Degree</th>
+			<th colspan=3>Functions</th>
+		</tr>
+	</thead>
 
-	<%= render :partial => "college_degrees/college_degree", :collection => @participant.college_degrees %>
+	<tbody>
+		<%= render :partial => "college_degrees/college_degree", :collection => @participant.college_degrees %>
 				
-	<%- if @participant.college_degrees.empty? -%>
-	<tr class="empty">
-		<td colspan="10">No college degrees yet.</td>
-	</tr>
-	<% end %>
+		<%- if @participant.college_degrees.empty? -%>
+		<tr class="empty">
+			<td colspan="10">No college degrees yet.</td>
+		</tr>
+		<% end %>
+	</tbody>
 
 </table>	
 

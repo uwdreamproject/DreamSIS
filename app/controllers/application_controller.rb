@@ -105,7 +105,7 @@ class ApplicationController < ActionController::Base
   private
 
   def reset_tenant_if_admin_subdomain
-    Apartment::Tenant.reset if request.subdomain == 'admin' || request.subdomain.blank?
+    Apartment::Tenant.reset if request.subdomain == 'admin' || !request.subdomain.present?
   end
 
   def save_user_in_current_thread

@@ -19,6 +19,14 @@
 	<% end %>
 
 	</td>
-<td><%=h college_application.choice %></td>
-<td class="centered"><%= content_tag :span, "Y", :class => "icon pass" if college_application.applied? %></td>
-<td><%=h college_application.decision %></td>
+<td class="college-choice inline-when-small">
+	<%=h college_application.choice %>
+</td>
+
+<td class="college-applied centered inline-when-small">
+	<%= content_tag :span, "Y", :class => "icon pass" if college_application.applied? %>
+</td>
+
+<td class="college-decision inline-when-small">
+	<%=h college_application.decision %>
+</td>

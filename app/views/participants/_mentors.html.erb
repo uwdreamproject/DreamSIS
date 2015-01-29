@@ -1,17 +1,21 @@
 <table id="mentors">
-	<tr>
-		<th>Name</th>
-		<th>E-mail</th>
-		<th>Assigned Dates</th>
-		<th>Functions</th>
-	</tr>
-
-	<%= render :partial => "mentors/mentor_participant", :collection => @participant.mentor_participants %>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>E-mail</th>
+			<th>Assigned Dates</th>
+			<th>Functions</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+		<%= render :partial => "mentors/mentor_participant", :collection => @participant.mentor_participants %>
 				
-	<%- if @participant.mentors.empty? -%>
-	<tr class="empty">
-		<td colspan="10">No <%= Customer.mentors_label %> have been assigned to this <%= Customer.mentee_label %> yet.</td>
-	</tr>
-	<% end %>
+		<%- if @participant.mentors.empty? -%>
+		<tr class="empty">
+			<td colspan="10">No <%= Customer.mentors_label %> have been assigned to this <%= Customer.mentee_label %> yet.</td>
+		</tr>
+		<% end %>
+	</tbody>
 
 </table>	

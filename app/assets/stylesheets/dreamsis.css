@@ -1501,7 +1501,7 @@ body.participants.show #content-wrap {
 }
 
 .info-section#contact h2, .tabs a.contact {
-	background-image: url(../images/icons/silk/telephone.png);
+	background-image: url(../images/icons/silk/vcard.png);
 }
 
 
@@ -1596,7 +1596,7 @@ td.college-logo {
 }
 
 .info-section#notes h2, .tabs a.notes {
-	background-image: url(../images/icons/silk/note.png);
+	background-image: url(../images/icons/silk/comment.png);
 }
 
 .info-section#documents h2, .tabs a.documents {
@@ -2563,7 +2563,7 @@ form.formtastic fieldset fieldset.inline > ol {
 form.formtastic fieldset fieldset.inline > ol li {
 	display: inline-block;
 	width: auto;
-	max-width: 30%;
+/*  max-width: 30%;*/
 	margin-right: 1em;
 	margin-bottom: 0.5em;
 }
@@ -2669,6 +2669,11 @@ form.formtastic > fieldset > ol > li > label {
   color: rgba(0,0,0,0.5);
 }
 */
+
+input.heritage-input {
+/*  position: absolute;
+  left: 20em;
+*/}
 
 input.currency {
 	background-image: url(../images/icons/silk/money_dollar.png) !important;

@@ -112,6 +112,7 @@ class EventsController < ApplicationController
   def redirect_to_rsvp_if_not_admin
     @event = Event.find params[:id]
     unless @current_user && @event.allows_admin_access_for?(@current_user)
+      return true if request.format.json?
       if @event.allow_rsvps?
         redirect_to event_rsvp_url(@event)
       else
