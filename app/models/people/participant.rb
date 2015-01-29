@@ -37,6 +37,8 @@ class Participant < Person
 	before_save :adjust_postsecondary_plan_to_match_college_attending
 
 	POSTSECONDARY_GOAL_OPTIONS = [
+    "2-year to 4-year transfer",
+    "Gap year",
 		"Vocational school", 
 		"Military service", 
 		"Job",
