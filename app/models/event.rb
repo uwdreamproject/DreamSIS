@@ -104,6 +104,10 @@ class Event < ActiveRecord::Base
     date < Date.today
   end
   
+  def this_week?
+    date.try(:this_week?)
+  end
+  
   def short_title
     short_date = date.strftime('%b %d')
     if name.blank?

@@ -14,7 +14,7 @@
 		<tr>
 			<th>Name</th>
 			<%- @visits.each_with_index do |visit, index| -%>
-				<th class="centered" data-column-id="<%= index+1 %>"></th>
+				<th class="centered <%= "this-week" if visit.this_week? %>" data-column-id="<%= index+1 %>"></th>
 			<% end %>
 		</tr>
 	</thead>
@@ -35,7 +35,7 @@
 				<small class="inactive-note">(inactive)</small>
 				</td>
 			<%- @visits.each_with_index do |visit, index| -%>
-				<td data-column-id="<%= index+1 %>"></td>
+				<td data-column-id="<%= index+1 %>" <%= "class=this-week" if visit.this_week? %>></td>
 			<% end %>
 		</tr>		
 		<% end -%>

@@ -2139,6 +2139,24 @@ body.attendance .success-marker {
   margin-top: 2px;
 }
 
+.attendance th.this-week:before {
+  content: "This Week";
+  display: block;
+  font-size: 70%;
+  font-weight: normal;
+  color: rgba(0,0,0,0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.attendance th.this-week {
+  background-color: rgb(235, 240, 249);
+}
+
+.attendance td.this-week {
+  background-color: rgba(235, 240, 249, 0.25);
+}
+
 .attendance .optioned input, .attendance .optioned select {
 	display: none;
 } 
@@ -4104,17 +4122,16 @@ input.target-threshold {
 	font-size: 90%;
 }
 
-.pagination span.current {
+.pagination .current {
 	border: 1px solid #a3bdcb;
-	padding: 3px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
+	padding: 3px 6px;
 	border-radius: 3px;
 	font-weight: bold;
+  font-style: normal;
 }
 
 .pagination a {
-	padding: 3px;
+	padding: 3px 6px;
 	text-decoration: none;
 }
 
@@ -4123,15 +4140,13 @@ input.target-threshold {
 	padding: 0;
 }
 
-.pagination span.disabled {
+.pagination .disabled {
 	color: #999;
 }
 
 .pagination a:hover {
 	border: 1px solid #a3bdcb;
-	padding: 2px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
+  padding: 2px 5px;
 	border-radius: 3px;
 	text-decoration: underline;
 }
