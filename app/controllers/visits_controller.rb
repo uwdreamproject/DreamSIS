@@ -41,9 +41,10 @@ class VisitsController < ApplicationController
     @showing = []
     @current_cohort = params[:cohort] || @term.participating_cohort
     if !params[:show] || params[:show].include?("participants")
-      @participants << @high_school.participants.find(:all,
-                                                      :conditions => { :grad_year => @current_cohort },
-                                                      :order => "inactive")
+      @participants = Participant
+        .in_high_school(@high_school.id)
+        .in_cohort(@current_cohort)
+        .reorder("inactive, lastname, firstname")
       @showing << :participants
     end
     if params[:show] && params[:show].include?("mentors")
