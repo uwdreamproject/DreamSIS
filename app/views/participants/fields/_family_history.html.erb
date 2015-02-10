@@ -24,5 +24,8 @@
 		<%= f.input :aliases, :label => "Maiden Name", :as => :string %>
 		<%= f.input :number_of_children, :collection => 0..5, :as => :select %>
 	<% end %>
+	
+	<%= f.input :subsidized_housing, :label => "Family receives public assistance or lives in federally subsidized housing" %>
+	<%= f.input :homeless, :label => "Student is homeless" %>
 
 <% end %>

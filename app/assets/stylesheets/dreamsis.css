@@ -3858,6 +3858,16 @@ h1 .tag {
 	float: left;
 }
 
+#filter_bucket .filter.tag {
+  margin-left: 0;
+  padding: 3px 6px;
+}
+
+#filter_bucket {
+  margin-left: -3px;
+  margin-bottom: 0.5em;
+}
+
 h1 .session_identifier.tag {
 	font-size: 100%;
 	padding: 5px;

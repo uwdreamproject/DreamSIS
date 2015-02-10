@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150115013559) do
+ActiveRecord::Schema.define(:version => 20150207194350) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -720,6 +720,9 @@ ActiveRecord::Schema.define(:version => 20150115013559) do
     t.boolean  "driver_license_on_file"
     t.float    "latitude"
     t.float    "longitude"
+    t.boolean  "homeless"
+    t.boolean  "subsidized_housing"
+    t.boolean  "immigrant"
   end
 
   add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"
