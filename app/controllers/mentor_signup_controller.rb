@@ -164,8 +164,8 @@ class MentorSignupController < ApplicationController
   end
   
   def fetch_term
-    @term = params[:term_id].blank? ? Term.current_term : Term.find(params[:term_id])
-    @term ||= Term.allowing_signups.try(:first) || Term.last
+    @term = params[:term_id].blank? ? Term.allowing_signups.try(:first) : Term.find(params[:term_id])
+    @term ||= Term.current_term || Term.last
   end
   
   def check_if_signups_allowed
