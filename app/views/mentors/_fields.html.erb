@@ -17,8 +17,10 @@
 	<%= f.input :birthdate, :label => "Birth Date", :start_year => Time.now.year-13, :end_year => 1930 %>
 	<%= f.input :shirt_size, :as => :select, :collection => %w[XS S M L XL XXL 3XL] %>
 	<%= f.input :avatar, :as => :file %>
-	
+
+	<%= f.input :tags, :input_html => { :rows => 4, :cols =>20}, :hint => "Add multiple tags on a different line and list position after a colon" %>	
 <% end %>
+
 
 
 <%= f.inputs :name => "Administrative Information" do -%>

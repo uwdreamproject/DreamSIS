@@ -14,7 +14,6 @@ class Mentor < Person
   validates_uniqueness_of :reg_id, :allow_blank => true
 
   attr_accessor :validate_background_check_form, :validate_risk_form, :validate_conduct_form, :validate_driver_form
-
   validates_inclusion_of :crimes_against_persons_or_financial, :drug_related_crimes, :related_proceedings_crimes, :medicare_healthcare_crimes, :general_convictions, :if => :validate_background_check_form, :in => [true,false], :message => "cannot be left blank"
   validates_presence_of :background_check_authorized_at, :if => :validate_background_check_form
 
@@ -521,6 +520,19 @@ Documentation for each filter:
   # is signed up for the proper sections
   def section_status(term = Term.current_term)
     correct_sections?(term) ? "Correct" : "Incorrect sections"
+  end
+
+  def self.parse_string_to_hash(tags)
+    taghash = {}
+    tags.split("\n").each {|s|
+      p = s.split(":")
+      if p.length == 2 && !p.last.blank?
+         taghash[p.first] = p.last.strip.titleize
+      else
+         taghash[p.first] = nil
+      end
+    }
+    taghash
   end
   
   protected

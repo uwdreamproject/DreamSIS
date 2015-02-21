@@ -5,6 +5,11 @@
 		<%= content_tag(:span, "admin", :class => 'admin tag') if event_attendance.admin? %>
 		<% p = event_attendance.try(:person)%>
 		<%= content_tag(:span, "Driver", :class => 'driver tag') if p.type == "Mentor" && p.valid_van_driver? %>
+		<% if !event_attendance.try(:person).try(:tags).try(:blank?) %>
+			<% Mentor.parse_string_to_hash(event_attendance.try(:person).tags).each {|k, v| %>
+			<%= raw "#{content_tag :span, sanitize(k) , :class => 'green tag', :title => sanitize(v)}" %>
+			<% } %>
+		<% end %>
 	</td>
 	
 	<%= content_tag(:td, event_attendance.try(:person).try(:high_school).try(:name)) if audience.to_s.downcase == "participant" || audience.to_s.downcase == "student" %>
