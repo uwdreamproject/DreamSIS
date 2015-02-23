@@ -28,7 +28,7 @@ class EventAttendance < ActiveRecord::Base
   scope :rsvpd, where(:rsvp => true)
   scope :attended, where(:attended => true)
 
-  # Updates the participant filter cache
+  # Updates the participant/mentor filter cache
   def update_filter_cache
     person.save
   end

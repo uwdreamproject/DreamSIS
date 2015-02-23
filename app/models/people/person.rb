@@ -42,6 +42,9 @@ class Person < ActiveRecord::Base
   
   after_create :generate_survey_id
 
+  serialize :filter_cache
+  before_save :update_filter_cache!
+
   attr_accessor :validate_name
   attr_accessor :validate_ready_to_rsvp
   
@@ -95,6 +98,34 @@ class Person < ActiveRecord::Base
   # def [](attr_name)
   #   instance_eval(attr_name.to_s)
   # end
+
+  # For each ObjectFilter relevant for this person type, run the filter on this person
+  # and store the result value in +filter_cache+.
+  def update_filter_cache!
+    self.filter_cache = {}
+    for object_filter in self.class.object_filters
+      self.filter_cache[object_filter.id] = object_filter.passes?(self)
+    end
+    self.filter_cache
+  end
+
+  def self.object_filters
+    []
+  end
+
+  # Allows for generic filters to be accessed as instance methods
+  def method_missing(method_name, *args)
+    if m = method_name.to_s.match(/\Apasses_filter_(\d+)\Z/)
+      object_filter = ObjectFilter.find(m[1])
+      passes_filter? object_filter
+    elsif m = method_name.to_s.match(/\AFilter: (.+)\Z/)
+      object_filter = ObjectFilter.find_by_title(m[1])
+      return super unless object_filter
+      passes_filter? object_filter
+    else
+      super(method_name, *args)
+    end
+  end
   
   # Returns the person's fullname in the form: Firstname Middlename Lastname
   # If we have a valid +person_resource+, then pass back +person_resource.DisplayName+ instead.
