@@ -30,7 +30,17 @@ class Institution < ActiveRecord::Base
   def id
     unitid.to_i
   end
-	
+
+  # Override in case we're looking for a college with a
+  # negative unitid
+  def self.find(*args)
+    if args.first.is_a?(Integer) && args.first < 0
+      College.find(-args.first)
+    else
+      super(*args)
+    end
+  end
+
 	def to_title
 		title
 	end
