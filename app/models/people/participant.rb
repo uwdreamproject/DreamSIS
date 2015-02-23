@@ -15,8 +15,6 @@ class Participant < Person
   has_many :college_enrollments
   has_many :college_degrees
   has_many :fafsas, :class_name => "PersonFafsa", :foreign_key => :person_id
-  
-  serialize :filter_cache
 
 	acts_as_xlsx
 	
@@ -33,8 +31,7 @@ class Participant < Person
 
   after_save :college_mapper_student, :if => :create_college_mapper_student_after_save?
   after_create :link_to_current_user, :if => :link_to_current_user_after_save?
-  before_save :update_filter_cache!
-	before_save :adjust_postsecondary_plan_to_match_college_attending
+  before_save :adjust_postsecondary_plan_to_match_college_attending
 
 	POSTSECONDARY_GOAL_OPTIONS = [
 		"Vocational school", 
@@ -75,6 +72,14 @@ class Participant < Person
   def self.object_filters
     ObjectFilter.find_all_by_object_class("Participant").select(&:display_now?)
   end
+
+  def method_missing(method_name, *args)
+    if m = method_name.to_s.match(/\Afafsa_(\d{4})_(.+)\Z/)
+      fafsa(m[1]).send m[2], *args
+    else
+      super(method_name, *args)
+    end
+  end
   
   # Returns the number of filters that this Participant doesn't pass. Useful for quick view of status.
   def filter_results_count
@@ -87,31 +92,6 @@ class Participant < Person
   def passes_filter?(object_filter)
     update_filter_cache! if !filter_cache.is_a?(Hash) || self.filter_cache[object_filter.id].nil?
     self.filter_cache[object_filter.id]
-  end
-  
-  # For each ObjectFilter relevant for this person type, run the filter on this person
-  # and store the result value in +filter_cache+.
-  def update_filter_cache!
-    self.filter_cache = {}
-    for object_filter in self.class.object_filters
-      self.filter_cache[object_filter.id] = object_filter.passes?(self)
-    end
-    self.filter_cache
-  end
-  
-  def method_missing(method_name, *args)
-    if m = method_name.to_s.match(/\Apasses_filter_(\d+)\Z/)
-			object_filter = ObjectFilter.find(m[1])
-			passes_filter? object_filter
-		elsif m = method_name.to_s.match(/\AFilter: (.+)\Z/)
-			object_filter = ObjectFilter.find_by_title(m[1])
-			return super unless object_filter
-			passes_filter? object_filter			
-    elsif m = method_name.to_s.match(/\Afafsa_(\d{4})_(.+)\Z/)
-      fafsa(m[1]).send m[2], *args
-		else
-      super(method_name, *args)
-    end
   end
 
   def respond_to?(method_sym, include_private = false)

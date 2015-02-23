@@ -70,6 +70,22 @@ class Mentor < Person
     return summary
   end
 
+  # Save common but expensive queries in a cache,
+  # updated on save
+  def update_filter_cache!
+    super
+
+    # Requires this to be called after mentor_term updates
+    self.filter_cache[:currently_enrolled] = currently_enrolled?
+
+    # Requires this to be called after event_attendance updates
+    if Customer.mentor_workshop_event_type
+      self.filter_cache[:attended_mentor_workshop] = attended_mentor_workshop?
+    end
+
+    self.filter_cache
+  end
+
   # Returns true if there is a valid date in the +risk_form_signed_at+ attribute and any value in the 
   # +risk_form_signature+ attribute.
   def signed_risk_form?
@@ -126,6 +142,9 @@ class Mentor < Person
 
   # Returns true if the mentor is enrolled for the current term.
   def currently_enrolled?
+    c = self.filter_cache.try(:[], :currently_enrolled)
+    return c unless c.nil?
+
     !current_mentor_term_groups.empty?
   end
 
@@ -245,6 +264,9 @@ Documentation for each filter:
 
   # Returns true if the mentor has attended an event in the "Mentor Workshop" type.
   def attended_mentor_workshop?
+    c = self.filter_cache.try(:[], :attended_mentor_workshop)
+    return c unless c.nil?
+
     return true if mentor_terms.collect(&:term).uniq.reject {|m| m == Term.current_term}.count > 0 rescue true
     !event_attendances.find(:all, 
                             :include => { :event => :event_type }, 
@@ -561,5 +583,5 @@ Documentation for each filter:
     end
     return correct
   end
-    
+
 end
