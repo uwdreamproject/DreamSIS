@@ -44,6 +44,14 @@
 			</dd>
 		<% end -%>
 
+		<%- if enrollment = @participant.latest_college_enrollment %>
+			<dt>Most Recent College</dt>
+			<dd>
+					<%= enrollment.institution.try(:name) %>
+					(<%= enrollment.enrollment_status_name %>)
+			</dd>
+		<% end %>
+
 	</dl>
 </div>
 

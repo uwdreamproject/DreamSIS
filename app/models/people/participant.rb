@@ -182,10 +182,27 @@ class Participant < Person
     fafsa = fafsas.find_or_initialize_by_year(year)
   end
 
-  # Returns the Institution or College record for this Participant.
+  # Returns the Institution or College record for this Participant based on "college_attending_id",
+  # which represents the school the person is _planning_ to attend.
   def college_attending
     return nil unless college_attending_id
     Institution.find(college_attending_id)
+  end
+  
+  # Returns the CollegeEnrollment representing where the student is _currently attending_, 
+  # based on the most recent Enrollment without an end date.
+  def current_college_enrollment
+    return nil if college_enrollments.empty?
+    college_enrollments.reorder("began_on DESC").where(ended_on => nil).joins(:institution).first
+  end
+  
+  # Returns the CollegeEnrollment representing where the student _most recently attended_, based on the
+  # CollegeEnrollment record for this student that may or may not include an end date.
+  # This is probably a better method to use when displaying a student's "current" college
+  # because it's a bit more lenient in the lookup.
+  def latest_college_enrollment
+    return nil if college_enrollments.empty?
+    college_enrollments.reorder("began_on DESC").joins(:institution).first
   end
 
 	# Automatically unsets +postsecondary_plan+ if +college_attending_id+ is changed.
