@@ -159,7 +159,7 @@ class ParticipantsController < ApplicationController
     
     @participants = @participant_group.participants
     @participant_groups = ParticipantGroup.find(:all, :conditions => { :location_id => @high_school, :grad_year => @grad_year })
-		@cache_key = fragment_cache_key(:action => :group, :id => @particiant_group.id, :format => :xlsx)
+		@cache_key = fragment_cache_key(:action => :group, :id => @participant_group.id, :format => :xlsx)
     @export = ParticipantsReport.for_key(@cache_key)
     
     respond_to do |format|

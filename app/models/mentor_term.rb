@@ -10,6 +10,8 @@ class MentorTerm < ActiveRecord::Base
   
   default_scope :order => "people.lastname, people.firstname", :joins => :mentor, :readonly => false
   
+  after_save :update_filter_cache
+  after_destroy :update_filter_cache
   # after_create :add_to_group
   
   def destroy
@@ -20,6 +22,11 @@ class MentorTerm < ActiveRecord::Base
   
   def deleted?
     !deleted_at.nil?
+  end
+
+  # Updates the mentor filter cache
+  def update_filter_cache
+    mentor.save
   end
 
   attr_accessor :new_participant_id
