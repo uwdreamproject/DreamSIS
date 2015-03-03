@@ -15,7 +15,7 @@
 							<%= content_tag(:span, "P", :class => 'tag') %>
 							<%- if append_block && @background_check_textblocks.count < 10
 								fname = mentor_onboarding.try(:firstname).split()
-								@background_check_textblocks << [fname[0].to_s.gsub("-",""), fname[1].to_s.gsub("-",""), mentor_onboarding.try(:lastname), mentor_onboarding.try(:sex), mentor_onboarding.try(:birthdate).try(:to_s, :short_date)].join("|")
+								@background_check_textblocks << [fname[0].to_s.gsub("-",""), fname[1].to_s[0], mentor_onboarding.try(:lastname), mentor_onboarding.try(:sex), mentor_onboarding.try(:birthdate).try(:to_s, :short_date)].join("|")
 							end -%>
 						<%- else -%>
 							-
