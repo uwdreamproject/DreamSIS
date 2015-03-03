@@ -1,0 +1,30 @@
+<table>
+	<thead>
+		<tr>
+			<th colspan="10">FAFSA/WASFA Status</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+	<%- for year in (@participant.grad_year || @participant.created_at.year)..Time.now.year -%>
+		<%- fafsa = @participant.fafsa(year) -%>
+		<tr>
+			<td class="name"><a><%= year %></a></td>
+			<%- for attribute in %w[Submitted_FAFSA Submitted_WASFA Not_Applicable] -%>
+			<td class="inline-when-small">
+				<%= form_for @participant, :remote => true do |f| %>
+					<%= hidden_field_tag "participant[fafsa_#{year}_#{attribute.downcase}]", false, :id => nil %>
+					<%= check_box_tag "participant[fafsa_#{year}_#{attribute.downcase}]", 
+										true, 
+										@participant.fafsa(year).try("#{attribute.downcase}?"), 
+										:class => "submit-on-change",
+										:id => "fafsa_#{year}_#{attribute.downcase}" %>
+					<%= label_tag "fafsa_#{year}_#{attribute.downcase}", attribute.gsub("_", " ") %>
+				<% end %>
+			</td>
+			<% end %>
+		</tr>
+	<% end %>
+	</tbody>
+	
+</table>
