@@ -137,6 +137,8 @@ GEM
     jquery-rails (3.1.2)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
+    jquery-tablesorter (1.15.0)
+      railties (>= 3.2, < 5)
     jquery-ui-rails (5.0.2)
       railties (>= 3.2.16)
     json (1.8.1)
@@ -309,6 +311,7 @@ DEPENDENCIES
   formtastic
   geocoder
   jquery-rails
+  jquery-tablesorter
   jquery-ui-rails
   json
   mandrill-api

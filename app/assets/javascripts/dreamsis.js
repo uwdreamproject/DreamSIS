@@ -95,6 +95,9 @@ function updateActivityTimeDescription(elem) {
 	elem.parent("li").addClass("time" + elem.val());
 }
 
+/*
+  Global Functions
+*/
 $( function() {
   
   // A form element with .submit-on-change will submit the enclosing form when changed.
@@ -109,6 +112,9 @@ $( function() {
       $( this ).serialize()
     );
   })
+  
+  // Enable all tablesorter tables
+  // $("table:not(.no-sort)").tablesorter()
   
 })
 
