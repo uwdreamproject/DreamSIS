@@ -1,10 +1,13 @@
+<%- 
+reports = {
+    "Basics" => "basics",
+    "College Applications" => "college_applications",
+    "Test Scores" => "test_score_summaries",
+    "Roster" => "rosters"
+}
+reports["College Pipeline"] = "college_stages" if @stages
+-%>
+
 <%= form_tag({}, :method => :get, :remote => true, :id => "report_selector") do -%>
-	Display: <%= select_tag "report", options_for_select(
-                                [
-                                    ["Basics", "basics"],
-                                    ["College Applications", "college_applications"],
-                                    ["Test Scores", "test_score_summaries"],
-                                    ["Roster", "rosters"]
-                                ],
-								@report.try(:pluralize)) %>
+	Display: <%= select_tag "report", options_for_select(reports, @report.try(:pluralize)), :class => 'submit-on-change' %>
 <% end %>
