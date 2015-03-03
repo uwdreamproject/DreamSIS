@@ -234,7 +234,7 @@ GEM
     redis (3.2.0)
     redis-namespace (1.5.1)
       redis (~> 3.0, >= 3.0.4)
-    rollbar (1.2.4)
+    rollbar (1.4.4)
       multi_json (~> 1.3)
     rubyzip (1.1.6)
     sass (3.4.6)
@@ -328,7 +328,7 @@ DEPENDENCIES
   rails3-jquery-autocomplete
   rails_autolink (~> 1.0.0)
   rdoc
-  rollbar (~> 1.2.4)
+  rollbar
   rubyzip
   sass-rails
   sidekiq

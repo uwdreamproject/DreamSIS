@@ -41,7 +41,7 @@ gem 'net-sftp'
 gem 'rails_autolink', '~> 1.0.0'
 gem 'rails3-jquery-autocomplete'
 gem "sqlite3"
-gem 'rollbar', '~> 1.2.4'
+gem 'rollbar'
 gem 'addressable'
 gem 'sucker_punch', '~> 1.0'
 gem 'sidekiq'
