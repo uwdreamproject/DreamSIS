@@ -21,7 +21,7 @@
      end
    end
    bgblock = []
-   bgblock << [fname[0].to_s.gsub("-",""), fname[1].to_s.gsub("-",""), @mentor.try(:lastname), @mentor.try(:sex), @mentor.try(:birthdate).try(:to_s, :short_date)].join("|")
+   bgblock << [fname[0].to_s.gsub("-",""), fname[1].to_s[0], @mentor.try(:lastname), @mentor.try(:sex), @mentor.try(:birthdate).try(:to_s, :short_date)].join("|")
 %>
 <h3>WATCH Check Block</h3>
 <textarea onClick="this.select()"><%=h bgblock.join("\n") %></textarea>
