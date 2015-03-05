@@ -101,7 +101,7 @@ class ParticipantsController < ApplicationController
         @stages[stage] = stage_participants.collect(&:id)
         @participants += stage_participants
       end
-      @participants.uniq!.sort!
+      @participants = @participants.flatten.uniq.compact.sort
     end
     
     respond_to do |format|

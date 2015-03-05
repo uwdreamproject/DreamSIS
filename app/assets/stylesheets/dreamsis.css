@@ -3305,6 +3305,25 @@ ul.filters {
 	margin-left: -2em;
 }
 
+.filters li input.enabled {
+  visibility: hidden;
+}
+
+.filters li input.enabled ~ span {
+  background-repeat: no-repeat;
+  margin-right: 1em;
+  margin-left: -1.9em;
+  padding-left: 1.9em;
+}
+
+.filters li input[value=true].enabled ~ span {
+	background-image: url(../images/icons/silk/tick.png);
+}
+
+.filters li input[value=false].enabled ~ span {
+	background-image: url(../images/icons/silk/cross.png);
+}
+
 .filters li label {
 	left: 1.7em;
 	position: relative;	
@@ -3865,6 +3884,10 @@ h1 .tag {
 #filter_bucket .filter.tag {
   margin-left: 0;
   padding: 3px 6px;
+}
+
+#filter_bucket .filter.tag em {
+  padding-right: 0.25em;
 }
 
 #filter_bucket {

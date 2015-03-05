@@ -8,4 +8,10 @@
 	</thead>
 	
 	<%= render :partial => 'participant', :collection => @participants, :locals => { :report => h(@report || "basic") } %>
+	
+	<tfoot id="empty_placeholder" style="display:none">
+		<tr class="empty">
+			<td colspan="20">No <%= Customer.participants_label %> match your selection.</td>
+		</tr>
+	</tfoot>
 </table>
