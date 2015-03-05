@@ -8,6 +8,8 @@ class Enrollment < ActiveRecord::Base
   after_save :update_filter_cache
   after_destroy :update_filter_cache
 
+  default_scope :order => "ended_on DESC, began_on DESC"
+
   # Updates the participant filter cache
   def update_filter_cache
     participant.save

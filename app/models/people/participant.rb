@@ -173,7 +173,7 @@ class Participant < Person
   # based on the most recent Enrollment without an end date.
   def current_college_enrollment
     return nil if college_enrollments.empty?
-    college_enrollments.reorder("began_on DESC").where(ended_on => nil).joins(:institution).first
+    college_enrollments.reorder("began_on DESC").where(ended_on => nil).first
   end
   
   # Returns the CollegeEnrollment representing where the student _most recently attended_, based on the
@@ -182,7 +182,7 @@ class Participant < Person
   # because it's a bit more lenient in the lookup.
   def latest_college_enrollment
     return nil if college_enrollments.empty?
-    college_enrollments.reorder("began_on DESC").joins(:institution).first
+    college_enrollments.reorder("began_on DESC").first
   end
 
 	# Automatically unsets +postsecondary_plan+ if +college_attending_id+ is changed.
