@@ -24,3 +24,9 @@ public/stylesheets/.DS_Store
 *.sqlite3 copy
 
 pid/sidekiq.pid
+
+*/.DS_Store
+
+public/images/icons/tango/.DS_Store
+
+public/images/icons/tango/12x12/.DS_Store

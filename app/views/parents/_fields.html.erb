@@ -37,8 +37,8 @@
 
 	<%= f.input :other_languages, :label => "Primary Language (if not English)" %>
 	<%= f.input :occupation %>
-	<%= f.input :annual_income, :input_html => { :size => 15 } %>
-	<%= f.input :highest_education_level_id, :label => "Highest Education Level Completed", :collection => EducationLevel.all %>
+	<%= f.input :annual_income, :input_html => { :size => 15, :class => "currency" } %>
+	<%= f.input :highest_education_level_id, :as => :select, :label => "Highest Education Level Completed", :collection => EducationLevel.all %>
 	<%= f.input :education_country, :label => "Country where educated", :include_blank => true, :priority_countries => ["United States"] %>
     
 <% end %>

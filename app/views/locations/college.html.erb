@@ -12,26 +12,14 @@
 </div>
 
 <ul class="stat-numbers progression">
+	
+	<%- for stage in CollegeApplication::Stages -%>
 	<li>
-		<%= link_to content_tag(:strong, @location.college_applications.count) + content_tag(:p, "interested"),
-					applications_college_path(@location.id) %>
+		<%= link_to content_tag(:strong, @location.try("#{stage}_participants").count) + content_tag(:p, stage),
+					college_participants_path(@location.id, :report => "college_stages", :anchor => "!stages=#{stage}") %>
 	</li>
-
-	<li>
-		<%= link_to content_tag(:strong, Participant.attending_college(@location.id).count) + content_tag(:p, "planning"),
-					college_participants_path(@location.id) %>
-	</li>
-
-	<li>
-		<%= link_to content_tag(:strong, "N") + content_tag(:p, "enrolled"),
-					college_participants_path(@location.id) %>
-	</li>
-
-	<li>
-		<%= link_to content_tag(:strong, "N") + content_tag(:p, "graduated"),
-					college_participants_path(@location.id) %>
-	</li>
-
+	<% end %>
+	
 </ul>
 
 <dl class="inline-definitions">

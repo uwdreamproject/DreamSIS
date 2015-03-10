@@ -1,5 +1,5 @@
-<h3 class="pre-title"><%=h @location.type.to_s.titleize %></h3>
-<h1><%=h @location.name %></h1>
+<h3 class="pre-title"><%= @location.class.to_s.titleize %></h3>
+<h1><%= @location.name %></h1>
 
 <table>
 	<thead>
@@ -30,3 +30,7 @@
 		<% end %>
 	</tbody>
 </table>
+
+<div id="sidebar">
+	<%= link_to "Back to #{@location.name}", college_path(@location), :class => 'back button' %>
+</div>

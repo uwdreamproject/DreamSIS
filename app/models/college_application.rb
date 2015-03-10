@@ -14,6 +14,8 @@ class CollegeApplication < ActiveRecord::Base
   before_destroy :destroy_college_mapper_college, :if => :do_college_mapper_functions?
   after_create :create_college_mapper_college, :if => :do_college_mapper_functions?  
   
+  Stages = %w[interested applied planning enrolled graduated]
+  
   attr_accessor :institution_name
 
   after_save :update_filter_cache

@@ -1,0 +1,9 @@
+<td class="cohort"><%= link_to "#{truncate(participant.high_school.name, :length => 30)} #{participant.grad_year}", 
+				high_school_cohort_path(participant.high_school, (participant.grad_year || 0)), 
+				:class => 'redirect-link' unless participant.high_school.nil? %></td>
+
+<%- for stage, participant_ids in @stages -%>
+	<td data-stages="<%= stage if participant_ids.include?(participant.id) %>">
+		<%= content_tag :span, "Y", :class => "icon pass" if participant_ids.include?(participant.id) %>
+	</td>
+<% end %>

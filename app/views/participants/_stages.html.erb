@@ -1,0 +1,10 @@
+<%- if @stages -%>
+<ul class="stat-numbers progression stages">
+	
+	<%- for stage, participant_ids in @stages -%>
+	<li>
+		<%= link_to content_tag(:strong, participant_ids.count) + content_tag(:p, stage), nil, "data-stage" => stage %>
+	</li>
+	<% end %>
+</ul>
+<% end %>

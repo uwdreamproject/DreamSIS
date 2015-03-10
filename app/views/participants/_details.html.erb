@@ -44,6 +44,20 @@
 			</dd>
 		<% end -%>
 
+		<%- if enrollment = @participant.latest_college_enrollment %>
+			<dt>Most Recent College</dt>
+			<dd>
+					<%= link_to enrollment.institution.try(:name), 
+							college_participants_path(enrollment.institution, :report => "college_stages"),
+							:class => 'redirect-link' %>
+							
+					<div class="small light">
+						<%= "#{enrollment.enrollment_status_name}, " unless enrollment.enrollment_status_name.blank? %>
+						<%= raw [enrollment.began_on.try(:to_s, :month_year), enrollment.ended_on.try(:to_s, :month_year)].compact.join('&ndash;') %>
+					</div>
+			</dd>
+		<% end %>
+
 	</dl>
 </div>
 

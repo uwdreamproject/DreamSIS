@@ -87,10 +87,22 @@ class ParticipantsController < ApplicationController
 
   def college
     @college = Institution.find(params[:college_id].to_i)
-    @participants = Participant.attending_college(@college.try(:id))
+    @participants = []
+    @stages = CollegeApplication::Stages
 		@title << @college
 		@cache_key = fragment_cache_key(:action => :college, :id => @college.try(:id), :format => :xlsx)
     @export = ParticipantsReport.for_key(@cache_key)
+
+    if request.xhr?
+      @participants = @college.interested_participants
+      @stages = {}
+      for stage in CollegeApplication::Stages
+        stage_participants = @college.try("#{stage}_participants")
+        @stages[stage] = stage_participants.collect(&:id)
+        @participants += stage_participants
+      end
+      @participants = @participants.flatten.uniq.compact.sort
+    end
     
     respond_to do |format|
       format.html { render :action => 'index' }

@@ -1,9 +1,11 @@
 <h3 class="pre-title"><%= link_to h(@participant.fullname), @participant %></h3>
 <h1>College Enrollments</h1>
 
-<table id="college_enrollments" class="multirow">
+<table id="college_enrollments">
 	<thead>
 		<tr>
+			<th></th>
+			<th>Institution</th>
 			<th>Start</th>
 			<th>End</th>
 			<th>Status</th>
@@ -13,30 +15,15 @@
 		</tr>
 	</thead>
 
-	<%- if @college_enrollments.empty? -%>	
-		<tbody>
+	<tbody>
+		<%- if @college_enrollments.empty? -%>	
 			<tr class="empty">
 				<td colspan="10">No college enrollments yet.</td>
 			</tr>
-		</tbody>
-	<% else %>
-		<%- 
-		es = { :enrollments => {}, :previous => nil, :index => 0 }
-		for e in @college_enrollments 
-			es[:index] += 1 if e.institution_id != es[:previous]
-			es[:enrollments][es[:index]] ||= []
-			es[:enrollments][es[:index]] << e
-			es[:previous] = e.institution_id
-		end
-		
-		for index, enrollments in es[:enrollments] -%>
-			<tbody>
-				<tr><th colspan=10><%=h enrollments.first.institution.try(:name) %></th></tr>
-				<%= render :partial => "college_enrollments/college_enrollment", :collection => enrollments %>
-			</tbody>
 		<% end %>
-	<% end %>
 
+		<%= render :partial => "college_enrollments/college_enrollment", :collection => enrollments %>
+	</tbody>
 
 </table>	
 

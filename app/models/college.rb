@@ -23,6 +23,10 @@ class College < Location
 		website_url
 	end
 
+  def formatted_website_url
+    Addressable::URI.heuristic_parse(webaddr).to_s
+  end
+
 	def college_navigator_url
 		nil
 	end
