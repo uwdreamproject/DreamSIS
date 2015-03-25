@@ -1,11 +1,15 @@
 <table id="former_mentors">
-	<tr>
-		<th>Name</th>
-		<th>E-mail</th>
-		<th>Assigned Dates</th>
-		<th>Functions</th>
-	</tr>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>E-mail</th>
+			<th>Assigned Dates</th>
+			<th>Functions</th>
+		</tr>
+	</thead>
 
-	<%= render :partial => "mentors/mentor_participant", :collection => @participant.former_mentor_participants %>
+	<tbody>
+		<%= render :partial => "mentors/mentor_participant", :collection => @participant.former_mentor_participants %>
+	</tbody>
 				
 </table>	

@@ -14,7 +14,7 @@
 					
 	<%= f.input :gpa, :label => "High School GPA", :input_html => { :size => 5 } %>
 	<%= f.input :gpa_date, :label => "GPA Date", :hint => raw("Enter the date this GPA was calculated. #{link_to_now('participant_gpa_date')}") %>
-	<%= f.input :other_location_id, :collection => Location.all %>
+	<%#= f.input :other_location_id, :collection => Location.all %>
 	
     <%= f.input :student_id_number, :label => "District Student ID Number", :input_html => { :size => 15 } %>
     

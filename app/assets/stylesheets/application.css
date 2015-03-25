@@ -6,7 +6,12 @@
  *= require formtastic
  *= require my_formtastic_changes
  *= require_self
- *= require_tree . 
  *= require jquery-ui
+ *= require dreamsis
+ *= require menus
+ *= require print
+ *= require syntax
+ *= require mobile
+ *= require_tree . 
 */
 

@@ -1,21 +1,26 @@
 <table id="college_applications_table">
 	<%- cache [@participant.cache_key, "college_applications"].join("/") do -%>
-		<tr>
-			<th colspan=2>Institution</th>
-			<th>Choice</th>
-			<th>Applied?</th>
-			<th>Decision</th>
-			<th>Functions</th>
-		</tr>
+		<thead>
+			<tr>
+				<th></th>
+				<th>Institution</th>
+				<th>Choice</th>
+				<th>Applied?</th>
+				<th>Decision</th>
+				<th>Functions</th>
+			</tr>
+		</thead>
 
-		<%= render :partial => "college_applications/college_application", 
-					:collection => @participant.college_applications %>
+		<tbody>
+			<%= render :partial => "college_applications/college_application", 
+						:collection => @participant.college_applications %>
 				
-		<%- if @participant.college_applications.empty? -%>
-		<tr class="empty">
-			<td colspan="10">No colleges/plans yet.</td>
-		</tr>
-		<% end %>
+			<%- if @participant.college_applications.empty? -%>
+			<tr class="empty">
+				<td colspan="10">No colleges/plans yet.</td>
+			</tr>
+			<% end %>
+		</tbody>
 	<% end %>
 	
 	<%= render :partial => "postsecondary_plan_row", :locals => { :participant => @participant } %>

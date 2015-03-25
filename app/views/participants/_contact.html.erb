@@ -54,5 +54,12 @@
 		<%= @participant.birthdate.try(:to_s, :long) rescue nil %>
 		<%= content_tag(:p, "Age #{@participant.age}", :class => 'light') if @participant.age %>
 	</dd>
-
+	
+	<%- unless @participant.gpa.blank? -%>
+	<dt>High School GPA</dt>
+	<dd><%= @participant.gpa %>
+		<%= content_tag :small, "as of #{time_ago_in_words(@participant.gpa_date)} ago", :class => "light" unless @participant.gpa_date.blank? %>
+		</dd>
+	<% end %>
+		
 </dl>

@@ -3,8 +3,8 @@ class EventAttendancesController < EventsController
   before_filter :declare_audience, :only => [:index, :checkin, :auto_complete_for_person_fullname]
   skip_before_filter :redirect_to_rsvp_if_not_admin
 
-  skip_before_filter :check_authorization, :only => [:checkin, :create, :update, :auto_complete_for_person_fullname]
-  before_filter :check_checkin_authorization, :only => [:checkin, :create, :update, :auto_complete_for_person_fullname]
+  skip_before_filter :check_authorization, :only => [:index, :checkin, :create, :update, :auto_complete_for_person_fullname]
+  before_filter :check_checkin_authorization, :only => [:index, :checkin, :create, :update, :auto_complete_for_person_fullname]
 
   protect_from_forgery :only => [:create, :update, :destroy] 
 

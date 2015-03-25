@@ -78,6 +78,7 @@
 				<ul>
 					<li class="primary list"><%= link_to "All Events", events_url %></li>
 					<li class="add"><%= link_to "Add new event", new_event_url %></li>
+					<li><%= link_to Customer.visits_Label, events_url(:type => "Visit") %></li>
 					<li><%= link_to "Groups", event_groups_url %></li>
 					<li><%= link_to "Types", event_types_url %></li>
 				</ul>

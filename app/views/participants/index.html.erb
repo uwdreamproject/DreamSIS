@@ -13,6 +13,7 @@
 	<span id="filtered_record_count"></span> 
 	<span id="total_record_count"><%= @participants.count %></span>
 </h3>
+<div id="filter_bucket"></div>
 
 <%- if @participant_group -%>
 	<h2>
@@ -22,7 +23,7 @@
 <% end -%>
 
 <%= will_paginate @participants if @participants.respond_to?(:current_page) %>
-	<table id="participants_table">
+	<table class="participants" id="participants_table">
 		<tr class="empty"><td class="loading"></td></tr>
 	</table>	
 <%= will_paginate @participants if @participants.respond_to?(:current_page) %>

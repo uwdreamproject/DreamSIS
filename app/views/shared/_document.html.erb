@@ -20,8 +20,6 @@
 	<%- if document.user == @current_user -%>
 		<td class="document_edit_buttons functions">
 			<%= link_to "Edit", edit_note_path(document, :return_to => params[:return_to] || request.url) %>
-		</td>
-		<td class="document_edit_buttons functions">
 			<%= link_to "Delete", 
 						:url => note_path(document, :return_to => params[:return_to] || request.url),
 						:remote => true,

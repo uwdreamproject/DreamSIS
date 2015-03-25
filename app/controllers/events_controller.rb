@@ -5,10 +5,14 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.xml
   def index
-    @events = Event.page(params[:page]).order("date desc")
+    @events = Event.unscoped.page(params[:page]).order("date DESC, start_time ASC")
+    @events = @events.where(:type => params[:type]) if params[:type]
+    @events = @events.where("date IN (?)", params[:dates]) if params[:dates]
 
     respond_to do |format|
       format.html # index.html.erb
+      format.json { render :json => @events.as_json(methods: [:short_title, :attendance_options]).group_by{|e| e["date"] } }
+      # format.json { render :json => @events.group_by(&:date) }
       format.xml  { render :xml => @events }
     end
   end
@@ -20,7 +24,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @event.attributes.merge({ attendance_options: @event.attendance_options }) }
+      format.json { render :json => @event.as_json(methods: [:short_title, :attendance_options]) }
       format.xml  { render :xml => @event }
     end
   end
@@ -44,7 +48,7 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.xml
   def create
-    klass = params[:event].try(:[], :type) == "Visit" ? Visit : Event
+    klass = (params[:event] || params[:visit]).try(:[], :type) == "Visit" ? Visit : Event
     @event = klass.new(params[:event] || params[:visit])
 
     respond_to do |format|
@@ -63,7 +67,7 @@ class EventsController < ApplicationController
   # PUT /events/1.xml
   def update
     @event = Event.find(params[:id])
-    klass = params[:event].try(:[], :type) == "Visit" ? Visit : Event
+    klass = (params[:event] || params[:visit]).try(:[], :type) == "Visit" ? Visit : Event
     @event.update_attribute(:type, klass.to_s) if @event.type != klass
 
     respond_to do |format|
@@ -108,6 +112,7 @@ class EventsController < ApplicationController
   def redirect_to_rsvp_if_not_admin
     @event = Event.find params[:id]
     unless @current_user && @event.allows_admin_access_for?(@current_user)
+      return true if request.format.json?
       if @event.allow_rsvps?
         redirect_to event_rsvp_url(@event)
       else

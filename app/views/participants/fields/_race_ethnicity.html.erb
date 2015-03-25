@@ -19,15 +19,16 @@ races = {
  
 	<%- for race, title in races.sort_by{|r,t| t.gsub("Other", "ZOther")} -%>
 	<ol>
-		<li class="input">
-			<%= f.check_box race, :onClick => "$('participant_#{race.to_s.gsub("_ethnicity", "")}_heritage').toggle()" %>
+		<li class="input race">
+			<%= f.check_box race, :onClick => "$('#participant_#{race.to_s.gsub("_ethnicity", "")}_heritage').toggle()" %>
 			<%= f.label race, title %>
-			<%= f.text_field "#{race.to_s.gsub("_ethnicity", "")}_heritage", :style => ("display:none" unless f.object["#{race}?"]) %>
+			<%= f.text_field "#{race.to_s.gsub("_ethnicity", "")}_heritage", :style => ("display:none" unless f.object[race]), :class => "heritage-input" %>
 		</li>
 	</ol>
 	<% end %>
 	<br />
 
 	<%= f.input :birthplace, :hint => "Include city, state, and country if outside the USA." %>
+	<%= f.input :immigrant, :label => "Identifies as an immigrant to the United States" %>
 
 <% end %>

@@ -10,9 +10,11 @@
 		<%= link_to highlight(h(mentor_participant.mentor.fullname(:skip_update => true)), (params[:mentor][:fullname] rescue nil)),
 			 		mentor_participant.mentor %></td>
 
-	<td><%= auto_link Customer.link_to_uw? ? h(mentor_participant.mentor.uw_net_id) : h(mentor_participant.mentor.email) %></td>
+	<td class="email">
+		<%= auto_link Customer.link_to_uw? ? h(mentor_participant.mentor.uw_net_id) : h(mentor_participant.mentor.email) %>
+	</td>
 
-	<td>
+	<td class="inline-when-small">
 		<%= mentor_participant.created_at.to_s(:month_year) %>
 		&ndash;
 		<%= mentor_participant.deleted_at.nil? ? "now" : mentor_participant.deleted_at.to_s(:month_year) %>

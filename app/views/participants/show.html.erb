@@ -3,9 +3,9 @@
 	<%- cache [@participant.cache_key, "tabs"].join("/") do -%>
 		<ul class="tabs">
 			<%= link_to_section_li @participant, "Current Stats", :filter_results, 'filter_results', true %>
-			<%= link_to_section_li @participant, "Contact Info", :contact, 'contact' %>
+			<%= link_to_section_li @participant, "Contact Information", :contact, 'contact' %>
 			<%= link_to_section_li @participant, "Colleges", :college_applications, 'college_applications' %>
-			<%= link_to_section_li @participant, "Scholarships", :scholarship_applications, 'scholarship_applications' %>
+			<%= link_to_section_li @participant, "Financial", :scholarship_applications, 'scholarship_applications' %>
 			<%= link_to_section_li @participant, "Parents/Contacts", :parents, 'parents' %>
 			<%= link_to_section_li @participant, "Tests", :test_scores, 'test_scores' %>
 			<%= link_to_section_li @participant, "College Enrollment", :college_enrollments, 'college_enrollments' %>
@@ -28,7 +28,7 @@
 	<div class="tab-content">
 
 		<%- cache [@participant.cache_key, "details"].join("/") do -%>
-			<div class="record-header">
+			<div class="record-header" onclick="void(0)">
 					<%= render :partial => "details" %>
 			</div>
 		<% end %>
@@ -42,7 +42,7 @@
 		<% end %>
 	
 		<div class="info-section" id="contact">
-			<h2>Contact Information</h2>
+			<h2>Contact Information &amp; Attributes</h2>
 			<div><%= render :partial => 'contact' %></div>
 		</div>
 	

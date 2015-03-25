@@ -48,6 +48,21 @@ function updateRecordCount(filter_key) {
       $(".filterable:not(.hidden)[data-filter-" + $(this).data("target-filter-id") + "='true']" ).size() 
     ) 
   })
+  updateFilterBucket()
+}
+
+/*
+  Shows little tags for each set filter into the "filter bucket" at the top of the page.
+*/
+function updateFilterBucket() {
+  $("#filter_bucket").html("")
+  $(".filter_checkbox:checked").each(function (i, element) {
+    $("#filter_bucket").append(
+      $("<span />").addClass("outline filter tag").text(
+        $( this ).siblings("span").text()
+      )
+    )
+  })
 }
 
 // // Sets a filter using some shortcuts and then executes the new filter. Valid options for 'type' are:

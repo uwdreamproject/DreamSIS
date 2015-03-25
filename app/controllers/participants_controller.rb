@@ -191,7 +191,7 @@ class ParticipantsController < ApplicationController
     @grad_year = @participant.grad_year
 		@term = Term.current_term
     @title = @participant.try(:fullname, :middlename => false)
-    @visits = @high_school.events(@term, nil, true, 100)
+    @visits = @high_school.events(@term, nil, true, 100) if @high_school
 		
     unless @current_user && @current_user.can_view?(@participant)
       return render_error("You are not allowed to view that participant.")
@@ -216,6 +216,20 @@ class ParticipantsController < ApplicationController
 		end
   end
 	
+  def event_attendances
+    @participant = Participant.find(params[:id]) rescue Student.find(params[:id])
+    @event_attendances = @participant.event_attendances.joins(:event)
+    @event_attendances = @event_attendances.where(:events => { :type => params[:type] }) if params[:type]
+    @event_attendances = @event_attendances.where("events.date IN (?)", params[:dates]) if params[:dates]
+    
+    respond_to do |format|
+      format.json { 
+        render :json => @event_attendances.as_json(include: { 
+          event: { methods: [:attendance_options, :short_title] }
+        }).group_by{|e| e[:event]["date"] }
+      }
+    end
+  end
 
   # GET /participants/new
   # GET /participants/new.xml
