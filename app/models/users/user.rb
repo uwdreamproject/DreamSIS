@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   attr_accessible :login, :email, :password, :password_confirmation, :identity_url, :person_attributes
   default_scope :order => 'login'
   alias_attribute :username, :login
-  delegate :email, :to => :person
+  delegate :email, :participants, :to => :person
   
   # Pulls the current user out of Thread.current. We try to avoid this when possible, but sometimes we need 
   # to access the current user in a model (e.g., to check EmailQueue#messages_waiting?).

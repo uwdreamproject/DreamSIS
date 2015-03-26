@@ -92,6 +92,7 @@
 .menu ul ul li.colleges a { background-image: url(../images/icons/silk/building.png); }
 .menu ul ul li.locations a { background-image: url(../images/icons/silk/building.png); }
 .menu ul ul li.groups a { background-image: url(../images/icons/silk/group.png); }
+.menu ul ul li.calendar a { background-image: url(../images/icons/silk/calendar.png); }
 .menu ul ul li.programs a { background-image: url(../images/icons/silk/bricks.png); }
 .menu ul ul li.filters a { background-image: url(../images/icons/silk/timeline_marker.png); }
 .menu ul ul li.terms a { background-image: url(../images/icons/silk/date.png); }
@@ -101,6 +102,21 @@
 .menu ul ul li.trash a { background-image: url(../images/icons/silk/bin_closed.png); }
 .menu ul ul li.settings a { background-image: url(../images/icons/silk/information.png); }
 
+.menu ul li li.participant a, .menu ul li li.participant a:hover {
+  background: none;
+}
+
+.menu ul li li.participant div.avatar {
+  width: 18px;
+  height: 18px;
+  border-radius: 50px;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: 105%;
+  position: absolute;
+  margin: 0;
+  top: 7px;
+}
 
 .menu ul ul li a {
 	background-position: left center;

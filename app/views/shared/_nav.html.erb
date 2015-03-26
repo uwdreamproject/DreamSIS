@@ -2,12 +2,18 @@
 	<div class="menu" id="main-nav">
 
 	<ul>
-		<li><%= link_to "Dashboard", root_url %>
+		<li><%= link_to "My #{Customer.mentees_label}", my_participants_url %>
 			<div>
 				<ul>
-					<li class="primary groups"><%= link_to "My #{Customer.mentees_label}", my_participants_url %></li>
+					<li class="primary groups"><%= link_to "All my #{Customer.mentees_label}", my_participants_url %></li>
 					<%- if Customer.uses_activity_logs? -%>
-						<li class="calendar"><%= link_to "Track my week", my_current_activity_log_url %></li>
+						<li class="calendar primary"><%= link_to "Track my week", my_current_activity_log_url %></li>
+					<% end %>
+					<%- for participant in @current_user.participants -%>
+						<li class="participant">
+							<%= content_tag :div, nil, :class => "avatar", :style => "background-image: url(#{participant_avatar_path(participant, :thumb)})" %>
+							<%= link_to truncate(participant.fullname), participant %>
+						</li>
 					<% end %>
 				</ul>
 			</div>
