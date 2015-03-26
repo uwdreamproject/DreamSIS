@@ -1013,15 +1013,61 @@ a.redirect-link:hover {
 	/*width: 95%;*/
 }
 
-.record-header .photo {
+.record-header .photo-container {
 	z-index: 10;
 	margin: 0;
-	width: 80px;
-	height: 80px;
 	position: relative;
 	float: left;
-	background: url(../images/blank_avatar.png) -1px -6px / 100%;
+}
+
+.record-header .photo-container .avatar {
+	background: url(../images/blank_avatar.png) 50% 50% / 105%;
 	-webkit-transition: all 0.25s ease-in-out;
+  width: 80px;
+  height: 80px;
+  display: block;
+  border-radius: 100px;
+  background-repeat: no-repeat;
+}
+
+.record-header .photo-container .avatar > em {
+  display: block;
+  text-align: center;
+  top: 50%;
+  position: absolute;
+  width: 100%;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  font-variant: normal;
+  opacity: 0;
+}
+
+.record-header .photo-container .avatar:hover {
+  opacity: 0.9;
+  cursor: pointer;
+}
+
+.record-header .photo-container .avatar:hover > em {
+  opacity: 1;
+}
+
+.record-header .photo-container .controls {
+  position: absolute;
+  top: 105%;
+  background: white;
+  padding: 1em;
+	-webkit-transition: all 0.25s ease-in-out;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.record-header .photo-container .controls.expanded {
+  opacity: 1;
+  visibility: visible;
+}
+
+.record-header .photo-container .controls:after, .record-header .photo-container .controls:before {
+  left: 40px;
 }
 
 .record-header .name {
@@ -1029,8 +1075,9 @@ a.redirect-link:hover {
 	/*left: 120px;*/
 	float: left;
 	margin-left: 20px;
-	margin-top: 15px;
+	margin-top: 10px;
 	-webkit-transition: all 0.25s ease-in-out;
+  max-width: 50%;
 }
 
 #content-wrap .record-header .name h1 {
@@ -1074,25 +1121,7 @@ a.redirect-link:hover {
 .record-header .note-band {
 	margin-top: 0.25em;
 	margin-bottom: 0;
-	background: #f8594a;
-	font: bold 85% Oxygen, sans-serif;
-	text-transform: uppercase;
-	color: white;
-	padding: 1px;
 	padding-right: 20px;
-	margin-left: -60px;
-	padding-left: 60px;
-	display: inline;
-	/*border-radius: 20px;*/
-	z-index: 0;
-	position: relative;
-}
-
-.record-header .note-band h2 {
-	display: inline;
-	font: bold 85% Oxygen, sans-serif;
-	text-transform: uppercase;
-	color: white;
 }
 
 /*body.scrolled-past-header .record-header {
@@ -2347,7 +2376,7 @@ body.attendance .success-marker {
   box-shadow: 0px 0px 4px rgba(0,0,0,0.3);
 }
 .arrow-box:after, .arrow-box:before {
-	top: 100%;
+  top: 100%;
 	left: 50%;
 	border: solid transparent;
 	content: " ";
@@ -2357,17 +2386,31 @@ body.attendance .success-marker {
 	pointer-events: none;  
 }
 .arrow-box:after {
-/*  border-color: rgba(255, 255, 255, 0);*/
 	border-top-color: #ffffff;
 	border-width: 7px;
 	margin-left: -7px;
 }
 .arrow-box:before {
-/*  border-color: rgba(17, 25, 245, 0);*/
   border-top-color: rgba(0,0,0,0.1);
 	border-width: 8px;
 	margin-left: -8px;
 }
+
+.arrow-box.arrow-top:after, .arrow-box.arrow-top:before {
+  bottom: 100%;
+  top: auto;
+}
+
+.arrow-box.arrow-top:after {
+	border-top-color: transparent;
+	border-bottom-color: #ffffff;
+}
+
+.arrow-box.arrow-top:before {
+  border-top-color: transparent;
+  border-bottom-color: rgba(0,0,0,0.1);
+}
+
 
 input, textarea, select {
 -webkit-transition: border linear 0.2s,box-shadow linear 0.2s;
@@ -3660,7 +3703,9 @@ div.photo {
 	border-radius: 100px;
 	padding: 0;
 	margin: 0 40px;
-	
+	background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: 101%;
 }
 
 img.student_photo {

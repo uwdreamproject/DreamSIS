@@ -6,11 +6,7 @@
 
 <div class="content-block">
 
-	<div align="right" style="float:right" class="photo">
-		<%= image_tag photo_mentor_path(@mentor, :size => :medium), 
-				:class => 'student_photo', 
-				:alt => "" %>
-	</div>
+	<div align="right" style="float:right; background-image: url(<%= photo_mentor_path(@mentor, :size => :medium) %>);" class="photo"></div>
 
 	<h3 class="pre-title"><%= Customer.current_customer.customer_label(@mentor.class.to_s.underscore) || @mentor.class.to_s %></h3>
 	<h1><%= @mentor.fullname %></h1>

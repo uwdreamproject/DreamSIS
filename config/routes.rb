@@ -160,7 +160,7 @@ Dreamsis::Application.routes.draw do
     end
   end
   match '/my/mentees' => 'participants#mentor', :as => :my_participants, :mentor_id => 'me'
-  match '/participants/:id/avatar/:style' => 'participants#avatar', :as => :participant_avatar
+  match '/participants/:id/avatar/:size' => 'participants#avatar', :as => :participant_avatar
   match 'participants/all' => 'participants#index', :as => :all_participants
   match '/participants/mentor/:mentor_id' => 'participants#mentor', :as => :mentor_participants
   match '/participants/college/:college_id/cohort/:year' => 'participants#college_cohort', :as => :college_participants_cohort
