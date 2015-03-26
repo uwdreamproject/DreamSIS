@@ -4250,25 +4250,98 @@ div.notes.editable, p.notes.editable {
 	margin-bottom: 2px;
 }
 
-#notes .metadata {
+.notes blockquote {
+  position: relative;
+  clear: both;
+  margin-left: 10em;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 5px;
+  margin-bottom: 1em;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05);
+  -webkit-transition: all 0.25s ease-in-out;
+}
+
+.notes blockquote.hidden {
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.notes blockquote:after, .notes blockquote:before {
+	top: 2em;
+	right: 100%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+.notes blockquote:after {
+	border-right-color: #ffffff;
+	border-width: 7px;
+	margin-top: -7px;
+}
+.notes blockquote:before {
+  border-right-color: rgba(0,0,0,0.1);
+	border-width: 8px;
+	margin-top: -8px;
+}
+
+.notes blockquote cite {
+  display: block;
 	vertical-align: top;
 	font-size: 90%;
 	color: #656565;
 	padding-right: 1em;
-	min-width: 10em;
+	width: 10em;
+  text-align: right;
+  position: relative;
+  float: left;
+  left: 0;
+  top: 0;
+  margin-bottom: 2em;
+  margin-left: -12em;
 }
 
-#notes .note-body {
-	width: 90%;	
-	vertical-align: top;
+
+.notes cite div.avatar {
+	border-radius: 50px;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: 105%;
+  width: 4em;
+  height: 4em;
+  left: 6em;
+  position: relative;
+  margin: 0;
+  margin-bottom: 0.5em;
 }
 
-#notes .note-body p {
+.notes .note-body {
+  margin: 1em;
+}
+
+.notes .note-body p {
 	margin: 10px 0;
+  margin-right: 10em;
 }
 
-#notes table {
-	margin-top: 1em;
+.notes .timestamp {
+  font-size: 80%;
+  color: rgba(0,0,0,0.5);
+  margin-left: 1em;
+  margin-top: 0;
+}
+
+.notes blockquote .controls {
+  
+}
+
+.notes blockquote .functions {
+  position: absolute;
+  top: 0;
+  right: 1em;
 }
 
 #notes .notes_container, #documents .documents_container {
@@ -4279,11 +4352,11 @@ div.notes.editable, p.notes.editable {
 	margin: 0;
 }
 
-#notes .metadata .timestamp, #documents .metadata .timestamp {
-	margin: 10px 0;
+.notes h5, .notes .metadata .timestamp, #documents .metadata .timestamp {
+	margin: 3px 0;
 }
 
-#notes .metadata .contact-type {
+.notes .contact-type {
 	margin: 0;
 	font-variant: small-caps;
 	text-transform: uppercase;
@@ -4291,11 +4364,35 @@ div.notes.editable, p.notes.editable {
 	font-weight: bold;
 }
 
-#notes .metadata .username, #documents .metadata .username {
+.notes .metadata .username, #documents .metadata .username {
 	font-weight: bold;
 }
 
-.needs-followup {
+.notes .date-interval {
+  text-align:center;
+  margin: 1em auto;
+  font-size: 125%;
+  color: rgba(0,0,0,0.25);
+  font-weight: lighter;
+  -webkit-transition: all 0.25s ease-in-out;
+}
+
+.notes .date-interval.hidden {
+  opacity: 0;
+  height: 0;
+  display: none;
+}
+
+.notes .date-interval:before, .notes .date-interval:after {
+  display: block;
+  content: " ";
+  height: 1em;
+  width: 0px;
+  margin: 1em auto;
+  border-right: 3px dotted rgba(0,0,0,0.1);
+}
+
+p.needs-followup, a.needs-followup {
 	background: url(/images/icons/silk/flag_orange.png) no-repeat;
 	display: block;
 	padding-left: 22px;
@@ -4304,20 +4401,31 @@ div.notes.editable, p.notes.editable {
 	padding-top: 1px;
 }
 
-.needs-followup a {
+p.needs-followup a {
 	font-weight: normal;
 	visibility: hidden;
 }
 
-.needs-followup:hover a {
+p.needs-followup:hover a {
 	visibility: visible;
 }
 
-#notes table td.functions a {
+.notes blockquote.needs-followup {
+  background: -webkit-linear-gradient(top, rgba(226,105,0,0.02), rgba(226,105,0,0.1) 100%);
+/*  background: linear-gradient(left top, left bottom, color-stop(0%,rgba(30,87,153,1)), color-stop(100%,rgba(125,185,232,0)));*/
+}
+
+a.show_all_notes {
+  text-align: center;
+  display: block;
+  margin: 2em;
+}
+
+.notes .functions a {
 	visibility: hidden;
 }
 
-#notes table tr:hover td.functions a {
+.notes blockquote:hover .functions a {
 	visibility: visible;
 }
 

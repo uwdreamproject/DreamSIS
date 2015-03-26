@@ -20,6 +20,7 @@
 
 <%- cache [participant.cache_key, "notes"].join("/") do -%>
 	<div class="notes_container" id="notes_container_<%= participant.id %>">
-		<%= render :partial => "shared/notes", :object => participant, :locals => locals %>
+		<a href="#" style="display: none;" class="show_all_notes" onClick="toggleFollowupNotes(); return false">Show all notes</a>
+		<%= render :partial => "shared/notes", :object => participant, :locals => locals %>		
 	</div>
 <% end %>
