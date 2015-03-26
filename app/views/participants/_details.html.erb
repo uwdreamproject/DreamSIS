@@ -12,7 +12,7 @@
 		</div>
 	<% end %>
 
-	<%= link_to "Needs Follow-up", "", :onclick => "switchToTab('notes'); return false;", :class => "needs-followup" if @participant.needs_followup? %>
+	<%= link_to "Needs Follow-up", "", :onclick => "switchToTab('notes', undefined, 'show=needs_followup'); return false;", :class => "needs-followup" if @participant.needs_followup? %>
 </div>
 
 <div class="details">

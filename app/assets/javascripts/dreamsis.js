@@ -15,6 +15,13 @@ $( window ).scroll(function() {
   }
 });
 
+// Scrolls the page to the provided element
+function scrollToObject(jqObj) {
+  $("html, body").animate(
+    { scrollTop: jqObj.offset().top - 20 }, "slow"
+  );
+}
+
 // Returns the currently selected rows
 function selectedElements() {
 	return $('tbody:not(.hidden) input.index_check_box:checked')

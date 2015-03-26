@@ -24,19 +24,37 @@ function bindKeyboardShortcutsForTabs() {
 }
 
 // Moves to a particular tab
-function switchToTab(tab_id) {
+function switchToTab(tab_id, object_id, extra_params) {
   $('.info-section-container .active').removeClass('active')
   $('.info-section#' + tab_id).addClass('active');
   $('#' + tab_id + '_tab_link').addClass('active');
-  window.location.hash = "!/section/" + tab_id
-  $("html, body").animate({ scrollTop: 0 }, "slow");
+  var new_hash = "!/section/" + tab_id
+
+  // Handle extra params
+  if(extra_params) {
+    if(extra_params == "show=needs_followup") {
+      toggleFollowupNotes()
+      new_hash += "&" + extra_params
+    }
+  }
+
+  // Scroll to the selected element, if provided
+  if(object_id) {
+    var obj = $(".info-section#" + tab_id + " [id*=" + object_id + "]")
+    scrollToObject(obj)
+  } else {
+    $("html, body").animate({ scrollTop: 0 }, "slow");    
+  }
+  
+  // Update the url hash
+  window.location.hash = new_hash
 }
 
 // Switches to the tab specified in the URL hash
 function switchToHashTab() {
-  var tabHashMatch = decodeURIComponent(window.location.hash).match(/#!\/section\/(\w+)/)
+  var tabHashMatch = decodeURIComponent(window.location.hash).match(/#!\/section\/(\w+)\/?(\d+)?&?(\w+=\w+)*/)
   if(tabHashMatch && tabHashMatch[1]) {
-  	switchToTab(tabHashMatch[1]);
+  	switchToTab(tabHashMatch[1], tabHashMatch[2], tabHashMatch[3]);
   }
 }
 
@@ -60,4 +78,10 @@ function previousTab() {
     var previous_tab = previous_li.children('a').first()
     switchToTab(previous_tab.attr('id').replace("_tab_link", ""))
   }
+}
+
+function toggleFollowupNotes() {
+    $(".notes blockquote:not(.needs-followup)").toggleClass("hidden")
+    $(".notes .date-interval").toggleClass("hidden")
+    $(".show_all_notes").toggle()
 }
