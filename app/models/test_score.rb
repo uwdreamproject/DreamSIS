@@ -3,7 +3,7 @@ class TestScore < ActiveRecord::Base
   belongs_to :participant, :touch => true
   belongs_to :test_type
   
-  delegate :name, :to => :test_type
+  delegate :name, :to => :test_type, :allow_nil => true
   
   validates_presence_of :participant_id, :test_type_id, :taken_at
   validate :total_score_is_below_maximum

@@ -1,7 +1,10 @@
 <blockquote id="note_<%= note.id %>" class="<%= note.contact_type %> <%= "needs-followup" if note.needs_followup? %>">
 
 	<cite>
-		<div class="avatar" style="background-image: url(<%= photo_mentor_path(note.user.try(:person), :size => :thumb) %>)"></div>
+		<%= content_tag :div, nil, 
+				:class => "avatar", 
+				:style => "background-image: url(#{photo_mentor_path(note.user.try(:person), :size => :thumb)});" if note.user %>
+
 		<h5 class="username"><%= note.user == @current_user ? "You" : note.fullname rescue nil %></h5>
 	</cite>	
 	
