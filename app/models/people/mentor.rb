@@ -286,10 +286,19 @@ Documentation for each filter:
 
   # Returns true if this user's +van_driver_training_completed_at+ is not null and the current customer
   # requiring mentors to complete a driver form implies the mentor has OK in +driver_form_remarks+ if they have
-  # previous driving convictions
+  # previous driving convictions. Additionally, if the current customer links to uw, checks if there is a
+  # uwfs training date on file. Finally, checks if +van_driver_training_completed_at+ is less than
+  # the number of days ago defined by the customer to be valid
   def valid_van_driver?
-    van_driver_training_completed_at && (!Customer.require_driver_form? ||
-        (driver_form_signature && (!has_previous_driving_convictions || driver_form_remarks["OK"])))
+    return false if !van_driver_training_completed_at
+    valid_length = Customer.driver_training_validity_length || 0
+    if valid_length > 0
+      return false if van_driver_training_completed_at < valid_length.days.ago
+    end
+
+    (!Customer.require_driver_form? ||
+            (driver_form_signature && (!has_previous_driving_convictions || driver_form_remarks["OK"]))) &&
+    (!Customer.link_to_uw? || uwfs_training_date)
   end
 
   # Returns true if the +aliases+ attribute has anything other than blank, nil, "none", "n/a" or "no"
@@ -299,9 +308,15 @@ Documentation for each filter:
     true
   end
 
-  # Returns all mentors who are valid van drivers.
-  def self.valid_van_drivers
-    find(:all, :conditions => ["van_driver_training_completed_at IS NOT NULL"])
+  # Returns all mentors who have completed a van driver training (but may not have passed
+  # other customer driving requirements) for the ActiveRecord term given if there is one, or
+  # all such drivers if a term is not given
+  def self.valid_van_drivers(term = nil)
+    if term
+      term.mentors.select{|m| m.van_driver_training_completed_at}
+    else
+      find(:all, :conditions => ["van_driver_training_completed_at IS NOT NULL"])
+    end
   end
 
   # Returns true if there's a non-blank value in +huksy_card_rfid+

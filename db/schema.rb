@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150207194350) do
+ActiveRecord::Schema.define(:version => 20150325204841) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(:version => 20150207194350) do
     t.text     "driver_form_content"
     t.boolean  "send_driver_form_emails"
     t.boolean  "display_nicknames_by_default"
+    t.integer  "driver_training_validity_length"
   end
 
   create_table "degrees", :force => true do |t|
@@ -723,6 +724,7 @@ ActiveRecord::Schema.define(:version => 20150207194350) do
     t.boolean  "homeless"
     t.boolean  "subsidized_housing"
     t.boolean  "immigrant"
+    t.datetime "uwfs_training_date"
   end
 
   add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"
