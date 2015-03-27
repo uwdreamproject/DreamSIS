@@ -52,7 +52,7 @@ class TestScoresController < ParticipantsController
     respond_to do |format|
       if @test_score.save
         flash[:notice] = 'TestScore was successfully created.'
-        format.html { redirect_to(@participant) }
+        format.html { redirect_to participant_path(@participant, :anchor => "!/section/test_scores") }
         format.xml  { render :xml => @test_score, :status => :created, :location => @participant }
       else
         format.html { render :action => "new" }
@@ -72,7 +72,7 @@ class TestScoresController < ParticipantsController
     respond_to do |format|
       if @test_score.update_attributes(params[:test_score])
         flash[:notice] = 'TestScore was successfully updated.'
-        format.html { redirect_to(@participant) }
+        format.html { redirect_to participant_path(@participant, :anchor => "!/section/test_scores") }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -88,7 +88,7 @@ class TestScoresController < ParticipantsController
     @test_score.destroy
 
     respond_to do |format|
-      format.html { redirect_to(participant_test_scores_url) }
+      format.html { redirect_to participant_path(@participant, :anchor => "!/section/test_scores") }
       format.xml  { head :ok }
     end
   end
