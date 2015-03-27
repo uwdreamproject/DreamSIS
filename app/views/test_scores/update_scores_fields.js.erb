@@ -7,3 +7,7 @@ end
 %>
 
 $("#scores_fields").html("<%=j render :partial => 'scores_fields', :locals => { :f => ref } %>")
+
+$('.section_score').change(function() {
+  updateTotalScore('test_score_total_score', $(this).data("score-calculation-method"))
+})
