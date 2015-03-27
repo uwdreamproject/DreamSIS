@@ -92,7 +92,7 @@ class TestScore < ActiveRecord::Base
   # When possible, the hash will include the actual TestScore object, but if mathematics is 
   # involved, it will just return the calculated value.
   def self.score_comparison(participant, test_type)
-    scores = participant.test_scores.find(:all, :joins => :test_type, :conditions => ["test_types.name LIKE ?", "%"+test_type+"%"])
+    scores = participant.test_scores.find(:all, :joins => :test_type, :conditions => ["test_types.name = ?", test_type])
     results = {}
     results[:all] = scores
     results[:earliest_total] = scores.sort_by(&:taken_at).first
