@@ -7,8 +7,6 @@ class ParticipantsController < ApplicationController
 	before_filter :set_title_prefix
   before_filter :set_report_type
 
-  caches_action :avatar
-
   # GET /participants
   # GET /participants.xml
   def index
@@ -226,7 +224,8 @@ class ParticipantsController < ApplicationController
 		if @participant.avatar?
 			av = params[:size] ? @participant.avatar.versions[params[:size].to_sym] : @participant.avatar
 			return send_default_photo(params[:size]) if av.nil?
-			return send_data(av.read, :disposition => 'inline', :type => 'image/jpeg')
+      # return send_data(av.read, :disposition => 'inline', :type => 'image/jpeg')
+      return redirect_to av.url
     else
       return send_default_photo(params[:size]) if av.nil?
     end
@@ -295,7 +294,6 @@ class ParticipantsController < ApplicationController
   # PUT /participants/1.xml
   def update
     @participant = Participant.find(params[:id])
-    expire_action :action => :avatar
 
     unless @current_user && @current_user.can_edit?(@participant)
       return render_error("You are not allowed to edit that participant.")
