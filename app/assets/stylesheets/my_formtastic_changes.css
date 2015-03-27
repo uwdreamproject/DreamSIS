@@ -5,3 +5,9 @@
 .formtastic .input .label {
   width: 22%;
 }
+
+input[type=file] {
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}

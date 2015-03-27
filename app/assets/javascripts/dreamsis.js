@@ -15,6 +15,13 @@ $( window ).scroll(function() {
   }
 });
 
+// Scrolls the page to the provided element
+function scrollToObject(jqObj) {
+  $("html, body").animate(
+    { scrollTop: jqObj.offset().top - 20 }, "slow"
+  );
+}
+
 // Returns the currently selected rows
 function selectedElements() {
 	return $('tbody:not(.hidden) input.index_check_box:checked')
@@ -95,6 +102,9 @@ function updateActivityTimeDescription(elem) {
 	elem.parent("li").addClass("time" + elem.val());
 }
 
+/*
+  Global Functions
+*/
 $( function() {
   
   // A form element with .submit-on-change will submit the enclosing form when changed.
@@ -109,6 +119,9 @@ $( function() {
       $( this ).serialize()
     );
   })
+  
+  // Enable all tablesorter tables
+  // $("table:not(.no-sort)").tablesorter()
   
 })
 

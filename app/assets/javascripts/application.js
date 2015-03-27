@@ -7,6 +7,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
+//= require jquery-tablesorter
 //= require autocomplete-rails
 //= require dreamsis.js
 //=  require_tree .

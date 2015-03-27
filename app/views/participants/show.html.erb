@@ -62,10 +62,11 @@
 				<div class="info-section" id="scholarship_applications">
 					<h2>Scholarships &amp; Financial Aid</h2>
 					<%= render :partial => 'scholarship_applications' %>
-					<br>
-					<%= link_to 'Add scholarship', 
-								new_participant_scholarship_application_path(@participant),
-								:class => "add button" %>
+					<p><%= link_to 'Add scholarship', 
+													new_participant_scholarship_application_path(@participant),
+													:class => "add button" %></p>
+					
+					<%= render :partial => "fafsas" if @participant.respond_to?(:fafsas) %>
 				</div>
 			<% end -%>
 

@@ -8,7 +8,17 @@ Participant.object_filters.each do |object_filter|
 	filter_html_attributes << "data-filter-#{object_filter.id}=#{participant.passes_filter?(object_filter)}" if object_filter.display_now?
 end
 -%>
-<tbody id="<%= dom_id %>" class="filterable" <%= filter_html_attributes.join(" ") %>>
+
+<% 
+if @stages
+	stages = []
+	@stages.each do |stage, participant_ids|
+		stages << stage if participant_ids.include?(participant.id)
+	end
+end
+-%>
+
+<tbody id="<%= dom_id %>" class="filterable" <%= filter_html_attributes.join(" ") %> data-stages="<%= stages.join(" ") if stages %>">
 	
 	<%- 
 	collection ||= (participant.instance_eval(report.pluralize) rescue []) 
@@ -23,8 +33,8 @@ end
 						:participant => participant, 
 						:report => report, 
 						:row_count => (collection.empty? ? 1 : collection.size),
-						:row_index => row_index 
+						:row_index => row_index,
+						:filter_html_attributes => filter_html_attributes
 					} %>
 	<% end %>
-	
 </tbody>

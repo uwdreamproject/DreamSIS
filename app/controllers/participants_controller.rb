@@ -87,10 +87,22 @@ class ParticipantsController < ApplicationController
 
   def college
     @college = Institution.find(params[:college_id].to_i)
-    @participants = Participant.attending_college(@college.try(:id))
+    @participants = []
+    @stages = CollegeApplication::Stages
 		@title << @college
 		@cache_key = fragment_cache_key(:action => :college, :id => @college.try(:id), :format => :xlsx)
     @export = ParticipantsReport.for_key(@cache_key)
+
+    if request.xhr?
+      @participants = @college.interested_participants
+      @stages = {}
+      for stage in CollegeApplication::Stages
+        stage_participants = @college.try("#{stage}_participants")
+        @stages[stage] = stage_participants.collect(&:id)
+        @participants += stage_participants
+      end
+      @participants = @participants.flatten.uniq.compact.sort
+    end
     
     respond_to do |format|
       format.html { render :action => 'index' }
@@ -212,8 +224,11 @@ class ParticipantsController < ApplicationController
 		if @participant.avatar?
 			av = params[:size] ? @participant.avatar.versions[params[:size].to_sym] : @participant.avatar
 			return send_default_photo(params[:size]) if av.nil?
-			return send_data(av.read, :disposition => 'inline', :type => 'image/jpeg')
-		end
+      # return send_data(av.read, :disposition => 'inline', :type => 'image/jpeg')
+      return redirect_to av.url
+    else
+      return send_default_photo(params[:size]) if av.nil?
+    end
   end
 	
   def event_attendances
@@ -436,7 +451,7 @@ class ParticipantsController < ApplicationController
   def send_default_photo(size)
 		filename = size == "thumb" ? "blank_avatar_thumb.png" : "blank_avatar.png"
     send_file File.join(Rails.root, "public", "images", filename), 
-              :disposition => 'inline', :type => 'image/png', :status => 404
+              :disposition => 'inline', :type => 'image/png', :status => 203
   end  
 
 	def respond_to_xlsx

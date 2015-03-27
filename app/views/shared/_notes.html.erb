@@ -1,32 +1,19 @@
-<% full ||= false %>
-<% include_other ||= [] %>
-<% start_date ||= nil %>
-<% end_date ||= nil %>
 <% 
-objects = []
+start_date ||= nil
+end_date ||= nil
 conditions = ["created_at >= ? AND created_at <= ?", start_date, end_date] if start_date && end_date
-objects << notes.notes.find(:all, :conditions => conditions)
-if include_other
-	include_other.each do |other|
-		objects << notes.send(other) if notes.respond_to?(other)
-	end
-	objects.flatten!
-end
-
+objects = notes.notes.where(conditions).order("created_at DESC")
+previous_date = nil
  %>
 
-<div class="<%= "full" if full %>">
-	<table class="" id="notes_<%= notes.id %>">
-		<%- current_date = nil -%>
-		<% for note in objects.sort_by(&:created_at).reverse %>
-			<% if note.allows?(@current_user) %>
-				<%= render :partial => "shared/note_rowset_header", 
-							:object => note if note.created_at.to_date != current_date  %>
-				<%= render :partial => "/shared/note", :object => note  %>
-				<%- current_date = note.created_at.to_date if note.created_at.to_date != current_date -%>
-			<% end -%>
+<div class="notes">
+	<% for note in objects %>
+		<% if note.allows?(@current_user) %>
+			<%= date_interval_tag(previous_date, note.created_at) %>
+			<%= render :partial => "/shared/note", :object => note  %>
+			<%- previous_date = note.created_at.to_date -%>
 		<% end -%>
-	</table>	
+	<% end -%>
 </div>
 
 <% if notes.notes.empty? %>

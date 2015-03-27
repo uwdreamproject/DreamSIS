@@ -51,7 +51,7 @@ class ParticipantResourceController < ParticipantsController
     respond_to do |format|
       if @object.save
         flash[:notice] = "#{self.class.object_name.titleize} was successfully created."
-        format.html { redirect_to(@participant) }
+        format.html { redirect_to participant_path(@participant, :anchor => "!/section/#{self.class.objects_name}") }
         format.xml  { render :xml => @object, :status => :created, :location => @participant }
       else
         format.html { render :action => "new" }
@@ -63,11 +63,10 @@ class ParticipantResourceController < ParticipantsController
   def update
     @object = @participant.instance_eval("#{self.class.objects_name}.find(#{params[:id]})")
     load_variables
-
     respond_to do |format|
       if @object.update_attributes(params[self.class.object_name])
         flash[:notice] = "#{self.class.object_name.titleize} was successfully updated."
-        format.html { redirect_to(@participant) }
+        format.html { redirect_to participant_path(@participant, :anchor => "!/section/#{self.class.objects_name}") }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -82,7 +81,7 @@ class ParticipantResourceController < ParticipantsController
     load_variables
 
     respond_to do |format|
-      format.html { redirect_to(self.instance_eval("participant_#{self.class.object_names}_path")) }
+      format.html { redirect_to participant_path(@participant, :anchor => "!/section/#{self.class.objects_name}") }
       format.xml  { head :ok }
     end
   end

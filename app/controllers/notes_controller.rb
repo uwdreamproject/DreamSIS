@@ -29,7 +29,7 @@ class NotesController < ApplicationController
     respond_to do |format|
       if @note.update_attributes(params[:note] || params[:document])
         flash[:notice] = "Successfully updated note."
-        format.html { redirect_to @note.notable }
+        format.html { redirect_to polymorphic_path(@note.notable, :anchor => "!/section/notes/#{@note.id}") }
         format.js
       else
         format.html { render :action => "edit" }

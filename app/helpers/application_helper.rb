@@ -94,4 +94,24 @@ module ApplicationHelper
       end
   end
   
+  def date_interval_tag(date1, date2)
+    return nil if date1.nil? || date2.nil?
+    date1 = date1.to_date
+    date2 = date2.to_date
+    days_diff = (date1 - date2).to_i
+    if days_diff < 7
+      return nil
+    elsif days_diff < 14
+      klass = "short"
+      output = distance_of_time_in_words(date1, date2)
+    elsif days_diff < 30
+      klass = "medium"
+      output = distance_of_time_in_words(date1, date2)
+    else
+      klass = "long"
+      output = distance_of_time_in_words(date1, date2)
+    end
+    content_tag(:div, output, :class => "date-interval #{klass}")
+  end
+  
 end

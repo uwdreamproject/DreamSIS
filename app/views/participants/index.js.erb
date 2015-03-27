@@ -1,3 +1,13 @@
-$("#participants_table").html("<%=j render('participants_table') %>").removeClass("loading")
+$("#participants_table")
+  .html("<%=j render('participants_table') %>")
+  .removeClass("loading")
+  .attr("data-report", "<%= @report %>")
+
+// history.pushState({'report' : '<%= @report %>'}, '<%= @report.titleize %>', '?report=<%= @report %>')
+
+$("#stages_selector").html("<%=j render('stages') %>")
+$("#stages_selector a[data-stage]").click(clickStageSelector)
+updateFiltersWithLocationHash()
 executeFilters()
 updateRecordCount()
+
