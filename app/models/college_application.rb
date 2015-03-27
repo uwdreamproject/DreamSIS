@@ -14,7 +14,7 @@ class CollegeApplication < ActiveRecord::Base
   before_destroy :destroy_college_mapper_college, :if => :do_college_mapper_functions?
   after_create :create_college_mapper_college, :if => :do_college_mapper_functions?  
   
-  Stages = %w[interested applied planning enrolled graduated]
+  Stages = %w[interested applied planning enrolled current graduated]
   
   attr_accessor :institution_name
 

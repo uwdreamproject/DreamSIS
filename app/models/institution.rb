@@ -9,6 +9,7 @@ class Institution < ActiveRecord::Base
   has_many :applied_participants, :class_name => "Participant", :through => :college_applications, :conditions => "date_applied IS NOT NULL", :source => :participant, :uniq => true
   has_many :planning_participants, :class_name => "Participant", :foreign_key => "college_attending_id", :source => :participant, :uniq => true
   has_many :enrolled_participants, :class_name => "Participant", :through => :college_enrollments, :source => :participant, :uniq => true
+  has_many :current_participants, :class_name => "Participant", :through => :college_enrollments, :source => :participant, :uniq => true, :conditions => ["ended_on IS NULL AND began_on > ?", 9.months.ago]
   has_many :graduated_participants, :class_name => "Participant", :through => :college_degrees, :source => :participant, :uniq => true
 
   alias_attribute :name, :instnm
