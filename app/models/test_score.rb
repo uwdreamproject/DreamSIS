@@ -11,7 +11,7 @@ class TestScore < ActiveRecord::Base
   serialize :section_scores
   before_save :update_section_scores_attribute
 
-  default_scope :joins => :test_type, :order => "test_types.name ASC, taken_at ASC"
+  default_scope :include => :test_type, :order => "test_types.name ASC, taken_at ASC"
 
   after_save :update_filter_cache
   after_destroy :update_filter_cache
