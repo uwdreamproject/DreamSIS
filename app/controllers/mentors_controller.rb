@@ -1,6 +1,8 @@
 class MentorsController < ApplicationController  
   protect_from_forgery :except => [:auto_complete_for_mentor_fullname] 
   skip_before_filter :login_required, :check_authorization, :save_user_in_current_thread, :check_if_enrolled, :only => [:check_if_valid_van_driver]
+
+  caches_action :photo
   
   def index
     return redirect_to Mentor.find(params[:id]) if params[:id]
@@ -74,6 +76,7 @@ class MentorsController < ApplicationController
   def update
     @mentor = Mentor.find(params[:id])
     @mentor.validate_name = true
+    expire_action :action => :photo
 
     respond_to do |format|
       if @mentor.update_attributes(params[:mentor])
