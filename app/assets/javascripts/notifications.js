@@ -1,10 +1,11 @@
 // Bind our global "loading" div to all ajax events
 $(document).ajaxStart(function() {
   $('#indicator').addClass("visible")
-// }).ajaxError(function( event, jqxhr, settings, thrownError ) {
-//   $('#indicator').removeClass("visible")
-//   updateFlashes( { "error" : "There was a problem processing your request. Your data was not saved." })
-//   console.log(thrownError)
+
+}).ajaxError(function( event, xhr, settings, thrownError ) {
+  $('#indicator').removeClass("visible")
+  updateFlashes( { "error" : "There was a problem processing your request. If you were trying to save a record, your data was probably not saved." })
+  console.log(thrownError)
 
 }).ajaxSuccess(function(event, xhr, settings) {
   var flash = xhr.getResponseHeader('X-Flash-Messages')

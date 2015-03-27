@@ -1,19 +1,20 @@
-<div id="avatar_container">
+<div class="photo-container">
+	<a class="avatar" style="background-image: url(<%= participant_avatar_path(@participant, :small) %>);" onClick="$(this).siblings('.controls').toggleClass('expanded'); return false;">
+		<em></em>
+	</a>
 
-	<%= link_to_function "Change picture", "$('avatar_container').addClassName('expanded')", :class => "edit button" %>
-
-	<%= image_tag participant_avatar_url(@participant, :medium) %>
-	
-	<% form_for(@participant, :html => {:id => "avatar_form", :multipart => true}) do |f| %>
-		<%= default_form_errors(f) %>
-
-		<%= f.file_field :avatar %>
-        <%= f.submit "Save" %>
-        <%= separator %>
-        <%= link_to_function "Cancel", "$('avatar_container').removeClassName('expanded')", :class => "cancel" %>
+	<div class="controls arrow-box arrow-top">
+		<%= image_tag @participant.avatar.medium if @participant.avatar? %>
 		
-		<%= observe_field "participant_avatar", :function => "element.form.submit()" %>
-	<% end %>
+		<%= semantic_form_for(@participant, :html => {:id => "avatar_form", :multipart => true}) do |f| %>
+		<h3>Choose a new picture:</h3>
+		
+			<%= default_form_errors(f) %>
 
+			<%= f.file_field :avatar %>
+		    <%= f.submit "Save" %>
+		    <%= separator %>
+		    <%= link_to_function "Cancel", "$(this).parents('.controls').removeClass('expanded')", :class => "cancel" %>
+		<% end %>
+	</div>
 </div>
-

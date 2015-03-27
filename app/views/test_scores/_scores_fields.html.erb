@@ -9,38 +9,17 @@
 						:input_html => { 
 							:class => "section_score", 
 							:size => 5,
-							:onChange => "updateTotalScore('test_score_total_score', '#{h(f.object.try(:test_type).try(:score_calculation_method))}')" 
+							"data-score-calculation-method" => f.object.try(:test_type).try(:score_calculation_method)
 						} %>
 		<% end %>
 	<% end %>
 
 	<%= f.input :total_score, 
+				:as => :string,
 				:input_html => { :size => 5 }, 
 				:wrapper_html => { :class => "sameline-hint" },
 				:hint => ("out of #{f.object.test_type.try(:maximum_total_score).to_i}" unless f.object.test_type.try(:maximum_total_score).blank?) %>
 				
-	<%- javascript_tag do -%>
-	function updateTotalScore(total_element_id, calculation_method) {
-		var elements = $$('.section_score');
-		var new_total_score;
-		var scores = new Array();
-		for(var i=0; i < elements.length; i++) {
-			if(elements[i].value != "") {
-				scores[i] = parseInt(elements[i].value);
-			}
-		}
-		if (calculation_method == 'average') {
-			new_total_score = average(scores);
-        } else if (calculation_method == 'rounded-average') {
-            new_total_score = average_and_round(scores);
-        } else {
-			new_total_score = sum(scores);
-		}
-		$(total_element_id).value = new_total_score;
-		return new_total_score;
-	}
-	<% end %>
-
     <%= f.input :passed, :hint => "Did the student pass the minimum score?" if f.object.test_type.try(:passable?) %>
 	
 <% end %>

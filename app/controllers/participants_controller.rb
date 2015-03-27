@@ -7,6 +7,8 @@ class ParticipantsController < ApplicationController
 	before_filter :set_title_prefix
   before_filter :set_report_type
 
+  caches_action :avatar
+
   # GET /participants
   # GET /participants.xml
   def index
@@ -225,7 +227,9 @@ class ParticipantsController < ApplicationController
 			av = params[:size] ? @participant.avatar.versions[params[:size].to_sym] : @participant.avatar
 			return send_default_photo(params[:size]) if av.nil?
 			return send_data(av.read, :disposition => 'inline', :type => 'image/jpeg')
-		end
+    else
+      return send_default_photo(params[:size]) if av.nil?
+    end
   end
 	
   def event_attendances
@@ -291,6 +295,7 @@ class ParticipantsController < ApplicationController
   # PUT /participants/1.xml
   def update
     @participant = Participant.find(params[:id])
+    expire_action :action => :avatar
 
     unless @current_user && @current_user.can_edit?(@participant)
       return render_error("You are not allowed to edit that participant.")
@@ -448,7 +453,7 @@ class ParticipantsController < ApplicationController
   def send_default_photo(size)
 		filename = size == "thumb" ? "blank_avatar_thumb.png" : "blank_avatar.png"
     send_file File.join(Rails.root, "public", "images", filename), 
-              :disposition => 'inline', :type => 'image/png', :status => 404
+              :disposition => 'inline', :type => 'image/png', :status => 203
   end  
 
 	def respond_to_xlsx

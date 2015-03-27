@@ -18,6 +18,6 @@
 	<%= f.input :sex, :collection => {"Male" => "M", "Female" => "F", "No Response" => "NR"}, :include_blank => true, :label => "Sex/Gender" %>
 	<%= f.input :shirt_size, :as => :select, :collection => %w[XS S M L XL XXL 3XL] %>
 	
-	<%= f.input :avatar %>
+	<%= f.input :avatar, :label => "Profile Picture" %>
 	
 <%- end -%>

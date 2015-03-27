@@ -18,28 +18,27 @@ class AvatarUploader < CarrierWave::Uploader::Base
   def default_url
     "/images/blank_avatar_" + version_name + ".png"
   end
-
-  # Process files as they are uploaded.
-  #     process :scale => [200, 300]
-  # process :resize_to_fill => [200, 200]
-  # process :convert => 'jpg'
   
-  #     def scale(width, height)
-  #       # do something
-  #     end
-
-  # Create different versions of your uploaded files
-	  version :thumb do
-	    process :resize_to_fill => [50, 50]
-	  end
-	
+  # Create different versions of your uploaded files	
 	version :mini do
 		process :resize_to_fill => [32, 32]
 	end
+
+  version :thumb do
+    process :resize_to_fill => [50, 50]
+  end
+
+  version :small do
+    process :resize_to_fill => [150, 150]
+  end
 	
 	version :medium do
-		process :resize_to_fill => [175, 175]
+    process :resize_to_fill => [300, 300]
 	end
+  
+  version :large do
+    process :resize_to_limit => [600, 600]
+  end
 
   # Add a white list of extensions which are allowed to be uploaded,
   # for images you might use something like this:

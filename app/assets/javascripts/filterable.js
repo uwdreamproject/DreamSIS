@@ -140,7 +140,7 @@ function clickStageSelector(event) {
 function updateLocationHashWithFilters() {
   var filterHash = []
   $(".filter_checkbox.enabled").each(function (i, element) {
-     filterHash.push($(this).data("target-filter-id") + "|" + $(this).val())
+     filterHash.push($(this).data("target-filter-id") + ":" + $(this).val())
   })
   
   var stagesHash = []
@@ -168,10 +168,10 @@ function updateFiltersWithLocationHash() {
       var key = hashParts[i].split("=")[0], stringValue = hashParts[i].split("=")[1]
       
       if (key == "filters") {
-        // stringValue looks like "1|true,2|true,3|true"
+        // stringValue looks like "1:true,2:true,3:true"
         var value = stringValue.split(",")
         for (var j=0; j < value.length; j++) {
-          var filter_id = value[j].split("|")[0], filter_value = value[j].split("|")[1]
+          var filter_id = value[j].split(":")[0], filter_value = value[j].split(":")[1]
           $(".filter_checkbox[data-target-filter-id=" + filter_id + "]").addClass("enabled").attr("value", filter_value)
         }
       }
