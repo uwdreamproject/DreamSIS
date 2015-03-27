@@ -3785,7 +3785,7 @@ tr.highlightless:hover {
 	background-color: inherit;
 }
 
-tr.newly_added {
+.newly_added {
 	background: #bec;
 }
 
@@ -4980,6 +4980,10 @@ body.rsvp.event .details .rsvp_status {
 
 body.rsvp.event table.rsvp td {
 	border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+#current_drivers {
+  margin-bottom: 3em;
 }
 
 #chapters_sidebar .ch-title {

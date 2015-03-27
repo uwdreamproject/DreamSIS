@@ -1,9 +1,16 @@
 <h2><%= @mentor.display_name %></h2>
 <% prev = @mentor.driver_form_offense_response %>
-<p><strong>Prev. Convictions:</strong> <%= prev ? sanitize(prev) : "No Response" %></p>
+<p><strong>Prev. Convictions:</strong> <%= !prev.blank? ? sanitize(prev) : "No Response" %></p>
+<%- if Customer.link_to_uw? %>
+	<p><%= link_to "Recheck UWFS Training", driver_training_status_mentor_url, :class => 'sync button', :id => 'check_uwfs_button' %>
+	<span id="uwfs-error"></span></p>
+<%- end -%>
 <hr />
 <%= semantic_form_for @mentor, :url => driver_update_mentor_path(@mentor.id), :html => {:id => 'driver-edit-form'} do |f| %>
     <%= f.inputs :name => "Driver Information" do -%>
+	<%- if Customer.link_to_uw? -%>
+		<%= f.input :uwfs_training_date, :input_html => {:disabled=> true} %>
+	<%- end -%>
         <%= f.input :van_driver_training_completed_at, :hint => link_to_now("mentor_van_driver_training_completed_at") %>
         <%= f.input :driver_form_remarks,
                     :hint => "Enter #{link_to_function('OK',
@@ -18,4 +25,6 @@
         <%= link_to "Cancel", "javascript:clearForm()", :class => 'cancel button' %>
     <% end -%>
 <% end %>
-<script>registerForm(<%= @mentor.id %>)</script>
+<%= javascript_tag do %>
+	registerForm(<%= @mentor.id %>)
+<% end %>
