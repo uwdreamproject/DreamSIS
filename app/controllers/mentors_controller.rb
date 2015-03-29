@@ -231,8 +231,17 @@ class MentorsController < ApplicationController
   
   def van_drivers
     @term = (t = params[:new_term_id] || params[:term_id]) ? Term.find(t) : Term.current_term
-    @mentors = Mentor.valid_van_drivers
-    @current_drivers = Mentor.valid_van_drivers(@term)
+    if params[:group]
+      @group_title = MentorTermGroup.find(params[:group]).title
+      @mentors = Mentor.valid_van_drivers(@term.id, params[:group])
+    else
+      @groups = if @current_user.admin?
+                  @term.mentor_term_groups.collect(&:id)
+                else # is a lead
+                  @current_user.person.current_lead_mentor_terms.collect(&:mentor_term_group).collect(&:id)
+                end
+      @mentors = Mentor.valid_van_drivers(@term.id)
+    end
   end
   
   def check_if_valid_van_driver

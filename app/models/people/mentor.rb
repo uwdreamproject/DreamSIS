@@ -321,9 +321,13 @@ Documentation for each filter:
   # Returns all mentors who have completed a van driver training (but may not have passed
   # other customer driving requirements) for the ActiveRecord term given if there is one, or
   # all such drivers if a term is not given
-  def self.valid_van_drivers(term = nil)
-    if term
-      term.mentors.select{|m| m.van_driver_training_completed_at}
+  def self.valid_van_drivers(term_id = nil, mtg_id = nil)
+    if term_id
+      conditions = {"mentor_term_groups.term_id" => term_id}
+      if mtg_id
+        conditions["mentor_term_groups.id"] = mtg_id
+      end
+      joins(:mentor_term_groups).where(conditions).where("van_driver_training_completed_at IS NOT NULL")
     else
       find(:all, :conditions => ["van_driver_training_completed_at IS NOT NULL"])
     end
