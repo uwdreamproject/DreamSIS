@@ -25,7 +25,7 @@ function registerForm(id) {
                 if (data["error"] == null) {
                     if (data["saved"] != null) {
                         getDriverForm(id);
-                        $(".mentor_" + id + " > td:nth-child(4)").each(function(i){
+                        $(".mentor_" + id + " > td:nth-child(5)").each(function(i){
                             updateUWFSDate($( this ), data["date"]);
                         });
                     } else if (data["changed"] != null) {
@@ -74,7 +74,7 @@ function checkAllCurrentDrivers() {
                     if (data["saved"] != null) {
                         savedCount++;
                         if (data["date"] != null) {
-                            $(".mentor_" + id + " > td:nth-child(4)").each(function(i){
+                            $(".mentor_" + id + " > td:nth-child(5)").each(function(i){
                                 updateUWFSDate($( this ), data["date"]);
                              });
                         }

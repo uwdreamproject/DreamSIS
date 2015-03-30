@@ -1,0 +1,20 @@
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>E-mail</th>
+			<th>Phone</th>
+			<th>Training Date</th>'
+			<%- if Customer.link_to_uw? %><th>UWFS Training Date</th><% end -%>
+            <th class="centered">Signed Form?</th>
+            <th class="centered">Convictions?</th>
+			<th colspan=4>Functions</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<%- if @mentors.empty? -%>
+			<tr class="empty">
+				<td colspan=10>No <%= Customer.mentors_label %> are currently trained to drive.</td>
+			</tr>
+		<% end -%>
+	</tbody>
