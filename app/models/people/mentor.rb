@@ -251,6 +251,11 @@ Documentation for each filter:
     conditions[:mentor_term_groups][:location_id] = location.try(:id) if location
     mentor_terms.find :all, :joins => [:mentor_term_group], :conditions => conditions
   end
+  
+  # Returns the locations for each of the #current_mentor_term_groups.
+  def current_locations
+    current_mentor_term_groups.collect(&:mentor_term_group).collect(&:location).flatten.uniq.compact
+  end
 
   # Returns the high school records for the high schools at which this mentor is a high school lead.
   def current_lead_at

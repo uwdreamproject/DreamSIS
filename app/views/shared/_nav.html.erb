@@ -1,4 +1,5 @@
 <%- cache ["shared/nav", Customer.cache_key, @current_user.cache_key, Date.today.to_s].join("/") do -%>
+<%- if @current_user.display_navbar? # keep this within the cache fragment so the lookup doesn't happen every time -%>
 	<div class="menu" id="main-nav">
 
 	<ul>
@@ -24,18 +25,18 @@
 					<li class="search auto_complete">
 						<input type="input" class="search autocomplete-search" placeholder="Search <%= Customer.participants_label %>" data-source="<%= auto_complete_for_participant_fullname_participants_url %>" data-target="<%= participant_url("id") %>" />
 					</li>
-					<li class="primary list"><%= link_to "All #{Customer.participants_Label}", participants_url %></li>
+					<li class="primary list admin"><%= link_to "All #{Customer.participants_Label}", participants_url %></li>
 					<li class="add"><%= link_to "Add new #{Customer.participant_label}", new_participant_url %></li>
 					<%- if Customer.uses_clearinghouse? && @current_user.admin? -%>
-						<li class="nsc"><%= link_to raw("National Student Clearinghouse&reg; Requests"), clearinghouse_requests_url %></li>
+						<li class="nsc admin"><%= link_to raw("National Student Clearinghouse&reg; Requests"), clearinghouse_requests_url %></li>
 					<% end %>
 					<% for cohort in Participant.cohorts %>
-						<li><%= link_to "#{cohort.to_s} Cohort", cohort_url(cohort) %></li>
+						<li class="admin"><%= link_to "#{cohort.to_s} Cohort", cohort_url(cohort) %></li>
 					<% end -%>
 				</ul>
 			</div>
 		</li>
-		<li class="trigger-autocomplete"><%= link_to Customer.mentors_Label, "#" %>
+		<li class="trigger-autocomplete admin"><%= link_to Customer.mentors_Label, "#" %>
 			<div>
 				<ul>
 					<li class="search auto_complete">
@@ -51,18 +52,25 @@
 				</ul>
 			</div>
 		</li>
-		<li><%= link_to "High Schools", "#", :onClick => "return false" %>
-			<div class="double-wide">
+		<li class=""><%= link_to "High Schools", "#", :onClick => "return false" %>
+			<div class="double-wide-if-admin">
 				<ul>
-					<li class="primary list"><%= link_to "Partner High Schools", high_schools_url %></li>
-					<li class="primary report"><%= link_to "Current Stats", stats_high_schools_url %></li>
+					<li class="primary list admin"><%= link_to "Partner High Schools", high_schools_url %></li>
+					<li class="primary report admin"><%= link_to "Current Stats", stats_high_schools_url %></li>
 					<% for high_school in HighSchool.partners %>
-						<li><%= link_to "#{high_school.name}", high_school_url(high_school) %></li>
+						<li class="admin"><%= link_to "#{high_school.name}", high_school_url(high_school) %></li>
+					<% end -%>
+					
+					<%- for high_school in @current_user.current_locations -%>
+						<li class="divider"><h3><%= high_school.name %></h3></li>
+						<li class="list"><%= link_to "All #{Customer.mentees_label}", high_school_cohort_path(high_school, Participant.current_cohort) %></li>
+						<li class="edit"><%= link_to "Take attendance", attendance_high_school_visits_path(high_school, Term.current_term) %></li>
+						<li class="report"><%= link_to "Statistics", stats_high_school_path(high_school) %></li>
 					<% end -%>
 				</ul>
 			</div>
 		</li>
-		<li class="trigger-autocomplete"><%= link_to "Colleges", "#" %>
+		<li class="trigger-autocomplete admin"><%= link_to "Colleges", "#" %>
 			<div class="double-wide">
 				<ul>
 					<li class="search auto_complete">
@@ -79,7 +87,7 @@
 				</ul>
 			</div>
 		</li>
-		<li><%= link_to "Events", "#", :onClick => "return false" %>
+		<li class="admin"><%= link_to "Events", "#", :onClick => "return false" %>
 			<div>
 				<ul>
 					<li class="primary list"><%= link_to "All Events", events_url %></li>
@@ -90,7 +98,7 @@
 				</ul>
 			</div>
 		</li>	
-		<li><%= link_to "Other", "#", :onClick => "return false" %>
+		<li class="admin"><%= link_to "Other", "#", :onClick => "return false" %>
 			<div>
 				<ul>
 					<% if @current_user.admin? && Customer.current_customer %>
@@ -114,4 +122,5 @@
 	</ul>
 
 	</div>
+<% end %>
 <% end %>
