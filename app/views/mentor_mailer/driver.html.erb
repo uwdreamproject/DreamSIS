@@ -7,7 +7,7 @@
     <h1>Complete your <%= Customer.name_label %> Driver Conduct Agreement</h1>
 
     <p>
-      Please complete the <%= link_to "driver conduct agreement", url_for(:controller => 'mentor_signup', :action => 'driver_form', :only_path => false) %> to confirm your status as a driver
+      Please complete the <%= link_to "driver conduct agreement", url_for(:host => (Customer.current_customer.url_shortcut + "." + ActionMailer::Base.default_url_options[:host]), :controller => 'mentor_signup', :action => 'driver_form', :only_path => false) %> to confirm your status as a driver
       for <%= Customer.name_label %>. You will not be able to drive until you have done so.
     </p>
 
