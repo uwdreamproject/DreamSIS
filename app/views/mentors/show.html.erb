@@ -125,6 +125,16 @@
 				<% end -%>
 			</dd>
 		<% end -%>
+		<%- if Customer.require_conduct_form? && @mentor.respond_to?(:signed_conduct_form?) -%>
+			<dt>Conduct Agreement</dt>
+			<dd>
+				<% if @mentor.signed_conduct_form? %>
+					Signed on <%= @mentor.conduct_form_signed_at.to_s(:short_date) %>
+				<%- else -%>
+					<span class="error-message">Not signed</span>
+				<% end -%>
+			</dd>
+		<% end -%>
 
 	</dl>
 </div>
