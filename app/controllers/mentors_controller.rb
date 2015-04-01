@@ -231,16 +231,17 @@ class MentorsController < ApplicationController
   
   def van_drivers
     @term = (t = params[:new_term_id] || params[:term_id]) ? Term.find(t) : Term.current_term
-    if params[:group]
-      @group_title = MentorTermGroup.find(params[:group]).title
-      @mentors = Mentor.valid_van_drivers(@term.id, params[:group])
+    if params[:group_id]
+      @group_title = MentorTermGroup.find(params[:group_id]).title
+      @page_header_title = @group_title
+      @mentors = Mentor.valid_van_drivers(@term.id, params[:group_id])
+      @ajax_load = false
     else
-      @groups = if @current_user.admin?
-                  @term.mentor_term_groups.collect(&:id)
-                else # is a lead
-                  @current_user.person.current_lead_mentor_terms.collect(&:mentor_term_group).collect(&:id)
-                end
+      @term.mentor_term_groups.collect(&:id)
       @mentors = Mentor.valid_van_drivers(@term.id)
+      @page_header_title = @term.is_a?(Quarter) ? @term.title : @term.to_param
+      @group_ids = @term.mentor_term_groups.collect(&:id)
+      @ajax_load = !@mentors.empty?
     end
   end
   

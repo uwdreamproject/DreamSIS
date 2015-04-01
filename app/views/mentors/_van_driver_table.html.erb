@@ -12,9 +12,11 @@
 	</thead>
 
 	<tbody>
-		<%- if @mentors.empty? -%>
+		<% if @mentors.empty? -%>
 			<tr class="empty">
 				<td colspan=10>No <%= Customer.mentors_label %> are currently trained to drive.</td>
 			</tr>
-		<% end -%>
+		<% elsif !@ajax_load -%>
+			<%= render :partial=> "mentor_driver", :collection => @mentors %>
+		<%- end %>
 	</tbody>
