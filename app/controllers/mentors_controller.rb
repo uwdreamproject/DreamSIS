@@ -211,6 +211,14 @@ class MentorsController < ApplicationController
     end
   end
 
+  def driver_training_status
+    if Customer.link_to_uw?
+      render :json => UwDriver.check_uwfs_training(params[:id])
+    else
+      return render :text => "Action not defined for current customer", :status => 400
+    end
+  end
+
   def event_status
     @term = Term.find(params[:term_id])
     @mentors = @term.mentors
@@ -222,7 +230,18 @@ class MentorsController < ApplicationController
   end
   
   def van_drivers
-    @mentors = Mentor.valid_van_drivers
+    @term = (t = params[:new_term_id] || params[:term_id]) ? Term.find(t) : Term.current_term
+    if params[:group]
+      @group_title = MentorTermGroup.find(params[:group]).title
+      @mentors = Mentor.valid_van_drivers(@term.id, params[:group])
+    else
+      @groups = if @current_user.admin?
+                  @term.mentor_term_groups.collect(&:id)
+                else # is a lead
+                  @current_user.person.current_lead_mentor_terms.collect(&:mentor_term_group).collect(&:id)
+                end
+      @mentors = Mentor.valid_van_drivers(@term.id)
+    end
   end
   
   def check_if_valid_van_driver

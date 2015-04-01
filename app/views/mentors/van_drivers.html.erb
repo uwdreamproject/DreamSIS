@@ -1,30 +1,49 @@
-<%= javascript_include_tag 'driver_form.js' %>
+<h1>Drivers for <%= @term.is_a?(Quarter) ? @term.title : @term.to_param %></h1>
 
-<h1>Current Trained Drivers</h1>
-
-<table>
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>E-mail</th>
-			<th>Training Date</th>
-            <th class="centered">Signed Form?</th>
-            <th class="centered">Convictions?</th>
-			<th colspan=4>Functions</th>
-		</tr>
-	</thead>
-
-	<tbody>
-		<%= render :partial => "mentor_driver", :collection => @mentors %>
-		<%- if @mentors.empty? -%>
-			<tr class="empty">
-				<td colspan=10>No <%= Customer.mentors_label %> are currently trained to drive.</td>
-			</tr>
-		<% end -%>
-	</tbody>
+<table id="current_drivers" class="loading">
 </table>
 
 <div id="sidebar">
-  <h3>Update Driver Status</h3>
-  <div id="form-container">Click a row to begin editing</div>
+	<p><%= render :partial => "shared/term_select",
+				:locals => { :form_url => van_drivers_mentors_path },
+				:object => @term %></p>
+	<%- if @current_user.admin? -%>
+		<hr />
+		<h3>Update Driver Status</h3>
+		<div id="form-container">
+			<p>Click a row to begin editing</p>
+			<%- if Customer.link_to_uw? -%>
+			<p>--OR--</p>
+			<%= link_to "Check UWFS Training for #{@term.is_a?(Quarter) ? @term.title : @term.to_param}", driver_training_status_mentor_url(999), :class => 'sync button', :id => 'check_all_button' %>
+			<%- end -%>
+		</div>
+	<%- end -%>
 </div>
+
+<%= javascript_tag do %>
+	<%#- Create an array of result subtables for each mentor term group,
+	then add the results to the array as we get them back, and once all
+	have finished, append the results to the table in the original order -%>
+	$( document ).on("ajaxStart.getDrivers", function(event) {
+		resultArray = new Array(<%= @groups.size %>)
+	}).on("ajaxStop.getDrivers", function(event) {
+		$("#current_drivers").removeClass("loading");
+		$("#current_drivers").html("<%=j render "van_driver_table" %>");
+		for (var i = 0; i < <%= @groups.size %>; i++) {
+			$("#current_drivers").append(eval(resultArray[i]));
+		}
+		$( document ).off("ajaxStop.getDrivers");
+	});
+
+	<%- @groups.each_with_index do |group, i| -%>
+		$.ajax({ url: "<%= url_for({:group => group}) %>",
+			dataType: "script",
+			success: function(data) { resultArray[<%= i %>] = data }
+		});
+	<%- end -%>
+	<%- if @current_user.admin? -%>
+		sidebar_content = $("#sidebar").html();
+		$("#check_all_button").click(function() { checkAllCurrentDrivers(); return false; });
+	<%- end -%>
+<% end %>
+<%= javascript_include_tag 'driver_form.js' if @current_user.admin? %>

@@ -68,7 +68,7 @@ class Customer < ActiveRecord::Base
   end
 
   def require_conduct_form?
-    !risk_form_content.blank?
+    !conduct_form_content.blank?
   end
 
   def require_driver_form?
