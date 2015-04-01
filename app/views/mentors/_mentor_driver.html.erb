@@ -1,7 +1,13 @@
-<tr id="mentor_<%= mentor_driver.id %>" class="<%= 'bright-red-background' if !mentor_driver.valid_van_driver?%>" onClick="loadForm(<%= mentor_driver.id %>)">
+<tr class="mentor_<%= mentor_driver.id %><%= ' bright-red-background' if !mentor_driver.valid_van_driver?%>"
+  <%- if @current_user.admin? -%>
+  onClick="getDriverForm(<%= mentor_driver.id %>)" data-needs-update="<%= mentor_driver.uwfs_training_date.nil? %>" data-mentor-id="<%= mentor_driver.id %>"
+  <%- end -%>
+>
   <td class="name"><%= link_to h(mentor_driver.fullname), mentor_driver %></td>
   <td><%= auto_link h(mentor_driver.email) %></td>
+  <td><%= number_to_phone mentor_driver.phone_mobile %></td>
   <td><%= mentor_driver.van_driver_training_completed_at.to_s(:short_date) rescue nil %></td>
+  <%- if Customer.link_to_uw? %><td><%= mentor_driver.uwfs_training_date.try(:to_s, :short_date) %></td><% end -%>
   <td class="centered">
     <%- if mentor_driver.driver_form_signature -%>
       <%= content_tag(:span, "Y", :class => 'approved tag') %>

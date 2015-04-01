@@ -145,7 +145,7 @@ class Mentor < Person
     c = self.filter_cache.try(:[], :currently_enrolled)
     return c unless c.nil?
 
-    !current_mentor_term_groups.empty?
+    !current_mentor_terms.empty?
   end
 
 =begin
@@ -237,13 +237,13 @@ Documentation for each filter:
 
   # Returns a string of the titles of current mentor term groups for this mentor.
   def current_mentor_term_groups_string
-    return "no groups" if current_mentor_term_groups.nil?
-    current_mentor_term_groups.collect(&:title).to_sentence
+    return "no groups" if (cmtgs = current_mentor_term_groups).nil?
+    cmtgs.collect(&:title).to_sentence
   end
 
-  # "Current" mentor term groups are defined as groups from either the current term AND any term marked
+  # "Current" mentor terms are defined as mentor terms from either the current term AND any term marked
   # as allowing signups. To limit this to a particular location, pass that as an option parameter.
-  def current_mentor_term_groups(location = nil)
+  def current_mentor_terms(location = nil)
     terms = Term.allowing_signups.collect(&:id)
     terms << Term.current_term.id if Term.current_term
     terms = terms.flatten.uniq
@@ -252,9 +252,19 @@ Documentation for each filter:
     mentor_terms.find :all, :joins => [:mentor_term_group], :conditions => conditions
   end
 
+  # Returns the mentor term groups associated with this mentor's current mentor terms
+  def current_mentor_term_groups(location = nil)
+    current_mentor_terms(location).collect(&:mentor_term_group)
+  end
+
   # Returns the high school records for the high schools at which this mentor is a high school lead.
   def current_lead_at
-    current_mentor_term_groups.select(&:lead?).collect(&:location)
+    current_lead_mentor_terms.collect(&:location)
+  end
+
+  # Returns the mentor terms for which this mentor is a high school lead
+  def current_lead_mentor_terms
+    current_mentor_terms.select(&:lead?)
   end
 
   # Returns true if +current_lead_at+ is not empty.
@@ -286,10 +296,19 @@ Documentation for each filter:
 
   # Returns true if this user's +van_driver_training_completed_at+ is not null and the current customer
   # requiring mentors to complete a driver form implies the mentor has OK in +driver_form_remarks+ if they have
-  # previous driving convictions
+  # previous driving convictions. Additionally, if the current customer links to uw, checks if there is a
+  # uwfs training date on file. Finally, checks if +van_driver_training_completed_at+ is less than
+  # the number of days ago defined by the customer to be valid
   def valid_van_driver?
-    van_driver_training_completed_at && (!Customer.require_driver_form? ||
-        (driver_form_signature && (!has_previous_driving_convictions || driver_form_remarks["OK"])))
+    return false if !van_driver_training_completed_at
+    valid_length = Customer.driver_training_validity_length || 0
+    if valid_length > 0
+      return false if van_driver_training_completed_at < valid_length.days.ago
+    end
+
+    (!Customer.require_driver_form? ||
+            (driver_form_signature && (!has_previous_driving_convictions || driver_form_remarks["OK"]))) &&
+    (!Customer.link_to_uw? || uwfs_training_date)
   end
 
   # Returns true if the +aliases+ attribute has anything other than blank, nil, "none", "n/a" or "no"
@@ -299,9 +318,19 @@ Documentation for each filter:
     true
   end
 
-  # Returns all mentors who are valid van drivers.
-  def self.valid_van_drivers
-    find(:all, :conditions => ["van_driver_training_completed_at IS NOT NULL"])
+  # Returns all mentors who have completed a van driver training (but may not have passed
+  # other customer driving requirements) for the ActiveRecord term given if there is one, or
+  # all such drivers if a term is not given
+  def self.valid_van_drivers(term_id = nil, mtg_id = nil)
+    if term_id
+      conditions = {"mentor_term_groups.term_id" => term_id}
+      if mtg_id
+        conditions["mentor_term_groups.id"] = mtg_id
+      end
+      joins(:mentor_term_groups).where(conditions).where("van_driver_training_completed_at IS NOT NULL")
+    else
+      find(:all, :conditions => ["van_driver_training_completed_at IS NOT NULL"])
+    end
   end
 
   # Returns true if there's a non-blank value in +huksy_card_rfid+
@@ -318,7 +347,7 @@ Documentation for each filter:
       return true if current_lead?
       return can_edit?(object)
     elsif object.is_a?(Location)
-      for mentor_term in current_mentor_term_groups
+      for mentor_term in current_mentor_terms
         return true if mentor_term.permissions_level == "any"
         return true if mentor_term.location_id == object.try(:id)
       end
@@ -339,7 +368,7 @@ Documentation for each filter:
     if object.is_a?(Participant)
       return true if participants.include?(object)
       
-      for mentor_term in current_mentor_term_groups
+      for mentor_term in current_mentor_terms
         return true if mentor_term.permissions_level == "any"
 
         if mentor_term.location_id == object.try(:high_school_id)

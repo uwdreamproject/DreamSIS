@@ -1,6 +1,6 @@
 			<tr id="mentor-<%= mentor_onboarding.id %>" class="<%= 'bright-red-background' if !mentor_onboarding.passed_basics?%>" onClick="loadForm(<%= mentor_onboarding.id %>)">
 				<td class="name"><%= link_to h(mentor_onboarding.fullname), mentor_onboarding %>
-				<p><%= h(mentor_onboarding.current_mentor_term_groups.collect{|mt| (l = mt.mentor_term_group.location) ? " * #{l.name}" : "" }.join) %></p>
+				<p><%= mentor_onboarding.current_mentor_term_groups_string %></p>
 				</td>
 				<td><%=h mentor_onboarding.email %></td>
 				<td class="centered"><%=h mentor_onboarding.sex %></td>

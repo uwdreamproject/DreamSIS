@@ -193,6 +193,7 @@ Dreamsis::Application.routes.draw do
       match :onboarding_update
       get :driver_edit_form
       match :driver_update
+      post :driver_training_status
     end
   end
   resources :mentor_term_groups do

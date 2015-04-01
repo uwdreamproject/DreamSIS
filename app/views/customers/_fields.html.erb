@@ -9,6 +9,7 @@
 	<%= f.input :require_background_checks, :label => "Require background checks for mentors" %>
 	<%= f.input :experimental, :label => "Enable experimental features" %>
 	<%= f.input :background_check_validity_length, :label => "Background Checks valid for:", :as => :select, :collection => {"90 Days" =>90, "180 Days" => 180, "1 Year" => 365, "2 Years" => 730, "Forever" => -1} %>
+	<%= f.input :driver_training_validity_length, :label => "Driver Trainings valid for:", :as => :select, :collection => {"90 Days" =>90, "180 Days" => 180, "1 Year" => 365, "2 Years" => 730, "Forever" => -1} %>
 <% end %>
 
 <%= f.inputs :name => "Allowed Login Methods" do -%>
