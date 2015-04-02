@@ -2,7 +2,10 @@
 	<td class="name"><%= link_to h(mentor_driver.fullname), mentor_driver %></td>
 	<td><%= auto_link h(mentor_driver.email) %></td>
 	<td><%= number_to_phone mentor_driver.phone_mobile %></td>
-	<td><%= mentor_driver.van_driver_training_completed_at.to_s(:short_date) rescue nil %></td>
+	<td>
+		<%- date_class = (mentor_driver.van_driver_training_expired? ? "error-message" : nil) -%>
+		<%= content_tag(:span, (mentor_driver.van_driver_training_completed_at.to_s(:short_date) rescue nil), :class => date_class) %>
+	</td>
 	<%- if Customer.link_to_uw? %>
 		<td class="uwfs-date">
 			<%- if d = mentor_driver.uwfs_training_date -%>

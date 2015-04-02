@@ -38,6 +38,8 @@ function registerForm(id) {
         });
         return false;
     });
+
+    registerDateInputHelpers();
 }
 
 function checkAllCurrentDrivers() {

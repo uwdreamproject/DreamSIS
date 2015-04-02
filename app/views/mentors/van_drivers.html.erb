@@ -23,34 +23,7 @@
 	<%- end -%>
 </div>
 <%= javascript_include_tag 'driver_form.js' %>
-<%= javascript_tag do %>
-    <%#- Create an array of result subtables for each mentor term group,
-    then add the results to the array as we get them back, and once all
-    have finished, append the results to the table in the original order -%>
-    $( document ).on("ajaxStart.getDrivers", function(event) {
-        resultArray = new Array(<%= @group_ids.size %>)
-    }).on("ajaxStop.getDrivers", function(event) {
-        $("#current_drivers").removeClass("loading");
-        $("#current_drivers").html("<%=j render "van_driver_table" %>");
-        for (var i = 0; i < <%= @group_ids.size %>; i++) {
-            $("#current_drivers").append(eval(resultArray[i]));
-        }
-        $( document ).off(".getDrivers");
-        $(".mentor-row").click(function() { getDriverForm($(this).data("mentor-id")) });
-    });
-
-    $( document ).ready(function() {
-        <%- @group_ids.each_with_index do |group, i| -%>
-            $.ajax({ url: "<%= url_for(:group_id => group, :term_id => @term.id) %>",
-                dataType: "script",
-                success: function(data) { resultArray[<%= i %>] = data }
-            });
-        <%- end -%>
-        <%- if @current_user.admin? -%>
-            sidebar_content = $("#sidebar").html();
-            $("#check_all_button").click(function() { checkAllCurrentDrivers(); return false; });
-        <%- end -%>
-    });
-<% end %>
-
+<%= javascript_tag do -%>
+	<%= render :template => "mentors/van_drivers.js", :locals => { :include_ajax => true } %>
+<%- end -%>
 <%- end -%>
