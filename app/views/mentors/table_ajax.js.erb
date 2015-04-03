@@ -1,0 +1,11 @@
+<% if params[:group_id] -%>
+    "<%= j("<tr class='rowspan-header'><th colspan='10'>#{h @group_title}</th></tr>".html_safe +
+        (!@mentors.empty? ? (render :partial => row_partial, :collection => @mentors) : "") +
+        ("<tr class=\"empty\"><td colspan=\"10\">" +
+          (@mentors.empty? ? "No #{h Customer.mentors_label} are currently trained to drive." : "") +
+          "</td></tr>"
+        ).html_safe
+      ) %>"
+<%- else -%>
+    $("#current_mentors").html("<%=j render @table_partial %>")
+<%- end %>

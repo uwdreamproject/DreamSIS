@@ -1,3 +1,8 @@
+function registerRows() {
+    clearForm();
+    $(".mentor-row").click(function() { getDriverForm($(this).data("mentor-id")); });
+}
+
 function clearForm() {
     $('#sidebar').html(sidebar_content);
     $("#check_all_button").click(function() { checkAllCurrentDrivers(); return false; });

@@ -1,11 +1,10 @@
 <h1>Drivers for <%= @page_header_title %></h1>
 
-<table id="current_drivers" <% if @ajax_load %>class="loading"<% end %>>
+<table id="current_mentors" <% if @ajax_load %>class="loading"<% end %>>
 	<%= render :partial => "van_driver_table" unless @ajax_load %>
 </table>
 
 <%- if !params[:group_id] -%>
-
 <div id="sidebar">
 	<p><%= render :partial => "shared/term_select",
 				:locals => { :form_url => van_drivers_mentors_path },
@@ -16,14 +15,11 @@
 		<div id="form-container">
 			<p>Click a row to begin editing</p>
 			<%- if Customer.link_to_uw? -%>
-			<%= separator %>
+			<p><%= separator %></p>
 			<%= link_to "Check UWFS Training for #{@term.is_a?(Quarter) ? @term.title : @term.to_param}", driver_training_status_mentor_url(999), :class => 'sync button', :id => 'check_all_button' %>
 			<%- end -%>
 		</div>
 	<%- end -%>
 </div>
-<%= javascript_include_tag 'driver_form.js' %>
-<%= javascript_tag do -%>
-	<%= render :template => "mentors/van_drivers.js", :locals => { :include_ajax => true } %>
-<%- end -%>
+<%= render :template => "mentors/table_ajax", :locals => { :table_partial => "van_driver_table" } %>
 <%- end -%>

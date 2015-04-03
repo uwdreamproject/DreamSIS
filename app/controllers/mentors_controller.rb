@@ -166,7 +166,15 @@ class MentorsController < ApplicationController
   
   def onboarding
     @term = Term.find(params[:term_id])
+    @group_ids = @term.mentor_term_groups.collect(&:id)
     @mentors = @term.mentors(sort = :lastname)
+    if params[:group_id]
+      @group_title = MentorTermGroup.find(params[:group_id]).title
+    end
+    respond_to do |format|
+      format.html
+      format.js { render "table_ajax", :locals => {:row_partial => "mentor_onboarding"} }
+    end
   end
 
   def onboarding_update
@@ -237,11 +245,14 @@ class MentorsController < ApplicationController
       @mentors = Mentor.valid_van_drivers(@term.id, params[:group_id])
       @ajax_load = false
     else
-      @term.mentor_term_groups.collect(&:id)
       @mentors = Mentor.valid_van_drivers(@term.id)
       @page_header_title = @term.is_a?(Quarter) ? @term.title : @term.to_param
       @group_ids = @term.mentor_term_groups.collect(&:id)
       @ajax_load = !@mentors.empty?
+    end
+    respond_to do |format|
+      format.html
+      format.js { render "table_ajax", :locals => { :row_partial => "mentor_driver" } }
     end
   end
   
