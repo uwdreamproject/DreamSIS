@@ -705,22 +705,18 @@ body.scrolled-past-header ul.tabs {
 	border-top: 1px outset #dfdfdf;
 }
 
-#sidebar .with_selected_actions ul {
-	list-style: square;
-	margin: 0;
-	padding-left: 22px;
+#sidebar .bulk_actions {
+	/*border-bottom: 1px inset #dfdfdf;*/
+  margin: 0 -20px;
+  padding: 1em 20px 0 20px;
+	background-color: rgb(238, 242, 252);
 }
 
-#sidebar .with_selected_actions h3 {
+#sidebar .bulk_actions h3 {
 	margin-bottom: 0;
 }
 
-#sidebar .with_selected_actions a {
-	display: block;
-	padding: 7px 0;
-}
-
-#sidebar #with_selected_actions_count {
+#sidebar #bulk_actions_count {
 	margin-left: 0.25em;
 	font-size: 85%;
 	font-weight: normal;
@@ -728,11 +724,11 @@ body.scrolled-past-header ul.tabs {
 	top: -1px;
 }
 
-#sidebar #with_selected_actions_count:before {
+#sidebar #bulk_actions_count:before {
 	content: "(";
 }
 
-#sidebar #with_selected_actions_count:after {
+#sidebar #bulk_actions_count:after {
 	content: ")";
 }
 
@@ -1587,10 +1583,10 @@ h2 em.synced-with-collegemapper-note {
 	width: 40%;
 	margin-left: -20%;
 	background: rgba(255,255,255,0.95);
-	padding: 2em;
-	box-shadow: 0px 0px 15px rgba(0,0,0,0.5);
+	padding: 1em 1.5em;
+	box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
 	border-radius: 10px;
-	text-align: center;
+	text-align: left;
 }
 
 .centered-modal h2 {
@@ -1817,7 +1813,7 @@ ul.crimes-list li {
 	position: fixed;
 	top: 60px;
 	text-align: center;
-	z-index: 100;
+	z-index: 0;
 	width: 70%;
 	left: 15%;
 	margin-left: -15%;
@@ -3023,6 +3019,10 @@ a.button:active {
 	background-image: url(../images/icons/silk/group.png);
 }
 
+.button.add.user {
+	background-image: url(../images/icons/silk/user_add.png);
+}
+
 .button.back {
 	background-image: url(../images/icons/silk/arrow_left.png);
 }
@@ -3034,7 +3034,6 @@ a.button:active {
 .button.up {
 	background-image: url(../images/icons/silk/arrow_up.png);
 }
-
 
 .button.info {
 	background-image: url(../images/icons/silk/information.png);
@@ -3106,6 +3105,18 @@ a.button:active {
 
 .button.url {
   background-image: url(../images/icons/silk/world.png);
+}
+
+.button.note {
+  background-image: url(../images/icons/silk/note.png);
+}
+
+.button.add.note {
+  background-image: url(../images/icons/silk/note_add.png);
+}
+
+.button.followup {
+	background-image: url(/images/icons/silk/flag_orange.png);
 }
 
 /*table.schedule {
@@ -3427,8 +3438,41 @@ span.icon.asterisk {
   background-image: url(../images/icons/silk/asterisk_yellow.png);
 }
 
-span.icon.needs-followup {
-	background-image: url(/images/icons/silk/flag_orange.png);
+tr.participant:not(.needs-followup) a.needs-followup.icon {
+  opacity: 0;
+}
+
+tr.participant:not(.needs-followup):hover a.needs-followup.icon {
+  opacity: 0.25;
+}
+
+tr.participant:not(.needs-followup) .needs-followup-container a.redirect-link {
+  display: none;
+}
+
+.needs-followup-container {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  padding-left: 0;
+}
+
+.needs-followup-container .controls {
+  position: absolute;
+  top: 25px;
+  left: -10.5em;
+  background: white;
+  opacity: 0;
+  width: 20em;
+  z-index: 150;
+  visibility: hidden;
+  padding: 1em;
+  padding-top: 0;
+}
+
+.needs-followup-container .controls.visible {
+  opacity: 1;
+  visibility: visible;
 }
 
 td.badges a:hover span.icon {
@@ -3694,6 +3738,10 @@ dl.inline-definitions.skinny dd {
 
 dl.inline-definitions dd p {
 	margin: 0;
+}
+
+dl.inline-definitions.location-actions dd {
+  padding-left: 20%;
 }
 
 div.photo {
@@ -4444,6 +4492,8 @@ p.needs-followup, a.needs-followup {
 	color: #e26900 !important;
 	font-weight: bold;
 	padding-top: 1px;
+  min-width: 16px;
+  min-height: 16px;
 }
 
 p.needs-followup a {

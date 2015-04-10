@@ -60,15 +60,8 @@ placeholder_text <<  "all #{Customer.participants_label}" if !@grad_year || !@hi
 			</p>
 	<% end %>
 	
-    <%- if @current_user.admin? -%>
-	<div class="with_selected_actions" id="with_selected_actions" style="display:none">
-		<h3>With Selected <span id="with_selected_actions_count"></span></h3>
-		<ul>
-			<li><%= link_to "Send e-mail", :remote => true, :url => bulk_participants_path(:task => :send_email), :with => "Form.serializeElements(selectedElements())" %></li>
-		</ul>
-	</div>
-	<% end %>
-
+	<%= render :partial => "bulk_actions" %>
+	
 	<%- unless @participants.respond_to?(:current_page) -%>
 	<h3>Filters
 		<%= link_to_function "show all", "clearAllFilters()", :class => "right small" %></h3>

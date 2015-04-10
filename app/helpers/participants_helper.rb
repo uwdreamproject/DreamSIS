@@ -14,4 +14,15 @@ module ParticipantsHelper
     content_tag :li, link_to_function(raw(link_title), "switchToTab('#{dom_id}')", :class => "#{(active ? "active" : "")} #{dom_id}", :id => "#{dom_id}_tab_link")
   end
   
+  # Outputs the link tag for triggering a bulk action. Specify the action to trigger as the main
+  # parameter, and an optional "class" option to assign to the link tag.
+  def link_to_participant_bulk_action(title, action_name, options = { })
+    link_to title, 
+      participant_bulk_action_path(action_name), 
+      "data-original-href" => participant_bulk_action_path(action_name),
+      :class => "#{options[:class]} button", 
+      :remote => true, 
+      :method => :post
+  end
+  
 end

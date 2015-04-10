@@ -117,8 +117,7 @@ Dreamsis::Application.routes.draw do
       # match '/participants/cohort/:id.:format' => 'participants#cohort', :as => :cohort
       
       post :add_to_group
-      post :college_mapper_callback
-      post :bulk
+      post :college_mapper_callback      
     end
     member do
       match :fetch_participant_group_options
@@ -170,6 +169,7 @@ Dreamsis::Application.routes.draw do
   match '/participants/high_school/:high_school_id' => 'participants#high_school', :as => :high_school_participants
   match '/participants/cohort/:id' => 'participants#cohort', :as => :cohort
   match '/participants/groups/:id' => 'participants#group', :as => :participant_group_participants
+  match '/participants/bulk_actions/:action' => 'participant_bulk_actions#:action', :as => :participant_bulk_action, :via => :post
 
 
   # Mentors

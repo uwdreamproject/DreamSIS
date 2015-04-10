@@ -1,0 +1,10 @@
+<%- if @mentor_participants[:error].empty? -%>
+  clearFlashes()
+<%- end %>
+
+<%- unless @mentor_participants[:success].empty? -%>
+  updateFlashes({
+    "notice": "Successfully assigned <%=j @mentor.fullname %> to <%=j @mentor_participants[:success].collect(&:fullname).to_sentence %>."
+  })  
+  $("#bulk_action_task").remove()
+<%- end %>
