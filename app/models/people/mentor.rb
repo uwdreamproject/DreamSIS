@@ -251,6 +251,11 @@ Documentation for each filter:
     conditions[:mentor_term_groups][:location_id] = location.try(:id) if location
     mentor_terms.find :all, :joins => [:mentor_term_group], :conditions => conditions
   end
+  
+  # Returns the locations for each of the #current_mentor_term_groups.
+  def current_locations
+    current_mentor_term_groups.collect(&:location).flatten.uniq.compact
+  end
 
   # Returns the mentor term groups associated with this mentor's current mentor terms
   def current_mentor_term_groups(location = nil)

@@ -18,7 +18,7 @@ class WelcomeController < ApplicationController
     end
     @my_mentees = @mentor.try(:participants)
     @layout_in_blocks = true
-    @high_schools = @mentor.current_mentor_term_groups.collect(&:location).flatten.uniq.compact
+    @high_schools = @current_user.current_locations
     @high_school = @mentor.current_lead_at.first
     @events = @mentor.event_attendances.future_attending.collect(&:event)
     @participants = Participant.in_cohort(Participant.current_cohort).in_high_school(@high_school.try(:id)) if @high_school

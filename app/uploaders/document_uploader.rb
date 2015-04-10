@@ -16,6 +16,10 @@ class DocumentUploader < CarrierWave::Uploader::Base
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
+  def cache_dir
+    "#{Rails.root}/tmp/" + store_dir
+  end
+
   # Override the filename of the uploaded files
   # def filename
   #   model.title.to_param if original_filename

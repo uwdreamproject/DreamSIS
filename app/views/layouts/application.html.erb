@@ -86,7 +86,7 @@
 
 	</div>
 
-	<%= render :partial => "shared/nav" if @current_user.try(:admin?) || @current_user.try(:person).try(:current_lead?) %>
+	<%= render :partial => "shared/nav" %>
 	
 	<div id="sidebar-header">
 		<%= link_to_function content_tag(:span, "Show Sidebar"), "$('body').toggleClass('sidebar_view')", :id => "sidebar_expander_link" %>

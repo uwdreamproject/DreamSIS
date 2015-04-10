@@ -1,0 +1,7 @@
+$("#bulk_action_task").remove()
+$("body").append(
+  $("<div id='bulk_action_task' class='centered-modal' />")
+    .html("<%=j render :template => 'participant_bulk_actions/assign_mentor.html.erb' %>")
+)
+prepAutocompletes()
+$("#bulk_action_task form input.search").focus()

@@ -15,10 +15,10 @@
 
 	<%= render :partial => 'mentors/mentees' %>
 	
-	<dl class="inline-definitions">
+	<dl class="inline-definitions location-actions">
 
 	<%- for high_school in @high_schools -%>
-		<dt><%=h high_school.name %>:</dt>
+		<dt><h3><%=h high_school.name %>:</h3></dt>
 		<dd>
 			<%= link_to "All #{Customer.mentees_label}", high_school_cohort_path(high_school, Participant.current_cohort), :class => "list button" %>
 			<%= link_to "Take Attendance", attendance_high_school_visits_path(high_school, Term.current_term), :class => "edit button" %>

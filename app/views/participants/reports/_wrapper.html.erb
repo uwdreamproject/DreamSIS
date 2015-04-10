@@ -1,4 +1,4 @@
-<tr class="<%= "deselected" if participant.inactive? %> <%= "not-target" if participant.not_target_participant? %> participant">
+<tr class="<%= "deselected" if participant.inactive? %> <%= "not-target" if participant.not_target_participant? %> <%= "needs-followup" if participant.needs_followup? %> participant">
 
 	<%- if row_index == 1 -%>
 		<td class="check_box_td multirow-highlight" rowspan="<%= row_count %>">

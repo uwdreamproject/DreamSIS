@@ -1,0 +1,20 @@
+<%- if @notes[:error].empty? -%>
+  clearFlashes()
+<%- end %>
+
+<%- unless @notes[:success].empty? -%>
+  updateFlashes({
+    "notice": "Successfully added note to <%=j @notes[:success].collect(&:notable).collect(&:fullname).to_sentence %>."
+  })
+  
+  $("#bulk_action_task").remove()
+
+  $('tr.participant .needs-followup-container .controls').removeClass("current visible")
+  
+  <%- for note in @notes[:success] %>
+    <%- if note.notable.try(:needs_followup?) %>
+      $("#participant_<%= note.notable_id %> tr.participant").addClass("needs-followup")
+    <%- end -%>
+  <%- end -%>
+  
+<%- end %>

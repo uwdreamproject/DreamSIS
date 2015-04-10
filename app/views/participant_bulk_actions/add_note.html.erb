@@ -1,0 +1,23 @@
+<h2>Add Note</h2>
+<p>Add a note for <%= raw(@participants.collect{ |p| link_to p.fullname, p }.to_sentence) %>.</p>
+
+<%= form_for @note, { :url => participant_bulk_action_path(:process_add_note), :remote => true } do |f| -%>
+	<div class="full">
+		<%= f.text_area :note, :style => "width:99%", :rows => 4, :placeholder => "Add your note here" %>
+	</div>
+	
+	<%- for id in @participants.collect(&:id) -%>
+		<%= hidden_field_tag "participant_ids[]", id, :multiple => true %>
+	<% end %>
+	
+	<%= f.label :contact_type, "Contact Type:" %>
+	<%= f.select :contact_type, ["", "Phone", "E-mail", "Text", "Facebook", "In-person"] %>
+	<%= f.label :needs_followup, f.check_box(:needs_followup) + " Needs Follow-up" %>
+	
+	<p>
+		<%= f.submit "Add Note", :disable_with => 'Adding note...', :class => 'add notes' %>
+		<%= separator %>
+		<%= link_to_function "Cancel", "$(this).parents('.centered-modal').remove()", :class => "cancel button" %>
+	</p>
+	
+<% end -%>

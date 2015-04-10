@@ -1,5 +1,15 @@
-// Prep the autocompletes
+// Initialize autocompletes on page load
 $(function() {
+	prepAutocompletes();
+  
+  $("#main-nav > ul > li.trigger-autocomplete > a").click(function(event) {
+    $(event.target).parents("li").find("input.search").focus();
+    event.preventDefault();
+  });
+});
+
+// Prep the autocompletes on the page
+function prepAutocompletes() {
 	$( ".autocomplete-search" ).autocomplete(
 	{
     minLength: 3,
@@ -32,12 +42,7 @@ $(function() {
       $(this).autocomplete("option", "source", $(this).data("source"));
     }
 	});
-  
-  $("#main-nav > ul > li.trigger-autocomplete > a").click(function(event) {
-    $(event.target).parents("li").find("input.search").focus();
-    event.preventDefault();
-  });
-});
+}
 
 function display_autocomplete_details(item, container) {
   container.find(".primary").html(item.fullname)

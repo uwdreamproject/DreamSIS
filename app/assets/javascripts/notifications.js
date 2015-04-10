@@ -4,7 +4,12 @@ $(document).ajaxStart(function() {
 
 }).ajaxError(function( event, xhr, settings, thrownError ) {
   $('#indicator').removeClass("visible")
-  updateFlashes( { "error" : "There was a problem processing your request. If you were trying to save a record, your data was probably not saved." })
+  if (thrownError == "Forbidden") {
+    var msg = "Sorry, you aren't allowed to access that record."
+  } else {
+    var msg = "There was a problem processing your request. If you were trying to save a record, your data was probably not saved."
+  }
+  updateFlashes( { "error" : msg })
   console.log(thrownError)
 
 }).ajaxSuccess(function(event, xhr, settings) {

@@ -1,0 +1,16 @@
+<div class="bulk_actions" id="bulk_actions" style="display:none">
+	
+	<h3>With Selected <span id="bulk_actions_count"></span></h3>
+	
+	<p><%= link_to_participant_bulk_action "Send e-mail", :send_email, :class => "email button"  %></p>
+
+	<%- if @current_user.admin? -%>
+		<!-- <p><%#= link_to_participant_bulk_action "Assign to group", :assign_group, :class => "people button"  %></p> -->
+		<p><%= link_to_participant_bulk_action "Assign to #{Customer.mentor_label}", :assign_mentor, :class => "add user button"  %></p>
+	<%- end %>
+
+	<!-- <p><%#= link_to_participant_bulk_action "Check-in for event", :check_in_event, :class => "calendar_day button"  %></p> -->
+	<p><%= link_to_participant_bulk_action "Flag for follow-up", :flag_for_followup, :class => "followup button"  %></p>
+	<p><%= link_to_participant_bulk_action "Add note", :add_note, :class => "add note button"  %></p>
+	
+</div>

@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   attr_accessible :login, :email, :password, :password_confirmation, :identity_url, :person_attributes
   default_scope :order => 'login'
   alias_attribute :username, :login
-  delegate :email, :participants, :to => :person
+  delegate :email, :participants, :current_locations, :to => :person
   
   # Pulls the current user out of Thread.current. We try to avoid this when possible, but sometimes we need 
   # to access the current user in a model (e.g., to check EmailQueue#messages_waiting?).
@@ -118,6 +118,18 @@ class User < ActiveRecord::Base
   def external?
     return true unless person
     (person.is_a?(Volunteer) || person.is_a?(Student)) ? true : false
+  end
+  
+  # Users will have the navbar displayed if any of the following are true:
+  # 
+  # * User is an admin
+  # * User Person is a Mentor and the mentor has #passed_basics?
+  # * User Person is a Mentor and a #current_lead?
+  def display_navbar?
+    return true if admin?
+    return true if person.is_a?(Mentor) && person.passed_basics?
+    return true if person.is_a?(Mentor) && person.current_lead?
+    false
   end
 
   protected
