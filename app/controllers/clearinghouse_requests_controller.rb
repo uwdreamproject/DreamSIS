@@ -47,7 +47,7 @@ class ClearinghouseRequestsController < ApplicationController
     if @clearinghouse_request.submit!
       flash[:notice] = "The file was successfully submitted to NSC for processing. You will receive an email when it has been processed."
     else
-      flash[:eerror] = "There was a problem submitting the file. Please try again or submit the file to NSC manually."
+      flash[:error] = "There was a problem submitting the file. Please try again or submit the file to NSC manually."
     end
     redirect_to(@clearinghouse_request)
   end
@@ -57,7 +57,7 @@ class ClearinghouseRequestsController < ApplicationController
     if @clearinghouse_request.retrieve!
       flash[:notice] = "The file was successfully retrieved from NSC and processed."
     else
-      flash[:eerror] = "There was a problem retrieving the file. Please try again or upload the results file manually."
+      flash[:error] = "There was a problem retrieving the file. Please try again or upload the results file manually."
     end
     redirect_to(@clearinghouse_request)
   end
