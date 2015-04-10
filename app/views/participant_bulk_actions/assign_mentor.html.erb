@@ -1,5 +1,5 @@
 <h2>Assign to <%= Customer.mentor_Label %></h2>
-<p>Assign <%= raw(@participants.collect{ |p| link_to p.fullname.html_safe, p }.to_sentence) %> to the following <%= Customer.mentor_label %>:</p>
+<p>Assign <%= raw(@participants.collect{ |p| link_to p.fullname, p }.to_sentence) %> to the following <%= Customer.mentor_label %>:</p>
 
 <div style="position:relative">
 	<%= form_for :participant, :url => participant_bulk_action_path(:process_assign_mentor), :remote => true do |f| %>
