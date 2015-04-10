@@ -3,12 +3,12 @@ class ParticipantBulkActionsController < ParticipantsController
   before_filter :check_authorization
   
 	def send_email
-		@emails = @participants.collect(&:email).flatten.compact.uniq
+		@emails = @participants.collect(&:email).flatten.uniq.compact.delete_if(&:blank?)
 		if @emails.empty?
 			flash[:error] = "You must select at least one record with an e-mail address."
-			render :text => flash[:error], :status => 200
+			render :js => "updateFlashes({ error: '#{flash[:error]}' })"
 		else
-      # flash[:notice] = "Sent #{@template.pluralize(@emails.count, "e-mail address")} to your e-mail program."
+      flash[:notice] = "Sent #{@emails.count} #{"e-mail address".pluralize(@emails.count)} to your e-mail program."
 			render :js => "window.location.href = 'mailto:#{@emails.join(",")}';"
 		end
 	end
