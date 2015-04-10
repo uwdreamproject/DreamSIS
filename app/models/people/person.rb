@@ -94,6 +94,11 @@ class Person < ActiveRecord::Base
   def person_resource?
     !reg_id.nil?
   end
+  
+  # For non-Mentors, #current_locations always returns an empty array.
+  def current_locations
+    []
+  end
     
   # def [](attr_name)
   #   instance_eval(attr_name.to_s)

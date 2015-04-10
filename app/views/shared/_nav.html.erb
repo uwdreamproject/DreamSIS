@@ -1,5 +1,5 @@
-<%- cache ["shared/nav", Customer.cache_key, @current_user.cache_key, Date.today.to_s].join("/") do -%>
-<%- if @current_user.display_navbar? # keep this within the cache fragment so the lookup doesn't happen every time -%>
+<%- cache ["shared/nav", Customer.cache_key, (@current_user.cache_key if @current_user), Date.today.to_s].join("/") do -%>
+<%- if @current_user && @current_user.display_navbar? # keep this within the cache fragment so the lookup doesn't happen every time -%>
 	<div class="menu" id="main-nav">
 
 	<ul>
@@ -52,7 +52,7 @@
 				</ul>
 			</div>
 		</li>
-		<li class=""><%= link_to "High Schools", "#", :onClick => "return false" %>
+		<li class="<%= "admin" if @current_user.current_locations.empty? %>"><%= link_to "High Schools", "#", :onClick => "return false" %>
 			<div class="double-wide-if-admin">
 				<ul>
 					<li class="primary list admin"><%= link_to "Partner High Schools", high_schools_url %></li>

@@ -254,7 +254,7 @@ Documentation for each filter:
   
   # Returns the locations for each of the #current_mentor_term_groups.
   def current_locations
-    current_mentor_term_groups.collect(&:mentor_term_group).collect(&:location).flatten.uniq.compact
+    current_mentor_term_groups.collect(&:location).flatten.uniq.compact
   end
 
   # Returns the mentor term groups associated with this mentor's current mentor terms
