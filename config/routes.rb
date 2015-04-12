@@ -207,7 +207,7 @@ Dreamsis::Application.routes.draw do
       get :photo_tile
     end
   end
-  match 'mentor_term_groups/:group_id/van_drivers' => 'mentors#van_drivers'
+  match 'mentor_term_groups/:group_id/van_drivers' => 'mentors#van_drivers', :as => :van_drivers_mentor_term_group
   match 'mentor_term_groups/term/:term_id' => 'mentor_term_groups#term', :as => :mentor_term_groups_term
   resources :volunteers, :only => [:show, :background_check_responses], :controller => 'mentors'
   resources :activity_logs
