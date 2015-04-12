@@ -7,7 +7,7 @@ $(function () {
   $('.section_score').change(function() {
     updateTotalScore('test_score_total_score', $(this).data("score-calculation-method"))
   })
-  
+
 });
 
 /*
@@ -31,4 +31,15 @@ function updateTotalScore(total_element_id, calculation_method) {
 	}
 	$("#" + total_element_id).val(new_total_score);
 	return new_total_score;
+}
+
+/*
+  Shows the control panel for the follow up flag for participants.
+*/
+function showFollowUpPanel(event) {
+  event.preventDefault()
+  $(".needs-followup-container .controls").removeClass("current")
+  $(this).siblings(".controls").toggleClass("visible").addClass("current")
+  $(".needs-followup-container .controls:not(.current)").removeClass("visible")
+  $(this).siblings(".controls").find("form textarea").focus()
 }

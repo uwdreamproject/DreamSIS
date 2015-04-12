@@ -22,6 +22,22 @@ function scrollToObject(jqObj) {
   );
 }
 
+// Setup the onClick for the select-all checkbox
+function prepareSelectAll() {
+  $("input:checkbox.select-all").click(function() {
+    var currentState = $( this ).prop("checked")
+    $('input.index_check_box').prop("checked", currentState)
+    updateWithSelectedActions()
+  })
+}
+
+// Prep the bulk actions links to incorporate the currently selected rows with javascript.
+$( function() {
+  $(".bulk_actions a").click(function() {
+    $( this ).attr("href", $(this).data("original-href") + "?" + selectedElements().serialize())
+  })
+})
+
 // Returns the currently selected rows
 function selectedElements() {
 	return $('tbody:not(.hidden) input.index_check_box:checked')
@@ -29,12 +45,12 @@ function selectedElements() {
 
 // Shows the actions that can be performed, if any rows are selected.
 function updateWithSelectedActions() {
-	if($("with_selected_actions")) {
+	if($(".bulk_actions")) {
 		if(selectedElements().length > 0) {
-			$("with_selected_actions").show()
-			$("with_selected_actions_count").update(selectedElements().length)
+			$(".bulk_actions").show()
+			$("#bulk_actions_count").text(selectedElements().length)
 		} else {
-			$("with_selected_actions").hide()
+			$(".bulk_actions").hide()
 		}
 	}
 }

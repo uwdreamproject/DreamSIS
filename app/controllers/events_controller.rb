@@ -127,7 +127,7 @@ class EventsController < ApplicationController
       return render_error("You are not allowed to access that page.") unless @current_user && @event.allows_admin_access_for?(@current_user)
     else
       return render_error("You must be logged in.") unless @current_user
-      return render_error("You must be an admin to view the event list.") unless @current_user.admin? || @current_user.try(:person).try(:current_lead?)
+      return render_error("You must be an admin to view the event list.") unless @current_user.admin? || @current_user.try(:person).try(:passed_basics?)
     end
   end
 

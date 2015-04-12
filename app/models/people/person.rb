@@ -94,6 +94,11 @@ class Person < ActiveRecord::Base
   def person_resource?
     !reg_id.nil?
   end
+  
+  # For non-Mentors, #current_locations always returns an empty array.
+  def current_locations
+    []
+  end
     
   # def [](attr_name)
   #   instance_eval(attr_name.to_s)
@@ -383,7 +388,7 @@ class Person < ActiveRecord::Base
   # to the text "OK". 
   def passed_sex_offender_check?
     return false if sex_offender_check_result.nil?
-    valid_length = Customer.current_customer.background_check_validity_length
+    valid_length = Customer.current_customer.background_check_validity_length || 0
     return true if valid_length < 0
     return false if (sex_offender_check_run_at.nil? || sex_offender_check_run_at < valid_length.days.ago)
     sex_offender_check_result.include?("OK") || sex_offender_check_result.include?("NO RECORD FOUND")

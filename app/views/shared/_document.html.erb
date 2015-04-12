@@ -19,6 +19,7 @@
 
 	<%- if document.user == @current_user -%>
 		<td class="document_edit_buttons functions">
+			<%= link_to "Download", document.document.url %>
 			<%= link_to "Edit", edit_note_path(document, :return_to => params[:return_to] || request.url) %>
 			<%= link_to "Delete", 
 						:url => note_path(document, :return_to => params[:return_to] || request.url),

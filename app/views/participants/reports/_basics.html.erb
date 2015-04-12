@@ -9,13 +9,7 @@
 <% end -%>
 
 <td class="badges">
-	<%- if participant.needs_followup? -%>
-		<%= link_to content_tag(:span, 
-						"Needs Follow-up", 
-						:class => "icon needs-followup", 
-						:title => "#{pluralize(participant.followup_note_count, "note needs", "notes need")} follow-up"),
-					participant_path(participant, :anchor => raw("!/section/notes&show=needs_followup")) %>
-	<% end %>
+	<%= render :partial => "participants/followup_notes_container", :locals => { :participant => participant } %>
 </td>
 
 <td class="last-updated <%= "old" if participant.updated_at < 3.months.ago %>">
