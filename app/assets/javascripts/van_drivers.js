@@ -1,4 +1,4 @@
-function registerRows() {
+function register_van_driver_table_rows() {
     clearForm();
     $(".mentor-row").click(function() { getDriverForm($(this).data("mentor-id")); });
 }
@@ -8,7 +8,7 @@ function clearForm() {
     $("#check_all_button").click(function() { checkAllCurrentDrivers(); return false; });
 }
 
-function registerForm(id) {
+function registerDriverForm(id) {
     $('#driver-edit-form').submit( function() {
         $('#indicator').addClass("visible");
         $.ajax({

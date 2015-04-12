@@ -173,34 +173,20 @@ class MentorsController < ApplicationController
     end
     respond_to do |format|
       format.html
-      format.js { render "table_ajax", :locals => {:row_partial => "mentor_onboarding"} }
+      format.js { render :partial => "table_ajax", :locals => {:row_partial => "mentor_onboarding"} }
     end
   end
 
-  def onboarding_update
+  def sidebar_form_update
     @mentor = Mentor.find(params[:id])
     @mentor.validate_name = true
 
     respond_to do |format|
       if @mentor.update_attributes(params[:mentor])
         flash[:notice] = 'Mentor was successfully updated.'
-        format.html { render :partial => "mentor_onboarding", :object => @mentor, :locals => {:append_block => false} }
+        format.html { render :partial => params[:row_partial], :object => @mentor }
       else
-        flash[:error] = "Error updating mentor"
-      end
-    end
-  end
-
-  def driver_update
-    @mentor = Mentor.find(params[:id])
-    @mentor.validate_name = true
-
-    respond_to do |format|
-      if @mentor.update_attributes(params[:mentor])
-        flash[:notice] = 'Mentor was successfully updated.'
-        format.html { render :partial => "mentor_driver", :object => @mentor, :locals => {:append_block => false} }
-      else
-        flash[:error] = "Error updating mentor"
+        flash[:error] = "Error updating mentor."
       end
     end
   end
@@ -252,7 +238,7 @@ class MentorsController < ApplicationController
     end
     respond_to do |format|
       format.html
-      format.js { render "table_ajax", :locals => { :row_partial => "mentor_driver" } }
+      format.js { render :partial => "table_ajax", :locals => { :row_partial => "mentor_driver" } }
     end
   end
   
@@ -271,6 +257,6 @@ class MentorsController < ApplicationController
 		filename = size == "thumb" ? "blank_avatar_thumb.png" : "blank_avatar.png"
     send_file File.join(Rails.root, "public", "images", filename), 
               :disposition => 'inline', :type => 'image/png', :status => 404
-  end  
+  end
   
 end

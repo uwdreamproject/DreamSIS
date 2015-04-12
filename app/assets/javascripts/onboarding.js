@@ -1,4 +1,4 @@
-function registerRows() {
+function register_onboarding_table_rows() {
     $(".mentor-row").click(function() { loadForm($(this).data("mentor-id")); });
 }
 
@@ -15,21 +15,16 @@ function clearForm() {
     $('#sidebar').html(sidebar_content);
 }
 
-function registerForm(id) {
-    $('#onboarding-form').submit( function() {
-        $('#indicator').addClass("visible");
+function registerOnboardingForm(id) {
+    $('#onboarding-form').submit( function(event) {
         $.ajax({
             type: "PUT",
             url: $('#onboarding-form').attr('action'),
             data: $("#onboarding-form").serialize(),
-            success: function(data)
-            {
+            success: function(data) {
                 $("tr[data-mentor-id='" + parseInt(id) + "']").replaceWith(data);
             }
-        }).always(function() {
-            $('#indicator').removeClass("visible");
         });
-
-        return false;
+        event.preventDefault();
     });
 }

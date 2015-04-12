@@ -20,5 +20,4 @@
 </div>
 
 
-<%= render :template => "mentors/table_ajax", :locals => {:table_partial => "onboarding_table"} %>
-<%= javascript_include_tag 'onboarding.js' %>
+<%= render :partial => "table_ajax", :locals => {:table_partial => "onboarding_table"} %>

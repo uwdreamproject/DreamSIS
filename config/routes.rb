@@ -190,9 +190,9 @@ Dreamsis::Application.routes.draw do
       put :send_login_link
       get :login_link
       get :onboarding_form
-      match :onboarding_update
+      match :onboarding_update, :action => "sidebar_form_update", :row_partial => "mentor_onboarding"
       get :driver_edit_form
-      match :driver_update
+      match :driver_update, :action => "sidebar_form_update", :row_partial => "mentor_driver"
       post :driver_training_status
     end
   end
