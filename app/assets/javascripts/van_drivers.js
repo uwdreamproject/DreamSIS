@@ -65,7 +65,7 @@ function checkAllCurrentDrivers() {
     });
 
     var ajaxCount = 0;
-    $("#current_drivers > tbody:nth-child(2)").children().each( function( i ) {
+    $(".mentor-row").each( function( i ) {
         if ($(this).data("needs-update")) {
             ajaxCount++;
             var id = $( this ).data("mentor-id");
