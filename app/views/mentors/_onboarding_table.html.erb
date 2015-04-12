@@ -1,0 +1,20 @@
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>E-mail</th>
+			<th class="centered">Gender</th>
+			<th>Date of Birth</th>
+			<th class="centered">Aliases</th>
+			<th class="centered">AOR Signed?</th>
+			<th class="centered">BG Check Cleared?</th>
+			<th class="centered">SO Check Cleared?</th>
+			<th class="centered">Attended Mentor Workshop?</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% if @mentors.empty? -%>
+			<tr class="empty">
+				<td colspan=10>No <%= Customer.mentors_label %> are currently trained to drive.</td>
+			</tr>
+		<%- end %>
+	</tbody>
