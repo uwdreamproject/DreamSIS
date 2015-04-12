@@ -1,9 +1,14 @@
+function register_van_driver_table_rows() {
+    clearForm();
+    $(".mentor-row").click(function() { getDriverForm($(this).data("mentor-id")); });
+}
+
 function clearForm() {
     $('#sidebar').html(sidebar_content);
     $("#check_all_button").click(function() { checkAllCurrentDrivers(); return false; });
 }
 
-function registerForm(id) {
+function registerDriverForm(id) {
     $('#driver-edit-form').submit( function() {
         $('#indicator').addClass("visible");
         $.ajax({
@@ -11,7 +16,7 @@ function registerForm(id) {
             url: $('#driver-edit-form').attr('action'),
             data: $("#driver-edit-form").serialize(),
             success: function(data) {
-                $(".mentor_" + parseInt(id)).replaceWith(data);
+                $("tr[data-mentor-id='" + parseInt(id) + "']").replaceWith(data);
             }
         });
         return false;
@@ -25,7 +30,7 @@ function registerForm(id) {
                 if (data["error"] == null) {
                     if (data["saved"] != null) {
                         getDriverForm(id);
-                        $(".mentor_" + id + " > td:nth-child(5)").each(function(i){
+                        $("tr[data-mentor-id='" + id + "'] > .uwfs-date").each(function(i){
                             updateUWFSDate($( this ), data["date"]);
                         });
                     } else if (data["changed"] != null) {
@@ -38,6 +43,8 @@ function registerForm(id) {
         });
         return false;
     });
+
+    registerDateInputHelpers();
 }
 
 function checkAllCurrentDrivers() {
@@ -74,7 +81,7 @@ function checkAllCurrentDrivers() {
                     if (data["saved"] != null) {
                         savedCount++;
                         if (data["date"] != null) {
-                            $(".mentor_" + id + " > td:nth-child(5)").each(function(i){
+                            $("tr[data-mentor-id='" + id + "'] > .uwfs-date").each(function(i){
                                 updateUWFSDate($( this ), data["date"]);
                              });
                         }

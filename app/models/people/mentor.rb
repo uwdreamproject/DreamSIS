@@ -306,14 +306,22 @@ Documentation for each filter:
   # the number of days ago defined by the customer to be valid
   def valid_van_driver?
     return false if !van_driver_training_completed_at
-    valid_length = Customer.driver_training_validity_length || 0
-    if valid_length > 0
-      return false if van_driver_training_completed_at < valid_length.days.ago
-    end
+    return false if van_driver_training_expired?
 
     (!Customer.require_driver_form? ||
             (driver_form_signature && (!has_previous_driving_convictions || driver_form_remarks["OK"]))) &&
     (!Customer.link_to_uw? || uwfs_training_date)
+  end
+
+
+  # Returns true if +van_driver_training_completed_at+ is nil
+  # or there is a set validity length for the current customer
+  # and the training has expired, false otherwise
+  def van_driver_training_expired?
+    return true if !van_driver_training_completed_at
+    valid_length = Customer.driver_training_validity_length || 0
+    return true unless valid_length > 0
+    van_driver_training_completed_at < valid_length.days.ago
   end
 
   # Returns true if the +aliases+ attribute has anything other than blank, nil, "none", "n/a" or "no"
