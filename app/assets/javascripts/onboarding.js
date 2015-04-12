@@ -1,3 +1,11 @@
+$(document).ready(function() {
+    $("#refresh-button").click(function (event) {
+        event.preventDefault();
+        refreshTextblocks();
+        return false;
+    });
+});
+
 function register_onboarding_table_rows() {
     $(".mentor-row").click(function() { loadForm($(this).data("mentor-id")); });
 }
@@ -27,4 +35,12 @@ function registerOnboardingForm(id) {
         });
         event.preventDefault();
     });
+}
+
+function refreshTextblocks() {
+    $.get($("#refresh-button").attr("href"), function(data) {
+        $("#background-check-block").val(data["background-check"]);
+        $("#sex-offender-check-block").val(data["sex-offender-check"]);
+    });
+    return false;
 }

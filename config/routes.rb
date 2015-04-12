@@ -178,6 +178,7 @@ Dreamsis::Application.routes.draw do
     collection do
       get :auto_complete_for_mentor_fullname
       match :onboarding
+      get :onboarding_textblocks
       match :event_status
       match :leads
       match :van_drivers

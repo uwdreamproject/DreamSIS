@@ -198,6 +198,15 @@ class MentorsController < ApplicationController
     end
   end
 
+  def onboarding_textblocks
+    @term = Term.find(params[:term_id])
+    @mentors = @term.mentors(sort = :lastname)
+    respond_to do |format|
+      format.json { render :json => { :background_check => view_context.background_check_textblock(@mentors),
+                                      :sex_offender_check => view_context.sex_offender_check_textblock(@mentors) } }
+    end
+  end
+
   def driver_edit_form
     @mentor = Mentor.find(params[:id])
     respond_to do |format|
