@@ -169,7 +169,11 @@ class MentorsController < ApplicationController
     @group_ids = @term.mentor_term_groups.collect(&:id)
     @mentors = @term.mentors(sort = :lastname)
     if params[:group_id]
-      @group_title = MentorTermGroup.find(params[:group_id]).title
+      mentor_term_group = MentorTermGroup.find(params[:group_id])
+      @group_title = mentor_term_group.title
+      @mentors = mentor_term_group.mentors
+    else
+      @mentors = @term.mentors(sort = :lastname)
     end
     respond_to do |format|
       format.html
