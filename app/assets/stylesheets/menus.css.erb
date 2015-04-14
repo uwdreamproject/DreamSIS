@@ -61,7 +61,7 @@ body.admin #main-nav .admin {
 }
 
 .menu ul li:hover {
-	/*background: url(../images/mainNav_notch.gif) no-repeat 40% 18px;*/
+	/*background: url(<%= asset_path 'mainNav_notch.gif' %>) no-repeat 40% 18px;*/
 	z-index: 21;
 	opacity: 0.98;
 }
@@ -92,23 +92,23 @@ body.admin #main-nav .admin {
 	font-weight: bold !important;
 }
 
-.menu ul ul li.list a {	background-image: url(../images/icons/silk/text_list_bullets.png); }
-.menu ul ul li.report a {	background-image: url(../images/icons/silk/chart_pie.png); }
-.menu ul ul li.add a { background-image: url(../images/icons/silk/add.png); }
-.menu ul ul li.nsc a { background-image: url(../images/icons/nsc-favicon.png); }
-.menu ul ul li.scholarships a { background-image: url(../images/icons/silk/money.png); }
-.menu ul ul li.colleges a { background-image: url(../images/icons/silk/building.png); }
-.menu ul ul li.locations a { background-image: url(../images/icons/silk/building.png); }
-.menu ul ul li.groups a { background-image: url(../images/icons/silk/group.png); }
-.menu ul ul li.calendar a { background-image: url(../images/icons/silk/calendar.png); }
-.menu ul ul li.programs a { background-image: url(../images/icons/silk/bricks.png); }
-.menu ul ul li.filters a { background-image: url(../images/icons/silk/timeline_marker.png); }
-.menu ul ul li.terms a { background-image: url(../images/icons/silk/date.png); }
-.menu ul ul li.tests a, .menu ul ul li.edit a { background-image: url(../images/icons/silk/page_edit.png); }
-.menu ul ul li.trainings a { background-image: url(../images/icons/silk/book_open.png); }
-.menu ul ul li.users a { background-image: url(../images/icons/silk/shield.png); }
-.menu ul ul li.trash a { background-image: url(../images/icons/silk/bin_closed.png); }
-.menu ul ul li.settings a { background-image: url(../images/icons/silk/information.png); }
+.menu ul ul li.list a {	background-image: url(<%= asset_path 'icons/silk/text_list_bullets.png' %>); }
+.menu ul ul li.report a {	background-image: url(<%= asset_path 'icons/silk/chart_pie.png' %>); }
+.menu ul ul li.add a { background-image: url(<%= asset_path 'icons/silk/add.png' %>); }
+.menu ul ul li.nsc a { background-image: url(<%= asset_path 'icons/nsc-favicon.png' %>); }
+.menu ul ul li.scholarships a { background-image: url(<%= asset_path 'icons/silk/money.png' %>); }
+.menu ul ul li.colleges a { background-image: url(<%= asset_path 'icons/silk/building.png' %>); }
+.menu ul ul li.locations a { background-image: url(<%= asset_path 'icons/silk/building.png' %>); }
+.menu ul ul li.groups a { background-image: url(<%= asset_path 'icons/silk/group.png' %>); }
+.menu ul ul li.calendar a { background-image: url(<%= asset_path 'icons/silk/calendar.png' %>); }
+.menu ul ul li.programs a { background-image: url(<%= asset_path 'icons/silk/bricks.png' %>); }
+.menu ul ul li.filters a { background-image: url(<%= asset_path 'icons/silk/timeline_marker.png' %>); }
+.menu ul ul li.terms a { background-image: url(<%= asset_path 'icons/silk/date.png' %>); }
+.menu ul ul li.tests a, .menu ul ul li.edit a { background-image: url(<%= asset_path 'icons/silk/page_edit.png' %>); }
+.menu ul ul li.trainings a { background-image: url(<%= asset_path 'icons/silk/book_open.png' %>); }
+.menu ul ul li.users a { background-image: url(<%= asset_path 'icons/silk/shield.png' %>); }
+.menu ul ul li.trash a { background-image: url(<%= asset_path 'icons/silk/bin_closed.png' %>); }
+.menu ul ul li.settings a { background-image: url(<%= asset_path 'icons/silk/information.png' %>); }
 
 .menu ul li li.participant a, .menu ul li li.participant a:hover {
   background: none;
@@ -140,7 +140,7 @@ body.admin #main-nav .admin {
 }
 
 .menu ul ul li a:hover {
-	background: url(../images/bullets/gold_arrow_small.gif) no-repeat 5px center;
+	background: url(<%= asset_path 'bullets/gold_arrow_small.gif' %>) no-repeat 5px center;
 	border: none;
 	border-bottom: 1px dotted #dadada;
 	color: rgb(53,94,170);
