@@ -8,11 +8,7 @@
 		</div>
 	</td>
 
-	<td class="content_type">
-		<%= file_icon_tag h(document.document_content_type) %>
-	</td>	
-	
-	<td class="note-body">
+	<td class="note-body with-file-icon <%= file_extension_from_content_type(document.document_content_type) %>">
 		<strong><%= link_to h(document.title), document.document.url %></strong>
 		<%= content_tag :p, simple_format(document.note), :class => "note" unless document.note.blank? %>
 	</td>

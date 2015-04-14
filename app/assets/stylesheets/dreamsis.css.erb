@@ -4486,8 +4486,31 @@ div.notes.editable, p.notes.editable {
 }
 
 .document .with-file-icon {
-  
+  background: url(<%= asset_path 'icons/filetypes/text-outline.svg' %>) left 10px no-repeat;
+  background-size: 24px;
+  padding-left: 40px;
 }
+
+.document .with-file-icon.doc, .document .with-file-icon.docx, .document .with-file-icon.dot {
+  background-image: url(<%= asset_path 'icons/filetypes/word-outline.svg' %>);
+}
+
+.document .with-file-icon.xls, .document .with-file-icon.xlsx {
+  background-image: url(<%= asset_path 'icons/filetypes/excel-outline.svg' %>);
+}
+
+.document .with-file-icon.ppt, .document .with-file-icon.pptx {
+  background-image: url(<%= asset_path 'icons/filetypes/powerpoint-outline.svg' %>);
+}
+
+.document .with-file-icon.pdf {
+  background-image: url(<%= asset_path 'icons/filetypes/pdf-outline.svg' %>);
+}
+
+.document .with-file-icon.jpg, .document .with-file-icon.jpeg  {
+  background-image: url(<%= asset_path 'icons/filetypes/image-outline.svg' %>);
+}
+
 
 p.needs-followup, a.needs-followup {
 	background: url(<%= asset_path 'icons/silk/flag_orange.png' %>) no-repeat;
