@@ -13,7 +13,7 @@ hide_title ||= false
 	<tr>
 		<th>School</th>
 		<th>Total</th>
-		<th>Active <%= "&amp; #{Customer.not_target_opposite_Label}" unless Customer.not_target_label.blank? %></th>
+		<th>Active <%= "&amp;".html_safe + Customer.not_target_opposite_Label unless Customer.not_target_label.blank? %></th>
 		<th>Meets Criteria</th>
 		<th>Completion</th>
 		<th></th>

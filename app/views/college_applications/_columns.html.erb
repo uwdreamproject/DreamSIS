@@ -23,7 +23,7 @@
 	<%=h college_application.choice %>
 </td>
 
-<td class="college-applied centered inline-when-small">
+<td class="college-applied centered inline-when-small" data-text="<%= college_application.applied? %>">
 	<%= content_tag :span, "Y", :class => "icon pass" if college_application.applied? %>
 </td>
 
