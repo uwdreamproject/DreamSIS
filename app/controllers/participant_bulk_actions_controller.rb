@@ -59,15 +59,20 @@ class ParticipantBulkActionsController < ParticipantsController
   def process_assign_mentor
     @mentor = Mentor.find params[:mentor_id]
     
-    @mentor_participants = { :success => [], :error => [] }
-    for participant in @participants
-      begin
-        participant.mentors << @mentor
-        @mentor_participants[:success] << participant
-      rescue ActiveRecord::RecordInvalid => e
-        @mentor_participants[:error] << participant
-        flash[:error] = "#{@mentor.fullname} is already assigned to #{participant.fullname}"
+    if @current_user.admin? || @mentor.current_lead?
+      @mentor_participants = { :success => [], :error => [] }
+      for participant in @participants
+        begin
+          participant.mentors << @mentor
+          @mentor_participants[:success] << participant
+        rescue ActiveRecord::RecordInvalid => e
+          @mentor_participants[:error] << participant
+          flash[:error] = "#{@mentor.fullname} is already assigned to #{participant.fullname}"
+        end
       end
+    else
+      flash[:error] = "You are not allowed to assign #{Customer.mentors_label} to #{Customer.participants_label}."
+      return render :text => "Error", :status => 403
     end
     
   rescue ActiveRecord::RecordNotFound => e
