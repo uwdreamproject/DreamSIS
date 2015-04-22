@@ -1,6 +1,12 @@
 <%= f.inputs :name => "Choose participants to submit" do -%>
 	<p>Choose the cohorts that should be submitted to the National Student Clearinghouse.</p>
 	
+	<p class="warning">
+		<strong>Tip:</strong>
+		Only include cohorts that have graduated high school. The list below includes all cohorts 
+		but the National Student Clearinghouse will only return results for students who have graduated high school.
+	</p>
+	
 	<%- for cohort in Participant.cohorts -%>
 		<li class="boolean optional" id="cohort_<%= cohort %>_input">
 			<label for="cohort_<%= cohort %>">

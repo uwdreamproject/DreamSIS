@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150325204841) do
+ActiveRecord::Schema.define(:version => 20150410053406) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(:version => 20150325204841) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "detail_report_filename"
+    t.text     "filenames"
   end
 
   create_table "college_applications", :force => true do |t|

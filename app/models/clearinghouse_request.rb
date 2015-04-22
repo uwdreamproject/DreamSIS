@@ -21,6 +21,8 @@ class ClearinghouseRequest < ActiveRecord::Base
   belongs_to :user, :class_name => "User", :foreign_key => "created_by"
   
   serialize :participant_ids
+
+  serialize :filenames
   
   scope :awaiting_retrieval, :conditions => "submitted_at IS NOT NULL AND retrieved_at IS NULL"
   
@@ -51,7 +53,6 @@ class ClearinghouseRequest < ActiveRecord::Base
   # If +@participants+ instance variable is assigned, return that. Otherwise, find all of the participants
   # identified by the collection in the +participant_ids+ attribute.
   def participants
-    # @participants ||= Participant.find(participant_ids)
     @participants ||= Participant.find(:all, :conditions => ["`id` IN (?)", participant_ids])
   end
   
@@ -91,6 +92,14 @@ class ClearinghouseRequest < ActiveRecord::Base
     @nsc ||= NationalStudentClearinghouse.new(self)
   end
   
+  # Use a custom logger for logging the relevant activities for this request.
+  def logger
+    return @local_logger if @local_logger
+    path = "#{Rails.root}/tmp/nsc/#{id.to_s}/processing_log.log"
+    FileUtils.mkdir_p(File.dirname(path)) unless File.exists?(File.dirname(path))
+    @local_logger = Logger.new(path)
+  end
+  
   # Checks to see if this Customer is over the "limit" of submissions for the year and adds a validation
   # error to this record if so.
   def overlimit_protection
@@ -127,18 +136,27 @@ class ClearinghouseRequest < ActiveRecord::Base
     begin
       logger.info { "process_detail_file(#{file_path})" }
       participant_ids = []
-      FasterCSV.foreach(file_path, :headers => true) do |row|
+      CSV.foreach(file_path, :headers => true) do |row|
         attrs = row.to_hash
+        logger.info { " " }
+        logger.info { "Processing row: " + attrs.inspect }
         if attrs["Record Found Y/N"] == "Y"
           participant_id = attrs["Requester Return Field"]
           participant_ids << participant_id
           participant = Participant.find(participant_id) rescue nil
-          next unless participant
+          if participant
+            logger.info { "  -> MATCHED to participant id #{participant.id}" }
+          else
+            logger.info { "  -> PARTICIPANT NOT FOUND" }
+            next
+          end
           if attrs["Graduated?"] == "Y"
             create_college_degree_from(attrs, participant_id)
           else
             create_college_enrollment_from(attrs, participant_id)
           end
+        else
+          logger.info { "  -> NO NSC RESULT RETURNED" }
         end
       end
       logger.info { "Done - updating request metadata" }
@@ -162,15 +180,34 @@ class ClearinghouseRequest < ActiveRecord::Base
 
   # Returns an array of the files stored for this request.
   def files
-    files_dir = File.join("files", "clearinghouse_request", id.to_s, "receive", "*")
-    Dir.glob(files_dir)
+    filenames || []
+  end
+  
+  def file_url(filename)
+    raise Exception.new("File name is not in the list of stored files") unless files.include?(filename)
+    uploader.retrieve_from_store!(filename)
+    uploader.url
+  end
+  
+  # Returns the instance of ClearinghouseRequestUploader to use for storing files on S3.
+  def uploader
+    @uploader ||= ClearinghouseRequestUploader.new(id)
+  end
+  
+  # Takes a local file, stores it in S3 using CarrierWave, and stores the filename in the "filenames" array.
+  def store_permanently!(local_path)
+    uploader.store!(File.open(local_path))
+    self.filenames ||= []
+    self.filenames << File.basename(local_path)
+    self.save!
   end
 
   protected
   
   # Creates a CollegeDegree record from the attributes provided. 
   def create_college_degree_from(attrs, participant_id)
-    CollegeDegree.create(
+    logger.info { "  -> Creating CollegeDegree record" }
+    cd = CollegeDegree.create(
       :participant_id => participant_id,
       :institution_id => Institution.find_by_opeid(attrs["College Code/Branch"]).try(:id),
       :graduated_on => Date.parse(attrs["Graduation Date"]),
@@ -185,11 +222,15 @@ class ClearinghouseRequest < ActiveRecord::Base
       :major_4_cip => attrs["Degree CIP 4"],
       :source => "clearinghouse",
       :clearinghouse_request_id => self.id
-    )    
+    )
+    logger.info { "     #{cd.inspect}" }
+    logger.info { "     Errors: #{cd.errors.messages.inspect}" } unless cd.valid?
+    cd
   end
   
   # Creates a CollegeEnrollment record from the attributes provided. 
   def create_college_enrollment_from(attrs, participant_id)
+    logger.info { "  -> Creating CollegeEnrollment record" }
     ce = CollegeEnrollment.create(
       :participant_id => participant_id,
       :institution_id => Institution.find_by_opeid(attrs["College Code/Branch"]).try(:id),
@@ -204,6 +245,9 @@ class ClearinghouseRequest < ActiveRecord::Base
       :source => "clearinghouse",
       :clearinghouse_request_id => self.id
     )
+    logger.info { "     #{ce.inspect}" }
+    logger.info { "     Errors: #{ce.errors.messages.inspect}" } unless ce.valid?
+    ce
   end
 
   # Moves the detail file and its two related files to permanent storage in 
@@ -222,12 +266,11 @@ class ClearinghouseRequest < ActiveRecord::Base
     for file_name in all_files
       source_path = File.join(source_dir, file_name)
       if File.exists?(source_path)
-        FileUtils.cp_r(source_path, File.join(destination_dir, file_name))
-        copied_files << file_name
+        store_permanently!(source_path)
       end
     end
     logger.info { "done" }
-    copied_files
+    files
   end
   
   # Tells the nsc object to delete the files related to this request.
