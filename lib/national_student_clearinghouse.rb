@@ -223,7 +223,7 @@ class NationalStudentClearinghouse
       Rails.logger.info { "Storing file in persistent store" }
       cr.store_permanently!(file_path)
     	Rollbar.warning "Sidekiq not running" unless Report.sidekiq_ready?
-      ClearinghouseRequestWorker.perform_async(self.id, file_path)
+      ClearinghouseRequestWorker.perform_async(cr.id, file_path)
     else 
       Rails.logger.info { "Did not match DreamSIS indicator in file contents! Quitting." }
     end
