@@ -48,6 +48,11 @@ class Institution < ActiveRecord::Base
       super(*args)
     end
   end
+  
+  # Strips out hyphens from OPEID before searching.
+  def self.find_by_opeid(opeid)
+    super(opeid.to_s.gsub("-", ""))
+  end
 
 	def to_title
 		title

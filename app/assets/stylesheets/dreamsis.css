@@ -1720,6 +1720,20 @@ abbr[title]:hover {
 /*  padding: 0.5em;*/
 }
 
+p.warning {
+  background: rgba(255,206,0,0.25) url("../images/icons/silk/error.png") 0.5em 0.5em no-repeat;  
+  border-radius: 5px;
+  border: 1px solid rgba(255,206,0,0.3);
+  padding: 0.5em;
+  padding-left: 32px;
+  color: #3f3f3f;
+  margin: 1em 0;
+}
+
+p.warning strong {
+  font-weight: bolder;
+}
+
 .stats .warning {
   background: inherit;
 }
@@ -2714,7 +2728,7 @@ form.formtastic li#participant_zip_input input, form.formtastic li#parent_zip_in
 
 
 form.formtastic fieldset p:first-child {
-	margin: -10px -2px 2em -7px;
+	margin: -22px -2px 2em -7px;
 	padding: 7px;
 	background: rgba(0,0,0,0.03);
 }
@@ -4669,6 +4683,16 @@ code.criteria pre {
 	display: inline;
 	white-space: normal;
 	font-family: inherit;
+}
+
+code.log-file {
+  display: block;
+  max-height: 30em;
+  overflow: scroll;
+  white-space: pre-wrap;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  padding: 1em;
 }
 
 .hoverable .show_on_hover {

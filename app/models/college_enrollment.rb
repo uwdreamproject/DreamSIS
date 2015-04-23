@@ -6,6 +6,8 @@ class CollegeEnrollment < Enrollment
   belongs_to :grade_level, :foreign_key => :abbreviation, :primary_key => :class_level
   belongs_to :institution
 
+  scope :from_clearinghouse_request, lambda { |clearinghouse_request_id| where(:clearinghouse_request_id => clearinghouse_request_id) }
+
   CLASS_LEVEL_NAMES = {
     "C" => "Certificate (Undergraduate)",
     "A" => "Associate's",
