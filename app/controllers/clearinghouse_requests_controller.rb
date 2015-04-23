@@ -71,6 +71,10 @@ class ClearinghouseRequestsController < ApplicationController
     redirect_to(@clearinghouse_request)
   end
   
+  def results
+    @clearinghouse_request = ClearinghouseRequest.find(params[:id])
+  end
+  
   def create
     @clearinghouse_request = ClearinghouseRequest.new(params[:clearinghouse_request])
     @clearinghouse_request.customer_id = Customer.current_customer.id

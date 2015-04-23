@@ -146,6 +146,7 @@ class ClearinghouseRequest < ActiveRecord::Base
           participant = Participant.find(participant_id) rescue nil
           if participant
             logger.info { "  -> MATCHED to participant id #{participant.id}" }
+            participant.update_attribute(:clearinghouse_record_found, true)
           else
             logger.info { "  -> PARTICIPANT NOT FOUND" }
             next

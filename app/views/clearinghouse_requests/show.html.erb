@@ -56,6 +56,8 @@
 		<%- if @clearinghouse_request.retrieved? -%>
 			<%= @clearinghouse_request.retrieved_at.to_s(:date_with_full_month) %>
 			with <%= pluralize @clearinghouse_request.number_of_records_returned, "record" %>
+			
+			<p><br /><%= link_to "List results", results_clearinghouse_request_path(@clearinghouse_request), :class => "list button" %></p>
 		<% else %>
 			<%= content_tag(:em, "Not retrieved", :class => 'light') %>
 		<% end %>
