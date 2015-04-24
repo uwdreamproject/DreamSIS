@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150423040511) do
+ActiveRecord::Schema.define(:version => 20150423235426) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -507,10 +507,10 @@ ActiveRecord::Schema.define(:version => 20150423040511) do
     t.integer  "warning_threshold"
     t.date     "start_display_at"
     t.date     "end_display_at"
-    t.integer  "earliest_grade_level"
     t.integer  "earliest_grade_level_level"
     t.integer  "latest_grade_level_level"
     t.integer  "customer_id"
+    t.integer  "earliest_grade_level"
   end
 
   add_index "object_filters", ["customer_id"], :name => "index_object_filters_on_customer_id"
