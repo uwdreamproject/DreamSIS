@@ -10,19 +10,21 @@
 	</thead>
 	
 	<tbody>
-	<%- for participant in @clearinghouse_request.participants -%>
-		<tr>
-			<td class="name"><%= link_to participant.fullname, participant %></td>
-			<td class="centered">
-				<%= content_tag :span, participant.clearinghouse_record_found?, :class => "icon pass" if participant.clearinghouse_record_found? %>
-			</td>
-			<td class="centered">
-				<%= p = participant.college_enrollments.from_clearinghouse_request(@clearinghouse_request.id); p.size unless p.empty? %>
-			</td>
-			<td class="centered">
-				<%= p = participant.college_degrees.from_clearinghouse_request(@clearinghouse_request.id); p.size unless p.empty? %>
-			</td>
-		</tr>
+	<%- cache [@clearinghouse_request.cache_key, "results"].join("/") do -%>
+		<%- for participant in @clearinghouse_request.participants -%>
+			<tr>
+				<td class="name"><%= link_to participant.fullname, participant %></td>
+				<td class="centered">
+					<%= content_tag :span, participant.clearinghouse_record_found?, :class => "icon pass" if participant.clearinghouse_record_found? %>
+				</td>
+				<td class="centered">
+					<%= p = participant.college_enrollments.from_clearinghouse_request(@clearinghouse_request.id); p.size unless p.empty? %>
+				</td>
+				<td class="centered">
+					<%= p = participant.college_degrees.from_clearinghouse_request(@clearinghouse_request.id); p.size unless p.empty? %>
+				</td>
+			</tr>
+		<% end %>
 	<% end %>
 	</tbody>
 </table>
