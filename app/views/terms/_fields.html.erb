@@ -6,6 +6,6 @@
 					:hint => "Specify the course ID's for this term in the format: 2011,spring,EDUC,360/A. One per line." if Customer.link_to_uw? %>
         <%= f.input :course_dependencies, :as => :text, :label => "Course Dependencies",:input_html => { :rows => 8 }, 
 					:hint => "Specify dependencies in YAML.".html_safe + link_to("Documentation","http://depts.washington.edu/uwdrmprj/resources/misc/dependencies_outline.txt") if Customer.link_to_uw? %>
-	<%= f.input :signup_description, :as => :text, :label => "Signup Page Description", :input_html => { :rows => 12 }, :hint => "Text to be displayed on the signup page. Use ".html_safe + link_to("Textfile","http://redcloth.org/") + " markup for formatting." if Customer.link_to_uw? %>
+	<%= f.input :signup_description, :as => :text, :label => "Signup Page Description", :input_html => { :rows => 12 }, :hint => "Text to be displayed on the signup page. Use ".html_safe + link_to("Textile","http://redcloth.org/") + " markup for formatting." if Customer.link_to_uw? %>
 	<%= f.input :allow_signups %>
 <% end -%>

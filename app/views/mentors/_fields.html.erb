@@ -25,9 +25,9 @@
 	<%= f.input :background_check_run_at, :hint => link_to_now("mentor_background_check_run_at") %>
 	<%= f.input :background_check_result, 
 					:hint => "Enter #{link_to_function('NO RECORD FOUND', 
-									"$('mentor_background_check_result').value='NO RECORD FOUND [#{@current_user.login}]'")} 
+									"$('mentor_background_check_result').value='NO RECORD FOUND [#{j(@current_user.login)}]'")}
 								or #{link_to_function('OK', 
-									"$('mentor_background_check_result').value='OK  [#{@current_user.login}]'")}
+									"$('mentor_background_check_result').value='OK  [#{j(@current_user.login)}]'")}
 								(include an explanation) if the mentor passed the check.".html_safe  %>
 
 	<hr />
@@ -35,15 +35,15 @@
   <%= f.input :sex_offender_check_run_at, :hint => link_to_now("mentor_sex_offender_check_run_at") %>
 	<%= f.input :sex_offender_check_result, 
 					:hint => "Enter #{link_to_function('NO RECORD FOUND', 
-									"$('mentor_sex_offender_check_result').value='NO RECORD FOUND [#{@current_user.login}]'")} 
+									"$('mentor_sex_offender_check_result').value='NO RECORD FOUND [#{j(@current_user.login)}]'")} 
 								or #{link_to_function('OK', 
-									"$('mentor_sex_offender_check_result').value='OK  [#{@current_user.login}]'")}
+									"$('mentor_sex_offender_check_result').value='OK  [#{j(@current_user.login)}]'")}
 								(include an explanation) if the mentor passed the check.".html_safe %>
 
 	<hr />
 
 	<%= f.input :van_driver_training_completed_at, :hint => link_to_now("mentor_van_driver_training_completed_at"), :label => "Driver Training" %>
     <%= f.input :driver_form_remarks, :hint => "Enter #{link_to_function('OK',
-                                                   "$('mentor_driver_form_remarks').value='OK  [#{@current_user.login}]'")}
+                                                   "$('mentor_driver_form_remarks').value='OK  [#{j(@current_user.login)}]'")}
 								(include an explanation if necessary) if the mentor is qualified to drive.".html_safe  %>
 <% end -%>
