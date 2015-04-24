@@ -1,7 +1,7 @@
 <tr id="test_score_<%= test_score.id %>">
 
 	<td class="name"><%= link_to h(test_score.name), [@participant, test_score] %></td>
-	<td class="inline-when-small"><%=h test_score.taken_at.try(:to_s, :date_with_day_of_week) %>
+	<td class="inline-when-small" data-text="<%= test_score.taken_at.try(:to_s, :short_date) %>"><%=h test_score.taken_at.try(:to_s, :date_with_day_of_week) %>
 		<%= content_tag :small, "(#{relative_timestamp(test_score.taken_at)})", :class => 'light' unless test_score.taken_at.blank? %>
 	</td>
 	<td class="inline-when-small">

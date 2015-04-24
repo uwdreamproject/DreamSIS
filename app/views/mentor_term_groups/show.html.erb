@@ -12,7 +12,7 @@
 		<th>Photo</th>
 		<th>Name</th>
 		<th><%= Customer.mentees_Label %></th>
-		<th>Functions</th>
+		<th class="functions">Functions</th>
 	</tr>
 
 	<%= render :partial => "mentor_term", :collection => @mentor_terms %>
@@ -45,7 +45,7 @@
 		<th>Photo</th>
 		<th>Name</th>
 		<th>Mentees</th>
-		<th>Functions</th>
+		<th class="functions">Functions</th>
 	</tr>
 
 	<%= render :partial => "mentor_term", :collection => @mentor_term_group.deleted_mentor_terms %>

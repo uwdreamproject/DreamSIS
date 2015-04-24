@@ -168,12 +168,37 @@ class Participant < Person
     return nil unless college_attending_id
     Institution.find(college_attending_id)
   end
+  alias :college_planning_to_attend :college_attending
   
   # Returns the CollegeEnrollment representing where the student is _currently attending_, 
-  # based on the most recent Enrollment without an end date.
+  # based on the current enrollment validity period set in CollegeEnrollment.
   def current_college_enrollment
     return nil if college_enrollments.empty?
-    college_enrollments.reorder("began_on DESC").where(ended_on => nil).first
+    @current_college_enrollment ||= college_enrollments.reorder("began_on DESC").where(
+      ["began_on > ?", CollegeEnrollment::CURRENT_ENROLLMENT_VALIDITY_PERIOD.ago]
+    ).first
+  end
+  
+  # Returns true if +current_college_enrollment+ is not nil.
+  def currently_college_enrolled?
+    !current_college_enrollment.nil?
+  end
+  
+  # Returns the name of the currently enrolled college, if it exists.
+  def current_college_name
+    current_college_enrollment.try(:name)
+  end
+  
+  # Returns true if +college_degrees+ is not empty.
+  def earned_college_degree?
+    !college_degrees.empty?
+  end
+  alias :graduated_college? :earned_college_degree?
+  
+  # Returns the name(s) of the colleges from which this person earned a degree.
+  # If there are multiple degrees, this method returns all of the names joined with a comma.
+  def alma_mater_names
+    college_degrees.reorder("graduated_on ASC").collect(&:name).join(", ")
   end
   
   # Returns the CollegeEnrollment representing where the student _most recently attended_, based on the
@@ -221,7 +246,8 @@ class Participant < Person
 	def self.xlsx_columns
 		columns = []
 		columns << self.column_names.map { |c| c = c.to_sym }
-		columns << [:high_school_name, :raw_survey_id, :college_attending_name, 
+		columns << [:high_school_name, :raw_survey_id, :college_planning_to_attend_name, 
+                :currently_college_enrolled?, :current_college_name, :graduated_college?, :alma_mater_names,
 								:family_income_level_title, :program_titles, :assigned_mentor_names, 
 								:participant_group_title, :multiracial?, 
                 "fafsa_#{Time.now.year}_fafsa_submitted_at", "fafsa_#{Time.now.year}_wasfa_submitted_at", 
@@ -240,6 +266,7 @@ class Participant < Person
 	def college_attending_name
 		college_attending.try(:name) 
 	end
+  alias :college_planning_to_attend_name :college_attending_name
 	
 	def high_school_name
 		high_school.try(:name)

@@ -6,7 +6,7 @@
 	<td class="align-right inline-when-small">
 		<%=h scholarship_application.amount.blank? ? raw("&mdash;") : number_to_currency(scholarship_application.amount) %>
 	</td>
-	<td class="inline-when-small">
+	<td class="inline-when-small" data-text="<%= scholarship_application.awarded? %>">
 		<%= form_for([@participant, scholarship_application], 
 					:remote => true,
 					:html => { :style => "display:inline", 
