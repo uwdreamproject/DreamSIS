@@ -156,6 +156,8 @@ Dreamsis::Application.routes.draw do
       post :retrieve
       get :file
       post :upload
+      get :refresh_status
+      get :results
     end
   end
   match '/my/mentees' => 'participants#mentor', :as => :my_participants, :mentor_id => 'me'
@@ -178,6 +180,7 @@ Dreamsis::Application.routes.draw do
     collection do
       get :auto_complete_for_mentor_fullname
       match :onboarding
+      get :onboarding_textblocks
       match :event_status
       match :leads
       match :van_drivers
@@ -190,9 +193,9 @@ Dreamsis::Application.routes.draw do
       put :send_login_link
       get :login_link
       get :onboarding_form
-      match :onboarding_update
+      match :onboarding_update, :action => "sidebar_form_update", :row_partial => "mentor_onboarding"
       get :driver_edit_form
-      match :driver_update
+      match :driver_update, :action => "sidebar_form_update", :row_partial => "mentor_driver"
       post :driver_training_status
     end
   end
@@ -207,6 +210,7 @@ Dreamsis::Application.routes.draw do
       get :photo_tile
     end
   end
+  match 'mentor_term_groups/:group_id/van_drivers' => 'mentors#van_drivers', :as => :van_drivers_mentor_term_group
   match 'mentor_term_groups/term/:term_id' => 'mentor_term_groups#term', :as => :mentor_term_groups_term
   resources :volunteers, :only => [:show, :background_check_responses], :controller => 'mentors'
   resources :activity_logs

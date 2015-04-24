@@ -56,7 +56,7 @@
 <% end %>
 
 <%= javascript_tag("
-  registerForm(#{@mentor.id});
+  registerOnboardingForm(#{@mentor.id});
   $(function() {
     $('.link-to-now').click(function(event) {
       setToNow($(event.target).data('target'))

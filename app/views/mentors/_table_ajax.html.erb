@@ -1,0 +1,28 @@
+<%= javascript_tag do %>
+	<%- if !@mentors.empty? -%>
+		<%#- Create an array of result subtables for each mentor term group,
+		then add the results to the array as we get them back, and once all
+		have finished, append the results to the table in the original order -%>
+
+		$( document ).on("ajaxStart.getMentors", function(event) {
+			resultArray = new Array(<%= @group_ids.size %>)
+		}).on("ajaxStop.getMentors", function(event) {
+			$("#current_mentors").removeClass("loading");
+			$("#current_mentors").html("<%=j render table_partial %>");
+			for (var i = 0; i < <%= @group_ids.size %>; i++) {
+				$("#current_mentors").append(eval(resultArray[i]));
+			}
+			$( document ).off(".getMentors");
+			register_<%= table_partial %>_rows();
+		});
+
+
+		<%- @group_ids.each_with_index do |group, i| -%>
+			$.ajax({ url: "<%= url_for(:group_id => group, :term_id => @term.id) %>",
+				dataType: "script",
+				success: function(data) { resultArray[<%= i %>] = data }
+			});
+		<%- end -%>
+		sidebar_content = $("#sidebar").html();
+	<%- end -%>
+<% end %>

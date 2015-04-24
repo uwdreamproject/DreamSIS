@@ -1,6 +1,7 @@
 class ParticipantBulkActionsController < ParticipantsController
   before_filter :fetch_participants
   before_filter :check_authorization
+  before_filter :check_privileged, :only => :process_assign_mentor
   
 	def send_email
 		@emails = @participants.collect(&:email).flatten.uniq.compact.delete_if(&:blank?)
@@ -69,7 +70,6 @@ class ParticipantBulkActionsController < ParticipantsController
         flash[:error] = "#{@mentor.fullname} is already assigned to #{participant.fullname}"
       end
     end
-    
   rescue ActiveRecord::RecordNotFound => e
     flash[:error] = "Please specify a #{Customer.mentor_label} to assign."
     return render :text => "Error"
@@ -86,6 +86,18 @@ class ParticipantBulkActionsController < ParticipantsController
     for participant in @participants
       unless @current_user && @current_user.can_edit?(participant)
         return render_error("You are not allowed to edit one of the selected participants.")
+      end
+    end
+  end
+
+  def check_privileged
+    unless @current_user.admin? || @current_user.person.current_lead?
+      error_text = "You are not authorized to perform that action."
+      if request.xhr?
+        flash[:error] = error_text
+        return render :text => "Error", :status => 403
+      else
+        return render_error(error_text)
       end
     end
   end

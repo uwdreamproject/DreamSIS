@@ -166,33 +166,31 @@ class MentorsController < ApplicationController
   
   def onboarding
     @term = Term.find(params[:term_id])
+    @group_ids = @term.mentor_term_groups.collect(&:id)
     @mentors = @term.mentors(sort = :lastname)
-  end
-
-  def onboarding_update
-    @mentor = Mentor.find(params[:id])
-    @mentor.validate_name = true
-
+    if params[:group_id]
+      mentor_term_group = MentorTermGroup.find(params[:group_id])
+      @group_title = mentor_term_group.title
+      @mentors = mentor_term_group.mentors
+    else
+      @mentors = @term.mentors(sort = :lastname)
+    end
     respond_to do |format|
-      if @mentor.update_attributes(params[:mentor])
-        flash[:notice] = 'Mentor was successfully updated.'
-        format.html { render :partial => "mentor_onboarding", :object => @mentor, :locals => {:append_block => false} }
-      else
-        flash[:error] = "Error updating mentor"
-      end
+      format.html
+      format.js { render :partial => "table_ajax", :locals => {:row_partial => "mentor_onboarding"} }
     end
   end
 
-  def driver_update
+  def sidebar_form_update
     @mentor = Mentor.find(params[:id])
     @mentor.validate_name = true
 
     respond_to do |format|
       if @mentor.update_attributes(params[:mentor])
         flash[:notice] = 'Mentor was successfully updated.'
-        format.html { render :partial => "mentor_driver", :object => @mentor, :locals => {:append_block => false} }
+        format.html { render :partial => params[:row_partial], :object => @mentor }
       else
-        flash[:error] = "Error updating mentor"
+        flash[:error] = "Error updating mentor."
       end
     end
   end
@@ -201,6 +199,15 @@ class MentorsController < ApplicationController
     @mentor = Mentor.find(params[:id])
     respond_to do |format|
       format.html { render :partial => "onboarding_form"}
+    end
+  end
+
+  def onboarding_textblocks
+    @term = Term.find(params[:term_id])
+    @mentors = @term.mentors(sort = :lastname)
+    respond_to do |format|
+      format.json { render :json => { :background_check => view_context.background_check_textblock(@mentors),
+                                      :sex_offender_check => view_context.sex_offender_check_textblock(@mentors) } }
     end
   end
 
@@ -231,16 +238,20 @@ class MentorsController < ApplicationController
   
   def van_drivers
     @term = (t = params[:new_term_id] || params[:term_id]) ? Term.find(t) : Term.current_term
-    if params[:group]
-      @group_title = MentorTermGroup.find(params[:group]).title
-      @mentors = Mentor.valid_van_drivers(@term.id, params[:group])
+    if params[:group_id]
+      @group_title = MentorTermGroup.find(params[:group_id]).title
+      @page_header_title = @group_title
+      @mentors = Mentor.valid_van_drivers(@term.id, params[:group_id])
+      @ajax_load = false
     else
-      @groups = if @current_user.admin?
-                  @term.mentor_term_groups.collect(&:id)
-                else # is a lead
-                  @current_user.person.current_lead_mentor_terms.collect(&:mentor_term_group).collect(&:id)
-                end
       @mentors = Mentor.valid_van_drivers(@term.id)
+      @page_header_title = @term.is_a?(Quarter) ? @term.title : @term.to_param
+      @group_ids = @term.mentor_term_groups.collect(&:id)
+      @ajax_load = !@mentors.empty?
+    end
+    respond_to do |format|
+      format.html
+      format.js { render :partial => "table_ajax", :locals => { :row_partial => "mentor_driver" } }
     end
   end
   
@@ -259,6 +270,6 @@ class MentorsController < ApplicationController
 		filename = size == "thumb" ? "blank_avatar_thumb.png" : "blank_avatar.png"
     send_file File.join(Rails.root, "public", "images", filename), 
               :disposition => 'inline', :type => 'image/png', :status => 404
-  end  
+  end
   
 end

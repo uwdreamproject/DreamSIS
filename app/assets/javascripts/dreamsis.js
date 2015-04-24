@@ -83,6 +83,10 @@ function selectMergeItem(element, part) {
 }
 
 $(function() {
+  registerDateInputHelpers();
+})
+
+function registerDateInputHelpers() {
   $('.link-to-now').click(function(event) {
     setToNow($(event.target).data('target'))
     event.preventDefault();
@@ -91,7 +95,7 @@ $(function() {
     setToClear($(event.target).data('target'))
     event.preventDefault();
   })
-})
+}
 
 function setToNow(element_id) {
 	d = new Date()
