@@ -1,4 +1,7 @@
-<h1>Request #<%= @clearinghouse_request.id.to_s %></h1>
+<div class="inline">
+	<h1>Request #<%= @clearinghouse_request.id.to_s %></h1> &nbsp;
+	<%= content_tag :span, @clearinghouse_request.status, :class => "#{@clearinghouse_request.status} status tag" %>
+</div>
 
 <dl class="inline-definitions">
 	
@@ -34,10 +37,10 @@
 				<p>
 					<br /><%= link_to "Retrieve results now", retrieve_clearinghouse_request_path(@clearinghouse_request), :method => :post, :class => "download button" if @clearinghouse_request.retrievable? %>
 					<%= separator if @clearinghouse_request.retrievable? %>
-					<%= link_to_function "Upload results file", "$('upload_form').show()", :class => "save button" %>
+					<%= link_to_function "Upload results file", "$('#upload_form').show()", :class => "save button" %>
 				</p>
 				
-				<%- form_tag upload_clearinghouse_request_path(@clearinghouse_request), :id => 'upload_form', :style => "display:none", :multipart => true do |f| -%>
+				<%= form_tag upload_clearinghouse_request_path(@clearinghouse_request), :id => 'upload_form', :style => "display:none", :multipart => true do |f| -%>
 					<p><br />Upload the detail file that was returned by National Student Clearinghouse.</p>
 					<%= file_field_tag 'retrieved_file' %>
 					<%= submit_tag "Upload" %>
@@ -53,6 +56,8 @@
 		<%- if @clearinghouse_request.retrieved? -%>
 			<%= @clearinghouse_request.retrieved_at.to_s(:date_with_full_month) %>
 			with <%= pluralize @clearinghouse_request.number_of_records_returned, "record" %>
+			
+			<p><br /><%= link_to "List results", results_clearinghouse_request_path(@clearinghouse_request), :class => "list button" %></p>
 		<% else %>
 			<%= content_tag(:em, "Not retrieved", :class => 'light') %>
 		<% end %>
@@ -68,9 +73,9 @@
 			</li>
 			
 			<%- if @clearinghouse_request.retrieved? -%>
-				<%- @clearinghouse_request.files.each_with_index do |file, i| %>
+				<%- for file in @clearinghouse_request.files %>
 					<li>
-						<%= link_to h(File.basename(file)), file_clearinghouse_request_path(@clearinghouse_request, :file => i+1) %>
+						<%= link_to file, file_clearinghouse_request_path(@clearinghouse_request, :file => file) %>
 						<%= "(Aggregate report)" if File.basename(file).match("aggrrpt") %>
 						<%= "(Control report)" if File.basename(file).match("cntlrpt") %>
 					</li>
@@ -78,11 +83,21 @@
 			<% end %>
 		</ul>
 	</dd>
+	
+	<%- if @clearinghouse_request.submitted? -%>
+		<dt>Processing Log</dt>
+		<dd>
+			<code id="processing_log_container"><em>Loading...</em></code>
+		</dd>
+	<% end %>
 
 </dl>
-
-
 
 <div id="sidebar">
 	<p><%= link_to "Back to requests", clearinghouse_requests_path, :class => "back button" %></p>
 </div>
+
+<%= javascript_tag "$( function() {
+	$.ajax('#{refresh_status_clearinghouse_request_path(@clearinghouse_request, :current_status => @clearinghouse_request.status)}', 
+		{ dataType: 'script' })
+	})" if @clearinghouse_request.submitted? %>

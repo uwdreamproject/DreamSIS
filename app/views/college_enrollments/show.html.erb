@@ -29,7 +29,7 @@
 
 	<dt>Source</dt>
 	<dd><%=h @college_enrollment.source.try(:titleize) %>
-		<%= " &ndash; " + link_to("Request ##{@college_enrollment.clearinghouse_request.id.to_s}", @college_enrollment.clearinghouse_request) if @college_enrollment.clearinghouse_request %>
+		<%= " &ndash; ".html_safe + link_to("Request ##{@college_enrollment.clearinghouse_request.id.to_s}", @college_enrollment.clearinghouse_request) if @college_enrollment.clearinghouse_request %>
 		</dd>
 
 </dl>
