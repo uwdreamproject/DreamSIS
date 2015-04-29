@@ -190,7 +190,7 @@ class NationalStudentClearinghouse
     elements = [
       "D1",
       "",
-      p.firstname.to_s[0..19],
+      p.formal_firstname.to_s[0..19],
       p.middlename.to_s[0..0],
       p.lastname.to_s[0..19],
       p.suffix.to_s[0..4],
