@@ -11,6 +11,7 @@ class ClearinghouseRequestsController < ApplicationController
   
   def show
     @clearinghouse_request = ClearinghouseRequest.find(params[:id])
+    flash[:notice] = params[:message] if params[:message]
   
     respond_to do |format|
       format.html # show.html.erb
@@ -35,16 +36,19 @@ class ClearinghouseRequestsController < ApplicationController
   def file
     @clearinghouse_request = ClearinghouseRequest.find(params[:id])
     if params[:file] == 'submission'
-      file_url = @clearinghouse_request.file_url(@clearinghouse_request.nsc.send_filename)
+      file_url = @clearinghouse_request.file_url(:submission)
     elsif !params[:file].blank?
       file_url = @clearinghouse_request.file_url(params[:file])
     end
     redirect_to file_url
+  rescue KeyError => e
+    flash[:error] = "The requested file is not included in the list of available files for this request."
+    redirect_to :back
   end
   
   def refresh_status
     @clearinghouse_request = ClearinghouseRequest.find(params[:id])
-    @output = File.read(@clearinghouse_request.logger.instance_variable_get(:@logdev).filename)
+    @output = @clearinghouse_request.log_contents
     
     respond_to do |format|
       format.js

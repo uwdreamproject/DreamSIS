@@ -13,6 +13,6 @@
     
 <%- end %>
 
-<%- if params[:current_status] != 'retrieved' && @clearinghouse_request.retrieved? -%>
-  window.location = "<%=j clearinghouse_request_path(@clearinghouse_request) %>"
+<%- if @clearinghouse_request.retrieved? -%>
+  window.location = "<%=j clearinghouse_request_path(@clearinghouse_request, :message => 'Done processing!') %>"
 <%- end %>
