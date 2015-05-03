@@ -105,6 +105,15 @@ class ClearinghouseRequest < ActiveRecord::Base
     end
     @local_logger
   end
+  
+  # Shortcut method to add a message to the log, with the proper prefix.
+  def log(message, severity = :info)
+    if severity == :error
+      logger.error { log_prefix + message }
+    else
+      logger.info { log_prefix + message }
+    end
+  end
 
   # Returns the path to the local log file.
   def log_path
@@ -164,21 +173,21 @@ class ClearinghouseRequest < ActiveRecord::Base
   def process_detail_file(file_path)
     errors.add(:retrieved_at, "can only be retrieved once") and return false if retrieved?
     begin
-      logger.info { log_prefix + "process_detail_file(#{file_path})" }
+      log "process_detail_file(#{file_path})"
       participant_ids = []
       CSV.foreach(file_path, :headers => true) do |row|
         attrs = row.to_hash
-        logger.info { log_prefix + " " }
-        logger.info { log_prefix + "Processing row: " + attrs.inspect }
+        log " "
+        log "Processing row: " + attrs.inspect
         if attrs["Record Found Y/N"] == "Y"
           participant_id = attrs["Requester Return Field"]
           participant_ids << participant_id
           participant = Participant.find(participant_id) rescue nil
           if participant
-            logger.info { log_prefix + "  -> MATCHED to participant id #{participant.id}" }
+            log "  -> MATCHED to participant id #{participant.id}"
             participant.update_attribute(:clearinghouse_record_found, true)
           else
-            logger.info { log_prefix + "  -> PARTICIPANT NOT FOUND" }
+            log "  -> PARTICIPANT NOT FOUND"
             next
           end
           if attrs["Graduated?"] == "Y"
@@ -187,10 +196,10 @@ class ClearinghouseRequest < ActiveRecord::Base
             create_college_enrollment_from(attrs, participant_id)
           end
         else
-          logger.info { log_prefix + "  -> NO NSC RESULT RETURNED" }
+          log "  -> NO NSC RESULT RETURNED"
         end
       end
-      logger.info { log_prefix + "Done - updating request metadata" }
+      log "Done - updating request metadata"
       update_attributes(
         :retrieved_at => Time.now,
         :number_of_records_returned => participant_ids.uniq.size
@@ -205,7 +214,7 @@ class ClearinghouseRequest < ActiveRecord::Base
   # 1. Delete the files from the server if needed.
   # 2. Delete FTP password
   def close
-    logger.info { log_prefix + "Closing this request" }
+    log "Closing this request"
     delete_sftp_files
     update_attribute(:ftp_password, nil)
   end
@@ -252,7 +261,7 @@ class ClearinghouseRequest < ActiveRecord::Base
   
   # Creates a CollegeDegree record from the attributes provided. 
   def create_college_degree_from(attrs, participant_id)
-    logger.info { log_prefix + "  -> Creating CollegeDegree record" }
+    log "  -> Creating CollegeDegree record"
     cd = CollegeDegree.create(
       :participant_id => participant_id,
       :institution_id => Institution.find_by_opeid(attrs["College Code/Branch"]).try(:id),
@@ -269,14 +278,14 @@ class ClearinghouseRequest < ActiveRecord::Base
       :source => "clearinghouse",
       :clearinghouse_request_id => self.id
     )
-    logger.info { log_prefix + "     #{cd.inspect}" }
-    logger.info { log_prefix + "     Errors: #{cd.errors.messages.inspect}" } unless cd.valid?
+    log "     #{cd.inspect}"
+    log "     Errors: #{cd.errors.messages.inspect}" unless cd.valid?
     cd
   end
   
   # Creates a CollegeEnrollment record from the attributes provided. 
   def create_college_enrollment_from(attrs, participant_id)
-    logger.info { log_prefix + "  -> Creating CollegeEnrollment record" }
+    log "  -> Creating CollegeEnrollment record"
     ce = CollegeEnrollment.create(
       :participant_id => participant_id,
       :institution_id => Institution.find_by_opeid(attrs["College Code/Branch"]).try(:id),
@@ -291,8 +300,8 @@ class ClearinghouseRequest < ActiveRecord::Base
       :source => "clearinghouse",
       :clearinghouse_request_id => self.id
     )
-    logger.info { log_prefix + "     #{ce.inspect}" }
-    logger.info { log_prefix + "     Errors: #{ce.errors.messages.inspect}" } unless ce.valid?
+    log "     #{ce.inspect}"
+    log "     Errors: #{ce.errors.messages.inspect}" unless ce.valid?
     ce
   end
 
@@ -303,7 +312,7 @@ class ClearinghouseRequest < ActiveRecord::Base
   # it won't return those in the list.
   def store_files(detail_file_path)
     destination_dir = File.join("files", "clearinghouse_request", id.to_s, "receive")
-    logger.info { log_prefix + "Storing files for later use(#{detail_file_path}) to #{destination_dir}" }
+    log "Storing files for later use(#{detail_file_path}) to #{destination_dir}"
     source_dir = File.dirname(detail_file_path)
     update_attribute(:detail_report_filename, File.basename(detail_file_path))
     FileUtils.mkdir_p(destination_dir)
@@ -315,13 +324,13 @@ class ClearinghouseRequest < ActiveRecord::Base
         store_permanently!(source_path)
       end
     end
-    logger.info { log_prefix + "done" }
+    log "done"
     files
   end
   
   # Tells the nsc object to delete the files related to this request.
   def delete_sftp_files
-    logger.info { log_prefix + "Deleting related sftp files" }
+    log "Deleting related sftp files"
     return false if detail_report_filename.blank? || ftp_password.blank?
     all_files = nsc.interpolate_file_names_from_detail_file_path(detail_report_filename)
     nsc.delete_retrieved_files!(all_files)
