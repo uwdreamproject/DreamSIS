@@ -73,18 +73,18 @@
 			</li>
 			
 			<%- if @clearinghouse_request.retrieved? -%>
-				<%- for file in @clearinghouse_request.files %>
+				<%- for file_name, index in @clearinghouse_request.files.each_with_index %>
 					<li>
-						<%= link_to file, file_clearinghouse_request_path(@clearinghouse_request, :file => file) %>
-						<%= "(Aggregate report)" if File.basename(file).match("aggrrpt") %>
-						<%= "(Control report)" if File.basename(file).match("cntlrpt") %>
+						<%= link_to file_name, file_clearinghouse_request_path(@clearinghouse_request, :file => index) %>
+						<%= "(Aggregate report)" if File.basename(file_name).match("aggrrpt") %>
+						<%= "(Control report)" if File.basename(file_name).match("cntlrpt") %>
 					</li>
 				<% end %>
 			<% end %>
 		</ul>
 	</dd>
 	
-	<%- if @clearinghouse_request.submitted? -%>
+	<%- if @clearinghouse_request.submitted? && !@clearinghouse_request.retrieved? -%>
 		<dt>Processing Log</dt>
 		<dd>
 			<code id="processing_log_container"><em>Loading...</em></code>
@@ -100,4 +100,4 @@
 <%= javascript_tag "$( function() {
 	$.ajax('#{refresh_status_clearinghouse_request_path(@clearinghouse_request, :current_status => @clearinghouse_request.status)}', 
 		{ dataType: 'script' })
-	})" if @clearinghouse_request.submitted? %>
+	})" if @clearinghouse_request.submitted? && !@clearinghouse_request.retrieved? %>
