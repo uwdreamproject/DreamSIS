@@ -8,7 +8,7 @@ class ClearinghouseRequestWorker
         request.log "Processing request file"
         request.process_detail_file(file_path)
         request.log "Done."
-        request.store_permanently!(request.logger.instance_variable_get(:@logdev).filename)
+        request.store_log_file_permanently!
       end
     rescue => e
       request.log "ERROR: #{e.message}", :error
