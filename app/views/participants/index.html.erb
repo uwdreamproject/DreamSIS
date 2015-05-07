@@ -24,7 +24,7 @@
 <% end -%>
 
 <%= will_paginate @participants if @participants.respond_to?(:current_page) %>
-	<table class="participants" id="participants_table">
+	<table class="participants no-sort" id="participants_table">
 		<tr class="empty"><td class="loading"></td></tr>
 	</table>	
 <%= will_paginate @participants if @participants.respond_to?(:current_page) %>

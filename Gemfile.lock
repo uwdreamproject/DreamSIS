@@ -144,6 +144,7 @@ GEM
     json (1.8.1)
     jwt (1.0.0)
     kgio (2.9.2)
+    le (2.6.2)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -312,6 +313,7 @@ DEPENDENCIES
   jquery-tablesorter
   jquery-ui-rails
   json
+  le
   mandrill-api
   mime-types
   mini_magick

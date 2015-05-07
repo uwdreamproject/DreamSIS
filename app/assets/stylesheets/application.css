@@ -7,6 +7,7 @@
  *= require my_formtastic_changes
  *= require_self
  *= require jquery-ui
+ *= require jquery-tablesorter/theme.dreamsis
  *= require dreamsis
  *= require menus
  *= require print

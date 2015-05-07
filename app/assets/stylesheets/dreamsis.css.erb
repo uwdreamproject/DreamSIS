@@ -219,11 +219,11 @@ table.participants img.avatar {
 }
 
 table.participants.loading {
-	background: url(../images/bar-loader.gif) no-repeat center 25%;
+	background: url(<%= asset_path 'bar-loader.gif' %>) no-repeat center 25%;
 }
 
 .loading {
-	background: url(../images/bar-loader.gif) center 75% no-repeat;
+	background: url(<%= asset_path 'bar-loader.gif' %>) center 75% no-repeat;
 	min-height: 5em;
 	min-width: 220px;
 	padding: 6px;
@@ -431,7 +431,7 @@ h4 {
 	left: 50%;
 	width: 70px;
 	margin-left: -45px;
-	background: yellow url(../images/indicator.gif) no-repeat 8px 10px;
+	background: yellow url(<%= asset_path 'indicator.gif' %>) no-repeat 8px 10px;
 	padding: 10px 10px 5px 30px;
 	border-radius: 5px;
 	font-weight: bold;
@@ -451,7 +451,7 @@ h4 {
 	color: white;
 	display: block;
 	/*box-shadow: rgba(0,0,0,0.3) 0 3px 3px;*/
-	background: url(../images/backgrounds/uw-purple-header.jpg) -1px;
+	background: url(<%= asset_path 'backgrounds/uw-purple-header.jpg' %>) -1px;
 /*background: #f5f5f5;*/
 	border-bottom: 5px solid #e0e0e0;
 	border-top: 5px solid #f8cb40;
@@ -464,7 +464,7 @@ h4 {
 	color: white;
 	width: 220px;
 	/*height: 37px;*/
-	background: url(../images/dreamsis-logo-transp-2x.png) 7px 7px no-repeat;
+	background: url(<%= asset_path 'dreamsis-logo-transp-2x.png' %>) 7px 7px no-repeat;
 	background-size: 172px;
 }
 
@@ -482,11 +482,11 @@ h4 {
 }
 
 #header h1 a:hover {
-	/*background: url(../images/icons/house.png) no-repeat right bottom;*/
+	/*background: url(<%= asset_path 'icons/house.png' %>) no-repeat right bottom;*/
 }
 
 #sidebar-header {
-	background: transparent url('../images/dreamsis-logo-dark-200.png') 2px center no-repeat;
+	background: transparent url(<%= asset_path 'dreamsis-logo-dark-200.png' %>) 2px center no-repeat;
 	height: 30px;
 	position: fixed;
 	top: 10px;
@@ -814,28 +814,28 @@ a.login-link:hover span {
 }
 
 .login-link.facebook span {
-	background-image: url(../images/icons/facebook_64.png);
+	background-image: url(<%= asset_path 'icons/facebook_64.png' %>);
 }
 
 .login-link.twitter span {
-	background-image: url(../images/icons/twitter_64.png);
+	background-image: url(<%= asset_path 'icons/twitter_64.png' %>);
 }
 
 .login-link.google span {
-	background-image: url(../images/icons/google_64.png);
+	background-image: url(<%= asset_path 'icons/google_64.png' %>);
 }
 
 .login-link.windowslive span {
-	background-image: url(../images/icons/windowslive_64.png);
+	background-image: url(<%= asset_path 'icons/windowslive_64.png' %>);
 }
 
 .login-link.linkedin span {
-	background-image: url(../images/icons/linkedin_64.png);
+	background-image: url(<%= asset_path 'icons/linkedin_64.png' %>);
 }
 
 
 .login-link.uwnetid span {
-	background-image: url(../images/icons/weblogin.gif);
+	background-image: url(<%= asset_path 'icons/weblogin.gif' %>);
 	min-width: 198px;
 	padding-top: 40px;
 }
@@ -891,7 +891,7 @@ body.new.session #content {
 
 body.new.session #content-wrap {
 	padding: 2em 4em 1em 4em;
-	background: white url(../images/backgrounds/uw-purple-header.jpg) repeat-x 0 -1px;
+	background: white url(<%= asset_path 'backgrounds/uw-purple-header.jpg' %>) repeat-x 0 -1px;
 	border-radius: 10px;
 	margin: 0;
 	border-bottom-right-radius: 0;
@@ -901,7 +901,7 @@ body.new.session #content-wrap {
 
 body.new.session h1 {
 	height: 50px;
-	background: url(../images/dreamsis-logo-transp-2x.png) no-repeat;
+	background: url(<%= asset_path 'dreamsis-logo-transp-2x.png' %>) no-repeat;
 	background-size: 192px;
 	padding-left: 200px !important;
 	padding-top: 12px;
@@ -944,7 +944,7 @@ td.align-right, th.align-right {
 }
 
 a.redirect-link {
-	background: url('../images/forward-arrow.gif') center right no-repeat;
+	background: url(<%= asset_path 'forward-arrow.gif' %>) center right no-repeat;
 	padding-right: 16px;
 	color: inherit;
 	text-decoration: none;
@@ -1017,7 +1017,7 @@ a.redirect-link:hover {
 }
 
 .record-header .photo-container .avatar {
-	background: url(../images/blank_avatar.png) 50% 50% / 105%;
+	background: url(<%= asset_path 'blank_avatar.png' %>) 50% 50% / 105%;
 	-webkit-transition: all 0.25s ease-in-out;
   width: 80px;
   height: 80px;
@@ -1276,7 +1276,7 @@ body.scrolled-past-header .record-header .photo {
 	width: 5px;
 	left: 45px;
 	bottom: 8px;
-	background: url(../images/bullets/grey-square.gif) 0 bottom repeat-y;
+	background: url(<%= asset_path 'bullets/grey-square.gif' %>) 0 bottom repeat-y;
 	-webkit-transition: opacity 0.25s ease-in-out 0s;
 }
 
@@ -1475,12 +1475,12 @@ body.participants.show #content-wrap {
 }
 
 #export_download_button.generating {
-	background-image: url(../images/indicator.gif);
+	background-image: url(<%= asset_path 'indicator.gif' %>);
 	border-color: rgba(153,153,153,.15);
 }
 
 #export_status.error {
-	background: url(../images/caution.png) left top / 16px no-repeat;
+	background: url(<%= asset_path 'caution.png' %>) left top / 16px no-repeat;
 	padding-left: 22px;
 	margin-left: 0;
 }
@@ -1518,19 +1518,19 @@ body.participants.show #content-wrap {
 }
 
 .info-section#college_applications h2, .info-section#college_enrollments h2, .tabs a.college_applications, .tabs a.college_enrollments {
-	background-image: url(../images/icons/silk/building.png);
+	background-image: url(<%= asset_path 'icons/silk/building.png' %>);
 }
 
 .info-section#college_degrees h2, .tabs a.college_degrees {
-	background-image: url(../images/icons/silk/script.png);
+	background-image: url(<%= asset_path 'icons/silk/script.png' %>);
 }
 
 .info-section#filter_results h2, .tabs a.filter_results {
-	background-image: url(../images/icons/silk/tick.png);
+	background-image: url(<%= asset_path 'icons/silk/tick.png' %>);
 }
 
 .info-section#contact h2, .tabs a.contact {
-	background-image: url(../images/icons/silk/vcard.png);
+	background-image: url(<%= asset_path 'icons/silk/vcard.png' %>);
 }
 
 
@@ -1540,7 +1540,7 @@ body.participants.show #content-wrap {
 }
 
 .info-section#college_applications .location {
-	/*background: url(../images/icons/silk/map.png) no-repeat 2px 0;
+	/*background: url(<%= asset_path 'icons/silk/map.png' %>) no-repeat 2px 0;
 	padding-left: 20px;
 	background-size: 12px;*/
 
@@ -1548,7 +1548,7 @@ body.participants.show #content-wrap {
 
 .info-section#college_applications .tertiary a {
 	color: inherit;
-	/*background: url(../images/icons/silk/world_go.png) no-repeat 2px 0;*/
+	/*background: url(<%= asset_path 'icons/silk/world_go.png' %>) no-repeat 2px 0;*/
 	padding-left: 0.6em;
 	margin-left: 0.5em;
 	background-size: 12px;
@@ -1567,7 +1567,7 @@ img.college_mapper_integration_bug {
 
 h2 em.synced-with-collegemapper-note {
 	font-size: 70%;
-	background: url(../images/college_mapper_icon.png) no-repeat left center;
+	background: url(<%= asset_path 'college_mapper_icon.png' %>) no-repeat left center;
 	padding-left: 22px;
 	font-weight: normal;
 	font-style: normal;
@@ -1605,35 +1605,35 @@ td.college-logo {
 }
 
 .info-section#scholarship_applications h2, .tabs a.scholarship_applications {
-	background-image: url(../images/icons/silk/money.png);
+	background-image: url(<%= asset_path 'icons/silk/money.png' %>);
 }
 
 .info-section#paperwork h2, .tabs a.paperwork {
-	background-image: url(../images/icons/silk/page_edit.png);
+	background-image: url(<%= asset_path 'icons/silk/page_edit.png' %>);
 }
 
 .info-section#parents h2, .tabs a.parents {
-	background-image: url(../images/icons/silk/user_couple.png);
+	background-image: url(<%= asset_path 'icons/silk/user_couple.png' %>);
 }
 
 .info-section#test_scores h2, .tabs a.test_scores {
-	background-image: url(../images/icons/silk/page_edit.png);
+	background-image: url(<%= asset_path 'icons/silk/page_edit.png' %>);
 }
 
 .info-section#mentors h2, .tabs a.mentors {
-	background-image: url(../images/icons/silk/user_red.png);
+	background-image: url(<%= asset_path 'icons/silk/user_red.png' %>);
 }
 
 .info-section#notes h2, .tabs a.notes {
-	background-image: url(../images/icons/silk/comment.png);
+	background-image: url(<%= asset_path 'icons/silk/comment.png' %>);
 }
 
 .info-section#documents h2, .tabs a.documents {
-	background-image: url(../images/icons/silk/book_open.png);
+	background-image: url(<%= asset_path 'icons/silk/book_open.png' %>);
 }
 
 .info-section#events h2, .tabs a.events {
-	background-image: url(../images/icons/silk/calendar_view_month.png);
+	background-image: url(<%= asset_path 'icons/silk/calendar_view_month.png' %>);
 }
 
 .calendar-container.span4 {
@@ -1699,7 +1699,7 @@ abbr[title]:hover {
 }
 
 .errorExplanation {
-	background: rgba(255,0,0,0.05) url("../images/caution.png") 20px 1em no-repeat;
+	background: rgba(255,0,0,0.05) url(<%= asset_path 'caution.png' %>) 20px 1em no-repeat;
 	padding: 1em;
 	padding-left: 100px;
 	border: 1px solid rgba(255,0,0,0.5);
@@ -1716,8 +1716,22 @@ abbr[title]:hover {
 }
 
 .warning {
-  background: #FFE482 url("../images/icons/silk/error.png") 7px center no-repeat;
+  background: #FFE482 url(<%= asset_path 'icons/silk/error.png' %>) 7px center no-repeat;
 /*  padding: 0.5em;*/
+}
+
+p.warning {
+  background: rgba(255,206,0,0.25) url("../images/icons/silk/error.png") 0.5em 0.5em no-repeat;  
+  border-radius: 5px;
+  border: 1px solid rgba(255,206,0,0.3);
+  padding: 0.5em;
+  padding-left: 32px;
+  color: #3f3f3f;
+  margin: 1em 0;
+}
+
+p.warning strong {
+  font-weight: bolder;
 }
 
 .stats .warning {
@@ -1735,7 +1749,7 @@ abbr[title]:hover {
 
 form.formtastic fieldset > ol > li p.inline-errors {
 	display: block;
-	background: url(../images/icons/silk/exclamation.png) no-repeat;
+	background: url(<%= asset_path 'icons/silk/exclamation.png' %>) no-repeat;
 	padding-left: 20px;
 	padding-top: 1px;
 	margin-top: 0;
@@ -1777,7 +1791,7 @@ form.formtastic label {
 }
 
 .fieldWithErrors {
-	background: url("../images/error-arrow.gif") center right no-repeat;
+	background: url(<%= asset_path 'error-arrow.gif' %>) center right no-repeat;
 }
 
 .fieldWithErrors input, .fieldWithErrors select, .fieldWithErrors textarea {
@@ -1820,7 +1834,7 @@ ul.crimes-list li {
 }
 
 #notifications .alert {
-	background: #bec url(../images/icons/silk/accept.png) no-repeat 10px 10px;
+	background: #bec url(<%= asset_path 'icons/silk/accept.png' %>) no-repeat 10px 10px;
 	color: #031;
 	border: 1px solid #031;
 	padding: 10px 20px;
@@ -1855,14 +1869,14 @@ ul.crimes-list li {
 
 
 #notifications .error {
-	background-image: url(../images/icons/silk/exclamation.png);
+	background-image: url(<%= asset_path 'icons/silk/information.png' %>);
 	background-color: #FFEBEB;
 	color: #b11;
 	border-color: #b11;
 }
 
 #notifications .info {
-	background-image: url(../images/icons/silk/information.png);
+	background-image: url(<%= asset_path 'icons/silk/information.png' %>);
 	color: #07b;
 	background-color: #e5f4ff;
 	border-color: #07b;
@@ -1894,7 +1908,7 @@ ul.crimes-list li {
 .error-message {
 	color: red;
 	font-weight: bold;
-	background: url(../images/icons/silk/exclamation.png) no-repeat;
+	background: url(<%= asset_path 'icons/silk/exclamation.png' %>) no-repeat;
 	background-position: 2px 50%;
 	padding-left: 22px;
 	min-height: 18px;
@@ -1939,7 +1953,7 @@ body.error #content {
 body.error #content-wrap {
 	padding: 2em 4em 1em 4em;
   margin: 0;
-	background: white url(../images/backgrounds/uw-purple-header.jpg) 0 -2px repeat-x;
+	background: white url(<%= asset_path 'backgrounds/uw-purple-header.jpg' %>) 0 -2px repeat-x;
 	border-radius: 10px;
 }
 
@@ -1950,7 +1964,7 @@ body.error .content-block > *, body.error #content-wrap > * {
 
 
 body.error h1 {
-	background: url(../images/dreamsis-logo-transparent.png) no-repeat;
+	background: url(<%= asset_path 'dreamsis-logo-transparent.png' %>) no-repeat;
 	padding-top: 280px;
 	line-height: 130%;
 }
@@ -2477,7 +2491,7 @@ input[type=submit]:active, input[type=button]:active, form.formtastic input[type
 }
 
 input[type=submit], form.formtastic input[type=submit], a.submit {
-	background-image: url(../images/icons/silk/tick.png);
+	background-image: url(<%= asset_path 'icons/silk/tick.png' %>);
 	padding-left: 25px;
 	font-weight: bold;
 	border-color: #cbcbcb;
@@ -2488,7 +2502,7 @@ input.search {
 	text-shadow: none;
 	padding: 5px;
 	padding-left: 25px !important;
-	background: white url(../images/icons/silk/magnifier.png) no-repeat 4px center;
+	background: white url(<%= asset_path 'icons/silk/magnifier.png' %>) no-repeat 4px center;
 	font: 13px/130% Helvetica, Arial, sans-serif;
 	font-weight: lighter;
 	color: rgba(0,0,0,0.9);
@@ -2499,7 +2513,7 @@ input.search {
 input.search:focus {
 	border-bottom-right-radius: 0;
 	border-bottom-left-radius: 0;
-	background: #edf5fe url(../images/icons/silk/magnifier.png) no-repeat 4px center !important;
+	background: #edf5fe url(<%= asset_path 'icons/silk/magnifier.png' %>) no-repeat 4px center !important;
 	padding-left: 25px !important;
 }
 
@@ -2517,7 +2531,7 @@ select, form.formtastic select {
 	color: rgba(0,0,0,0.8);
 	text-shadow: 0 1px 0 #fff;
 	box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-	background: url(../images/icons/silk/bullet_arrow_down.png) no-repeat right center #f9f9f9;
+	background: url(<%= asset_path 'icons/silk/bullet_arrow_down.png' %>) no-repeat right center #f9f9f9;
 	font: 13px Helvetica, Arial, sans-serif;
 	
 }
@@ -2714,7 +2728,7 @@ form.formtastic li#participant_zip_input input, form.formtastic li#parent_zip_in
 
 
 form.formtastic fieldset p:first-child {
-	margin: -10px -2px 2em -7px;
+	margin: -22px -2px 2em -7px;
 	padding: 7px;
 	background: rgba(0,0,0,0.03);
 }
@@ -2747,7 +2761,7 @@ input.heritage-input {
 */}
 
 input.currency {
-	background-image: url(../images/icons/silk/money_dollar.png) !important;
+	background-image: url(<%= asset_path 'icons/silk/money_dollar.png' %>) !important;
   background-repeat: no-repeat !important;
   background-position: left center !important;
   min-width: 7em;
@@ -2777,12 +2791,12 @@ ul.time_categories > li label {
 ul.time_categories > li > ul > li {
 	clear: both;
 	padding-left: 24px;
-	background: url(../images/icons/silk/tick-grey.png) left center no-repeat;
+	background: url(<%= asset_path 'icons/silk/tick-grey.png' %>) left center no-repeat;
 
 }
 
 ul.time_categories > li > ul > li:not(.time0) {
-	background: url(../images/icons/silk/tick.png) left center no-repeat;
+	background: url(<%= asset_path 'icons/silk/tick.png' %>) left center no-repeat;
 }
 
 ul.time_categories > li > ul > li span.value {
@@ -2886,21 +2900,21 @@ ul.big.choice li {
 }
 
 .phone.home {
-	background: url('../images/icons/home_bw.gif') center left no-repeat;
+	background: url(<%= asset_path 'icons/home_bw.gif' %>) center left no-repeat;
 }
 
 .phone.mobile {
-	background: url('../images/icons/mobile_bw.gif') center left no-repeat;
+	background: url(<%= asset_path 'icons/mobile_bw.gif' %>) center left no-repeat;
 }
 
 .phone.work {
-	background: url('../images/icons/work_bw.gif') center left no-repeat;
+	background: url(<%= asset_path 'icons/work_bw.gif' %>) center left no-repeat;
 }
 
 .facebook-mini {
 	padding: 10px 0 10px 20px;
 	line-height: 20px;
-  background: url('../images/icons/facebook_16.gif') center left no-repeat;
+  background: url(<%= asset_path 'icons/facebook_16.gif' %>) center left no-repeat;
 }
 
 .dropzone {
@@ -2908,7 +2922,7 @@ ul.big.choice li {
 }
 
 a.offsite {
-	background: url(../images/offsite.png) no-repeat right center;
+	background: url(<%= asset_path 'offsite.png' %>) no-repeat right center;
 	padding-right: 16px;
 }
 
@@ -2998,7 +3012,7 @@ a.button:active {
 	top: -6px;
 	width: 16px;
 	height: 10px;
-	background: url(../images/icons/down-arrow.png) center 1px no-repeat;
+	background: url(<%= asset_path 'icons/down-arrow.png' %>) center 1px no-repeat;
 }
 
 .button.icon-only:hover > span {
@@ -3010,123 +3024,123 @@ a.button:active {
 }
 
 .button.cancel {
-	background-image: url(../images/icons/silk/cross.png);
+	background-image: url(<%= asset_path 'icons/silk/cross.png' %>);
 }
 
 .button.add {
-	background-image: url('../images/icons/silk/add.png');
+	background-image: url(<%= asset_path 'icons/silk/add.png' %>);
 }
 
 .button.xls {
-	background-image: url('../images/icons/xls.png');
+	background-image: url(<%= asset_path 'icons/xls.png' %>);
 }
 
 .button.list {
-	background-image: url(../images/icons/silk/text_list_bullets.png);
+	background-image: url(<%= asset_path 'icons/silk/text_list_bullets.png' %>);
 }
 
 .button.people {
-	background-image: url(../images/icons/silk/group.png);
+	background-image: url(<%= asset_path 'icons/silk/group.png' %>);
 }
 
 .button.add.user {
-	background-image: url(../images/icons/silk/user_add.png);
+	background-image: url(<%= asset_path 'icons/silk/user_add.png' %>);
 }
 
 .button.back {
-	background-image: url(../images/icons/silk/arrow_left.png);
+	background-image: url(<%= asset_path 'icons/silk/arrow_left.png' %>);
 }
 
 .button.forward {
-	background-image: url(../images/icons/silk/arrow_right.png);
+	background-image: url(<%= asset_path 'icons/silk/arrow_right.png' %>);
 }
 
 .button.up {
-	background-image: url(../images/icons/silk/arrow_up.png);
+	background-image: url(<%= asset_path 'icons/silk/arrow_up.png' %>);
 }
 
 .button.info {
-	background-image: url(../images/icons/silk/information.png);
+	background-image: url(<%= asset_path 'icons/silk/information.png' %>);
 }
 
 .button.edit {
-	background-image: url(../images/icons/silk/pencil.png);
+	background-image: url(<%= asset_path 'icons/silk/pencil.png' %>);
 }
 
 .button.sync {
-	background-image: url(../images/icons/silk/arrow_switch.png);
+	background-image: url(<%= asset_path 'icons/silk/arrow_switch.png' %>);
 }
 
 .button.photo-tile {
-	background-image: url(../images/icons/silk/application_view_tile.png);
+	background-image: url(<%= asset_path 'icons/silk/application_view_tile.png' %>);
 }
 
 .button.email {
-	background-image: url(../images/icons/silk/email.png);
+	background-image: url(<%= asset_path 'icons/silk/email.png' %>);
 }
 
 .button.calendar {
-	background-image: url(../images/icons/silk/calendar.png);
+	background-image: url(<%= asset_path 'icons/silk/calendar.png' %>);
 }
 
 .button.calendar_day {
-	background-image: url(../images/icons/silk/calendar_view_day.png);
+	background-image: url(<%= asset_path 'icons/silk/calendar_view_day.png' %>);
 }
 
 .button.view {
-	background-image: url(../images/icons/silk/television.png);
+	background-image: url(<%= asset_path 'icons/silk/television.png' %>);
 }
 
 .button.anonymous {
-	background-image: url(../images/icons/silk/key_go.png);
+	background-image: url(<%= asset_path 'icons/silk/key_go.png' %>);
 }
 
 .button.lock {
-	background-image: url(../images/icons/silk/lock.png);
+	background-image: url(<%= asset_path 'icons/silk/lock.png' %>);
 }
 
 .button.college_mapper {
-	background-image: url(../images/college_mapper_icon.png);
+	background-image: url(<%= asset_path 'college_mapper_icon.png' %>);
 }
 
 .button.upload {
-	background-image: url(../images/icons/silk/arrow_up.png);
+	background-image: url(<%= asset_path 'icons/silk/arrow_up.png' %>);
 }
 
 .button.download {
-	background-image: url(../images/icons/silk/arrow_down.png);
+	background-image: url(<%= asset_path 'icons/silk/arrow_down.png' %>);
 }
 
 .button.save {
-	background-image: url(../images/icons/silk/disk.png);
+	background-image: url(<%= asset_path 'icons/silk/disk.png' %>);
 }
 
 .button.ok {
-	background-image: url(../images/icons/silk/tick.png);
+	background-image: url(<%= asset_path 'icons/silk/tick.png' %>);
 }
 
 .button.trash, .button.delete {
-  background-image: url(../images/icons/silk/bin_closed.png);
+  background-image: url(<%= asset_path 'icons/silk/bin_closed.png' %>);
 }
 
 .button.stats {
-  background-image: url(../images/icons/silk/chart_pie.png);
+  background-image: url(<%= asset_path 'icons/silk/chart_pie.png' %>);
 }
 
 .button.url {
-  background-image: url(../images/icons/silk/world.png);
+  background-image: url(<%= asset_path 'icons/silk/world.png' %>);
 }
 
 .button.note {
-  background-image: url(../images/icons/silk/note.png);
+  background-image: url(<%= asset_path 'icons/silk/note.png' %>);
 }
 
 .button.add.note {
-  background-image: url(../images/icons/silk/note_add.png);
+  background-image: url(<%= asset_path 'icons/silk/note_add.png' %>);
 }
 
 .button.followup {
-	background-image: url(/images/icons/silk/flag_orange.png);
+	background-image: url(<%= asset_path 'icons/silk/flag_orange.png' %>);
 }
 
 /*table.schedule {
@@ -3209,7 +3223,7 @@ a.button:active {
 }
 
 .schedule ul.meetings li.full {
-	background: rgb(178,178,178) url(../images/backgrounds/unavailable-xtile.gif);
+	background: rgb(178,178,178) url(<%= asset_path 'backgrounds/unavailable-xtile.gif' %>);
 	border: 1px solid rgba(0,0,0,0.4);
 	opacity: 0.5;
 	z-index: 1;
@@ -3304,14 +3318,14 @@ a.button:active {
 }
 
 .schedule ul.meetings li a.add {
-	background: url(../images/icons/silk/add.png) no-repeat center top;
+	background: url(<%= asset_path 'icons/silk/add.png' %>) no-repeat center top;
 	padding-top: 22px;
 	margin: 0.5em 0;
 	text-align: center;
 }
 
 .schedule ul.meetings li a.cancel {
-	background: url(../images/icons/silk/delete.png) no-repeat center top;
+	background: url(<%= asset_path 'icons/silk/delete.png' %>) no-repeat center top;
 	padding-top: 22px;
 	margin: 0.5em 0;
 	text-align: center;
@@ -3381,11 +3395,11 @@ ul.filters {
 }
 
 .filters li input[value=true].enabled ~ span {
-	background-image: url(../images/icons/silk/tick.png);
+	background-image: url(<%= asset_path 'icons/silk/tick.png' %>);
 }
 
 .filters li input[value=false].enabled ~ span {
-	background-image: url(../images/icons/silk/cross.png);
+	background-image: url(<%= asset_path 'icons/silk/cross.png' %>);
 }
 
 .filters li label {
@@ -3433,19 +3447,19 @@ ul.filter-results {
 }
 
 .filter-results li.pass, span.icon.pass {
-	background-image: url(../images/icons/silk/tick.png);
+	background-image: url(<%= asset_path 'icons/silk/tick.png' %>);
 }
 
 .filter-results li.fail, span.icon.fail {
-	background-image: url(../images/icons/silk/cross.png);	
+	background-image: url(<%= asset_path 'icons/silk/cross.png' %>);	
 }
 
 span.icon.world {
-  background-image: url(../images/icons/silk/world.png);
+  background-image: url(<%= asset_path 'icons/silk/world.png' %>);
 }
 
 span.icon.asterisk {
-  background-image: url(../images/icons/silk/asterisk_yellow.png);
+  background-image: url(<%= asset_path 'icons/silk/asterisk_yellow.png' %>);
 }
 
 tr.participant:not(.needs-followup) a.needs-followup.icon {
@@ -3813,7 +3827,7 @@ table.mentors .mentor.name {
 .preferred-note {
   color: green;
   font-weight: bold;
-	background: url(../images/check-mini.gif) no-repeat 0;
+	background: url(<%= asset_path 'check-mini.gif' %>) no-repeat 0;
 	padding-left: 15px;
   margin: 0;
 }
@@ -4024,7 +4038,7 @@ h1 .session_identifier.tag {
 
 .invalid.tag {
 	color: #fc0012;
-	background: url(../images/icons/occupied.png) no-repeat 0 0;
+	background: url(<%= asset_path 'icons/occupied.png' %>) no-repeat 0 0;
 	padding-left: 16px;
 }
 
@@ -4033,7 +4047,7 @@ h1 .session_identifier.tag {
 }
 
 .americorps.tag {
-	background: transparent url(../images/icons/americorps.png) no-repeat;
+	background: transparent url(<%= asset_path 'icons/americorps.png' %>) no-repeat;
 	width: 16px;
 	height: 16px;
 	text-indent: -1000px;
@@ -4043,7 +4057,7 @@ h1 .session_identifier.tag {
 }
 
 .unlocked.tag {
-  background: transparent url(../images/icons/silk/shield.png) no-repeat;
+  background: transparent url(<%= asset_path 'icons/silk/shield.png' %>) no-repeat;
 	width: 10px;
 	height: 16px;
 	text-indent: -1000px;
@@ -4083,7 +4097,7 @@ h1 .big.tag {
 	top: 5px;
 	display: block;
 	right: 3px;
-	background: url(../images/icons/close.gif) no-repeat 0 0;
+	background: url(<%= asset_path 'icons/close.gif' %>) no-repeat 0 0;
 }
 
 .deleteable.tag:hover {
@@ -4102,7 +4116,7 @@ a.mini.delete {
 	display: inline-block;
 	position: relative;
 	top: 2px;
-	background: url(../images/icons/trash.gif) no-repeat;
+	background: url(<%= asset_path 'icons/trash.gif' %>) no-repeat;
 	float: right;
 	visibility: hidden;
 }
@@ -4332,7 +4346,7 @@ input.target-threshold {
 }
 
 div.notes.editable, p.notes.editable {
-	background: #fffde7 url(../images/icons/silk/note.png) no-repeat 3px 3px;
+	background: #fffde7 url(<%= asset_path 'icons/silk/note.png' %>) no-repeat 3px 3px;
 	padding: 3px;
 	padding-left: 26px;
 	margin: 1em 0;
@@ -4342,7 +4356,7 @@ div.notes.editable, p.notes.editable {
 }
 
 .notes.editable:hover {
-	background-image: url(../images/icons/silk/note_edit.png);
+	background-image: url(<%= asset_path 'icons/silk/note_edit.png' %>);
 }
 
 .notes.editable p {
@@ -4495,8 +4509,35 @@ div.notes.editable, p.notes.editable {
   border-right: 3px dotted rgba(0,0,0,0.1);
 }
 
+.document .with-file-icon {
+  background: url(<%= asset_path 'icons/filetypes/text-outline.svg' %>) left 10px no-repeat;
+  background-size: 24px;
+  padding-left: 40px;
+}
+
+.document .with-file-icon.doc, .document .with-file-icon.docx, .document .with-file-icon.dot {
+  background-image: url(<%= asset_path 'icons/filetypes/word-outline.svg' %>);
+}
+
+.document .with-file-icon.xls, .document .with-file-icon.xlsx {
+  background-image: url(<%= asset_path 'icons/filetypes/excel-outline.svg' %>);
+}
+
+.document .with-file-icon.ppt, .document .with-file-icon.pptx {
+  background-image: url(<%= asset_path 'icons/filetypes/powerpoint-outline.svg' %>);
+}
+
+.document .with-file-icon.pdf {
+  background-image: url(<%= asset_path 'icons/filetypes/pdf-outline.svg' %>);
+}
+
+.document .with-file-icon.jpg, .document .with-file-icon.jpeg  {
+  background-image: url(<%= asset_path 'icons/filetypes/image-outline.svg' %>);
+}
+
+
 p.needs-followup, a.needs-followup {
-	background: url(/images/icons/silk/flag_orange.png) no-repeat;
+	background: url(<%= asset_path 'icons/silk/flag_orange.png' %>) no-repeat;
 	display: block;
 	padding-left: 22px;
 	color: #e26900 !important;
@@ -4671,6 +4712,16 @@ code.criteria pre {
 	font-family: inherit;
 }
 
+code.log-file {
+  display: block;
+  max-height: 30em;
+  overflow: scroll;
+  white-space: pre-wrap;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  padding: 1em;
+}
+
 .hoverable .show_on_hover {
 	opacity: 0;
 	-webkit-transition: opacity 0.15s ease-in-out;
@@ -4681,11 +4732,11 @@ code.criteria pre {
 }
 
 a.add.notes {
-	background-image: url(../images/icons/silk/note_add.png);
+	background-image: url(<%= asset_path 'icons/silk/note_add.png' %>);
 }
 
 a.add.documents {
-  background-image: url(../images/icons/silk/book_add.png);
+  background-image: url(<%= asset_path 'icons/silk/book_add.png' %>);
 }
 
 .mentors td a.add.notes {
@@ -4760,7 +4811,7 @@ ul.mini_participants {
 }
 
 ul.mini_participants li {
-	background: url(../images/icons/silk/user_gray.png) no-repeat;
+	background: url(<%= asset_path 'icons/silk/user_gray.png' %>) no-repeat;
 	list-style: none;
 	padding: 2px;
 	padding-left: 20px;
@@ -4773,15 +4824,15 @@ div.complete, div.incomplete, div.pending {
 }
 
 div.complete {
-	background-image: url(../images/icons/green-check-with-shadow.png);
+	background-image: url(<%= asset_path 'icons/green-check-with-shadow.png' %>);
 }
 
 div.pending {
-	background-image: url(../images/icons/grey-check-with-shadow.png);
+	background-image: url(<%= asset_path 'icons/grey-check-with-shadow.png' %>);
 }
 
 div.incomplete {
-	background-image: url(../images/icons/grey-check-with-shadow.png);
+	background-image: url(<%= asset_path 'icons/grey-check-with-shadow.png' %>);
 }
 
 .basics div.complete, .basics div.incomplete, .basics div.pending {
@@ -4905,18 +4956,18 @@ table.rsvp tr.attending td {
 }
 
 table.rsvp tr td:first-child {
-	background: url(../images/icons/grey-check-with-shadow.png) no-repeat 10px 2em;
+	background: url(<%= asset_path 'icons/grey-check-with-shadow.png' %>) no-repeat 10px 2em;
 	padding-left: 60px;
 	/*border-left: 10px solid rgba(0,0,0,0.1);*/
 }
 
 table.rsvp tr.attending td:first-child {
-	background: linear-gradient(to top, rgba(0,255,0,0.1), rgba(0,255,0,0) 40%) 0 0,  url(../images/icons/green-check-with-shadow.png) no-repeat 10px 2em;
+	background: linear-gradient(to top, rgba(0,255,0,0.1), rgba(0,255,0,0) 40%) 0 0,  url(<%= asset_path 'icons/green-check-with-shadow.png' %>) no-repeat 10px 2em;
 	/*border-left: 10px solid rgba(0,255,0,0.25);*/
 }
 
 body.mentor.welcome table.rsvp tr {
-	background: url(../images/backgrounds/unavailable-xtile.gif) repeat-x;
+	background: url(<%= asset_path 'backgrounds/unavailable-xtile.gif' %>) repeat-x;
 }
 
 body.mentor.welcome table.rsvp tr.attending {
@@ -4936,12 +4987,12 @@ body.mentor.welcome table.rsvp tr.attending td {
 }
 
 .attending .rsvp_status, .rsvp_status.attending {
-	background: url(../images/check-mini.gif) no-repeat 0;
+	background: url(<%= asset_path 'check-mini.gif' %>) no-repeat 0;
 	padding-left: 15px;
 }
 
 .rsvp_status.not_attending {
-	background: url(../images/icons/occupied.png) no-repeat 0;
+	background: url(<%= asset_path 'icons/occupied.png' %>) no-repeat 0;
 	padding-left: 20px;
 }
 
@@ -5064,7 +5115,7 @@ body.rsvp.event table.rsvp td {
 }
 
 .training_required_note {
-		background: #fffde7 url(../images/icons/silk/information.png) no-repeat 10px 1.1em;
+		background: #fffde7 url(<%= asset_path 'icons/silk/information.png' %>) no-repeat 10px 1.1em;
 	padding: 1em;
 	padding-left: 35px;
 	margin: 1em 0;
@@ -5097,7 +5148,7 @@ body.rsvp.event table.rsvp td {
 }
 
 .training_required_note.completed {
-	background: url(../images/icons/silk/accept.png) no-repeat 0 0;
+	background: url(<%= asset_path 'icons/silk/accept.png' %>) no-repeat 0 0;
 	border: none;
 	padding: 0;
 	padding-left: 25px;
@@ -5200,22 +5251,22 @@ ul.ui-autocomplete div.empty {
 	padding: 0.5em;
 	padding-left: 25px;
 	text-align: left;
-	background: url(../images/exclamation-mini.gif) no-repeat 5px center;
+	background: url(<%= asset_path 'exclamation-mini.gif' %>) no-repeat 5px center;
 	color: rgba(0,0,0,0.5);
 }
 
 .apply ul.ui-autocomplete li {
 	padding-left: 30px;
-	background: url(../images/icons/silk/page_white_text.png) no-repeat 6px 6px;
+	background: url(<%= asset_path 'icons/silk/page_white_text.png' %>) no-repeat 6px 6px;
 }
 
 div#organization_name_auto_complete ul li {
 	padding-left: 30px;
-	background: url(../images/icons/silk/building.png) no-repeat 6px 6px;
+	background: url(<%= asset_path 'icons/silk/building.png' %>) no-repeat 6px 6px;
 }
 
 div#institution_name_auto_complete ul li {
-	background-image: url(../images/icons/silk/building.png);
+	background-image: url(<%= asset_path 'icons/silk/building.png' %>);
 	background-repeat: no-repeat;
 	background-position: 6px 6px;
 }
@@ -5269,7 +5320,7 @@ ul.ui-autocomplete li.selected strong.highlight {
 ul.ui-autocomplete .new {
 	padding-top: 10px;
 	font-size: 95%;
-	background: url(../images/icons/silk/add.png) no-repeat 6px center;
+	background: url(<%= asset_path 'icons/silk/add.png' %>) no-repeat 6px center;
 	padding-left: 30px;
 	background-color: #d8dfea;
 }

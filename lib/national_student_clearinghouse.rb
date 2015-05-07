@@ -58,6 +58,7 @@ class NationalStudentClearinghouse
     ensure
       file.close unless file == nil
     end
+    request.store_permanently!(local_send_file_path)
     local_send_file_path
   end
   
@@ -189,7 +190,7 @@ class NationalStudentClearinghouse
     elements = [
       "D1",
       "",
-      p.firstname.to_s[0..19],
+      p.formal_firstname.to_s[0..19],
       p.middlename.to_s[0..0],
       p.lastname.to_s[0..19],
       p.suffix.to_s[0..4],
@@ -219,7 +220,10 @@ class NationalStudentClearinghouse
     if match = File.read(file_path).match(/DreamSIS-ClearinghouseRequest(\d+)/i)
       Rails.logger.info { "Matched DreamSIS indicator in file contents - request ID is #{match[1].to_i}" }
       cr = ClearinghouseRequest.find(match[1].to_i)
-      cr.process_detail_file(file_path)
+      Rails.logger.info { "Storing file in persistent store" }
+      cr.store_permanently!(file_path)
+    	Rollbar.warning "Sidekiq not running" unless Report.sidekiq_ready?
+      ClearinghouseRequestWorker.perform_async(cr.id, file_path)
     else 
       Rails.logger.info { "Did not match DreamSIS indicator in file contents! Quitting." }
     end

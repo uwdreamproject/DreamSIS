@@ -11,6 +11,7 @@ class ClearinghouseRequestsController < ApplicationController
   
   def show
     @clearinghouse_request = ClearinghouseRequest.find(params[:id])
+    flash[:notice] = params[:message] if params[:message]
   
     respond_to do |format|
       format.html # show.html.erb
@@ -35,11 +36,23 @@ class ClearinghouseRequestsController < ApplicationController
   def file
     @clearinghouse_request = ClearinghouseRequest.find(params[:id])
     if params[:file] == 'submission'
-      file_path = @clearinghouse_request.nsc.generate_file!
-    elsif !params[:file].to_i.zero?
-      file_path = @clearinghouse_request.files[params[:file].to_i-1]
+      file_url = @clearinghouse_request.file_url(:submission)
+    elsif !params[:file].blank?
+      file_url = @clearinghouse_request.file_url(params[:file])
     end
-    send_file file_path, :disposition => 'attachment'
+    redirect_to file_url
+  rescue KeyError => e
+    flash[:error] = "The requested file is not included in the list of available files for this request."
+    redirect_to :back
+  end
+  
+  def refresh_status
+    @clearinghouse_request = ClearinghouseRequest.find(params[:id])
+    @output = @clearinghouse_request.log_contents
+    
+    respond_to do |format|
+      format.js
+    end
   end
   
   def submit
@@ -55,11 +68,15 @@ class ClearinghouseRequestsController < ApplicationController
   def retrieve
     @clearinghouse_request = ClearinghouseRequest.find(params[:id])
     if @clearinghouse_request.retrieve!
-      flash[:notice] = "The file was successfully retrieved from NSC and processed."
+      flash[:notice] = "The file was successfully retrieved from NSC and accepted for processing."
     else
       flash[:error] = "There was a problem retrieving the file. Please try again or upload the results file manually."
     end
     redirect_to(@clearinghouse_request)
+  end
+  
+  def results
+    @clearinghouse_request = ClearinghouseRequest.find(params[:id])
   end
   
   def create
@@ -102,8 +119,10 @@ class ClearinghouseRequestsController < ApplicationController
     File.open(path, 'w') do |file|
       file.write(file_io.read)
     end
-    if @clearinghouse_request.process_detail_file(path)
-      flash[:notice] = "Retrieved file processed successfully."
+  	Rollbar.warning "Sidekiq not running" unless Report.sidekiq_ready?
+    
+    if ClearinghouseRequestWorker.perform_async(@clearinghouse_request.id, path)
+      flash[:notice] = "Retrieved file accepted for processing."
     else
       flash[:error] = "The file could not be processed."
     end

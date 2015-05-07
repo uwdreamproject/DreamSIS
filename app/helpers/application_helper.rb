@@ -1,5 +1,11 @@
 module ApplicationHelper
 
+  def file_extension_from_content_type(content_type)
+		extension = Rack::Mime::MIME_TYPES.invert[content_type] || ""
+		extension = extension.dup.to_s
+		extension.gsub!(".", "")    
+  end
+
 	# Creates an image tag with the icon for the requested MIME content type. Defaults to the 32px size.
 	def file_icon_tag(content_type, size = "32")
 		aliases = {

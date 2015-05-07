@@ -122,6 +122,11 @@ function updateActivityTimeDescription(elem) {
 	elem.parent("li").addClass("time" + elem.val());
 }
 
+function registerTableSorters() {
+  $("th.functions").addClass("sorter-false")
+  $(":not(.calendar) > table:not(.no-sort)").tablesorter({ theme: "dreamsis", sortStable: true })
+}
+
 /*
   Global Functions
 */
@@ -141,7 +146,7 @@ $( function() {
   })
   
   // Enable all tablesorter tables
-  // $("table:not(.no-sort)").tablesorter()
+  registerTableSorters()
   
 })
 

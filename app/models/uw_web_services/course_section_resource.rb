@@ -26,10 +26,10 @@ class CourseSectionResource < UwWebResource
   end
 
   def self.instantiate_collection(collection, prefix_options = {})
-    if collection.try(:[], "Sections").try(:[], "Section").is_a?(Array)
-      collection.try(:[], "Sections").try(:[], "Section").collect!{|record| instantiate_record(record, prefix_options) }
+    if collection.try(:[], "Sections").is_a?(Array)
+      collection.try(:[], "Sections").collect!{|record| instantiate_record(record, prefix_options) }
     else
-      [instantiate_record(collection.try(:[], "Sections").try(:[], "Section"), prefix_options)]
+      [instantiate_record(collection.try(:[], "Sections"), prefix_options)]
     end
   end
 

@@ -6,6 +6,10 @@ class CollegeEnrollment < Enrollment
   belongs_to :grade_level, :foreign_key => :abbreviation, :primary_key => :class_level
   belongs_to :institution
 
+  delegate :name, :to => :institution
+
+  scope :from_clearinghouse_request, lambda { |clearinghouse_request_id| where(:clearinghouse_request_id => clearinghouse_request_id) }
+
   CLASS_LEVEL_NAMES = {
     "C" => "Certificate (Undergraduate)",
     "A" => "Associate's",
@@ -32,6 +36,9 @@ class CollegeEnrollment < Enrollment
     "A" => "Leave of Absence",
     "D" => "Deceased"
   }
+
+  # The length of time that a CollegeEnrollment could still be considered "current" to account for data staleness.
+  CURRENT_ENROLLMENT_VALIDITY_PERIOD = 9.months
   
   # Returns a printable String of the names of the majors for this record.
   def majors_list

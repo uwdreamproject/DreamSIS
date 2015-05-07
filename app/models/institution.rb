@@ -9,7 +9,7 @@ class Institution < ActiveRecord::Base
   has_many :applied_participants, :class_name => "Participant", :through => :college_applications, :conditions => "date_applied IS NOT NULL", :source => :participant, :uniq => true
   has_many :planning_participants, :class_name => "Participant", :foreign_key => "college_attending_id", :source => :participant, :uniq => true
   has_many :enrolled_participants, :class_name => "Participant", :through => :college_enrollments, :source => :participant, :uniq => true
-  has_many :current_participants, :class_name => "Participant", :through => :college_enrollments, :source => :participant, :uniq => true, :conditions => ["ended_on IS NULL AND began_on > ?", 9.months.ago]
+  has_many :current_participants, :class_name => "Participant", :through => :college_enrollments, :source => :participant, :uniq => true, :conditions => ["began_on > ?", CollegeEnrollment::CURRENT_ENROLLMENT_VALIDITY_PERIOD.ago]
   has_many :graduated_participants, :class_name => "Participant", :through => :college_degrees, :source => :participant, :uniq => true
 
   alias_attribute :name, :instnm
@@ -27,7 +27,7 @@ class Institution < ActiveRecord::Base
 		"2" => "2-year college",
 		"3" => "Less than 2-year college"
 	}
-
+  
   self.primary_key = 'unitid'
 
   def geocoded?
@@ -47,6 +47,11 @@ class Institution < ActiveRecord::Base
     else
       super(*args)
     end
+  end
+  
+  # Strips out hyphens from OPEID before searching.
+  def self.find_by_opeid(opeid)
+    super(opeid.to_s.gsub("-", ""))
   end
 
 	def to_title

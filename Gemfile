@@ -50,6 +50,7 @@ gem 'apartment-sidekiq'
 # gem 'slim'  # for sidekiq monitor
 gem "simple_calendar", "~> 1.1.0"
 gem 'jquery-tablesorter'
+gem 'le'
 
 group :production do
   gem 'mysql2', '~> 0.3.7'

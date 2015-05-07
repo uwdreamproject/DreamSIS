@@ -6,14 +6,14 @@
 		<th>Start Date</th>
 		<%- if Customer.link_to_uw? -%><th>Primary Course(s)</th><% end %>
 		<th>Allow Signups?</th>
-		<th>Functions</th>
+		<th class="functions">Functions</th>
 	</tr>
 
 <% for term in @terms %>
 <tr class="<%= "current" if term.current_term? %>">
 	<td class="name"><%= link_to term.title, term_path(term) %></td>
 	<td><%= term.start_date.to_s(:db) %></td>
-	<%- if Customer.link_to_uw? -%><td><%= term.course_ids.split.collect{|c| "<li>#{h(c)}</li>"} unless term.course_ids.blank? %></td><% end %>
+	<%- if Customer.link_to_uw? -%><td><%= raw term.course_ids.split.collect{|c| "<li>#{h(c)}</li>"}.join unless term.course_ids.blank? %></td><% end %>
 	<td><%= content_tag :span, "Y", :class => "approved tag" if term.allow_signups? %>
 	<td class="functions">
 		<%= link_to 'Edit', edit_term_path(term) %>
