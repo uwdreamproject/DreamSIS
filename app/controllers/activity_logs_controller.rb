@@ -76,7 +76,8 @@ class ActivityLogsController < ApplicationController
   
   def edit
     @activity_log = ActivityLog.find(params[:id])
-		@participants = @activity_log.mentor.try(:participants)
+    @date = @activity_log.start_date
+    @participants = @activity_log.mentor.try(:participants)
   end
   
   def create
