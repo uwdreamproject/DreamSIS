@@ -94,10 +94,10 @@ class CollegeApplicationsController < ParticipantsController
     render :json => @institutions.map { |result| 
       {
         :id => result.id, 
-        :value => result.name,
+        :value => h(result.name),
         :klass => result.class.to_s.underscore, 
-        :fullname => result.name, 
-        :secondary => result.location_detail
+        :fullname => h(result.name),
+        :secondary => h(result.location_detail)
       }
     }
   end

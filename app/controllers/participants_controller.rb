@@ -379,11 +379,11 @@ class ParticipantsController < ApplicationController
     render :json => @participants.map { |result| 
       {
         :id => result.id, 
-        :value => result.fullname,
+        :value => h(result.fullname),
         :klass => result.class.to_s.underscore, 
-        :fullname => result.fullname, 
-        :secondary => result.email,
-        :tertiary => (Customer.current_customer.customer_label(result.class.to_s.underscore, :titleize => true) || result.class.to_s).titleize
+        :fullname => h(result.fullname),
+        :secondary => h(result.email),
+        :tertiary => h((Customer.current_customer.customer_label(result.class.to_s.underscore, :titleize => true) || result.class.to_s).titleize)
       }
     }
   end

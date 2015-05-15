@@ -93,11 +93,11 @@ class ScholarshipApplicationsController < ParticipantsController
     render :json => @scholarships.map { |result| 
       {
         :id => result.id, 
-        :value => result.name,
+        :value => h(result.name),
         :klass => result.class.to_s.underscore, 
-        :fullname => result.name, 
-        :secondary => result.email,
-        :tertiary => (Customer.current_customer.customer_label(result.class.to_s.underscore, :titleize => true) || result.class.to_s).titleize
+        :fullname => h(result.name),
+        :secondary => h(result.email),
+        :tertiary => h((Customer.current_customer.customer_label(result.class.to_s.underscore, :titleize => true) || result.class.to_s).titleize)
       }
     }
   end
