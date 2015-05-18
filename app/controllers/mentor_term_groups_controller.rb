@@ -99,7 +99,7 @@ class MentorTermGroupsController < ApplicationController
       original_size = @mentor_term_group.mentor_terms_count
       @mentor_term_group.sync_with_course!
       new_size = @mentor_term_group.reload.mentor_terms_count
-      flash[:notice] = "Successfully synced course enrollees. Went from #{@template.pluralize(original_size, "mentor")} to #{@template.pluralize(new_size, "mentor")}."
+      flash[:notice] = "Successfully synced course enrollees. Went from #{view_context.pluralize(original_size, "mentor")} to #{view_context.pluralize(new_size, "mentor")}."
     else
       @mentor_term_group = nil
       @term.mentor_term_groups.collect(&:sync_with_course!)

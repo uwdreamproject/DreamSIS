@@ -37,8 +37,9 @@
 </table>
 
 <br>
-<%= link_to_function "Show deleted/dropped mentors (#{@mentor_term_group.deleted_mentor_terms.size})",
- 					"Effect.toggle('deleted_mentors', 'blind', {duration: 0.25})" unless @mentor_term_group.deleted_mentor_terms.empty? %>
+<%= link_to_function content_tag(:span, "Show", :id => "deleted_verb") +
+					" deleted/dropped mentors (#{@mentor_term_group.deleted_mentor_terms.size})",
+					"showHideDeletedMentors()" unless @mentor_term_group.deleted_mentor_terms.empty? %>
 
 <table class="mentors" style="display:none" id="deleted_mentors">
 	<tr>

@@ -155,11 +155,11 @@ class MentorsController < ApplicationController
     render :json => @mentors.map { |mentor| 
       {
         :id => mentor.id, 
-        :value => mentor.fullname,
+        :value => h(mentor.fullname),
         :klass => mentor.class.to_s.underscore, 
-        :fullname => mentor.fullname, 
-        :secondary => mentor.email,
-        :tertiary => (Customer.current_customer.customer_label(mentor.class.to_s.underscore, :titleize => true) || result.class.to_s).titleize
+        :fullname => h(mentor.fullname),
+        :secondary => h(mentor.email),
+        :tertiary => h((Customer.current_customer.customer_label(mentor.class.to_s.underscore, :titleize => true) || result.class.to_s).titleize)
       }
     }    
   end
@@ -206,8 +206,8 @@ class MentorsController < ApplicationController
     @term = Term.find(params[:term_id])
     @mentors = @term.mentors(sort = :lastname)
     respond_to do |format|
-      format.json { render :json => { :background_check => view_context.background_check_textblock(@mentors),
-                                      :sex_offender_check => view_context.sex_offender_check_textblock(@mentors) } }
+      format.json { render :json => { :background_check => h(view_context.background_check_textblock(@mentors)),
+                                      :sex_offender_check => h(view_context.sex_offender_check_textblock(@mentors)) } }
     end
   end
 
