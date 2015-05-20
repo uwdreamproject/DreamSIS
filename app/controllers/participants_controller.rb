@@ -374,7 +374,8 @@ class ParticipantsController < ApplicationController
     middle = ""
     last = ""
     len = args.length
-    args = args.collect {|s| s.split[0] }
+    args = args.each { |s| s.strip! }
+    # args = args.collect {|s| s.split[0] }
 
     if (len == 1)
       # Results for first or last name
