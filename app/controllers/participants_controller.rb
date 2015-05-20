@@ -366,13 +366,58 @@ class ParticipantsController < ApplicationController
   end
 	
   def auto_complete_for_participant_fullname
-    conditions = ["(LOWER(firstname) LIKE :fullname OR LOWER(lastname) LIKE :fullname)"]
+    queryString = params[:term].downcase
+
+    # Is there spacing? If so, let's figure that out
+    args = queryString.split(" ", 3)
+    first = ""
+    middle = ""
+    last = ""
+    len = args.length
+    args = args.each { |s| s.strip! }
+    # args = args.collect {|s| s.split[0] }
+
+    if (len == 1)
+      # Results for first or last name
+      if (queryString.end_with? ",")
+        queryString = queryString[0..queryString.length - 2]
+      end
+      first = queryString
+      last = queryString
+      conditions = ["(LOWER(firstname) LIKE :firstname OR LOWER(lastname) LIKE :lastname)"]
+    elsif (len == 2)
+      if (args[0].end_with? ",")
+        # Results for  L, F ordering
+        last = args[0][0..args[0].length - 2]
+        first = args[1]
+      else # Results for F M or F L
+        first = args[0]
+        last = args[1]
+        middle = args[1]
+      end
+      conditions = ["(LOWER(firstname) LIKE :firstname AND LOWER(lastname) LIKE :lastname OR LOWER(middlename) LIKE :middlename)"]
+    else 
+      # Assume 3 arguments in some order
+      if (args[0].end_with? ",")
+        # Results for L, F M
+        last = args[0][0..args[0].length - 2]
+        first = args[1]
+        middle = args[2]
+      else # Results for F M L
+        last = args[2]
+        first = args[0]
+        middle = args[1]
+      end
+      conditions = ["(LOWER(firstname) LIKE :firstname AND LOWER(lastname) LIKE :lastname AND LOWER(middlename) LIKE :middlename)"]
+    end
+    #conditions = ["(LOWER(firstname) LIKE :fullname OR LOWER(lastname) LIKE :fullname)"]
     conditions << "high_school_id = :high_school_id" if params[:high_school_id]
     conditions << "grad_year = :grad_year" if params[:grad_year]
-    
     @participants = Participant.find(:all, 
                                       :conditions => [conditions.join(" AND "), 
-                                                      {:fullname => "%#{params[:term].downcase}%",
+                                                      {:firstname => "%#{first}%",
+                                                      :lastname => "%#{last}%",
+                                                      :middlename => "%#{middle}%",
                                                       :grad_year => params[:grad_year],
                                                       :high_school_id => params[:high_school_id]
                                                       }])
