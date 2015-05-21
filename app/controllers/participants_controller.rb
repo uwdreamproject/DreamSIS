@@ -382,9 +382,9 @@ class ParticipantsController < ApplicationController
       if (queryString.end_with? ",")
         queryString = queryString[0..queryString.length - 2]
       end
-      first = queryString
-      last = queryString
-      conditions = ["(LOWER(firstname) LIKE :firstname OR LOWER(lastname) LIKE :lastname)"]
+      first = middle = last = queryString
+      conditions = ["(LOWER(firstname) LIKE :firstname OR 
+                      LOWER(lastname) LIKE :lastname)"]
     elsif (len == 2)
       if (args[0].end_with? ",")
         # Results for  L, F ordering
@@ -395,7 +395,8 @@ class ParticipantsController < ApplicationController
         last = args[1]
         middle = args[1]
       end
-      conditions = ["(LOWER(firstname) LIKE :firstname AND LOWER(lastname) LIKE :lastname OR LOWER(middlename) LIKE :middlename)"]
+      conditions = ["(LOWER(firstname) LIKE :firstname AND 
+                     (LOWER(lastname) LIKE :lastname OR LOWER(middlename) LIKE :middlename))"]
     else 
       # Assume 3 arguments in some order
       if (args[0].end_with? ",")
