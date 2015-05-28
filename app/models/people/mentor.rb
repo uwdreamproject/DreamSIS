@@ -553,6 +553,7 @@ Documentation for each filter:
   # depending on how this mentor registered for MentorTermGroups
   # for the given term
   def enrollment_status_for_term(term = Term.current_term)
+    raise "Bad argument" if !term.is_a?(Term)
     mts = mentor_terms.for_term(term)
     return "Not Enrolled" if mts.empty?
 

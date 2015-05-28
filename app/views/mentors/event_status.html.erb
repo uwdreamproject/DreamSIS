@@ -24,7 +24,7 @@
 			@rsvp_counts << rsvp_count
 			@attended_counts << attended_count
 			if Customer.link_to_uw?
-				enrollment_status = mentor.enrollment_status_for_term(params[:term_id])
+				enrollment_status = mentor.enrollment_status_for_term(Term.find(params[:term_id]))
 				is_not_enrolled = enrollment_status.include? "Not"
 				is_enrolled = (enrollment_status.include? "Enrolled") && !is_not_enrolled
 				
