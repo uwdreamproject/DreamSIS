@@ -23,10 +23,17 @@
 			attended_count = event_attendances.select(&:attended?).size
 			@rsvp_counts << rsvp_count
 			@attended_counts << attended_count
+			if Customer.link_to_uw?
+				enrollment_status = mentor.enrollment_status_for_term(params[:term_id])
+				is_not_enrolled = enrollment_status.include? "Not"
+				is_enrolled = (enrollment_status.include? "Enrolled") && !is_not_enrolled
+				
+			end
 			
 			 -%>
-			<tr data-rsvp-count="<%= rsvp_count %>" data-attended-count="<%= attended_count %>">
-				<td><%= link_to h(mentor.fullname), mentor %></td>
+			<tr data-rsvp-count="<%= rsvp_count %>" data-attended-count="<%= attended_count %>"<%= (' data-enrolled="' + (is_enrolled ? "1" : "0") + '"').html_safe if Customer.link_to_uw? %>>
+				<td><%= content_tag :span, enrollment_status, class: "#{is_enrolled ? "green" : "red"} tag" if Customer.link_to_uw? && (is_enrolled || is_not_enrolled) %>
+				    <%= link_to h(mentor.fullname), mentor %></td>
 				<td class="email"><%= auto_link h(mentor.email) %></td>
 				<td></td>
 				<td class="centered"><%= rsvp_count %></td>
@@ -42,45 +49,21 @@
 	
 	<p>Show <%= Customer.mentors_label %> who RSVP'd for fewer than <span id="current_rsvp_limit"><%= @rsvp_counts.max+2 %></span> event(s):
 		<br>
-		<input type="range" min="0" max="<%= @rsvp_counts.max+2 %>" value="<%= @rsvp_counts.max+2 %>" onChange="
-			var count = parseInt(this.value);
-			$('#current_rsvp_limit').html(count); 
-			$('table#event_status > tbody > tr').each(function(){
-				if (parseInt($(this).attr('data-rsvp-count')) < count) {
-					$(this).show();
-					$(this).addClass('visible');
-				} else {
-					$(this).hide();
-					$(this).removeClass('visible')
-				}
-			});
-			$('#rsvp_email_link').show().attr('href', 'mailto:' + $('table#event_status > tbody > tr.visible > td.email > a').map(function(){return this.text}).get().join(', '));
-			$('#attended_email_link').hide();
-		">
+		<input type="range" id="rsvp_limit" min="0" max="<%= @rsvp_counts.max+2 %>" value="<%= @rsvp_counts.max+2 %>" class="update_status_rows_on_change">
 		<br>
 		<a href="mailto:nil" id="rsvp_email_link" class="email button" style="display:none">Email these <%= Customer.mentors_label %></a>
 	</p>
 
-
 	<p>Show <%= Customer.mentors_label %> who attended fewer than <span id="current_attended_limit"><%= @attended_counts.max+2 %></span> event(s):
 		<br>
-		<input type="range" min="0" max="<%= @attended_counts.max+2 %>" value="<%= @attended_counts.max+2 %>" onChange="
-			var count = parseInt(this.value);
-			$('#current_attended_limit').html(count); 
-			$('table#event_status > tbody > tr').each(function(){
-				if (parseInt($(this).attr('data-attended-count')) < count) {
-					$(this).show();
-					$(this).addClass('visible');
-				} else {
-					$(this).hide();
-					$(this).removeClass('visible')
-				}
-			});
-			$('#attended_email_link').show().attr('href', 'mailto:' + $('table#event_status > tbody > tr.visible > td.email > a').map(function(){return this.text}).get().join(', '));
-			$('#rsvp_email_link').hide()
-		">
+		<input type="range" id="attended_limit" min="0" max="<%= @attended_counts.max+2 %>" value="<%= @attended_counts.max+2 %>" class="update_status_rows_on_change">
 		<br>
 		<a href="mailto:nil" id="attended_email_link" class="email button" style="display:none">Email these <%= Customer.mentors_label %></a>
 	</p>
-	
+	<%- if Customer.link_to_uw? -%>
+	<p>
+		<%= check_box_tag "only_enrolled", 1, true, class: "update_status_rows_on_change" %> <%= label_tag "include_enrolled", "Show only enrolled mentors"%> <br/>
+	<p>
+	<%- end -%>
+	<%= javascript_tag "$(document).ready(function() { update_event_status_rows(\"load\"); });" %>
 </div>
