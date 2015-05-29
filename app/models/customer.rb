@@ -75,6 +75,36 @@ class Customer < ActiveRecord::Base
     !driver_form_content.blank?
   end
 
+  # returns human readable string of the validity length of driver training
+  def helper_driver_training_validity_length?
+    if driver_training_validity_length <= 90
+	return "90 days"
+    elsif driver_training_validity_length <= 180
+        return "180 days"
+    elsif driver_training_validity_length <= 365
+        return "1 year"
+    elsif driver_training_validity_length <= 730
+        return "2 years"
+    else 
+        return "Forever"
+   end
+  end
+
+  # returns human readable string of the validity length of background checks
+  def helper_background_check_validity_length?
+    if background_check_validity_length <= 90
+	return "90 days"
+    elsif background_check_validity_length <= 180
+        return "180 days"
+    elsif background_check_validity_length <= 365
+        return "1 year"
+    elsif background_check_validity_length <= 730
+        return "2 years"
+    else 
+        return "Forever"
+    end
+  end
+
   # If there exists an event type with the +name+ "Mentor Workshop", returns it, otherwise nil
   def mentor_workshop_event_type
     EventType.find_by_name("Mentor Workshop")

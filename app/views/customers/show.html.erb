@@ -15,8 +15,10 @@
 		</dd>
 
 	<dt>Requirements</dt>
-	<dd><%= @customer.require_background_checks? ? "Background checks<br>".html_safe : "" %>
-		<%= @customer.require_risk_form? ? "Mentor consent<br>".html_safe : "" %>
+	<dd><%= @customer.require_background_checks? ? "Background checks<br>".html_safe : "Background Checks (valid for "+@customer.helper_background_check_validity_length?+"), "%>
+		<%= @customer.require_driver_form? ? "Driver Validity<br>".html_safe : "Driver Trainings (valid for "+@customer.helper_driver_training_validity_length?+"), "  %>
+		<%= @customer.require_risk_form? ? "Mentor consent<br>".html_safe : "Mentor Consent, " %>
+		<%= @customer.require_conduct_form? ? "Mentor conduct<br>".html_safe : "Mentor Conduct" %>
 		</dd>
 
 	<dt>Login Methods</dt>
