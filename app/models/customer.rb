@@ -75,7 +75,7 @@ class Customer < ActiveRecord::Base
     !driver_form_content.blank?
   end
 
-  # returns human readable string of the validity length of driver training
+  # returns Human readable string of the validity length of driver training
   def helper_driver_training_validity_length?
     if driver_training_validity_length <= 90
 	return "90 days"
