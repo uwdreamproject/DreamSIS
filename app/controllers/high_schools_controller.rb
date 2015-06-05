@@ -112,7 +112,7 @@ class HighSchoolsController < ApplicationController
     end
     @unassigned_codes = @high_school.unassigned_survey_ids[0..(@n-1)]
     
-    if params[:survey_url] && params[:survey_url].match(URI.regexp(%w[http https]))
+    if params[:survey_url] && params[:survey_url]
       @survey_url = params[:survey_url]
     else
       @survey_url = (Customer.website_url.blank? ? "http://dreamproject.org" : Customer.website_url) + "/survey"

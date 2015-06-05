@@ -521,7 +521,7 @@ Documentation for each filter:
   end
 
   # Returns all event attendances for mentor for the given term.
-  # excluding new mentor workshops and class events
+  # excluding new mentor workshops, class events, and visits
   def event_attendances_for_term(term = Term.current_term)
     event_attendances.find(
       :all,
@@ -531,7 +531,8 @@ Documentation for each filter:
       AND events.date <= ?
       AND (rsvp = ? OR attended = ?)
       AND (event_type_id IS NULL OR event_types.name != ?)
-      AND events.name != ?",
+      AND events.name != ?
+      AND events.type != 'Visit'",
       term.start_date, term.end_date, true, true, "Mentor Workshop", 'Class']
     )
   end
@@ -552,6 +553,7 @@ Documentation for each filter:
   # depending on how this mentor registered for MentorTermGroups
   # for the given term
   def enrollment_status_for_term(term = Term.current_term)
+    raise "Bad argument" if !term.is_a?(Term)
     mts = mentor_terms.for_term(term)
     return "Not Enrolled" if mts.empty?
 

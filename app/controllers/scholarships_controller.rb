@@ -51,10 +51,10 @@ class ScholarshipsController < ResourceController
     render :json => @scholarships.map { |result| 
       {
         :id => result.id, 
-        :value => result.title,
+        :value => h(result.title),
         :klass => "", 
-        :fullname => result.title, 
-        :secondary => result.organization_name
+        :fullname => h(result.title),
+        :secondary => h(result.organization_name)
       }
     }
   end

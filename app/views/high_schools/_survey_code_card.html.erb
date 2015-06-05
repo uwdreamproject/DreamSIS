@@ -1,12 +1,12 @@
-<%= "</div><div class='page-break-note noprint'><span>page break</span></div><div class='survey_code_cards' style='page-break-after:always'>" if i%15==0 %>
+<%= "</div><div class='page-break-note noprint'><span>page break</span></div><div class='survey_code_cards' style='page-break-after:always'>".html_safe if i%15==0 %>
 	
 <div class="survey_code_card">
 	<span class="name">
-		<%= participant.try(:lastname_first) || "&nbsp;" %>
+		<%= participant.try(:lastname_first) || "&nbsp;".html_safe %>
 		<small><%= participant.try(:id) %></small>
 		</span>
 	<ol>
-		<li>Go to <span class="url"><%= @survey_url.split("/").join("&thinsp;/&thinsp;") %></span></li>
+		<li>Go to <span class="url"><%= @survey_url %></span></li>
 		<li>Enter your survey ID code:</li>
 	</ol>
 	<span class="code"><%= code %></span>

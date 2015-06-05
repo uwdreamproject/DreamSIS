@@ -19,10 +19,10 @@
 	</tr>
 	
 	<% @participants.each_with_index do |participant, i| %>
-		<%= "<tr id=\"participant_#{participant.id.to_s}\">" if i%3==0 %>
+		<%= "<tr id=\"participant_#{participant.id.to_s}\">".html_safe if i%3==0 %>
 			<td class="survey_code"><%=h participant.survey_id %></td>
 			<td><%=h participant.lastname_first %></td>
-		<%= "</tr>" if i%3==2 %>
+		<%= "</tr>".html_safe if i%3==2 %>
 	<% end -%>
 	
 </table>
@@ -30,10 +30,10 @@
 <h2>Unassigned Survey Codes</h2>
 <table>
 	<% @unassigned_codes.each_with_index do |code, i| %>
-		<%= "<tr>" if i%3==0 %>
+		<%= "<tr>".html_safe if i%3==0 %>
 			<td><%= code %></td>
 			<td>_____________________________</td>
-		<%= "</tr>" if i%3==2 %>
+		<%= "</tr>".html_safe if i%3==2 %>
 	<% end -%>
 </table>
 

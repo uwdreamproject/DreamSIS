@@ -41,4 +41,5 @@
 	<p><%= link_to "Edit this event", edit_event_path(@event), :class => 'edit button' %></p>
 	<p><%= link_to "Back to events", events_path, :class => 'back button' %></p>
 	<p><%= link_to "Check-in Attendance", checkin_event_event_attendances_path(@event), :class => 'edit button' %>
+	<p><%= link_to 'Add a shift', new_event_event_shift_path(@event), :class => 'add button' %></p>
 </div>

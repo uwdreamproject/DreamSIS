@@ -113,9 +113,9 @@ class LocationsController < ApplicationController
     render :json => @locations.map { |result|
       {
         :id => result.id, 
-        :value => result.name,
+        :value => h(result.name),
         :klass => result.class.to_s.underscore, 
-        :fullname => result.name, 
+        :fullname => h(result.name),
         :secondary => result.type.to_s.titleize
       }
     }
@@ -126,10 +126,10 @@ class LocationsController < ApplicationController
     render :json => @institutions.map { |result| 
       {
         :id => result.id, 
-        :value => result.name,
+        :value => h(result.name),
         :klass => "", 
-        :fullname => result.name, 
-        :secondary => result.location_detail
+        :fullname => h(result.name),
+        :secondary => h(result.location_detail)
       }
     }
   end
