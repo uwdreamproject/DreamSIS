@@ -1,4 +1,4 @@
-<%- for test_type in ["SAT", "ACT"] -%>
+<%- for test_type in %w[PSAT SAT ACT] -%>
 
 	<%- scores = participant.test_scores_comparison(test_type) -%>
 	<td>

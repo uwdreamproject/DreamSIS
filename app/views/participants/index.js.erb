@@ -3,7 +3,10 @@ $("#participants_table")
   .removeClass("loading")
   .attr("data-report", "<%= @report %>")
 
-// history.pushState({'report' : '<%= @report %>'}, '<%= @report.titleize %>', '?report=<%= @report %>')
+history.pushState({'report' : '<%= @report %>'}, '<%= @report.titleize %>', '?report=<%= @report %>')
+
+$("#export_actions").html("<%=j render('export_actions') %>")
+exportReportType = "<%=j params[:report] %>"
 
 $("#stages_selector").html("<%=j render('stages') %>")
 $("#stages_selector a[data-stage]").click(clickStageSelector)

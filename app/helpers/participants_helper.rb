@@ -25,4 +25,13 @@ module ParticipantsHelper
       :method => :post
   end
   
+  # Generates the URL for requesting an XLSX report based on the current location.
+  def xlsx_url(force_generate = false)
+    url = { :format => :xlsx }
+    url[:report] = params[:report] if params[:report]
+    url[:action] = 'index' if controller.action_name == 'index'
+    url[:generate] = 'true' if force_generate
+    return url
+  end
+  
 end

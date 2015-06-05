@@ -4,6 +4,7 @@ class TestScore < ActiveRecord::Base
   belongs_to :test_type
   
   delegate :name, :to => :test_type, :allow_nil => true
+  delegate :firstname, :lastname, :formal_firstname, :grad_year, :to => :participant
   
   validates_presence_of :participant_id, :test_type_id, :taken_at
   validate :total_score_is_below_maximum
@@ -15,6 +16,8 @@ class TestScore < ActiveRecord::Base
 
   after_save :update_filter_cache
   after_destroy :update_filter_cache
+
+	acts_as_xlsx
 
   # Updates the participant filter cache
   def update_filter_cache
@@ -102,5 +105,16 @@ class TestScore < ActiveRecord::Base
     results[:gain_or_loss_trend] = results[:gain_or_loss] > 0 ? "up" : results[:gain_or_loss] < 0 ? "down" : "same" rescue nil
     return results
   end
+
+	# Determines the columns that are exported into xlsx pacakages. Includes most model columns
+	# plus some extra attributes defined by methods.
+	def self.xlsx_columns
+		columns = []
+    columns << [:lastname, :formal_firstname, :grad_year, :name]
+		columns << self.column_names.map { |c| c = c.to_sym }
+    columns << [:total_score_pretty]
+		remove_columns = [:customer_id]
+		columns = columns.flatten - remove_columns
+	end
   
 end

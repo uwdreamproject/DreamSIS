@@ -9,7 +9,7 @@ $(document).ready( function() {
 // Setup the export status checker, which will be called with setInterval.
 function exportStatusWorker() {
   if (checkExportStatus == true && typeof(exportReportId) !== 'undefined') {
-    urlToCheck = checkExportStatusUrl.replace("__id__", exportReportId);
+    urlToCheck = checkExportStatusUrl.replace("__id__", exportReportId).replace("__report__", exportReportType);
     if (debug) console.log("[exportStatusWorker] checkExportStatus: " + checkExportStatus + ", urlToCheck: " + urlToCheck)
 		$.ajax({ url: urlToCheck, dataType: 'script' });
 	} else {

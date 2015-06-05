@@ -31,22 +31,10 @@ placeholder_text <<  "all #{Customer.participants_label}" if !@grad_year || !@hi
 	
 <% if controller.action_name != 'show' %>
 
-	<%- xlsx_url = controller.action_name == 'index' ? { :action => 'index', :format => :xlsx } : { :format => :xlsx }  -%>
-	<p><%= link_to "Download in Excel", xlsx_url, html_options = { :class => 'button xls with-below', :id => "export_download_button", :remote => true } %></p>
-	
-	<%= javascript_tag("checkExportStatus = false;") %>
-	<%= javascript_tag("checkExportStatusUrl = '#{check_export_status_participants_url(:id => "__id__")}'") %>
-		
-	<p id="export_status" class="below">
-	<%- if @export -%>	
-		<%=h @export.status.try(:titleize) %> <%=h relative_timestamp @export.updated_at %>
-		<%= link_to "Regenerate", { :generate => true, :format => 'xlsx' }, url_options = { :remote => true } %>
-		<%= javascript_tag("checkExportStatus = true; exportReportId = '#{@export.id.to_s}';") unless @export.generated? %>
-	<% else %>
-	  Not yet generated
-	<% end %>
-	</p>
-	
+	<div id="export_actions">
+		<%= render "export_actions" %>
+	</div>
+
 	<%- if @high_school %>
 		<form>
 	    <p>Class of <%= select_tag :cohort, options_for_select(@high_school.cohorts.collect(&:to_s), @grad_year.to_s) %>
