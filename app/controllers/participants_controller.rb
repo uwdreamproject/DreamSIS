@@ -481,6 +481,7 @@ class ParticipantsController < ApplicationController
   def report_type
     case params[:report]
     when "test_score_summaries" then TestScoresReport
+    when "college_applications" then CollegeApplicationsReport
     else ParticipantsReport
     end
   end
@@ -488,6 +489,7 @@ class ParticipantsController < ApplicationController
   def report_object_ids
     case params[:report]
     when "test_score_summaries" then @participants.collect(&:test_scores).flatten.collect(&:id)
+    when "college_applications" then @participants.collect(&:college_applications).flatten.collect(&:id)
     else @participants.collect(&:id)
     end
   end

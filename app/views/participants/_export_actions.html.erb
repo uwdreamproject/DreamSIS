@@ -6,7 +6,7 @@
 
 <p id="export_status" class="below">
 <%- if @export -%>	
-	<%= "Report ##{@export.id.to_s}" %>
+	<%= "#{@export.class.to_s.titleize} ##{@export.id.to_s}" %>
 	<%= @export.status.try(:titleize) %> <%=h relative_timestamp @export.updated_at %>
 	<%= link_to "Regenerate", xlsx_url(true), :remote => true, :id => "regenerate_download_button" %>
 	<%= javascript_tag("checkExportStatus = true; exportReportId = '#{@export.id.to_s}';") unless @export.generated? %>

@@ -9,7 +9,8 @@ class CollegeApplication < ActiveRecord::Base
   validates_exclusion_of :institution_id, :in => [0], :message => "ID can't be set to zero" # make sure this doesn't get set to zero, but allow any other positive or negative integer
   validates :institution, presence: true
   
-  delegate :name, :to => :institution
+  delegate :name, :to => :institution, :allow_nil => true
+  delegate :firstname, :lastname, :formal_firstname, :grad_year, :to => :participant
   
   before_destroy :destroy_college_mapper_college, :if => :do_college_mapper_functions?
   after_create :create_college_mapper_college, :if => :do_college_mapper_functions?  
@@ -22,6 +23,8 @@ class CollegeApplication < ActiveRecord::Base
   after_destroy :update_filter_cache
 
   belongs_to :institution
+  
+  acts_as_xlsx
 
   # Updates the participant filter cache
   def update_filter_cache
@@ -87,5 +90,15 @@ class CollegeApplication < ActiveRecord::Base
     return false unless participant.college_mapper_id
     college_mapper_college.destroy if college_mapper_college
   end
+
+	# Determines the columns that are exported into xlsx pacakages. Includes most model columns
+	# plus some extra attributes defined by methods.
+	def self.xlsx_columns
+		columns = []
+    columns << [:lastname, :formal_firstname, :grad_year, :name]
+		columns << self.column_names.map { |c| c = c.to_sym }
+		remove_columns = [:customer_id]
+		columns = columns.flatten - remove_columns
+	end
   
 end
