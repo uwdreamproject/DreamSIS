@@ -1,0 +1,3 @@
+<%- @events.each_with_index do |event, index| -%>
+	<td data-column-id="<%= index+1 %>" <%= "class=this-week" if event.this_week? %>></td>
+<% end %>

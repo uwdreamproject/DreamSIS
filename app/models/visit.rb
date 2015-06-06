@@ -16,4 +16,8 @@ class Visit < Event
     Customer.uses_visit_attendance_options? ? Customer.visit_attendance_options_array : []
   end
   
+  def name
+    read_attribute(:name) || Customer.visit_Label
+  end
+  
 end

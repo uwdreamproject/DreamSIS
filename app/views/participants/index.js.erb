@@ -8,6 +8,10 @@ history.pushState({'report' : '<%= @report %>'}, '<%= @report.titleize %>', '?re
 $("#export_actions").html("<%=j render('export_actions') %>")
 exportReportType = "<%=j params[:report] %>"
 
+if (typeof attendanceEventIds !== 'undefined') {
+  buildAttendanceTable(attendanceEventIds)
+}
+
 $("#stages_selector").html("<%=j render('stages') %>")
 $("#stages_selector a[data-stage]").click(clickStageSelector)
 updateFiltersWithLocationHash()
