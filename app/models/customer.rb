@@ -76,33 +76,13 @@ class Customer < ActiveRecord::Base
   end
 
   # returns Human readable string of the validity length of driver training
-  def helper_driver_training_validity_length?
-    if driver_training_validity_length <= 90
-	return "90 days"
-    elsif driver_training_validity_length <= 180
-        return "180 days"
-    elsif driver_training_validity_length <= 365
-        return "1 year"
-    elsif driver_training_validity_length <= 730
-        return "2 years"
-    else 
-        return "Forever"
-   end
+  def helper_driver_training_validity_length
+	helper_validity_length(driver_training_validity_length)
   end
 
   # returns human readable string of the validity length of background checks
-  def helper_background_check_validity_length?
-    if background_check_validity_length <= 90
-	return "90 days"
-    elsif background_check_validity_length <= 180
-        return "180 days"
-    elsif background_check_validity_length <= 365
-        return "1 year"
-    elsif background_check_validity_length <= 730
-        return "2 years"
-    else 
-        return "Forever"
-    end
+  def helper_background_check_validity_length
+	helper_validity_length(background_check_validity_length)
   end
 
   # If there exists an event type with the +name+ "Mentor Workshop", returns it, otherwise nil
@@ -253,3 +233,23 @@ class Customer < ActiveRecord::Base
 	end
   
 end
+
+private 
+
+  #helper method to calculate and return the length of days in human readable string form 
+  def helper_validity_length(length)
+	if length.nil?
+	 return "(length not set)"
+	end
+   case length
+     when -1
+	then return "(valid for Forever)"
+     when 0..364
+	then return "(valid for #{length} days)"
+     when 365
+	then return "(valid for 1 year)"
+     when 366..730
+	then return "(valid for 2 years)"
+   end
+  end
+
