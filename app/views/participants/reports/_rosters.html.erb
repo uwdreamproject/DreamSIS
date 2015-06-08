@@ -6,13 +6,13 @@
 </td>
 
 <td class="phone">
-    <%= number_to_phone_pretty(participant.phone_home, :type => 'home') unless participant.phone_home.blank? %>
+    <%= number_to_phone_pretty(h(participant.phone_home), :type => 'home') unless participant.phone_home.blank? %>
     <%= content_tag :span, "(Preferred)", :class => "light" if participant.preferred_phone == "Home" %>
     
-    <%= "<br />".html_safe + number_to_phone_pretty(participant.phone_mobile, :type => 'mobile') unless participant.phone_mobile.blank? %>
+    <%= "<br />".html_safe + number_to_phone_pretty(h(participant.phone_mobile), :type => 'mobile') unless participant.phone_mobile.blank? %>
     <%= content_tag :span, "(Preferred)", :class => "light" if participant.preferred_phone == "Mobile" %>
     
-    <%= "<br />".html_safe + number_to_phone_pretty(participant.phone_work, :type => 'work') unless participant.phone_work.blank? %>
+    <%= "<br />".html_safe + number_to_phone_pretty(h(participant.phone_work), :type => 'work') unless participant.phone_work.blank? %>
     <%= content_tag(:div, "BAD PHONE", :class => 'error-message') if participant.bad_phone? %>
 	<%= content_tag(:div, "Preferred", :class => 'preferred-note') if participant.preferred_contact_method == 'Phone' %>
 </td>
