@@ -281,6 +281,11 @@ class Person < ActiveRecord::Base
 		read_attribute(:survey_id)
 	end
   
+  # Returns the URL for the person's facebook profile
+  def facebook_url
+    facebook_id.blank? ? "" : "http://facebook.com/" + facebook_id
+  end
+  
   # Returns the class standing if possible.
   # def class_standing
   #   affil = person_resource.attributes["PersonAffiliations"].attributes["StudentPersonAffiliation"] rescue nil

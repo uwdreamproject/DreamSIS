@@ -218,6 +218,10 @@ table.participants img.avatar {
 	border-radius: 100px;
 }
 
+table.participants td.college-logo {
+  padding-left: 0 !important;
+}
+
 table.participants.loading {
 	background: url(<%= asset_path 'bar-loader.gif' %>) no-repeat center 25%;
 }
@@ -701,7 +705,7 @@ body.scrolled-past-header ul.tabs {
   padding-left: 20px;
 }
 
-#sidebar p:first-child a.button {
+#sidebar :first-child a.button {
 	border-top: 1px outset #dfdfdf;
 }
 

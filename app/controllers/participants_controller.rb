@@ -13,7 +13,7 @@ class ParticipantsController < ApplicationController
     return redirect_to Participant.find(params[:id]) if params[:id]
     @participants = Participant.page(params[:page])
 		@cache_key = fragment_cache_key(:action => :index, :format => :xlsx)
-    @export = ParticipantsReport.for_key(@cache_key)
+    @export = report_type.for_key(@cache_key)
 
     respond_to do |format|
       format.html
@@ -36,7 +36,7 @@ class ParticipantsController < ApplicationController
     
     @participants = @high_school.participants
 		@cache_key = fragment_cache_key(:action => :high_school, :id => @high_school.id, :format => :xlsx)
-    @export = ParticipantsReport.for_key(@cache_key)
+    @export = report_type.for_key(@cache_key)
 
     respond_to do |format|
       format.html { render :action => 'index' }
@@ -51,7 +51,7 @@ class ParticipantsController < ApplicationController
     @participants = Participant.in_cohort(params[:id])
 		@title << @grad_year
 		@cache_key = fragment_cache_key(:action => :cohort, :id => @grad_year, :format => :xlsx)
-    @export = ParticipantsReport.for_key(@cache_key)
+    @export = report_type.for_key(@cache_key)
     
     respond_to do |format|
       format.html { render :action => 'index' }
@@ -75,7 +75,7 @@ class ParticipantsController < ApplicationController
     @participants = request.format == Mime::HTML ? [] : Participant.in_cohort(@grad_year).in_high_school(@high_school.try(:id))
     @participant_groups = ParticipantGroup.find(:all, :conditions => { :location_id => @high_school, :grad_year => @grad_year })
 		@cache_key = fragment_cache_key(:action => :high_school_cohort, :id => @high_school.id, :cohort => @grad_year, :format => :xlsx)
-    @export = ParticipantsReport.for_key(@cache_key)
+    @export = report_type.for_key(@cache_key)
 
     respond_to do |format|
       format.html { render :action => 'index' }
@@ -91,7 +91,7 @@ class ParticipantsController < ApplicationController
     @stages = CollegeApplication::Stages
 		@title << @college
 		@cache_key = fragment_cache_key(:action => :college, :id => @college.try(:id), :format => :xlsx)
-    @export = ParticipantsReport.for_key(@cache_key)
+    @export = report_type.for_key(@cache_key)
 
     if request.xhr?
       @participants = @college.interested_participants
@@ -119,7 +119,7 @@ class ParticipantsController < ApplicationController
 		@title << @college
 		@title << @grad_year
 		@cache_key = fragment_cache_key(:action => :college_cohort, :id => @college.try(:id), :cohort => @grad_year, :format => :xlsx)
-    @export = ParticipantsReport.for_key(@cache_key)
+    @export = report_type.for_key(@cache_key)
     
     respond_to do |format|
       format.html { render :action => 'index' }
@@ -134,7 +134,7 @@ class ParticipantsController < ApplicationController
     @participants = Participant.assigned_to_mentor(@mentor.try(:id))
 		@title << "Assigned to #{@mentor.try(:fullname)}"
 		@cache_key = fragment_cache_key(:action => :mentor, :id => @mentor.id, :format => :xlsx)
-    @export = ParticipantsReport.for_key(@cache_key)
+    @export = report_type.for_key(@cache_key)
 		
 		respond_to do |format|
       format.html { render :action => 'index' }
@@ -149,7 +149,7 @@ class ParticipantsController < ApplicationController
     @participants = @program.participants
 		@title << @program.try(:title)
 		@cache_key = fragment_cache_key(:action => :program, :id => @program.id, :format => :xlsx)
-    @export = ParticipantsReport.for_key(@cache_key)
+    @export = report_type.for_key(@cache_key)
     
     respond_to do |format|
       format.html { render :action => 'index' }
@@ -172,7 +172,7 @@ class ParticipantsController < ApplicationController
     @participants = @participant_group.participants
     @participant_groups = ParticipantGroup.find(:all, :conditions => { :location_id => @high_school, :grad_year => @grad_year })
 		@cache_key = fragment_cache_key(:action => :group, :id => @participant_group.id, :format => :xlsx)
-    @export = ParticipantsReport.for_key(@cache_key)
+    @export = report_type.for_key(@cache_key)
     
     respond_to do |format|
       format.html { render :action => 'index' }
@@ -414,7 +414,7 @@ class ParticipantsController < ApplicationController
   end
 
 	def check_export_status
-		@export = ParticipantsReport.find(params[:id])
+		@export = report_type.find(params[:id])
 		respond_to do |format|
 			format.html { render :text => (@export.try(:status) || "does not exist") }
 			format.js
@@ -439,11 +439,11 @@ class ParticipantsController < ApplicationController
   end  
 
 	def respond_to_xlsx
-		@export = ParticipantsReport.find_or_initialize_by_key(@cache_key)
+		@export = report_type.find_or_initialize_by_key(@cache_key)
 		if @export.generated? && params[:generate].nil?
 			if request.xhr?
 				headers["Content-Type"] = "text/javascript"
-				render :js => "window.location = '#{url_for(:format => 'xlsx')}'"
+				render :js => "window.location = '#{url_for(:format => 'xlsx', :report => params[:report])}'"
 			else
         begin
           filename = @filename || "participants.xlsx"
@@ -459,12 +459,14 @@ class ParticipantsController < ApplicationController
 	end
   
 	def respond_to_generate_xlsx
-		@export = ParticipantsReport.find_or_initialize_by_key(@cache_key)
+		@export = report_type.find_or_initialize_by_key(@cache_key)
 		@export.format = "xlsx"
-		@export.object_ids = @participants.collect(&:id)
+		@export.object_ids = report_object_ids
 		@export.reset_to_ungenerated
 		@export.status = "initializing"
 		@export.save
+    logger.debug { @export.to_yaml }
+    logger.debug { @export.errors.to_yaml }
 		@export.generate_in_background!
 		flash[:notice] = "We are generating your Excel file for you. Please wait."
 		
@@ -476,5 +478,20 @@ class ParticipantsController < ApplicationController
 		end
 	end
 
+  def report_type
+    case params[:report]
+    when "test_score_summaries" then TestScoresReport
+    when "college_applications" then CollegeApplicationsReport
+    else ParticipantsReport
+    end
+  end
+  
+  def report_object_ids
+    case params[:report]
+    when "test_score_summaries" then @participants.collect(&:test_scores).flatten.collect(&:id)
+    when "college_applications" then @participants.collect(&:college_applications).flatten.collect(&:id)
+    else @participants.collect(&:id)
+    end
+  end
     
 end

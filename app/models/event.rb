@@ -24,6 +24,7 @@ class Event < ActiveRecord::Base
   
   default_scope order("date, start_time")
   scope :visits, where(:type => "Visit")
+  scope :past, lambda { where("date <= ?", Date.today) }
 
   # Allows overwriting of type in controller, default is [+id+, +type+]
   def self.attributes_protected_by_default

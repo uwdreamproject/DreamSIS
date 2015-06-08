@@ -6,7 +6,7 @@ class Report < ActiveRecord::Base
 	VALIDITY_PERIOD = 1.day
 
 	validates_presence_of :key, :format, :model_name
-	validates_uniqueness_of :key, :scope => [ :customer_id, :format ]
+	validates_uniqueness_of :key, :scope => [ :customer_id, :format, :type ]
 	serialize :object_ids
 
   mount_uploader :file, ReportUploader, :mount_on => :file_path

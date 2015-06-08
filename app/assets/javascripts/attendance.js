@@ -41,7 +41,7 @@ function addAttendanceColumn(eventId, columnId) {
   $.getJSON( url, function( data ) {
     // console.log(data)
     $('.attendance-matrix thead th[data-column-id=' + columnId + ']').html( 
-      data.name + "<br>" + data.date
+      (data.name || "") + "<br>" + data.date
     ).data("attendance-options", data.attendance_options)
     
     // Fetch and populate the attendee rows

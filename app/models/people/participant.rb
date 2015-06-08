@@ -302,6 +302,11 @@ class Participant < Person
     end
     @eas
   end
+  
+  # Returns the _n_ most recent events that are open for Participants. Defaults to 5.
+  def self.recent_events(number = 5)
+    @recent_events ||= Event.past.where(:show_for_participants => true).reverse_order.limit(number)
+  end
 
   # Returns the CollegeMapperStudent record for this individual if we have a college_mapper_id stored.
   # By default, if the record doesn't exist, we create it. You can override that by passing +false+ for

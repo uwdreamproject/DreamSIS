@@ -1,0 +1,10 @@
+<%- @events = Participant.recent_events(5).reverse -%>
+
+<th class="name">Name</th>
+<%- @events.each_with_index do |event, index| -%>
+	<th class="centered <%= "this-week" if event.this_week? %>" data-column-id="<%= index+1 %>"></th>
+<% end %>
+<th colspan=3></th>
+
+<%= javascript_tag "attendanceEventIds = [#{@events.collect(&:id).join(", ")}];" %>
+<%= javascript_tag "$('#participants_table').addClass('attendance-matrix').addClass('attendance')" %>
