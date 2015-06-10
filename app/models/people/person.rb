@@ -354,7 +354,7 @@ class Person < ActiveRecord::Base
   # Strip out non-digit characters in annual_income if needed, like "$" or "," or other text.
   def annual_income=(new_amount)
     new_amount = new_amount.gsub(/[^0-9.]/i, '') unless new_amount.is_a?(Numeric)
-    self.write_attribute(:annual_income, new_amount)
+    write_attribute :annual_income, new_amount
   end
   
   # Returns true if this person has completed the specified training
