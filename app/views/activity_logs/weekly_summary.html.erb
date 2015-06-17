@@ -48,8 +48,8 @@
 	
 	<h3><%= Customer.mentor_Label %> Group</h3>
 	<form><%= select_tag :mentor_term_group_id, 
-						options_for_select(["All"] + Term.current_term.mentor_term_groups.collect{|g| [h(g.title), g.id]}, @mentor_term_group.try(:id) ),
-						:id => "mentor_term_group_select" %>
+						options_for_select(["All"] + @term.mentor_term_groups.collect{|g| [h(g.title), g.id]}, @mentor_term_group.try(:id) ),
+						:id => "mentor_term_group_select" if @term %>
 	</form>
 	<%= javascript_tag("
 			$('#mentor_term_group_select').change(function() {
