@@ -64,6 +64,11 @@ class Term < ActiveRecord::Base
     [Term.current_term, Term.allowing_signups].flatten.uniq.compact
   end
   
+  # Finds the first Term where the specified date falls.
+  def self.find_for_date(date)
+    where(":date >= start_date AND :date <= end_date", :date => date).first()
+  end
+  
   # Returns true if specified date falls between this Term's start and end dates.
   def include?(date)
     date >= start_date && date <= end_date
