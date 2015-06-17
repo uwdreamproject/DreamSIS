@@ -22,7 +22,7 @@ gem 'omniauth-linkedin'
 gem 'geocoder'
 gem 'aes'
 gem 'fastercsv'
-gem 'mandrill-api', require: 'mandrill'
+gem 'mandrill-api'
 # gem 'newrelic_rpm'
 gem 'ey_config'
 gem "mime-types" #, "1.25"
