@@ -4586,6 +4586,7 @@ ul.mentor_stats_summary .section_id.tag {
 .signup-numbers {
 	font-size: 85%;
 	color: #656565;
+	clear: both;
 }
 
 .signup-numbers span {

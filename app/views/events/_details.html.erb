@@ -26,7 +26,7 @@
 				 title="<%= number_to_percentage details.percent_full, :precision => 0 %> full">
 
 				<div class="size" style="width: <%= details.percent_full %>%">
-					<%= details.full? ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
+					<%= details.full? ? content_tag(:span, "full", :class => "full_label") : "&nbsp;".html_safe %>
 				</div>					
 			</div>
 		</div>
