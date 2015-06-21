@@ -91,25 +91,19 @@ function updateEmailLinks() {
 
     // create an email list of those people attending
     var emailsAttending = [];
-    function getAttending() {
-        attending_rows.each(function(key, value) {             
-            emailsAttending.push(value.getAttribute('data-email'));
-        });
-    }
-    getAttending();
+    attending_rows.each(function(key, value) {             
+        emailsAttending.push(value.getAttribute('data-email'));
+    });
 
     // make the array into string and then set that as a value to the email link 
-    emailsAttending = emailsAttending.splice(',').join(',');
+    emailsAttending = emailsAttending.join(',');
     $('#attending_email_link').attr("href",  "mailto:" + emailsAttending);
 
     // similarly for the Attended emails
     var emailsAttended = [];
-    function getAttended() {
-        attended_rows.each(function(key, value) {             
-            emailsAttended.push(value.getAttribute('data-email'));
-        });
-    }
-    getAttended();
+    attended_rows.each(function(key, value) {             
+        mailsAttended.push(value.getAttribute('data-email'));
+    });
     emailsAttended = emailsAttended.join(',');
     $('#attended_email_link').attr("href",  "mailto:" + emailsAttended);
 }
