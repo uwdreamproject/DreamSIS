@@ -1,6 +1,6 @@
 <h3 class="pre-title"><%= @event.name %></h3>
 <h1><%=h @audience.to_s %> Attendance</h1>
-    
+
 <table class="attendees">
     <thead>
         <tr>
@@ -69,11 +69,6 @@
 
 <script type="text/javascript">
 
-function filterEvents() {
-
-}
-
-
 function updateShiftSelections(elem) {
     // get the data shift id for the filter
     var shiftid = elem.getAttribute("data-shift-id");
@@ -86,7 +81,6 @@ function updateShiftSelections(elem) {
     } else {
         rows.hide();
     }
-    
     updateEmailLinks();
 }
 
@@ -116,7 +110,7 @@ function updateEmailLinks() {
         });
     }
     getAttended();
-    emailsAttended = emailsAttended.splice(',').join(',');
+    emailsAttended = emailsAttended.join(',');
     $('#attended_email_link').attr("href",  "mailto:" + emailsAttended);
 }
 
