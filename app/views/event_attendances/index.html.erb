@@ -12,13 +12,13 @@
 			<%= "<th class='centered'>Trained?</th>" if @event.training_required?(@audience.to_s) %>
 			<th class="centered">RSVP'd?
 				<%= link_to "E-mail",
-				 				"mailto:#{@event.attendees.rsvpd(@audience).collect{|a| a.email rescue nil }.compact.join(",")}",
+				 				"mailto:#{@event.attendees.audience(@audience).rsvpd.collect{|a| a.email rescue nil }.compact.join(",")}",
 								:class => 'email button',
 								:id => 'attending_email_link' %>
 				</th>
 			<th class="centered">Attended?
 				<%= link_to "E-mail",
-				 				"mailto:#{@event.attendees.attended(@audience).collect{|a| a.email rescue nil }.compact.join(",")}",
+				 				"mailto:#{@event.attendees.audience(@audience).attended.collect{|a| a.email rescue nil }.compact.join(",")}",
 								:class => 'email button',
 								:id => 'attended_email_link' %>
 				</th>
