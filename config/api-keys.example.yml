@@ -52,3 +52,9 @@ redis:
   production:
     endpoint: 
     password: 
+
+mandrill:
+  development:
+    key:
+  production:
+    key:
