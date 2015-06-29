@@ -1,3 +1,7 @@
+<td class="cohort"><%= link_to "#{truncate(participant.high_school.name, :length => 30)} #{participant.grad_year}", 
+				high_school_cohort_path(participant.high_school, (participant.grad_year || 0)), 
+				:class => 'redirect-link' unless participant.high_school.nil? %></td>
+
 <%- for test_type in %w[PSAT SAT ACT] -%>
 
 	<%- scores = participant.test_scores_comparison(test_type) -%>
