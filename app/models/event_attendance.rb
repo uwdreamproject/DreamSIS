@@ -35,6 +35,7 @@ class EventAttendance < ActiveRecord::Base
 
   # Class method to use along with other named scopes to limit results to a specific audience group.
   def self.audience(audience_name = Person)
+    audience_name ||= Person
     joins(:person).where(["(audience = :audience) OR (people.type = :audience AND audience IS NULL)", {:audience => audience_name.to_s.classify}])
   end
   
