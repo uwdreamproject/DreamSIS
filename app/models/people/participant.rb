@@ -43,6 +43,24 @@ class Participant < Person
 		"Earn GED",
 		"Don't know"
 	]
+  
+  # Stores the categories for Participant ObjectFilters. The key should match the dom_id
+  # of the category, and is also the key that gets displayed in the database.
+  FILTER_CATEGORIES = {
+    _general: "General",
+		contact: "Contact Information",
+		college_applications: "Colleges",
+		scholarship_applications: "Financial",
+		parents: "Parents/Contacts",
+		test_scores: "Tests",
+		college_enrollments: "College Enrollment",
+		college_degrees: "College Degrees",
+		mentors: "Mentors",
+		events: "Events",
+		paperwork: "Paperwork",
+		documents: "Documents",
+		notes: "Notes"
+  }
 
   def validate_name?
     true
@@ -73,7 +91,7 @@ class Participant < Person
   
   # Returns all Filter objects that list Participant as the object_class
   def self.object_filters
-    ObjectFilter.find_all_by_object_class("Participant").select(&:display_now?)
+    ObjectFilter.where(object_class: "Participant")
   end
 
   def method_missing(method_name, *args)

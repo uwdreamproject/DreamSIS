@@ -663,6 +663,16 @@ body.scrolled-past-header ul.tabs {
 	font-family: "Oxygen", sans-serif;
 }
 
+#sidebar h3 > a.right {
+  margin-left: 1em;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+#sidebar h3 > a.right:hover {
+  text-decoration: underline;
+}
+
 #sidebar :first-child {
 	margin-top: 0;
 }
@@ -3375,9 +3385,39 @@ ul.filters {
 	margin: 0;
 }
 
+ul.filters ul {
+  list-style: none;
+  padding-left: 0.5em;
+  padding-top: 3px;
+}
+
+ul.filters li ul { 
+  transition: opacity 0.5s, height 0.5s;
+  overflow: hidden;
+}
+
+ul.filters li.closed ul {
+  opacity: 0;
+  height: 0;
+}
+
 .filters li {
 	clear: both;
 	margin-bottom: 5px;
+}
+
+.filters > li.category > h4 {
+	padding-top: 0.5em;
+  font-weight: bold;
+	text-transform: uppercase;
+	font-size: 85%;
+	font-family: "Oxygen", sans-serif;
+  cursor: pointer;
+}
+
+.filters > li.category:not(.closed) > h4:after, .filters > li.category:hover > h4:after {
+  content: '\25be';
+  padding-left: 0.35em;
 }
 
 .filters li:hover label small {

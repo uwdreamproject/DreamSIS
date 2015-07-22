@@ -34,6 +34,11 @@ class ObjectFilter < ActiveRecord::Base
     return false
   end
 
+  # Returns the human readable category name by looking up the value in Participant::FILTER_CATEGORIES.
+  def category_name
+    Participant::FILTER_CATEGORIES[category.to_sym] if category
+  end
+
   # Returns false unless start_display_at and end_display_at are not nil.
   def has_display_period?
     !start_display_at.nil? && !end_display_at.nil?

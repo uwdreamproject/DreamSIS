@@ -3,6 +3,7 @@ $( function() {
   executeFilters()
   $(".filter_checkbox").click(clickFilterCheckbox)
   $("#stages_selector a").click(clickStageSelector) // Add this after the ajax call, too
+  $("ul.filters li.category h4").click(function() { $(this).parents('li.category').toggleClass('closed') })
 })
 
 function executeFilters() {
@@ -20,10 +21,12 @@ function executeFilters() {
     // Add rows that match the selected filters
     $(".filter_checkbox.enabled").each(function (i, element) {
       selection += "[data-filter-" + $(this).data("target-filter-id") + "='" + $(this).val() + "']"
+      $(this).parents('li.category').removeClass('closed')
     })
 
     // Show all the rows in the selection
     $(selection).removeClass("hidden")
+    $(".filter-clear-link").show()
   }
   updateRecordCount()
 }
@@ -31,6 +34,7 @@ function executeFilters() {
 // shows all the filterable items to give us a clean slate before running executeFilters()
 function showAllFilterables() {
   $(".filterable").removeClass("hidden")
+  $(".filter-clear-link").hide()
 }
 
 // // Adds the "preview_filter" CSS class to the filter elements but doesn't hide them
@@ -50,6 +54,18 @@ function clearAllFilters() {
   $('.filter_checkbox').removeAttr("checked").removeClass("enabled") // uncheck all the boxes to start
   updateRecordCount()
   updateLocationHashWithFilters()
+}
+
+function toggleExpandFiltersView() {
+  if( $('ul.filters').is('.expanded') ) {
+    $('ul.filters li.category').addClass("closed")
+    $('ul.filters').removeClass("expanded")
+    $('.filter-expand-link').html("Expand")
+  } else {
+    $('ul.filters li.category').removeClass("closed")
+    $('ul.filters').addClass("expanded")
+    $('.filter-expand-link').html("Collapse")
+  }
 }
 
 // Tries to update a div with id "filtered_record_count" with the number of filterables that are visible.
@@ -160,8 +176,8 @@ function updateLocationHashWithFilters() {
 /*
   Updates filter selections with the values in the location hash.
 */
-function updateFiltersWithLocationHash() {
-  var currentHash = window.location.hash
+function updateFiltersWithLocationHash(otherHash) {
+  var currentHash = otherHash || window.location.hash
   var hashParts = currentHash.replace("#!", "").split("&")
   for (var i=0; i < hashParts.length; i++) {
     if (hashParts[i].length > 0) {      
@@ -187,3 +203,4 @@ function updateFiltersWithLocationHash() {
     executeFilters()
   }
 }
+
