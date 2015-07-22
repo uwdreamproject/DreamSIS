@@ -16,6 +16,13 @@ class Change < ActiveRecord::Base
 
   default_scope :order => "created_at DESC"
 
+  # Override this method so that we can use the reserved attribute name +changes+.
+  # Since a Change object is never updated like a typical record (and therefore reliant
+  # on the ActiveModel::Dirty methods), this is OK in this case.
+  def self.dangerous_attribute_method?(name)
+    name.to_s == 'changes' ? false : super(name)
+  end
+
   # Gets called after_create
   def self.log_create(obj)
     return false if obj.is_a?(Change)
@@ -94,11 +101,9 @@ class Change < ActiveRecord::Base
   
   # Cleans up the object's @changes hash so that we don't bother storing changes to things like +updated_at+ and +creator_id+
   def self.cleanup_changes(h)
-    # logger.info { "\n\n\nBefore:" }
-    # logger.info { h.to_yaml }
-    # logger.info { "After:" }
-    # logger.info { h.reject{|key,val| NON_TRACKED_ATTRIBUTES.include?(key)}.to_yaml }
-    h.reject{|key,val| NON_TRACKED_ATTRIBUTES.include?(key)}
+    results = h.reject{|key,val| NON_TRACKED_ATTRIBUTES.include?(key)}
+    logger.debug { "Cleanup Changes: \nBefore:\n" + h.to_yaml + "\nAfter:\n" + results.to_yaml }
+    return results
   end
   
   # Used in the +for+ scope. Generates a valid array for use as a SQL :conditions paramater. Can accept an array of
