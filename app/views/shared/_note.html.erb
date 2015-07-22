@@ -41,4 +41,12 @@
 	</div>
 	
 	<p class="timestamp"><%= relative_timestamp note.created_at %></p>
+	
+	<%- for change in note.changelogs.select{|ch| ch.action_type == "update" && ch.changes.keys.include?("needs_followup") } -%>
+		<p class="timestamp">
+			<%= relative_timestamp(change.created_at) %> &ndash;
+			<%= change.user.nil? ? "The system" : link_to(h(change.user.try(:fullname)), user_path(change.user)) %>
+			<%= change.changes["needs_followup"][1] == false ? "cleared" : "set" %> the follow-up flag.
+		</p>
+	<% end %>
 </blockquote>

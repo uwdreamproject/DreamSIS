@@ -390,7 +390,9 @@ class Participant < Person
   # * event_attendances
   def child_objects
     collections = %w[college_applications scholarship_applications parents test_scores 
-                     college_enrollments college_degrees mentor_participants event_attendances]
+                     college_enrollments college_degrees mentor_participants event_attendances
+                     notes
+                   ]
     child_objects = []
     for collection in collections
       child_objects << self.instance_eval(collection)
