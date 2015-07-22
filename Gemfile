@@ -51,6 +51,7 @@ gem 'apartment-sidekiq'
 gem "simple_calendar", "~> 1.1.0"
 gem 'jquery-tablesorter'
 gem 'le'
+gem 'coderay', :require =>  'coderay'
 
 group :production do
   gem 'mysql2', '~> 0.3.7'
