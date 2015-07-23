@@ -18,7 +18,7 @@
 	<%= f.submit "Add Note", :disable_with => 'Adding note...', :class => 'add notes right' %>
 <% end -%>
 
-<%- cache [participant.cache_key, "notes"].join("/") do -%>
+<%- cache [participant.cache_key, @current_user.id, "notes"].join("/") do -%>
 	<div class="notes_container" id="notes_container_<%= participant.id %>">
 		<a href="#" style="display: none;" class="show_all_notes" onClick="toggleFollowupNotes(); return false">Show all notes</a>
 		<%= render :partial => "shared/notes", :object => participant, :locals => locals %>		
