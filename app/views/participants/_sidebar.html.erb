@@ -31,9 +31,7 @@ placeholder_text <<  "all #{Customer.participants_label}" if !@grad_year || !@hi
 	
 <% if controller.action_name != 'show' %>
 
-	<div id="export_actions">
-		<%= render "export_actions" %>
-	</div>
+	<%= content_tag :div, render("export_actions"), :id => "export_actions" %>
 
 	<%- if @high_school %>
 		<form>
@@ -50,45 +48,9 @@ placeholder_text <<  "all #{Customer.participants_label}" if !@grad_year || !@hi
 			</p>
 	<% end %>
 	
-	<%= render :partial => "bulk_actions" %>
-	
-	<%- unless @participants.respond_to?(:current_page) -%>
-	<h3>Filters
-		<%= link_to_function "show all", "clearAllFilters()", :class => "right small" %></h3>
-
-		<ul class="filters">
-		<% for object_filter in Participant.object_filters %>
-			<li id="filter_li_<%= object_filter.id.to_s %>">
-			
-				<% 
-			    dom_id = "filter_#{object_filter.id.to_s}_true"
-			    check_box_str = check_box_tag dom_id, true, false, 
-									:class => "#{object_filter.id.to_s}_filter_checkbox filter_checkbox", 
-									"data-target-filter-id" => object_filter.id.to_s
-				record_count_str = "<small id='record_count_#{object_filter.id}'>&nbsp;</small>"
-				%>
-				<%= label_tag(dom_id, raw("#{check_box_str}#{record_count_str}<span>#{object_filter.opposite_title}</span>")) %>
-			
-			</li>
-		
-		<% end -%>
-		</ul>
-	<% end %>
-		
-	<%- if @participant_groups && !@participant_groups.empty? -%>
-	<h3>Groups</h3>
-	<ul class="quick_nav" style="margin-top: 0">
-		<%- for participant_group in @participant_groups -%>
-			<li id="participant_group_dropzone_<%= participant_group.id %>">
-				<%= link_to participant_group.try(:title), participant_group_path(participant_group), :class => 'redirect-link' %>
-			</li>
-			<%#= TODO drop_receiving_element "participant_group_dropzone_#{participant_group.id}",
-			 							:url => add_to_group_participants_path(:participant_group_id => participant_group.id),
-										:accept => 'participant',
-										:hoverclass => 'dropzone' %>
-		<% end -%>
-	</ul>
-	<% end -%>
+	<%= render "bulk_actions" %>
+	<%= render "filter_controls" unless @participants.respond_to?(:current_page) %>		
+	<%= render "participant_groups_sidebar" if @participant_groups && !@participant_groups.empty? %>
 			
 <% end -%>
 </div>

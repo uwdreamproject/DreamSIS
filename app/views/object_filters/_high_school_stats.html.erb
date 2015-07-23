@@ -24,15 +24,24 @@ hide_title ||= false
 		<td class="number"><%= active_participants.size %></td>
 		<td></td>
 		<td class="percentage"><%= number_to_percentage(active_participants.size.to_f / participants.size.to_f * 100, :precision => 0) rescue 0.0/0.0 %></td>
-	</tr>
+	</tr>	
 	
+	<%- for category, object_filters in Participant.object_filters.group_by(&:category) -%>
+	<tr class="category">
+		<th colspan="10" data-category="<%= category %>">
+			<%= Participant::FILTER_CATEGORIES[category.to_s.to_sym] || "Other" %>
+		</th>
+	</tr>
+				
 	<%= render :partial => "object_filters/object_filter", 
-				:collection => Participant.object_filters,
+				:collection => object_filters,
 				:locals => { 
 					:participants => participants,
 					:active_participants => active_participants,
 					:hide_title => hide_title
 				} %>
+	
+	<% end %>
 
 </table>
 

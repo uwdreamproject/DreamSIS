@@ -20,18 +20,11 @@
 
 <%= f.inputs(:title => "Display Options") do %>
 	
-	<%#= f.input :opposite_title, :hint => "If you want this to show as an opposite filter in participant lists, enter a title here so that
-											the semantics will make sense. This might be useful so that you can filter for the people who 
-											have NOT completed this stat." %>
-								
-	<%#= f.inputs :name => "Display Period", :class => "inline" do -%>			
-		<%#= f.input :start_display_at, :label => "From", :order => [:month, :day] %>
-		<%#= f.input :end_display_at, :label => "To", :order => [:month, :day] %>
-	<%# end %>
-
 	<%= f.inputs :name => "Relevant Grade Levels", :class => "inline" do -%>			
 		<%= f.input :earliest_grade_level_level, :label => "From", :as => :select, :collection => GradeLevel.all.collect{|g| [g.title, g.level]} %>
 		<%= f.input :latest_grade_level_level, :label => "To", :as => :select, :collection => GradeLevel.all.collect{|g| [g.title, g.level]} %>
 	<% end %>
+	
+	<%= f.input :category, :collection => Participant::FILTER_CATEGORIES.invert %>
 											
 <% end -%>

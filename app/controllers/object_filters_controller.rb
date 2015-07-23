@@ -1,7 +1,7 @@
 class ObjectFiltersController < ApplicationController
   
   def index
-    @object_filters = ObjectFilter.all
+    @object_filters = ObjectFilter.reorder("category IS NULL ASC, category, position")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -73,15 +73,12 @@ class ObjectFiltersController < ApplicationController
       format.xml  { head :ok }
     end
   end
-
-  def formatted_criteria
-    @object_filter = ObjectFilter.find(params[:id])
-    code = @object_filter.criteria
-    request = Net::HTTP.post_form(URI.parse('http://pygments.appspot.com/'), {'lang' => 'ruby', 'code' => code})
-
-    respond_to do |format|
-      format.js { render :text => request.body }
+  
+  def sort
+    params[:object_filter].each_with_index do |id, index|
+      ObjectFilter.update_all({ position: index+1 }, { id: id })
     end
+    render nothing: true
   end
 
   protected 

@@ -1,33 +1,45 @@
 <h1>Stat Filters</h1>
 <p>Filters are used to dynamically limit the students displayed on list pages, based on certain criteria defined here.</p>
 
-<table class="object_filters">
-  <tr>
-    <th>Object</th>
-    <th>Title</th>
-	<th>Target</th>
-	<th>Warning</th>
-	<th>Dates</th>
-	<th>Grades</th>
-	<th colspan=3>Functions</th>
-  </tr>
+<table class="object_filters no-sort">
+	<thead>
+		<tr><th></th>
+			<th>Category</th>
+			<th>Title</th>
+			<th>Target</th>
+			<th>Warning</th>
+			<th>Grades</th>
+			<th colspan=3>Functions</th>
+		</tr>
+	</thead>
 
-<% for object_filter in @object_filters %>
-  <tr>
-    <td><%=h object_filter.object_class %></td>
-    <td class="name">
-		<%= link_to h(object_filter.title), object_filter_path(object_filter), :title => h(object_filter.criteria) %>
-		<code class="criteria syntax" id="criteria_<%= object_filter.id %>" style="display:none"><%=h object_filter.criteria %></code>
-	</td>
-	<td><%=h number_to_percentage object_filter.target_percentage, :precision => 0 %></td>
-	<td><%=h number_to_percentage object_filter.warning_threshold, :precision => 0 %></td>
-	<td><%= object_filter.display_period_string %></td>
-	<td><%= object_filter.grade_levels_list_string %></td>
-    <td class="functions"><%= link_to 'Show', object_filter_path(object_filter) %></td>
-    <td class="functions"><%= link_to 'Edit', edit_object_filter_path(object_filter) %></td>
-    <td class="functions"><%= link_to 'Destroy', object_filter_path(object_filter), :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
+	<%- for category, object_filters in @object_filters.group_by(&:category) -%>
+	<tbody data-update-url="<%= sort_object_filters_url %>">
+		<% for object_filter in object_filters %>
+		<tr id="object_filter_<%= object_filter.id %>">
+			<td class="handle">&#9776;</td>
+			<td><%=h object_filter.category_name %></td>
+			<td class="name">
+			   	<%= link_to h(object_filter.title), object_filter_path(object_filter), :title => h(object_filter.criteria) %>
+				<code data-id="<%= object_filter.id %>" class="criteria syntax" id="criteria_<%= object_filter.id %>" style="display:none">
+					<%=raw CodeRay.scan(object_filter.criteria, :ruby).html(
+							:wrap => nil,
+							:line_numbers => nil,
+							:css => :style
+					) %>
+				</code>
+			</td>
+			<td><%=h number_to_percentage object_filter.target_percentage, :precision => 0 %></td>
+			<td><%=h number_to_percentage object_filter.warning_threshold, :precision => 0 %></td>
+			<td><%= object_filter.grade_levels_list_string %></td>
+			<td class="functions"><%= link_to 'Show', object_filter_path(object_filter) %></td>
+			<td class="functions"><%= link_to 'Edit', edit_object_filter_path(object_filter) %></td>
+			<td class="functions"><%= link_to 'Destroy', object_filter_path(object_filter), :confirm => 'Are you sure?', :method => :delete %></td>
+		</tr>
+		<% end %>
+	</tbody>
+	<% end %>
+
 </table>
 
 <div id="sidebar">
@@ -41,19 +53,3 @@
 	
 </div>
 
-<%= javascript_tag do %>
-	<%- for object_filter in @object_filters -%>
-	
-		$( function() {
-			$.ajax({ 
-				url: '<%= formatted_criteria_object_filter_path(object_filter) %>', 
-				dataType: 'text', 
-				type: 'post',
-				success: function(data) {
-					$("#criteria_<%= object_filter.id %>").html(data)
-				}
-			});
-		});
-	
-	<% end %>
-<% end %>

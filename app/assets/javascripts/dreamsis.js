@@ -125,6 +125,15 @@ function updateActivityTimeDescription(elem) {
 function registerTableSorters() {
   $("th.functions").addClass("sorter-false")
   $(":not(.calendar) > table:not(.no-sort)").tablesorter({ theme: "dreamsis", sortStable: true })
+
+  $("table.object_filters > tbody").sortable({ 
+    axis: 'y', 
+    cursor: 'move',
+    handle: '.handle',
+    update: function(elem) {
+      $.post($(this).data('update-url'), $(this).sortable('serialize'))
+    }
+  })
 }
 
 /*

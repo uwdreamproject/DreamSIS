@@ -7,8 +7,8 @@ Dreamsis::Application.routes.draw do
   # ---------------------------------------
   resources :customers
   resources :object_filters do
-    member do
-      post :formatted_criteria
+    collection do
+      post :sort
     end
   end
   resources :terms do
