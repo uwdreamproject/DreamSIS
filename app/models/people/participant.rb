@@ -47,7 +47,7 @@ class Participant < Person
   # Stores the categories for Participant ObjectFilters. The key should match the dom_id
   # of the category, and is also the key that gets displayed in the database.
   FILTER_CATEGORIES = {
-    _general: "General",
+    :"-general" => "General",
 		contact: "Contact Information",
 		college_applications: "Colleges",
 		scholarship_applications: "Financial",
