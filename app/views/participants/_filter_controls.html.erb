@@ -20,7 +20,7 @@
 						"data-target-filter-id" => object_filter.id.to_s
 					record_count_str = "<small id='record_count_#{object_filter.id}'>&nbsp;</small>"
 					%>
-					<%= label_tag(dom_id, raw("#{check_box_str}#{record_count_str}<span>#{object_filter.opposite_title}</span>")) %>
+					<%= label_tag(dom_id, raw("#{check_box_str}#{record_count_str}<span>#{h(object_filter.opposite_title)}</span>")) %>
 
 				</li>
 				<% end %>
