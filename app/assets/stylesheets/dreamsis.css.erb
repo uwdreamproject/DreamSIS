@@ -130,6 +130,14 @@ a:visited {
 	margin-right: 1em;
 }
 
+.handle {
+  color: rgba(0,0,0,0.35);
+}
+
+.handle:hover {
+  cursor: move;
+}
+
 table {
 	width: 100%;
 	border-collapse: collapse;
@@ -2163,6 +2171,16 @@ ul.stat-numbers.progression li:last-child:after {
 	width: 30%;
 }
 
+.stats tr.category th {
+  padding-left: 10px !important;
+  padding-bottom: 5px !important;
+  background: none;
+}
+
+.stats tr.category:hover th {
+  background: none !important;
+}
+
 form.fixed-width label {
 	float: left;
 	width: 200px;
@@ -3480,18 +3498,29 @@ ul.filters li.closed ul {
 ul.filter-results {
 	list-style: none;
 	padding: 0;
-	margin: 20px 30px;
-	columns: 2;
-	-webkit-columns: 2;
+	margin: 10px 20px;
+	columns: 3;
+	-webkit-columns: 3;  
+}
+
+ul.filter-results li ul {
+	list-style: none;
+	padding: 0;
+  margin-bottom: 10px;
 }
 
 .filter-results li {
 	background: no-repeat left center;
 	padding: 7px;
-	padding-left: 22px;
 	border-bottom: 1px solid #eee;
 	-webkit-column-break-inside: avoid;
 	break-inside: avoid-column;
+	padding-left: 25px;
+}
+
+.filter-results li ul li {
+  border-bottom: none;
+  margin-left: 0px;
 }
 
 .filter-results li.pass, span.icon.pass {
@@ -4729,7 +4758,7 @@ table.documents tr:hover td.functions a {
 	padding-bottom: 1em;
 }
 
-#new_participant_form_container h2, new_volunteer_form_container h2 {
+#new_participant_form_container h2, #new_volunteer_form_container h2 {
 	margin: 0;
 	padding-bottom: 0.25em;
 	border-bottom: 1px solid #eee;
@@ -4741,6 +4770,10 @@ table.documents tr:hover td.functions a {
 
 table.object_filters td {
 	vertical-align: text-bottom;
+}
+
+table.object_filters tbody {
+  border-bottom: 15px solid rgba(0,0,0,0.03);
 }
 
 code {

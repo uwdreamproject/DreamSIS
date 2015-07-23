@@ -4,6 +4,7 @@ $( function() {
   $(".filter_checkbox").click(clickFilterCheckbox)
   $("#stages_selector a").click(clickStageSelector) // Add this after the ajax call, too
   $("ul.filters li.category h4").click(function() { $(this).parents('li.category').toggleClass('closed') })
+  removeCategoriesIfEmpty()    
 })
 
 function executeFilters() {
@@ -204,3 +205,13 @@ function updateFiltersWithLocationHash(otherHash) {
   }
 }
 
+/*
+  If there is only one category or none, expand it and hide the expanding buttons
+*/
+function removeCategoriesIfEmpty() {
+  if ($('ul.filters li.category').size() < 2) {
+    $('ul.filters li.category').removeClass("closed")
+    $("ul.filters li.category h4").hide()
+    $('.filter-expand-link').hide()
+  }
+}

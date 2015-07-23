@@ -29,6 +29,8 @@ GEM
     activesupport (3.2.19)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
+    acts_as_list (0.7.2)
+      activerecord (>= 3.0)
     acts_as_xlsx (1.0.6)
       activerecord (>= 2.3.9)
       axlsx (>= 1.0.13)
@@ -293,6 +295,7 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth
+  acts_as_list
   acts_as_xlsx
   addressable
   aes

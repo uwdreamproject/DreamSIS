@@ -6,7 +6,11 @@ Dreamsis::Application.routes.draw do
   # Top-level or Customer-level Objects
   # ---------------------------------------
   resources :customers
-  resources :object_filters
+  resources :object_filters do
+    collection do
+      post :sort
+    end
+  end
   resources :terms do
     collection do
       match :check_export_status

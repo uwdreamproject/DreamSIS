@@ -1,7 +1,7 @@
 class ObjectFiltersController < ApplicationController
   
   def index
-    @object_filters = ObjectFilter.all
+    @object_filters = ObjectFilter.reorder("category IS NULL ASC, category, position")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -72,6 +72,13 @@ class ObjectFiltersController < ApplicationController
       format.html { redirect_to(object_filters_url) }
       format.xml  { head :ok }
     end
+  end
+  
+  def sort
+    params[:object_filter].each_with_index do |id, index|
+      ObjectFilter.update_all({ position: index+1 }, { id: id })
+    end
+    render nothing: true
   end
 
   protected 

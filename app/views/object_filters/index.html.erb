@@ -1,10 +1,9 @@
 <h1>Stat Filters</h1>
 <p>Filters are used to dynamically limit the students displayed on list pages, based on certain criteria defined here.</p>
 
-<table class="object_filters">
+<table class="object_filters no-sort">
 	<thead>
-		<tr>
-			<!-- <th>Object</th> -->
+		<tr><th></th>
 			<th>Category</th>
 			<th>Title</th>
 			<th>Target</th>
@@ -14,10 +13,11 @@
 		</tr>
 	</thead>
 
-	<tbody>
-		<% for object_filter in @object_filters %>
-		<tr>
-		   	<!-- <td><%=h object_filter.object_class %></td> -->
+	<%- for category, object_filters in @object_filters.group_by(&:category) -%>
+	<tbody data-update-url="<%= sort_object_filters_url %>">
+		<% for object_filter in object_filters %>
+		<tr id="object_filter_<%= object_filter.id %>">
+			<td class="handle">&#9776;</td>
 			<td><%=h object_filter.category_name %></td>
 			<td class="name">
 			   	<%= link_to h(object_filter.title), object_filter_path(object_filter), :title => h(object_filter.criteria) %>
@@ -38,6 +38,7 @@
 		</tr>
 		<% end %>
 	</tbody>
+	<% end %>
 
 </table>
 
