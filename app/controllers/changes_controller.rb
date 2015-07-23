@@ -1,6 +1,6 @@
 class ChangesController < ApplicationController
   
-  ALLOWABLE_MODELS = %w[Person User Participant Mentor Volunteer PubcookieUser CollegeApplication ScholarshipApplication]
+  ALLOWABLE_MODELS = %w[Person User Participant Mentor Volunteer PubcookieUser CollegeApplication ScholarshipApplication Note]
   
   # GET /changes/for/:model_name/:id
   def for_object
