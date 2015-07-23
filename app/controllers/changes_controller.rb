@@ -1,20 +1,15 @@
 class ChangesController < ApplicationController
   
-  ALLOWABLE_MODELS = %w[Person User Participant Mentor Volunteer PubcookieUser CollegeApplication ScholarshipApplication]
+  ALLOWABLE_MODELS = %w[Person User Participant Mentor Volunteer PubcookieUser CollegeApplication ScholarshipApplication Note]
   
   # GET /changes/for/:model_name/:id
   def for_object
     @object = validate_and_instantiate_object_from_params(params[:model_name], params[:id])
-    @changes = Change.find(:all, :conditions => { :change_loggable_type => @object.class.to_s, :change_loggable_id => @object.id })
-    
-    if @object.respond_to?(:child_objects)
-      for child_object in @object.child_objects
-        child_changes = Change.find(:all, :conditions => { :change_loggable_type => child_object.class.to_s, :change_loggable_id => child_object.id })
-        @changes << child_changes unless child_changes.empty?
-      end
-      @changes.flatten!
-    end
-      
+    ids = [[@object.class.to_s, @object.id]]
+    ids += @object.child_objects.collect{|o| [o.class.to_s, o.id] } if @object.respond_to?(:child_objects)
+    conditions_string = ids.size.times.collect{ "(change_loggable_type = ? AND change_loggable_id = ?)" }.join(" OR ")
+    @changes = Change.where([conditions_string] + ids.flatten)
+
     render :action => "index"
   end
   

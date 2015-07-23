@@ -3915,6 +3915,14 @@ code.change_value {
 	border-radius: 3px;
 }
 
+code.change_value.nil {
+  border-bottom: none;
+  background: none;
+  padding: 0 0;
+  font-family: inherit;
+  font-size: inherit;
+}
+
 /* @group Tags */
 
 .tag {
@@ -4457,6 +4465,11 @@ div.notes.editable, p.notes.editable {
   color: rgba(0,0,0,0.5);
   margin-left: 1em;
   margin-top: 0;
+  margin-bottom: 0;
+}
+
+.notes .timestamp:last-child {
+  margin-bottom: 1em;
 }
 
 .notes blockquote .controls {

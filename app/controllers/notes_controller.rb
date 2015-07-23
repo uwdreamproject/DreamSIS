@@ -48,25 +48,16 @@ class NotesController < ApplicationController
     end
   end
     
-  # def document
-  #     @note = Note.find(params[:id])
-  #
-  #     if @note.notable.is_a?(Person)
-  #       @person = @note.notable
-  #       unless @current_user && @current_user.can_view?(@person)
-  #         return render_error("You are not allowed to view documents for that person.")
-  #       end
-  #     end
-  #
-  #     send_data @note.document.read, :type => @note.document_content_type, :filename => @note.document_file_name
-  # end
-
   protected
   
   def verify_permissions
     @note = Note.find params[:id]
-    unless @note.user == @current_user
-      render_error("You can only edit or delete your own notes.")
+    if @note.user != @current_user && @current_user.can_edit?(@note.notable) && params[:note].try(:[], :needs_followup)
+      # The user is trying to change the followup flag, and has permission. Allow *only* this change.
+      params[:note] = { :needs_followup => params[:note].try(:[], :needs_followup) }
+    else
+      # The user does not own the note and cannot edit it.
+      render_error("You can only edit or delete your own notes.") unless @note.user == @current_user
     end
   end
   

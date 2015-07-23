@@ -48,7 +48,7 @@ class ParentsController < ParticipantsController
     respond_to do |format|
       if @parent.save
         flash[:notice] = 'Parent was successfully created.'
-        format.html { redirect_to(@participant) }
+        format.html { redirect_to(participant_path(@participant, :anchor => "!/section/parents")) }
         format.xml  { render :xml => @parent, :status => :created, :location => @participant }
       else
         format.html { render :action => "new" }
@@ -65,7 +65,7 @@ class ParentsController < ParticipantsController
     respond_to do |format|
       if @parent.update_attributes(params[:parent])
         flash[:notice] = 'Parent was successfully updated.'
-        format.html { redirect_to(@participant) }
+        format.html { redirect_to(participant_path(@participant, :anchor => "!/section/parents")) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -81,7 +81,7 @@ class ParentsController < ParticipantsController
     @parent.destroy
 
     respond_to do |format|
-      format.html { redirect_to(participant_parents_url) }
+      format.html { redirect_to(participant_path(@participant, :anchor => "!/section/parents")) }
       format.xml  { head :ok }
     end
   end
