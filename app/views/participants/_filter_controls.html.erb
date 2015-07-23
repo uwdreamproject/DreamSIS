@@ -6,7 +6,7 @@
 	<ul class="filters">
 		<%- for category, object_filters in Participant.object_filters.group_by(&:category) -%>
 	
-		<li class="category <%= "closed" unless category.to_s.starts_with?("_") %>" data-category="<%= category %>">
+		<li class="category <%= "closed" unless category.to_s.starts_with?("-") %>" data-category="<%= category %>">
 			<h4><%= Participant::FILTER_CATEGORIES[category.to_s.to_sym] || "Other" %></h4>
 			<ul>
 					
