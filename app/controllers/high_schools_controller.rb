@@ -115,7 +115,7 @@ class HighSchoolsController < ApplicationController
     if params[:survey_url] && params[:survey_url]
       @survey_url = params[:survey_url]
     else
-      @survey_url = (Customer.website_url.blank? ? "http://dreamproject.org" : Customer.website_url) + "/survey"
+      @survey_url = (Customer.website_url.blank? ? "http://dreamsis.com" : Customer.website_url) + "/survey"
     end
   end
 

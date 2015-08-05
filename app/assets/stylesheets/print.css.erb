@@ -1,0 +1,134 @@
+@media print {
+  
+  body {
+  	background: none;
+  	padding: 0 0.25in 0.25in 0.25in;
+    font-size: 10px;
+  }
+
+  #header {
+  	background: none;
+  	border-bottom: 1px solid #999;
+  	min-height: 30px;
+  	box-shadow: none;
+  	padding: 0.5em 0;
+    border-top: none;
+    margin-bottom: 1em;
+  }
+
+  #sidebar-header {
+  	display: none;
+  }
+
+  #header h1 {
+  	margin: 0;
+/*    background: url(<%= asset_path 'dreamsis-logo-dark-200.png' %>) 0 7px no-repeat;*/
+    background: none;
+  	background-size: 120px;
+  }
+  
+  #header h1 a {
+    margin: 0;
+    text-decoration: none;
+    padding: 0.5em 0;
+    height: auto;
+  }
+  
+  #header h1 a strong {
+  	display: block;
+    font-weight: normal;
+  }
+  
+  .menu, #header .menu {
+  	display: none;
+  }
+
+  #main-nav {
+  	display: none;
+  }
+
+  #menu-shadow {
+  	display: none;
+  }
+
+  #login_logout {
+  	position: absolute;
+  	right: 0.25in;
+  	top: 15px;
+    color: #3f3f3f;
+  }
+
+  #login_logout .outline.tag {
+  	background: none;
+  	border: 1px solid rgba(0,0,0,0.3);
+  	color: black;
+  	font-size: 70%;
+  }
+  
+  #login_logout .hide_when_small {
+  	display: inline;
+  }
+
+  #login_logout ul > li {
+    display: none;
+  }
+
+  #login_logout ul > li:first-child {
+    display: block;
+    font-weight: normal;
+  }
+
+  #login_logout img.avatar {
+  	display: none;
+  }
+
+  #content {
+  	margin: 0;
+  	background: none;
+  	padding: 0;
+    border: none;
+  }
+
+  #content-wrap {
+  	padding: 0;
+    padding-top: 1em;
+  	background: none;
+  	-webkit-box-shadow: none;
+  	box-shadow: none;
+  	-moz-box-shadow: none;
+    margin: 0;
+    border: none;
+  }
+  
+  .content-block > *, #content-wrap > * {
+  	padding-left: 0;
+  	padding-right: 0;
+  }
+  
+  table td:first-child, table th:first-child {
+  	padding-left: 0 !important;
+  }
+
+  table td:last-child, table th:last-child {
+  	padding-right: 0 !important;
+  }
+
+  #sidebar {
+  	display: none;
+  }
+
+  .noprint, .no-print {
+  	display: none;
+  }
+  
+  #footer {
+  	margin: 0;
+    margin-top: 2em;
+    background: none;
+  }
+
+  .info-section-container .tab-content .info-section {
+  	/*display: block;*/ /* uncomment this to show all tabs inline on the printed page instead. */
+  }
+    
+}
