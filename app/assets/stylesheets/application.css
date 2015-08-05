@@ -10,9 +10,9 @@
  *= require jquery-tablesorter/theme.dreamsis
  *= require dreamsis
  *= require menus
- *= require print
  *= require syntax
  *= require mobile
  *= require_tree . 
+ *= require print
 */
 
