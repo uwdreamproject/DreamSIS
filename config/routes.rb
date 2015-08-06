@@ -18,7 +18,6 @@ Dreamsis::Application.routes.draw do
     member do
       put :update
       put :sync
-      match :show
     end
   end
   resources :quarters, :controller => 'terms'
