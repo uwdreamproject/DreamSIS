@@ -1,0 +1,2 @@
+Fabricator(:mentor) do
+end

@@ -1,0 +1,2 @@
+Fabricator(:note) do
+end
