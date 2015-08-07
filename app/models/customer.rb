@@ -29,6 +29,8 @@ class Customer < ActiveRecord::Base
   validates_uniqueness_of :url_shortcut
   validates_exclusion_of :url_shortcut, :in => RESERVED_SUBDOMAINS, :message => "URL shortcut %s is not allowed"
 
+  OMNIAUTH_PROVIDERS = %w[facebook twitter google_oauth2 shibboleth windowslive linkedin identity]
+
   validate :tenant_database_must_exist
   after_create :initialize_tenant!
 
@@ -81,11 +83,12 @@ class Customer < ActiveRecord::Base
   end
 
   def allowable_login_method?(provider)
-    (allowable_login_methods || {})[provider.to_s] == "true"
+    allowable_login_methods_list.include? provider.to_s
   end
   
   def allowable_login_methods_list
-    allowable_login_methods.try{|h| h.select{ |k,v| v == "true" }.keys } rescue []
+    list_from_db = allowable_login_methods.try{|h| h.select{ |k,v| v == "true" }.keys } rescue []
+    list_from_db & OMNIAUTH_PROVIDERS # only allow providers listed to be included
   end
   
   # Parses the text in +college_application_choice_options+ and returns an array that is split on newlines.
