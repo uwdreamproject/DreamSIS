@@ -64,22 +64,23 @@ class User < ActiveRecord::Base
 
   # Updates this user's information based on the information in the auth data passed from OmniAuth.
   def update_from_provider!(auth)
-    return nil if auth["extra"]["raw_info"]["updated_at"] && Time.parse(auth["extra"]["raw_info"]["updated_at"]) < person.resource_cache_updated_at
+    last_updated = auth["extra"]["raw_info"]["updated_at"] rescue nil
+    return nil if last_updated && Time.parse(last_updated) < person.resource_cache_updated_at
+    avatar_image_url = auth["info"]["image"] || auth["extra"]["raw_info"]["profile_image_url_https"] rescue nil
     person.update_attributes({
       :display_name => auth["info"]["name"],
       :firstname => auth["info"]["first_name"],
       :lastname => auth["info"]["last_name"],
       :email => auth["info"]["email"],
-      :avatar_image_url => auth["info"]["image"] || auth["extra"]["raw_info"]["profile_image_url_https"],
+      :avatar_image_url => avatar_image_url,
       :resource_cache_updated_at => Time.now
     })
   end
   
   # Only update the avatar image from the OmniAuth data.
   def update_avatar_from_provider!(auth)
-    person.update_attributes({
-      :avatar_image_url => auth["info"]["image"] || auth["extra"]["raw_info"]["profile_image_url_https"],
-    }) if person
+    avatar_image_url = auth["info"]["image"] || auth["extra"]["raw_info"]["profile_image_url_https"] rescue nil
+    person.update_attribute(:avatar_image_url, avatar_image_url) if avatar_image_url && person
   end
   
   # Returns all User records with the same provider and UID combination. Useful for switching to another customer identity.

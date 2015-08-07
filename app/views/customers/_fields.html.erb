@@ -13,7 +13,7 @@
 <% end %>
 
 <%= f.inputs :name => "Allowed Login Methods" do -%>
-	<%- for provider in %w[facebook twitter google_oauth2 shibboleth windowslive linkedin] -%>
+	<%- for provider in %w[facebook twitter google_oauth2 shibboleth windowslive linkedin identity] -%>
 		<li class="boolean input optional" id="customer_allowable_login_methods_<%= provider %>_input">
 			<%= hidden_field_tag "customer[allowable_login_methods][#{provider}]", false, :id => "" %>
 			<label for="customer_allowable_login_methods_<%= provider %>"><%= provider.titleize %>

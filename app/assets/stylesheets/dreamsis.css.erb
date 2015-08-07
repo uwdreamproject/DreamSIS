@@ -805,6 +805,27 @@ body.new.session #login_logout {
 	display: none;
 }
 
+body.identity_login form {
+  margin: 1em 5em;
+}
+
+body.identity_login form .field {
+  margin-top: 1em;
+  font-weight: bold;
+}
+
+body.identity_login form input:not([type=submit]) {
+  width: 95%;
+  font-size: 110%;
+}
+
+body.identity_login form input[type=submit] {
+  font-size: 100%;
+  font-weight: normal;
+  margin: 1em auto;
+  display: block;
+}
+
 #login_logout img.avatar {
 	float: left;
 	margin-left: 0;
@@ -855,6 +876,9 @@ a.login-link:hover span {
 	background-image: url(<%= asset_path 'icons/linkedin_64.png' %>);
 }
 
+.login-link.identity span {
+  background-image: url(<%= asset_path 'icons/identity_64.png' %>);
+}
 
 .login-link.uwnetid span {
 	background-image: url(<%= asset_path 'icons/weblogin.gif' %>);
@@ -1891,7 +1915,7 @@ ul.crimes-list li {
 
 
 #notifications .error {
-	background-image: url(<%= asset_path 'icons/silk/information.png' %>);
+	background-image: url(<%= asset_path 'icons/silk/cross.png' %>);
 	background-color: #FFEBEB;
 	color: #b11;
 	border-color: #b11;

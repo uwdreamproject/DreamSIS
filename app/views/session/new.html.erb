@@ -16,6 +16,7 @@
 	<%= link_to raw("<span>&nbsp;</span> Twitter"), "auth/twitter", :class => "twitter login-link" if Customer.allowable_login_method?(:twitter) %>
 	<%= link_to raw("<span>&nbsp;</span> LinkedIn"), "auth/linkedin", :class => "linkedin login-link" if Customer.allowable_login_method?(:linkedin) %>
 	<%= link_to raw("<span>&nbsp;</span> Live"), "auth/windowslive", :class => "windowslive login-link" if Customer.allowable_login_method?(:windowslive) %>
+	<%= link_to raw("<span>&nbsp;</span> Other"), "auth/identity", :class => "identity login-link" if Customer.allowable_login_method?(:identity) %>
 </div>
 
 <%- if session[:external_login_context] == :rsvp -%>
@@ -24,3 +25,7 @@
 		<%= link_to "Continue without logging in", anonymous_login_callback_path, :class => 'anonymous button' %>
 	</div>
 <% end -%>
+
+<%- if Customer.allowable_login_methods_list.empty? -%>
+	<p class="warning">This account does not have any login providers configured.</p>
+<% end %>
