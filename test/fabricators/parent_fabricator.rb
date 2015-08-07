@@ -1,0 +1,2 @@
+Fabricator(:parent) do
+end

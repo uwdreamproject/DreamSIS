@@ -53,6 +53,8 @@ gem 'jquery-tablesorter'
 gem 'le'
 gem 'coderay', :require =>  'coderay'
 gem 'acts_as_list'
+gem 'fabrication'
+gem 'faker'
 
 group :production do
   gem 'mysql2', '~> 0.3.7'
