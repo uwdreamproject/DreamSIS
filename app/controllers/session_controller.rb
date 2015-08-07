@@ -5,6 +5,7 @@ class SessionController < ApplicationController
 
   def new
     redirect_to locator_url(:subdomain => false) if Customer.current_customer.nil? || Customer.current_customer.new_record?
+    redirect_to "/auth/#{Customer.allowable_login_methods_list.first}" if Customer.allowable_login_methods_list.size == 1 && session[:external_login_context] != :rsvp
   end
   
   def locator
@@ -50,6 +51,15 @@ class SessionController < ApplicationController
     redirect_to login_url, :notice => "Signed out!"
   end
   
+  def identity_login
+    @body_class = "new session"
+  end
+  
+  def identity_register
+    flash[:error] = "Sorry, you can't register for a new account directly."
+    redirect_to '/auth/identity'
+  end
+  
   def map_login
     session[:user_id] = nil
     cookies.delete :auth_token
@@ -81,7 +91,11 @@ class SessionController < ApplicationController
   end
 
   def failure
-    flash[:error] = "There was an error while trying to log you in. Please try again or come back later."
+    message = case params[:message]
+      when "invalid_credentials" then "That username or password is incorrect."
+      else "There was an error while trying to log you in."
+    end
+    flash[:error] = "#{message} Please try again or come back later."
     redirect_to login_url
   end
 

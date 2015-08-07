@@ -27,6 +27,7 @@
 		<%= content_tag :a, raw("<span>&nbsp;</span>Twitter"), :class => "twitter login-link" if @customer.allowable_login_method?(:twitter) %>
 		<%= content_tag :a, raw("<span>&nbsp;</span>Live"), :class => "windowslive login-link" if @customer.allowable_login_method?(:windowslive) %>
 		<%= content_tag :a, raw("<span>&nbsp;</span>LinkedIn"), :class => "linkedin login-link" if @customer.allowable_login_method?(:linkedin) %>
+		<%= content_tag :a, raw("<span>&nbsp;</span>Other"), :class => "identity login-link" if @customer.allowable_login_method?(:identity) %>
 		</dd>
 
 	<dt>Labels</dt>
