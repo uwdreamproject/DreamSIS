@@ -87,7 +87,7 @@ class Customer < ActiveRecord::Base
   end
   
   def allowable_login_methods_list
-    list_from_db = allowable_login_methods.try{|h| h.select{ |k,v| v == "true" }.keys } rescue []
+    list_from_db = allowable_login_methods.try{|h| h.select{ |k,v| v == "true" }.keys } || [] rescue []
     list_from_db & OMNIAUTH_PROVIDERS # only allow providers listed to be included
   end
   
