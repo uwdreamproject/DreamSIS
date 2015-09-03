@@ -74,3 +74,38 @@ Formtastic::FormBuilder.use_required_attribute = true
 # this to false. Doing so will add a `novalidate` attribute to the `<form>` tag.
 # See http://diveintohtml5.org/forms.html#validation for more info.
 Formtastic::FormBuilder.perform_browser_validations = true
+
+
+module Formtastic
+  module Inputs
+    module Base
+      module Hints
+
+        def hint_html
+          output = "".html_safe
+          
+          if help_text = HelpText.for(object_name.classify, method)
+            output << template.content_tag(
+            :div,
+            template.content_tag(
+              :span, Formtastic::Util.html_safe(help_text.try(:instructions))
+            ),
+            :class => "button icon info icon-only help-text"
+            )
+          end
+          
+          if hint?
+            output << template.content_tag(
+            :p, 
+            Formtastic::Util.html_safe(hint_text), 
+            :class => builder.default_hint_class
+            )
+          end
+          
+          return output
+        end
+        
+      end      
+    end
+  end
+end

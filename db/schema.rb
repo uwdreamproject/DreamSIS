@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150723045103) do
+ActiveRecord::Schema.define(:version => 20150903010703) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -290,6 +290,15 @@ ActiveRecord::Schema.define(:version => 20150723045103) do
     t.datetime "updated_at"
   end
 
+  create_table "help_texts", :force => true do |t|
+    t.string   "object_class"
+    t.string   "attribute_name"
+    t.string   "title"
+    t.text     "instructions"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
   create_table "how_did_you_hear_options", :force => true do |t|
     t.string   "name"
     t.boolean  "show_for_participants"
@@ -471,6 +480,16 @@ ActiveRecord::Schema.define(:version => 20150723045103) do
   end
 
   add_index "mentor_terms", ["customer_id"], :name => "index_mentor_terms_on_customer_id"
+
+  create_table "multitenant_proxies", :force => true do |t|
+    t.string   "proxyable_type"
+    t.integer  "proxyable_id"
+    t.string   "role"
+    t.integer  "other_customer_id"
+    t.integer  "other_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
 
   create_table "notes", :force => true do |t|
     t.text     "note"
