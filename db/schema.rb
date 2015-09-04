@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150903010703) do
+ActiveRecord::Schema.define(:version => 20150904055454) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -297,6 +297,7 @@ ActiveRecord::Schema.define(:version => 20150903010703) do
     t.text     "instructions"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+    t.text     "hint"
   end
 
   create_table "how_did_you_hear_options", :force => true do |t|
