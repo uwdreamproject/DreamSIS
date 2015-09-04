@@ -77,6 +77,16 @@ class Customer < ActiveRecord::Base
     !driver_form_content.blank?
   end
 
+  # returns human readable string of the validity length of driver training
+  def helper_driver_training_validity_length
+    helper_validity_length(driver_training_validity_length)
+  end
+
+  # returns human readable string of the validity length of background checks
+  def helper_background_check_validity_length
+    helper_validity_length(background_check_validity_length)
+  end
+
   # If there exists an event type with the +name+ "Mentor Workshop", returns it, otherwise nil
   def mentor_workshop_event_type
     EventType.find_by_name("Mentor Workshop")
@@ -224,5 +234,33 @@ class Customer < ActiveRecord::Base
 			"not " + not_target_label
 		end
 	end
-  
+
+  private 
+
+  # helper method to calculate and return the validity length as a string
+  def helper_validity_length(length)
+    if length.nil?
+      return "(Length not set)"
+    end
+    str = "(valid for: "
+    if (length == 0)
+      str += "0 days"
+    elsif (length == -1)
+      str += "Forever"
+    else
+      years = length / 365;
+      days = length % 365;
+      if years > 0
+      str += "#{years} " + 'year'.pluralize(years)
+      end
+      if days > 0
+        if years > 0
+          str += " and "
+	    end
+	    str +=  "#{days} days"
+      end
+    end
+    return str + ")"
+  end
+
 end
