@@ -6,6 +6,14 @@
   width: 22%;
 }
 
+.formtastic .input .input .label {
+  width: 100%;
+}
+
+.formtastic .number input {
+  width: 5em;
+}
+
 input[type=file] {
   border: none !important;
   background: none !important;
