@@ -2,7 +2,7 @@ require 'digest/sha1'
 class User < ActiveRecord::Base
   belongs_to :person
   validates_presence_of :login
-  validates_uniqueness_of :uid, :scope => [:provider]
+  validates_uniqueness_of :uid, :scope => [:provider], :allow_nil => true
   attr_accessible :login, :email, :password, :password_confirmation, :identity_url, :person_attributes
   default_scope :order => 'login'
   alias_attribute :username, :login
