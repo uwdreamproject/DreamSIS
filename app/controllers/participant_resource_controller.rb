@@ -20,7 +20,7 @@ class ParticipantResourceController < ParticipantsController
   end
 
   def show
-    @object = @participant.instance_eval("#{self.class.objects_name}.find(#{params[:id]})")
+    @object = @participant.instance_eval("#{self.class.objects_name}.find(#{params[:id].to_i})")
     load_variables
 
     respond_to do |format|
@@ -40,7 +40,7 @@ class ParticipantResourceController < ParticipantsController
   end
 
   def edit
-    @object = @participant.instance_eval("#{self.class.objects_name}.find(#{params[:id]})")
+    @object = @participant.instance_eval("#{self.class.objects_name}.find(#{params[:id].to_i})")
     load_variables
   end
 
@@ -61,7 +61,7 @@ class ParticipantResourceController < ParticipantsController
   end
 
   def update
-    @object = @participant.instance_eval("#{self.class.objects_name}.find(#{params[:id]})")
+    @object = @participant.instance_eval("#{self.class.objects_name}.find(#{params[:id].to_i})")
     load_variables
     respond_to do |format|
       if @object.update_attributes(params[self.class.object_name])
@@ -76,7 +76,7 @@ class ParticipantResourceController < ParticipantsController
   end
 
   def destroy
-    @object = @participant.instance_eval("#{self.class.objects_name}.find(#{params[:id]})")
+    @object = @participant.instance_eval("#{self.class.objects_name}.find(#{params[:id].to_i})")
     @object.destroy
     load_variables
 
