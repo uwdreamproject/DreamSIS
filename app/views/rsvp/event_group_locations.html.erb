@@ -10,7 +10,7 @@
 						 %>
 	</p>
 	
-	<%= observe_field :county_filter, :function => "filterByCounty($F('county_filter'))" %>
+	<%#= observe_field :county_filter, :function => "filterByCounty($F('county_filter'))" %>
 </div>
 
 <table class="highlightless rsvp">
@@ -45,11 +45,16 @@
 </div>
 
 <script>
-document.observe("dom:loaded", function() {
+$(document).ready(function() {
 	if (window.location.hash.slice(1) != "" && window.location.hash.slice(1).split("=")[0] == "filter-county") {
 		var filter_value = window.location.hash.slice(1).split("=")[1]
 		filterByCounty(filter_value)
-		$('county_filter').value = filter_value
+		$('#county_filter').val(filter_value)	 
 	}
+	$("#county_filter").change(function() {
+		console.log("value: " + $("#county_filter").val())
+		filterByCounty($("#county_filter").val())
+	});
 });
+
 </script>
