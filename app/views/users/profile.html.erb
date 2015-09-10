@@ -1,7 +1,7 @@
 <h1>About You</h1>
 <p class="intro">Tell us about yourself so that we can communicate with you effectively. We promise we won't sell your information or send you spam.</p>
 
-<%= semantic_form_for @person, :as => :person, :url => update_profile_path, :method => :post do |f| %>
+<%= semantic_form_for @person, :as => :person, :url => update_profile_path, :method => :post, :label_customizations => false do |f| %>
 
 	<%= default_form_errors(f) %>
 
