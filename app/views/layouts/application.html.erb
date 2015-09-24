@@ -108,8 +108,8 @@
 			<%- unless @extra_footer_content.blank? -%>
 				<div class="event-footer-content extra-footer-content">
 					<%= sanitize textilize(@extra_footer_content), 
-											:tags => %w(table tr td h2 p a ul li strong em img), 
-											:attributes => %w(id class style href src) %>
+											:tags => %w(div table tr td h2 p a ul li strong em img), 
+											:attributes => %w(id class style href src role) %>
 				</div>
 			<% end -%>
 		</div>

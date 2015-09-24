@@ -4056,6 +4056,8 @@ h1 .tag {
 	font-weight: lighter !important;
 	margin: 0;
 	letter-spacing: 1px;
+  font-size: 50%;
+  margin-left: 0.5em;
 }
 
 .outline.tag {
@@ -4100,6 +4102,15 @@ h1 .tag {
 	background-color: #fce4b0;
 	/*border-color: #f70;*/
 	color: #f70;
+}
+
+.shared.tag {
+  background-color: #E9D3FE;
+  color: #5A1F95;
+}
+
+h1 .shared.tag {
+  text-transform: uppercase;
 }
 
 .session_identifier.tag {
@@ -4236,6 +4247,23 @@ a.mini.delete {
 
 li:hover > a.mini.delete {
 	visibility: visible;
+}
+
+h3.proxyable {
+  background: url(<%= asset_path 'icons/silk/arrow_switch.png' %>) no-repeat 8px center;
+  padding-left: 30px !important;
+  padding-right: 8px !important;
+  text-transform: none;
+  margin-left: 30px;
+  border: 1px solid rgba(0,0,0,0.2);
+  display: inline-block;
+  border-radius: 3px;
+  padding: 4px;
+}
+
+h1 + h3 {
+  margin-top: -30px !important;
+  margin-bottom: 0;
 }
 
 /* @end */
@@ -5078,7 +5106,7 @@ table.rsvp tr.attending td {
 }
 
 table.rsvp tr td:first-child {
-	background: url(<%= asset_path 'icons/grey-check-with-shadow.png' %>) no-repeat 10px 2em;
+	background: url(<%= asset_path 'icons/grey-check-with-shadow.png' %>) no-repeat 30px 2em;
 	padding-left: 60px;
 	/*border-left: 10px solid rgba(0,0,0,0.1);*/
 }

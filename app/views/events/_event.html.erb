@@ -1,5 +1,8 @@
   <tr id="event_<%= event.id %>">
-    <td class="name"><%= link_to (event.name.blank? && event.is_a?(Visit) ? content_tag(:span, Customer.visit_Label, :class => 'light') : h(event.name)), event_path(event) %></td>
+    <td class="name">
+		<%= link_to (event.name.blank? && event.is_a?(Visit) ? content_tag(:span, Customer.visit_Label, :class => 'light') : h(event.name)), event_path(event) %>
+		<%= content_tag :span, "shared", class: "shared tag" if event.proxies? %>
+	</td>
     <td><%=h event.date %></td>
 	<td><%= event.attendees.size %></td>
 	<td><%= event.attendees.rsvpd.size %></td>

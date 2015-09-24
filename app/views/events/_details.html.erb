@@ -26,12 +26,12 @@
 				 title="<%= number_to_percentage details.percent_full, :precision => 0 %> full">
 
 				<div class="size" style="width: <%= details.percent_full %>%">
-					<%= details.full? ? content_tag(:span, "full", :class => "full_label") : "&nbsp;" %>
+					<%= details.full? ? content_tag(:span, "full", :class => "full_label") : "&nbsp;".html_safe %>
 				</div>					
 			</div>
 		</div>
-		&nbsp;
 		<div class="signup-numbers">
+			&nbsp;
 			<%= content_tag :span, details.attendees.rsvpd.size %>
 			of
 			<%= content_tag :span, details.capacity %>
@@ -64,4 +64,13 @@
 <%- if !details.grade_levels_list_string.blank? -%>
 	<dt>Grade Levels</dt>
 	<dd><%= details.grade_levels_list_string %></dd>
+<% end %>
+
+<%- unless details.proxies.master.empty? -%>
+	<dt>Sharing</dt>
+	<dd>
+		<%- for proxy in details.proxies.master -%>
+			<p>Shared with <%= proxy.other_customer.name %></p>
+		<% end %>
+	</dd>
 <% end %>
