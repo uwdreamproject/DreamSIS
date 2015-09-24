@@ -21,14 +21,23 @@ class ClearinghouseRequest < ActiveRecord::Base
   belongs_to :user, :class_name => "User", :foreign_key => "created_by"
   
   serialize :participant_ids
-
   serialize :filenames
+  serialize :selection_criteria
   
   scope :awaiting_retrieval, :conditions => "submitted_at IS NOT NULL AND retrieved_at IS NULL"
   
-  attr_accessor :plain_ftp_password
+  attr_accessor :plain_ftp_password, :exclude_inactive, :exclude_not_target
   
   attr_protected :customer_id, :ftp_password
+  
+  InquiryTypes = {
+    "SE" => "SE - Current or Previously Enrolled Students/Transfers Out",
+    "DA" => "DA - Subsequent Enrollment for Prospective Students/Denied/Declined Admissions (Default)",
+    "PA" => "PA - Prior Attendance for Pending Admissions",
+    "SB" => "SB - Sibling/Parent Enrollment",
+    "CO" => "CO - Cohort Query",
+    "CB" => "CB - Consent-Based (Requires pre-approval from NSC)"
+  }
   
   # Returns the current "status" of this request.
   # 
@@ -36,7 +45,9 @@ class ClearinghouseRequest < ActiveRecord::Base
   # submitted:: Submitted but not retrieved
   # retrieved:: Retrieved results
   def status
-    if submitted?
+    if closed?
+      return "closed"
+    elsif submitted?
       return retrieved? ? "retrieved" : "submitted"
     else
       "new"
@@ -54,6 +65,11 @@ class ClearinghouseRequest < ActiveRecord::Base
   # identified by the collection in the +participant_ids+ attribute.
   def participants
     @participants ||= Participant.find(:all, :conditions => ["`id` IN (?)", participant_ids])
+  end
+  
+  # Returns the full title of the inquiry type for this request.
+  def inquiry_type_description
+    ClearinghouseRequest::InquiryTypes[inquiry_type]
   end
   
   def plain_ftp_password=(pwd)
@@ -78,14 +94,19 @@ class ClearinghouseRequest < ActiveRecord::Base
     retrieved_at.try(:past?)
   end
   
+  # Returns true if the request has been marked as closed.
+  def closed?
+    closed_at.try(:past?)
+  end
+  
   # Returns true if there is a valid FTP password stored and the file hasn't yet been submitted.
   def submittable?
-    !ftp_password.blank? && !submitted?
+    !ftp_password.blank? && !submitted? && !closed?
   end
   
   # Returns true if there is a valid FTP password and the file hasn't yet been retreived.
   def retrievable?
-    !ftp_password.blank? && !retrieved?
+    !ftp_password.blank? && !retrieved? && !closed?
   end
   
   def nsc
@@ -217,6 +238,7 @@ class ClearinghouseRequest < ActiveRecord::Base
     log "Closing this request"
     delete_sftp_files
     update_attribute(:ftp_password, nil)
+    update_attribute(:closed_at, Time.now)
   end
 
   # Returns an array of the files stored for this request.

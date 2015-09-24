@@ -30,3 +30,5 @@ pid/sidekiq.pid
 public/images/icons/tango/.DS_Store
 
 public/images/icons/tango/12x12/.DS_Store
+
+ey-ssh.sh
