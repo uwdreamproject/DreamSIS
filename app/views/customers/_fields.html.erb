@@ -53,10 +53,15 @@
 	<p>If you have a contract with the National Student Clearinghouse, enter your account information here and 
 		DreamSIS can perform automatic queries about your participants.</p>
 		<%= f.input :clearinghouse_customer_number, 
-					:label => "Customer Number", 
+					:label => "Customer/School Number", 
 					:hint => "Your customer number (or account number) should be six digits. If your customer number starts with a zero,
-                             DreamSIS will automatically add the leading zeros.",
+                             DreamSIS will automatically add the leading zeros. Higher education institution accounts should use their
+							 school code.",
 					:input_html => { :size => 6 } %>
+		<%= f.input :clearinghouse_customer_name, :label => "Customer Name",
+			 		:hint => "In most cases, this is the same as your organization name, but if your NSC account is setup under a
+							  different name, enter it here." %>
+		<%= f.input :clearinghouse_entity_type, :label => "Entity Type", :collection => { "S - Direct-service Organization" => "S", "I - Higher-education Institution" => "I" } %>
 		<%= f.input :clearinghouse_contract_start_date, 
 					:label => "Contract Start Date", 
 					:hint => "Enter the start date of the current contract. You'll need to update this 

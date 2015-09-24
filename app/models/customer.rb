@@ -60,6 +60,12 @@ class Customer < ActiveRecord::Base
     return_integer ? raw : raw.to_s.rjust(6, "0")
   end
   
+  # If the Customer defines a different name for use with ClearinghouseRequests, return that. 
+  # Otherwise, just return the name.
+  def name_for_clearinghouse 
+    clearinghouse_customer_name || name
+  end
+  
   # Returns true if +term_system+ is +Quarters+.
   def use_quarters?
     term_system == "Quarters"

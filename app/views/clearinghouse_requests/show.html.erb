@@ -5,6 +5,9 @@
 
 <dl class="inline-definitions">
 	
+	<dt>Inquiry Type</dt>
+	<dd><%= @clearinghouse_request.inquiry_type_description %></dd>
+	
 	<dt>Created</dt>
 	<dd>
 		<%= @clearinghouse_request.created_at.to_s(:date_with_full_month) %>
@@ -14,6 +17,12 @@
         <%- if missing_count > 0 -%>
             <span class="light">(<%= pluralize missing_count, "record" %> no longer found)</span>
         <% end %>
+		
+		<ul>
+			<%- for criterion in @clearinghouse_request.selection_criteria || [] -%>
+				<%= content_tag :li, criterion %>
+			<% end %>
+		</ul>
 
 		<%- unless @clearinghouse_request.submitted? -%>
 			<p>
@@ -37,7 +46,7 @@
 				<p>
 					<br /><%= link_to "Retrieve results now", retrieve_clearinghouse_request_path(@clearinghouse_request), :method => :post, :class => "download button" if @clearinghouse_request.retrievable? %>
 					<%= separator if @clearinghouse_request.retrievable? %>
-					<%= link_to_function "Upload results file", "$('#upload_form').show()", :class => "save button" %>
+					<%= link_to_function "Upload results file", "$('#upload_form').show()", :class => "save button" unless @clearinghouse_request.closed? %>
 				</p>
 				
 				<%= form_tag upload_clearinghouse_request_path(@clearinghouse_request), :id => 'upload_form', :style => "display:none", :multipart => true do |f| -%>
@@ -84,7 +93,7 @@
 		</ul>
 	</dd>
 	
-	<%- if @clearinghouse_request.submitted? && !@clearinghouse_request.retrieved? -%>
+	<%- if @clearinghouse_request.submitted? && @clearinghouse_request.retrievable? -%>
 		<dt>Processing Log</dt>
 		<dd>
 			<code id="processing_log_container"><em>Loading...</em></code>
@@ -95,9 +104,13 @@
 
 <div id="sidebar">
 	<p><%= link_to "Back to requests", clearinghouse_requests_path, :class => "back button" %></p>
+	
+	<%- unless @clearinghouse_request.closed? -%>
+		<p><%= link_to "Close this request", [:close, @clearinghouse_request], :class => "cancel button", :method => :post, :confirm => "Are you sure you want to close out this request?" %></p>
+	<% end %>
 </div>
 
 <%= javascript_tag "$( function() {
 	$.ajax('#{refresh_status_clearinghouse_request_path(@clearinghouse_request, :current_status => @clearinghouse_request.status)}', 
 		{ dataType: 'script' })
-	})" if @clearinghouse_request.submitted? && !@clearinghouse_request.retrieved? %>
+	})" if @clearinghouse_request.submitted? && @clearinghouse_request.retrievable? %>
