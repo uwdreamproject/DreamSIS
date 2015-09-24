@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150827034646) do
+ActiveRecord::Schema.define(:version => 20150924024227) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -55,6 +55,9 @@ ActiveRecord::Schema.define(:version => 20150827034646) do
     t.datetime "updated_at"
     t.string   "detail_report_filename"
     t.text     "filenames"
+    t.string   "inquiry_type"
+    t.text     "selection_criteria"
+    t.datetime "closed_at"
   end
 
   create_table "college_applications", :force => true do |t|
@@ -106,6 +109,8 @@ ActiveRecord::Schema.define(:version => 20150827034646) do
     t.boolean  "send_driver_form_emails"
     t.boolean  "display_nicknames_by_default"
     t.integer  "driver_training_validity_length"
+    t.string   "clearinghouse_customer_name"
+    t.string   "clearinghouse_entity_type"
   end
 
   create_table "degrees", :force => true do |t|
@@ -288,6 +293,16 @@ ActiveRecord::Schema.define(:version => 20150827034646) do
     t.string   "abbreviation"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "help_texts", :force => true do |t|
+    t.string   "object_class"
+    t.string   "attribute_name"
+    t.string   "title"
+    t.text     "instructions"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.text     "hint"
   end
 
   create_table "how_did_you_hear_options", :force => true do |t|

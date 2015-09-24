@@ -158,6 +158,7 @@ Dreamsis::Application.routes.draw do
       post :upload
       get :refresh_status
       get :results
+      post :close
     end
   end
   match '/my/mentees' => 'participants#mentor', :as => :my_participants, :mentor_id => 'me'

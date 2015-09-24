@@ -6,6 +6,5 @@
 	<td class="centered number"><%= clearinghouse_request.number_of_records_submitted %></td>
 	<td class="centered number"><%= clearinghouse_request.number_of_records_returned %></td>
     <td class="functions"><%= link_to 'Show', clearinghouse_request %></td>
-    <td class="functions"><%= link_to 'Edit', edit_clearinghouse_request_path(clearinghouse_request) unless clearinghouse_request.submitted? %></td>
     <td class="functions"><%= link_to 'Destroy', clearinghouse_request, :confirm => 'Are you sure?', :method => :delete unless clearinghouse_request.submitted? %></td>
 </tr>

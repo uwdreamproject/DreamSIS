@@ -23,7 +23,7 @@
 			<div>
 				<ul>
 					<li class="search auto_complete">
-						<input type="input" class="search autocomplete-search" placeholder="Search <%= Customer.participants_label %>" data-source="<%= auto_complete_for_participant_fullname_participants_url %>" data-target="<%= participant_url("id") %>" />
+						<input type="input" class="search autocomplete-search" placeholder="Search <%= Customer.participants_label %> name or ID" data-source="<%= auto_complete_for_participant_fullname_participants_url %>" data-target="<%= participant_url("id") %>" />
 					</li>
 					<li class="primary list admin"><%= link_to "All #{Customer.participants_Label}", participants_url %></li>
 					<li class="add"><%= link_to "Add new #{Customer.participant_label}", new_participant_url %></li>
@@ -103,7 +103,7 @@
 				<ul>
 					<% if @current_user.admin? && Customer.current_customer %>
 						<li class="settings">
-							<%= link_to "#{Customer.current_customer.name} Settings", Customer.current_customer %>
+							<%= link_to "#{Customer.current_customer.name} Settings", [:edit, Customer.current_customer] %>
 						</li>
 					<% end %>
 					<li class="locations"><%= link_to raw("Locations &amp; Colleges"), locations_url %></li>

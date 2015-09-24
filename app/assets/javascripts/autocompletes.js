@@ -12,7 +12,7 @@ $(function() {
 function prepAutocompletes() {
 	$( ".autocomplete-search" ).autocomplete(
 	{
-    minLength: 3,
+    minLength: 2,
 		source: null,
 		select: function( event, ui ) {
 			$(this).val( ui.item.fullname );
@@ -35,7 +35,7 @@ function prepAutocompletes() {
           .append( "<a>" +
             "<span class='primary'>" + item.fullname + "</span>" + 
             "<span class='secondary'>" + item.secondary + "</span>" +
-            "<span class='tertiary'>" + item.klass + "</span>" +
+            "<span class='tertiary'>" + item.klass + " " + item.id + "</span>" +
             "</a>")
           .appendTo( ul );
       };

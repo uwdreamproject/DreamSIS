@@ -143,10 +143,10 @@ class NationalStudentClearinghouse
       "H1",
       @customer.clearinghouse_customer_number.to_s.rjust(6),
       "00",
-      @customer.name.to_s[0..39],
+      @customer.name_for_clearinghouse.to_s[0..39],
       Time.now.to_date.to_s(:number),
-      "DA",
-      "S",
+      (request.inquiry_type || "DA"),
+      (@customer.clearinghouse_entity_type || "S"),
       "", "", "", "", ""
     ]
     strip_illegal_characters(elements.join("\t"))
@@ -197,7 +197,7 @@ class NationalStudentClearinghouse
       p.birthdate.to_s(:number),
       "#{p.grad_year}0901",
       "",
-      "",
+      (@customer.clearinghouse_entity_type == "I" ? @customer.clearinghouse_customer_number.to_s.rjust(6) : ""),
       "00",
       p.id.to_s
     ]

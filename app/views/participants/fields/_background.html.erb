@@ -20,7 +20,7 @@
 				].flatten.uniq %>
 
 	<%= f.input :postsecondary_plan, :as => :select, 
-				:hint => "What is the student's plan after high school? This field likely won't be filled in until close to high school graduation time." + ("<br />" + content_tag(:span, "Note: Changing the postsecondary plan will unset the college that #{h(f.object.firstname)} is planning to attend.", :class => "weak error-message") unless f.object.college_attending_id.nil?).to_s, 
+				:hint => "What is the student's plan after high school? This field likely won't be filled in until close to high school graduation time.".html_safe + ("<br />".html_safe + content_tag(:span, h("Note: Changing the postsecondary plan will unset the college that #{h(f.object.firstname)} is planning to attend."), :class => "weak error-message") unless f.object.college_attending_id.nil?).to_s, 
 				:collection => [
 					h(f.object.postsecondary_plan),
 					Institution::ICLEVEL_DESCRIPTIONS.values,

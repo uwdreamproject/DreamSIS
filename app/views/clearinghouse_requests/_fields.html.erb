@@ -14,12 +14,21 @@
 				Class of <%= cohort %>
 			</label>
 		</li>
-	<% end %>	
-<% end %>	
+	<% end %>
+	<p>&nbsp;</p>
+
+	<%= f.inputs "Exclusions", :class => "inline" do %>
+		<%= f.input :exclude_inactive, :as => :boolean, :label => "Exclude inactive #{Customer.participants_label}" %>
+		<%= f.input :exclude_not_target, :as => :boolean, :label => "Exclude #{Customer.not_target_label} #{Customer.participants_label}" %>
+	<% end %>
+<% end %>
 
 <%= f.inputs :name => "Account Settings" do -%>
 	<%= f.input :plain_ftp_password, 
 				:label => "FTP Password", 
 				:hint => "You must have an FTP account assigned. The password you enter here is encrypted
 				 		 and only used for the life of this specific request." %>
+						 
+	<%= f.input :inquiry_type, 
+				:collection => ClearinghouseRequest::InquiryTypes.invert %>
 <% end %>
