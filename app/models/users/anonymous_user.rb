@@ -5,7 +5,10 @@ class AnonymousUser < User
   def self.create_random
     u = create! do |user|
       user.customer_id = Customer.current_customer.id
-      user.login = "AnonymousUser" + Time.now.to_i.to_s + rand(10000).to_s
+      rand_id = Time.now.to_i.to_s + rand(10000).to_s
+      user.login = "AnonymousUser" + rand_id
+      user.provider = "anonymous"
+      user.uid = rand_id
       user.person = Person.create!
     end
   end

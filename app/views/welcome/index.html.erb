@@ -1,17 +1,24 @@
-<div class="content-block">
-	<h1 class="events">My Events</h1>
-	<p>You've signed up for the following upcoming events:</p>
+<h1 class="events">My Events</h1>
+<p>You've signed up for the following upcoming events:</p>
+
+<table class="highlightless rsvp">
+	<%= render :partial => 'rsvp/event', :collection => @events %>
 	
-	<table class="highlightless rsvp">
-		<%= render :partial => 'rsvp/event', :collection => @events %>
-		
-		<%- if @events.empty? -%>
-		<tr class="empty">
-			<td colspan=10>You haven't registered for any upcoming events.</td>
-		</tr>
-		<% end -%>
-		
-	</table>
-</div>
+	<%- if @events.empty? -%>
+	<tr class="empty">
+		<td colspan=10>You haven't registered for any upcoming events.</td>
+	</tr>
+	<% end -%>
+	
+</table>
+
+<%- if @event_groups -%>
+	<h2>Register for more events:</h2>
+	<p>
+		<%- for event_group in @event_groups -%>
+			<%= link_to(event_group.name, event_group_rsvp_url(event_group), class: 'button') %>
+		<% end %>
+	</p>
+<% end %>
 
 <%= render :partial => "other_sidebar" %>

@@ -139,5 +139,9 @@ class ApplicationController < ActionController::Base
     session[:apply_extra_footer_content] = params[:apply_extra_footer_content] if params[:apply_extra_footer_content]
     apply_extra_footer_content if params[:apply_extra_footer_content] || session[:apply_extra_footer_content]
   end
+  
+  def apply_customer_styles
+    @customer_stylesheet = Customer.stylesheet_url if Customer.stylesheet_url
+  end
     
 end

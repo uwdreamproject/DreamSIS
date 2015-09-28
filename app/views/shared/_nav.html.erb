@@ -1,8 +1,8 @@
 <%- cache ["shared/nav", Customer.cache_key, (@current_user.cache_key if @current_user), Date.today.to_s].join("/") do -%>
-<%- if @current_user && @current_user.display_navbar? # keep this within the cache fragment so the lookup doesn't happen every time -%>
 	<div class="menu" id="main-nav">
-
 	<ul>
+		
+	<%- if @current_user && @current_user.display_navbar? # keep this within the cache fragment so the lookup doesn't happen every time -%>
 		<li><%= link_to "My #{Customer.mentees_label}", my_participants_url %>
 			<div>
 				<ul>
@@ -119,8 +119,8 @@
 				</ul>
 			</div>
 		</li>
-	</ul>
+		<% end %>
 
+	</ul>
 	</div>
-<% end %>
 <% end %>

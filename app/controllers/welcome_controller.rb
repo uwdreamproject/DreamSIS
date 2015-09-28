@@ -1,12 +1,14 @@
 class WelcomeController < ApplicationController
   skip_before_filter :check_authorization
   before_filter :check_identity
+  before_filter :apply_customer_styles
   
   def index
     redirect_to :action => "mentor" if @current_user.person.is_a?(Mentor)
     @person = @current_user.person
     @events = @person.event_attendances.future_attending.collect(&:event)
-    @layout_in_blocks = true
+    @event_groups = EventGroup.where(allow_external_volunteers: true)
+    # @layout_in_blocks = true
     apply_extra_stylesheet
     apply_extra_footer_content
   end

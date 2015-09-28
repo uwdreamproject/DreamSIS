@@ -2,6 +2,7 @@
 class SessionController < ApplicationController
   skip_before_filter :login_required, :check_authorization, :check_for_limited_login, :check_if_enrolled, :authenticated?, :save_user_in_current_thread
   before_filter :login_required, :only => [ :map_to_person ]
+  before_filter :apply_customer_styles
 
   def new
     redirect_to locator_url(:subdomain => false) if Customer.current_customer.nil? || Customer.current_customer.new_record?

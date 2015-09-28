@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150924024227) do
+ActiveRecord::Schema.define(:version => 20150928060812) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -111,6 +111,7 @@ ActiveRecord::Schema.define(:version => 20150924024227) do
     t.integer  "driver_training_validity_length"
     t.string   "clearinghouse_customer_name"
     t.string   "clearinghouse_entity_type"
+    t.string   "stylesheet_url"
   end
 
   create_table "degrees", :force => true do |t|
