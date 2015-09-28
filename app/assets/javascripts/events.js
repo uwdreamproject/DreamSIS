@@ -44,3 +44,32 @@ function update_event_status_rows(changed) {
 $(function() {
 	$(".update_status_rows_on_change").change(function(event) { update_event_status_rows(event.target)});
 })
+
+/*
+  Filters a list of location items by county. Add a class name of "filterable-by-county" for all
+  filterable elements, and a class of "county-{value}" to define which county the element is in.
+*/
+function filterByCounty(filter_value) {
+  if(filter_value == 'reset') {
+    $('.filterable-by-county').show();
+    window.location.hash = ""
+  } else {
+    $('.filterable-by-county').hide();
+    $('.filterable-by-county.county-' + filter_value).show()
+    window.location.hash = "filter-county=" + filter_value
+  }
+}
+$(function() {
+  $("#county_filter").on('change', function() {
+    filterByCounty($('#county_filter').value)
+  })
+})
+
+/*
+  Events can specify a replacement nav bar, by providing a nav with the id="main_nav" and role="replacement".
+*/
+$(function() {
+  if ($("#main-nav-replacement").length > 0) {
+    $("#main-nav").html($("#main-nav-replacement"))
+  }
+})

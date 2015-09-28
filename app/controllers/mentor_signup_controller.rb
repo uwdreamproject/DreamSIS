@@ -3,6 +3,7 @@ class MentorSignupController < ApplicationController
   before_filter :fetch_term, :except => ['background_check_form', 'risk_form', 'conduct_form', 'driver_form']
 	before_filter :check_if_signups_allowed, :except => ['basics', 'background_check_form', 'risk_form', 'conduct_form', 'driver_form']
   skip_before_filter :check_authorization, :check_if_enrolled
+  before_filter :apply_customer_styles
 
   def index
     @mentor_terms = @mentor.mentor_terms.for_term(@term.id) rescue []

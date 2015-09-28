@@ -47,6 +47,8 @@
 	<% end %>
 	
 	<%= f.input :display_nicknames_by_default, :hint => "By default, formal names are used. Check this box to default to using peoples' nicknames instead." %>
+	
+	<%= f.input :stylesheet_url, :label => "Custom Stylesheet URL", :hint => "Specify a custom CSS stylesheet to be applied to certain areas of your DreamSIS installation, such as the login page. HTTPS addresses are required." %>
 <% end %>
 
 <%= f.inputs :name => "National Student Clearinghouse Integration" do -%>
