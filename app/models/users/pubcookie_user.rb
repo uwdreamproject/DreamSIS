@@ -40,7 +40,7 @@ class PubcookieUser < User
           update_attribute(:person_id, p.id)
           p.update_resource_cache!(true)
           return true
-        elsif p.errors.on(:reg_id)
+        elsif p.errors.include?(:reg_id)
           existing_p = Mentor.find_by_reg_id(p.reg_id)
           if existing_p
             update_attribute(:person_id, existing_p.id)
