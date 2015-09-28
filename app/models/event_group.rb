@@ -16,6 +16,9 @@ class EventGroup < ActiveRecord::Base
   belongs_to :mentor_training, :class_name => "Training"
 
   default_scope :order => "id DESC"
+
+  include MultitenantProxyable
+  acts_as_proxyable
   
   # Returns future events that should be displayed for the particular person or audience type.
   def future_events(person_or_type = nil)

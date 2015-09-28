@@ -11,25 +11,10 @@ module MultitenantProxyable
     def acts_as_proxyable(options = {})
       cattr_accessor :proxy_parent
       cattr_accessor :proxy_dependents
-      cattr_accessor :proxy_passthroughs
+      cattr_accessor :proxy_parent_direction
       self.proxy_dependents = options[:dependents] || []
       self.proxy_parent = options[:parent]
-      # self.proxy_passthroughs = options[:passthrough] || []
-      
-      # for passthrough in proxy_passthroughs
-      #   alias_method "#{passthrough.to_s}_without_passthrough", "#{passthrough.to_s}"
-      #
-      #   define_method(passthrough) do
-      #     logger.info { "Passing through method ##{passthrough.to_s}" }
-      #     logger.info { "Current proxies.slave: #{proxies.slave.inspect}" }
-      #     if proxies.slave.empty?
-      #       instance_eval("#{passthrough.to_s}_without_passthrough")
-      #     else
-      #       proxies.slave.first.other_object
-      #     end
-      #   end
-      # end
-      
+      self.proxy_parent_direction = options[:parent_direction]
     end
   end
 
@@ -41,21 +26,14 @@ module MultitenantProxyable
   
   # Prepares the attribute overrides for this object based on the parent and child objects.
   def attribute_overrides
-    parent_attributes #.merge(passthrough_attributes)
+    parent_attributes
   end
   
   def parent_attributes
-    { self.proxy_parent.to_s.foreign_key => parent_object_proxy.other_id }
+    # FIXME probably should not rely on the first proxy being the right one.
+    self.proxy_parent.nil? ? {} : { self.proxy_parent.to_s.foreign_key => parent_object_proxies.first.other_id }
   end
   
-  # def passthrough_attributes
-  #   h = {}
-  #   for proxy_passthrough in self.proxy_passthroughs
-  #     h[proxy_passthrough.to_s.foreign_key] = 14 #:proxy_passthrough
-  #   end
-  #   h
-  # end
-    
   # Convenience method to check if there are any proxies setup for this object.
   def proxies?
     !proxies.empty?
@@ -63,6 +41,7 @@ module MultitenantProxyable
   
   # Triggered from a callback; requests the object's slave(s) to be updated
   def update_proxies
+    return create_proxies if !parent_object_proxies.empty? && proxies.master.empty?
     proxies.master.each{ |p| p.update_slave }
   end
   
@@ -81,18 +60,17 @@ module MultitenantProxyable
   #    record (e.g., +person_id+, +event_shift_id+).
   # 3. Create the proxy object.
   def create_proxies
-    return nil unless parent_object_proxy
+    return nil if parent_object_proxies.empty?
     
-    # Create the proxy object
-    other_customer_id = parent_object_proxy.other_customer_id
-    new_master = proxies.master.create(other_customer_id: other_customer_id)
-    
-    # Create the proxy slave object
-    new_master.create_slave_object
-    
-    return new_master
+    new_proxies = []
+    for parent_object_proxy in parent_object_proxies
+      other_customer_id = parent_object_proxy.other_customer_id
+      new_master = proxies.master.create(other_customer_id: other_customer_id)
+      new_master.create_slave_object  
+      new_proxies << new_master
+    end
   end
-
+  
   private
 
   # Dependent objects need to be linked/proxied before we can save the current object.
@@ -110,29 +88,61 @@ module MultitenantProxyable
     instance_eval(self.proxy_parent.to_s)
   end
 
-  # Returns the first (which should be only) MultitenantProxy object attached to this
-  # object's +parent_object+.
-  def parent_object_proxy
-    parent_object.proxies.slave.first if parent_object
+  # Returns the MultitenantProxy object(s) attached to this object's +parent_object+.
+  #
+  # * "Forward" direction means that we create/update an equivalent object when the
+  #   parent object is a Master. For example, EventShift is set to the "forward" direction
+  #   because when we add an EventShift to a master Event, we want that EventShift to
+  #   propogate to all the slave Event objects. In this case, this method may return
+  #   multiple MultitenantProxy objects.
+  #
+  # * "Reverse" direction means that we create/update an equivalent object when the
+  #   parent object is a Slave. For example, EventAttendance is set to the "reverse"
+  #   direction because when someone RSVP's for an event by creating an attendance
+  #   record, we only want to propogate that back to the master object. If a new
+  #   EventAttendance object is created on the master object, we don't want that to
+  #   propogate down to the slave objects.
+  def parent_object_proxies
+    # parent_object.proxies.slave.first if parent_object
+    
+    return [] unless parent_object
+    
+    if self.proxy_parent_direction == :forward
+      parent_object.proxies.master
+    elsif self.proxy_parent_direction == :reverse
+      parent_object.proxies.slave
+    end
   end
 
 end
 
 
-# EventAttendance
-#   dependents: event_shift
-#   parent: event
-#   passthrough: person
-
-# Person
-#   dependents: ?
-#   parent: ---
-
-# EventShift
-#   dependents: ---
-#   parent: event
-
-# Event
-#   passthrough: location (no need to proxy)
-#   dependents: ---
-#   parent: event_group
+# # EventAttendance
+# #   dependents: event_shift, person
+# #   parent: event
+#   after create:
+#     if event is slave, create equivalent in master
+#     if event is master, do not create equivalent in slave
+#       only create/update if event is slave
+#
+# # EventShift
+# #   dependents: ---
+# #   parent: event
+#     if event is slave, do not create equivalent in master
+#     if event is master, create equivalent in slave
+#       only create/update if event is master
+#       propogate to all others
+#
+# # Event
+# #   dependents: location
+# #   parent: event_group
+# only create/update if event_group is master
+# propogate to all others
+#
+# # Person
+# #   dependents: ---
+# #   parent: ---
+#
+# # Location
+# #   dependents: ---
+# #   parent: ---

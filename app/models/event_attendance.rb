@@ -29,7 +29,7 @@ class EventAttendance < ActiveRecord::Base
   scope :attended, where(:attended => true)
 
   include MultitenantProxyable
-  acts_as_proxyable parent: :event, passthrough: [:person]
+  acts_as_proxyable parent: :event, dependents: [:person, :event_shift], parent_direction: :reverse
 
   def proxyable_attributes
     excluded = %w[id created_at updated_at admin person_id event_id event_shift_id]

@@ -18,7 +18,7 @@ class Event < ActiveRecord::Base
   end
   
   include MultitenantProxyable
-  acts_as_proxyable
+  acts_as_proxyable parent: :event_group, dependents: [:location], parent_direction: :forward
 
   def proxyable_attributes
     excluded = %w[id created_at updated_at event_group_id event_type_id 
