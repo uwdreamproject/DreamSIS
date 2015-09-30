@@ -24,6 +24,7 @@ class UsersController < ApplicationController
   def profile
     return redirect_to choose_identity_path if @current_user.person.class == Person || @current_user.person.nil?
     @person = @current_user.person
+    apply_customer_styles
   end
 
   def update_profile
@@ -47,6 +48,7 @@ class UsersController < ApplicationController
   end
 
   def choose_identity
+    apply_customer_styles
   end
   
   def update_identity

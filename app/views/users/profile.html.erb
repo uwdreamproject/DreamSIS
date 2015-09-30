@@ -58,7 +58,7 @@
 		<% end -%>
 
 
-		<p>I certify that the information contained in the above-stated information is true, correct, and complete to the best of my knowledge. I understand that consideration for participation in Dream Project activities and the continuation of subsequent participation depend on true, accurate and complete representation of these facts as stated or implied in all application-related materials. I authorize the University of Washington to make inquiries regarding my criminal conviction history. I understand that participation may be conditioned on the University’s receipt of a satisfactory Criminal Conviction Report from the Washington State Patrol or other law-enforcement related agency.</p>
+		<p>I certify that the information contained in the above-stated information is true, correct, and complete to the best of my knowledge. I understand that consideration for participation in <%= Customer.name_label %> activities and the continuation of subsequent participation depend on true, accurate and complete representation of these facts as stated or implied in all application-related materials. I authorize <%= Customer.name_label %> to make inquiries regarding my criminal conviction history. I understand that participation may be conditioned on receipt of a satisfactory Criminal Conviction Report from the Washington State Patrol or other law-enforcement related agency.</p>
 
 		<%= f.inputs do %>
 			<%= f.input :background_check_authorized, :as => :boolean, :label => "I understand the statement above." %>

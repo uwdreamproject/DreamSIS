@@ -13,6 +13,7 @@
 
 	<%= stylesheet_link_tag "application", media: 'all' %>
 	<%= javascript_include_tag "application" %>
+	<%= stylesheet_link_tag @customer_stylesheet if @customer_stylesheet %>
 	<%= stylesheet_link_tag @extra_stylesheet if @extra_stylesheet %>
 
     <%- if @include_typekit -%>
@@ -108,8 +109,8 @@
 			<%- unless @extra_footer_content.blank? -%>
 				<div class="event-footer-content extra-footer-content">
 					<%= sanitize textilize(@extra_footer_content), 
-											:tags => %w(div table tr td h2 p a ul li strong em img), 
-											:attributes => %w(id class style href src role) %>
+							:tags => %w(div table tr td h2 p a ul li strong em img), 
+							:attributes => %w(id class style href src role) %>
 				</div>
 			<% end -%>
 		</div>
