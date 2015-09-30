@@ -17,6 +17,14 @@ class Location < ActiveRecord::Base
 
   default_scope :order => "name"
 
+  include MultitenantProxyable
+  acts_as_proxyable
+
+  def proxyable_attributes
+    excluded = %w[id type created_at updated_at partner_school enable_college_mapper_integration customer_id]
+    attributes.except(*excluded)
+  end  
+
   # Returns all the events that we should show on the attendance page for the requested term
   def events(term = nil, audience = nil, visits_only = true, limit = 1000)
     conditions = ""
@@ -40,7 +48,7 @@ class Location < ActiveRecord::Base
 
   # Strips all non digits from the phone number before storing it
   def phone=(new_number)
-    write_attribute :phone, new_number.gsub(/[^0-9]/i, '')
+    write_attribute :phone, new_number.to_s.gsub(/[^0-9]/i, '')
   end
   
 end

@@ -70,7 +70,9 @@
 	<dt>Sharing</dt>
 	<dd>
 		<%- for proxy in details.proxies.master -%>
-			<p>Shared with <%= proxy.other_customer.name %></p>
+			<p>Shared with <%= proxy.other_customer.name %> 
+				<span class="light">(Event #<%= proxy.other_id %>)</span>
+			</p>
 		<% end %>
 	</dd>
 <% end %>

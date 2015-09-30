@@ -31,6 +31,7 @@ module MultitenantProxyable
   
   def parent_attributes
     # FIXME probably should not rely on the first proxy being the right one.
+    return {} if parent_object_proxies.first.nil?
     self.proxy_parent.nil? ? {} : { self.proxy_parent.to_s.foreign_key => parent_object_proxies.first.other_id }
   end
   
