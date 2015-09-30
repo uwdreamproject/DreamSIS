@@ -157,6 +157,11 @@ class Customer < ActiveRecord::Base
     url_shortcut
   end
   
+  # Shortcut for +Apartment::Tenant.switch(:tenant)+.
+  def self.switch(tenant_name)
+    Apartment::Tenant.switch(tenant_name)
+  end
+  
   # Create a new tenant database.
   def create_tenant!
     Apartment::Tenant.create(tenant_name) unless tenant_name.blank?

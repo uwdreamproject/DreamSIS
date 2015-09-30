@@ -73,3 +73,25 @@ $(function() {
     $("#main-nav").html($("#main-nav-replacement"))
   }
 })
+
+/*
+  Handle shift filters when viewing the event attendance list.
+*/
+function updateShiftSelections() {
+	$("tr.event_attendance").each(function() {
+	  $(this).toggle($("input[data-shift-id=" + $(this).data("shift-id") + "]").is(":checked"))
+	})
+  // updateEmailLinks()
+}
+
+function updateEmailLinks() {
+	var rows = $$("tr.event_attendance").findAll(function(e) { return e.visible() })
+	var attending_rows = rows.findAll(function(e) { return e.readAttribute("data-attending") == "true" })
+	var attended_rows =  rows.findAll(function(e) { return e.readAttribute("data-attended") == "true" })
+	$('attending_email_link').writeAttribute("href", "mailto:" + attending_rows.collect(function(e) { return e.readAttribute("data-email") }).join(","))
+	$('attended_email_link').writeAttribute("href",  "mailto:" + attended_rows.collect(function(e) {  return e.readAttribute("data-email") }).join(","))
+}
+
+$(function() {
+  $("#event_shift_selectors input[data-shift-id]").on('change', updateShiftSelections)
+})

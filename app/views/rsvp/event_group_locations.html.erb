@@ -9,8 +9,6 @@
 						options_for_select([["All Counties", "reset"]] + @counties.collect{|k,v| [(k ? "#{h(k)} County" : "Other"), k.to_s.parameterize.to_s]}) 
 						 %>
 	</p>
-	
-	<%= observe_field :county_filter, :function => "filterByCounty($F('county_filter'))" %>
 </div>
 
 <table class="highlightless rsvp">

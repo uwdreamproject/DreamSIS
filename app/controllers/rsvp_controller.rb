@@ -34,7 +34,7 @@ class RsvpController < ApplicationController
     
     @counties = {}
     for event in @event_group.future_events(@current_user.try(:person) || @audience)
-			county_name = event.location.try(:county).gsub("County","").strip
+			county_name = event.location.try(:county).try{ |c| c.gsub("County", "").strip }
       @counties[county_name] ||= {}
       @counties[county_name][event.location] ||= []
       @counties[county_name][event.location] << event

@@ -1,7 +1,13 @@
 <%- event_audience = @audience || @current_user.try(:person) -%>
 <h3 class="pre-title">RSVP for</h3>
 <h1><%=h @event.name %></h1>
+
+<%- for proxy in @event.proxies.slave -%>
+	<h3 class="proxyable">Coordinated by <%= proxy.other_customer.name %></h3>
+<% end %>
+
 <h2 class="date"><%= @event.time_detail(:audience => event_audience) %></h2>
+
 
 <div class="when-and-where">
 	<h3>When &amp; Where</h3>

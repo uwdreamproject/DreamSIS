@@ -51,41 +51,18 @@
 		</p>
 	<% end -%>
 
-	<%- if @event.has_shifts?(@audience.to_s.classify) %>
+	<!-- <%- if @event.has_shifts?(@audience.to_s.classify) %>
 		<h3>Filter by Shift</h3>
-		
+
 		<div id="event_shift_selectors">
 		<%- for event_shift in @event.shifts.for(@audience.to_s.classify) -%>
 			<label for="event_shift_selector_<%= event_shift.id %>">
-				<input type="checkbox" id="event_shift_selector_<%= event_shift.id %>" data-shift-id="<%= event_shift.id %>" checked onChange="updateShiftSelections(this);">
+				<input type="checkbox" id="event_shift_selector_<%= event_shift.id %>" data-shift-id="<%= event_shift.id %>" checked />
 				<%= truncate(event_shift.title) %>
 			</label><br>
 		<% end -%>
 		<small class="light">Filtering the list will also update the email buttons above.</small>
 		</div>
-		
-	<% end -%>
+
+	<% end -%> -->
 </div>
-
-<script type="text/javascript">
-
-function updateShiftSelections(elem) {
-	var rows = $$("tr.event_attendance")
-	rows = rows.findAll(function(e) { return e.readAttribute('data-shift-id') == elem.readAttribute('data-shift-id') })
-	if(elem.checked == true) {
-		rows.invoke('show')
-	} else {
-		rows.invoke('hide')
-	}
-	updateEmailLinks()
-}
-
-function updateEmailLinks() {
-	var rows = $$("tr.event_attendance").findAll(function(e) { return e.visible() })
-	var attending_rows = rows.findAll(function(e) { return e.readAttribute("data-attending") == "true" })
-	var attended_rows =  rows.findAll(function(e) { return e.readAttribute("data-attended") == "true" })
-	$('attending_email_link').writeAttribute("href", "mailto:" + attending_rows.collect(function(e) { return e.readAttribute("data-email") }).join(","))
-	$('attended_email_link').writeAttribute("href",  "mailto:" + attended_rows.collect(function(e) {  return e.readAttribute("data-email") }).join(","))
-}
-
-</script>
