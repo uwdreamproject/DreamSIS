@@ -3,6 +3,7 @@ class MultitenantProxyWorker
 
   # Creates or updates the slave object connected to this master object.
   def perform(tenant_name, multitenant_proxy_id)
+    return true
     # begin
       ActiveRecord::Base.connection_pool.with_connection do
         Apartment::Tenant.switch(tenant_name)
