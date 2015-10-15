@@ -7,6 +7,7 @@
 	<%= f.input :term_system, :collection => %w(Quarters) %>
 	<%= f.input :link_to_uw, :label => "Link to University of Washington systems" %>
 	<%= f.input :require_background_checks, :label => "Require background checks for mentors" %>
+	<%= f.input :require_parental_consent_for_minors, :label => "Require parental consent for minors" %>
 	<%= f.input :experimental, :label => "Enable experimental features" %>
 	<%= f.input :background_check_validity_length, :label => "Background Checks valid for:", :as => :select, :collection => {"90 Days" =>90, "180 Days" => 180, "1 Year" => 365, "2 Years" => 730, "Forever" => -1} %>
 	<%= f.input :driver_training_validity_length, :label => "Driver Trainings valid for:", :as => :select, :collection => {"90 Days" =>90, "180 Days" => 180, "1 Year" => 365, "2 Years" => 730, "Forever" => -1} %>
