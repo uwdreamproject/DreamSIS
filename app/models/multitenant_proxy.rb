@@ -36,7 +36,7 @@ class MultitenantProxy < ActiveRecord::Base
     raise Exception.new("Slave object already exists") if other_object
     raise Exception.new("Cannot create slave object until current object is valid") unless valid? && persisted?
 
-    Rollbar.warning "Sidekiq note ready" unless Report.sidekiq_ready?
+    Rollbar.warning "Sidekiq not ready" unless Report.sidekiq_ready?
     MultitenantProxyWorker.perform_async(Customer.tenant_name, self.id)
   end
   
@@ -53,7 +53,7 @@ class MultitenantProxy < ActiveRecord::Base
   # an object. If this is a Master object, then we update the attributes on the Slave object.
   def update_slave
     return false unless master?
-    Rollbar.warning "Sidekiq note ready" unless Report.sidekiq_ready?
+    Rollbar.warning "Sidekiq not ready" unless Report.sidekiq_ready?
     MultitenantProxyWorker.perform_async(Customer.tenant_name, self.id)
   end
   
