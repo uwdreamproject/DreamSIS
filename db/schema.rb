@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150928060812) do
+ActiveRecord::Schema.define(:version => 20151023210122) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -257,8 +257,8 @@ ActiveRecord::Schema.define(:version => 20150928060812) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "type"
-    t.boolean  "show_for_participants",      :default => true
-    t.boolean  "show_for_mentors",           :default => true
+    t.boolean  "show_for_participants",           :default => true
+    t.boolean  "show_for_mentors",                :default => true
     t.boolean  "allow_rsvps"
     t.integer  "event_type_id"
     t.integer  "event_group_id"
@@ -278,12 +278,13 @@ ActiveRecord::Schema.define(:version => 20150928060812) do
     t.time     "volunteer_end_time"
     t.time     "mentor_start_time"
     t.time     "mentor_end_time"
-    t.boolean  "show_for_students",          :default => true
-    t.boolean  "show_for_volunteers",        :default => true
+    t.boolean  "show_for_students",               :default => true
+    t.boolean  "show_for_volunteers",             :default => true
     t.integer  "customer_id"
     t.integer  "earliest_grade_level_level"
     t.integer  "latest_grade_level_level"
     t.boolean  "send_attendance_emails"
+    t.boolean  "always_show_on_attendance_pages"
   end
 
   add_index "events", ["customer_id"], :name => "index_events_on_customer_id"
