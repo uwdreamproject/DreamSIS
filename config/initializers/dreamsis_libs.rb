@@ -4,3 +4,5 @@ load "#{Rails.root}/lib/national_student_clearinghouse.rb"
 load "#{Rails.root}/lib/uw_driver_methods.rb"
 
 require "addressable/uri"
+
+require "#{Rails.root}/lib/multitenant_proxyable.rb"

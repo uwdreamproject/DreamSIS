@@ -20,7 +20,7 @@
         <%= f.input :other_languages, :label => "Other languages you speak", :hint => "If you speak any languages other than English, enter them here to help coordinate event planning and project assignment." %>
 	
 		<%- if @person.is_a?(Student) || @person.is_a?(Participant) -%>
-			<li class="select optional <%= "error" if @person.errors.on(:high_school_id) %>" id="person_high_school_id_input">
+			<li class="select optional <%= "error" if @person.errors.include?(:high_school_id) %>" id="person_high_school_id_input">
 				<label>High School</label>
 				<%= select_tag :high_school_district, 
 								options_for_select(HighSchool.all_by_district(
@@ -28,9 +28,16 @@
 									:selected => (@person.try(:high_school_id).nil? ? "-- Choose District --" : @person.try(:high_school).try(:district))
 								) %>
 				<%= f.collection_select :high_school_id, (HighSchool.all_by_district[f.object.try(:high_school).try(:district)] || []), :id, :name, :selected => f.object.try(:high_school).try(:id) %>
-				<%= content_tag(:p, @person.errors.on(:high_school_id), :class => "inline-errors") if @person.errors.on(:high_school_id) %>
+				<%= content_tag(:p, @person.errors.include?(:high_school_id), :class => "inline-errors") if @person.errors.include?(:high_school_id) %>
 				
-				<%= observe_field :high_school_district, :url => in_district_high_schools_path, :with => "'district=' + $F('high_school_district')" %>
+				<%= javascript_tag "
+					$('select#high_school_district').change(function() {
+						$.ajax('#{in_district_high_schools_path}', { 
+							dataType: 'script',
+							data: { district: $(this).val() }
+						})
+					})"
+				 %>
 			</li>			
 		<% end -%>
 	
@@ -58,7 +65,7 @@
 		<% end -%>
 
 
-		<p>I certify that the information contained in the above-stated information is true, correct, and complete to the best of my knowledge. I understand that consideration for participation in Dream Project activities and the continuation of subsequent participation depend on true, accurate and complete representation of these facts as stated or implied in all application-related materials. I authorize the University of Washington to make inquiries regarding my criminal conviction history. I understand that participation may be conditioned on the University’s receipt of a satisfactory Criminal Conviction Report from the Washington State Patrol or other law-enforcement related agency.</p>
+		<p>I certify that the information contained in the above-stated information is true, correct, and complete to the best of my knowledge. I understand that consideration for participation in <%= Customer.name_label %> activities and the continuation of subsequent participation depend on true, accurate and complete representation of these facts as stated or implied in all application-related materials. I authorize <%= Customer.name_label %> to make inquiries regarding my criminal conviction history. I understand that participation may be conditioned on receipt of a satisfactory Criminal Conviction Report from the Washington State Patrol or other law-enforcement related agency.</p>
 
 		<%= f.inputs do %>
 			<%= f.input :background_check_authorized, :as => :boolean, :label => "I understand the statement above." %>

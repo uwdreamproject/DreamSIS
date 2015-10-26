@@ -7,6 +7,7 @@ class Customer < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :clearinghouse_customer_number, :clearinghouse_contract_start_date, :clearinghouse_number_of_submissions_allowed, :if => :validate_clearinghouse_configuration?
   validates_numericality_of :clearinghouse_customer_number, :if => :validate_clearinghouse_configuration?
+  validates_format_of :stylesheet_url, :with => URI::regexp(%w(http https))
   
   belongs_to :parent_customer, :class_name => "Customer"
   belongs_to :program
@@ -58,6 +59,12 @@ class Customer < ActiveRecord::Base
     raw = read_attribute(:clearinghouse_customer_number)
     return nil if raw.nil?
     return_integer ? raw : raw.to_s.rjust(6, "0")
+  end
+  
+  # If the Customer defines a different name for use with ClearinghouseRequests, return that. 
+  # Otherwise, just return the name.
+  def name_for_clearinghouse 
+    clearinghouse_customer_name || name
   end
   
   # Returns true if +term_system+ is +Quarters+.
@@ -148,6 +155,11 @@ class Customer < ActiveRecord::Base
   # The tenant name used by this Customer for apartment multitenancy.
   def tenant_name
     url_shortcut
+  end
+  
+  # Shortcut for +Apartment::Tenant.switch(:tenant)+.
+  def self.switch(tenant_name)
+    Apartment::Tenant.switch(tenant_name)
   end
   
   # Create a new tenant database.

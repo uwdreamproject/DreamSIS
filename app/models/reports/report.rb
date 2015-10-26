@@ -98,12 +98,15 @@ class Report < ActiveRecord::Base
 	
 	# Kicks off a sucker_punch task to generate this report
 	def generate_in_background!
-    Rollbar.warning "Sidekiq not running" unless Report.sidekiq_ready?
+    Rollbar.warning "Sidekiq not ready" unless Report.sidekiq_ready?
     ReportWorker.perform_async(self.id)
 	end
   
   def self.sidekiq_ready?
     Sidekiq::ProcessSet.new.size > 0
+  rescue Redis::CannotConnectError => e
+    Rollbar.error(e)
+    return false
   end
   
 end

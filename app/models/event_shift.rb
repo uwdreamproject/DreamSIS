@@ -2,6 +2,9 @@ class EventShift < ActiveRecord::Base
   belongs_to :event
   validates_presence_of :title
   
+  include MultitenantProxyable
+  acts_as_proxyable parent: :event, parent_direction: :forward
+  
   def details_string
     str = title
     if start_time

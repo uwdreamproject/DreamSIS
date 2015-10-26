@@ -366,21 +366,26 @@ class ParticipantsController < ApplicationController
   end
 	
   def auto_complete_for_participant_fullname
-    conditions = ["(LOWER(firstname) LIKE :fullname OR LOWER(lastname) LIKE :fullname)"]
-    conditions << "high_school_id = :high_school_id" if params[:high_school_id]
-    conditions << "grad_year = :grad_year" if params[:grad_year]
+    if params[:term].to_i != 0
+      @participants = [ Participant.find(params[:term].to_i) ]
+    else      
+      conditions = ["(LOWER(firstname) LIKE :fullname OR LOWER(lastname) LIKE :fullname)"]
+      conditions << "high_school_id = :high_school_id" if params[:high_school_id]
+      conditions << "grad_year = :grad_year" if params[:grad_year]
     
-    @participants = Participant.find(:all, 
-                                      :conditions => [conditions.join(" AND "), 
-                                                      {:fullname => "%#{params[:term].downcase}%",
-                                                      :grad_year => params[:grad_year],
-                                                      :high_school_id => params[:high_school_id]
-                                                      }])
+      @participants = Participant.find(:all, 
+                                        :conditions => [conditions.join(" AND "), 
+                                                        {:fullname => "%#{params[:term].downcase}%",
+                                                        :grad_year => params[:grad_year],
+                                                        :high_school_id => params[:high_school_id]
+                                                        }])
+    end
+    
     render :json => @participants.map { |result| 
       {
         :id => result.id, 
         :value => h(result.fullname),
-        :klass => result.class.to_s.underscore, 
+        :klass => result.class.to_s.underscore.titleize, 
         :fullname => h(result.fullname),
         :secondary => h(result.email),
         :tertiary => h((Customer.current_customer.customer_label(result.class.to_s.underscore, :titleize => true) || result.class.to_s).titleize)

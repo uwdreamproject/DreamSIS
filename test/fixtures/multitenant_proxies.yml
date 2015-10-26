@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  proxyable_type: MyString
+  proxyable_id: 1
+  role: MyString
+  other_id: 1
+
+two:
+  proxyable_type: MyString
+  proxyable_id: 1
+  role: MyString
+  other_id: 1

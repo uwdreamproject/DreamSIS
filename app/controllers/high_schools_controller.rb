@@ -133,7 +133,7 @@ class HighSchoolsController < ApplicationController
   
   def in_district
     @district = params[:district]
-    @high_schools = HighSchool.find_all_by_district(@district) || []
+    @high_schools = HighSchool.where(district: @district) || []
     
     respond_to do |format|
       format.js

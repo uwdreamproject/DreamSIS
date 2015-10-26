@@ -48,6 +48,15 @@ class Person < ActiveRecord::Base
   attr_accessor :validate_name
   attr_accessor :validate_ready_to_rsvp
   
+  include MultitenantProxyable
+  acts_as_proxyable
+  
+  def proxyable_attributes
+    only = %w[firstname middlename lastname suffix nickname email phone_home phone_mobile phone_work birthdate sex other_languages dietary_restrictions vegetarian vegan kosher halal background_check_run_at background_check_result display_name aliases crimes_against_persons_or_financial drug_related_crimes related_proceedings_crimes medicare_healthcare_crimes victim_crimes_explanation general_convictions general_convictions_explanation background_check_authorized_at van_driver_training_completed_at avatar_image_url organization shirt_size gluten_free sex_offender_check_run_at sex_offender_check_result]
+    attributes.slice(*only)
+  end  
+  
+  
   def validate_name?
     validate_name
   end
@@ -338,22 +347,22 @@ class Person < ActiveRecord::Base
   
   # Strips all non digits from the phone number before storing it
   def phone_mobile=(new_number)
-    write_attribute :phone_mobile, new_number.gsub(/[^0-9]/i, '')
+    write_attribute :phone_mobile, new_number.try(:gsub, /[^0-9]/i, '')
   end
 
   # Strips all non digits from the phone number before storing it
   def phone_home=(new_number)
-    write_attribute :phone_home, new_number.gsub(/[^0-9]/i, '')
+    write_attribute :phone_home, new_number.try(:gsub, /[^0-9]/i, '')
   end
 
   # Strips all non digits from the phone number before storing it
   def phone_work=(new_number)
-    write_attribute :phone_work, new_number.gsub(/[^0-9]/i, '')
+    write_attribute :phone_work, new_number.try(:gsub, /[^0-9]/i, '')
   end
 	
   # Strip out non-digit characters in annual_income if needed, like "$" or "," or other text.
   def annual_income=(new_amount)
-    new_amount = new_amount.gsub(/[^0-9.]/i, '') unless new_amount.is_a?(Numeric)
+    new_amount = new_amount.try(:gsub, /[^0-9.]/i, '') unless new_amount.is_a?(Numeric)
     write_attribute :annual_income, new_amount
   end
   

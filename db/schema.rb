@@ -55,6 +55,9 @@ ActiveRecord::Schema.define(:version => 20151015024144) do
     t.datetime "updated_at"
     t.string   "detail_report_filename"
     t.text     "filenames"
+    t.string   "inquiry_type"
+    t.text     "selection_criteria"
+    t.datetime "closed_at"
   end
 
   create_table "college_applications", :force => true do |t|
@@ -106,6 +109,9 @@ ActiveRecord::Schema.define(:version => 20151015024144) do
     t.boolean  "send_driver_form_emails"
     t.boolean  "display_nicknames_by_default"
     t.integer  "driver_training_validity_length"
+    t.string   "clearinghouse_customer_name"
+    t.string   "clearinghouse_entity_type"
+    t.string   "stylesheet_url"
     t.boolean  "require_parental_consent_for_minors"
   end
 
@@ -483,6 +489,16 @@ ActiveRecord::Schema.define(:version => 20151015024144) do
 
   add_index "mentor_terms", ["customer_id"], :name => "index_mentor_terms_on_customer_id"
 
+  create_table "multitenant_proxies", :force => true do |t|
+    t.string   "proxyable_type"
+    t.integer  "proxyable_id"
+    t.string   "role"
+    t.integer  "other_customer_id"
+    t.integer  "other_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
   create_table "notes", :force => true do |t|
     t.text     "note"
     t.integer  "creator_id"
@@ -740,12 +756,6 @@ ActiveRecord::Schema.define(:version => 20151015024144) do
     t.boolean  "immigrant"
     t.datetime "uwfs_training_date"
     t.boolean  "clearinghouse_record_found"
-    t.boolean  "international_student"
-    t.string   "intended_major"
-    t.integer  "transfer_student"
-    t.integer  "residency_status"
-    t.string   "home_state"
-    t.integer  "housing_status"
     t.boolean  "parental_consent_on_file"
   end
 

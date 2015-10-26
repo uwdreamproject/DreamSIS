@@ -34,7 +34,7 @@ class RsvpController < ApplicationController
     
     @counties = {}
     for event in @event_group.future_events(@current_user.try(:person) || @audience)
-			county_name = event.location.try(:county).gsub("County","").strip
+			county_name = event.location.try(:county).try{ |c| c.gsub("County", "").strip }
       @counties[county_name] ||= {}
       @counties[county_name][event.location] ||= []
       @counties[county_name][event.location] << event
@@ -104,6 +104,9 @@ class RsvpController < ApplicationController
           flash[:error] = "Sorry, but the capacity for that event has been reached."
         elsif @event_attendance.errors[:audience] && @event_attendance.errors[:audience].any?
           flash[:error] = "Invalid Audience, check that you are using the correct RSVP link."
+        elsif @event_attendance.errors[:event_shift_id] && @event_attendance.errors[:event_shift_id].any?
+          flash[:error] = "You must select a shift/role in order to RSVP. Please select from the list, and
+                           then click the button again to submit your RSVP."
         elsif @event_attendance.errors[:base] && @event_attendance.errors[:base].any?
           flash[:error] = @event_attendance.errors[:base].to_sentence
         else

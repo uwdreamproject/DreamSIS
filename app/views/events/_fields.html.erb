@@ -15,14 +15,14 @@
 	<%= f.input :date, :hint => link_to_now(f.object.class.to_s.underscore + "_date") %>
 	<%= f.input :time_tba, :label => "Time TBA", :input_html => { :onChange => "
 					if(this.checked) {
-						$('event_times_input').hide(); $('audience_specific_times').hide();
+						$('#event_times_input').hide(); $('#audience_specific_times').hide();
 					} else {
-						$('event_times_input').show(); $('audience_specific_times').show();
+						$('#event_times_input').show(); $('#audience_specific_times').show();
 					}
 				"} %>
 	
-	<li class="string optional" id="event_times_input">
-		<%= label_tag "#{klass}_start_time", "Times" %>
+	<li class="string input optional stringish" id="event_times_input">
+		<%= label_tag "#{klass}_start_time", "Times", :class => "label" %>
 		From <%= text_field_tag "#{klass}[start_time]", f.object.try("start_time").try(:to_s, :time12), :size => 10 %>
 		to <%= text_field_tag "#{klass}[end_time]", f.object.try("end_time").try(:to_s, :time12), :size => 10 %>
 		<p class="inline-hints">Enter times like "11:30 AM" or "5:00 PM". You can enter audience-specific times below.</p>
@@ -130,8 +130,8 @@
 <%= f.inputs(:name => "Audience-Specific Times", :id => "audience_specific_times") do %>
 	<p>These times will be used instead of the event and start times above for members of the specific audience. Otherwise, the default from above will be displayed.</p>
 	<%- for audience in %w(student volunteer mentor) -%>
-	<li class="string optional">
-		<%= label_tag "#{klass}_#{audience}_start_time", audience.titleize.pluralize %>
+	<li class="string input optional">
+		<%= label_tag "#{klass}_#{audience}_start_time", audience.titleize.pluralize, :class => "label" %>
 		From <%= text_field_tag "#{klass}[#{audience}_start_time]", f.object.try("#{audience}_start_time").try(:to_s, :time12), :size => 10 %>
 		to <%= text_field_tag "#{klass}[#{audience}_end_time]", f.object.try("#{audience}_end_time").try(:to_s, :time12), :size => 10 %>
 	</li>

@@ -101,21 +101,6 @@ function updateFilterBucket() {
 }
 
 /*
-  Filters a list of location items by county. Add a class name of "filterable-by-county" for all
-  filterable elements, and a class of "county-{value}" to define which county the element is in.
-*/
-function filterByCounty(filter_value) {
-  if(filter_value == 'reset') {
-    $('.filterable-by-county').show();
-    window.location.hash = ""
-  } else {
-    $('.filterable-by-county').hide();
-    $('.filterable-by-county.county-' + filter_value).show()
-    window.location.hash = "filter-county=" + filter_value
-  }
-}
-
-/*
   Function to call when a filter checkbox is clicked.
 */
 function clickFilterCheckbox(event) {
