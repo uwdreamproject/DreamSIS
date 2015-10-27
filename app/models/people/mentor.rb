@@ -38,7 +38,7 @@ class Mentor < Person
   # Returns true if +passed_background_check?+ and +signed_risk_form?+ and +currently_enrolled?+ all return true, and
   # if has attended mentor workshop (if necessary)
   def passed_basics?
-    (!Customer.require_background_checks? || (passed_background_check? && passed_sex_offender_check?)) && (!Customer.require_risk_form? || signed_risk_form?) && (!Customer.require_conduct_form? || signed_conduct_form?)&& currently_enrolled? && (!Customer.mentor_workshop_event_type || attended_mentor_workshop?)
+    (!Customer.require_background_checks? || (passed_background_check? && passed_sex_offender_check?)) && (!Customer.require_risk_form? || signed_risk_form?) && (!Customer.require_conduct_form? || signed_conduct_form?)&& currently_enrolled? && (!Customer.mentor_workshop_event_type || attended_mentor_workshop?) && (!Customer.require_parental_consent_for_minors? || (is_18? || parental_consent_on_file?))
   end
 
   # Returns a string detailing the steps needed for this mentor
@@ -51,7 +51,14 @@ class Mentor < Person
         summary << "* Must sign risk form  "
       end
     end
-    if Customer.require_conduct_form?
+    if Customer.require_parental_consent_for_minors?
+      if !is_18?
+        if !parental_consent_on_file?
+          summary << "* Must require parental consent "
+        end
+      end
+    end
+        if Customer.require_conduct_form?
       if !signed_conduct_form?
         summary << "* Must sign conduct agreement  "
       end  
