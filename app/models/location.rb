@@ -28,14 +28,14 @@ class Location < ActiveRecord::Base
   # Returns all the events that we should show on the attendance page for the requested term
   def events(term = nil, audience = nil, visits_only = true, limit = 1000)
     conditions = ""
-    conditions_values = {} 
+    conditions_values = { :nil => nil, :true => true } 
     conditions << "date >= '#{term.start_date.to_s(:db)}' AND date <= '#{term.end_date.to_s(:db)}'" if term
     if audience
-      conditions << " AND show_for_mentors = :sfm " && conditions_values[:sfm] = true if audience.include?(:mentors)
-      conditions << " AND show_for_participants = :sfp " && conditions_values[:sfp] = true if audience.include?(:participants)
+      conditions << " AND show_for_mentors = :true " if audience.include?(:mentors)
+      conditions << " AND show_for_participants = :true " if audience.include?(:participants)
     end
-    conditions << " AND (location_id = '#{id}' OR location_id IS NULL)"
-    conditions << " AND type = 'Visit' " if visits_only
+    conditions << " AND (location_id = '#{id}' OR location_id IS :nil OR always_show_on_attendance_pages = :true) "
+    conditions << " AND (type = 'Visit' OR always_show_on_attendance_pages = :true) " if visits_only
     Event.where([conditions, conditions_values]).limit(limit)
   end
 

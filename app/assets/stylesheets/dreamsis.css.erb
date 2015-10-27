@@ -2310,7 +2310,7 @@ body.attendance .success-marker {
 	border-radius: inherit;
 	height: inherit;
 	z-index: 20;
-	min-width: inherit;
+	min-width: 0.9em;
 	white-space: nowrap;
 	font-style: normal;
 	opacity: 0;
@@ -2350,6 +2350,12 @@ body.attendance .success-marker {
 	color: white;
 	font-weight: bold;
 	border-color: red;
+}
+
+.attendance .saving {
+  background-image: url(<%= asset_path 'indicator.gif' %>);
+  background-repeat: no-repeat;
+  background-position: 25% center;
 }
 
 .attendance td h5 {

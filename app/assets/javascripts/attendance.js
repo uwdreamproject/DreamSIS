@@ -119,6 +119,8 @@ function submitAttendance(elem, eventId, data) {
   } else {
     method = "POST"
   }
+  elem.addClass("saving")
+  elem.attr("data-expected-attendance-option", data.attendance_option) // store the value to check before clearing the spinner
   $.ajax({
     type: method,
     url: url,
@@ -126,6 +128,10 @@ function submitAttendance(elem, eventId, data) {
     success: function(returnData, textStatus, jqXHR) {
       if(elem.data("event-attendance-id") == undefined) {
         elem.attr("data-event-attendance-id", returnData.id)
+      }
+      // console.log("Expected: `" + elem.attr("data-expected-attendance-option") + "`, received: `" + returnData.attendance_option + "`")
+      if(returnData.attendance_option == elem.attr("data-expected-attendance-option")){ 
+        elem.removeClass("saving") // only remove the spinner if the attendance option matches, to prevent "quick click" overrides
       }
     },
     dataType: 'json' });
