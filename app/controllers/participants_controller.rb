@@ -234,7 +234,7 @@ class ParticipantsController < ApplicationController
   def event_attendances
     @participant = Participant.find(params[:id]) rescue Student.find(params[:id])
     @event_attendances = @participant.event_attendances.joins(:event)
-    @event_attendances = @event_attendances.where(:events => { :type => params[:type] }) if params[:type]
+    @event_attendances = @event_attendances.where("events.type = ? OR events.always_show_on_attendance_pages = ?", params[:type], true) if params[:type]
     @event_attendances = @event_attendances.where("events.date IN (?)", params[:dates]) if params[:dates]
     
     respond_to do |format|

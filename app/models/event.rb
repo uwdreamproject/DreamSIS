@@ -87,7 +87,7 @@ class Event < ActiveRecord::Base
 
   # Returns true if there's no Location assigned to this event.
   def program_wide?
-    location_id.nil?
+    location_id.nil? || always_show_on_attendance_pages?
   end
   
   # Returns a string of the valid grade levels for this filter.

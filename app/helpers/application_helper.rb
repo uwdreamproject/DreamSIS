@@ -24,6 +24,7 @@ module ApplicationHelper
   
   # Fetch the favicon for a requested site, like a college home page.
   def fetch_favicon_tag(url, options = {})
+    return nil if url.blank?
     options.merge({ :size => 16 })
     url_parsed = Addressable::URI.heuristic_parse(h(url)).to_s
     # service_prefix = "https://getfavicon.appspot.com/" # this service is perpetually over quota :-(
