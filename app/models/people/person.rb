@@ -6,7 +6,7 @@ class Person < ActiveRecord::Base
       find :all, :joins => [:event], :conditions => ["events.date >= ? AND rsvp = ?", Time.now.midnight, true]
     end
 		def non_visits
-			find :all, :joins => [:event], :conditions => ["type IS NULL OR type = ?", "Event"]
+			find :all, :joins => [:event], :conditions => ["type IS ? OR type = ? OR type = ?", nil, "Event", ""]
 		end
 		def visits
 			find :all, :joins => [:event], :conditions => ["type = ?", "Visit"]

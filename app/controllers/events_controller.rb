@@ -6,7 +6,7 @@ class EventsController < ApplicationController
   # GET /events.xml
   def index
     @events = Event.unscoped.page(params[:page]).order("date DESC, start_time ASC")
-    @events = @events.where(:type => params[:type]) if params[:type]
+    @events = @events.where("type = ? OR always_show_on_attendance_pages = ?", params[:type], true) if params[:type]
     @events = @events.where("date IN (?)", params[:dates]) if params[:dates]
 
     respond_to do |format|
