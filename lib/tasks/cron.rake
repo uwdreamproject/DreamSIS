@@ -60,7 +60,11 @@ namespace :cron do
           Customer.switch(customer.tenant_name)
           i = 0
           Person.find_in_batches do |group|
-            group.each { |person| i = i+1; person.update_filter_cache! }
+            group.each do |person|
+              before = person.filter_cache
+              person.update_filter_cache!
+              person.save && i = i+1 if before != person.filter_cache
+            end
           end
           puts "updated #{i} records."
         end
