@@ -52,7 +52,7 @@ class Event < ActiveRecord::Base
   
   # For now, only Visit type events can have attendance options.
   def attendance_options
-    []
+    ["Attended"]
   end
   
   def visit?
