@@ -23,6 +23,7 @@ class EventAttendance < ActiveRecord::Base
   
   after_save :update_filter_cache
   after_destroy :update_filter_cache
+  before_save :replace_blank_attendance_option
 
   # default_scope :joins => :person, :order => "lastname, firstname"
   scope :rsvpd, where(:rsvp => true)
@@ -94,4 +95,11 @@ class EventAttendance < ActiveRecord::Base
   def audience
     read_attribute(:audience) || person.class.to_s
   end
+  
+  # Before we save the record, check if `attended = true` but `attendance_option` is blank. If so,
+  # set `attendance_option` to "Attended".
+  def replace_blank_attendance_option
+    self.attendance_option = "Attended" if attended? && attendance_option.blank?
+  end
+  
 end
