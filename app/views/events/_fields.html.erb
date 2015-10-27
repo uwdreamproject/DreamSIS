@@ -6,6 +6,8 @@
 	<%= f.input :type, :as => :select, :collection => {"Regular Event" => nil, Customer.visit_Label => "Visit"} %>
 	
 	<%= f.input :location, :label => "High School/Location", :hint => "Leave blank if this is a program-wide event. Program-wide events show up on everyone's attendance sheets.", :collection => Location.all %>
+	
+	<%= f.input :always_show_on_attendance_pages, :label => "Always show on attendance sheets", :hint => "Check this box to make sure that this event shows up on everyone's attendance sheets, even if it's assigned a specific location above. Use this to be sure that a program-wide event is always included on the list." %>
 
 	<%= f.input :location_text, :label => "Location Detail", :hint => "Specify the location here if the event is happening at a location that's not in the list, or if you want to add extra location information, like room number." %>
 	
