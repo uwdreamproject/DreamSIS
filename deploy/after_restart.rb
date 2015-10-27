@@ -10,4 +10,5 @@ end
 on_app_servers do
   sudo "cd #{config.current_path} && bundle exec sidekiqctl stop #{config.shared_path}/pid/DreamSIS_sidekiq.pid"
   sudo "cd #{config.current_path} && bundle exec sidekiq -d -e #{config.environment} -l #{config.shared_path}/log/DreamSIS_sidekiq.log -P #{config.shared_path}/pid/DreamSIS_sidekiq.pid"
+  sudo "chown -R deploy #{config.shared_path}/tmp/"
 end
