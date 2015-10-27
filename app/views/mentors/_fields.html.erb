@@ -46,4 +46,7 @@
     <%= f.input :driver_form_remarks, :hint => "Enter #{link_to_function('OK',
                                                    "$('mentor_driver_form_remarks').value='OK  [#{j(@current_user.login)}]'")}
 								(include an explanation if necessary) if the mentor is qualified to drive.".html_safe  %>
+	<hr />
+
+	<%= f.input :parental_consent_on_file, :as => :radio, :label => "Parental consent form on file" %>
 <% end -%>

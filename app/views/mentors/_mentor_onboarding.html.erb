@@ -3,7 +3,15 @@
 				</td>
 				<td><%=h mentor_onboarding.email %></td>
 				<td class="centered"><%=h mentor_onboarding.sex %></td>
-				<td><%=h mentor_onboarding.birthdate.to_s %></td>
+				<td><%=h mentor_onboarding.birthdate.to_s %>
+					<%- if !mentor_onboarding.is_18? -%>
+					  <%- if mentor_onboarding.parental_consent_on_file? -%>
+					    <%= content_tag(:span, "Y", :class => 'approved tag') %>
+					  <%- else -%>
+						<%= content_tag(:span, "N", :class => 'red tag') %>
+					  <%- end -%>
+					<%- end -%>
+				</td>
 				<td class="centered"><%= mentor_onboarding.has_aliases? ? content_tag(:span, "Y", :class => 'red tag') : "-" %></td>
 				<td class="centered"><%= mentor_onboarding.signed_risk_form? ? content_tag(:span, "Y", :class => 'approved tag') : "-" %></td>
 				<td class="centered">

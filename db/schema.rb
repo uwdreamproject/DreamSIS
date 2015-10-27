@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151023210122) do
+ActiveRecord::Schema.define(:version => 20151015024144) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(:version => 20151023210122) do
     t.string   "clearinghouse_customer_name"
     t.string   "clearinghouse_entity_type"
     t.string   "stylesheet_url"
+    t.boolean  "require_parental_consent_for_minors"
   end
 
   create_table "degrees", :force => true do |t|
@@ -534,10 +535,10 @@ ActiveRecord::Schema.define(:version => 20151023210122) do
     t.integer  "warning_threshold"
     t.date     "start_display_at"
     t.date     "end_display_at"
-    t.integer  "earliest_grade_level"
     t.integer  "earliest_grade_level_level"
     t.integer  "latest_grade_level_level"
     t.integer  "customer_id"
+    t.integer  "earliest_grade_level"
     t.string   "category"
     t.integer  "position"
   end
@@ -756,6 +757,7 @@ ActiveRecord::Schema.define(:version => 20151023210122) do
     t.boolean  "immigrant"
     t.datetime "uwfs_training_date"
     t.boolean  "clearinghouse_record_found"
+    t.boolean  "parental_consent_on_file"
   end
 
   add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"
