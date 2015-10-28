@@ -46,6 +46,35 @@ namespace :cron do
     end
   end
   
+  namespace :people do 
+  
+    desc "Update the filter cache for all Person records in the database"
+    task :update_filter_caches => :environment do
+      Rails.logger = Logger.new(STDOUT)
+      STDOUT.sync = true
+    
+      bt = Benchmark.realtime do 
+        puts "Updating filter caches for all Person records..."
+        for customer in Customer.all
+          print "  #{customer.name}... "
+          Customer.switch(customer.tenant_name)
+          i = 0
+          Person.find_in_batches do |group|
+            group.each do |person|
+              before = person.filter_cache
+              person.update_filter_cache!
+              person.save && i = i+1 if before != person.filter_cache
+            end
+          end
+          puts "updated #{i} records."
+        end
+        print "Done "
+      end
+      puts "(took #{'%.2f' % bt} seconds)."
+    
+    end  
+  end
+  
 end
         
         
