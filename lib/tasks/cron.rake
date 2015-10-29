@@ -57,7 +57,7 @@ namespace :cron do
         puts "Updating filter caches for all Person records..."
         for customer in Customer.all
           print "  #{customer.name}... "
-          Customer.switch(customer.tenant_name)
+          Customer.switch(customer.tenant_name) rescue next
           i = 0
           Person.find_in_batches do |group|
             group.each do |person|
