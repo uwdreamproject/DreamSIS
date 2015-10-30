@@ -11,7 +11,7 @@
 <h3 class="light" style="margin-top: 0">
 	Listing 
 	<span id="filtered_record_count"></span> 
-	<span id="total_record_count"><%= @participants.count %></span>
+	<span id="total_record_count"><%= @participants.total_entries %></span>
 </h3>
 <div id="stages_selector"></div>
 <div id="filter_bucket"></div>
@@ -23,14 +23,23 @@
 	</h2>
 <% end -%>
 
-<%= will_paginate @participants if @participants.respond_to?(:current_page) %>
-	<table class="participants no-sort" id="participants_table">
-		<tr class="empty"><td class="loading"></td></tr>
-	</table>	
-<%= will_paginate @participants if @participants.respond_to?(:current_page) %>
+<table class="participants multirow active-report" id="participants_table">
+	<thead>
+		<tr>
+			<th><input type="checkbox" class="select-all"></th>
+			<%= render :partial => "participants/reports/#{h(@report || "basic").pluralize}_header" %>
+		</tr>
+	</thead>
+	
+	<tfoot id="empty_placeholder" style="display:none">
+		<tr class="empty">
+			<td colspan="20">No <%= Customer.participants_label %> match your selection.</td>
+		</tr>
+	</tfoot>
+</table>
 
 <%= render :partial => "sidebar" %>
 
 <%= javascript_tag "$( function() {
-	$.ajax({ url: '#{url_for(:report => @report, :page => params[:page])}', dataType: 'script' });
+	$.ajax({ url: '#{url_for(:report => @report, :page => 1)}', dataType: 'script' });
 })" %>

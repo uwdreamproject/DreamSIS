@@ -34,7 +34,7 @@ class ParticipantsController < ApplicationController
       return render_error("You are not allowed to view that high school.")
     end
     
-    @participants = @high_school.participants
+    @participants = @high_school.participants.page(params[:page])
 		@cache_key = fragment_cache_key(:action => :high_school, :id => @high_school.id, :format => :xlsx)
     @export = report_type.for_key(@cache_key)
 
@@ -48,7 +48,7 @@ class ParticipantsController < ApplicationController
 
   def cohort
     @grad_year = params[:id]
-    @participants = Participant.in_cohort(params[:id])
+    @participants = Participant.in_cohort(params[:id]).page(params[:page])
 		@title << @grad_year
 		@cache_key = fragment_cache_key(:action => :cohort, :id => @grad_year, :format => :xlsx)
     @export = report_type.for_key(@cache_key)
@@ -72,7 +72,7 @@ class ParticipantsController < ApplicationController
       return render_error("You are not allowed to view that high school.")
     end
     
-    @participants = request.format == Mime::HTML ? [] : Participant.in_cohort(@grad_year).in_high_school(@high_school.try(:id))
+    @participants = request.format == Mime::HTML ? [] : Participant.in_cohort(@grad_year).in_high_school(@high_school.try(:id)).page(params[:page])
     @participant_groups = ParticipantGroup.find(:all, :conditions => { :location_id => @high_school, :grad_year => @grad_year })
 		@cache_key = fragment_cache_key(:action => :high_school_cohort, :id => @high_school.id, :cohort => @grad_year, :format => :xlsx)
     @export = report_type.for_key(@cache_key)
@@ -115,7 +115,7 @@ class ParticipantsController < ApplicationController
   def college_cohort
     @college = Institution.find(params[:college_id].to_i)
     @grad_year = params[:year]
-    @participants = Participant.in_cohort(@grad_year).attending_college(@college.try(:id))
+    @participants = Participant.in_cohort(@grad_year).attending_college(@college.try(:id)).page(params[:page])
 		@title << @college
 		@title << @grad_year
 		@cache_key = fragment_cache_key(:action => :college_cohort, :id => @college.try(:id), :cohort => @grad_year, :format => :xlsx)
@@ -131,7 +131,7 @@ class ParticipantsController < ApplicationController
 
   def mentor
     @mentor = Mentor.find(params[:mentor_id] == "me" ? User.current_user.try(:person_id) : params[:mentor_id])
-    @participants = Participant.assigned_to_mentor(@mentor.try(:id))
+    @participants = Participant.assigned_to_mentor(@mentor.try(:id)).page(params[:page])
 		@title << "Assigned to #{@mentor.try(:fullname)}"
 		@cache_key = fragment_cache_key(:action => :mentor, :id => @mentor.id, :format => :xlsx)
     @export = report_type.for_key(@cache_key)
@@ -146,7 +146,7 @@ class ParticipantsController < ApplicationController
 
   def program
     @program = Program.find(params[:program_id])
-    @participants = @program.participants
+    @participants = @program.participants.page(params[:page])
 		@title << @program.try(:title)
 		@cache_key = fragment_cache_key(:action => :program, :id => @program.id, :format => :xlsx)
     @export = report_type.for_key(@cache_key)
@@ -169,7 +169,7 @@ class ParticipantsController < ApplicationController
       return render_error("You are not allowed to view that participant group.")
     end
     
-    @participants = @participant_group.participants
+    @participants = @participant_group.participants.page(params[:page])
     @participant_groups = ParticipantGroup.find(:all, :conditions => { :location_id => @high_school, :grad_year => @grad_year })
 		@cache_key = fragment_cache_key(:action => :group, :id => @participant_group.id, :format => :xlsx)
     @export = report_type.for_key(@cache_key)

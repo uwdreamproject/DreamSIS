@@ -144,7 +144,11 @@
 
 	</div>
 	
-	<div id="indicator">Loading...</div>
+	<div id="indicator">
+		Loading...
+		<a href="#" class="stop-loading">Stop</a>
+		<%= render :partial => "shared/progress" %>
+	</div>
 
 </body>
 </html>
