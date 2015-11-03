@@ -9,7 +9,7 @@ $("#participants_table")
   .removeClass("loading")
   .attr("data-report", "<%= @report %>")
   .addClass("<%= @report %>")
-  .append("<%=j render(:partial => 'participant', :collection => @participants, :locals => { :report => h(@report || 'basic') }) %>")
+  .append("<%=j render(:partial => 'participant', :collection => @participants, :locals => { :report => @report }) %>")
 
 // Update the loading indicator's progress bar
 updateLoadProgress("<%= number_to_percentage(params[:page].to_f / @participants.total_pages.to_i * 100) %>")
@@ -21,7 +21,7 @@ if (<%=j @participants.current_page.to_s %> == 1) {
 
 // Set up the export report
 $("#export_actions").html("<%=j render('export_actions') %>")
-exportReportType = "<%=j params[:report] %>"
+exportReportType = "<%=j @report %>"
 
 // Set up the attendance table if this is an attendance page
 if (typeof attendanceEventIds !== 'undefined') {

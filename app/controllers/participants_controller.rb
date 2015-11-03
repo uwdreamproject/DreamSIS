@@ -427,7 +427,7 @@ class ParticipantsController < ApplicationController
 
   # Stores the value from +params[:report]+ and stores it in +@report+ for use in views.
   def set_report_type
-    @report = params[:report] || "basics"
+    @report = params[:report].blank? ? "basics" : ERB::Util.html_escape(params[:report])
   end
 
 	def set_title_prefix
@@ -445,7 +445,7 @@ class ParticipantsController < ApplicationController
 		if @export.generated? && params[:generate].nil?
 			if request.xhr?
 				headers["Content-Type"] = "text/javascript"
-				render :js => "window.location = '#{url_for(:format => 'xlsx', :report => params[:report])}'"
+				render :js => "window.location = '#{url_for(:format => 'xlsx', :report => @report)}'"
 			else
         begin
           filename = @filename || "participants.xlsx"
