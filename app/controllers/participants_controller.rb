@@ -428,6 +428,7 @@ class ParticipantsController < ApplicationController
   # Stores the value from +params[:report]+ and stores it in +@report+ for use in views.
   def set_report_type
     @report = params[:report].blank? ? "basics" : ERB::Util.html_escape(params[:report])
+    @report = "basics" unless Participant::ReportTypes.include?(@report.to_sym)
   end
 
 	def set_title_prefix

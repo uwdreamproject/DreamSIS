@@ -1,14 +1,8 @@
 <%- 
-reports = {
-    "Basics" => "basics",
-    "College Applications" => "college_applications",
-    "Test Scores" => "test_score_summaries",
-    "Roster" => "rosters",
-	"Attendance" => "attendance_summaries"
-}
-reports["College Pipeline"] = "college_stages" if @stages
+reports = Participant::ReportTypes
+reports.delete(:college_stages) unless @stages
 -%>
 
 <%= form_tag({}, :method => :get, :remote => true, :id => "report_selector") do -%>
-	Display: <%= select_tag "report", options_for_select(reports, @report.try(:pluralize)), :class => 'submit-on-change' %>
+	Display: <%= select_tag "report", options_for_select(reports.invert, @report.try(:pluralize)), :class => 'submit-on-change' %>
 <% end %>
