@@ -1,20 +1,34 @@
+// Update the table header row on the first page load
+if (<%=j @participants.current_page.to_s %> == 1) {
+  $("#participants_table thead").html("<%=j render(:partial => 'participants/reports/table_header') %>")
+}
+
+// Append the new participant data to the table on the screen
 $("#participants_table")
+  .data("loading", true)
   .removeClass("loading")
   .attr("data-report", "<%= @report %>")
   .addClass("<%= @report %>")
   .append("<%=j render(:partial => 'participant', :collection => @participants, :locals => { :report => h(@report || 'basic') }) %>")
 
+// Update the loading indicator's progress bar
 updateLoadProgress("<%= number_to_percentage(params[:page].to_f / @participants.total_pages.to_i * 100) %>")
 
-history.pushState({'report' : '<%= @report %>'}, '<%= @report.titleize %>', '?report=<%= @report %>')
+// Update the browser history state on the first page load
+if (<%=j @participants.current_page.to_s %> == 1) {
+  history.pushState({'report' : '<%= @report %>'}, '<%= @report.titleize %>', '?report=<%= @report %>')
+}
 
+// Set up the export report
 $("#export_actions").html("<%=j render('export_actions') %>")
 exportReportType = "<%=j params[:report] %>"
 
+// Set up the attendance table if this is an attendance page
 if (typeof attendanceEventIds !== 'undefined') {
   buildAttendanceTable(attendanceEventIds)
 }
 
+// Run all of the page load hooks
 $("#stages_selector").html("<%=j render('stages') %>")
 $("#stages_selector a[data-stage]").click(clickStageSelector)
 updateFiltersWithLocationHash()
@@ -24,12 +38,11 @@ prepareSelectAll()
 $('tr.participant .needs-followup-container > a').click(showFollowUpPanel);
 registerTableSorters()
 
-
-
-
+// Fetch the next page of participants
 if ("<%=j @participants.next_page.to_s %>" && !stopLoading) {
   console.log("Fetching page <%=j @participants.next_page.to_s %>")
   $.ajax({ url: '<%=j url_for(:report => @report, :page => @participants.next_page) %>', dataType: 'script' });
 } else {
   hideLoadProgress()
+  $("#participants_table").data("loading", false)
 }

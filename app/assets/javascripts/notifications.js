@@ -55,8 +55,11 @@ function updateFlashes(flash) {
 Turn the primary "Loading" indicator into a progress bar and update the progress bar's width.  
 */
 function updateLoadProgress(new_size) {
+  if (typeof(new_size) == "number")
+    new_size = "" + (new_size * 100) + "%"
   $("#indicator").addClass("progress")
   $("#indicator .size").css({ width: new_size })
+  return new_size
 }
 var stopLoading = false;
 

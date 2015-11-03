@@ -17,12 +17,9 @@ class ParticipantsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.xml { render :xml => @participants }
+      format.xml  { render :xml => @participants.unpaginate }
       format.js
-      format.xlsx {
-        @participants = Participant.all
-        respond_to_xlsx
-      }
+      format.xlsx { respond_to_xlsx }
     end
   end
 
@@ -40,8 +37,8 @@ class ParticipantsController < ApplicationController
 
     respond_to do |format|
       format.html { render :action => 'index' }
-      format.xml  { render :xml => @participants }
-      format.js { render 'index'}
+      format.xml  { render :xml => @participants.unpaginate }
+      format.js   { render 'index'}
       format.xlsx { respond_to_xlsx }
     end
   end
@@ -55,8 +52,8 @@ class ParticipantsController < ApplicationController
     
     respond_to do |format|
       format.html { render :action => 'index' }
-      format.xml  { render :xml => @participants }
-      format.js { render 'index'}
+      format.xml  { render :xml => @participants.unpaginate }
+      format.js   { render 'index'}
 		  format.xlsx { respond_to_xlsx }
     end
   end
@@ -72,15 +69,15 @@ class ParticipantsController < ApplicationController
       return render_error("You are not allowed to view that high school.")
     end
     
-    @participants = request.format == Mime::HTML ? [] : Participant.in_cohort(@grad_year).in_high_school(@high_school.try(:id)).page(params[:page])
+    @participants = Participant.in_cohort(@grad_year).in_high_school(@high_school.try(:id)).page(params[:page])
     @participant_groups = ParticipantGroup.find(:all, :conditions => { :location_id => @high_school, :grad_year => @grad_year })
 		@cache_key = fragment_cache_key(:action => :high_school_cohort, :id => @high_school.id, :cohort => @grad_year, :format => :xlsx)
     @export = report_type.for_key(@cache_key)
 
     respond_to do |format|
       format.html { render :action => 'index' }
-      format.xml  { render :xml => @participants }
-      format.js { render 'index'}
+      format.xml  { render :xml => @participants.unpaginate }
+      format.js   { render 'index'}
 		  format.xlsx { respond_to_xlsx }
     end    
   end
@@ -106,8 +103,8 @@ class ParticipantsController < ApplicationController
     
     respond_to do |format|
       format.html { render :action => 'index' }
-      format.xml  { render :xml => @participants }
-      format.js { render 'index'}
+      format.xml  { render :xml => @participants.unpaginate }
+      format.js   { render 'index'}
 		  format.xlsx { respond_to_xlsx }
     end
   end
@@ -123,8 +120,8 @@ class ParticipantsController < ApplicationController
     
     respond_to do |format|
       format.html { render :action => 'index' }
-      format.xml  { render :xml => @participants }
-      format.js { render 'index'}
+      format.xml  { render :xml => @participants.unpaginate }
+      format.js   { render 'index'}
 		  format.xlsx { respond_to_xlsx }
     end
   end
@@ -138,8 +135,8 @@ class ParticipantsController < ApplicationController
 		
 		respond_to do |format|
       format.html { render :action => 'index' }
-      format.xml  { render :xml => @participants }
-      format.js { render 'index'}
+      format.xml  { render :xml => @participants.unpaginate }
+      format.js   { render 'index'}
 		  format.xlsx { respond_to_xlsx }
     end
   end
@@ -153,8 +150,8 @@ class ParticipantsController < ApplicationController
     
     respond_to do |format|
       format.html { render :action => 'index' }
-      format.xml  { render :xml => @participants }
-      format.js { render 'index'}
+      format.xml  { render :xml => @participants.unpaginate }
+      format.js   { render 'index'}
 		  format.xlsx { respond_to_xlsx }
     end
   end
@@ -176,8 +173,8 @@ class ParticipantsController < ApplicationController
     
     respond_to do |format|
       format.html { render :action => 'index' }
-      format.xml  { render :xml => @participants }
-      format.js { render 'index'}
+      format.xml  { render :xml => @participants.unpaginate }
+      format.js   { render 'index'}
 		  format.xlsx { respond_to_xlsx }
     end    
   end
@@ -492,6 +489,7 @@ class ParticipantsController < ApplicationController
   end
   
   def report_object_ids
+    @participants = @participants.unpaginate
     case params[:report]
     when "test_score_summaries" then @participants.collect(&:test_scores).flatten.collect(&:id)
     when "college_applications" then @participants.collect(&:college_applications).flatten.collect(&:id)

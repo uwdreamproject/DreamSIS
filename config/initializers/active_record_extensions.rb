@@ -15,6 +15,13 @@ module ChangeLogged
   end
 end
 
+module Unpaginate
+  def unpaginate
+    self.limit(100000).offset(0)
+  end
+end
+
 # include the extensions
 ActiveRecord::Base.send(:include, ActiveRecordTitle)
 ActiveRecord::Base.send(:include, ChangeLogged)
+::ActiveRecord::Relation.send(:include, Unpaginate)
