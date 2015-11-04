@@ -84,21 +84,21 @@ class ParticipantsController < ApplicationController
 
   def college
     @college = Institution.find(params[:college_id].to_i)
-    @participants = []
+    @participants = Participant.where("0=1").page(1)
     @stages = CollegeApplication::Stages
 		@title << @college
 		@cache_key = fragment_cache_key(:action => :college, :id => @college.try(:id), :format => :xlsx)
     @export = report_type.for_key(@cache_key)
 
     if request.xhr?
-      @participants = @college.interested_participants
+      @participant_ids = @college.interested_participants.select("people.id").collect(&:id)
       @stages = {}
       for stage in CollegeApplication::Stages
         stage_participants = @college.try("#{stage}_participants")
         @stages[stage] = stage_participants.collect(&:id)
-        @participants += stage_participants
+        @participant_ids += @stages[stage]
       end
-      @participants = @participants.flatten.uniq.compact.sort
+      @participants = Participant.where(id: @participant_ids).page(params[:page])
     end
     
     respond_to do |format|

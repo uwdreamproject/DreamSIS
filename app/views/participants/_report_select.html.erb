@@ -1,5 +1,5 @@
 <%- 
-reports = Participant::ReportTypes
+reports = Participant::ReportTypes.dup
 reports.delete(:college_stages) unless @stages
 -%>
 
