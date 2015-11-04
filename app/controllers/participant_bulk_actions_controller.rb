@@ -75,6 +75,23 @@ class ParticipantBulkActionsController < ParticipantsController
     return render :text => "Error"
   end
   
+  def assign_to_group
+    @participant_groups = ParticipantGroup.find(params[:participant_group_ids].split(","))
+    respond_to do |format|
+      format.js
+    end
+  end
+  
+  def process_assign_to_group
+    @participant_group = ParticipantGroup.find(params[:participant_group_id])
+    flash[:error] = "Could not find participant group with that ID" unless @participant_group
+    
+    for participant in @participants
+      participant.participant_group = @participant_group
+      participant.save
+    end
+  end
+  
   protected
   
   def fetch_participants

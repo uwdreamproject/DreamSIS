@@ -34,7 +34,8 @@ function prepareSelectAll() {
 // Prep the bulk actions links to incorporate the currently selected rows with javascript.
 $( function() {
   $(".bulk_actions a").click(function() {
-    $( this ).attr("href", $(this).data("original-href") + "?" + selectedElements().serialize())
+    var url = $(this).data("original-href") + "?" + selectedElements().serialize() + "&" + $(this).data("extra-params")
+    $( this ).attr("href", url)
   })
 })
 

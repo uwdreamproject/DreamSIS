@@ -1,9 +1,8 @@
 <tr id="participant_group_<%= participant_group.id %>">
-  <td><%=h participant_group.title %></td>
+  <td class="name"><%=h link_to participant_group.title, participant_group %></td>
   <td><%=h participant_group.location.try(:name) %></td>
   <td><%= participant_group.grad_year %></td>
   <td><%= participant_group.participants_count %></td>
-  <td><%= link_to 'Show', participant_group_path(participant_group) %></td>
-  <td><%= link_to 'Edit', edit_participant_group_path(participant_group) %></td>
-  <td><%= link_to 'Destroy', participant_group_path(participant_group), :confirm => 'Are you sure?', :method => :delete %></td>
+  <td class="functions"><%= link_to 'Edit', edit_participant_group_path(participant_group) %></td>
+  <td class="functions"><%= link_to 'Destroy', participant_group_path(participant_group), :confirm => 'Are you sure?', :method => :delete %></td>
 </tr>

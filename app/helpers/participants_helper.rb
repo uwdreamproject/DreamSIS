@@ -20,6 +20,7 @@ module ParticipantsHelper
     link_to title, 
       participant_bulk_action_path(action_name), 
       "data-original-href" => participant_bulk_action_path(action_name),
+      "data-extra-params" => options[:extra_params],
       :class => "#{options[:class]} button", 
       :remote => true, 
       :method => :post
