@@ -1,27 +1,13 @@
-<table class="participants" id="participants_table">
-	<thead>
-		<tr>
-			<th><input type="checkbox" onClick="$$('input.index_check_box').each(function(e) { e.checked = this.checked }, this)"></th>
-			<th>Name</th>
-			<th>Cohort</th>
-			<th>Last Updated</th>
-			<th colspan=3></th>
-		</tr>
-	</thead>
-
-	<tbody>
-		<tr class="empty"><td class="loading" colspan=10></td></tr>
+<table class="participants multirow active-report" id="participants_table">
+	<thead></thead>
 	
-		<%- if (@my_mentees || @participants).empty? -%>
-			<tr class="empty">
-				<td colspan=10>You don't currently have any <%= Customer.mentees_label %> assigned to you.</td>
-			</tr>
-		<% end -%>
-	</tbody>
-		
+	<tfoot id="empty_placeholder" style="display:none">
+		<tr class="empty">
+			<td colspan=20>You don't currently have any <%= Customer.mentees_label %> assigned to you.</td>
+		</tr>
+	</tfoot>
 </table>
 
 <%= javascript_tag "$( function() {
-	 $.ajax({ url: '#{mentor_participants_path(@mentor, :report => 'basics')}', dataType: 'script' });
+	 $.ajax({ url: '#{mentor_participants_path(@mentor, :report => 'basics', :page => 1)}', dataType: 'script' });
 })" %>
-

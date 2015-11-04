@@ -72,7 +72,7 @@ function toggleExpandFiltersView() {
 // Tries to update a div with id "filtered_record_count" with the number of filterables that are visible.
 function updateRecordCount(filter_key) {
   $('#filtered_record_count').html($('.filterable:not(.hidden)').size() + " of")
-  $('#total_record_count').html($('.filterable').size())
+  // $('#total_record_count').html($('.filterable').size())
   $(".filter_checkbox").each(function(i) {
     $(this).siblings("small").html( 
       $(".filterable:not(.hidden)[data-filter-" + $(this).data("target-filter-id") + "='true']" ).size() 

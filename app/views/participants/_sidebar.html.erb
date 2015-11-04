@@ -49,7 +49,7 @@ placeholder_text <<  "all #{Customer.participants_label}" if !@grad_year || !@hi
 	<% end %>
 	
 	<%= render "bulk_actions" %>
-	<%= render "filter_controls" unless @participants.respond_to?(:current_page) %>		
+	<%= render "filter_controls" %>		
 	<%= render "participant_groups_sidebar" if @participant_groups && !@participant_groups.empty? %>
 			
 <% end -%>

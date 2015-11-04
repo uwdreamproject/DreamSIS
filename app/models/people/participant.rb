@@ -61,6 +61,16 @@ class Participant < Person
 		documents: "Documents",
 		notes: "Notes"
   }
+  
+  # Stores the possible ways that participant lists can be dynamically displayed.
+  ReportTypes = {
+    basics: "Basics",
+    college_applications: "College Applications", 
+    test_score_summaries: "Test Scores", 
+    rosters: "Roster", 
+    attendance_summaries: "Attendance", 
+    college_stages: "College Pipeline" 
+  }
 
   def validate_name?
     true

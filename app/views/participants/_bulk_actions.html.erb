@@ -5,7 +5,11 @@
 	<p><%= link_to_participant_bulk_action "Send e-mail", :send_email, :class => "email button"  %></p>
 
 	<%- if @current_user.admin? || @current_user.person.current_lead? -%>
-		<!-- <p><%#= link_to_participant_bulk_action "Assign to group", :assign_group, :class => "people button"  %></p> -->
+		<%- if @participant_groups && !@participant_groups.empty? -%>
+			<p><%= link_to_participant_bulk_action "Add to group", :assign_to_group, :class => "people button", 
+						:extra_params => "participant_group_ids=#{@participant_groups.collect(&:id).join(",")}" %></p>
+		<% end %>
+		
 		<p><%= link_to_participant_bulk_action "Assign to #{Customer.mentor_label}", :assign_mentor, :class => "add user button"  %></p>
 	<%- end %>
 

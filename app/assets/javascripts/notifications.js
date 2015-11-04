@@ -50,3 +50,31 @@ function updateFlashes(flash) {
 	if(flash.info)  { $('#info_notification').html(flash.info).addClass('visible') }
 	if(flash.saved) { $('#saved_notification').html(flash.saved).addClass('visible') }
 }
+
+/*
+Turn the primary "Loading" indicator into a progress bar and update the progress bar's width.  
+*/
+function updateLoadProgress(new_size) {
+  if (typeof(new_size) == "number")
+    new_size = "" + (new_size * 100) + "%"
+  $("#indicator").addClass("progress")
+  $("#indicator .size").css({ width: new_size })
+  return new_size
+}
+var stopLoading = false;
+
+/*
+  Revert the primary "Loading" indicator back into a regular spinner without progress bar.
+*/
+function hideLoadProgress() {
+  $("#indicator").removeClass("progress")
+  $("#indicator .size").css({ width: 0 })
+}
+
+$(function() {
+  $("#indicator a.stop-loading").click(function(event) {
+    event.preventDefault();
+    console.log("User requested to stop the loading process")
+    stopLoading = true;
+  })
+})

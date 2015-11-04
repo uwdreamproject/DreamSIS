@@ -1,7 +1,8 @@
 $(function () {
   
   $('select#report').change(function() {
-    $('#participants_table').empty().addClass('loading');
+    $('#participants_table tbody').remove();
+    stopLoading = false;
   })
   
   $('.section_score').change(function() {
