@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
   before_filter :login_required, :except => [ 'remove_vicarious_login', 'ping' ]
   before_filter :save_user_in_current_thread, :except => %w[ ping ]
   before_filter :save_return_to, :except => %w[ ping ]
+  before_filter :check_rack_mini_profiler
   before_filter :check_authorization, :except => %w[ ping ]
   before_filter :check_if_enrolled, :except => %w[ ping ]
   after_filter :flash_to_headers, :except => %w[ ping ]
@@ -99,6 +100,13 @@ class ApplicationController < ActionController::Base
       flash_json = Hash[flash.map{|k,v| [k,ERB::Util.h(v)] }].to_json
       response.headers['X-Flash-Messages'] = flash_json
       flash.discard
+    end
+  end
+  
+  def check_rack_mini_profiler
+    # for example - if current_user.admin?
+    if @current_user && @current_user.admin? && params[:rmp]
+      Rack::MiniProfiler.authorize_request
     end
   end
 
