@@ -41,7 +41,7 @@ function prepAutocompletes() {
       };
       $(this).autocomplete("option", "source", $(this).data("source"));
     }
-	});
+	}).attr("spellcheck", "false").attr("autocomplete", "off").attr("autocapitalize", "off");
 }
 
 function display_autocomplete_details(item, container) {

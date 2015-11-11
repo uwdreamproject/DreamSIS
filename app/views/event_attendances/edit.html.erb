@@ -2,6 +2,8 @@
 <h1><%= @attendee.fullname %>
 	<%= content_tag(:span, "Anonymous User", :class => 'outline tag') if @attendee.try(:person).try(:is_anonymous_user?) %>
 	</h1>
+	
+	<%= content_tag :div, "<p>Note: This person registered as an anonymous user, meaning that they did not log in with an account. This means that:</p> <ul><li>This person will not be able to change their RSVP on their own (but you can modify the response on their behalf here)</li><li>You cannot assign this person admin status for this event.</li></ul>".html_safe, :class => "warning" if @attendee.try(:person).try(:is_anonymous_user?) %>
 
 <%= semantic_form_for(@attendee, :url => event_event_attendance_path(@event, @attendee)) do |f| %>
 
