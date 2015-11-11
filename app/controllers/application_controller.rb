@@ -104,7 +104,6 @@ class ApplicationController < ActionController::Base
   end
   
   def check_rack_mini_profiler
-    # for example - if current_user.admin?
     if @current_user && @current_user.admin? && params[:rmp]
       Rack::MiniProfiler.authorize_request
     end
