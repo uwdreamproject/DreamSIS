@@ -128,7 +128,7 @@ class ParticipantsController < ApplicationController
 
   def mentor
     @mentor = Mentor.find(params[:mentor_id] == "me" ? User.current_user.try(:person_id) : params[:mentor_id])
-    @participants = Participant.assigned_to_mentor(@mentor.try(:id)).page(params[:page])
+    @participants = Participant.assigned_to_mentor(@mentor.try(:id)).page(params[:page]).readonly(false)
 		@title << "Assigned to #{@mentor.try(:fullname)}"
 		@cache_key = fragment_cache_key(:action => :mentor, :id => @mentor.id, :format => :xlsx)
     @export = report_type.for_key(@cache_key)
