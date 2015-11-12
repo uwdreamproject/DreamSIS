@@ -44,3 +44,10 @@ function showFollowUpPanel(event) {
   $(".needs-followup-container .controls:not(.current)").removeClass("visible")
   $(this).siblings(".controls").find("form textarea").focus()
 }
+
+/*
+  Enable the click handler for creating follow-up notes.
+*/
+function prepareFollowupPanels() {
+  $('.needs-followup-container > a').on("click", showFollowUpPanel);
+}
