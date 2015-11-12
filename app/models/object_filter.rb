@@ -2,6 +2,7 @@ class ObjectFilter < ActiveRecord::Base
   validates_presence_of :object_class, :title, :criteria  
   validate :validate_criteria
   validates_format_of :title, :with => /\A[^.]+\Z/, :message => "cannot include a period"
+  after_save :expire_object_filters_cache
   
   belongs_to :earliest_grade_level, :class_name => "GradeLevel", :primary_key => 'level', :foreign_key => 'earliest_grade_level_level'
   belongs_to :latest_grade_level, :class_name => "GradeLevel", :primary_key => 'level', :foreign_key => 'latest_grade_level_level'
@@ -20,6 +21,7 @@ class ObjectFilter < ActiveRecord::Base
   # to change the behavior for filters marked as +stats_shows_opposite+.
   def passes?(object, options = { :purpose => :filter })
     result = object.instance_eval(criteria)
+    result = false if result.nil?
     options[:purpose].to_sym == :stats && display_filter_as_opposite? ? !result : result
   end
 
@@ -75,6 +77,10 @@ class ObjectFilter < ActiveRecord::Base
     valid = participant.grade >= earliest_grade_level_level unless earliest_grade_level_level.nil?
     valid = participant.grade <= latest_grade_level_level unless latest_grade_level_level.nil?
     return valid
+  end
+  
+  def expire_object_filters_cache
+    object_class.constantize.expire_object_filters_cache
   end
   
 end

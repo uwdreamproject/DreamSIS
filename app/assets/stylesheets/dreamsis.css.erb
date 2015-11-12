@@ -145,7 +145,7 @@ table {
 }
 
 tr {
-	/*-webkit-transition: background-color 0.15s ease-in-out;*/
+	/*transition: background-color 0.15s ease-in-out;*/
 }
 
 table.multirow tbody:hover td.multirow-highlight {
@@ -243,8 +243,8 @@ table.participants.loading {
 }
 
 table.participants td, table.participants th {
-	-webkit-transition: opacity 0.25s ease-in-out 0s;
-	-webkit-transition: color 0.25s ease-in-out 0s;
+	transition: opacity 0.25s ease-in-out 0s;
+	transition: color 0.25s ease-in-out 0s;
 }
 
 table.participants.loading th:not(.name) {
@@ -449,7 +449,7 @@ h4 {
 	font-weight: bold;
 	opacity: 0;
 	text-shadow: rgba(255,255,255,0.9) 0 1px 0;
-	-webkit-transition: all 0.25s ease-in-out;
+	transition: all 0.25s ease-in-out;
 	z-index: 1000;
 }
 
@@ -884,7 +884,7 @@ a.login-link span {
 	padding-top: 50px;
 	background-repeat: no-repeat;
 	background-position: center top;
-	-webkit-transition: all 0.25s ease-out;
+	transition: all 0.25s ease-out;
 }
 
 a.login-link:hover span {
@@ -1086,7 +1086,7 @@ a.redirect-link:hover {
 	min-height: 5em;
 	/*background-color: rgb(247, 249, 250);*/
 	border-bottom: 5px solid rgb(236, 241, 245);
-	-webkit-transition: all 0.25s ease-in-out;
+	transition: all 0.25s ease-in-out;
 	/*width: 95%;*/
 }
 
@@ -1099,7 +1099,7 @@ a.redirect-link:hover {
 
 .record-header .photo-container .avatar {
 	background: url(<%= asset_path 'blank_avatar.png' %>) 50% 50% / 105%;
-	-webkit-transition: all 0.25s ease-in-out;
+	transition: all 0.25s ease-in-out;
   width: 80px;
   height: 80px;
   display: block;
@@ -1133,7 +1133,7 @@ a.redirect-link:hover {
   top: 105%;
   background: white;
   padding: 1em;
-	-webkit-transition: all 0.25s ease-in-out;
+	transition: all 0.25s ease-in-out;
   opacity: 0;
   visibility: hidden;
 }
@@ -1153,7 +1153,7 @@ a.redirect-link:hover {
 	float: left;
 	margin-left: 20px;
 	margin-top: 10px;
-	-webkit-transition: all 0.25s ease-in-out;
+	transition: all 0.25s ease-in-out;
   max-width: 50%;
 }
 
@@ -1164,7 +1164,7 @@ a.redirect-link:hover {
 
 .record-header .details {
 	float: right;
-	-webkit-transition: all 0.25s ease-in-out;
+	transition: all 0.25s ease-in-out;
 	
 }
 
@@ -1233,8 +1233,8 @@ body.scrolled-past-header .record-header .photo {
 	
 	position: fixed;
 	background: rgba(255,255,255,0.95);
-	-webkit-transition: box-shadow 0.2s ease-in-out;
-	-webkit-transition: top 0.25s ease-out;
+	transition: box-shadow 0.2s ease-in-out;
+	transition: top 0.25s ease-out;
 	z-index: 100;
   overflow: scroll;
   max-height: 100%;
@@ -1248,7 +1248,7 @@ body.scrolled-past-header .record-header .photo {
 .info-section-container.vertical ul.tabs li {
 	width: 60px;
 	overflow: hidden;
-	-webkit-transition: width 0.2s ease-out;
+	transition: width 0.2s ease-out;
 	position: relative;
 	border-right: 1px solid rgb(229, 231, 241);
 }
@@ -1273,7 +1273,7 @@ body.scrolled-past-header .record-header .photo {
 	background-position: 20px center;
 	
 	width: 300px;
-	/*-webkit-transition: all 0.1s ease-in-out 0.05s;*/
+	/*transition: all 0.1s ease-in-out 0.05s;*/
 }
 
 .info-section-container.vertical ul.tabs li a.active {
@@ -1301,7 +1301,7 @@ body.scrolled-past-header .record-header .photo {
 	font-family: "Helvetica Neue", Helvetica, sans-serif;
 	color: #fff;
 	border-radius: 20px;
-	-webkit-transition: all 0.2s ease-in-out 0;
+	transition: all 0.2s ease-in-out 0;
 
 
 	left: 195px;
@@ -1343,7 +1343,7 @@ body.scrolled-past-header .record-header .photo {
 	padding: 2px 5px;
 	text-align: center;
 	background: #fe4c4c;
-	/*-webkit-transition: all 0.25s ease-in-out 0.25s;*/
+	/*transition: all 0.25s ease-in-out 0.25s;*/
 }
 
 .info-section-container.vertical ul.tabs li a.filter_results span.count.calculating {
@@ -1358,7 +1358,7 @@ body.scrolled-past-header .record-header .photo {
 	left: 45px;
 	bottom: 8px;
 	background: url(<%= asset_path 'bullets/grey-square.gif' %>) 0 bottom repeat-y;
-	-webkit-transition: opacity 0.25s ease-in-out 0s;
+	transition: opacity 0.25s ease-in-out 0s;
 }
 
 .info-section-container.vertical ul.tabs:hover .count-bar {
@@ -1413,7 +1413,7 @@ body.scrolled-past-header .record-header .photo {
 }
 
 .info-section-container.vertical ul.tabs .tips a {
-  -webkit-transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
   opacity: 0;
   padding-left: 15px;
   font-size: 70%;
@@ -1478,7 +1478,7 @@ body.participants.show #content-wrap {
 }
 
 #avatar_container img {
-	-webkit-transition: opacity 0.5s ease-in-out;
+	transition: opacity 0.5s ease-in-out;
 }
 
 #avatar_container form {
@@ -1503,7 +1503,7 @@ body.participants.show #content-wrap {
 	bottom: 1em;
 	left: 50%;
 	margin-left: -35%;
-	-webkit-transition: opacity 0.25s ease-in-out;
+	transition: opacity 0.25s ease-in-out;
 	opacity: 0;
 }
 
@@ -1932,7 +1932,7 @@ ul.crimes-list li {
 	-webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.35);
 	margin-bottom: 20px;
 	opacity: 0;
-	-webkit-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
 	z-index: -100;
 	display: inline-block;
 	top: -50px !important;
@@ -1983,7 +1983,7 @@ ul.crimes-list li {
 	opacity: 0;
 	text-shadow: none;
 	box-shadow: none;
-	-webkit-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
 	z-index: 1000;
 	border: none;
 }
@@ -2090,7 +2090,7 @@ body.error #content-wrap p {
 	background: rgba(255,255,255,0.95);
 	border-top-right-radius: 5px;
 	border: 1px solid rgba(0,0,0,0.1);
-	-webkit-transition: all 0.25s ease-in-out;
+	transition: all 0.25s ease-in-out;
 	max-height: 95%;
 	max-width: 70%;
 	overflow: auto;
@@ -2352,7 +2352,7 @@ body.attendance .success-marker {
 	white-space: nowrap;
 	font-style: normal;
 	opacity: 0;
-	-webkit-transition: opacity 0.15s ease-out;
+	transition: opacity 0.15s ease-out;
 }
 
 .attendance .optioned:hover {
@@ -2420,7 +2420,7 @@ body.attendance .success-marker {
 	z-index: 20;
 	font-style: normal;
 	opacity: 0;
-	-webkit-transition: opacity 0.15s ease-out;
+	transition: opacity 0.15s ease-out;
 }
 
 .attendance.mini .attendance-day:hover .details {
@@ -2465,7 +2465,7 @@ body.attendance .success-marker {
 	width: 95% !important;
 	border-color: transparent;
 	background-color: transparent;
-	-webkit-transition: all 0.25s ease-in-out;
+	transition: all 0.25s ease-in-out;
 }
 
 .activity_logs td.notes textarea:focus {
@@ -2537,7 +2537,7 @@ body.attendance .success-marker {
 
 
 input, textarea, select {
--webkit-transition: border linear 0.2s,box-shadow linear 0.2s;
+transition: border linear 0.2s,box-shadow linear 0.2s;
 -moz-transition: border linear 0.2s,box-shadow linear 0.2s;
 -ms-transition: border linear 0.2s,box-shadow linear 0.2s;
 -o-transition: border linear 0.2s,box-shadow linear 0.2s;
@@ -2995,7 +2995,7 @@ ul.big.choice li {
 	border: 1px solid #7f7f7f;
 	box-shadow: rgba(0, 0, 0, 0.117188) 0px 1px 2px 0px inset;
 	background-color: #fcfcfc;
-	-webkit-transition: 0.25s all ease-in-out;
+	transition: 0.25s all ease-in-out;
 	display: inline-block;
 	text-align: center;
 	text-decoration: none;
@@ -3332,7 +3332,7 @@ a.button:active {
 	text-shadow: white 0 -1px 1px;
 	width: 97%;
 	float: left;
-	-webkit-transition: all 0.1s ease-in-out;
+	transition: all 0.1s ease-in-out;
 	opacity: 0.9;
 }
 
@@ -3363,7 +3363,7 @@ a.button:active {
 .schedule ul.meetings li p {
 	padding: 0 5px;
 	margin: 0;
-	-webkit-transition: all 0.5s ease-in;
+	transition: all 0.5s ease-in;
 	font-size: 95%;
 }
 
@@ -3423,7 +3423,7 @@ a.button:active {
 }*/
 
 .schedule ul.meetings li p.signup-link a {
-	-webkit-transition: all 0.5s ease-in;
+	transition: all 0.5s ease-in;
 	opacity: 0;
 }
 
@@ -3659,7 +3659,7 @@ td.badges a:hover span.icon {
 }
 
 .filterable {
-	-webkit-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
 }
 
 .filterable.hidden {
@@ -4412,7 +4412,7 @@ td.signup-meter {
 	float: left;
 	border-radius: 5px 0 0 5px;
   height: 10px;
-  -webkit-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
 
 .signup-meter div.target {
@@ -4584,7 +4584,7 @@ div.notes.editable, p.notes.editable {
   border-radius: 5px;
   margin-bottom: 1em;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05);
-  -webkit-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
 
 .notes blockquote.hidden {
@@ -4705,7 +4705,7 @@ div.notes.editable, p.notes.editable {
   font-size: 125%;
   color: rgba(0,0,0,0.25);
   font-weight: lighter;
-  -webkit-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
 
 .notes .date-interval.hidden {
@@ -4942,7 +4942,7 @@ code.log-file {
 
 .hoverable .show_on_hover {
 	opacity: 0;
-	-webkit-transition: opacity 0.15s ease-in-out;
+	transition: opacity 0.15s ease-in-out;
 }
 
 .hoverable:hover .show_on_hover {
@@ -5128,7 +5128,7 @@ table.rsvp td.map img {
 }
 
 table.rsvp td.map a img {
-	-webkit-transition: all 0.25s ease-out;
+	transition: all 0.25s ease-out;
 }
 
 /*table.rsvp td.map a:hover img {

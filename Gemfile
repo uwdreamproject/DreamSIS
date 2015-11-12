@@ -76,3 +76,8 @@ end
 group :test do
   gem 'turn', :require => false
 end
+
+gem 'rack-mini-profiler'
+gem 'flamegraph'
+gem 'stackprof'
+gem 'memory_profiler'

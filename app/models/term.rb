@@ -87,13 +87,15 @@ class Term < ActiveRecord::Base
     
   
   # Finds term where current date falls before term.end_date and after or on term.start_date 
-  def self.current_term()
-    q = Term.find(:first, :conditions => [ "? >= start_date AND ? < end_date", Time.now, Time.now])
-    q ||= Quarter.create(:year => Time.now.year,
+  def self.current_term
+    @current_term ||= {}
+    return @current_term[Apartment::Tenant.current] if @current_term[Apartment::Tenant.current]
+    @current_term[Apartment::Tenant.current] = Term.find(:first, :conditions => [ "? >= start_date AND ? < end_date", Time.now, Time.now])
+    @current_term[Apartment::Tenant.current] ||= Quarter.create(:year => Time.now.year,
                          :quarter_code => Quarter.guess_quarter_code, 
                          :start_date => Quarter.guess_first_day(Quarter.guess_quarter_code, Time.now.year),
                          :end_date  => Quarter.guess_last_day(Quarter.guess_quarter_code, Time.now.year))
-    q.valid? ? q : nil
+    @current_term[Apartment::Tenant.current].valid? ? @current_term[Apartment::Tenant.current] : nil
   end
   
   def current_term?

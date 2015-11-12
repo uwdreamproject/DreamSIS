@@ -149,7 +149,8 @@ class Customer < ActiveRecord::Base
   
   # Returns the current customer record by looking up the Customer whose url_shortcut matches the tenant name.
   def self.current_customer
-    Customer.where(:url_shortcut => Apartment::Tenant.current).first || Customer.new
+    @current_customer ||= {}
+    @current_customer[Apartment::Tenant.current] ||= Customer.where(:url_shortcut => Apartment::Tenant.current).first || Customer.new
   end
   
   # The tenant name used by this Customer for apartment multitenancy.

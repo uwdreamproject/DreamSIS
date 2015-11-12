@@ -101,7 +101,8 @@ class Participant < Person
   
   # Returns all Filter objects that list Participant as the object_class
   def self.object_filters
-    ObjectFilter.where(object_class: "Participant")
+    @object_filters ||= {}
+    @object_filters[Apartment::Tenant.current] ||= ObjectFilter.where(object_class: "Participant")
   end
 
   def method_missing(method_name, *args)
@@ -121,7 +122,7 @@ class Participant < Person
   # Checks the +filter_cache+ to see whether or not this person passes the specified filter.
   # If the +filter_cache+ doesn't exist, it creates it.
   def passes_filter?(object_filter)
-    update_filter_cache! if !filter_cache.is_a?(Hash) || self.filter_cache[object_filter.id].nil?
+    update_filter_cache! && save if !filter_cache.is_a?(Hash) || self.filter_cache[object_filter.id].nil?
     self.filter_cache[object_filter.id]
   end
 
