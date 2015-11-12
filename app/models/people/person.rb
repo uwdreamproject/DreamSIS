@@ -127,6 +127,10 @@ class Person < ActiveRecord::Base
     []
   end
 
+  def self.expire_object_filters_cache
+    @object_filters = nil
+  end
+
   # Allows for generic filters to be accessed as instance methods
   def method_missing(method_name, *args)
     if m = method_name.to_s.match(/\Apasses_filter_(\d+)\Z/)

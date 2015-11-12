@@ -2,39 +2,41 @@
 <%- report ||= "basics" -%>
 <%- @participant_row_index = 1 -%>
 
-<% 
-filter_html_attributes = []
-Participant.object_filters.each do |object_filter|
-	filter_html_attributes << "data-filter-#{object_filter.id}=#{participant.passes_filter?(object_filter)}" if object_filter.display_now?
-end
--%>
-
-<% 
-if @stages
-	stages = []
-	@stages.each do |stage, participant_ids|
-		stages << stage if participant_ids.include?(participant.id)
+<%- cache [participant.cache_key, "participant-row", Participant.object_filters.collect(&:cache_key).hash, report.to_s].join("/") do -%>
+	<% 
+	filter_html_attributes = []
+	Participant.object_filters.each do |object_filter|
+		filter_html_attributes << "data-filter-#{object_filter.id}=#{participant.passes_filter?(object_filter)}" if object_filter.display_now?
 	end
-end
--%>
+	-%>
 
-<tbody id="<%= dom_id %>" class="filterable" <%= filter_html_attributes.join(" ") %> data-stages="<%= stages.join(" ") if stages %>">
+	<% 
+	if @stages
+		stages = []
+		@stages.each do |stage, participant_ids|
+			stages << stage if participant_ids.include?(participant.id)
+		end
+	end
+	-%>
+
+	<tbody id="<%= dom_id %>" class="filterable" <%= filter_html_attributes.join(" ") %> data-stages="<%= stages.join(" ") if stages %>">
 	
-	<%- 
-	collection ||= (participant.instance_eval(report.pluralize) rescue []) 
-	row_index = 0
-	%>
+		<%- 
+		collection ||= (participant.instance_eval(report.pluralize) rescue []) 
+		row_index = 0
+		%>
 	
-	<%- (collection.empty? ? 1 : collection.size).times do -%>
-		<%- row_index += 1 -%>
-		<%= render :partial => "participants/reports/wrapper", 
-					:locals => { 
-						:collection => collection, 
-						:participant => participant, 
-						:report => report, 
-						:row_count => (collection.empty? ? 1 : collection.size),
-						:row_index => row_index,
-						:filter_html_attributes => filter_html_attributes
-					} %>
-	<% end %>
-</tbody>
+		<%- (collection.empty? ? 1 : collection.size).times do -%>
+			<%- row_index += 1 -%>
+			<%= render :partial => "participants/reports/wrapper", 
+						:locals => { 
+							:collection => collection, 
+							:participant => participant, 
+							:report => report, 
+							:row_count => (collection.empty? ? 1 : collection.size),
+							:row_index => row_index,
+							:filter_html_attributes => filter_html_attributes
+						} %>
+		<% end %>
+	</tbody>
+<% end %>
