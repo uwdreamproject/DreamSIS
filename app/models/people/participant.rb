@@ -101,7 +101,8 @@ class Participant < Person
   
   # Returns all Filter objects that list Participant as the object_class
   def self.object_filters
-    ObjectFilter.where(object_class: "Participant")
+    @object_filters ||= {}
+    @object_filters[Apartment::Tenant.current] ||= ObjectFilter.where(object_class: "Participant")
   end
 
   def method_missing(method_name, *args)
