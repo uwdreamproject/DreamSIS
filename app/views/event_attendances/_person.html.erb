@@ -2,16 +2,16 @@
 	
 	<td class="name">
 		<%= link_to h(person.fullname), person, :target => "_blank" %>
-		<%= content_tag :span, "Non-Participant", :class => "outline tag" unless person.is_a?(Participant) %>
+		<%= content_tag :span, "Non-Participant", :class => "outline tag" if !person.is_a?(Participant) && @audiences.try(:include?, Participant) %>
 		<small class="inactive-note">(inactive)</small>
 		<small class="not-target-note">(<%= Customer.not_target_label %>)</small>
 	</td>
 
 	<td class="cohort">
-		<%= "#{truncate(person.high_school.name, :length => 30)} #{person.grad_year}" if person.respond_to?(:high_school) && !person.high_school.nil? %>
+		<%= "#{truncate(person.high_school.name, :length => 30)} #{person.grad_year}" if person.respond_to?(:high_school) && !person.high_school_id.nil? %>
 	</td>
 	
-	<td><% e = person.event_attendances.find_by_event_id(@event.id) %>
+	<td><% e = @event_attendances[person.id] rescue person.event_attendances.where(event_id: @event.id).first %>
 		<% if e && e.attended? %>
 			<span class="green">Checked in at <%= e.updated_at.to_s(:time12) %></span></td>
 			<td><%= button_to( "Undo",

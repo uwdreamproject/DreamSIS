@@ -4,24 +4,8 @@
 
 	<%= content_tag :p, "This event has passed... are you sure you want to be checking in attendees?", :class => "weak error-message" if @event.date.far_past? %>
 	  <div>
-			<input type="text" size="30" id="person_fullname" class="search" placeholder="Search for a <%= @audiences.collect(&:to_s).join("/") %>" />
+			<input type="text" size="30" id="person_fullname" class="search" placeholder="Search for a <%= @audiences.collect(&:to_s).join("/") %>" data-source="<%= auto_complete_for_person_fullname_event_event_attendances_url(:format => :js) + "?audience=#{@audience.to_s}&person[fullname]=" %>" />
 	  </div>
-		<%= javascript_tag("$( document ).ready(function(){
-			var thread = null;
-
-			$('#person_fullname').on('keyup', function() {
-				if (this.value.length > 2) {
-					clearTimeout(thread);
-					var target = $(this);
-					thread = setTimeout(function() {
-						$.ajax({
-							url: '#{auto_complete_for_person_fullname_event_event_attendances_url(:format => :js)}?audience=#{@audience.to_s}&person[fullname]=' + target.val(),
-							cache: false
-						});
-					}, 500);
-				}
-			});
-		});") %>
 		<div class="auto_complete" id="person_fullname_auto_complete"></div>
 	<br />
 
@@ -68,4 +52,4 @@
 
 <%= render :partial => 'sidebar' %>
 
-<%= javascript_tag "window.onload = function() { $('person_fullname').select() }" %>
+<%= javascript_tag "$(function() { $('#person_fullname').select() })" %>

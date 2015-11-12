@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151023210122) do
+ActiveRecord::Schema.define(:version => 20151112183412) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -189,6 +189,9 @@ ActiveRecord::Schema.define(:version => 20151023210122) do
   end
 
   add_index "event_attendances", ["customer_id"], :name => "index_event_attendances_on_customer_id"
+  add_index "event_attendances", ["event_id", "person_id"], :name => "index_event_attendances_on_event_id_and_person_id", :unique => true
+  add_index "event_attendances", ["event_id"], :name => "index_event_attendances_on_event_id"
+  add_index "event_attendances", ["person_id"], :name => "index_event_attendances_on_person_id"
 
   create_table "event_groups", :force => true do |t|
     t.string   "name"
