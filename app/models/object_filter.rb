@@ -20,6 +20,7 @@ class ObjectFilter < ActiveRecord::Base
   # to change the behavior for filters marked as +stats_shows_opposite+.
   def passes?(object, options = { :purpose => :filter })
     result = object.instance_eval(criteria)
+    result = false if result.nil?
     options[:purpose].to_sym == :stats && display_filter_as_opposite? ? !result : result
   end
 
