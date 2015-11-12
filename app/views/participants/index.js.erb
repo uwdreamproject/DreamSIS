@@ -1,6 +1,8 @@
-// Update the table header row on the first page load
+// Update the table header row and setup the export actions on the first page load
 if (<%=j @participants.current_page.to_s %> == 1) {
   $("#participants_table thead").html("<%=j render(:partial => 'participants/reports/table_header') %>")
+  $("#export_actions").html("<%=j render('export_actions') %>")
+  exportReportType = "<%=j @report %>"
 }
 
 // Append the new participant data to the table on the screen
@@ -18,10 +20,6 @@ updateLoadProgress("<%= number_to_percentage(params[:page].to_f / @participants.
 if (<%=j @participants.current_page.to_s %> == 1) {
   history.pushState({'report' : '<%= @report %>'}, '<%= @report.titleize %>', '?report=<%= @report %>')
 }
-
-// Set up the export report
-$("#export_actions").html("<%=j render('export_actions') %>")
-exportReportType = "<%=j @report %>"
 
 // Set up the attendance table if this is an attendance page
 if (typeof attendanceEventIds !== 'undefined') {
