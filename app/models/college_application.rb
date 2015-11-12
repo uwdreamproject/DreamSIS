@@ -41,7 +41,8 @@ class CollegeApplication < ActiveRecord::Base
   end
   
   def do_college_mapper_functions?
-    !participant.college_mapper_id.nil? rescue false
+    # !participant.college_mapper_id.nil? rescue false
+    false
   end
   
   # Returns an array of the most commonly selected institution codes. Specify a number to limit.
