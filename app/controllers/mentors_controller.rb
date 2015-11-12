@@ -52,7 +52,7 @@ class MentorsController < ApplicationController
   end
 
   def edit
-    @mentor = Mentor.find(params[:id])
+    @mentor = Mentor.find(params[:id]) rescue Volunteer.find(params[:id])
   end
 
   def create
@@ -72,11 +72,11 @@ class MentorsController < ApplicationController
   end
 
   def update
-    @mentor = Mentor.find(params[:id])
+    @mentor = Mentor.find(params[:id]) rescue Volunteer.find(params[:id])
     @mentor.validate_name = true
 
     respond_to do |format|
-      if @mentor.update_attributes(params[:mentor])
+      if @mentor.update_attributes(params[:mentor] || params[:volunteer])
         flash[:notice] = 'Mentor was successfully updated.'
         format.html { redirect_to(@mentor) }
         format.xml  { head :ok }
