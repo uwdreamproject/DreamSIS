@@ -1,4 +1,5 @@
-Rack::MiniProfiler.config.storage = Rack::MiniProfiler::MemoryStore
+Rack::MiniProfiler.config.storage = Rack::MiniProfiler::FileStore
+Rack::MiniProfiler.config.disable_caching = false
 
 if Rails.env.production?  
   endpoint = API_KEYS["redis"][Rails.env]["endpoint"]
