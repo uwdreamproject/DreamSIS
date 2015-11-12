@@ -120,5 +120,10 @@ module ApplicationHelper
     end
     content_tag(:div, output, :class => "date-interval #{klass}")
   end
-  
+
+  def timeago(time, options = {})
+    options[:class] ||= "timeago"
+    content_tag(:time, time.to_s, options.merge(:datetime => time.iso8601)) if time
+  end
+
 end

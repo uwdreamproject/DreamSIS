@@ -13,6 +13,6 @@
 </td>
 
 <td class="last-updated <%= "old" if participant.updated_at < 3.months.ago %>">
-	<%= time_ago_in_words(participant.updated_at) %> ago
+	<%= timeago(participant.updated_at.to_time) %>
 </td>
 <td class="functions"></td>
