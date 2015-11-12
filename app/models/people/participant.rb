@@ -122,7 +122,7 @@ class Participant < Person
   # Checks the +filter_cache+ to see whether or not this person passes the specified filter.
   # If the +filter_cache+ doesn't exist, it creates it.
   def passes_filter?(object_filter)
-    update_filter_cache! && save if !filter_cache.is_a?(Hash) || self.filter_cache[object_filter.id].nil?
+    update_filter_cache_and_save! if !filter_cache.is_a?(Hash) || self.filter_cache[object_filter.id].nil?
     self.filter_cache[object_filter.id]
   end
 
