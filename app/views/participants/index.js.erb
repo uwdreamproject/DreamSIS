@@ -37,6 +37,7 @@ updateRecordCount()
 prepareSelectAll()
 $('tr.participant .needs-followup-container > a').click(showFollowUpPanel);
 registerTableSorters()
+updateRelativeTimestamps()
 
 // Fetch the next page of participants
 if ("<%=j @participants.next_page.to_s %>" && !stopLoading) {
