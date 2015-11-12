@@ -8,7 +8,7 @@ class MentorParticipant < ActiveRecord::Base
 
   default_scope :order => "people.lastname, people.firstname", :include => :participant #, :joins => :participant
   
-  after_save :update_college_mapper_association, :if => :college_mapper_student_exists?
+  # after_save :update_college_mapper_association, :if => :college_mapper_student_exists?
 
   after_save :update_filter_cache
   after_destroy :update_filter_cache

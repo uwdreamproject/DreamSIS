@@ -13,8 +13,8 @@
 
 	<%= stylesheet_link_tag "application", media: 'all' %>
 	<%= javascript_include_tag "application" %>
-	<%= stylesheet_link_tag @customer_stylesheet if @customer_stylesheet %>
-	<%= stylesheet_link_tag @extra_stylesheet if @extra_stylesheet %>
+	<%= stylesheet_link_tag @customer_stylesheet unless @customer_stylesheet.blank? %>
+	<%= stylesheet_link_tag @extra_stylesheet unless @extra_stylesheet.blank? %>
 
     <%- if @include_typekit -%>
     	<script type="text/javascript" src="//use.typekit.net/vjh2nav.js"></script>

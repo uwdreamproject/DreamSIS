@@ -29,7 +29,7 @@ class Participant < Person
   scope :attending_college, lambda {|college_id| { :conditions => { :college_attending_id => college_id }}}
   scope :assigned_to_mentor, lambda {|mentor_id| { :joins => :mentor_participants, :conditions => { :mentor_participants => { :mentor_id => mentor_id }}}}
 
-  after_save :college_mapper_student, :if => :create_college_mapper_student_after_save?
+  # after_save :college_mapper_student, :if => :create_college_mapper_student_after_save?
   after_create :link_to_current_user, :if => :link_to_current_user_after_save?
   before_save :adjust_postsecondary_plan_to_match_college_attending
 
@@ -122,7 +122,7 @@ class Participant < Person
   # Checks the +filter_cache+ to see whether or not this person passes the specified filter.
   # If the +filter_cache+ doesn't exist, it creates it.
   def passes_filter?(object_filter)
-    update_filter_cache! && save if !filter_cache.is_a?(Hash) || self.filter_cache[object_filter.id].nil?
+    update_filter_cache_and_save! if !filter_cache.is_a?(Hash) || self.filter_cache[object_filter.id].nil?
     self.filter_cache[object_filter.id]
   end
 

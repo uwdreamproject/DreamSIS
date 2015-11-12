@@ -126,6 +126,13 @@ class Person < ActiveRecord::Base
   def self.object_filters
     []
   end
+  
+  # Updates the filter cache by checking each ObjectFilter, and then saves the current record
+  # by calling +update_attribute+ so that +updated_at+ is not modified.
+  def update_filter_cache_and_save!
+    new_filter_cache = update_filter_cache!
+    update_column(:filter_cache, new_filter_cache.to_yaml)
+  end
 
   def self.expire_object_filters_cache
     @object_filters = nil

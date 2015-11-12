@@ -34,9 +34,7 @@ $("#stages_selector a[data-stage]").click(clickStageSelector)
 updateFiltersWithLocationHash()
 executeFilters()
 updateRecordCount()
-prepareSelectAll()
-$('tr.participant .needs-followup-container > a').click(showFollowUpPanel);
-registerTableSorters()
+updateRelativeTimestamps()
 
 // Fetch the next page of participants
 if ("<%=j @participants.next_page.to_s %>" && !stopLoading) {
@@ -44,5 +42,8 @@ if ("<%=j @participants.next_page.to_s %>" && !stopLoading) {
   $.ajax({ url: '<%=j url_for(:report => @report, :page => @participants.next_page) %>', dataType: 'script' });
 } else {
   hideLoadProgress()
+  prepareFollowupPanels()
+  registerTableSorters()
+  setTimeout(prepareSelectAll, 1000)
   $("#participants_table").data("loading", false)
 }
