@@ -118,6 +118,7 @@ class ApplicationController < ActionController::Base
 
   def save_user_in_current_thread
     Thread.current['user'] = @current_user
+    Thread.current['customer'] = Customer.current_customer(true)
   end
 
   def apply_extra_stylesheet(extra_stylesheet = nil)

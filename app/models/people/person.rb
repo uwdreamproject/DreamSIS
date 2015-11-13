@@ -47,6 +47,8 @@ class Person < ActiveRecord::Base
 
   attr_accessor :validate_name
   attr_accessor :validate_ready_to_rsvp
+
+  self.per_page = 50 # For pagination
   
   include MultitenantProxyable
   acts_as_proxyable
