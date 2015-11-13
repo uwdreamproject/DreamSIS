@@ -75,7 +75,7 @@
 <div id="sidebar">
 	
 	<p><%= link_to "Back to #{Customer.mentors_label}", mentors_path, :class => "back button" %></p>
-	<p><%= link_to "Edit this #{Customer.mentor_label}", edit_mentor_path(@mentor), :class => 'edit button' %></p>
+	<p><%= link_to "Edit this #{Customer.try(@mentor.class.to_s + "_label") || @mentor.class.to_s}", [:edit, @mentor], :class => 'edit button' %></p>
 	
 	<%- if !Customer.link_to_uw? && @current_user.admin? && !@mentor.email.blank? -%>
 	<p class="login_link">

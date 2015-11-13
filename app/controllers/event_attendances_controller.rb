@@ -122,19 +122,16 @@ class EventAttendancesController < EventsController
   def auto_complete_for_person_fullname
     fullname = params[:person][:fullname].downcase rescue ""
     fullname.gsub!(", ", ",")
-    conditions = [  
-                "LOWER(firstname) LIKE :fullname",
-                "LOWER(lastname) LIKE :fullname",
-                "LOWER(display_name) LIKE :fullname",
-                "LOWER(uw_net_id) LIKE :fullname"
-              ]
+    conditions = %w[firstname lastname display_name uw_net_id].collect{|c| "LOWER(#{c}) LIKE :fullname" }
     conditions << "LOWER(#{db_concat(:firstname, ' ', :lastname)}) LIKE :fullname" if fullname.include?(" ")
     conditions << "LOWER(#{db_concat(:lastname, ',', :firstname)}) LIKE :fullname" if fullname.include?(",")
-    @people = []
     
-    @audiences.each{|audience| @people << audience.find(:all, :conditions => [conditions.join(" OR "), {:fullname => "%#{fullname}%"}]) }
-    @people.flatten!                            
-                                          
+    @people = Person
+      .where(type: @audiences.collect(&:to_s))
+      .where([conditions.join(" OR "), {:fullname => "#{fullname}%"}])
+    @people = @people.includes(:high_school) if @audiences.include?(Participant) || @audiences.include?(Student)      
+    @event_attendances = Hash[EventAttendance.where(event_id: @event.id, person_id: @people.collect(&:id)).map{|ea| [ea.person_id, ea]}]
+    
     respond_to do |format|
       format.js
     end

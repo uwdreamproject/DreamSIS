@@ -1,6 +1,7 @@
 // Initialize autocompletes on page load
 $(function() {
 	prepAutocompletes();
+  prepEventCheckinAutocompletes();
   
   $("#main-nav > ul > li.trigger-autocomplete > a").click(function(event) {
     $(event.target).parents("li").find("input.search").focus();
@@ -50,4 +51,21 @@ function display_autocomplete_details(item, container) {
   container.find(".secondary").html(item.secondary)
   container.find(".tertiary").html(item.klass)
   container.show()
+}
+
+function prepEventCheckinAutocompletes() {
+  var thread = null;
+
+  $('#person_fullname.search').on('keyup', function() {
+    if ($(this).val().length > 2) {
+    	clearTimeout(thread);
+      var target = $(this)
+    	thread = setTimeout(function() {
+    		$.ajax({
+    			url: target.data("source") + target.val(),
+    			cache: false
+    		});
+    	}, 250);
+    }
+  }).attr("spellcheck", "false").attr("autocomplete", "off").attr("autocapitalize", "off");
 }

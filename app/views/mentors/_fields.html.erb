@@ -20,32 +20,32 @@
 	
 <% end %>
 
-
 <%= f.inputs :name => "Administrative Information" do -%>
-	<%= f.input :background_check_run_at, :hint => link_to_now("mentor_background_check_run_at") %>
+	<%= f.input :background_check_run_at, :hint => link_to_now("#{f.object.type.to_s.underscore}_background_check_run_at") %>
 	<%= f.input :background_check_result, 
-					:hint => "Enter #{link_to_function('NO RECORD FOUND', 
-									"$('mentor_background_check_result').value='NO RECORD FOUND [#{j(@current_user.login)}]'")}
-								or #{link_to_function('OK', 
-									"$('mentor_background_check_result').value='OK  [#{j(@current_user.login)}]'")}
-								(include an explanation) if the mentor passed the check.".html_safe  %>
+			:hint => "Enter #{link_to_function('NO RECORD FOUND', 
+				"$('##{f.object.type.to_s.underscore}_background_check_result').val('NO RECORD FOUND [#{j(@current_user.login)}]')")}
+				or #{link_to_function('OK', 
+				"$('##{f.object.type.to_s.underscore}_background_check_result').val('OK  [#{j(@current_user.login)}]')")}
+				(include an explanation) if the #{f.object.type.to_s.underscore} passed the check.".html_safe  %>
 
 	<hr />
 
-  <%= f.input :sex_offender_check_run_at, :hint => link_to_now("mentor_sex_offender_check_run_at") %>
+  <%= f.input :sex_offender_check_run_at, :hint => link_to_now("#{f.object.type.to_s.underscore}_sex_offender_check_run_at") %>
 	<%= f.input :sex_offender_check_result, 
-					:hint => "Enter #{link_to_function('NO RECORD FOUND', 
-									"$('mentor_sex_offender_check_result').value='NO RECORD FOUND [#{j(@current_user.login)}]'")} 
-								or #{link_to_function('OK', 
-									"$('mentor_sex_offender_check_result').value='OK  [#{j(@current_user.login)}]'")}
-								(include an explanation) if the mentor passed the check.".html_safe %>
+			:hint => "Enter #{link_to_function('NO RECORD FOUND', 
+				"$('##{f.object.type.to_s.underscore}_sex_offender_check_result').val('NO RECORD FOUND [#{j(@current_user.login)}]')")} 
+				or #{link_to_function('OK', 
+				"$('##{f.object.type.to_s.underscore}_sex_offender_check_result').val('OK  [#{j(@current_user.login)}]')")}
+				(include an explanation) if the #{f.object.type.to_s.underscore} passed the check.".html_safe %>
 
 	<hr />
 
-	<%= f.input :van_driver_training_completed_at, :hint => link_to_now("mentor_van_driver_training_completed_at"), :label => "Driver Training" %>
-    <%= f.input :driver_form_remarks, :hint => "Enter #{link_to_function('OK',
-                                                   "$('mentor_driver_form_remarks').value='OK  [#{j(@current_user.login)}]'")}
-								(include an explanation if necessary) if the mentor is qualified to drive.".html_safe  %>
+	<%= f.input :van_driver_training_completed_at, :hint => link_to_now("#{f.object.type.to_s.underscore}_van_driver_training_completed_at"), :label => "Driver Training" %>
+    <%= f.input :driver_form_remarks, 
+			:hint => "Enter #{link_to_function('OK',
+               "$('##{f.object.type.to_s.underscore}_driver_form_remarks').val('OK  [#{j(@current_user.login)}]')")}
+				(include an explanation if necessary) if the #{f.object.type.to_s.underscore} is qualified to drive.".html_safe  %>
 	<hr />
 
 	<%= f.input :parental_consent_on_file, :as => :radio, :label => "Parental consent form on file" %>
