@@ -148,7 +148,8 @@ class Customer < ActiveRecord::Base
 	end
   
   # Returns the current customer record by looking up the Customer whose url_shortcut matches the tenant name.
-  def self.current_customer
+  def self.current_customer(reset = false)
+    return Thread.current['customer'] if Thread.current['customer'] && !reset
     @current_customer ||= {}
     @current_customer[Apartment::Tenant.current] ||= Customer.where(:url_shortcut => Apartment::Tenant.current).first || Customer.new
   end
@@ -200,12 +201,15 @@ class Customer < ActiveRecord::Base
   
   # Automatically handle +Customer.method+ by passing it on to Customer.current_customer.
   def self.method_missing(method_name, *args)
-    # logger.info { "method_missing: #{method_name}" }
-    # logger.info { "current_customer respond_to?: #{current_customer.respond_to?(:id)}" }
+    current_customer.method_missing(method_name, *args)
+  end
+  
+  # Automatically handle the same method_missing for individual Customer objects.
+  def method_missing(method_name, *args)
     if m = method_name.to_s.match(/\A(\w+)_(label|Label)\Z/)
-      current_customer.customer_label(m[1], :titleize => m[2] == "Label")
-    elsif current_customer.respond_to?(method_name)
-      current_customer.try(method_name.to_s, *args)
+      customer_label(m[1], :titleize => m[2] == "Label")
+    elsif respond_to?(method_name)
+      try(method_name.to_s, *args)
     else
       super(method_name, *args)
     end
