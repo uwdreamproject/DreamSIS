@@ -1,7 +1,7 @@
 <tr id="person_<%= person.id %>" class="<%= "deselected" if person.inactive? %> <%= "not-target" if person.not_target_participant? %> participant">
 	
 	<td class="name">
-		<%= link_to h(person.fullname), person, :target => "_blank" %>
+		<%= link_to h(person.fullname(:skip_update => true)), person, :target => "_blank" %>
 		<%= content_tag :span, "Non-Participant", :class => "outline tag" if !person.is_a?(Participant) && @audiences.try(:include?, Participant) %>
 		<small class="inactive-note">(inactive)</small>
 		<small class="not-target-note">(<%= Customer.not_target_label %>)</small>
