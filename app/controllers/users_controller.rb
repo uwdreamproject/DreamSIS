@@ -114,11 +114,11 @@ class UsersController < ApplicationController
   def auto_complete_for_user_login
     @users = User.find(:all, 
                           :joins => [:person],
-                          :conditions => ["LOWER(login) LIKE :login
-                                              OR LOWER(people.firstname) LIKE :fullname 
-                                              OR LOWER(people.lastname) LIKE :fullname
-                                              OR LOWER(people.display_name) LIKE :fullname
-                                              OR LOWER(people.uw_net_id) LIKE :fullname", 
+                          :conditions => ["login LIKE :login
+                                              OR people.firstname LIKE :fullname 
+                                              OR people.lastname LIKE :fullname
+                                              OR people.display_name LIKE :fullname
+                                              OR people.uw_net_id LIKE :fullname", 
                                           {:login => "%#{params[:user][:login].downcase}%",
                                           :fullname => "%#{params[:user][:login].downcase}%"}])                                          
     respond_to do |format|
