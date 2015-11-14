@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151112183412) do
+ActiveRecord::Schema.define(:version => 20151114002442) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -769,6 +769,9 @@ ActiveRecord::Schema.define(:version => 20151112183412) do
   add_index "people", ["firstname"], :name => "index_people_on_firstname"
   add_index "people", ["grad_year"], :name => "index_people_on_grad_year"
   add_index "people", ["lastname"], :name => "index_people_on_lastname"
+  add_index "people", ["middlename"], :name => "index_people_on_middlename"
+  add_index "people", ["nickname"], :name => "index_people_on_nickname"
+  add_index "people", ["type"], :name => "index_people_on_type"
   add_index "people", ["uw_net_id"], :name => "index_people_on_uw_net_id"
 
   create_table "people_fafsas", :force => true do |t|
