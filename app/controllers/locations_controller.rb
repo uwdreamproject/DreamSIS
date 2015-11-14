@@ -109,7 +109,7 @@ class LocationsController < ApplicationController
   end
 
   def auto_complete_for_location_name
-    @locations = Location.find(:all, :conditions => ["LOWER(name) LIKE ?", "%#{params[:term].to_s.downcase}%"])
+    @locations = Location.find(:all, :conditions => ["name LIKE ?", "%#{params[:term].to_s.downcase}%"])
     render :json => @locations.map { |result|
       {
         :id => result.id, 

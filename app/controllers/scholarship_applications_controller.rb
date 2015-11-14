@@ -88,7 +88,7 @@ class ScholarshipApplicationsController < ParticipantsController
 
   def auto_complete_for_scholarship_application_title
     @scholarships = Scholarship.find(:all, 
-                      :conditions => ["LOWER(title) LIKE ?", '%' + params[:scholarship_application][:title].downcase + '%'],
+                      :conditions => ["title LIKE ?", '%' + params[:scholarship_application][:title].downcase + '%'],
                       :limit => 10)
     render :json => @scholarships.map { |result| 
       {

@@ -46,7 +46,7 @@ class ScholarshipsController < ResourceController
 		if term.is_integer?
 			@scholarships = [Scholarship.find(term)]
 		else
-	    @scholarships = Scholarship.find(:all, :conditions => ["LOWER(title) LIKE ?", "%#{term.to_s.downcase}%"], :limit => 20)
+	    @scholarships = Scholarship.find(:all, :conditions => ["title LIKE ?", "%#{term.to_s.downcase}%"], :limit => 20)
 		end
     render :json => @scholarships.map { |result| 
       {

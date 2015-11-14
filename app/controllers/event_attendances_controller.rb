@@ -121,14 +121,24 @@ class EventAttendancesController < EventsController
   
   def auto_complete_for_person_fullname
     fullname = params[:person][:fullname].downcase rescue ""
-    fullname.gsub!(", ", ",")
-    conditions = %w[firstname lastname display_name uw_net_id].collect{|c| "LOWER(#{c}) LIKE :fullname" }
-    conditions << "LOWER(#{db_concat(:firstname, ' ', :lastname)}) LIKE :fullname" if fullname.include?(" ")
-    conditions << "LOWER(#{db_concat(:lastname, ',', :firstname)}) LIKE :fullname" if fullname.include?(",")
+    conditions = %w[firstname lastname display_name uw_net_id].collect{|c| "#{c} LIKE :fullname" }
+    matches = { :fullname => "#{fullname}%" }
+
+    if fullname.include?(",")
+      conditions << "(lastname LIKE :lastname AND (firstname LIKE :firstname OR nickname LIKE :firstname))"
+      name_parts = fullname.split(/\s*,\s*/)
+      matches.merge!(:lastname => "#{name_parts[0]}%", :firstname => "#{name_parts[1]}%")
+      
+    elsif fullname.include?(" ")
+      conditions << "(lastname LIKE :lastname AND (firstname LIKE :firstname OR nickname LIKE :firstname))"
+      name_parts = fullname.split
+      matches.merge!(:firstname => "#{name_parts[0]}%", :lastname => "#{name_parts[1]}%")
+    end
     
     @people = Person
       .where(type: @audiences.collect(&:to_s))
-      .where([conditions.join(" OR "), {:fullname => "#{fullname}%"}])
+      .where([conditions.join(" OR "), matches])
+      .limit(30)
     @people = @people.includes(:high_school) if @audiences.include?(Participant) || @audiences.include?(Student)      
     @event_attendances = Hash[EventAttendance.where(event_id: @event.id, person_id: @people.collect(&:id)).map{|ea| [ea.person_id, ea]}]
     

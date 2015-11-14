@@ -97,7 +97,7 @@ class EventsController < ApplicationController
   def auto_complete_model_for_person_fullname
     @people = Person.find(
       :all,
-      :conditions => ['LOWER(lastname) LIKE :q', 
+      :conditions => ['lastname LIKE :q', 
                         {:q => "%#{params[:person][:fullname].downcase}%"}],
       :limit => 10
     )
