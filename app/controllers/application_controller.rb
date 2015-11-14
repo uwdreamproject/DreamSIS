@@ -113,6 +113,7 @@ class ApplicationController < ActionController::Base
   private
 
   def reset_tenant_if_admin_subdomain
+    Thread.current['customer'] = nil
     Apartment::Tenant.reset if request.subdomain == 'admin' || !request.subdomain.present?
   end
 
