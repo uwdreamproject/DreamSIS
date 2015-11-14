@@ -366,7 +366,7 @@ class ParticipantsController < ApplicationController
     if params[:term].to_i != 0
       @participants = [ Participant.find(params[:term].to_i) ]
     else      
-      conditions = ["(LOWER(firstname) LIKE :fullname OR LOWER(lastname) LIKE :fullname)"]
+      conditions = ["(firstname LIKE :fullname OR lastname LIKE :fullname)"]
       conditions << "high_school_id = :high_school_id" if params[:high_school_id]
       conditions << "grad_year = :grad_year" if params[:grad_year]
     
