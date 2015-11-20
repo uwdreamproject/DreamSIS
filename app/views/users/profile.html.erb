@@ -46,7 +46,14 @@
 			<!--<%= f.input :shirt_size, :as => :select, :collection => %w[XS S M L XL XXL 3XL] %>-->
 		<% end -%>
 	<% end -%>
-	
+
+  <%= f.inputs("Emergency Contact Information") do -%>
+    <%= f.input :emergency_name, :label => "Name" %>
+    <%= f.input :emergency_relationship, :label => "Relationship" %>
+    <%= f.input :emergency_number, :label => "Phone Number" %>
+    <%= f.input :emergency_email, :label => "Email" %>
+  <% end -%>
+
 	<%= f.inputs("Program Affiliations") do -%>
 		<p>Which of the following programs are you affiliated with or do you participate in?</p>
 		<%= f.input :programs, :as => :check_boxes %>

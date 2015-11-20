@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151114002442) do
+ActiveRecord::Schema.define(:version => 20151120203925) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -189,7 +189,7 @@ ActiveRecord::Schema.define(:version => 20151114002442) do
   end
 
   add_index "event_attendances", ["customer_id"], :name => "index_event_attendances_on_customer_id"
-  add_index "event_attendances", ["event_id", "person_id"], :name => "index_event_attendances_on_event_id_and_person_id", :unique => true
+  add_index "event_attendances", ["event_id", "person_id"], :name => "index_event_attendances_on_event_id_and_person_id"
   add_index "event_attendances", ["event_id"], :name => "index_event_attendances_on_event_id"
   add_index "event_attendances", ["person_id"], :name => "index_event_attendances_on_person_id"
 
@@ -761,6 +761,10 @@ ActiveRecord::Schema.define(:version => 20151114002442) do
     t.datetime "uwfs_training_date"
     t.boolean  "clearinghouse_record_found"
     t.boolean  "parental_consent_on_file"
+    t.string   "emergency_name"
+    t.string   "emergency_relationship"
+    t.string   "emergency_number"
+    t.string   "emergency_email"
   end
 
   add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"
