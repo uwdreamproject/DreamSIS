@@ -29,7 +29,6 @@
 								) %>
 				<%= f.collection_select :high_school_id, (HighSchool.all_by_district[f.object.try(:high_school).try(:district)] || []), :id, :name, :selected => f.object.try(:high_school).try(:id) %>
 				<%= content_tag(:p, @person.errors.include?(:high_school_id), :class => "inline-errors") if @person.errors.include?(:high_school_id) %>
-				
 				<%= javascript_tag "
 					$('select#high_school_district').change(function() {
 						$.ajax('#{in_district_high_schools_path}', { 
@@ -45,6 +44,15 @@
 			<%= f.input :organization, :label => "Employer/Organization" %>
 			<!--<%= f.input :shirt_size, :as => :select, :collection => %w[XS S M L XL XXL 3XL] %>-->
 		<% end -%>
+	<% end -%>
+	<%- if @person.is_a?(Student) || @person.is_a?(Participant) -%>
+		<%= render :partial => 'participants/fields/contact', :locals => { :f => f } %>
+		<%= render :partial => 'participants/fields/high_school', :locals => { :f => f } %>
+		<%= render :partial => 'participants/fields/background', :locals => { :f => f } %>
+		<%= render :partial => 'participants/fields/race_ethnicity', :locals => { :f => f } %>
+		<%= render :partial => 'participants/fields/family_history', :locals => { :f => f } %>
+		<%= render :partial => 'participants/fields/parents', :locals => { :f => f } %>
+		<%= render :partial => 'participants/fields/financial', :locals => { :f => f } %>
 	<% end -%>
 	
 	<%= f.inputs("Program Affiliations") do -%>
