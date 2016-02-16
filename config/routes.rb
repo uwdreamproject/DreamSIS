@@ -230,6 +230,7 @@ Dreamsis::Application.routes.draw do
   match 'mentor_signup/:term_id' => 'mentor_signup#index', :as => :mentor_signup_term
   match 'mentor_signup/' => 'mentor_signup#index', :as => :mentor_signup
   match 'my/dashboard' => 'welcome#mentor', :as => :my_dashboard
+  match 'participant_signup/intake_form' => 'participant_signup#intake_form', :as => :participant_signup_intake_form
   
 
   # Users
