@@ -1,1 +1,13 @@
 <h1>Participant Information Form for <%= Customer.name_label %></h1>
+
+<%= semantic_form_for @participant, :url => { :action => 'intake_form'} do |f| %>
+
+  <%= default_form_errors(f) %>
+  <%= render :partial => 'participant_signup/personal.html.erb', :locals => { :f => f } %>
+  <%= render :partial => 'participant_signup/contact.html.erb', :locals => { :f => f } %>
+  <%= render :partial => 'participant_signup/race_ethnicity.html.erb', :locals => { :f => f } %>
+  <%= render :partial => 'participant_signup/family_history.html.erb', :locals => { :f => f } %>
+  <%= render :partial => 'participant_signup/high_school.html.erb', :locals => { :f => f } %>
+  <%= render :partial => 'participant_signup/parents.html.erb', :locals => { :f => f } %>
+  <%= render :partial => 'participant_signup/post_program.html.erb', :locals => { :f => f } %>
+<% end -%>
