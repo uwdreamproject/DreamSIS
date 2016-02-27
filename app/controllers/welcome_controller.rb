@@ -5,7 +5,7 @@ class WelcomeController < ApplicationController
   
   def index
     redirect_to :action => "mentor" if @current_user.person.is_a?(Mentor)
-    redirect_to :action => "student" if @current_user.person.is_a?(Student)
+    redirect_to :action => "participant" if @current_user.person.is_a?(Participant)
     @person = @current_user.person
     @events = @person.event_attendances.future_attending.collect(&:event)
     @event_groups = EventGroup.where(allow_external_volunteers: true)
@@ -29,9 +29,9 @@ class WelcomeController < ApplicationController
     @report = params[:report].blank? ? "basics" : ERB::Util.html_escape(params[:report])
   end
 
-  def student
-    @student = @current_user.person
-    if !@student.passed_basics?
+  def participant
+    @participant = @current_user.person
+    if !@participant.passed_basics?
       redirect_to participant_signup_intake_form_path
     end
   end

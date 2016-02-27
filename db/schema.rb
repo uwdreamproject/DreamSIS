@@ -771,6 +771,7 @@ ActiveRecord::Schema.define(:version => 20160227040251) do
     t.string   "intake_form_signate"
     t.string   "intake_form_signature"
     t.boolean  "intake_form_signed_at"
+    t.boolean  "completed_intake_form"
   end
 
   add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"

@@ -6,14 +6,5 @@ class Student < ExternalPerson
   
   scope :in_cohort, lambda {|grad_year| {:conditions => { :grad_year => grad_year }}}
   scope :in_high_school, lambda {|high_school_id| {:conditions => { :high_school_id => high_school_id }}}
-
-  def passed_basics?
-  	(completed_intake_form)
-  end
-
-  # Returns true if the form as been signed and there is a value in the signature
-  def completed_intake_form?
-  	!intake_form_signed_at.nil? && !intake_form_signature.blank?
-  end
   
 end

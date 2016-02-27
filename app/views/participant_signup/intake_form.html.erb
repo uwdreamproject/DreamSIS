@@ -9,4 +9,13 @@
   <%= render :partial => 'participant_signup/family_history.html.erb', :locals => { :f => f } %>
   <%= render :partial => 'participant_signup/high_school.html.erb', :locals => { :f => f } %>
   <%= render :partial => 'participant_signup/parents.html.erb', :locals => { :f => f } %>
+
+  	<%= f.inputs do %>
+		<%= f.input :intake_form_signature, :label => "Enter your full legal name as signature" %>
+		<%= f.input :intake_form_signed_at, :as => :boolean, :label => "I understand the statements above." %>
+	<% end -%>
+
+	<%= f.actions do %>
+		<%= f.action :submit, :label=> "Submit" %>
+	<% end -%>
 <% end -%>
