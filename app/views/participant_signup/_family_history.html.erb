@@ -21,7 +21,7 @@
 		<%= f.input :number_of_children, :collection => 0..5, :as => :select %>
 	<% end %>
 	
-	<%= f.input :subsidized_housing, :label => "Family receives public assistance or lives in federally subsidized housing" %>
-	<%= f.input :homeless, :label => "Student is homeless" %>
+	<%= f.input :subsidized_housing, :label => "My family receives public assistance or lives in federally subsidized housing", :as => :radio %>
+	<%= f.input :homeless, :label => "I am currently experiencing unstable housing (live with family members other than my parents/legal guardians, couch surfing, live with friends, homeless, live in a motel or hotel)" %>
 
 <% end %>

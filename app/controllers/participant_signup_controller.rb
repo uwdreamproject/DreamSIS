@@ -6,7 +6,6 @@ class ParticipantSignupController < ApplicationController
 	end
 
 	def intake_form
-		
 	end
 
 
