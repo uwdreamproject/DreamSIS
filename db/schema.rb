@@ -768,9 +768,8 @@ ActiveRecord::Schema.define(:version => 20160227040251) do
     t.integer  "housing_status"
     t.boolean  "parental_consent_on_file"
     t.boolean  "pending_participant"
-    t.string   "intake_form_signate"
     t.string   "intake_form_signature"
-    t.boolean  "intake_form_signed_at"
+    t.datetime "intake_form_signed_at"
     t.boolean  "completed_intake_form"
   end
 
