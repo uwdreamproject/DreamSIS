@@ -14,12 +14,9 @@ class ParticipantSignupController < ApplicationController
      	if @participant.save
           flash[:notice] = "Your intake form was successfully received. Thank you."
           @participant.completed_intake_form = true
-          redirect_to root_path
       	end
 	  end
 	end
-
-
 
 	private 
 
