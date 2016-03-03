@@ -34,6 +34,7 @@ class WelcomeController < ApplicationController
     if !@participant.passed_basics?
       redirect_to participant_signup_intake_form_path
     end
+    @person = current_user.person
   end
 
   protected

@@ -11,10 +11,16 @@ class ParticipantSignupController < ApplicationController
 	  if request.put?
      	@participant.intake_form_signature = params[:participant][:intake_form_signature]
      	@participant.intake_form_signed_at = params[:participant][:intake_form_signed_at] == "1" ? Time.now : nil
+     	@participant.completed_intake_form = true
      	if @participant.save
           flash[:notice] = "Your intake form was successfully received. Thank you."
-          @participant.completed_intake_form = true
       	end
+
+      	if @participant.update_attributes(params[:participant])
+      	  flash[:notice] = "Thanks! We updated your profile."
+      	  redirect_to root_url
+      	end
+
 	  end
 	end
 
