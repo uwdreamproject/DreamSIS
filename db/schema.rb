@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151114002442) do
+ActiveRecord::Schema.define(:version => 20160209204843) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -489,6 +489,9 @@ ActiveRecord::Schema.define(:version => 20151114002442) do
     t.boolean  "driver"
     t.text     "notes"
     t.integer  "customer_id"
+    t.boolean  "steering"
+    t.boolean  "ccra"
+    t.boolean  "planning"
   end
 
   add_index "mentor_terms", ["customer_id"], :name => "index_mentor_terms_on_customer_id"
@@ -761,6 +764,8 @@ ActiveRecord::Schema.define(:version => 20151114002442) do
     t.datetime "uwfs_training_date"
     t.boolean  "clearinghouse_record_found"
     t.boolean  "parental_consent_on_file"
+    t.boolean  "employment_status"
+    t.integer  "weekly_hours"
   end
 
   add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"
