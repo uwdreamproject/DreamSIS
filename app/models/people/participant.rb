@@ -68,6 +68,7 @@ class Participant < Person
     college_applications: "College Applications", 
     test_score_summaries: "Test Scores", 
     rosters: "Roster", 
+    parents: "Parents & Contacts",
     attendance_summaries: "Attendance", 
     college_stages: "College Pipeline" 
   }
