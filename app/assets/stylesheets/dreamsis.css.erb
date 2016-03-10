@@ -182,7 +182,7 @@ tr:hover, tr.odd:hover, tr.even:hover, tr.highlight {
 }
 */
 
-table td:first-child, table th:first-child {
+table tr:not(.not-first-child) td:first-child, table th:first-child {
 	padding-left: 30px !important;
 }
 
@@ -215,6 +215,14 @@ table td.name a {
 
 table.participants td.name {
 	font-weight: bold;
+}
+
+table.participants td.name > a {
+    max-width: 200px;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 table.participants img.avatar {
