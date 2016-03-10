@@ -13,6 +13,9 @@
 			<%= raw "#{content_tag :span, Customer.lead_Label, :class => 'admin tag'}" if mentor_term.lead? %>
 			<%= raw "#{content_tag :span, "Enrolled", :class => 'green tag'}" unless mentor_term.volunteer? %>
 			<%= raw "#{content_tag :span, "Driver", :class => 'grey tag'}" if mentor_term.driver? || mentor_term.mentor.valid_van_driver? %>
+			<%= raw "#{content_tag :span, "CCRA", :class => 'ccra tag'}" if mentor_term.ccra? %>
+			<%= raw "#{content_tag :span, "Planning", :class => 'planning tag'}" if mentor_term.planning? %>
+			<%= raw "#{content_tag :span, "Steering", :class => 'steering tag'}" if mentor_term.steering? %>
 		</div>
 			<% if !mentor_term.mentor.passed_basics? %>
 	  <div><strong><%= mentor_term.mentor.readiness_summary %></strong></div>

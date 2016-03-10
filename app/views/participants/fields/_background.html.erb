@@ -10,6 +10,12 @@
 	<%= f.input :college_bound_scholarship, :label => "Signed up for Washington College Bound Scholarship" %>
 
 	<%= f.input :after_school_activities, :label => "Other extracurricular activities", :input_html => { :rows => 5 } %>
+	
+	<%= f.input :employment_status, :label => "Is the student currently employed?", :as => :radio, :collection => ["Yes", "No"] %> 
+
+	<%= f.input :weekly_hours, :label => "Weekly Hours", :as => :select, 
+				:hint => "If yes, how many hours per week does the student work?",
+				:collection => { "0-10" => 1, "11-20" => 2, "20+" => 3 } %>
 
 	<%= f.input :postsecondary_goal, :as => :select, 
 				:hint => "What is the student's hope to do after graduating high school?", 
