@@ -42,6 +42,12 @@
     <%= f.input :paperwork_status_options, :input_html => { :rows => 5 }, :hint => "Specify the options you want to allow for paperwork status choices. Enter one entry per line. By default, the options are 'Not Started', 'In Progress', and 'Complete.'" %>
     <%= f.input :visit_attendance_options, :input_html => { :rows => 5 }, :hint => "Specify the options you want to allow for visit attendance. Enter one entry per line. If nothing is specified here, 'Attended' will appear only as a single checkbox." %>
 	
+	<%= f.input :mentor_term_tag_list,
+			      as: :select,
+				  label: "Mentor Term Tags",
+				  collection: f.object.mentor_term_tag_list,
+			      input_html: { class: 'taggable', multiple: true, style: "width: 50%", "data-tags" => true } %>
+	
 	<%= f.inputs :name => "Activity Log Time Categories", :class => "inline" do %>
 		<%= f.input :activity_log_student_time_categories, :input_html => { :rows => 10}, :label => "Student Time" %>
 		<%= f.input :activity_log_non_student_time_categories, :input_html => { :rows => 10}, :label => "Non-Student Time" %>
