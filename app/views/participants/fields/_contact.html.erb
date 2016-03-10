@@ -7,7 +7,7 @@
 	<%= f.inputs :name => "Phone Numbers", :class => "inline compress-bottom" do %>
 		<%= f.input :phone_home, :label => "Home" %>
 		<%= f.input :phone_mobile, :label => "Mobile" %>
-		<%= f.input :preferred_phone, :collection => %w[Home Mobile] %>
+		<%= f.input :preferred_phone, :as => :select, :collection => %w[Home Mobile] %>
 	<% end %>
 	<%= f.inputs :name => "", :class => "inline" do -%>
 		<%= f.inputs :can_send_texts, :can_receive_texts, :unlimited_texting %>
