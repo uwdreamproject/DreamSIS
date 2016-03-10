@@ -30,9 +30,6 @@ class WelcomeController < ApplicationController
   end
 
   def participant
-    @participant = @current_user.person
-    @participant.type = "Participant"
-    @participant.save
     if !@participant.completed_intake_form?
       redirect_to participant_signup_intake_form_path
     end
