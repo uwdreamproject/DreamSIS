@@ -71,13 +71,10 @@ class Participant < Person
     attendance_summaries: "Attendance", 
     college_stages: "College Pipeline" 
   }
-  def passed_basics?
-    (completed_intake_form)
-  end
 
-  # Returns true if the form as been signed and there is a value in the signature
+  # Returns true if there is a value in the signature
   def completed_intake_form?
-    !intake_form_signed_at.nil? && !intake_form_signature.blank?
+    !intake_form_signature.blank?
   end
   
   def validate_name?

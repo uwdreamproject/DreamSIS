@@ -5,7 +5,7 @@ class WelcomeController < ApplicationController
   
   def index
     redirect_to :action => "mentor" if @current_user.person.is_a?(Mentor)
-    redirect_to :action => "participant" if @current_user.person.is_a?(Participant)
+    redirect_to :action => "participant" if @current_user.person.is_a?(Participant) || @current_user.person.is_a?(Student)
     @person = @current_user.person
     @events = @person.event_attendances.future_attending.collect(&:event)
     @event_groups = EventGroup.where(allow_external_volunteers: true)
@@ -31,10 +31,16 @@ class WelcomeController < ApplicationController
 
   def participant
     @participant = @current_user.person
-    if !@participant.passed_basics?
+    @participant.type = "Participant"
+    @participant.save
+    if !@participant.completed_intake_form?
       redirect_to participant_signup_intake_form_path
     end
     @person = current_user.person
+    @events = @person.event_attendances.future_attending.collect(&:event)
+    @event_groups = EventGroup.where(allow_external_volunteers: true)
+    apply_extra_stylesheet
+    apply_extra_footer_content
   end
 
   protected

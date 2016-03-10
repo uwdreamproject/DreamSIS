@@ -769,8 +769,6 @@ ActiveRecord::Schema.define(:version => 20160227040251) do
     t.boolean  "parental_consent_on_file"
     t.boolean  "pending_participant"
     t.string   "intake_form_signature"
-    t.datetime "intake_form_signed_at"
-    t.boolean  "completed_intake_form"
   end
 
   add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"

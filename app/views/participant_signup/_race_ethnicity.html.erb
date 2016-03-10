@@ -28,7 +28,7 @@ races = {
 	<% end %>
 	<br />
 
-	<%= f.input :birthplace, :hint => "Include city, state, and country if outside the USA." %>
-	<%= f.input :immigrant, :label => "Do you identify yourself as an immigrant?", :as => :radio %>
+	<%= f.input :birthplace, :hint => "Include city, state, and country if outside the USA.", :required => true %>
+	<%= f.input :immigrant, :label => "Do you identify yourself as an immigrant?", :as => :radio, :required => true %>
 
 <% end %>

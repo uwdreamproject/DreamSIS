@@ -1,4 +1,31 @@
-<h1></h1>
+<h1>Welcome to <%= Customer.name_label %></h1>
+<div>
+	 <h1><%= link_to "Update your information", participant_signup_intake_form_path %></h1>
+</div>
+
+<h1 class="events">My Events</h1>
+<p>You've signed up for the following upcoming events:</p>
+
+<table class="highlightless rsvp">
+	<%= render :partial => 'rsvp/event', :collection => @events %>
+	
+	<%- if @events.empty? -%>
+	<tr class="empty">
+		<td colspan=10>You haven't registered for any upcoming events.</td>
+	</tr>
+	<% end -%>
+	
+</table>
+	<%- if @event_groups -%>
+		<h2>Register for more events:</h2>
+		<div class="more-events">
+			<p>
+				<%- for event_group in @event_groups -%>
+					<%= link_to(event_group.name, event_group_rsvp_url(event_group), class: 'button') %>
+				<% end %>
+			</p>
+		</div>
+	<% end %>
 
 
 <%= render :partial => "other_sidebar" %>
