@@ -760,14 +760,7 @@ ActiveRecord::Schema.define(:version => 20160227040251) do
     t.boolean  "immigrant"
     t.datetime "uwfs_training_date"
     t.boolean  "clearinghouse_record_found"
-    t.boolean  "international_student"
-    t.string   "intended_major"
-    t.integer  "transfer_student"
-    t.integer  "residency_status"
-    t.string   "home_state"
-    t.integer  "housing_status"
     t.boolean  "parental_consent_on_file"
-    t.boolean  "pending_participant"
     t.string   "intake_form_signature"
   end
 

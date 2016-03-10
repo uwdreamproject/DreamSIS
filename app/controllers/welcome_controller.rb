@@ -5,7 +5,7 @@ class WelcomeController < ApplicationController
   
   def index
     redirect_to :action => "mentor" if @current_user.person.is_a?(Mentor)
-    redirect_to :action => "participant" if @current_user.person.is_a?(Participant) || @current_user.person.is_a?(Student)
+    redirect_to :action => "participant" if @current_user.person.is_a?(Participant)
     @person = @current_user.person
     @events = @person.event_attendances.future_attending.collect(&:event)
     @event_groups = EventGroup.where(allow_external_volunteers: true)
