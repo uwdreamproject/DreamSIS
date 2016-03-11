@@ -5,6 +5,7 @@ class EventAttendancesController < EventsController
 
   skip_before_filter :check_authorization, :only => [:index, :checkin, :create, :update, :auto_complete_for_person_fullname]
   before_filter :check_checkin_authorization, :only => [:index, :checkin, :create, :update, :auto_complete_for_person_fullname]
+  before_filter :attendee_params, :only => [:create, :update]
 
   protect_from_forgery :only => [:create, :update, :destroy] 
 
@@ -49,63 +50,31 @@ class EventAttendancesController < EventsController
       format.js
     end
   end
-
-  # def show
-  #   @attendee = @event.attendees.find(params[:id])
-  # 
-  #   respond_to do |format|
-  #     format.html # show.html.erb
-  #     format.xml  { render :xml => @attendee }
-  #   end
-  # end
-
-  # def new
-  #   @attendee = @event.attendees.new
-  # 
-  #   respond_to do |format|
-  #     format.html # new.html.erb
-  #     format.xml  { render :xml => @attendee }
-  #   end
-  # end
   
   def edit
     @attendee = @event.attendees.find(params[:id])
   end
 
   def create
-    @attendee = @event.attendees.new(params[:attendee] || params[:event_attendance])
-
-    respond_to do |format|
-      if @attendee.save
-        flash[:notice] = "#{@attendee.fullname} was successfully checked in."
-        format.html { redirect_to(@attendee) }
-        format.js
-        format.json { render :json => @attendee }
-        format.xml  { render :xml => @attendee, :status => :created, :location => @attendee }
-      else
-        format.html { render :action => "new" }
-        format.js   { flash[:error] = @attendee.errors.full_messages.to_sentence }
-        format.xml  { render :xml => @attendee.errors, :status => :unprocessable_entity }
-      end
-    end
+    upsert
+  end
+  
+  def update
+    upsert
   end
 
-  def update
-    # @attendee = @event.attendees.find(params[:id])
-    @attendee = EventAttendance.find(params[:id])
-    @attendee.admin = params[:event_attendance].try(:[], :admin) if params[:event_attendance].try(:[], :admin)
+  def upsert
+    selector = { person_id: attendee_params[:person_id], event_id: @event.id }
+    setter = attendee_params.merge({ created_at: Time.now, updated_at: Time.now })
+    EventAttendance.upsert(selector, setter)
+    @attendee = EventAttendance.where(selector).first! # the `!` ensures that a record is returned
 
     respond_to do |format|
-      if @attendee.update_attributes(params[:attendee] || params[:event_attendance])
-        flash[:notice] = "#{@attendee.fullname} was successfully #{ @attendee.attended_changed? ? "checked in" : "updated" }."
-        format.html { redirect_to(event_event_attendances_path(@event, :audience => @attendee.try(:person).try(:class))) }
-        format.js
-        format.json { render :json => @attendee }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @attendee.errors, :status => :unprocessable_entity }
-      end
+      flash[:notice] = "Saved"
+      format.html { redirect_to(event_event_attendances_path(@event, :audience => @attendee.try(:person).try(:class))) }
+      format.js   { render 'upsert' }
+      format.json { render :json => @attendee }
+      format.xml  { head :ok }
     end
   end
 
@@ -168,6 +137,10 @@ class EventAttendancesController < EventsController
       render_error("You are not allowed to access that page.")
     end
     
+  end
+  
+  def attendee_params
+    params[:attendee] || params[:event_attendance]
   end
   
 end

@@ -299,6 +299,7 @@ GEM
     unicorn-rails (2.2.0)
       rack
       unicorn
+    upsert (2.1.0)
     uuidtools (2.1.5)
     will_paginate (3.0.7)
     xml-simple (1.1.4)
@@ -367,5 +368,6 @@ DEPENDENCIES
   uglifier
   unicorn
   unicorn-rails
+  upsert
   will_paginate (~> 3.0)
   zip

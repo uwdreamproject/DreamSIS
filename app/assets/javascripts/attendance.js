@@ -111,18 +111,11 @@ function attendanceCheckbox(elem, eventId, attendanceData) {
 */
 function submitAttendance(elem, eventId, data) {
   var url = "/events/" + eventId + "/event_attendances/"
-  var event_attendance_id = elem.data("event-attendance-id")
-  var method;
-  if (event_attendance_id !== undefined) {
-    url += event_attendance_id
-    method = "PUT"
-  } else {
-    method = "POST"
-  }
+  clearFlashes()
   elem.addClass("saving")
   elem.attr("data-expected-attendance-option", data.attendance_option) // store the value to check before clearing the spinner
   $.ajax({
-    type: method,
+    type: 'POST',
     url: url,
     data: { "event_attendance": data },
     success: function(returnData, textStatus, jqXHR) {

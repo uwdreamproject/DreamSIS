@@ -55,6 +55,7 @@ gem 'coderay', :require =>  'coderay'
 gem 'acts_as_list'
 gem 'fabrication'
 gem 'faker'
+gem 'upsert'
 
 group :production do
   gem 'mysql2', '~> 0.3.7'

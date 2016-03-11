@@ -15,18 +15,18 @@
 		<% if e && e.attended? %>
 			<span class="green">Checked in at <%= e.updated_at.to_s(:time12) %></span></td>
 			<td><%= button_to( "Undo",
-				{ :action => :update, :event_id => @event.id, :id => e.id, :attendee => { :attended => false }, :format => :js},
-				{:disable_with => "Undoing...", :remote => true, :method => 'put'}) %></td>
+				{ :action => :create, :event_id => @event.id, :attendee => { :person_id => person.id, :attended => false }, :format => :js},
+				{:disable_with => "Undoing...", :remote => true, :method => 'post'}) %></td>
 		<% elsif e && e.rsvp? %>
 		  	<span class="light">RSVP'd, but not checked in.</span></td>
 			<td><%= button_to( "Check-in",
-                                { :action => :update, :event_id => @event.id, :id => e.id, :attendee => { :attended => true }},
-                                {:disable_with => "Checking in...", :remote => true, :method => 'put'}) %></td>
+                                { :action => :create, :event_id => @event.id, :attendee => { :person_id => person.id, :attended => true }},
+                                {:disable_with => "Checking in...", :remote => true, :method => 'post'}) %></td>
 		<% elsif e %>
 		  	<span class="light">Not checked in.</span></td>
 			<td><%= button_to( "Check-in",
-                                { :action => :update, :event_id => @event.id, :id => e.id, :attendee => { :attended => true }, :format => :js},
-                                {:disable_with => "Checking in...", :remote => true, :method => 'put'}) %></td>
+                                { :action => :create, :event_id => @event.id, :attendee => { :person_id => person.id, :attended => true }, :format => :js},
+                                {:disable_with => "Checking in...", :remote => true, :method => 'post'}) %></td>
 		<% else %>
 		  	<span class="light">Not checked in.</span></td>
 			<td><%= button_to( "Check-in",
