@@ -162,6 +162,15 @@ $( function() {
     );
   })
   
+  // Prep the taggable fields
+  $('select.taggable').each(function() {
+      $(this).select2({
+          minimumResultsForSearch: Infinity,
+          placeholder: "Assign tags"
+      });
+  });
+  
+  
   // Enable all tablesorter tables
   registerTableSorters()
   
