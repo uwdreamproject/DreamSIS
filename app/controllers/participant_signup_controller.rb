@@ -8,6 +8,9 @@ class ParticipantSignupController < ApplicationController
 	end
 
 	def intake_form
+	  unless current_user && current_user.person.can_view?(@participant)
+        return render_error("You are not allowed to view this form")
+      end
 	  if request.put?
      	@participant.intake_form_signature = params[:participant][:intake_form_signature]
      	if @participant.save

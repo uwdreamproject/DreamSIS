@@ -117,6 +117,10 @@ class Participant < Person
       super(method_name, *args)
     end
   end
+
+  def can_view?(object)
+    return true if object.is_a?(Participant)
+  end
   
   # Returns the number of filters that this Participant doesn't pass. Useful for quick view of status.
   def filter_results_count
