@@ -1,8 +1,9 @@
-<%= link_to "Download in Excel", xlsx_url, html_options = { :class => 'button xls with-below', :id => "export_download_button", :remote => true } %>
+<%= link_to "Download #{@export.try{ |e| e.class.to_s.titleize }}", xlsx_url, html_options = { :class => 'button xls with-below', :id => "export_download_button", :remote => true } %>
 
 <%= javascript_tag("checkExportStatus = false;") %>
 <%= javascript_tag("checkExportStatusUrl = '#{check_export_status_participants_url(:id => "__id__", :report => "__report__")}'") %>
 <%= javascript_tag("exportReportType = '#{params[:report]}'") %>
+<%= javascript_tag("exportReportTitle = '#{@export.try{ |e| e.class.to_s.titleize }}'") %>
 
 <p id="export_status" class="below">
 <%- if @export -%>	
