@@ -17,9 +17,15 @@ module Formtastic
           
           output = "".html_safe
           output << hint_html_without_customizations
-                    
+
+          current_person = template.instance_variable_get(:current_user).try(:person_type)
+          if current_person.nil?
+            help_text = HelpText.for(object_name.to_s.classify, method)
+          else
+            help_text = HelpText.for(object_name.to_s.classify, method, current_person)
+          end            
           # Add customer-specific help text
-          if help_text = HelpText.for(object_name.to_s.classify, method)
+          if help_text
             output << template.content_tag(
             :p,
             Formtastic::Util.html_safe(help_text.try(:hint)),
@@ -48,9 +54,13 @@ module Formtastic
           return label_html_without_customizations if builder.options[:label_customizations] == false
           
           if render_label?
-            help_text = HelpText.for(object_name.to_s.classify, method)
+            current_person = template.instance_variable_get(:current_user).try(:person_type)
+            if current_person.nil?
+              help_text = HelpText.for(object_name.to_s.classify, method)
+            else
+              help_text = HelpText.for(object_name.to_s.classify, method, current_person)
+            end
             custom_label_text = Formtastic::Util.html_safe(help_text.try(:title)) || label_text
-            
             # Add customer-specific instructions text
             custom_label_text << template.content_tag(
               :div,

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160227040251) do
+ActiveRecord::Schema.define(:version => 20160324032853) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -309,6 +309,7 @@ ActiveRecord::Schema.define(:version => 20160227040251) do
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
     t.text     "hint"
+    t.string   "audience"
   end
 
   create_table "how_did_you_hear_options", :force => true do |t|
@@ -760,7 +761,15 @@ ActiveRecord::Schema.define(:version => 20160227040251) do
     t.boolean  "immigrant"
     t.datetime "uwfs_training_date"
     t.boolean  "clearinghouse_record_found"
+    t.boolean  "international_student"
+    t.string   "intended_major"
+    t.integer  "transfer_student"
+    t.integer  "residency_status"
+    t.string   "home_state"
+    t.integer  "housing_status"
     t.boolean  "parental_consent_on_file"
+    t.boolean  "pending_participant"
+    t.string   "intake_form_signate"
     t.string   "intake_form_signature"
   end
 

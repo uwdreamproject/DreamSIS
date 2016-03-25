@@ -133,6 +133,10 @@ class User < ActiveRecord::Base
     false
   end
 
+  def person_type
+    person.type
+  end
+
   protected
   
   def encrypt_password
