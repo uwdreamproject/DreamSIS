@@ -39,14 +39,11 @@ gem 'zip'
 gem 'net-sftp'
 gem 'rails_autolink', '~> 1.0.0'
 gem 'rails3-jquery-autocomplete'
-gem "sqlite3"
 gem 'rollbar'
 gem 'addressable'
 gem 'sucker_punch', '~> 1.0'
 gem 'sidekiq'
 gem 'apartment-sidekiq'
-# gem 'sinatra', require: false  # for sidekiq monitor
-# gem 'slim'  # for sidekiq monitor
 gem "simple_calendar", "~> 1.1.0"
 gem 'jquery-tablesorter'
 gem 'le'
@@ -59,6 +56,10 @@ gem 'select2-rails'
 gem 'rails_12factor', group: :production
 gem "rack-timeout"
 gem 'aws-sdk', '~> 2'
+gem 'rack-mini-profiler'
+gem 'flamegraph'
+gem 'stackprof'
+gem 'memory_profiler'
 
 group :production do
   gem 'mysql2', '~> 0.3.7'
@@ -69,6 +70,7 @@ end
 
 group :development do
   gem 'byebug'
+  gem "sqlite3"
 end
 
 group :assets do
@@ -80,8 +82,3 @@ end
 group :test do
   gem 'turn', :require => false
 end
-
-gem 'rack-mini-profiler'
-gem 'flamegraph'
-gem 'stackprof'
-gem 'memory_profiler'
