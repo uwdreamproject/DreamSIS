@@ -1,2 +1,3 @@
-config_file_path = File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "api-keys.yml")
-API_KEYS = YAML::load(ERB.new((IO.read(config_file_path))).result)
+s3 = Aws::S3::Client.new
+resp = s3.get_object( bucket: ENV['S3_BUCKET_NAME'], key: ENV['API_KEYS_PATH'] )
+API_KEYS = YAML::load(resp.body.read)

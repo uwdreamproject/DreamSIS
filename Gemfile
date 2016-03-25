@@ -1,8 +1,10 @@
 source 'https://rubygems.org'
+ruby '2.1.3'
 
 gem 'rails', '3.2.19'
 gem "unicorn"
 gem "unicorn-rails"
+gem "puma"
 gem 'formtastic' #, '~> 1.1.0'
 gem 'will_paginate', '~> 3.0'
 gem 'nokogiri'
@@ -18,17 +20,14 @@ gem 'omniauth-shibboleth'
 gem 'omniauth-identity'
 gem 'omniauth-windowslive'
 gem 'omniauth-linkedin'
-# gem 'mail_style'
 gem 'geocoder'
 gem 'aes'
 gem 'fastercsv'
 gem 'mandrill-api'
-# gem 'newrelic_rpm'
 gem 'ey_config'
 gem "mime-types" #, "1.25"
 gem "carrierwave" #, "~> 0.4"
 gem "fog"
-gem "aws"
 gem "mini_magick"
 gem "rubyzip" #, '~> 0.9.9'
 gem 'axlsx' #, '~> 1.3.6'
@@ -57,6 +56,9 @@ gem 'fabrication'
 gem 'faker'
 gem 'acts-as-taggable-on', '~> 3.4'
 gem 'select2-rails'
+gem 'rails_12factor', group: :production
+gem "rack-timeout"
+gem 'aws-sdk', '~> 2'
 
 group :production do
   gem 'mysql2', '~> 0.3.7'
