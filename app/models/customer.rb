@@ -191,7 +191,7 @@ class Customer < ActiveRecord::Base
     begin
       Apartment::Tenant.process(tenant_name)
       true
-    rescue Apartment::DatabaseNotFound => e
+    rescue Apartment::TenantNotFound => e
       errors.add :base, "Tenant database must exist before Customer record is created."
     end
   end
