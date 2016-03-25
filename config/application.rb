@@ -45,7 +45,7 @@ module Dreamsis
     config.assets.enabled = true
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.1'
+    config.assets.version = '1.2'
    
     # Setup global ActionMailer settings
     config.action_mailer.default_url_options = { :host => "dreamsis.com" }
