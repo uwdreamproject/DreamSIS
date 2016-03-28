@@ -1,6 +1,5 @@
 <%= f.inputs :name => "High School" do -%>
-	<%= f.input :grad_year, :as => :select, :collection => (2004..Date.current.year+5), :include_blank => true, :label => "Graduation Year", 
-				:hint => "Enter the student's expected graduation year" %>
+	<%= f.input :grad_year, :as => :select, :collection => (2004..Date.current.year+5), :include_blank => true, :label => "Graduation Year" %>
 				
 	<%= f.input :high_school, :collection => HighSchool.all %>
 	  

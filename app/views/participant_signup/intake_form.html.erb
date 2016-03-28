@@ -3,12 +3,13 @@
 <%= semantic_form_for @participant, :url => { :action => 'intake_form'} do |f| %>
 
   <%= default_form_errors(f) %>
-  <%= render :partial => 'participant_signup/personal.html.erb', :locals => { :f => f } %>
-  <%= render :partial => 'participant_signup/contact.html.erb', :locals => { :f => f } %>
-  <%= render :partial => 'participant_signup/race_ethnicity.html.erb', :locals => { :f => f } %>
-  <%= render :partial => 'participant_signup/family_history.html.erb', :locals => { :f => f } %>
-  <%= render :partial => 'participant_signup/high_school.html.erb', :locals => { :f => f } %>
-  <%= render :partial => 'participant_signup/parents.html.erb', :locals => { :f => f } %>
+  <%= render :partial => 'participants/fields/contact.html.erb', :locals => { :f => f } %>
+  <%= render :partial => 'participants/fields/race_ethnicity.html.erb', :locals => { :f => f } %>
+  <%= render :partial => 'participants/fields/family_history.html.erb', :locals => { :f => f } %>
+  <%= render :partial => 'participants/fields/high_school.html.erb', :locals => { :f => f } %>
+  <%= render :partial => 'participants/fields/background.html.erb', :locals => { :f => f } %>
+  <%= render :partial => 'participants/fields/parents.html.erb', :locals => { :f => f } %>
+  <%= render :partial => 'participants/fields/financial.html.erb', :locals => { :f => f } %>
 
   <hr>
 

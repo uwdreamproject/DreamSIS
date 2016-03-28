@@ -2,7 +2,9 @@
 	<%= f.inputs :name => "Mailing Address", :class => "inline compress-bottom" do %>
 		<%= f.inputs :street, :city, :state, :zip %>
 	<% end %>
-	<%= f.input :bad_address, :label => "Bad address information (needs correcting)" %>
+	<%- if @current_user.person_type != 'Participant' -%>
+	  <%= f.input :bad_address, :label => "Bad address information (needs correcting)" %>
+	<% end -%>
 	
 	<%= f.inputs :name => "Phone Numbers", :class => "inline compress-bottom" do %>
 		<%= f.input :phone_home, :label => "Home" %>
@@ -13,14 +15,21 @@
 		<%= f.inputs :can_send_texts, :can_receive_texts, :unlimited_texting %>
 	<% end %>
 
-	<%= f.input :bad_phone, :label => "Bad phone information (needs correcting)" %>
+
+	<%- if @current_user.person_type != 'Participant' -%>
+	  <%= f.input :bad_phone, :label => "Bad phone information (needs correcting)" %>
+	<% end -%>
+
 	
 	<%= f.inputs :name => "Email", :class => "inline compress-bottom" do -%>
 		<%= f.input :email, :label => "Primary" %>
 		<%= f.input :email2, :label => "Backup" %>
 		<%= f.input :check_email_regularly, :label => "Checks email regularly" %>
 	<% end %>
-	<%= f.input :bad_email, :label => "Bad email information (needs correcting)" %>
+
+	<%- if @current_user.person_type != 'Participant' -%>
+	  <%= f.input :bad_email, :label => "Bad email information (needs correcting)" %>
+	<% end -%>
 	
 	<%= f.input :facebook_id, :label => "Facebook ID", :input_html => { :size => 15 } %>
 	

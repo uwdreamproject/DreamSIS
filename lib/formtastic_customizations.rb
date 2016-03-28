@@ -18,7 +18,7 @@ module Formtastic
           output = "".html_safe
           output << hint_html_without_customizations
 
-          current_person = template.instance_variable_get(:current_user).try(:person_type)
+          current_person = template.try(:current_user).try(:person_type)
           if current_person.nil?
             help_text = HelpText.for(object_name.to_s.classify, method)
           else
@@ -54,7 +54,7 @@ module Formtastic
           return label_html_without_customizations if builder.options[:label_customizations] == false
           
           if render_label?
-            current_person = template.instance_variable_get(:current_user).try(:person_type)
+            current_person = template.try(:current_user).try(:person_type)
             if current_person.nil?
               help_text = HelpText.for(object_name.to_s.classify, method)
             else

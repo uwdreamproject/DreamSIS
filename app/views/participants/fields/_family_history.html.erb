@@ -1,6 +1,6 @@
 <%= f.inputs :name => "Family History Information" do -%>
 
-    <%= f.input :first_generation, :as => :select, :label => "Did parents graduate from college?", :collection => { "No (student is first generation to college)" => true, "Yes (student is NOT first generation to college)" => false } %>
+    <%= f.input :first_generation, :as => :select, :collection => { "No (student is first generation to college)" => true, "Yes (student is NOT first generation to college)" => false } %>
 	<%= f.input :family_members_who_went_to_college, :input_html => { :size => "90%" } %>
 	<%= f.input :family_members_graduated, :label => "Did any of them graduate?" %>    
 	
@@ -21,7 +21,7 @@
 		<%= f.input :number_of_children, :collection => 0..5, :as => :select %>
 	<% end %>
 	
-	<%= f.input :subsidized_housing, :label => "Family receives public assistance or lives in federally subsidized housing" %>
-	<%= f.input :homeless, :label => "Student is homeless" %>
+	<%= f.input :subsidized_housing %>
+	<%= f.input :homeless %>
 
 <% end %>
