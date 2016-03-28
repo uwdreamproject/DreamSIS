@@ -7,7 +7,7 @@ class EventAttendance < ActiveRecord::Base
 
   validates_presence_of :person_id, :event_id
   validates_uniqueness_of :person_id, :scope => :event_id, :message => "already has an event attendance record for this event"
-  validates_format_of :audience, :with => /(^Mentor$)|(^Volunteer$)|(^Participant$)|(^Student$)/
+  validates_format_of :audience, :with => /(\AMentor\z)|(\AVolunteer\z)|(\AParticipant\z)|(\AStudent\z)/
 
   validate :validate_event_shift
   

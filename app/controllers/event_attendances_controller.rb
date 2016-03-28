@@ -64,13 +64,16 @@ class EventAttendancesController < EventsController
   end
 
   def upsert
-    selector = { person_id: attendee_params[:person_id], event_id: @event.id }
-    setter = attendee_params.merge({ created_at: Time.now, updated_at: Time.now })
-    EventAttendance.upsert(selector, setter)
-    @attendee = EventAttendance.where(selector).first! # the `!` ensures that a record is returned
+    @attendee = EventAttendance.where(person_id: attendee_params[:person_id], event_id: @event.id).first_or_create
+    @attendee.update_attributes(attendee_params)
+
+    if @attendee.save
+      flash[:notice] = "Saved"
+    else
+      flash[:error] = "There was an error saving the attendance. Please try again."
+    end
 
     respond_to do |format|
-      flash[:notice] = "Saved"
       format.html { redirect_to(event_event_attendances_path(@event, :audience => @attendee.try(:person).try(:class))) }
       format.js   { render 'upsert' }
       format.json { render :json => @attendee }
@@ -133,7 +136,7 @@ class EventAttendancesController < EventsController
   end
   
   def check_checkin_authorization
-    unless @current_user && (@current_user.admin? || (@current_user.person.try(:respond_to?, :passed_basics?) && @current_user.person.try(:passed_basics?)))
+    unless @current_user && (@current_user.admin? || (@current_user.person.try(:respond_to?, :current_lead?) && @current_user.person.try(:current_lead?)))
       render_error("You are not allowed to access that page.")
     end
     
