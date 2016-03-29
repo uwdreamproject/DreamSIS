@@ -92,7 +92,7 @@ function attendanceCheckbox(elem, eventId, attendanceData) {
 
     var wrap = $( "<span>", { "class": "emwrap" })
     currentOption = attendanceData == null ? "" : (attendanceData.attendance_option || "")
-    wrap.append( $( "<strong>" ).html( currentOption[0] ) )
+    wrap.append( $( "<strong>" ).html( currentOption[0] || "&nbsp;" ) )
     container.append(wrap)
     elem.addClass("optioned").html( container )
     var attendanceOptions = attendanceOptionsFor(elem)
@@ -165,7 +165,7 @@ function submitAttendance(elem, eventId, data) {
         var i = attendanceOptions.indexOf(returnData.attendance_option)
         colorizeAttendanceOption(parentOptioned, i, attendanceOptions.length)
         var childStrong = parentOptioned.find("strong")
-        childStrong.text(returnData.attendance_option[0] || "")
+        childStrong.html(returnData.attendance_option[0] || "&nbsp;")
         parentOptioned.find(".choice").removeClass("selected")
         elem.addClass("selected")
       }
