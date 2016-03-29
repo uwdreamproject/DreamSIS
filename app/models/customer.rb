@@ -8,6 +8,7 @@ class Customer < ActiveRecord::Base
   validates_presence_of :clearinghouse_customer_number, :clearinghouse_contract_start_date, :clearinghouse_number_of_submissions_allowed, :if => :validate_clearinghouse_configuration?
   validates_numericality_of :clearinghouse_customer_number, :if => :validate_clearinghouse_configuration?
   validates_format_of :stylesheet_url, :with => URI::regexp(%w(http https)), :allow_blank => true
+  validates_format_of :visit_attendance_options, :with => /\A([\w -]|\r\n|\n)+\Z/, :allow_blank => true
   
   belongs_to :parent_customer, :class_name => "Customer"
   belongs_to :program

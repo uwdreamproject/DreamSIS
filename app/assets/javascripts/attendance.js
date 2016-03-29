@@ -92,7 +92,13 @@ function attendanceCheckbox(elem, eventId, attendanceData) {
 
     var wrap = $( "<span>", { "class": "emwrap" })
     currentOption = attendanceData == null ? "" : (attendanceData.attendance_option || "")
-    wrap.append( $( "<strong>" ).html( currentOption[0] || "&nbsp;" ) )
+    var childStrong = $( "<strong>" )
+    if (currentOption[0]) {
+      childStrong.text(currentOption[0])
+    } else {
+      childStrong.html("&nbsp;")
+    }
+    wrap.append(childStrong)
     container.append(wrap)
     elem.addClass("optioned").html( container )
     var attendanceOptions = attendanceOptionsFor(elem)
@@ -165,7 +171,11 @@ function submitAttendance(elem, eventId, data) {
         var i = attendanceOptions.indexOf(returnData.attendance_option)
         colorizeAttendanceOption(parentOptioned, i, attendanceOptions.length)
         var childStrong = parentOptioned.find("strong")
-        childStrong.html(returnData.attendance_option[0] || "&nbsp;")
+        if (returnData.attendance_option[0]) {
+          childStrong.text(returnData.attendance_option[0])
+        } else {
+          childStrong.html("&nbsp;")
+        }
         parentOptioned.find(".choice").removeClass("selected")
         elem.addClass("selected")
       }
