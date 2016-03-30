@@ -236,10 +236,20 @@ class Person < ActiveRecord::Base
   def middlename=(new_middlename)
     write_attribute(:middlename, uppercase_first_letter(new_middlename))
   end
+  
+  # Returns the first letter of the +middlename+
+  def middle_initial
+    middlename.to_s[0]
+  end
 
   # Automatically capitalizes the first letter of +lastname+
   def lastname=(new_lastname)
     write_attribute(:lastname, uppercase_first_letter(new_lastname))
+  end
+  
+  # Returns the birthdate in MM/DD/YYYY format.
+  def watch_birthdate
+    birthdate.to_s(:short_date)
   end
   
   # Calculates the person's age. Returns nil if we don't know the birthdate.

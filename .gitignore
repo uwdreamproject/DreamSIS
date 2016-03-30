@@ -38,3 +38,5 @@ ey-ssh.sh
 public/stylesheets/rmtc.css
 
 .run
+
+.env
