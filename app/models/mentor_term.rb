@@ -14,6 +14,8 @@ class MentorTerm < ActiveRecord::Base
   after_destroy :update_filter_cache
   # after_create :add_to_group
   
+  acts_as_taggable
+  
   def destroy
     update_attribute :deleted_at, Time.now
     MentorTermGroup.decrement_counter(:mentor_terms_count, mentor_term_group.id)

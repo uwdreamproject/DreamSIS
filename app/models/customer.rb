@@ -39,6 +39,8 @@ class Customer < ActiveRecord::Base
   has_many :clearinghouse_requests
   
   serialize :allowable_login_methods
+  
+  acts_as_taggable_on :mentor_term_tags
 
   attr_accessor :validate_clearinghouse_configuration
   
