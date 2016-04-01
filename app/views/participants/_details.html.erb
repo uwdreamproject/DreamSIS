@@ -23,6 +23,7 @@
 			<%= link_to "#{@participant.high_school.name} #{@participant.grad_year}", 
 					high_school_cohort_path(@participant.high_school, (@participant.grad_year || 0)), 
 					:class => 'redirect-link' unless @participant.high_school.nil? %>
+
 		</dd>
 
 		<%- if @participant.respond_to?(:participant_group) && @participant.participant_group -%>
@@ -55,10 +56,17 @@
 					<div class="small light">
 						<%= "#{enrollment.enrollment_status_name}, " unless enrollment.enrollment_status_name.blank? %>
 						<%= raw [enrollment.began_on.try(:to_s, :month_year), enrollment.ended_on.try(:to_s, :month_year)].compact.join('&ndash;') %>
+						<br/>
+						<% list_of_majors = enrollment.majors_list 
+						    majors = list_of_majors.split(", ")
+						    if majors.first.nil? || majors.first.downcase == "NOT APPLICABLE".downcase
+						    	list_of_majors = ""
+						    end %>
+						    <%=  list_of_majors %>
 					</div>
 			</dd>
 		<% end %>
-
+		
 	</dl>
 </div>
 
