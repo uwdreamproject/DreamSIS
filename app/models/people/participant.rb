@@ -87,7 +87,7 @@ class Participant < Person
   
   # Returns an array of unique graudation years
   def self.cohorts
-    Participant.find(:all, :select => "DISTINCT grad_year").collect(&:grad_year).compact.sort.reverse
+    Participant.pluck(:grad_year).uniq.compact.sort.reverse
   end
   
   # Returns the grad_year of the currently-active cohort:

@@ -25,7 +25,7 @@ class HighSchool < Location
   # Returns an array of unique graudation years
   def cohorts
     # participants.find(:all, :select => [:grad_year]).collect(&:grad_year).uniq.compact.sort.reverse
-    @cohorts ||= participants.find(:all, :select => "DISTINCT grad_year").collect(&:grad_year).compact.sort.reverse
+    @cohorts ||= participants.pluck(:grad_year).uniq.compact.sort.reverse
   end
 
   # Attempts to fetch the CEEB code form the College Board website for this school.
