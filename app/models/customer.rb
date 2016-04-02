@@ -8,12 +8,12 @@ class Customer < ActiveRecord::Base
   validates_presence_of :clearinghouse_customer_number, :clearinghouse_contract_start_date, :clearinghouse_number_of_submissions_allowed, :if => :validate_clearinghouse_configuration?
   validates_numericality_of :clearinghouse_customer_number, :if => :validate_clearinghouse_configuration?
   validates_format_of :stylesheet_url, :with => URI::regexp(%w(http https)), :allow_blank => true
-  validates_format_of :visit_attendance_options, :with => /\A([\w -]|\r\n|\n)+\Z/, :allow_blank => true
   
   belongs_to :parent_customer, :class_name => "Customer"
   belongs_to :program
 
   delegate :website_url, :to => :program
+
 
   DEFAULT_LABEL = {
     :mentor => "mentor",
@@ -41,6 +41,7 @@ class Customer < ActiveRecord::Base
   serialize :allowable_login_methods
   
   acts_as_taggable_on :mentor_term_tags
+  acts_as_ordered_taggable_on :visit_attendance_options
 
   attr_accessor :validate_clearinghouse_configuration
   
@@ -147,7 +148,7 @@ class Customer < ActiveRecord::Base
 	# Visit attendance always includes "Attended" as an option, but this allows customers to provide
 	# other options that might also count when reporting attendance.
 	def visit_attendance_options_array
-		(["Attended"] + visit_attendance_options.try(:split, "\n").try(:collect, &:strip).to_a).flatten.uniq
+		(visit_attendance_option_list + ["Attended"]).uniq
 	end
   
   # Returns the current customer record by looking up the Customer whose url_shortcut matches the tenant name.

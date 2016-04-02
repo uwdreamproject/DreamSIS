@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160310061850) do
+ActiveRecord::Schema.define(:version => 20160402072712) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -102,7 +102,6 @@ ActiveRecord::Schema.define(:version => 20160310061850) do
     t.string   "not_target_label"
     t.text     "activity_log_student_time_categories"
     t.text     "activity_log_non_student_time_categories"
-    t.text     "visit_attendance_options"
     t.integer  "background_check_validity_length"
     t.text     "conduct_form_content"
     t.text     "driver_form_content"

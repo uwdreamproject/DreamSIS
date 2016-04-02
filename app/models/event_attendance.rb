@@ -9,7 +9,7 @@ class EventAttendance < ActiveRecord::Base
   validates_uniqueness_of :person_id, :scope => :event_id, :message => "already has an event attendance record for this event"
   validates_format_of :audience, :with => /(\AMentor\z)|(\AVolunteer\z)|(\AParticipant\z)|(\AStudent\z)/
 
-  validates_format_of :attendance_option, :with => lambda{|option| /\A#{Customer.visit_attendance_options_array.join('|')}\z/ }, :allow_blank => true
+  validates :attendance_option, inclusion: { in: lambda{|option| Customer.visit_attendance_options_array } }, :allow_blank => true
 
   validate :validate_event_shift
   
