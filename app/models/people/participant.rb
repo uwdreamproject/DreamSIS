@@ -119,7 +119,7 @@ class Participant < Person
   end
 
   def can_view?(object)
-    return true if object.is_a?(Participant)
+    return true if object.person_type == "Participant"
   end
   
   # Returns the number of filters that this Participant doesn't pass. Useful for quick view of status.
