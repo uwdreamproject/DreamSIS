@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160310061850) do
+ActiveRecord::Schema.define(:version => 20160402195246) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -395,7 +395,7 @@ ActiveRecord::Schema.define(:version => 20160310061850) do
     t.integer  "pseflag"
     t.integer  "pset4flg"
     t.integer  "rptmth"
-    t.string   "ialias"
+    t.text     "ialias"
     t.integer  "instcat"
     t.integer  "ccbasic"
     t.integer  "ccipug"

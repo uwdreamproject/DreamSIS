@@ -60,6 +60,7 @@ gem 'rack-mini-profiler'
 gem 'flamegraph'
 gem 'stackprof'
 gem 'memory_profiler'
+gem 'dotenv'
 
 group :production do
   # gem 'mysql2', '~> 0.3.7'
