@@ -40,3 +40,5 @@ public/stylesheets/rmtc.css
 .run
 
 .env
+
+config/heroku.md

@@ -20,7 +20,7 @@ Apartment.configure do |config|
   config.excluded_models = %w[Customer Identity Institution ActiveRecord::SessionStore::Session]
 
   # use postgres schemas?
-  config.use_schemas = false
+  # config.use_schemas = true
 
   # use raw SQL dumps for creating postgres schemas? (only appies with use_schemas set to true)
   #config.use_sql = true
