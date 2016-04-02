@@ -57,11 +57,11 @@ class EventAttendancesController < EventsController
   end
 
   def create
-    upsert
+    save_attendance
   end
   
   def update
-    upsert
+    save_attendance
   end
 
   def destroy
@@ -104,7 +104,7 @@ class EventAttendancesController < EventsController
   
   protected
 
-  def upsert
+  def save_attendance
     @attendee = @event.attendees.where(person_id: attendee_params[:person_id]).first_or_create
 
     if @attendee.update_attributes(attendee_params)

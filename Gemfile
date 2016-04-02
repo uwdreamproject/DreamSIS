@@ -55,7 +55,6 @@ gem 'coderay', :require =>  'coderay'
 gem 'acts_as_list'
 gem 'fabrication'
 gem 'faker'
-gem 'upsert'
 gem 'acts-as-taggable-on', '~> 3.4'
 gem 'select2-rails'
 
