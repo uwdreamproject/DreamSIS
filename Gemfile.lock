@@ -23,6 +23,8 @@ GEM
       activesupport (= 3.2.19)
       arel (~> 3.0.2)
       tzinfo (~> 0.3.29)
+    activerecord-postgresql-adapter (0.0.1)
+      pg
     activeresource (3.2.19)
       activemodel (= 3.2.19)
       activesupport (= 3.2.19)
@@ -174,7 +176,6 @@ GEM
     multi_json (1.10.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
-    mysql2 (0.3.16)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.2)
@@ -218,6 +219,7 @@ GEM
     omniauth-windowslive (0.0.9)
       multi_json (>= 1.0.3)
       omniauth-oauth2 (~> 1.0)
+    pg (0.18.4)
     polyglot (0.3.5)
     puma (3.2.0)
     rack (1.4.5)
@@ -320,6 +322,7 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth
+  activerecord-postgresql-adapter
   acts-as-taggable-on (~> 3.4)
   acts_as_list
   acts_as_xlsx
@@ -352,7 +355,6 @@ DEPENDENCIES
   memory_profiler
   mime-types
   mini_magick
-  mysql2 (~> 0.3.7)
   net-sftp
   nokogiri
   omniauth-facebook
@@ -362,6 +364,7 @@ DEPENDENCIES
   omniauth-shibboleth
   omniauth-twitter
   omniauth-windowslive
+  pg (= 0.18.4)
   puma
   rack-mini-profiler
   rack-timeout

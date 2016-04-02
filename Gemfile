@@ -62,7 +62,9 @@ gem 'stackprof'
 gem 'memory_profiler'
 
 group :production do
-  gem 'mysql2', '~> 0.3.7'
+  # gem 'mysql2', '~> 0.3.7'
+  gem "pg", "0.18.4"
+  gem "activerecord-postgresql-adapter"
 end
 
 group :staging do
