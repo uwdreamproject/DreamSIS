@@ -7,12 +7,15 @@ module MentorsHelper
     blocks = []
     mentors.each do |mentor|
       if mentor.background_check_result.blank? && mentor.background_check_authorized
-        fname = mentor.try(:firstname).split()
-        blocks << [fname[0].to_s.gsub("-",""), fname[1].to_s[0], mentor.try(:lastname), mentor.try(:sex), mentor.try(:birthdate).try(:to_s, :short_date)].join("|")
+        blocks << mentor.as_json(
+          root: false,
+          only: %w[lastname firstname sex aliases],
+          methods: %w[middle_initial watch_birthdate]
+        )
       end
       break if blocks.count >= BACKGROUND_CHECK_COUNT
     end
-    blocks.join("\n")
+    blocks.to_json
   end
 
   def sex_offender_check_textblock(mentors)
