@@ -2,6 +2,7 @@ class ParticipantBulkActionsController < ParticipantsController
   before_filter :fetch_participants
   before_filter :check_authorization
   before_filter :check_privileged, :only => :process_assign_mentor
+  before_filter :validate_emails, :only => :send_login_links
   
 	def send_email
 		@emails = @participants.collect(&:email).flatten.uniq.compact.delete_if(&:blank?)
@@ -10,7 +11,7 @@ class ParticipantBulkActionsController < ParticipantsController
 			render :js => "updateFlashes({ error: '#{flash[:error]}' })"
 		else
       flash[:notice] = "Sent #{@emails.count} #{"e-mail address".pluralize(@emails.count)} to your e-mail program."
-			render :js => "window.location.href = 'mailto:#{@emails.join(",")}';"
+			render :js => "window.location.href = 'mailto:#{j @emails.join(",")}';"
 		end
 	end
   
@@ -91,12 +92,39 @@ class ParticipantBulkActionsController < ParticipantsController
       participant.save
     end
   end
+
+  def send_login_links
+    return render_error_context("You are not authorized to perform that action") unless Customer.allow_participant_login
+
+    errors = []
+    @participants.each do |participant|
+      token = participant.generate_login_token!
+      login_link = map_login_url(participant, token)
+      begin
+        participant.send_login_link(login_link)
+      rescue Mandrill::Error => e
+        errors << participant.email
+      end
+    end
+
+    error_count = errors.count
+    success_count = @participants.count - error_count
+    if error_count > 0
+      error_text = "#{success_count} #{"email".pluralize(success_count)} sent successfully. The following could not be sent: "
+      error_text << errors.join(", ")
+
+      render_error_context(error_text)
+    else
+      flash[:notice] = "#{success_count} login #{"email".pluralize(success_count)} successfully sent."
+      render :js => "updateFlashes({ notice: '#{flash[:notice]}' })"
+    end
+  end
   
   protected
   
   def fetch_participants
     participant_ids = params[:selected] ? params[:selected]["Participant"].keys : params[:participant_ids]
-		@participants = Participant.find(participant_ids)
+    @participants = Participant.find(participant_ids)
   end
   
   def check_authorization
@@ -110,13 +138,38 @@ class ParticipantBulkActionsController < ParticipantsController
   def check_privileged
     unless @current_user.admin? || @current_user.person.current_lead?
       error_text = "You are not authorized to perform that action."
-      if request.xhr?
-        flash[:error] = error_text
-        return render :text => "Error", :status => 403
-      else
-        return render_error(error_text)
-      end
+      render_error_context(error_text)
     end
   end
-  
+
+  def validate_emails
+    blank_participants = @participants.select { |p| p.email.blank? }
+    emails = @participants.collect(&:email)
+    error_text = "Error: "
+    if blank_participants.any?
+      blank_count = blank_participants.count
+      error_text << blank_participants.collect(&:fullname).join(", ")
+      error_text << " #{blank_count == 1 ? "has" : "have" } no email #{"address".pluralize(blank_count)} on file."
+      error_text << " Ensure all #{Customer.mentees_label} have valid email addresses."
+    elsif emails.uniq.count != @participants.count
+      duplicate_emails = (emails - emails.uniq).uniq
+      error_text << "Multiple #{Customer.mentees_label} have the following email addresses:"
+      error_text << duplicate_emails.join(", ")
+      error_text << ". Ensure there are no #{Customer.mentees_label} with duplicate email addresses."
+    else
+      return true
+    end
+
+    render_error_context(error_text)
+  end
+
+  def render_error_context(error_text)
+    if request.xhr?
+      flash[:error] = error_text
+      return render :js => "updateFlashes({ error: '#{j flash[:error]}' })"
+    else
+      return render_error(error_text)
+    end
+  end
+
 end
