@@ -470,6 +470,11 @@ class Person < ActiveRecord::Base
   def has_valid_login_token?
     false
   end
+
+  # By default, a person never has a correct login token.
+  def correct_login_token?(given_token)
+    false
+  end
     
   protected
   

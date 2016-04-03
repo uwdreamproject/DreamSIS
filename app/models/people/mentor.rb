@@ -113,6 +113,11 @@ class Mentor < Person
     false
   end
 
+  def correct_login_token?(given_token)
+    return false if !has_valid_login_token? || given_token.blank?
+    login_token == given_token
+  end
+
   # Generates a new random login token and stores it in the record, along with an expiry date of
   # 1 week from now.
   def generate_login_token!
