@@ -1,6 +1,4 @@
 class EventAttendance < ActiveRecord::Base
-  require 'upsert/active_record_upsert'
-
   belongs_to :event, :inverse_of => :attendees
   belongs_to :person, :touch => true
   belongs_to :event_shift
