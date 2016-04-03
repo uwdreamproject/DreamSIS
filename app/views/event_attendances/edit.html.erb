@@ -10,6 +10,7 @@
 	<%= default_form_errors(f) %>
 
 	<%= render :partial => "fields", :locals => { :f => f } %>
+	<%= f.input :person_id, as: :hidden, value: @attendee.person_id %>
 
 	<%= f.submit "Update", :disable_with => 'Updating...' %>
 	<%= separator %>

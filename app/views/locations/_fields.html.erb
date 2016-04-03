@@ -15,7 +15,7 @@
 
 <%- if f.object.is_a?(College) -%>
 	<%= f.inputs "Colleges" do -%>
-		<%= f.input :institution_id, :as => :string, :hint => "Enter the IPEDS ID for this college if it exists in the IPEDS database.", :input_html => { :size => 5 } %>
+		<%= f.input :institution_id, :as => :string, :hint => "Enter the IPEDS ID for this college if it exists in the IPEDS database.", :input_html => { :size => 8 } %>
 		<%= f.input :country, :include_blank => true %>
 	<% end -%>
 <% end -%>

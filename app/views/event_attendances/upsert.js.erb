@@ -1,3 +1,4 @@
+clearFlashes()
 if ($('#person_<%= @attendee.person_id %>')){
   $("#person_<%= @attendee.person_id %>").replaceWith("<%= j render :partial => 'event_attendances/person', :object => @attendee.person %>");
   $('#person_fullname').select();
