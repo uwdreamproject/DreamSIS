@@ -15,8 +15,8 @@ class EventAttendance < ActiveRecord::Base
 
   validate :validate_rsvps_not_disabled
   
-  delegate :fullname, :email, :to => :person
-  delegate :has_shifts?, :to => :event
+  delegate :fullname, :firstname, :lastname, :email, :to => :person
+  delegate :has_shifts?, :date, :start_time, :end_time, :to => :event
   
   after_save :send_email
   
@@ -30,6 +30,8 @@ class EventAttendance < ActiveRecord::Base
   # default_scope :joins => :person, :order => "lastname, firstname"
   scope :rsvpd, where(:rsvp => true)
   scope :attended, where(:attended => true)
+  
+  acts_as_xlsx
 
   include MultitenantProxyable
   acts_as_proxyable parent: :event, dependents: [:person, :event_shift], parent_direction: :reverse
@@ -42,6 +44,10 @@ class EventAttendance < ActiveRecord::Base
   # Updates the participant/mentor filter cache
   def update_filter_cache
     person.save
+  end
+  
+  def event_name
+    event.try(:name)
   end
 
   # Class method to use along with other named scopes to limit results to a specific audience group.
@@ -103,5 +109,12 @@ class EventAttendance < ActiveRecord::Base
   def replace_blank_attendance_option
     self.attendance_option = "Attended" if attended? && attendance_option.blank?
   end
+  
+	def self.xlsx_columns
+		columns = []
+    columns << [:person_id, :lastname, :firstname, :event_id, :event_name, :date, :start_time, :end_time]
+		columns << self.column_names.map { |c| c = c.to_sym }
+    columns.flatten
+	end
   
 end
