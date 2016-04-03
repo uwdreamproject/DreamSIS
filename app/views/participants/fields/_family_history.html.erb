@@ -22,7 +22,7 @@
 		<%= f.input :number_of_children, :collection => 0..5, :as => :select %>
 	<% end %>
 	
-	<%= f.input :subsidized_housing %>
-	<%= f.input :homeless %>
+	<%= f.input :subsidized_housing, :as =>:radio %>
+	<%= f.input :homeless, :as => :radio %>
 
 <% end %>

@@ -67,8 +67,9 @@ HelpText.create({
 HelpText.create({
   "object_class" => "Participant",
   "attribute_name" => "homeless",
-  "title" => "I am currently experiencing unstable housing (live with family members other than my parents/legal guardians, couch surfing, live with friends, homeless, live in a motel or hotel)",
-  "audience" => "Participant"
+  "title" => "I am currently experiencing unstable housing",
+  "audience" => "Participant",
+  "hint" => "I live with family members other than my parents/legal guardians, couch surfing, live with friends, homeless, live in a motel or hotel."
 })
 HelpText.create({
   "object_class" => "Mentor",
