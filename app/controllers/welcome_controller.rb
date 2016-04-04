@@ -37,7 +37,7 @@ class WelcomeController < ApplicationController
       end
       @person = current_user.person
       @events = @person.event_attendances.future_attending.collect(&:event)
-      @event_groups = EventGroup.where(allow_external_volunteers: true)
+      @event_groups = EventGroup.where(allow_external_students: true)
       apply_extra_stylesheet
       apply_extra_footer_content
     else

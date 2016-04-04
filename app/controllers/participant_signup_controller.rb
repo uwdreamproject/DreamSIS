@@ -10,7 +10,7 @@ class ParticipantSignupController < ApplicationController
       @participant.intake_form_signature = params[:participant][:intake_form_signature]
       if @participant.update_attributes(params[:participant])
         flash[:notice] = "Your information was successfully updated. Thank you."
-      	redirect_to root_url
+        redirect_to root_url
       end
     end
   end
