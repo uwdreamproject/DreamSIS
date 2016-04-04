@@ -45,10 +45,10 @@ function clearFlashes() {
 }
 
 function updateFlashes(flash) {
-	if(flash.notice){ $('#notice_notification').html(flash.notice).addClass('visible') }
-	if(flash.error) { $('#error_notification').html(flash.error).addClass('visible') }
-	if(flash.info)  { $('#info_notification').html(flash.info).addClass('visible') }
-	if(flash.saved) { $('#saved_notification').html(flash.saved).addClass('visible') }
+	if(flash.notice){ $('#notice_notification').text(flash.notice).addClass('visible') }
+	if(flash.error) { $('#error_notification').text(flash.error).addClass('visible') }
+	if(flash.info)  { $('#info_notification').text(flash.info).addClass('visible') }
+	if(flash.saved) { $('#saved_notification').text(flash.saved).addClass('visible') }
 }
 
 /*

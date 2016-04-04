@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160324032853) do
+ActiveRecord::Schema.define(:version => 20160403221743) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -113,6 +113,7 @@ ActiveRecord::Schema.define(:version => 20160324032853) do
     t.string   "clearinghouse_customer_name"
     t.string   "clearinghouse_entity_type"
     t.string   "stylesheet_url"
+    t.boolean  "allow_participant_login"
   end
 
   create_table "degrees", :force => true do |t|
