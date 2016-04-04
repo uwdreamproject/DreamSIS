@@ -16,7 +16,7 @@
 		<dd><%= number_to_phone @person.phone_mobile %></dd>
 
 		<%- if @current_user.person_type == "Participant" -%>
-		  <dt><%= link_to "Acknowledgement of Intake Form", participant_signup_intake_form_path %></dt>
+		  <dt>Intake Form (<%= link_to "Edit Responses", participant_signup_intake_form_path %>)</dt>
 		  <dd>
 		  	<%- if !@participant.completed_intake_form? %>
 			  <span class="error-message">Not Completed</span>
