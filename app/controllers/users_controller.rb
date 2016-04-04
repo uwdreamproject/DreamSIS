@@ -53,7 +53,7 @@ class UsersController < ApplicationController
   
   def update_identity
     new_identity = h(params[:identity].to_s)
-    return redirect_to choose_identity_path unless %w(Participant Volunteer Mentor).include?(new_identity)
+    return redirect_to choose_identity_path unless %w(Student Volunteer Mentor).include?(new_identity)
     if new_identity == "Mentor"
       @current_user.attach_person_record
       redirect_to profile_path

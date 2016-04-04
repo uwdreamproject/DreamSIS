@@ -31,13 +31,13 @@ GradeLevel.create "title" => "College 5th-Year", "level" => 17
 HelpText.create({
   "object_class" => "Participant", 
   "attribute_name" => "household_size",
-  "hint" => "Include yourself in this count",
+  "hint" => "Include yourself in this count.",
   "audience" => "Participant"
 })
 HelpText.create({
   "object_class" => "Mentor", 
   "attribute_name" => "household_size",
-  "hint" => "Include the student in this count",
+  "hint" => "Include the student in this count.",
   "audience" => "Mentor"
 })
 HelpText.create({
@@ -92,13 +92,13 @@ HelpText.create({
 HelpText.create({
   "object_class" => "Participant",
   "attribute_name" => "grad_year",
-  "hint" => "Enter your expected graduation year",
+  "hint" => "Enter your expected graduation year.",
   "audience" => "Participant"
 })
 HelpText.create({
   "object_class" => "Mentor",
   "attribute_name" => "grad_year",
-  "hint" => "Enter the student's expected graduation year",
+  "hint" => "Enter the student's expected graduation year.",
   "audience" => "Mentor"
 })
 HelpText.create({

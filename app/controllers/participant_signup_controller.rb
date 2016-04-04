@@ -7,16 +7,14 @@ class ParticipantSignupController < ApplicationController
   end
 
   def intake_form
-	unless current_user && current_user.person.can_view?(@current_user)
+	  unless current_user && current_user.person.can_view?(@participant)
       return render_error("You are not allowed to view this form")
     end
-	if request.put?
-      @participant.intake_form_signature = params[:participant][:intake_form_signature]
-      if @participant.save
-        flash[:notice] = "Your intake form was successfully received. Thank you."
-      end
 
+	  if request.put?
+      @participant.intake_form_signature = params[:participant][:intake_form_signature]
       if @participant.update_attributes(params[:participant])
+        flash[:notice] = "Your information was successfully updated. Thank you."
       	redirect_to root_url
       end
 	  end

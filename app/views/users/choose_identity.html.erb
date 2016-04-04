@@ -7,7 +7,7 @@
 	<%- if @current_user.is_a?(PubcookieUser) -%>
 		<li><%= link_to "Dream Project mentor", update_identity_path(:identity => "Mentor"), :method => :post %></li>
 	<%- else -%>
-		<li><%= link_to "high-school student", update_identity_path(:identity => "Participant"), :method => :post %></li>
+		<li><%= link_to "high-school student", update_identity_path(:identity => "Student"), :method => :post %></li>
 	<% end -%>	
 	
 	<li><%= link_to "community volunteer", update_identity_path(:identity => "Volunteer"), :method => :post %></li>
