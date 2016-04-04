@@ -190,7 +190,7 @@ ActiveRecord::Schema.define(:version => 20160403221743) do
   end
 
   add_index "event_attendances", ["customer_id"], :name => "index_event_attendances_on_customer_id"
-  add_index "event_attendances", ["event_id", "person_id"], :name => "index_event_attendances_on_event_id_and_person_id"
+  add_index "event_attendances", ["event_id", "person_id"], :name => "index_event_attendances_on_event_id_and_person_id", :unique => true
   add_index "event_attendances", ["event_id"], :name => "index_event_attendances_on_event_id"
   add_index "event_attendances", ["person_id"], :name => "index_event_attendances_on_person_id"
 
@@ -877,12 +877,14 @@ ActiveRecord::Schema.define(:version => 20160403221743) do
     t.datetime "created_at"
   end
 
-  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
+  add_index "taggings", ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], :name => "taggings_idx", :unique => true
   add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
 
   create_table "tags", :force => true do |t|
     t.string "name"
   end
+  
+  add_index "tags", ["name"], :name => "index_tags_on_name", :unique => true
 
   create_table "terms", :force => true do |t|
     t.integer  "year"
