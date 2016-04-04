@@ -118,8 +118,13 @@ class Participant < Person
     end
   end
 
+  # Determines what objects this particpant can view.
+  #
+  # * A participant can only view themselves
   def can_view?(object)
-    return true if object.id == id
+    if object.is_a?(Participant)
+      return true if object.try(:id) == id
+    end
   end
   
   # Returns the number of filters that this Participant doesn't pass. Useful for quick view of status.
