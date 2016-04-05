@@ -106,7 +106,7 @@ class Mentor < Person
   end
 
   def correct_login_token?(given_token)
-    secure_comapre_token(given_token)
+    secure_compare_token(given_token)
   end
 
   def send_login_link(login_link)
