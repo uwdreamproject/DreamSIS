@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.19'
+gem 'rails', '4.0.13'
 gem "unicorn"
 gem "unicorn-rails"
 gem 'formtastic' #, '~> 1.1.0'
