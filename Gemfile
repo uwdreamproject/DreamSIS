@@ -57,6 +57,8 @@ gem 'fabrication'
 gem 'faker'
 gem 'acts-as-taggable-on', '~> 3.4'
 gem 'select2-rails'
+gem 'activeresource', require: 'active_resource'
+gem 'activerecord-session_store'
 
 group :production do
   gem 'mysql2', '~> 0.3.7'
