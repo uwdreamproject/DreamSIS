@@ -22,7 +22,7 @@ class ParticipantSignupController < ApplicationController
   end
 
   def check_authorization
-    unless current_user && current_user.person_type == "Participant" && current_user.person.can_view?(@participant)
+    unless current_user && current_user.person_type == "Participant" && current_user.person == @participant
       return render_error("You are not allowed to view this form")
     end    
   end
