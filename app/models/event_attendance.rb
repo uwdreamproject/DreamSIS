@@ -16,7 +16,7 @@ class EventAttendance < ActiveRecord::Base
   validate :validate_rsvps_not_disabled
   
   delegate :fullname, :firstname, :lastname, :email, :to => :person
-  delegate :has_shifts?, :date, :start_time, :end_time, :to => :event
+  delegate :has_shifts?, :date, :start_time, :end_time, :to => :event, :allow_nil => true
   
   after_save :send_email
   
