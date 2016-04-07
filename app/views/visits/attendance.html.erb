@@ -31,7 +31,7 @@
 		<% end -%>
 
 		<tr <%= "class='deselected'" if participant.inactive? %> id="participant_row_<%= participant.id.to_s %>" data-participant-id="<%= participant.id.to_s %>">
-		    <td class="name"><%= link_to participant.lastname_first, participant, :popup => true %>
+		    <td class="name"><%= link_to participant.lastname_first, participant_url(participant, :anchor => "!/section/events"), :popup => true %>
 				<small class="inactive-note">(inactive)</small>
 				</td>
 			<%- @visits.each_with_index do |visit, index| -%>

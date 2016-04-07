@@ -182,7 +182,7 @@ tr:hover, tr.odd:hover, tr.even:hover, tr.highlight {
 }
 */
 
-table td:first-child, table th:first-child {
+table tr:not(.not-first-child) td:first-child, table th:first-child {
 	padding-left: 30px !important;
 }
 
@@ -215,6 +215,14 @@ table td.name a {
 
 table.participants td.name {
 	font-weight: bold;
+}
+
+table.participants td.name > a {
+    max-width: 200px;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 table.participants img.avatar {
@@ -1919,6 +1927,11 @@ ul.crimes-list li {
 	width: 70%;
 	left: 15%;
 	margin-left: -15%;
+    transition: opacity 0.25s ease-in-out;
+}
+
+#notifications.remove {
+    opacity: 0;
 }
 
 #notifications .alert {
@@ -2308,6 +2321,73 @@ body.attendance .success-marker {
   background-color: rgba(235, 240, 249, 0.25);
 }
 
+.attendance .optioned .choice-dropdown {
+	display: none;
+	position: absolute;
+	margin: 0;
+	z-index: 30;
+	background-color: #fafafa;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	border: 1px solid #c0c0c0;
+	border-radius: 5px;
+	margin-left: 2px;
+	width: 10em;
+	top: -5px;
+}
+
+.tab-content #events {
+	overflow: visible;
+}
+
+#disable-blur {
+	position: absolute;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 31;
+	opacity: 0.15;
+	background-color: #a0a0a0;
+}
+
+
+.attendance .optioned .select-container {
+	display: inline-block;
+	position: relative;
+	left: 20%;
+	margin: 0 auto;
+}
+
+.attendance .optioned .choice-dropdown .choice {
+	display: block;
+	padding: 4px;
+	margin: 5px 6px;
+	border-radius: 4px;
+	border: 1px solid #bdbcbc;
+	color: black;
+	text-align: center;
+}
+
+.attendance .optioned .choice-dropdown .choice:hover {
+	font-weight: bold;
+	box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.4);
+}
+
+.attendance .select-container:focus {
+	outline: none;
+}
+
+.attendance .select-container:focus .emwrap {
+	border: 1px solid rgba(0, 96, 128, 0.7) !important;
+	box-shadow: 0px 0px 1px 0px rgba(0, 96, 128, 0.7);
+}
+
+.attendance .optioned:hover .choice-dropdown, .attendance .select-container:focus .choice-dropdown {
+	display: inline-block;
+}
+
 .attendance .optioned input, .attendance .optioned select {
 	display: none;
 } 
@@ -2316,8 +2396,8 @@ body.attendance .success-marker {
 	text-align: left;
 }
 
-.attendance .optioned .emwrap {
-	display: block;
+.attendance .optioned .select-container .emwrap {
+	display: inline-block;
 	background: #f9f9f9;
 	padding: 1px;
 	padding-left: 3px;
@@ -2329,7 +2409,6 @@ body.attendance .success-marker {
 	font-weight: normal;
 	font-style: normal;
 	position: relative;
-	left: 45%;
 }
 
 .attendance .optioned .emwrap strong {
@@ -2344,7 +2423,7 @@ body.attendance .success-marker {
 	background: inherit;
 	border: inherit;
 	padding: inherit;
-  padding-right: 2px;
+ 	padding-right: 2px;
 	border-radius: inherit;
 	height: inherit;
 	z-index: 20;
@@ -2369,23 +2448,46 @@ body.attendance .success-marker {
 }
 
 
-.attendance .optioned.first .emwrap {
-	background: green;
-	color: white;
+.attendance .optioned .choice-dropdown .first {
+	background: rgba(0, 128, 0, 0.2);
+	color: black;
+	border-color: green;
+}
+
+.attendance .optioned .choice-dropdown .middle {
+	background: rgba(255, 255, 0, 0.2);
+	color: black;
+	border-color: #f9de00;
+}
+
+.attendance .optioned .choice-dropdown .last {
+	background: rgba(255, 0, 0, 0.2);
+	color: black;
+	border-color: red;
+}
+
+.attendance .optioned .choice-dropdown .clear {
+	font-size: 10px;
+	padding: 1px;
+}
+
+.attendance .optioned.first .emwrap, .attendance .optioned .choice-dropdown .first.selected {
+	background: rgba(0, 128, 0, 0.55);
+	color: black;
 	font-weight: bold;
 	border-color: green;
 }
 
-.attendance .optioned.middle .emwrap {
-	background: yellow;
+.attendance .optioned.middle .emwrap, .attendance .optioned .choice-dropdown .middle.selected {
+	background: rgba(255, 255, 0, 0.55);
 	color: black;
 	font-weight: bold;
 	border-color: #f9de00;
 }
 
-.attendance .optioned.last .emwrap {
-	background: red;
-	color: white;
+.attendance .optioned.last .emwrap, .attendance .optioned .choice-dropdown .last.selected {
+	background: rgba(255, 0, 0, 0.55);
+	color: black;
 	font-weight: bold;
 	border-color: red;
 }
@@ -3011,6 +3113,11 @@ ul.big.choice li {
 .phone {
 	padding: 10px 0 10px 20px;
 	line-height: 20px;
+}
+
+td.phone {
+    padding-left: 0;
+    line-height: inherit;
 }
 
 .phone.home {

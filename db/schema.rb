@@ -102,17 +102,16 @@ ActiveRecord::Schema.define(:version => 20160403221743) do
     t.string   "not_target_label"
     t.text     "activity_log_student_time_categories"
     t.text     "activity_log_non_student_time_categories"
-    t.text     "visit_attendance_options"
     t.integer  "background_check_validity_length"
     t.text     "conduct_form_content"
     t.text     "driver_form_content"
     t.boolean  "send_driver_form_emails"
     t.boolean  "display_nicknames_by_default"
     t.integer  "driver_training_validity_length"
-    t.boolean  "require_parental_consent_for_minors"
     t.string   "clearinghouse_customer_name"
     t.string   "clearinghouse_entity_type"
     t.string   "stylesheet_url"
+    t.boolean  "require_parental_consent_for_minors"
     t.boolean  "allow_participant_login"
   end
 
@@ -397,7 +396,7 @@ ActiveRecord::Schema.define(:version => 20160403221743) do
     t.integer  "pseflag"
     t.integer  "pset4flg"
     t.integer  "rptmth"
-    t.string   "ialias"
+    t.text     "ialias"
     t.integer  "instcat"
     t.integer  "ccbasic"
     t.integer  "ccipug"
@@ -540,10 +539,10 @@ ActiveRecord::Schema.define(:version => 20160403221743) do
     t.integer  "warning_threshold"
     t.date     "start_display_at"
     t.date     "end_display_at"
+    t.integer  "earliest_grade_level"
     t.integer  "earliest_grade_level_level"
     t.integer  "latest_grade_level_level"
     t.integer  "customer_id"
-    t.integer  "earliest_grade_level"
     t.string   "category"
     t.integer  "position"
   end
@@ -870,10 +869,10 @@ ActiveRecord::Schema.define(:version => 20160403221743) do
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"
     t.integer  "taggable_id"
+    t.string   "taggable_type"
     t.integer  "tagger_id"
     t.string   "tagger_type"
-    t.string   "taggable_type"
-    t.string   "context"
+    t.string   "context",       :limit => 128
     t.datetime "created_at"
   end
 
@@ -881,9 +880,10 @@ ActiveRecord::Schema.define(:version => 20160403221743) do
   add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
 
   create_table "tags", :force => true do |t|
-    t.string "name"
+    t.string  "name"
+    t.integer "taggings_count", :default => 0
   end
-  
+
   add_index "tags", ["name"], :name => "index_tags_on_name", :unique => true
 
   create_table "terms", :force => true do |t|

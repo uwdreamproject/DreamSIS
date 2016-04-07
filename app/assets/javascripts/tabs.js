@@ -25,6 +25,9 @@ function bindKeyboardShortcutsForTabs() {
 
 // Moves to a particular tab
 function switchToTab(tab_id, object_id, extra_params) {
+  if($('.info-section#' + tab_id).size() < 1) {
+      return switchToTab('filter_results') // someone's requested a non-existent tab
+  }
   $('.info-section-container .active').removeClass('active')
   $('.info-section#' + tab_id).addClass('active');
   $('#' + tab_id + '_tab_link').addClass('active');

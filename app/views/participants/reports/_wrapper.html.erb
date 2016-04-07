@@ -1,4 +1,4 @@
-<tr class="<%= "deselected" if participant.inactive? %> <%= "not-target" if participant.not_target_participant? %> <%= "needs-followup" if participant.needs_followup? %> participant" data-participant-id="<%= participant.id.to_s %>">
+<tr class="<%= "deselected" if participant.inactive? %> <%= "not-target" if participant.not_target_participant? %> <%= "needs-followup" if participant.needs_followup? %> <%= "not-first-child" unless row_index == 1 %> participant" data-participant-id="<%= participant.id.to_s %>">
 
 	<%- if row_index == 1 -%>
 		<td class="check_box_td multirow-highlight" rowspan="<%= row_count %>">
@@ -22,7 +22,7 @@
 
 	<%- if row_index == 1 -%>	
 		<td rowspan="<%= row_count %>" class="functions multirow-highlight">
-			<%= link_to 'Show', participant %>
+			<%= link_to 'Show', participant_path(participant, :anchor => "!/section/#{report}") %>
 			<%= link_to 'Edit', edit_participant_path(participant) %>
 		</td>
 	<% end %>

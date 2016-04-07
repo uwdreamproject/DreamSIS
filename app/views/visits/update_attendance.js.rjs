@@ -1,7 +1,0 @@
-# if params[:attendance] || params[:attendance_option]
-#   page.replace_html "status_#{@participant.id}_#{@event.id}", "<span id='status_text_#{@participant.id}_#{@event.id}'>Saved</span>"
-#   page.visual_effect :fade, "status_text_#{@participant.id}_#{@event.id}"
-# elsif params[:rsvp]
-#   page.replace_html "status_#{@participant.id}_#{@event.id}_rsvp", "<span id='status_text_#{@participant.id}_#{@event.id}_rsvp'>Saved</span>"
-#   page.visual_effect :fade, "status_text_#{@participant.id}_#{@event.id}_rsvp"
-# end
