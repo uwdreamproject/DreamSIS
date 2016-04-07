@@ -446,7 +446,7 @@ class Participant < Person
   end
 
   def has_valid_login_token?
-    return false unless Customer.allow_participant_login
+    return false unless Customer.allow_participant_login?
     super
   end
 

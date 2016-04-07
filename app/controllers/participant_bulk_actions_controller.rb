@@ -94,7 +94,7 @@ class ParticipantBulkActionsController < ParticipantsController
   end
 
   def send_login_links
-    return render_error_context("You are not authorized to perform that action") unless Customer.allow_participant_login
+    return render_error_context("You are not authorized to perform that action") unless Customer.allow_participant_login?
 
     errors = []
     @participants.each do |participant|
