@@ -525,13 +525,7 @@ class Person < ActiveRecord::Base
   def secure_compare_token(given_token)
     return false if !has_valid_login_token? || given_token.blank?
     salt, stored_hash = split_token_record(login_token)
-    computed_hash = token_hash(given_token, salt)
-
-    random_key = SecureRandom.hex(16)
-    valid_digest = OpenSSL::HMAC.digest(token_digest, random_key, stored_hash)
-    given_digest = OpenSSL::HMAC.digest(token_digest, random_key, computed_hash)
-
-    valid_digest == given_digest
+    stored_hash == token_hash(given_token, salt)
   end
 
 end
