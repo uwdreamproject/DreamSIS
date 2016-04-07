@@ -33,7 +33,7 @@ class WelcomeController < ApplicationController
     if @current_user.person_type == "Participant"
       @participant = @current_user.person
       if @participant && !@participant.completed_intake_form?
-        redirect_to participant_signup_intake_form_path
+        redirect_to participant_signup_basics_path
       end
       @person = current_user.person
       @events = @person.event_attendances.future_attending.collect(&:event)

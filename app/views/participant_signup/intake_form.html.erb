@@ -1,4 +1,5 @@
-<h1>Participant Information Form for <%= Customer.name_label %></h1>
+<h1>Tell Us About Yourself, <%= @participant.firstname %></h1>
+<p>Please enter as much of the information below as possible. If you have any questions, check with your <%= Customer.lead_label %>.</p>
 
 <%= semantic_form_for @participant, :url => { :action => 'intake_form'} do |f| %>
 

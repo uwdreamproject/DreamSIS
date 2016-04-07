@@ -1,0 +1,15 @@
+<% if @participant.completed_intake_form? %>
+	<div class="complete">
+		<h2>Submit an intake form</h2>
+		<p>You're all set and your intake form has been received. Thank you!
+			<br>
+			<%= link_to "Change your information", {:action => 'intake_form'} %></p>
+	</div>
+
+<%- else -%>
+	<div class="incomplete">
+		<h2>Submit an intake form</h2>
+		<p>We need some information before you can participate in the program.</p>
+		<p><%= link_to raw("Submit your intake form now &#x2192;"), {:action => 'intake_form'}, :class => 'button add' %></p>
+	</div>
+<% end -%>
