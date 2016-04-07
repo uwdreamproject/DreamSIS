@@ -16,8 +16,8 @@
 	<!-- <p><%#= link_to_participant_bulk_action "Check-in for event", :check_in_event, :class => "calendar_day button"  %></p> -->
 	<p><%= link_to_participant_bulk_action "Flag for follow-up", :flag_for_followup, :class => "followup button"  %></p>
 	<p><%= link_to_participant_bulk_action "Add note", :add_note, :class => "add note button"  %></p>
-	<p><%= link_to_participant_bulk_action "Send Login Links", :send_login_links, :class => "send-login button"  %></p>
 	<%- if Customer.allow_participant_login? -%>
+		<p><%= link_to_participant_bulk_action "Send Login Links", :send_login_links, :class => "send-login button", :confirm => "Are you sure you want to send login links to these students? This will allow them to create new accounts in DreamSIS."  %></p>
 	<%- end -%>
 	
 </div>
