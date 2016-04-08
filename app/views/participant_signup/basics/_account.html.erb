@@ -1,7 +1,7 @@
 <div class="complete">
 	<h2>Create an account</h2>
 	<p>You're logged in as <strong><%= @current_user.person.try(:fullname) %></strong>
-		using your <strong><%= @current_user.provider.to_s.gsub("oauth2", "").try(:titleize) %></strong> account.
+		using your <strong><%= @current_user.provider_type %></strong> account.
 		<small>(Not you? <%= link_to "Log out", logout_path %>)</small>
 	</p>
 	

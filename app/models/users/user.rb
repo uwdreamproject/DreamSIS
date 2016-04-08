@@ -89,6 +89,11 @@ class User < ActiveRecord::Base
   def identities
     User.where(:provider => provider, :uid => uid)
   end
+  
+  # Returns a string describing the provider used to link this account, e.g., "Facebook" or "Google."
+  def provider_type
+    provider.to_s.gsub("oauth2", "").try(:titleize)
+  end
 
   # Encrypts some data with the salt.
   def self.encrypt(password, salt)
