@@ -67,6 +67,7 @@ end
 
 group :development do
   gem 'byebug'
+  gem 'awesome_print'
 end
 
 group :assets do
