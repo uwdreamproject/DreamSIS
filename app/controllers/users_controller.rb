@@ -31,9 +31,14 @@ class UsersController < ApplicationController
     @person = @current_user.person
     @person.validate_ready_to_rsvp = true if session[:profile_validations_required].to_s.include?("ready_to_rsvp")
     @person.validate_name = true
+    @person.assign_attributes(params[:person])
+
+    for attribute in %w[firstname lastname email high_school_id]
+      @person.send("reset_#{attribute}!") unless @current_user.can_edit?(@person, attribute)
+    end
     
     respond_to do |format|
-      if @person.update_attributes(params[:person])
+      if @person.save
         flash[:notice] = "Thanks! We updated your profile."
         format.html { 
           redirect_to(session[:return_to_after_profile] || root_path)

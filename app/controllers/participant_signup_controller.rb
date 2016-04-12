@@ -8,9 +8,17 @@ class ParticipantSignupController < ApplicationController
   def intake_form
     if request.put?
       @participant.intake_form_signature = params[:participant][:intake_form_signature]
-      if @participant.update_attributes(params[:participant])
+      @participant.assign_attributes(params[:participant])
+      
+      for attribute in %w[firstname lastname email high_school_id]
+        @participant.send("reset_#{attribute}!") unless @current_user.can_edit?(@participant, attribute)
+      end
+      
+      if @participant.save
         flash[:notice] = "Your information was successfully updated. Thank you."
         redirect_to root_url
+      else
+        flash[:error] = "Sorry, we couldn't save your information. Please try again."
       end
     end
   end

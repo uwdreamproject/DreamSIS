@@ -1,7 +1,7 @@
 <%= f.inputs :name => "High School" do -%>
 	<%= f.input :grad_year, :as => :select, :collection => (2004..Date.current.year+5), :include_blank => true, :label => "Graduation Year" %>
 				
-	<%= f.input :high_school, :collection => HighSchool.all %>
+	<%= f.input :high_school, :collection => HighSchool.all, :input_html => { :disabled => !@current_user.can_edit?(f.object, :high_school_id) } %>
 	  
 	<%#= TODO observe_field 'participant_grad_year', 
 					:url => fetch_participant_group_options_participants_path(), 
