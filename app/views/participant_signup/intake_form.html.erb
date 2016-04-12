@@ -4,6 +4,7 @@
 <%= semantic_form_for @participant, :url => { :action => 'intake_form'} do |f| %>
 
   <%= default_form_errors(f) %>
+  <%= render :partial => 'participants/fields/name_and_personal.html.erb', :locals => { :f => f } %>
   <%= render :partial => 'participants/fields/contact.html.erb', :locals => { :f => f } %>
   <%= render :partial => 'participants/fields/race_ethnicity.html.erb', :locals => { :f => f } %>
   <%= render :partial => 'participants/fields/family_history.html.erb', :locals => { :f => f } %>
