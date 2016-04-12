@@ -1,6 +1,9 @@
 <%= f.inputs(:name => "Name and Personal Information") do -%>
+	<%- collection_attributes = %i[lastname firstname middlename suffix] -%>
 	<%= f.inputs :name => "Name", :class => "inline" do %>
-		<%= f.inputs :lastname, :firstname, :middlename, :suffix %>
+		<%- collection_attributes.each do |attribute| %>
+			<%= f.input attribute, :input_html => { :disabled => !@current_user.can_edit?(@person, attribute) } %>
+		<% end -%>
 	<%- end -%>
 
 	<%#= TODO observe_field 'participant_lastname', 
