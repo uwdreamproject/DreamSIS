@@ -189,7 +189,7 @@ ActiveRecord::Schema.define(:version => 20160403221743) do
   end
 
   add_index "event_attendances", ["customer_id"], :name => "index_event_attendances_on_customer_id"
-  add_index "event_attendances", ["event_id", "person_id"], :name => "index_event_attendances_on_event_id_and_person_id", :unique => true
+  add_index "event_attendances", ["event_id", "person_id"], :name => "index_event_attendances_on_event_id_and_person_id"
   add_index "event_attendances", ["event_id"], :name => "index_event_attendances_on_event_id"
   add_index "event_attendances", ["person_id"], :name => "index_event_attendances_on_person_id"
 
