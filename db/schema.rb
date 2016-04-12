@@ -108,10 +108,10 @@ ActiveRecord::Schema.define(:version => 20160403221743) do
     t.boolean  "send_driver_form_emails"
     t.boolean  "display_nicknames_by_default"
     t.integer  "driver_training_validity_length"
-    t.boolean  "require_parental_consent_for_minors"
     t.string   "clearinghouse_customer_name"
     t.string   "clearinghouse_entity_type"
     t.string   "stylesheet_url"
+    t.boolean  "require_parental_consent_for_minors"
     t.boolean  "allow_participant_login"
   end
 
@@ -189,7 +189,7 @@ ActiveRecord::Schema.define(:version => 20160403221743) do
   end
 
   add_index "event_attendances", ["customer_id"], :name => "index_event_attendances_on_customer_id"
-  add_index "event_attendances", ["event_id", "person_id"], :name => "index_event_attendances_on_event_id_and_person_id"
+  add_index "event_attendances", ["event_id", "person_id"], :name => "index_event_attendances_on_event_id_and_person_id", :unique => true
   add_index "event_attendances", ["event_id"], :name => "index_event_attendances_on_event_id"
   add_index "event_attendances", ["person_id"], :name => "index_event_attendances_on_person_id"
 
@@ -396,7 +396,7 @@ ActiveRecord::Schema.define(:version => 20160403221743) do
     t.integer  "pseflag"
     t.integer  "pset4flg"
     t.integer  "rptmth"
-    t.string   "ialias"
+    t.text     "ialias"
     t.integer  "instcat"
     t.integer  "ccbasic"
     t.integer  "ccipug"
@@ -539,10 +539,10 @@ ActiveRecord::Schema.define(:version => 20160403221743) do
     t.integer  "warning_threshold"
     t.date     "start_display_at"
     t.date     "end_display_at"
+    t.integer  "earliest_grade_level"
     t.integer  "earliest_grade_level_level"
     t.integer  "latest_grade_level_level"
     t.integer  "customer_id"
-    t.integer  "earliest_grade_level"
     t.string   "category"
     t.integer  "position"
   end
