@@ -19,7 +19,7 @@
 		<%= f.input :birthdate, :label => "Birth Date", :start_year => Time.now.year-13, :end_year => 1930 %>
         <%= f.input :other_languages, :label => "Other languages you speak", :hint => "If you speak any languages other than English, enter them here to help coordinate event planning and project assignment." %>
 		
-		<%- if @current_user.can_edit?(@person, :high_school_id) && @person.is_a?(Participant) -%>
+		<%- if @current_user.can_edit?(@person, :high_school_id) && @person.respond_to?(:high_school) -%>
 			<li class="select optional <%= "error" if @person.errors.include?(:high_school_id) %>" id="person_high_school_id_input">
 				<label>High School</label>
 				<%= select_tag :high_school_district, 
