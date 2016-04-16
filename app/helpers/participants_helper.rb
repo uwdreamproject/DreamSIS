@@ -17,13 +17,14 @@ module ParticipantsHelper
   # Outputs the link tag for triggering a bulk action. Specify the action to trigger as the main
   # parameter, and an optional "class" option to assign to the link tag.
   def link_to_participant_bulk_action(title, action_name, options = { })
-    link_to title, 
-      participant_bulk_action_path(action_name), 
+    options.merge!({
       "data-original-href" => participant_bulk_action_path(action_name),
-      "data-extra-params" => options[:extra_params],
-      :class => "#{options[:class]} button", 
+      "data-extra-params" => options.delete(:extra_params),
+      :class => "#{options.delete(:class)} button", 
       :remote => true, 
       :method => :post
+    })
+    link_to title, participant_bulk_action_path(action_name), options
   end
   
   # Generates the URL for requesting an XLSX report based on the current location.

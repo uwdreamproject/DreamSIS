@@ -105,24 +105,8 @@ class Mentor < Person
     !conduct_form_signed_at.nil? && !conduct_form_signature.blank?
   end
 
-  # This mentor has a valid login token if there is a value in +login_token+ and the timestamp in
-  # +login_token_expires_at+ is in the future.
-  def has_valid_login_token?
-    return false if login_token.blank? || login_token_expires_at.nil?
-    return true if login_token_expires_at.future?
-    false
-  end
-
-  # Generates a new random login token and stores it in the record, along with an expiry date of
-  # 1 week from now.
-  def generate_login_token!
-    new_login_token = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{rand(10e200).to_s(36)}--")
-    update_attributes(:login_token => new_login_token, :login_token_expires_at => 1.week.from_now)
-    new_login_token
-  end
-
-  def invalidate_login_token!
-    update_attributes(:login_token => nil, :login_token_expires_at => nil)
+  def correct_login_token?(given_token)
+    secure_compare_token(given_token)
   end
 
   def send_login_link(login_link)

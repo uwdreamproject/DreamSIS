@@ -35,6 +35,7 @@ class Customer < ActiveRecord::Base
 
   validate :tenant_database_must_exist
   after_create :initialize_tenant!
+  after_save :reset_customer_in_thread
 
   has_many :clearinghouse_requests
   
@@ -156,6 +157,11 @@ class Customer < ActiveRecord::Base
     return Thread.current['customer'] if Thread.current['customer'] && !reset
     @current_customer ||= {}
     @current_customer[Apartment::Tenant.current] ||= Customer.where(:url_shortcut => Apartment::Tenant.current).first || Customer.new
+  end
+  
+  # Unset the customer attribute in the current thread. Used as an +after_save+ callback to pick up changes.
+  def reset_customer_in_thread
+    Thread.current['customer'] = nil
   end
   
   # The tenant name used by this Customer for apartment multitenancy.

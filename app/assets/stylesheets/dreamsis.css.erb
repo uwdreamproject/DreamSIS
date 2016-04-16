@@ -105,6 +105,12 @@ a:visited {
   font-weight: normal !important;
 }
 
+ul.bulletless {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
 .activity_logs.weekly_summary .highlight_container {
 	clear: left;
 	padding-bottom: 1em;
@@ -2293,6 +2299,11 @@ input:focus, form.formtastic input:focus, textarea:focus, form.formtastic textar
 	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),0 0 8px rgba(82, 168, 236, 0.4);
 }
 
+input[disabled], select[disabled], textarea[disabled] {
+  cursor: not-allowed;
+  background: #eee !important;
+}
+
 input[type=checkbox]:focus, form.formtastic input[type=checkbox]:focus {
   outline: 2px solid rgba(82, 168, 236, 0.4);
 	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),0 0 8px rgba(82, 168, 236, 0.4);
@@ -3362,6 +3373,10 @@ a.button:active {
 
 .button.followup {
 	background-image: url(<%= asset_path 'icons/silk/flag_orange.png' %>);
+}
+
+.button.send-login {
+  background-image: url(<%= asset_path 'icons/silk/key_go.png' %>);
 }
 
 /*table.schedule {

@@ -61,5 +61,18 @@
 		<%= content_tag :small, "as of #{time_ago_in_words(@participant.gpa_date)} ago", :class => "light" unless @participant.gpa_date.blank? %>
 		</dd>
 	<% end %>
-		
+	
+	<dt><%= "User Account".pluralize(@participant.users.count) %></dt>
+	<dd>
+		<%= content_tag(:em, "None", class: 'light') if @participant.users.empty? %>
+		<ul class="bulletless">
+		<%- for user in @participant.users %>
+			<li>
+				<%= link_to user.login, user_path(user) %>
+				<small class="light">(Created <%= relative_timestamp(user.created_at) %>)</small>
+			</li>
+		<% end -%>
+		</ul>
+	</dd>
+	
 </dl>

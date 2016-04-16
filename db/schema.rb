@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160402072712) do
+ActiveRecord::Schema.define(:version => 20160403221743) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(:version => 20160402072712) do
     t.string   "clearinghouse_entity_type"
     t.string   "stylesheet_url"
     t.boolean  "require_parental_consent_for_minors"
+    t.boolean  "allow_participant_login"
   end
 
   create_table "degrees", :force => true do |t|
@@ -308,6 +309,7 @@ ActiveRecord::Schema.define(:version => 20160402072712) do
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
     t.text     "hint"
+    t.string   "audience"
   end
 
   create_table "how_did_you_hear_options", :force => true do |t|
@@ -394,7 +396,7 @@ ActiveRecord::Schema.define(:version => 20160402072712) do
     t.integer  "pseflag"
     t.integer  "pset4flg"
     t.integer  "rptmth"
-    t.string   "ialias"
+    t.text     "ialias"
     t.integer  "instcat"
     t.integer  "ccbasic"
     t.integer  "ccipug"
@@ -760,6 +762,7 @@ ActiveRecord::Schema.define(:version => 20160402072712) do
     t.datetime "uwfs_training_date"
     t.boolean  "clearinghouse_record_found"
     t.boolean  "parental_consent_on_file"
+    t.string   "intake_form_signature"
   end
 
   add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"

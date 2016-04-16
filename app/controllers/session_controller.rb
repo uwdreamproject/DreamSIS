@@ -66,10 +66,10 @@ class SessionController < ApplicationController
     cookies.delete :auth_token
     reset_session
     
-    @mentor = Mentor.find params[:person_id]
-    if @mentor.has_valid_login_token? && @mentor.login_token == params[:token]
+    @person = Person.find(params[:person_id])
+    if @person.correct_login_token?(params[:token])
       flash[:info] = "Please login so that we can link your account."
-      redirect_to login_url(:return_to => map_to_person_url(@mentor, @mentor.login_token))
+      redirect_to login_url(:return_to => map_to_person_url(@person, params[:token]))
     else
       flash[:error] = "Sorry, but that login token is invalid. Please talk to your program administrator."
       redirect_to login_url
@@ -77,11 +77,11 @@ class SessionController < ApplicationController
   end
 
   def map_to_person
-    @mentor = Mentor.find params[:person_id]
-    if @mentor.has_valid_login_token? && @mentor.login_token == params[:token]
-      if @current_user.update_attribute(:person_id, @mentor.id)
-        @mentor.invalidate_login_token!
-        flash[:notice] = "Your user account has been successfully linked to #{ActionController::Base.helpers.sanitize(@mentor.fullname)}."
+    @person = Person.find(params[:person_id])
+    if @person.correct_login_token?(params[:token])
+      if @current_user.update_attribute(:person_id, @person.id)
+        @person.invalidate_login_token!
+        flash[:notice] = "Your user account has been successfully linked to #{ActionController::Base.helpers.sanitize(@person.fullname)}."
         redirect_to root_url
       else
         render_error "Your user account could not be linked successfully."

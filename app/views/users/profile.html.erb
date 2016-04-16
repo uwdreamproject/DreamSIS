@@ -7,19 +7,19 @@
 
 	<%= f.inputs do -%>
         <%= f.inputs(:name => "First Name", :class => "inline") do -%>
-    		<%= f.input :firstname, :label => "Legal/Given Name", :disabled => @person.is_a?(Mentor) %>
+    		<%= f.input :firstname, :label => "Legal/Given Name", :input_html => { :disabled => !@current_user.can_edit?(@person, :firstname) } %>
     		<%= f.input :nickname, :label => "Preferred/Nickname", :input_html => { :size => 10 } %>
         <% end %>
 
-		<%= f.input :lastname, :label => "Last Name", :disabled => @person.is_a?(Mentor) %>
+		<%= f.input :lastname, :label => "Last Name", :input_html => { :disabled => !@current_user.can_edit?(@person, :lastname) } %>
         
-		<%= f.input :email, :label => "E-mail Address", :disabled => @person.is_a?(Mentor), :hint => "We've pulled your email address from the login service that you used (if it was provided). You can change the email address here if you'd like to use a different address instead." %>
+		<%= f.input :email, :label => "E-mail Address", :input_html => { :disabled => !@current_user.can_edit?(@person, :email) }, :hint => "We've pulled your email address from the login service that you used (if it was provided). You can change the email address here if you'd like to use a different address instead." %>
 		<%= f.input :sex, :label => "Gender", :as => :select, :collection => {"Male" => "M", "Female" => "F", "No Response" => "NR"} %>
 		<%= f.input :phone_mobile, :label => "Phone", :input_html => { :value => number_to_phone(f.object.phone_mobile) }, :hint => "We only use your phone number to get ahold of you about events and activities that you've signed up for on this site." %>
 		<%= f.input :birthdate, :label => "Birth Date", :start_year => Time.now.year-13, :end_year => 1930 %>
         <%= f.input :other_languages, :label => "Other languages you speak", :hint => "If you speak any languages other than English, enter them here to help coordinate event planning and project assignment." %>
-	
-		<%- if @person.is_a?(Student) || @person.is_a?(Participant) -%>
+		
+		<%- if @current_user.can_edit?(@person, :high_school_id) && @person.respond_to?(:high_school) -%>
 			<li class="select optional <%= "error" if @person.errors.include?(:high_school_id) %>" id="person_high_school_id_input">
 				<label>High School</label>
 				<%= select_tag :high_school_district, 
@@ -47,10 +47,12 @@
 		<% end -%>
 	<% end -%>
 	
-	<%= f.inputs("Program Affiliations") do -%>
-		<p>Which of the following programs are you affiliated with or do you participate in?</p>
-		<%= f.input :programs, :as => :check_boxes %>
-	<% end -%>
+	<%- unless Program.count.zero? -%>
+		<%= f.inputs("Program Affiliations") do -%>
+			<p>Which of the following programs are you affiliated with or do you participate in?</p>
+			<%= f.input :programs, :as => :check_boxes %>
+		<% end -%>
+	<% end %>
 	
 	<%- if @person.is_a?(Volunteer) -%>
 		<%= f.inputs("Criminal Conviction History") do %>
