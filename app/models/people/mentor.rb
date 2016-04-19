@@ -371,6 +371,7 @@ Documentation for each filter:
   def can_edit?(object)
     if object.is_a?(Participant)
       return true if participants.include?(object)
+      return true if object.new_record?
       
       for mentor_term in current_mentor_terms
         return true if mentor_term.permissions_level == "any"

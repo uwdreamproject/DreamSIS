@@ -2,7 +2,7 @@
 	<%- collection_attributes = %i[lastname firstname middlename suffix] -%>
 	<%= f.inputs :name => "Name", :class => "inline" do %>
 		<%- collection_attributes.each do |attribute| %>
-			<%= f.input attribute, :input_html => { :disabled => !@current_user.can_edit?(@person, attribute) } %>
+			<%= f.input attribute, :input_html => { :disabled => !@current_user.can_edit?(f.object, attribute) } %>
 		<% end -%>
 	<%- end -%>
 
