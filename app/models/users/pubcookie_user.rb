@@ -56,6 +56,11 @@ class PubcookieUser < User
     end
     false
   end
+  
+  def can_edit_own?(attribute)
+    return false if  %w[firstname lastname email].include?(attribute.to_s)
+    super
+  end
 
   protected
 

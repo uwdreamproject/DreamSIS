@@ -1,0 +1,13 @@
+<h1>Get Started with <%= Customer.name_label %></h1>
+<p>In order to participate as a <%= Customer.participant_label %> in <%= Customer.name_label %>, you must complete an intake form.</p>
+
+	<%= render :partial => 'participant_signup/basics/account' %>
+	<%= render :partial => 'participant_signup/basics/intake_form' %>
+
+<p>As soon as that is done, you'll be able to access DreamSIS.</p>
+
+<div id="sidebar">
+	<h3>What is DreamSIS?</h3>
+	<p><%= Customer.name_label %> uses DreamSIS.com to manage its program and keep track of student information in order to better support students like you. You can use DreamSIS to signup for the program, provide additional information, and register for events.</p>
+	<p>If you have any questions, please contact your <%= Customer.mentor_label %> or <%= Customer.lead_label %>.</p>
+</div>

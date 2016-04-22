@@ -49,6 +49,7 @@ GEM
       apartment (>= 0.25)
       sidekiq (>= 2.11)
     arel (3.0.3)
+    awesome_print (1.6.1)
     aws-sdk (2.2.30)
       aws-sdk-resources (= 2.2.30)
     aws-sdk-core (2.2.30)
@@ -331,6 +332,7 @@ DEPENDENCIES
   aes
   apartment
   apartment-sidekiq
+  awesome_print
   aws-sdk (~> 2)
   axlsx
   bcrypt-ruby (~> 3.0.0)

@@ -74,6 +74,7 @@ end
 group :development do
   gem 'byebug'
   gem "sqlite3"
+  gem 'awesome_print'
 end
 
 group :assets do

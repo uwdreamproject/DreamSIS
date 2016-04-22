@@ -2,6 +2,7 @@
 
 	<h3>Contact Info</h3>
 	<p>We may use this information to contact you prior to an event.</p>
+	<br>
 	
 	<dl class="sidebar">
 
@@ -13,6 +14,17 @@
 		
 		<dt>Phone</dt>
 		<dd><%= number_to_phone @person.phone_mobile %></dd>
+
+		<%- if @current_user.person_type == "Participant" -%>
+		  <dt>Intake Form (<%= link_to "Edit Responses", participant_signup_intake_form_path %>)</dt>
+		  <dd>
+		  	<%- if !@participant.completed_intake_form? %>
+			  <span class="error-message">Not Completed</span>
+			<%- else -%>
+			  <span class="success-message">Completed</span>
+			<% end -%>
+		  </dd>
+		<% end -%>
 
 	</dl>
 	

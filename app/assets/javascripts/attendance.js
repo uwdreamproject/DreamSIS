@@ -84,20 +84,56 @@ function attendanceCheckbox(elem, eventId, attendanceData) {
     
   // Show a Multi-option selector instead
   } else {  
+    var container = $( "<div>", { "class": "select-container" } )
+    // Allow touchscreens to select the "pseudo-checkbox"
+    container.attr("tabIndex", 0)
+    // But "unselect" a box when the mouse moves to a different element
+    elem.mouseout(function() { container.blur() })
+
     var wrap = $( "<span>", { "class": "emwrap" })
     currentOption = attendanceData == null ? "" : (attendanceData.attendance_option || "")
-    wrap.append( $( "<strong>" ).html( currentOption[0] ) )
-    wrap.append( $( "<em>" ).addClass("value").html( currentOption ) )
-    elem.addClass("optioned").html( wrap )
+    var childStrong = $( "<strong>" )
+    if (currentOption[0]) {
+      childStrong.text(currentOption[0])
+    } else {
+      childStrong.html("&nbsp;")
+    }
+    wrap.append(childStrong)
+    container.append(wrap)
+    elem.addClass("optioned").html( container )
     var attendanceOptions = attendanceOptionsFor(elem)
     var i = attendanceOptions.indexOf(currentOption)    
     colorizeAttendanceOption(elem, i, attendanceOptions.length)
-    elem.click( function(e) {
-      nextAttendanceOption($( this ))
+
+    var choices = $( "<div>", { "class": "choice-dropdown" } )
+    container.append(choices)
+
+    for (var j = 0; j < attendanceOptions.length; j++) {
+      var option = attendanceOptions[j]
+      var selector = $( "<span>", {"class": "choice" } )
+      choices.append(selector)
+      selector.text(option)
+      setAttendanceOption(selector)
+      if (i == j) { selector.addClass("selected") }
+      selector.click( function(e) {
+        submitAttendance($( this ), eventId, {
+          person_id: $( this ).parents("tr").data("participant-id"),
+          attended: $( this ).attr("data-attended"),
+          attendance_option: $( this ).text()
+        })
+        e.stopImmediatePropagation()
+      })
+    }
+
+    var clearSelector = $( "<span>", {"class": "choice clear"} )
+    choices.append(clearSelector)
+    clearSelector.text("Clear")
+    clearSelector.attr("data-attended", null);
+    clearSelector.click( function(e) {
       submitAttendance($( this ), eventId, {
         person_id: $( this ).parents("tr").data("participant-id"),
-        attended: $( this ).attr("data-attended"),
-        attendance_option: $( this ).find("em.value").html()
+        attended: null,
+        attendance_option: ""
       })
       e.stopImmediatePropagation()
     })
@@ -105,24 +141,21 @@ function attendanceCheckbox(elem, eventId, attendanceData) {
 }
 
 /*
-  Sends the request to actually update the attendance record. If the DOM element has
-  an event-attendance-id attribute assigned, then we submit the request as an UPDATE,
-  otherwise, use a CREATE and update the id attribute from the returned payload.
+  Sends the request to actually create or update the attendance record.
 */
 function submitAttendance(elem, eventId, data) {
   var url = "/events/" + eventId + "/event_attendances/"
-  var event_attendance_id = elem.data("event-attendance-id")
-  var method;
-  if (event_attendance_id !== undefined) {
-    url += event_attendance_id
-    method = "PUT"
-  } else {
-    method = "POST"
-  }
+  clearFlashes()
   elem.addClass("saving")
   elem.attr("data-expected-attendance-option", data.attendance_option) // store the value to check before clearing the spinner
+  var parentOptioned = elem.parents(".optioned")
+  var choiceDropdown = parentOptioned.find(".choice-dropdown")
+
+  // Overlay the selectors with a translucent div to deter concurrent updates for the same EventAttendance
+  choiceDropdown.append($( "<div>", { "id" : "disable-blur" } ))
+
   $.ajax({
-    type: method,
+    type: 'POST',
     url: url,
     data: { "event_attendance": data },
     success: function(returnData, textStatus, jqXHR) {
@@ -132,28 +165,38 @@ function submitAttendance(elem, eventId, data) {
       // console.log("Expected: `" + elem.attr("data-expected-attendance-option") + "`, received: `" + returnData.attendance_option + "`")
       if(returnData.attendance_option == elem.attr("data-expected-attendance-option")){
         elem.removeClass("saving") // only remove the spinner if the attendance option matches, to prevent "quick click" overrides
+
+        // Update the styling of the relevant selectors and checkbox
+        var attendanceOptions = attendanceOptionsFor(parentOptioned)
+        var i = attendanceOptions.indexOf(returnData.attendance_option)
+        colorizeAttendanceOption(parentOptioned, i, attendanceOptions.length)
+        var childStrong = parentOptioned.find("strong")
+        if (returnData.attendance_option[0]) {
+          childStrong.text(returnData.attendance_option[0])
+        } else {
+          childStrong.html("&nbsp;")
+        }
+        parentOptioned.find(".choice").removeClass("selected")
+        elem.addClass("selected")
       }
+    },
+    complete: function() {
+      $("#disable-blur").remove()
     },
     dataType: 'json' });
 }
 
 /*
-  Change this element to the next attendance option in the list, or loop back to blank.
+  Set the attendance option to be sent with an ajax request, and color the element
+  appropriately.
 */
-function nextAttendanceOption(elem) {
-  var currentValue = elem.find("em").html()
-  var attendanceOptions = attendanceOptionsFor(elem)
+function setAttendanceOption(elem) {
+  var currentValue = elem.text()
+  var attendanceOptions = attendanceOptionsFor(elem.parents(".optioned"))
   var i = attendanceOptions.indexOf(currentValue)
   if (i == attendanceOptions.length-1) {
-    elem.find("strong").html("")
-    elem.find("em.value").html("")
     elem.attr("data-attended", false)
-    i = -1
   } else {
-    i = i+1
-    var nextValue = attendanceOptions[i]
-    elem.find("strong").html( nextValue[0] )
-    elem.find("em.value").html( nextValue )
     elem.attr("data-attended", true)
   }
   colorizeAttendanceOption(elem, i, attendanceOptions.length)

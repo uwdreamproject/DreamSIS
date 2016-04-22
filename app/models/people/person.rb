@@ -236,10 +236,20 @@ class Person < ActiveRecord::Base
   def middlename=(new_middlename)
     write_attribute(:middlename, uppercase_first_letter(new_middlename))
   end
+  
+  # Returns the first letter of the +middlename+
+  def middle_initial
+    middlename.to_s[0]
+  end
 
   # Automatically capitalizes the first letter of +lastname+
   def lastname=(new_lastname)
     write_attribute(:lastname, uppercase_first_letter(new_lastname))
+  end
+  
+  # Returns the birthdate in MM/DD/YYYY format.
+  def watch_birthdate
+    birthdate.to_s(:short_date)
   end
   
   # Calculates the person's age. Returns nil if we don't know the birthdate.
@@ -464,18 +474,68 @@ class Person < ActiveRecord::Base
   def is_anonymous_user?
     users.first.is_a?(AnonymousUser)
   end
-  
-  # Always returns false. By default, a person can never use a login token to login.
-  # Override this method in subclasses to provide this functionality to certain models.
-  def has_valid_login_token?
+
+  # By default, a person never has a correct login token.
+  def correct_login_token?(given_token)
     false
   end
-    
+
+  # This mentor has a valid login token if there is a value in +login_token+ and the timestamp in
+  # +login_token_expires_at+ is in the future.
+  def has_valid_login_token?
+    return false if login_token.blank? || login_token_expires_at.nil?
+    login_token_expires_at.future?
+  end
+
+  # Generates a new random login token and stores a secure hash of the token in the record,
+  # along with an expiry date of 1 week from now.
+  def generate_login_token!
+    new_login_token = SecureRandom.hex(24)
+    salt = SecureRandom.hex(24)
+    hash = token_hash(new_login_token, salt)
+
+    update_attributes(:login_token => concatenate_token_record(hash, salt), :login_token_expires_at => 1.week.from_now)
+    new_login_token
+  end
+
+  def invalidate_login_token!
+    update_attributes(:login_token => nil, :login_token_expires_at => nil)
+  end
+
+  # This should never be called on an object that hasn't explicitly overridden this method
+  def send_login_link(login_link)
+    raise "Not implemented"
+  end
+
   protected
   
   # Uppercases the first letter of the string and does nothing else.
   def uppercase_first_letter(str)
     str[0..0].upcase + str[1..-1] rescue str
   end
-  
+
+  def token_hash(token, salt)
+    iterations = 50000
+    raw_hash = OpenSSL::PKCS5.pbkdf2_hmac(token, salt, iterations, token_digest.digest_length, token_digest)
+    token_digest.hexdigest(raw_hash)
+  end
+
+  def concatenate_token_record(hash, salt)
+    salt + '--' + hash
+  end
+
+  def split_token_record(record)
+    record.split('--', 2)
+  end
+
+  def token_digest
+    @@digest ||= OpenSSL::Digest.new('sha256')
+  end
+
+  def secure_compare_token(given_token)
+    return false if !has_valid_login_token? || given_token.blank?
+    salt, stored_hash = split_token_record(login_token)
+    stored_hash == token_hash(given_token, salt)
+  end
+
 end

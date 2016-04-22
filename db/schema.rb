@@ -11,7 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20160402195246) do
+=======
+ActiveRecord::Schema.define(:version => 20160403221743) do
+>>>>>>> master
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -102,7 +106,6 @@ ActiveRecord::Schema.define(:version => 20160402195246) do
     t.string   "not_target_label"
     t.text     "activity_log_student_time_categories"
     t.text     "activity_log_non_student_time_categories"
-    t.text     "visit_attendance_options"
     t.integer  "background_check_validity_length"
     t.text     "conduct_form_content"
     t.text     "driver_form_content"
@@ -113,6 +116,7 @@ ActiveRecord::Schema.define(:version => 20160402195246) do
     t.string   "clearinghouse_entity_type"
     t.string   "stylesheet_url"
     t.boolean  "require_parental_consent_for_minors"
+    t.boolean  "allow_participant_login"
   end
 
   create_table "degrees", :force => true do |t|
@@ -309,6 +313,7 @@ ActiveRecord::Schema.define(:version => 20160402195246) do
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
     t.text     "hint"
+    t.string   "audience"
   end
 
   create_table "how_did_you_hear_options", :force => true do |t|
@@ -761,6 +766,7 @@ ActiveRecord::Schema.define(:version => 20160402195246) do
     t.datetime "uwfs_training_date"
     t.boolean  "clearinghouse_record_found"
     t.boolean  "parental_consent_on_file"
+    t.string   "intake_form_signature"
   end
 
   add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"
