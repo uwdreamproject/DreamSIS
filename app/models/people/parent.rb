@@ -4,16 +4,17 @@ class Parent < Person
 	acts_as_xlsx
 
   RELATIONSHIP_TYPES = [
-    "Mother", "Father", 
-    "Step-Mother", "Step-Father", 
+    "Mother", "Father",
+    "Step-Mother", "Step-Father",
     "Grandmother", "Grandfather",
-    "Foster Parent", 
-    "Guardian", 
-    "Other", 
+    "Foster Parent",
+    "Guardian",
     "Sister", "Brother",
-    "Emergency Contact"
+    "Spouse",
+    "Emergency Contact",
+    "Other"
   ]
-  
+
   validates_presence_of :lastname, :firstname
   validates_presence_of :child_id
 
@@ -29,35 +30,35 @@ class Parent < Person
   def update_filter_cache
     child_person.save
   end
-  
+
   def child_firstname
     child_person.try(:firstname)
   end
-  
+
   def child_lastname
     child_person.try(:lastname)
   end
-  
+
 	def highest_education_level_title
 		highest_education_level.try(:title)
 	end
-  
+
   def street
     address_part_or_childs(:street)
   end
-  
+
   def city
     address_part_or_childs(:city)
   end
-  
+
   def state
     address_part_or_childs(:state)
   end
-  
+
   def zip
     address_part_or_childs(:zip)
   end
-  
+
   # Returns the requested part of the address, but if the local value is blank,
   # this method returns the child's equivalent address part. This allows us to
   # share or export the parent's address if it's the same as the child's (which
@@ -67,14 +68,14 @@ class Parent < Person
     raw = read_attribute(part)
     (raw.blank? || child_person.nil?) ? child_person.try(part) : raw
   end
-  
+
   # Returns true if the parent's address is blank and therefore assumed to be
   # the same as the child's. For simplicity, we just check the +street+ attribute,
   # and if it's blank we assume that we should use the child's address.
   def address_is_same?
     read_attribute(:street).blank?
   end
-  
+
   # Returns the preferred method of contact, ready for printing on the page.
   # For example, if the preferred contact method is "Home Phone", this method
   # will return the phone number as a phone-formatted string.
@@ -88,16 +89,16 @@ class Parent < Person
       email
     end
   end
-  
+
 	# Determines the columns that are exported into xlsx pacakages.
 	def self.xlsx_columns
     columns = [
-      :id, :child_id, :child_lastname, :child_firstname, :formal_firstname, :middlename, :lastname, :suffix, 
+      :id, :child_id, :child_lastname, :child_firstname, :formal_firstname, :middlename, :lastname, :suffix,
       :parent_type, :lives_with,
       :street, :city, :state, :zip, :address_is_same?, :email, :phone_home, :phone_mobile, :phone_work,
       :other_languages, :occupation,	:annual_income,	:highest_education_level_title, :education_country,
       :meeting_availability, :needs_interpreter
     ]
 	end
-  
+
 end

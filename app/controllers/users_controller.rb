@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   skip_before_filter :check_authorization, :only => [:profile, :update_profile, :choose_identity, :update_identity]
   before_filter :apply_extra_styles_if_requested
   before_filter :apply_extra_footer_content_if_requested
-  
+
   def index
     @users = User.page(params[:page])
 
@@ -31,18 +31,19 @@ class UsersController < ApplicationController
     @person = @current_user.person
     @person.validate_ready_to_rsvp = true if session[:profile_validations_required].to_s.include?("ready_to_rsvp")
     @person.validate_name = true
+    params[:person].delete(:emergency_contact_attributes) if params[:person][:emergency_contact_attributes].values.reject(&:blank?).empty?
     @person.assign_attributes(params[:person])
 
     for attribute in %w[firstname lastname email high_school_id]
       @person.send("reset_#{attribute}!") unless @current_user.can_edit?(@person, attribute)
     end
-    
+
     respond_to do |format|
       if @person.save
         flash[:notice] = "Thanks! We updated your profile."
-        format.html { 
+        format.html {
           redirect_to(session[:return_to_after_profile] || root_path)
-          session[:return_to_after_profile] = nil 
+          session[:return_to_after_profile] = nil
           session[:apply_extra_styles] = nil
         }
       else
@@ -55,7 +56,7 @@ class UsersController < ApplicationController
   def choose_identity
     apply_customer_styles
   end
-  
+
   def update_identity
     new_identity = h(params[:identity].to_s)
     return redirect_to choose_identity_path unless %w(Student Volunteer Mentor).include?(new_identity)
@@ -117,32 +118,32 @@ class UsersController < ApplicationController
   end
 
   def auto_complete_for_user_login
-    @users = User.find(:all, 
+    @users = User.find(:all,
                           :joins => [:person],
                           :conditions => ["login LIKE :login
-                                              OR people.firstname LIKE :fullname 
+                                              OR people.firstname LIKE :fullname
                                               OR people.lastname LIKE :fullname
                                               OR people.display_name LIKE :fullname
-                                              OR people.uw_net_id LIKE :fullname", 
+                                              OR people.uw_net_id LIKE :fullname",
                                           {:login => "%#{params[:user][:login].downcase}%",
-                                          :fullname => "%#{params[:user][:login].downcase}%"}])                                          
+                                          :fullname => "%#{params[:user][:login].downcase}%"}])
     respond_to do |format|
       format.js
     end
   end
-  
+
   def admin
     @users = User.paginate :conditions => { :admin => true }, :page => params[:page], :per_page => 100
-    
+
     respond_to do |format|
       format.html { render :action => 'index' }
       format.xml  { render :xml => @users }
     end
-    
+
   end
-  
-  protected 
-  
+
+  protected
+
   def check_authorization
     unless @current_user && @current_user.admin?
       render_error("You are not allowed to access that page.")
