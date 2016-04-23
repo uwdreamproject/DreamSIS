@@ -31,7 +31,8 @@ class UsersController < ApplicationController
     @person = @current_user.person
     @person.validate_ready_to_rsvp = true if session[:profile_validations_required].to_s.include?("ready_to_rsvp")
     @person.validate_name = true
-    
+    params[:person].delete(:emergency_contact_attributes) if params[:person][:emergency_contact_attributes].values.reject(&:blank?).empty?
+    @person.assign_attributes(params[:person])
 
     for attribute in %w[firstname lastname email high_school_id]
       @person.send("reset_#{attribute}!") unless @current_user.can_edit?(@person, attribute)

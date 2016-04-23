@@ -10,6 +10,7 @@ class Parent < Person
     "Foster Parent",
     "Guardian",
     "Sister", "Brother",
+    "Spouse",
     "Emergency Contact",
     "Other"
   ]

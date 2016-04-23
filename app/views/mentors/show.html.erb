@@ -35,7 +35,21 @@
 
 		<dt>Date of Birth</dt>
 		<dd><%= @mentor.birthdate.to_s %></dd>
-		
+
+    <%- if @mentor.emergency_contact %>
+      <dt>Emergency Contact</dt>
+      <dd>
+        <%= @mentor.emergency_contact.fullname %><br>
+        <small>
+          <%= [
+                @mentor.emergency_contact.relationship_to_child,
+                number_to_phone(@mentor.emergency_contact.phone_mobile),
+                @mentor.emergency_contact.email
+              ].reject(&:blank?).join(", ") %>
+        </small>
+      </dd>
+    <% end %>
+
 		<%- if @mentor.respond_to?(:valid_van_driver?) -%>
 			<dt>Driver Trained?</dt>
 			<dd><%- if @mentor.valid_van_driver? -%>

@@ -48,10 +48,17 @@
 	<% end -%>
 
   <%= f.inputs("Emergency Contact Information") do -%>
-    <%= f.input :emergency_name, :label => "Name" %>
-    <%= f.input :emergency_relationship, :label => "Relationship" %>
-    <%= f.input :emergency_number, :label => "Phone Number" %>
-    <%= f.input :emergency_email, :label => "Email" %>
+		<p>Who can we contact in case of emergency? We will only use this information for contact during emergencies and for no other purpose.</p>
+		<%= f.fields_for :emergency_contact, (@person.emergency_contact || Parent.new) do |contact| %>
+	    <%= contact.inputs("Name", :class => "inline") do %>
+	      <%= contact.input :firstname, :label => "First" %>
+				<%= contact.input :lastname, :label => "Last" %>
+	    <% end %>
+	    <%= contact.input :relationship_to_child, :label => "Relationship", :collection => Parent::RELATIONSHIP_TYPES %>
+	    <%= contact.input :phone_mobile, :label => "Phone Number" %>
+	    <%= contact.input :email, :label => "Email" %>
+			<%= contact.input :id, :as => :hidden %>
+		<% end %>
   <% end -%>
 
 	<%- unless Program.count.zero? -%>

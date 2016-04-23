@@ -35,6 +35,8 @@ class Person < ActiveRecord::Base
 
   has_many :training_completions
   has_many :trainings, :through => :training_completions, :source => :training
+  has_one :emergency_contact, :foreign_key => :child_id, :class_name => "Parent", :conditions => { :is_emergency_contact => true, :parent_type => "Emergency Contact" }
+  accepts_nested_attributes_for :emergency_contact, allow_destroy: true
 
   has_and_belongs_to_many :programs
 
