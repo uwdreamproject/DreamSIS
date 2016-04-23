@@ -55,6 +55,8 @@ gem 'coderay', :require =>  'coderay'
 gem 'acts_as_list'
 gem 'fabrication'
 gem 'faker'
+gem 'acts-as-taggable-on', '~> 3.4'
+gem 'select2-rails'
 
 group :production do
   gem 'mysql2', '~> 0.3.7'
@@ -65,6 +67,7 @@ end
 
 group :development do
   gem 'byebug'
+  gem 'awesome_print'
 end
 
 group :assets do

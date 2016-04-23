@@ -20,7 +20,7 @@
 	<%= f.inputs :name => "Phone Numbers", :class => "inline compress-bottom" do %>
 		<%= f.input :phone_home, :label => "Home" %>
 		<%= f.input :phone_mobile, :label => "Mobile" %>
-		<%= f.input :preferred_phone, :collection => %w[Home Mobile] %>
+		<%= f.input :preferred_phone, :as => :select, :collection => %w[Home Mobile] %>
 	<% end %>
 	<%= f.input :bad_phone %>
 	

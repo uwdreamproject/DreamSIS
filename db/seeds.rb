@@ -27,6 +27,105 @@ GradeLevel.create "title" => "College Junior", "level" => 15, "abbreviation" => 
 GradeLevel.create "title" => "College Senior", "level" => 16, "abbreviation" => "R"
 GradeLevel.create "title" => "College 5th-Year", "level" => 17
 
+# Help Texts
+HelpText.create({
+  "object_class" => "Participant", 
+  "attribute_name" => "household_size",
+  "hint" => "Include yourself in this count.",
+  "audience" => "Participant"
+})
+HelpText.create({
+  "object_class" => "Mentor", 
+  "attribute_name" => "household_size",
+  "hint" => "Include the student in this count.",
+  "audience" => "Mentor"
+})
+HelpText.create({
+  "object_class" => "Participant",
+  "attribute_name" => "immigrant",
+  "title" => "Do you identify yourself as an immigrant to the United States?",
+  "audience" => "Participant"
+})
+HelpText.create({
+  "object_class" => "Mentor",
+  "attribute_name" => "immigrant",
+  "title" => "Identifies as an immigrant to the United States",
+  "audience" => "Mentor"
+})
+HelpText.create({
+  "object_class" => "Participant",
+  "attribute_name" => "first_generation",
+  "title" => "Does one or more of your parents/legal guardians hold a bachelor’s/4 year degree?",
+  "audience" => "Participant"
+})
+HelpText.create({
+  "object_class" => "Mentor",
+  "attribute_name" => "first_generation",
+  "title" => "Did parents graduate from college?",
+  "audience" => "Mentor"
+})
+HelpText.create({
+  "object_class" => "Participant",
+  "attribute_name" => "homeless",
+  "title" => "I am currently experiencing unstable housing",
+  "audience" => "Participant",
+  "hint" => "I live with family members other than my parents/legal guardians, couch surfing, live with friends, homeless, live in a motel or hotel."
+})
+HelpText.create({
+  "object_class" => "Mentor",
+  "attribute_name" => "homeless",
+  "title" => "Student is homeless",
+  "audience" => "Mentor"
+})
+HelpText.create({
+  "object_class" => "Participant",
+  "attribute_name" => "subsidized_housing",
+  "title" => "My family receives public assistance or lives in federally subsidized housing",
+  "audience" => "Participant"
+})
+HelpText.create({
+  "object_class" => "Mentor",
+  "attribute_name" => "subsidized_housing",
+  "title" => "Family receives public assistance or lives in federally subsidized housing",
+  "audience" => "Mentor"
+})
+HelpText.create({
+  "object_class" => "Participant",
+  "attribute_name" => "grad_year",
+  "hint" => "Enter your expected graduation year.",
+  "audience" => "Participant"
+})
+HelpText.create({
+  "object_class" => "Mentor",
+  "attribute_name" => "grad_year",
+  "hint" => "Enter the student's expected graduation year.",
+  "audience" => "Mentor"
+})
+HelpText.create({
+  "object_class" => "Participant",
+  "attribute_name" => "college_bound_scholarship",
+  "title" => "I'm signed up for Washington College Bound Scholarship",
+  "audience" => "Participant"
+})
+HelpText.create({
+  "object_class" => "Mentor",
+  "attribute_name" => "college_bound_scholarship",
+  "title" => "Signed up for Washington College Bound Scholarship",
+  "audience" => "Mentor"
+})
+HelpText.create({
+  "object_class" => "Participant",
+  "attribute_name" => "postsecondary_goal",
+  "hint" => "What's your hope to do after graduating high school?",
+  "audience" => "Participant"
+})
+HelpText.create({
+  "object_class" => "Mentor",
+  "attribute_name" => "postsecondary_goal",
+  "hint" => "What is the student's hope to do after graduating high school?",
+  "audience" => "Mentor"
+})
+
 # Test Types
 TestType.create({
   "name"                     => "ACT",
@@ -85,4 +184,5 @@ TestType.create( {
   "score_calculation_method" => "average",
   "passable"                 => true
 })
+
 

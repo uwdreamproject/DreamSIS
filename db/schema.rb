@@ -102,7 +102,6 @@ ActiveRecord::Schema.define(:version => 20151120203925) do
     t.string   "not_target_label"
     t.text     "activity_log_student_time_categories"
     t.text     "activity_log_non_student_time_categories"
-    t.text     "visit_attendance_options"
     t.integer  "background_check_validity_length"
     t.text     "conduct_form_content"
     t.text     "driver_form_content"
@@ -113,6 +112,7 @@ ActiveRecord::Schema.define(:version => 20151120203925) do
     t.string   "clearinghouse_entity_type"
     t.string   "stylesheet_url"
     t.boolean  "require_parental_consent_for_minors"
+    t.boolean  "allow_participant_login"
   end
 
   create_table "degrees", :force => true do |t|
@@ -189,7 +189,7 @@ ActiveRecord::Schema.define(:version => 20151120203925) do
   end
 
   add_index "event_attendances", ["customer_id"], :name => "index_event_attendances_on_customer_id"
-  add_index "event_attendances", ["event_id", "person_id"], :name => "index_event_attendances_on_event_id_and_person_id"
+  add_index "event_attendances", ["event_id", "person_id"], :name => "index_event_attendances_on_event_id_and_person_id", :unique => true
   add_index "event_attendances", ["event_id"], :name => "index_event_attendances_on_event_id"
   add_index "event_attendances", ["person_id"], :name => "index_event_attendances_on_person_id"
 
@@ -309,6 +309,7 @@ ActiveRecord::Schema.define(:version => 20151120203925) do
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
     t.text     "hint"
+    t.string   "audience"
   end
 
   create_table "how_did_you_hear_options", :force => true do |t|
@@ -395,7 +396,7 @@ ActiveRecord::Schema.define(:version => 20151120203925) do
     t.integer  "pseflag"
     t.integer  "pset4flg"
     t.integer  "rptmth"
-    t.string   "ialias"
+    t.text     "ialias"
     t.integer  "instcat"
     t.integer  "ccbasic"
     t.integer  "ccipug"
@@ -765,6 +766,7 @@ ActiveRecord::Schema.define(:version => 20151120203925) do
     t.string   "emergency_relationship"
     t.string   "emergency_number"
     t.string   "emergency_email"
+    t.string   "intake_form_signature"
   end
 
   add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"
@@ -871,19 +873,22 @@ ActiveRecord::Schema.define(:version => 20151120203925) do
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"
     t.integer  "taggable_id"
+    t.string   "taggable_type"
     t.integer  "tagger_id"
     t.string   "tagger_type"
-    t.string   "taggable_type"
-    t.string   "context"
+    t.string   "context",       :limit => 128
     t.datetime "created_at"
   end
 
-  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
+  add_index "taggings", ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], :name => "taggings_idx", :unique => true
   add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
 
   create_table "tags", :force => true do |t|
-    t.string "name"
+    t.string  "name"
+    t.integer "taggings_count", :default => 0
   end
+
+  add_index "tags", ["name"], :name => "index_tags_on_name", :unique => true
 
   create_table "terms", :force => true do |t|
     t.integer  "year"

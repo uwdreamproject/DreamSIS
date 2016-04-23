@@ -8,6 +8,7 @@
  *= require_self
  *= require jquery-ui
  *= require jquery-tablesorter/theme.dreamsis
+ *= require select2
  *= require dreamsis
  *= require menus
  *= require syntax

@@ -109,9 +109,9 @@ class NationalStudentClearinghouse
   # * the control report is 600209_T112660cntlrpt.201305130930_DA.htm
   def interpolate_file_names_from_detail_file_path(detail_file_path)
     detail_file_name = File.basename(detail_file_path)
-    match = detail_file_name.match(/(\d+)_([A-Z]\d+).(\d+)_DA/)
-    aggrrpt_file_name = "#{match[1]}_#{match[2]}aggrrpt.#{match[3]}_DA.csv"
-    cntlrpt_file_name = "#{match[1]}_#{match[2]}cntlrpt.#{match[3]}_DA.htm"
+    match = detail_file_name.match(/(\d+)_([A-Z]\d+).(\d+)_([A-Z][A-Z])/)
+    aggrrpt_file_name = "#{match[1]}_#{match[2]}aggrrpt.#{match[3]}_#{match[4]}.csv"
+    cntlrpt_file_name = "#{match[1]}_#{match[2]}cntlrpt.#{match[3]}_#{match[4]}.htm"
     [detail_file_name, aggrrpt_file_name, cntlrpt_file_name]
   end
   
@@ -208,7 +208,7 @@ class NationalStudentClearinghouse
   def process_files!(local_path)
     Rails.logger.info { "Processing files from #{local_path}" }
     Dir.glob(File.join(local_path, "*")).each do |file_path|
-      process_detail_file(file_path) if file_path.ends_with?("_DA.csv") && !file_path.include?("aggrrpt")
+      process_detail_file(file_path) if file_path.ends_with?(".csv") && !file_path.include?("aggrrpt")
     end
   end
   

@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
   alias_attribute :username, :login
   delegate :email, :participants, :current_locations, :to => :person
   
+  acts_as_tagger
+  
   # Pulls the current user out of Thread.current. We try to avoid this when possible, but sometimes we need 
   # to access the current user in a model (e.g., to check EmailQueue#messages_waiting?).
   def self.current_user
@@ -87,6 +89,11 @@ class User < ActiveRecord::Base
   def identities
     User.where(:provider => provider, :uid => uid)
   end
+  
+  # Returns a string describing the provider used to link this account, e.g., "Facebook" or "Google."
+  def provider_type
+    provider.to_s.gsub("oauth2", "").try(:titleize)
+  end
 
   # Encrypts some data with the salt.
   def self.encrypt(password, salt)
@@ -108,10 +115,20 @@ class User < ActiveRecord::Base
     person.can_view?(object)
   end
   
-  def can_edit?(object)
+  def can_edit?(object, attribute = nil)
     return true if admin?
     return false unless person
+    return can_edit_own?(attribute) if attribute && object == person
     person.can_view?(object)
+  end
+  
+  # Returns true if the current user is allowed to edit an attribute of his own object.
+  # Note that you should also be sure to handle this restriction in the appropriate controller
+  # as well as the view. This method does not actually affect the model's save methods.
+  def can_edit_own?(attribute)
+    return false if person.is_a?(Participant) && %w[firstname lastname high_school_id].include?(attribute.to_s)
+    return true if person.is_a?(Student) && %w[high_school_id].include?(attribute.to_s)
+    true  # Override this method in child classes
   end
 
   # Returns true if this User's Person is an external user (either a Volunteer or a Student).
@@ -131,6 +148,10 @@ class User < ActiveRecord::Base
     return true if person.is_a?(Mentor) && person.passed_basics?
     return true if person.is_a?(Mentor) && person.current_lead?
     false
+  end
+
+  def person_type
+    person.type
   end
 
   protected

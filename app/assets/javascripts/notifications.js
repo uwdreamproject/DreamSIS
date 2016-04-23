@@ -30,25 +30,30 @@ $(function() {
 
 
 function clearFlashes() {
+    $('#notifications').addClass('remove')
+    setTimeout(function() {
+        $('#notifications').removeClass('remove')
+    }, 250)
+    
 	$('#notice_notification').removeClass('visible')
 	$('#error_notification').removeClass('visible')
 	$('#info_notification').removeClass('visible')
 	$('#saved_notification').removeClass('visible')
 	
 	// Wait for a second to clear the text, if it's hidden.
-	setTimeout(function() {
+    setTimeout(function() {
 		if(!$('#notice_notification').hasClass('visible')) $('#notice_notification').html('')
 		if(!$('#error_notification').hasClass('visible')) $('#error_notification').html('')
 		if(!$('#info_notification').hasClass('visible')) $('#info_notification').html('')
 		if(!$('#saved_notification').hasClass('visible')) $('#saved_notification').html('')
-	}, 1000)
+    }, 1000)
 }
 
 function updateFlashes(flash) {
-	if(flash.notice){ $('#notice_notification').html(flash.notice).addClass('visible') }
-	if(flash.error) { $('#error_notification').html(flash.error).addClass('visible') }
-	if(flash.info)  { $('#info_notification').html(flash.info).addClass('visible') }
-	if(flash.saved) { $('#saved_notification').html(flash.saved).addClass('visible') }
+	if(flash.notice){ $('#notice_notification').text(flash.notice).addClass('visible') }
+	if(flash.error) { $('#error_notification').text(flash.error).addClass('visible') }
+	if(flash.info)  { $('#info_notification').text(flash.info).addClass('visible') }
+	if(flash.saved) { $('#saved_notification').text(flash.saved).addClass('visible') }
 }
 
 /*

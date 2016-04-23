@@ -3,6 +3,7 @@ if (<%=j @participants.current_page.to_s %> == 1) {
   $("#participants_table thead").html("<%=j render(:partial => 'participants/reports/table_header') %>")
   $("#export_actions").html("<%=j render('export_actions') %>")
   exportReportType = "<%=j @report %>"
+  exportReportTitle = "<%=j @export.try{ |e| e.class.to_s.titleize } %>"
 }
 
 // Append the new participant data to the table on the screen

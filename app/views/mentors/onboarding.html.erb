@@ -10,7 +10,7 @@
 
 	<h3>First 10 students for background checks (in WATCH auto-fill format):</h3>
 	<textarea id="background-check-block" rows=11 cols=60 style="font-family:monospace" onClick="this.select()"><%= background_check_textblock(@mentors) %></textarea><br>
-	<a href="javascript:lines%20=%20prompt('Enter%20names%20block%20in%20proper%20format:').split(/' '|\r\n|\n/);%20var%20inputn%20=%200;%20for%20(var%20i=0;%20i<lines.length;%20i++)%20{%20parts%20=%20lines[i].split('|');%20document.forms[0][inputn].value%20=%20parts[0];%20inputn++;%20document.forms[0][inputn].value%20=%20parts[1];%20inputn++;%20document.forms[0][inputn].value%20=%20parts[2];%20inputn++;%20document.forms[0][inputn].value%20=%20parts[3];%20inputn++;%20document.forms[0][inputn].value%20=%20parts[4];%20inputn++;%20}" class="up button">WATCH Auto-fill Bookmarklet</a>
+	<a href="<%= URI.encode("javascript:" + render('watch_bookmarklet.js')) %>" class="up button">WATCH Auto-fill Bookmarklet</a>
 	<br>
 
 	<h3>First 10 students for sex offender checks (in NSOPW auto-fill format):</h3>
