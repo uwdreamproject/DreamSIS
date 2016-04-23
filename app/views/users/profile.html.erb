@@ -12,48 +12,62 @@
         <% end %>
 
 		<%= f.input :lastname, :label => "Last Name", :input_html => { :disabled => !@current_user.can_edit?(@person, :lastname) } %>
-        
+
 		<%= f.input :email, :label => "E-mail Address", :input_html => { :disabled => !@current_user.can_edit?(@person, :email) }, :hint => "We've pulled your email address from the login service that you used (if it was provided). You can change the email address here if you'd like to use a different address instead." %>
 		<%= f.input :sex, :label => "Gender", :as => :select, :collection => {"Male" => "M", "Female" => "F", "No Response" => "NR"} %>
 		<%= f.input :phone_mobile, :label => "Phone", :input_html => { :value => number_to_phone(f.object.phone_mobile) }, :hint => "We only use your phone number to get ahold of you about events and activities that you've signed up for on this site." %>
 		<%= f.input :birthdate, :label => "Birth Date", :start_year => Time.now.year-13, :end_year => 1930 %>
         <%= f.input :other_languages, :label => "Other languages you speak", :hint => "If you speak any languages other than English, enter them here to help coordinate event planning and project assignment." %>
-		
+
 		<%- if @current_user.can_edit?(@person, :high_school_id) && @person.respond_to?(:high_school) -%>
 			<li class="select optional <%= "error" if @person.errors.include?(:high_school_id) %>" id="person_high_school_id_input">
 				<label>High School</label>
-				<%= select_tag :high_school_district, 
+				<%= select_tag :high_school_district,
 								options_for_select(HighSchool.all_by_district(
-									:prompt => "-- Choose District --").keys.sort, 
+									:prompt => "-- Choose District --").keys.sort,
 									:selected => (@person.try(:high_school_id).nil? ? "-- Choose District --" : @person.try(:high_school).try(:district))
 								) %>
 				<%= f.collection_select :high_school_id, (HighSchool.all_by_district[f.object.try(:high_school).try(:district)] || []), :id, :name, :selected => f.object.try(:high_school).try(:id) %>
 				<%= content_tag(:p, @person.errors.include?(:high_school_id), :class => "inline-errors") if @person.errors.include?(:high_school_id) %>
-				
+
 				<%= javascript_tag "
 					$('select#high_school_district').change(function() {
-						$.ajax('#{in_district_high_schools_path}', { 
+						$.ajax('#{in_district_high_schools_path}', {
 							dataType: 'script',
 							data: { district: $(this).val() }
 						})
 					})"
 				 %>
-			</li>			
+			</li>
 		<% end -%>
-	
+
 		<%- if @person.is_a?(Volunteer) -%>
 			<%= f.input :organization, :label => "Employer/Organization" %>
 			<!--<%= f.input :shirt_size, :as => :select, :collection => %w[XS S M L XL XXL 3XL] %>-->
 		<% end -%>
 	<% end -%>
-	
+
+  <%= f.inputs("Emergency Contact Information") do -%>
+		<p>Who can we contact in case of emergency? We will only use this information for contact during emergencies and for no other purpose.</p>
+		<%= f.fields_for :emergency_contact, (@person.emergency_contact || Parent.new) do |contact| %>
+	    <%= contact.inputs("Name", :class => "inline") do %>
+	      <%= contact.input :firstname, :label => "First" %>
+				<%= contact.input :lastname, :label => "Last" %>
+	    <% end %>
+	    <%= contact.input :relationship_to_child, :label => "Relationship", :collection => Parent::RELATIONSHIP_TYPES %>
+	    <%= contact.input :phone_mobile, :label => "Phone Number" %>
+	    <%= contact.input :email, :label => "Email" %>
+			<%= contact.input :id, :as => :hidden %>
+		<% end %>
+  <% end -%>
+
 	<%- unless Program.count.zero? -%>
 		<%= f.inputs("Program Affiliations") do -%>
 			<p>Which of the following programs are you affiliated with or do you participate in?</p>
 			<%= f.input :programs, :as => :check_boxes %>
 		<% end -%>
 	<% end %>
-	
+
 	<%- if @person.is_a?(Volunteer) -%>
 		<%= f.inputs("Criminal Conviction History") do %>
 			<label>Have you ever been convicted of any crimes against persons?</label>
@@ -61,7 +75,7 @@
 				<li>Arson (1st degree)</li><li>Assault, Custodial</li><li>Assault, Simple (or 4th Degree Assault) </li><li>Assault (1st/2nd/3rd Degree)</li><li>Assault of a Child (1st/2nd/3rd Degree) </li><li>Burglary (1st Degree)</li><li>Child Abandonment</li><li>Child Abuse or Neglect (RCW 26.44.020) </li><li>Child Buying or Selling</li><li>Child Molestation (1st,2nd,3rd Degree) </li><li>Communication with a Minor</li><li>Criminal Abandonment</li><li>Criminal Mistreatment (1st/2nd Degree)</li><li>Custodial Interference (1st/2nd Degree) </li><li>Extortion (1st/2nd/3rd* Degree) </li><li>Forgery*</li><li>Incest</li><li>Indecent Exposure - Felony Indecent Liberties</li><li>Kidnapping (1st/2nd Degree) </li><li>Malicious Harassment </li><li>Manslaughter (1st/2nd Degree) </li><li>Murder, Aggravated</li><li>Murder (1st/2nd Degree) </li><li>Patronizing a Juvenile Prostitute </li><li>Promoting Pornography</li><li>Promoting Prostitution (1st Degree) </li><li>Prostitution</li><li>Robbery (1st/2nd Degree)</li><li>Rape (1st/2nd/3rd Degree)</li><li>Rape of a Child (1st/2nd/3rd Degree) </li><li>Selling/Distributing Erotic Material to a Minor </li><li>Sexual Exploitation of a Minor</li><li>Sexual Misconduct with a Minor (1st/2nd Degree) </li><li>Theft (1st/2nd/3rd* Degree)</li><li>Unlawful Imprisonment</li><li>Vehicular Homicide</li><li>Violation of Child Abuse Restraining Order</li>
 			</ul>
 			<br style="clear: left" />	-->
-		
+
 			<%= f.input :crimes_against_persons_or_financial, :label => "", :as => :radio %>
 			<%= f.input :aliases, :label => "Aliases/Maiden Name", :as => :string %>
 		<% end -%>
@@ -72,9 +86,9 @@
 		<%= f.inputs do %>
 			<%= f.input :background_check_authorized, :as => :boolean, :label => "I understand the statement above." %>
 		<% end -%>
-			
+
 	<% end -%>
 
-	<%= f.submit "Save", :disable_with => 'Saving...' %>	
+	<%= f.submit "Save", :disable_with => 'Saving...' %>
 
 <% end -%>

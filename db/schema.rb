@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160403221743) do
+ActiveRecord::Schema.define(:version => 20160423012804) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -763,6 +763,8 @@ ActiveRecord::Schema.define(:version => 20160403221743) do
     t.boolean  "clearinghouse_record_found"
     t.boolean  "parental_consent_on_file"
     t.string   "intake_form_signature"
+    t.boolean  "is_emergency_contact"
+    t.boolean  "on_track_to_graduate",                  :default => true
   end
 
   add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"

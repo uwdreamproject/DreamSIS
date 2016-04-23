@@ -45,6 +45,11 @@ class CollegeEnrollment < Enrollment
     [major_1, major_2].select{|m| !m.blank? }.collect(&:titleize).join(", ")
   end
   
+  # Returns the number of majors in the record (0, 1, or 2).
+  def majors_count
+    [major_1, major_2].select{|m| !m.blank? }.size
+  end
+  
   # Returns the name of the +class_level+ based on the CLASS_LEVEL_NAMES mapping.
   def class_level_name
     CLASS_LEVEL_NAMES[class_level.to_s.strip]

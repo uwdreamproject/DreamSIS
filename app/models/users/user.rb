@@ -2,7 +2,7 @@ require 'digest/sha1'
 class User < ActiveRecord::Base
   belongs_to :person
   validates_presence_of :login
-  validates_uniqueness_of :uid, :scope => [:provider]
+  validates_uniqueness_of :uid, :scope => [:provider], :allow_nil => true
   attr_accessible :login, :email, :password, :password_confirmation, :identity_url, :person_attributes
   default_scope :order => 'login'
   alias_attribute :username, :login
@@ -126,7 +126,7 @@ class User < ActiveRecord::Base
   # Note that you should also be sure to handle this restriction in the appropriate controller
   # as well as the view. This method does not actually affect the model's save methods.
   def can_edit_own?(attribute)
-    return false if person.is_a?(Participant) && %w[firstname lastname high_school_id].include?(attribute.to_s)
+    return false if person.is_a?(Participant) && %w[firstname lastname high_school_id on_track_to_graduate].include?(attribute.to_s)
     return true if person.is_a?(Student) && %w[high_school_id].include?(attribute.to_s)
     true  # Override this method in child classes
   end

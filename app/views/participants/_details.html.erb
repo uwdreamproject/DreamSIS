@@ -54,7 +54,9 @@
 							
 					<div class="small light">
 						<%= "#{enrollment.enrollment_status_name}, " unless enrollment.enrollment_status_name.blank? %>
-						<%= raw [enrollment.began_on.try(:to_s, :month_year), enrollment.ended_on.try(:to_s, :month_year)].compact.join('&ndash;') %>
+						<%= safe_join([enrollment.began_on.try(:to_s, :month_year), enrollment.ended_on.try(:to_s, :month_year)].compact, '&ndash;'.html_safe) %>
+						<%= "<br>".html_safe + content_tag(:b, "Major".pluralize(enrollment.majors_count)) +
+									": ".html_safe + enrollment.majors_list unless enrollment.majors_list.blank? %>
 					</div>
 			</dd>
 		<% end %>
