@@ -155,7 +155,7 @@ class MentorsController < ApplicationController
     render :json => @mentors.map { |mentor| 
       {
         :id => mentor.id, 
-        :value => h(mentor.fullname),
+        :value => h(mentor.fullname(:skip_update => true)),
         :klass => mentor.class.to_s.underscore, 
         :fullname => h(mentor.fullname),
         :secondary => h(mentor.email),
