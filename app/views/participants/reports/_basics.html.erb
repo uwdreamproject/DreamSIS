@@ -11,6 +11,7 @@
 </td>
 
 <td class="badges">
+	<%= content_tag :span, participant.filter_results_count, class: "filter_results_count" if participant.filter_warnings? %>
 	<%= render :partial => "participants/followup_notes_container", :locals => { :participant => participant } %>
 </td>
 

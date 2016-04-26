@@ -1360,6 +1360,19 @@ body.scrolled-past-header .record-header .photo {
 	/*transition: all 0.25s ease-in-out 0.25s;*/
 }
 
+span.filter_results_count {
+	border-radius: 20px;
+	text-align: center;
+	background: #fe4c4c;	
+	font-weight: bold;
+	font-family: "Helvetica Neue", Helvetica, sans-serif;
+	color: #fff;
+	width: 1em;
+	padding: 1px 7px;
+	font-size: 90%;	
+	text-align: center;
+}
+
 .info-section-container.vertical ul.tabs li a.filter_results span.count.calculating {
 	-webkit-transform: rotateY(90deg);
 }
@@ -3728,7 +3741,13 @@ ul.filter-results li ul {
 }
 
 .filter-results li.fail, span.icon.fail {
-	background-image: url(<%= asset_path 'icons/silk/cross.png' %>);	
+	background-image: url(<%= asset_path 'icons/silk/cross-muted.png' %>);
+	color: #ccc;
+}
+
+.filter-results li.fail.warn, span.icon.fail.warn {
+	background-image: url(<%= asset_path 'icons/silk/cross.png' %>);
+	color: red;
 }
 
 span.icon.world {
@@ -3756,6 +3775,7 @@ tr.participant:not(.needs-followup) .needs-followup-container a.redirect-link {
   width: 16px;
   height: 16px;
   padding-left: 0;
+	display: inline-block;
 }
 
 .needs-followup-container .controls {
@@ -5671,12 +5691,3 @@ li.input ul.ui-autocomplete.after_select {
 }
 
 /* @end */
-
-
-
-
-
-
-
-
-

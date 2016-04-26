@@ -128,15 +128,25 @@ class Participant < Person
     end
   end
   
+  def filter_warnings?
+    filter_results_count > 0
+  end
+  
   # Returns the number of filters that this Participant doesn't pass. Useful for quick view of status.
   def filter_results_count
     update_filter_cache! unless filter_cache
-    filter_cache.select{|k,v| v == false }.count
+    filter_cache.select{|k,v| v.is_a?(String) && v.include?("warn") }.count
   end
 
   # Checks the +filter_cache+ to see whether or not this person passes the specified filter.
   # If the +filter_cache+ doesn't exist, it creates it.
   def passes_filter?(object_filter)
+    filter_status(object_filter) == "pass"
+  end
+  
+  # Returns either "pass", "fail", or "fail warn" depending on the +filter_status+ result and
+  # the ObjectFilter's +warn_if_false+ setting.
+  def filter_status(object_filter)
     update_filter_cache_and_save! if !filter_cache.is_a?(Hash) || self.filter_cache[object_filter.id].nil?
     self.filter_cache[object_filter.id]
   end

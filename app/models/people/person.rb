@@ -122,7 +122,7 @@ class Person < ActiveRecord::Base
   def update_filter_cache!
     self.filter_cache = {}
     for object_filter in self.class.object_filters
-      self.filter_cache[object_filter.id] = object_filter.passes?(self)
+      self.filter_cache[object_filter.id] = object_filter.passes?(self) ? "pass" : (object_filter.warn_if_false? ? "fail warn" : "fail")
     end
     self.filter_cache
   end

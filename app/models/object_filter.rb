@@ -10,7 +10,7 @@ class ObjectFilter < ActiveRecord::Base
   default_scope :order => "category IS NULL, category, position, earliest_grade_level_level, title"
 
   acts_as_list scope: [:category]
-  
+    
   # If there's a value in the +opposite_title+ attribute, then we'll display the opposite perspective on the filters
   # list on the participant list.
   def display_filter_as_opposite?
@@ -55,11 +55,16 @@ class ObjectFilter < ActiveRecord::Base
     [start_display_at.to_s(:month_day), end_display_at.to_s(:month_day)].join(delimiter)
   end
 
+  # Return the list of valid grade levels for this filter as an array.
+  def grade_levels
+    return [] unless !earliest_grade_level.nil? || !latest_grade_level.nil?
+    [earliest_grade_level_level, latest_grade_level_level]
+  end
+
   # Returns a string of the valid grade levels for this filter.
   def grade_levels_list_string(html = true)
-    return "" unless !earliest_grade_level.nil? || !latest_grade_level.nil?
     delimiter = html ? "&ndash;" : "-"
-    [earliest_grade_level_level, latest_grade_level_level].join(delimiter)
+    grade_levels.join(delimiter)
   end
   
   # Returns true if the display period is undefined, or if it is defined, if this filter should
