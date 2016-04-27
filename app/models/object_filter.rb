@@ -88,4 +88,23 @@ class ObjectFilter < ActiveRecord::Base
     object_class.constantize.expire_object_filters_cache
   end
   
+  # Deletes all current filters information stored in the redis cache.
+  def self.reset_filter_cache!
+    if (keys = Customer.redis.keys("ObjectFilter*")) && !keys.empty?
+      Customer.redis.del(keys)
+    end
+  end
+  
+  def redis_key(str)
+    "ObjectFilter:#{self.id}:#{str}"
+  end
+  
+  # Takes an array of filter conditions and returns the matching object_ids for
+  # the intersection of those conditions in the filter cache. You can specify
+  # direct redis keys ("ObjectFilter:6:pass") or short form ("6:pass").
+  def self.intersect(filter_selections)
+    keys = filter_selections.map{ |s| s.start_with?("ObjectFilter:") ? s : "ObjectFilter:" + s }
+    Customer.redis.sinter(keys)
+  end
+  
 end

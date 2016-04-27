@@ -2,6 +2,7 @@ $( function() {
   updateFiltersWithLocationHash()
   executeFilters()
   $(".filter_checkbox").click(clickFilterCheckbox)
+  $("a.filter_results_count").hover(loadFilterResultsCount, hideFilterResultsCount)
   $("#stages_selector a").click(clickStageSelector) // Add this after the ajax call, too
   $("ul.filters li.category h4").click(function() { $(this).parents('li.category').toggleClass('closed') })
   removeCategoriesIfEmpty()    
@@ -11,7 +12,7 @@ function executeFilters() {
   if( $(".filter_checkbox.enabled").length === 0 && $("#stages_selector [data-stage].selected").length === 0 ) {
     showAllFilterables()
   } else {
-    $(".filterable").addClass("hidden")
+    // $(".filterable").addClass("hidden")
     selection = ""
 
     // Add rows that match the selected stages
@@ -20,16 +21,21 @@ function executeFilters() {
     })
 
     // Add rows that match the selected filters
+    var filter_selections = [];
     $(".filter_checkbox.enabled").each(function (i, element) {
-      selection += "[data-filter-" + $(this).data("target-filter-id") + "='" + $(this).val() + "']"
+      filter_selections.push($(this).data("target-filter-id") + ':' + $(this).val())
       $(this).parents('li.category').removeClass('closed')
     })
-
-    // Show all the rows in the selection
-    $(selection).removeClass("hidden")
-    $(".filter-clear-link").show()
+    
+    $.getJSON( "/participants/filter_results.json", { "filter_selections": filter_selections.join(",") }, function( data ) {
+      $(".filterable").addClass("hidden")
+      // TODO: add in stages selector here as well
+      selection += "[data-participant-id='" + data.object_ids.join("'],[data-participant-id='") + "']"
+      $(selection).removeClass("hidden")
+      $(".filter-clear-link").show()
+      updateRecordCount()
+    })
   }
-  updateRecordCount()
 }
 
 // shows all the filterable items to give us a clean slate before running executeFilters()
@@ -37,17 +43,6 @@ function showAllFilterables() {
   $(".filterable").removeClass("hidden")
   $(".filter-clear-link").hide()
 }
-
-// // Adds the "preview_filter" CSS class to the filter elements but doesn't hide them
-// function previewFilter(filter_key) {
-//   elements = filterables[filter_key][true]
-//   elements.addClass('preview')
-// }
-//
-// function unpreviewFilter(filter_key) {
-//   elements = filterables[filter_key][true]
-//   elements.removeClass('preview')
-// }
 
 // Shows everything and unchecks all the checkboxes
 function clearAllFilters() {
@@ -75,7 +70,7 @@ function updateRecordCount(filter_key) {
   // $('#total_record_count').html($('.filterable').size())
   $(".filter_checkbox").each(function(i) {
     $(this).siblings("small").html( 
-      $(".filterable:not(.hidden)[data-filter-" + $(this).data("target-filter-id") + "='true']" ).size() 
+      $(".filterable:not(.hidden)[data-filter-" + $(this).data("target-filter-id") + "='pass']" ).size() 
     ) 
   })
   if ($('.filterable:not(.hidden)').size() <= 0) {
@@ -94,7 +89,7 @@ function updateFilterBucket() {
   $(".filter_checkbox.enabled").each(function (i, element) {
     var newTag = $("<span />");
     newTag.addClass("outline filter tag").text($( this ).siblings("span").text())
-    if ($(this).attr("value") == "false")
+    if ($(this).attr("value") == "fail")
       newTag.prepend($("<em class='red'>NOT</em>"))
     $("#filter_bucket").append(newTag);
   })
@@ -111,15 +106,15 @@ function clickFilterCheckbox(event) {
   var enabled = $(this).hasClass("enabled"), value = $(this).attr("value")
   
   if( enabled ) {
-    if (value == "true") {
-      $(this).attr("value", false)
-    } else if (value == "false") {
-      $(this).attr("value", true).removeClass("enabled")
+    if (value == "pass") {
+      $(this).attr("value", "fail")
+    } else if (value == "fail") {
+      $(this).attr("value", "pass").removeClass("enabled")
     }
   } else {
-    $(this).attr("value", true).addClass("enabled")
+    $(this).attr("value", "pass").addClass("enabled")
   }
-  console.log($(this))
+  // console.log($(this))
   
   updateLocationHashWithFilters()
   executeFilters()
@@ -134,6 +129,31 @@ function clickStageSelector(event) {
   $( this ).toggleClass("selected")
   updateLocationHashWithFilters()
   executeFilters()
+}
+
+/*
+  Loads the details of the filter results for this participant and shows in a popover.
+*/
+function loadFilterResultsCount(event) {
+  event.preventDefault()
+  var controls = $("<div><p>Loading...</p></div>").addClass("controls arrow-box arrow-top").appendTo($(this).parent())
+  
+  var participant_id = $( this ).parents("[data-participant-id]").data("participant-id")
+  $.getJSON("/participants/" + participant_id + "/filters.json", function(data) {
+    controls.html("<h3>Status Warnings</h3><ul class='filter-results'></ul>")
+    $.each(data, function(title, result) {
+      if(result == "fail warn")
+        $("<li>").addClass(result).text(title).appendTo(controls.children("ul"))
+    })
+  })
+}
+
+/*
+  Hide the details of the filter results.
+*/
+function hideFilterResultsCount(event) {
+  event.preventDefault()
+  $(this).siblings().remove()
 }
 
 /*
@@ -170,7 +190,7 @@ function updateFiltersWithLocationHash(otherHash) {
       var key = hashParts[i].split("=")[0], stringValue = hashParts[i].split("=")[1]
       
       if (key == "filters") {
-        // stringValue looks like "1:true,2:true,3:true"
+        // stringValue looks like "1:pass,2:pass,3:fail"
         var value = stringValue.split(",")
         for (var j=0; j < value.length; j++) {
           var filter_id = value[j].split(":")[0], filter_value = value[j].split(":")[1]

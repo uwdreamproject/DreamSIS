@@ -117,13 +117,15 @@ Dreamsis::Application.routes.draw do
       # match '/participants/cohort/:id.:format' => 'participants#cohort', :as => :cohort
       
       post :add_to_group
-      post :college_mapper_callback      
+      post :college_mapper_callback
+      get :filter_results
     end
     member do
       match :fetch_participant_group_options
       post :college_mapper_login
       post :refresh_filter_cache
       get :event_attendances
+      get :filters
     end
     resources :college_applications do
       collection do

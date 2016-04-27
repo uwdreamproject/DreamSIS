@@ -30,6 +30,7 @@ if (typeof attendanceEventIds !== 'undefined') {
 // Run all of the page load hooks
 $("#stages_selector").html("<%=j render('stages') %>")
 $("#stages_selector a[data-stage]").click(clickStageSelector)
+$("a.filter_results_count").hover(loadFilterResultsCount, hideFilterResultsCount)
 updateFiltersWithLocationHash()
 executeFilters()
 updateRecordCount()

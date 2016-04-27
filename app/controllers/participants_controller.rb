@@ -6,6 +6,7 @@ class ParticipantsController < ApplicationController
   
 	before_filter :set_title_prefix
   before_filter :set_report_type
+  before_filter :fetch_filter_warning_counts
 
   # GET /participants
   # GET /participants.xml
@@ -221,10 +222,9 @@ class ParticipantsController < ApplicationController
 		if @participant.avatar?
 			av = params[:size] ? @participant.avatar.versions[params[:size].to_sym] : @participant.avatar
 			return send_default_photo(params[:size]) if av.nil?
-      # return send_data(av.read, :disposition => 'inline', :type => 'image/jpeg')
-      return redirect_to av.url
+      redirect_to av.url
     else
-      return send_default_photo(params[:size]) if av.nil?
+      send_default_photo(params[:size]) if av.nil?
     end
   end
 	
@@ -341,12 +341,32 @@ class ParticipantsController < ApplicationController
   # Forces a refresh of the filter cache for this participant.
   def refresh_filter_cache
     @participant = Participant.find(params[:id])
-    @participant.update_filter_cache!
-    flash[:notice] = "Stats successfully updated." if @participant.save
+    flash[:notice] = "Stats successfully updated." if @participant.update_filter_cache!
     
     respond_to do |format|
       format.html { redirect_to :back }
       format.js
+    end
+  end
+  
+  # Returns a json payload of the matching objects for the selected filter criteria.
+  def filter_results
+    query = params[:filter_selections].blank? ? [] : params[:filter_selections].split(",")
+    @object_ids = ObjectFilter.intersect(query)
+    
+    respond_to do |format|
+      format.json { render(json: { object_ids: @object_ids, filter_counts: {} }) }
+    end
+  end
+  
+  # Returns the filters for the specified participant.
+  def filters
+    @object_filters = Participant.object_filters
+    @participant = Participant.find(params[:id]) rescue Student.find(params[:id])
+    @result = Hash[@object_filters.map{|f| [f.title, @participant.filter_status(f)] }]
+    
+    respond_to do |format|
+      format.json { render json: @result }
     end
   end
   
@@ -434,6 +454,10 @@ class ParticipantsController < ApplicationController
 	def set_title_prefix
 		@title = ["Participants"]
 	end
+  
+  def fetch_filter_warning_counts
+    @filter_warning_counts = Customer.redis.hgetall("filters:counts:Participant:warn")
+  end
 
   def send_default_photo(size)
 		filename = size == "thumb" ? "blank_avatar_thumb.png" : "blank_avatar.png"
