@@ -1,6 +1,6 @@
 class PersonFafsa < ActiveRecord::Base
   self.table_name = "people_fafsas"
-  belongs_to :person
+  belongs_to :person, touch: true
   validates_presence_of :person_id, :year
   validates_uniqueness_of :year, :scope => :person_id
   

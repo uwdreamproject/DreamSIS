@@ -9,6 +9,7 @@
 			<th>Target</th>
 			<th>Warning</th>
 			<th>Grades</th>
+			<th>Warn?</th>
 			<th colspan=3>Functions</th>
 		</tr>
 	</thead>
@@ -29,9 +30,10 @@
 					) %>
 				</code>
 			</td>
-			<td><%=h number_to_percentage object_filter.target_percentage, :precision => 0 %></td>
-			<td><%=h number_to_percentage object_filter.warning_threshold, :precision => 0 %></td>
-			<td><%= object_filter.grade_levels_list_string %></td>
+			<td><%= number_to_percentage object_filter.target_percentage, :precision => 0 %></td>
+			<td><%= number_to_percentage object_filter.warning_threshold, :precision => 0 %></td>
+			<td><%= safe_join(object_filter.grade_levels, '&ndash;'.html_safe) %></td>
+			<td><%= content_tag :span, "Yes", class: (object_filter.warn_if_false ? "icon fail warn" : "icon fail") %></td>
 			<td class="functions"><%= link_to 'Show', object_filter_path(object_filter) %></td>
 			<td class="functions"><%= link_to 'Edit', edit_object_filter_path(object_filter) %></td>
 			<td class="functions"><%= link_to 'Destroy', object_filter_path(object_filter), :confirm => 'Are you sure?', :method => :delete %></td>
@@ -52,4 +54,3 @@
 	</p>
 	
 </div>
-

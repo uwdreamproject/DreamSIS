@@ -20,7 +20,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
 
   # Provide a default URL as a default if there hasn't been a file uploaded
   def default_url
-    "/images/blank_avatar_" + version_name + ".png"
+    "/images/blank_avatar_" + version_name.to_s + ".png"
   end
   
   # Create different versions of your uploaded files	

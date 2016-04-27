@@ -199,9 +199,14 @@ class Customer < ActiveRecord::Base
     begin
       Apartment::Tenant.process(tenant_name)
       true
-    rescue Apartment::DatabaseNotFound => e
+    rescue Apartment::DatabaseNotFound
       errors.add :base, "Tenant database must exist before Customer record is created."
     end
+  end
+  
+  # Creates a Redis namespace for this customer to use.
+  def redis
+     @redis ||= Redis::Namespace.new(url_shortcut, redis: $redis)
   end
 
   # Returns the current customer's name

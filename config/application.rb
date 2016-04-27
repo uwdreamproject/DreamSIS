@@ -50,5 +50,13 @@ module Dreamsis
     # Setup global ActionMailer settings
     config.action_mailer.default_url_options = { :host => "dreamsis.com" }
     
+    config_file_path = File.join(Rails.root, "config", "api-keys.yml")
+    temp_api_keys = YAML.load_file(config_file_path)
+    redis_endpoint = temp_api_keys["redis"][Rails.env]["endpoint"]
+    redis_password = temp_api_keys["redis"][Rails.env]["password"]
+    config.cache_store = :redis_store, { 
+      url: "redis://#{redis_endpoint}", password: redis_password, namespace: "cache" 
+    }
+
   end
 end

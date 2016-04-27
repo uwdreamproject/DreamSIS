@@ -14,8 +14,8 @@
 				<li id="filter_li_<%= object_filter.id.to_s %>" data-category="<%= object_filter.category.to_s %>">		
 
 					<% 
-					dom_id = "filter_#{object_filter.id.to_s}_true"
-					check_box_str = check_box_tag dom_id, true, false, 
+					dom_id = "filter_#{object_filter.id.to_s}_pass"
+					check_box_str = check_box_tag dom_id, "pass", false, 
 						:class => "#{object_filter.id.to_s}_filter_checkbox filter_checkbox", 
 						"data-target-filter-id" => object_filter.id.to_s
 					record_count_str = "<small id='record_count_#{object_filter.id}'>&nbsp;</small>"
