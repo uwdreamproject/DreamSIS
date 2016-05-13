@@ -11,7 +11,7 @@
 
 	<%= f.input :after_school_activities, :label => "Other extracurricular activities", :input_html => { :rows => 5 } %>
 	
-	<%= f.input :employment_status, :label => "Is the student currently employed?", :as => :radio, :collection => ["Yes", "No"] %> 
+	<%= f.input :employment_status, :label => "Is the student currently employed?", :as => :radio %> 
 
 	<%= f.input :weekly_hours, :label => "Weekly Hours", :as => :select, 
 				:hint => "If yes, how many hours per week does the student work?",

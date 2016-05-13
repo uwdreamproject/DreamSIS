@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160209204843) do
+ActiveRecord::Schema.define(:version => 20160202203959) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -489,9 +489,6 @@ ActiveRecord::Schema.define(:version => 20160209204843) do
     t.boolean  "driver"
     t.text     "notes"
     t.integer  "customer_id"
-    t.boolean  "steering"
-    t.boolean  "ccra"
-    t.boolean  "planning"
   end
 
   add_index "mentor_terms", ["customer_id"], :name => "index_mentor_terms_on_customer_id"
