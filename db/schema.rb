@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160423012804) do
+ActiveRecord::Schema.define(:version => 20160531085718) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -292,6 +292,17 @@ ActiveRecord::Schema.define(:version => 20160423012804) do
   end
 
   add_index "events", ["customer_id"], :name => "index_events_on_customer_id"
+
+  create_table "friendly_id_slugs", :force => true do |t|
+    t.string   "slug",                         :null => false
+    t.integer  "sluggable_id",                 :null => false
+    t.string   "sluggable_type", :limit => 40
+    t.datetime "created_at"
+  end
+
+  add_index "friendly_id_slugs", ["slug", "sluggable_type"], :name => "index_friendly_id_slugs_on_slug_and_sluggable_type", :unique => true
+  add_index "friendly_id_slugs", ["sluggable_id"], :name => "index_friendly_id_slugs_on_sluggable_id"
+  add_index "friendly_id_slugs", ["sluggable_type"], :name => "index_friendly_id_slugs_on_sluggable_type"
 
   create_table "grade_levels", :force => true do |t|
     t.string   "title"
@@ -765,6 +776,7 @@ ActiveRecord::Schema.define(:version => 20160423012804) do
     t.string   "intake_form_signature"
     t.boolean  "is_emergency_contact"
     t.boolean  "on_track_to_graduate",                  :default => true
+    t.string   "slug"
   end
 
   add_index "people", ["college_attending_id"], :name => "index_people_on_college_attending_id"
@@ -775,6 +787,7 @@ ActiveRecord::Schema.define(:version => 20160423012804) do
   add_index "people", ["lastname"], :name => "index_people_on_lastname"
   add_index "people", ["middlename"], :name => "index_people_on_middlename"
   add_index "people", ["nickname"], :name => "index_people_on_nickname"
+  add_index "people", ["slug"], :name => "index_people_on_slug", :unique => true
   add_index "people", ["type"], :name => "index_people_on_type"
   add_index "people", ["uw_net_id"], :name => "index_people_on_uw_net_id"
 

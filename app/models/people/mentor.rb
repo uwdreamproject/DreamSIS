@@ -1,4 +1,6 @@
 class Mentor < Person
+  extend FriendlyId
+  friendly_id :fullname, use: :slugged
   has_many :mentor_terms, :conditions => { :deleted_at => nil } do
     def for_term(term_id)
       term_id = term_id.id if term_id.is_a?(Term)
