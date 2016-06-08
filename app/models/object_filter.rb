@@ -23,6 +23,8 @@ class ObjectFilter < ActiveRecord::Base
     result = object.instance_eval(criteria)
     result = false if result.nil?
     options[:purpose].to_sym == :stats && display_filter_as_opposite? ? !result : result
+  rescue => e
+    raise ObjectFilterEvaluationError.new(self, e)
   end
 
   # If +opposite_title+ is blank, just default to the normal title.
@@ -82,5 +84,12 @@ class ObjectFilter < ActiveRecord::Base
   def expire_object_filters_cache
     object_class.constantize.expire_object_filters_cache
   end
-  
+
+end
+
+class ObjectFilterEvaluationError < StandardError
+  def initialize(object, original_error)
+    msg = "Couldn't evaluate ObjectFilter ID ##{object.id}: " + original_error.message
+    super(msg)
+  end
 end
