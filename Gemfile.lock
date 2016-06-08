@@ -138,6 +138,8 @@ GEM
     formatador (0.2.5)
     formtastic (3.0.0)
       actionpack (>= 3.2.13)
+    friendly_id (4.0.10.1)
+      activerecord (>= 3.0, < 4.0)
     geocoder (1.2.5)
     hashie (3.3.1)
     hike (1.2.3)
@@ -337,6 +339,7 @@ DEPENDENCIES
   flamegraph
   fog
   formtastic
+  friendly_id
   geocoder
   jquery-rails
   jquery-tablesorter
