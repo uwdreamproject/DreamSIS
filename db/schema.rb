@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160531085718) do
+ActiveRecord::Schema.define(:version => 20160607061512) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -456,9 +456,11 @@ ActiveRecord::Schema.define(:version => 20160531085718) do
     t.string   "website_url"
     t.boolean  "enable_college_mapper_integration"
     t.integer  "customer_id"
+    t.string   "slug"
   end
 
   add_index "locations", ["customer_id"], :name => "index_locations_on_customer_id"
+  add_index "locations", ["slug"], :name => "index_locations_on_slug", :unique => true
 
   create_table "mentor_participants", :force => true do |t|
     t.integer  "mentor_id"
@@ -556,6 +558,7 @@ ActiveRecord::Schema.define(:version => 20160531085718) do
     t.integer  "customer_id"
     t.string   "category"
     t.integer  "position"
+    t.boolean  "warn_if_false"
   end
 
   add_index "object_filters", ["customer_id"], :name => "index_object_filters_on_customer_id"
