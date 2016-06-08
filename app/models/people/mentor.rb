@@ -1,6 +1,7 @@
 class Mentor < Person
   extend FriendlyId
-  friendly_id :uw_net_id, use: :slugged
+  friendly_id :friendly_slug, use: :slugged
+
   has_many :mentor_terms, :conditions => { :deleted_at => nil } do
     def for_term(term_id)
       term_id = term_id.id if term_id.is_a?(Term)
@@ -35,6 +36,11 @@ class Mentor < Person
     new_mentor.validate_name = false
     new_mentor.update_resource_cache!(true)
     new_mentor
+  end
+
+  # Generates a slug for friendly_id to use using a UW NetID if it exists, or email handle otherwise.
+  def friendly_slug
+    uw_net_id.blank? ? email.to_s.split("@").first : uw_net_id
   end
 
   # Returns true if +passed_background_check?+ and +signed_risk_form?+ and +currently_enrolled?+ all return true, and
