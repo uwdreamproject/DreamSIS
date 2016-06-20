@@ -26,11 +26,6 @@ class EventsController < ApplicationController
       format.html # show.html.erb
       format.json { render :json => @event.as_json(methods: [:short_title, :attendance_options]) }
       format.xml  { render :xml => @event }
-      format.xls {
-        @event = Event.find(params[:id])
-        @attendee = @event.attendees.find(params[:event_attendance_id])
-        render :action => 'index', :layout => 'basic'
-      }
     end
   end
 

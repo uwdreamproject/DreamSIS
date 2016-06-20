@@ -18,6 +18,10 @@ class EventAttendancesController < EventsController
       format.html # index.html.erb
       format.json { render :json => @attendees }
       format.xml  { render :xml => @attendees }
+      format.xls {
+        @event = Event.find(params[:event_id])
+        render :action => 'index', :layout => 'basic'
+      }
     end
   end
 
