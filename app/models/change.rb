@@ -68,8 +68,12 @@ class Change < ActiveRecord::Base
   
   # Restores this object by creating a new matching object with the same attributes.
   def undelete!
-    new_object = change_loggable_type.constantize.create!(changes)
+    new_type = changes.delete("type")
+    new_id = changes.delete("id")
+    new_object = change_loggable_type.constantize.new(changes)
+    new_object.update_attribute(:id, new_id)
     if new_object.valid?
+      new_object.save!
       self.restored_at = Time.now
       self.restored_user_id = Thread.current['user'].try(:id)
       self.save!
