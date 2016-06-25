@@ -73,6 +73,7 @@ class Participant < Person
     rosters: "Roster", 
     parents: "Parents & Contacts",
     attendance_summaries: "Attendance", 
+    financial_aid_packages: "Financial Aid",
     college_stages: "College Pipeline" 
   }
 

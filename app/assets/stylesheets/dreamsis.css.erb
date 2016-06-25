@@ -4643,21 +4643,28 @@ td.signup-meter {
 .signup-meter.financial-aid .cost-label {
 	display: inline-block;
 	position: absolute;
-	padding: 0 0.5em 0.5em 0.5em;
-	border-left: 1px solid #ddd;
+	padding: 0.25em 0.5em;
 	top: 25px;
 	background: rgba(255,255,255,0.85);
 }
 
 .signup-meter.financial-aid .cost-label > small {
 	display: block;
-	color: #999;
 	color: #90a4ae;
 }
 
 .cost-component.gap .cost-label {
 	color: red;
 	font-weight: bold;
+}
+
+table.participants .signup-meter .cost-label {
+	display:none;
+}
+
+table.participants .signup-meter .cost-component:hover > .cost-label {
+	background: white;
+	display: block;
 }
 
 table#financial_aid_packages td {
