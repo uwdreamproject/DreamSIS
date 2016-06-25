@@ -9,7 +9,7 @@ class CollegeApplication < ActiveRecord::Base
   validates_exclusion_of :institution_id, :in => [0], :message => "ID can't be set to zero" # make sure this doesn't get set to zero, but allow any other positive or negative integer
   validates :institution, presence: true
   
-  delegate :name, :to => :institution, :allow_nil => true
+  delegate :name, :iclevel_description, :control_description, :sector_description, :to => :institution, :allow_nil => true
   delegate :firstname, :lastname, :formal_firstname, :grad_year, :to => :participant
   
   before_destroy :destroy_college_mapper_college, :if => :do_college_mapper_functions?

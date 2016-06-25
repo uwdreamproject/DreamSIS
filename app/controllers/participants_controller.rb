@@ -486,6 +486,7 @@ class ParticipantsController < ApplicationController
     when "test_score_summaries" then TestScoresReport
     when "college_applications" then CollegeApplicationsReport
     when "attendance_summaries" then AttendanceSummariesReport
+    when "financial_aid_packages" then FinancialAidReport
     when "parents" then ParentsReport
     else ParticipantsReport
     end
@@ -497,6 +498,7 @@ class ParticipantsController < ApplicationController
     when "test_score_summaries" then @participants.collect(&:test_scores).flatten.collect(&:id)
     when "college_applications" then @participants.collect(&:college_applications).flatten.collect(&:id)
     when "attendance_summaries" then @participants.collect(&:event_attendances).flatten.collect(&:id)
+    when "financial_aid_packages" then @participants.collect(&:financial_aid_packages).flatten.collect(&:id)
     when "parents" then @participants.collect(&:parents).flatten.collect(&:id)
     else @participants.collect(&:id)
     end

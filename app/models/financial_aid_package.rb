@@ -14,6 +14,11 @@ class FinancialAidPackage < ActiveRecord::Base
 
   has_many :notes, :as => :notable, :conditions => "document_file_name IS NULL"
   has_many :documents, :as => :notable, :class_name => "Note", :conditions => "document_file_name IS NOT NULL AND title IS NOT NULL"
+
+  delegate :fullname, :high_school_name, to: :participant
+  delegate :name, :iclevel_description, :control_description, :sector_description, to: :college_application
+
+  acts_as_xlsx
   
   BREAKDOWN_TITLES = {
     expected_family_contribution: "EFC",
@@ -63,6 +68,31 @@ class FinancialAidPackage < ActiveRecord::Base
     sources.where(financial_aid_source_types: { category: category.singularize}).joins(:source_type)
   end
   
+  def self.xlsx_columns
+    columns = [
+      :id, :participant_id, :fullname, :high_school_name, :academic_year,
+      :name, :iclevel_description, :control_description, :sector_description, :cost_of_attendance_USD,
+      :expected_family_contribution_USD, :grants_total_USD, :loans_total_USD, :work_study_total_USD, :gap_total_USD
+    ]
+    columns << FinancialAidSourceType.pluck(:name).collect{ |t| "Source: " + t }
+    columns.flatten
+  end
+
+  def method_missing(method_name, *args)
+    if m = method_name.to_s.match(/\ASource: (.+)\Z/)
+      source_type = FinancialAidSourceType.find_by_name(m[1])
+      return super unless source_type
+      total = sources.where(source_type_id: source_type).collect(&:amount).sum
+      total.to_i
+    elsif m = method_name.to_s.end_with?("_USD")
+      category = method_name.to_s.split("_USD").first rescue nil
+      return super unless %w[expected_family_contribution grants_total loans_total work_study_total gap_total cost_of_attendance].include?(category)
+      total.to_i
+    else
+      super(method_name, *args)
+    end
+  end
+  
   private
 
   # Calculates the total amounts for the various cost categories.
@@ -85,7 +115,7 @@ class FinancialAidPackage < ActiveRecord::Base
   # Format the Money object as requested, or return the original money object otherwise.
   def _format(money, format_options)
     return money unless format_options
-    return money unless money.respond_to?(:to_money)
+    return money unless money.is_a?(Money)
     money.format(format_options)
   end
   
