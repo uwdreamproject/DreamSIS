@@ -1,0 +1,28 @@
+<h3 class="pre-title"><%= @participant.fullname %></h3>
+<h1>Financial Aid Packages</h1>
+
+<table>
+  <tr>
+    <th>Year</th>
+    <th>College</th>
+    <th colspan="3">Functions</th>
+  </tr>
+
+<% @financial_aid_packages.each do |financial_aid_package| %>
+  <tr>
+    <td>
+      <%= financial_aid_package.academic_year %>
+    </td>
+    <td>
+      <%= financial_aid_package.try(:college_application).try(:name) %>
+    </td>
+    <td><%= link_to 'Show', [@participant, financial_aid_package] %></td>
+    <td><%= link_to 'Edit', [:edit, @participant, financial_aid_package] %></td>
+    <td><%= link_to 'Destroy', [@participant, financial_aid_package], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Financial aid package', [:new, @participant, :financial_aid_package] %>

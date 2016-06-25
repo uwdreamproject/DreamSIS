@@ -1,0 +1,33 @@
+<table id="financial_aid_packages">
+	<thead>
+    <tr>
+      <th colspan=10>Financial Aid Packages</th>
+    </tr>
+  </thead>
+  
+  <tbody>
+    <% @participant.financial_aid_packages.each do |financial_aid_package| %>
+    <tr>
+      <td class="name">
+        <%= link_to financial_aid_package.try(:college_application).try(:name), [@participant, financial_aid_package] %>
+				<br />
+				<%= financial_aid_package.academic_year %>
+      </td>
+      <td width="60%">
+        <%= render "financial_aid_packages/cost_breakdown", object: financial_aid_package %>
+        <div style="clear:both; height: 50px">&nbsp;</div>
+      </td>
+      <td class="functions"><%= link_to 'Show', [@participant, financial_aid_package] %></td>
+      <td class="functions"><%= link_to 'Edit', [:edit, @participant, financial_aid_package] %></td>
+      <td class="functions"><%= link_to 'Destroy', [@participant, financial_aid_package], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+    <% end %>
+
+		<%- if @participant.financial_aid_packages.empty? -%>
+		<tr class="empty">
+			<td colspan="10">No financial aid packages yet.</td>
+		</tr>
+		<% end %>
+	</tbody>
+
+</table>	

@@ -43,6 +43,10 @@ h1 {
 	line-height: 100%;
 }
 
+h1.no-bottom-margin {
+	margin-bottom: 0.25em;
+}
+
 h2 {
 	font-size: 100%;
   text-transform: uppercase;
@@ -1585,7 +1589,7 @@ body.participants.show #content-wrap {
 	margin-bottom: 2em;
 }
 
-.info-section > a, .info-section div, .info-section > form {
+.info-section > a, .info-section > div, .info-section > form {
 	margin-left: 30px;
 	margin-right: 30px;
 	margin-top: 20px;
@@ -3997,6 +4001,9 @@ dl.sidebar dd {
 	margin-left: 0;
 }
 
+dl.sidebar dt.hidden, dl.sidebar dd.hidden {
+	display: none;
+}
 
 dl.inline-definitions {
 	margin-top: 2em;
@@ -4035,6 +4042,23 @@ dl.inline-definitions.skinny dt {
 
 dl.inline-definitions.skinny dd {
 	padding-left: 30%;
+}
+
+dl.inline-definitions.one-line {
+	margin-top: 0.5em;
+	margin-bottom: 2em;
+}
+
+dl.inline-definitions.one-line dt {
+	display: inline;
+	float: none;
+}
+
+dl.inline-definitions.one-line dd {
+	padding-left: 0.5em;
+	display: inline;
+	float: none;
+	margin-right: 3em;
 }
 
 dl.inline-definitions dd p {
@@ -4518,14 +4542,23 @@ td.signup-meter {
 }
 
 .signup-meter div.capacity {
-	background: rgb(230,230,230);
 	z-index: 10;
 	float: left;
 	border-radius: 5px;
-/*  border: 1px solid rgba(0,0,0,0.05);*/
 	background: linear-gradient(to bottom, #f8f8f8 0%, #f0f0f0 100%);
 	overflow: hidden;
   height: 10px;
+	background-color: #f5f5f5;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
+}
+
+.signup-meter.financial-aid {
+	height: 20px;
+	border-radius: 4px;
+}
+
+.signup-meter.financial-aid div.capacity {
+	height: 20px;
 }
 
 .signup-meter div.size {
@@ -4544,6 +4577,98 @@ td.signup-meter {
 	border-right: 1px dashed #999;
 	position: absolute;
 }
+
+.signup-meter .cost-component {
+	height: 20px;
+	float: left;
+	transition: all 0.5s ease-in-out;
+	box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15);
+}
+
+.signup-meter .cost-component.hidden {
+	opacity: 0;
+}
+
+.signup-meter .cost-component:hover {
+	box-shadow: inset 0 -3px 0px rgba(255, 255, 255, 0.5);
+}
+
+.signup-meter .cost-component:hover > .cost-label {
+	z-index: 100;
+	/*box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05);*/
+}
+
+.signup-meter .cost-component.expected-family-contribution {
+	background: #337ab7;
+}
+
+.signup-meter .cost-component.grants {
+	background: #5cb85c;
+}
+
+.signup-meter .cost-component.loans {
+	background: #d9534f;
+}
+
+.signup-meter .cost-component.work-study {
+	background: #f0ad4e;
+}
+
+.signup-meter .cost-component.gap {
+	/*background: #d9534f;*/
+	background-image: linear-gradient(45deg, rgba(255, 0, 0, .05) 25%, transparent 25%, transparent 50%, rgba(255, 0, 0, .04) 50%, rgba(255, 0, 0, .03) 75%, transparent 75%, transparent);
+	background-size: 40px 40px;
+}
+
+.cost-label.expected-family-contribution {
+	color: #337ab7
+}
+
+.cost-label.grants, .cost-label.grant {
+	color: #5cb85c;
+}
+
+.cost-label.loans, .cost-label.loan {
+	color: #d9534f;
+}
+
+.cost-label.work-study {
+	color: #f0ad4e;
+}
+
+.cost-label.gap {
+	color: red;
+}
+
+.signup-meter.financial-aid .cost-label {
+	display: inline-block;
+	position: absolute;
+	padding: 0 0.5em 0.5em 0.5em;
+	border-left: 1px solid #ddd;
+	top: 25px;
+	background: rgba(255,255,255,0.85);
+}
+
+.signup-meter.financial-aid .cost-label > small {
+	display: block;
+	color: #999;
+	color: #90a4ae;
+}
+
+.cost-component.gap .cost-label {
+	color: red;
+	font-weight: bold;
+}
+
+table#financial_aid_packages td {
+	vertical-align: top;
+	padding-top: 7px;
+}
+
+/*.signup-meter.financial-aid .cost-label.cost-of-attendance {
+	top: -14px;
+	border-left: none;
+}*/
 
 .signup-meter.full div.size {
 	background: rgba(255,0,0,0.25);
@@ -5671,12 +5796,3 @@ li.input ul.ui-autocomplete.after_select {
 }
 
 /* @end */
-
-
-
-
-
-
-
-
-

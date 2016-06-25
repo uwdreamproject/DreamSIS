@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160607061512) do
+ActiveRecord::Schema.define(:version => 20160611174922) do
 
   create_table "activity_logs", :force => true do |t|
     t.date     "start_date"
@@ -292,6 +292,44 @@ ActiveRecord::Schema.define(:version => 20160607061512) do
   end
 
   add_index "events", ["customer_id"], :name => "index_events_on_customer_id"
+
+  create_table "financial_aid_packages", :force => true do |t|
+    t.integer  "participant_id"
+    t.integer  "college_application_id"
+    t.integer  "academic_year"
+    t.integer  "cost_of_attendance_cents",              :default => 0,     :null => false
+    t.string   "cost_of_attendance_currency",           :default => "USD", :null => false
+    t.string   "cost_of_attendance_source"
+    t.integer  "expected_family_contribution_cents",    :default => 0,     :null => false
+    t.string   "expected_family_contribution_currency", :default => "USD", :null => false
+    t.integer  "grants_total_cents",                    :default => 0,     :null => false
+    t.string   "grants_total_currency",                 :default => "USD", :null => false
+    t.integer  "loans_total_cents",                     :default => 0,     :null => false
+    t.string   "loans_total_currency",                  :default => "USD", :null => false
+    t.integer  "work_study_total_cents",                :default => 0,     :null => false
+    t.string   "work_study_total_currency",             :default => "USD", :null => false
+    t.integer  "gap_total_cents",                       :default => 0,     :null => false
+    t.string   "gap_total_currency",                    :default => "USD", :null => false
+    t.datetime "created_at",                                               :null => false
+    t.datetime "updated_at",                                               :null => false
+  end
+
+  create_table "financial_aid_source_types", :force => true do |t|
+    t.string   "name"
+    t.string   "category"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "financial_aid_sources", :force => true do |t|
+    t.integer  "package_id"
+    t.integer  "source_type_id"
+    t.integer  "amount_cents",               :default => 0,     :null => false
+    t.string   "amount_currency",            :default => "USD", :null => false
+    t.integer  "scholarship_application_id"
+    t.datetime "created_at",                                    :null => false
+    t.datetime "updated_at",                                    :null => false
+  end
 
   create_table "friendly_id_slugs", :force => true do |t|
     t.string   "slug",                         :null => false

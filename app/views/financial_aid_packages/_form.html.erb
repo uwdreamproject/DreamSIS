@@ -1,0 +1,12 @@
+<%= semantic_form_for [@participant, @financial_aid_package] do |f| %>
+  <%= f.inputs do %>
+    <%= f.input :college_application_id, as: :select, collection: @participant.college_applications, required: true, hint: "Choose the college that provided this financial aid award. If the college doesn't show up on the list here, be sure to #{link_to('add it first', participant_path(@participant, anchor: '!/section/college_applications'))}.".html_safe %>
+    <%= f.input :academic_year, as: :select, collection: (2004..Date.current.year+5) %>
+    <%= f.input :cost_of_attendance, input_html: { data: { autonumeric: { mDec: 0 }}, class: "currency" } %>
+    <%= f.input :expected_family_contribution, input_html: { data: { autonumeric: { mDec: 0 }}, class: "currency" } %>
+  <% end %>
+
+  <%= f.actions do %>
+    <%= f.action :submit, :as => :input %>
+  <% end %>
+<% end %>

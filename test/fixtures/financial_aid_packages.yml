@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  participant_id: 1
+  institution_id: 1
+  academic_year: 1
+  cost_of_attendance: 1
+  cost_of_attendance_source: MyString
+  expected_family_contribution: 1
+  creator_id: 1
+  updater_id: 1
+  summary: MyText
+
+two:
+  participant_id: 1
+  institution_id: 1
+  academic_year: 1
+  cost_of_attendance: 1
+  cost_of_attendance_source: MyString
+  expected_family_contribution: 1
+  creator_id: 1
+  updater_id: 1
+  summary: MyText

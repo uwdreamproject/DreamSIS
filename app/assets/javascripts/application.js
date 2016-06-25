@@ -10,6 +10,6 @@
 //= require jquery-tablesorter
 //= require autocomplete-rails
 //= require select2-full
+//= require autonumeric
 //= require dreamsis.js
 //=  require_tree .
-

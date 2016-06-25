@@ -1,0 +1,7 @@
+<h1>New financial aid package</h1>
+
+<%= render 'form' %>
+
+<div id="sidebar">
+  <%= link_to "Back to #{Customer.participant_label}", participant_path(@participant, anchor: "!/section/scholarship_applications"), class: "back button" %>
+</div>

@@ -1,0 +1,8 @@
+<h1>Editing financial aid package</h1>
+
+<%= render 'form' %>
+
+<div id="sidebar">
+  <%= link_to "Cancel", [@participant, @financial_aid_package], class: 'cancel button' %>
+  <%= link_to "Back to #{Customer.participant_label}", participant_path(@participant, anchor: "!/section/scholarship_applications"), class: "back button" %>
+</div>

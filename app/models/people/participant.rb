@@ -17,6 +17,7 @@ class Participant < Person
   has_many :college_enrollments
   has_many :college_degrees
   has_many :fafsas, :class_name => "PersonFafsa", :foreign_key => :person_id
+  has_many :financial_aid_packages
 
 	acts_as_xlsx
 	
