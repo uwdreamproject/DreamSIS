@@ -1,0 +1,15 @@
+<tr class="cost-component <%= source.category.dasherize %> <%= source.category.underscore %>" data-id="<%= source.id %>">
+  <td class="cost-label <%= source.category.dasherize %> <%= source.category.underscore %>">
+    <%= FinancialAidPackage::BREAKDOWN_TITLES[source.category.pluralize.to_sym] || source.category.titleize %>
+  </td>
+  <td class="source_name">
+    <%= source.name %>
+    <%= "&ndash; ".html_safe + link_to(source.scholarship_application.try(:title), [@participant, source.scholarship_application]) if source.scholarship_application %>
+  </td>
+  <td class="amount">
+    <%= money_without_cents_and_with_symbol source.amount %>
+  </td>
+  <td class="functions">
+    <%= link_to "Remove", participant_financial_aid_package_source_path(@participant, @financial_aid_package, source, format: :json), method: :delete, confirm: "Are you sure you want to remove this source?", remote: true, class: "destroy" %>
+  </td>
+</tr>

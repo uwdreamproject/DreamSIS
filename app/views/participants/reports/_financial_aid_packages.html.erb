@@ -1,0 +1,6 @@
+<%- if collection.empty? -%>
+	<td colspan="3" class="empty">
+    No financial aid packages yet.
+    <%= link_to "Add one.", [:new, participant, :financial_aid_package] %>
+  </td>
+<% end %>

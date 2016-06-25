@@ -60,13 +60,19 @@
 	
 			<%- if @participant.respond_to?(:scholarship_applications) -%>
 				<div class="info-section" id="scholarship_applications">
-					<h2>Scholarships &amp; Financial Aid</h2>
+					<h2>Financial Aid &amp; Scholarships</h2>
+					<%= render :partial => "fafsas" if @participant.respond_to?(:fafsas) %>
+					<br />
+					
 					<%= render :partial => 'scholarship_applications' %>
 					<p><%= link_to 'Add scholarship', 
 													new_participant_scholarship_application_path(@participant),
 													:class => "add button" %></p>
 					
-					<%= render :partial => "fafsas" if @participant.respond_to?(:fafsas) %>
+					<%= render :partial => "financial_aid_packages" if @participant.respond_to?(:financial_aid_packages) %>
+					<p><%= link_to 'Add financial aid package', 
+													new_participant_financial_aid_package_path(@participant),
+													:class => "add button" %></p>
 				</div>
 			<% end -%>
 

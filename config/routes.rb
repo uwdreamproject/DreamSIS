@@ -133,6 +133,9 @@ Dreamsis::Application.routes.draw do
     resources :college_enrollments
     resources :college_degrees
     resources :scholarship_applications
+    resources :financial_aid_packages do
+      resources :financial_aid_sources, as: :sources
+    end
     resources :parents
     resources :test_scores do
       collection do
