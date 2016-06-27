@@ -5,12 +5,12 @@ class Institution < ActiveRecord::Base
   has_many :college_applications, :foreign_key => "institution_id"
   has_many :college_enrollments
   has_many :college_degrees
-  has_many :interested_participants, :class_name => "Participant", :through => :college_applications, :source => :participant, :uniq => true
-  has_many :applied_participants, :class_name => "Participant", :through => :college_applications, :conditions => "date_applied IS NOT NULL", :source => :participant, :uniq => true
-  has_many :planning_participants, :class_name => "Participant", :foreign_key => "college_attending_id", :source => :participant, :uniq => true
-  has_many :enrolled_participants, :class_name => "Participant", :through => :college_enrollments, :source => :participant, :uniq => true
-  has_many :current_participants, :class_name => "Participant", :through => :college_enrollments, :source => :participant, :uniq => true, :conditions => ["began_on > ?", CollegeEnrollment::CURRENT_ENROLLMENT_VALIDITY_PERIOD.ago]
-  has_many :graduated_participants, :class_name => "Participant", :through => :college_degrees, :source => :participant, :uniq => true
+  has_many :interested_participants, -> { uniq }, :class_name => "Participant", :through => :college_applications, :source => :participant
+  has_many :applied_participants, -> { where("date_applied IS NOT NULL").uniq }, :class_name => "Participant", :through => :college_applications, :source => :participant
+  has_many :planning_participants, -> { uniq }, :class_name => "Participant", :foreign_key => "college_attending_id", :source => :participant
+  has_many :enrolled_participants, -> { uniq }, :class_name => "Participant", :through => :college_enrollments, :source => :participant
+  has_many :current_participants, -> { where(["began_on > ?", CollegeEnrollment::CURRENT_ENROLLMENT_VALIDITY_PERIOD.ago]).uniq }, :class_name => "Participant", :through => :college_enrollments, :source => :participant
+  has_many :graduated_participants, -> { uniq }, :class_name => "Participant", :through => :college_degrees, :source => :participant
 
   alias_attribute :name, :instnm
   alias_attribute :title, :instnm

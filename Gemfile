@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.2.4'
 
-gem 'rails', '4.0.13'
+gem 'rails', '4.2.6'
 gem "unicorn"
 gem "unicorn-rails"
 gem "puma"
@@ -44,14 +44,8 @@ gem 'addressable'
 gem 'sucker_punch'
 gem 'sidekiq'
 gem 'apartment-sidekiq'
-<<<<<<< HEAD
 gem "simple_calendar"
-=======
 gem 'friendly_id'
-# gem 'sinatra', require: false  # for sidekiq monitor
-# gem 'slim'  # for sidekiq monitor
-gem "simple_calendar", "~> 1.1.0"
->>>>>>> master
 gem 'jquery-tablesorter'
 gem 'le'
 gem 'coderay', require: 'coderay'
@@ -60,7 +54,6 @@ gem 'fabrication'
 gem 'faker'
 gem 'acts-as-taggable-on'
 gem 'select2-rails'
-<<<<<<< HEAD
 gem 'rails_12factor', group: :production
 gem "rack-timeout"
 gem 'aws-sdk'
@@ -70,10 +63,12 @@ gem 'stackprof'
 gem 'memory_profiler'
 gem 'activeresource', require: 'active_resource'
 gem 'activerecord-session_store'
-=======
 gem 'autonumeric-rails'
 gem 'money-rails'
->>>>>>> master
+gem 'sass-rails'
+gem 'coffee-rails'
+gem 'uglifier'
+
 
 group :production do
   gem "pg", "0.18.4"
@@ -85,7 +80,7 @@ end
 
 group :development do
   gem "sqlite3"
-  gem 'web-console'
+  gem 'web-console', '~> 2.0'
 end
 
 group :development, :test do
@@ -101,12 +96,6 @@ group :development, :test do
   gem 'pronto-brakeman', require: false
   gem 'pronto-flay', require: false
   gem 'pronto-rails_best_practices', require: false
-end
-
-group :assets do
-  gem 'sass-rails'
-  gem 'coffee-rails'
-  gem 'uglifier'
 end
 
 group :test do
