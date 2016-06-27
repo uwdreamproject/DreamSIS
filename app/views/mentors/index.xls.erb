@@ -40,7 +40,7 @@
 	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.reg_id %></ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.uw_student_no %></ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.uw_net_id %></ss:Data></ss:Cell>
-	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.mentor_term_groups.collect(&:term_id).flatten.uniq.size %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h mentor.mentor_terms.collect{|mt| mt.mentor_term_group.try(:term_id) }.flatten.uniq.size %></ss:Data></ss:Cell>
 	<ss:Cell ss:StyleID="ShortDate"><ss:Data ss:Type="DateTime"><%=h mentor.created_at.to_s(:excel) %></ss:Data></ss:Cell>
 	<ss:Cell ss:StyleID="ShortDate"><ss:Data ss:Type="DateTime"><%=h mentor.updated_at.to_s(:excel) %></ss:Data></ss:Cell>
 </ss:Row>

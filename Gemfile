@@ -44,7 +44,14 @@ gem 'addressable'
 gem 'sucker_punch'
 gem 'sidekiq'
 gem 'apartment-sidekiq'
+<<<<<<< HEAD
 gem "simple_calendar"
+=======
+gem 'friendly_id'
+# gem 'sinatra', require: false  # for sidekiq monitor
+# gem 'slim'  # for sidekiq monitor
+gem "simple_calendar", "~> 1.1.0"
+>>>>>>> master
 gem 'jquery-tablesorter'
 gem 'le'
 gem 'coderay', require: 'coderay'
@@ -53,6 +60,7 @@ gem 'fabrication'
 gem 'faker'
 gem 'acts-as-taggable-on'
 gem 'select2-rails'
+<<<<<<< HEAD
 gem 'rails_12factor', group: :production
 gem "rack-timeout"
 gem 'aws-sdk'
@@ -62,6 +70,10 @@ gem 'stackprof'
 gem 'memory_profiler'
 gem 'activeresource', require: 'active_resource'
 gem 'activerecord-session_store'
+=======
+gem 'autonumeric-rails'
+gem 'money-rails'
+>>>>>>> master
 
 group :production do
   gem "pg", "0.18.4"

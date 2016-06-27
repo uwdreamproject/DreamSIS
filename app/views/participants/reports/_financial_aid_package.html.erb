@@ -1,0 +1,9 @@
+<td class="name">
+  <%= link_to financial_aid_package.try(:college_application).try(:name), [participant, financial_aid_package] %>
+</td>
+<td width="60%">
+  <%= render "financial_aid_packages/cost_breakdown", object: financial_aid_package %>
+</td>
+<td>
+  <%= money_without_cents_and_with_symbol financial_aid_package.cost_of_attendance %>
+</td>

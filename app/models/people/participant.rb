@@ -1,4 +1,6 @@
 class Participant < Person
+  extend FriendlyId
+  friendly_id :fullname, use: :slugged
   belongs_to :high_school
   has_many :college_applications
   has_many :scholarship_applications
@@ -15,6 +17,7 @@ class Participant < Person
   has_many :college_enrollments
   has_many :college_degrees
   has_many :fafsas, :class_name => "PersonFafsa", :foreign_key => :person_id
+  has_many :financial_aid_packages
 
 	acts_as_xlsx
 	
@@ -70,6 +73,7 @@ class Participant < Person
     rosters: "Roster", 
     parents: "Parents & Contacts",
     attendance_summaries: "Attendance", 
+    financial_aid_packages: "Financial Aid",
     college_stages: "College Pipeline" 
   }
 
@@ -108,7 +112,7 @@ class Participant < Person
   # Returns all Filter objects that list Participant as the object_class
   def self.object_filters
     @object_filters ||= {}
-    @object_filters[Apartment::Tenant.current] ||= ObjectFilter.where(object_class: "Participant")
+    @object_filters[Customer.current_customer.url_shortcut] ||= ObjectFilter.where(object_class: "Participant")
   end
 
   def method_missing(method_name, *args)

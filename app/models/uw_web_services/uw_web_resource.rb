@@ -34,7 +34,7 @@ class UwWebResource < ActiveResource::Base
     
     # Returns config options for the current Tenant.
     def config_options
-      tenant_options = global_config_options["tenant_options"][Apartment::Tenant.current]
+      tenant_options = global_config_options["tenant_options"][Customer.current_customer.url_shortcut]
       if tenant_options.nil?
         return {}
       else

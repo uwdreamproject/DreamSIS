@@ -1,0 +1,19 @@
+<div class="financial-aid signup-meter stat-meter">
+  <div class="capacity" style="width: 90%;" title="">
+    
+    <%- for category in %w[expected_family_contribution grants work_study loans gap] %>
+      <%- breakdown = object.breakdown[category.to_sym] %>
+      <div class="cost-component <%= category.dasherize %> <%= category.underscore %> <%= "hidden" if breakdown[:amount].zero? %>" style="width: <%= breakdown[:percentage] %>%;">
+        <div class="cost-label arrow-box arrow-top">
+          <small><%= FinancialAidPackage::BREAKDOWN_TITLES[category.to_sym] || category.titleize %></small>
+          <span class="amount"><%= money_without_cents_and_with_symbol breakdown[:amount] %></span>
+        </div>
+      </div>
+    <% end %>    
+  </div>
+  
+  <div class="cost-label cost-of-attendance">
+    <small>Cost of Attendance</small>
+    <span class="amount"><%= money_without_cents_and_with_symbol object.cost_of_attendance %></span>
+  </div>
+</div>

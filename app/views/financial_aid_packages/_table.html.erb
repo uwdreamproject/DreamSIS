@@ -1,0 +1,29 @@
+<table id="financial_aid_sources_table">
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Name</th>
+      <th>Amount</th>
+      <th>Functions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= render partial: "financial_aid_sources/source", collection: @financial_aid_package.sources %>
+  </tbody>
+
+  <tfoot>
+    <%= form_for @financial_aid_package.sources.new, url: participant_financial_aid_package_sources_path(@participant, @financial_aid_package, format: :json), remote: true do |f| %>
+      <tr class="total">
+        <td><h3>Add Another:</h3></td>
+        <td>
+          <%= f.select :source_type_id, grouped_options_for_select(FinancialAidSourceType.grouped_by_category, nil, "-- Please select --") %>
+          <br />
+          <%= f.select :scholarship_application_id, options_from_collection_for_select(@participant.scholarship_applications, :id, :title), { prompt: "Link to a scholarship application (optional)" }, style: "display: none;" unless @participant.scholarship_applications.empty? %>
+        </td>
+        <td><%= f.text_field :amount, data: { autonumeric: { mDec: 0 } }, class: "currency"  %></td>
+        <td><%= f.submit "Add" %></td>
+      </tr>
+    <% end %>
+  </tfoot>
+</table>

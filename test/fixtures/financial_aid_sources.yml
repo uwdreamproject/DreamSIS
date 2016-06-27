@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  package_id: 1
+  source_type_id: 1
+  amount: 1
+  scholarship_application_id: 1
+
+two:
+  package_id: 1
+  source_type_id: 1
+  amount: 1
+  scholarship_application_id: 1

@@ -7,7 +7,7 @@ class MentorTermGroup < ActiveRecord::Base
       find(:all, :conditions => { :lead => true })
     end
   end
-  has_many :mentors, :through => :mentor_terms, :conditions => "mentor_terms.deleted_at IS NULL", :order => "lastname, firstname"
+  has_many :mentors, :through => :mentor_terms, :conditions => { :mentor_terms => { :deleted_at => nil } }, :order => "lastname, firstname"
   has_many :deleted_mentor_terms, :class_name => "MentorTerm", :conditions => "deleted_at IS NOT NULL"
 
   validates_presence_of :term_id

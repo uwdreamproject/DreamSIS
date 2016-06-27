@@ -35,7 +35,7 @@ HelpText.create({
   "audience" => "Participant"
 })
 HelpText.create({
-  "object_class" => "Mentor", 
+  "object_class" => "Participant", 
   "attribute_name" => "household_size",
   "hint" => "Include the student in this count.",
   "audience" => "Mentor"
@@ -47,7 +47,7 @@ HelpText.create({
   "audience" => "Participant"
 })
 HelpText.create({
-  "object_class" => "Mentor",
+  "object_class" => "Participant",
   "attribute_name" => "immigrant",
   "title" => "Identifies as an immigrant to the United States",
   "audience" => "Mentor"
@@ -59,7 +59,7 @@ HelpText.create({
   "audience" => "Participant"
 })
 HelpText.create({
-  "object_class" => "Mentor",
+  "object_class" => "Participant",
   "attribute_name" => "first_generation",
   "title" => "Did parents graduate from college?",
   "audience" => "Mentor"
@@ -72,7 +72,7 @@ HelpText.create({
   "hint" => "I live with family members other than my parents/legal guardians, couch surfing, live with friends, homeless, live in a motel or hotel."
 })
 HelpText.create({
-  "object_class" => "Mentor",
+  "object_class" => "Participant",
   "attribute_name" => "homeless",
   "title" => "Student is homeless",
   "audience" => "Mentor"
@@ -84,7 +84,7 @@ HelpText.create({
   "audience" => "Participant"
 })
 HelpText.create({
-  "object_class" => "Mentor",
+  "object_class" => "Participant",
   "attribute_name" => "subsidized_housing",
   "title" => "Family receives public assistance or lives in federally subsidized housing",
   "audience" => "Mentor"
@@ -96,7 +96,7 @@ HelpText.create({
   "audience" => "Participant"
 })
 HelpText.create({
-  "object_class" => "Mentor",
+  "object_class" => "Participant",
   "attribute_name" => "grad_year",
   "hint" => "Enter the student's expected graduation year.",
   "audience" => "Mentor"
@@ -108,7 +108,7 @@ HelpText.create({
   "audience" => "Participant"
 })
 HelpText.create({
-  "object_class" => "Mentor",
+  "object_class" => "Participant",
   "attribute_name" => "college_bound_scholarship",
   "title" => "Signed up for Washington College Bound Scholarship",
   "audience" => "Mentor"
@@ -120,7 +120,7 @@ HelpText.create({
   "audience" => "Participant"
 })
 HelpText.create({
-  "object_class" => "Mentor",
+  "object_class" => "Participant",
   "attribute_name" => "postsecondary_goal",
   "hint" => "What is the student's hope to do after graduating high school?",
   "audience" => "Mentor"
@@ -186,3 +186,22 @@ TestType.create( {
 })
 
 
+# Financial Aid Source Types
+FinancialAidSourceType.create name: "Federal Pell Grant", category: "grant"
+FinancialAidSourceType.create name: "Federal Supplemental Education Opportunity Grant", category: "grant"
+FinancialAidSourceType.create name: "College Bound Scholarship", category: "grant"
+FinancialAidSourceType.create name: "State Need/LEAP", category: "grant"
+FinancialAidSourceType.create name: "University Grant", category: "grant"
+FinancialAidSourceType.create name: "13th Year Promise", category: "grant"
+FinancialAidSourceType.create name: "Cougar Commitment", category: "grant"
+FinancialAidSourceType.create name: "Tuition Exemption", category: "grant"
+FinancialAidSourceType.create name: "State Work Study", category: "work_study"
+FinancialAidSourceType.create name: "Federal Work Study", category: "work_study"
+FinancialAidSourceType.create name: "University Scholarship", category: "grant"
+FinancialAidSourceType.create name: "Outside Scholarship (On Award)", category: "grant"
+FinancialAidSourceType.create name: "Outside Scholarship (Not on Award)", category: "grant"
+FinancialAidSourceType.create name: "Athletic Scholarship", category: "grant"
+FinancialAidSourceType.create name: "Federal Direct Subsidized (Stafford) Loan", category: "loan"
+FinancialAidSourceType.create name: "Federal Direct Unsubsidized (Stafford) Loan", category: "loan"
+FinancialAidSourceType.create name: "Federal Perkins Loan", category: "loan"
+FinancialAidSourceType.create name: "Federal Direct Parent PLUS Loan", category: "loan"

@@ -28,6 +28,27 @@ class Institution < ActiveRecord::Base
 		"3" => "Less than 2-year college"
 	}
   
+  CONTROL_DESCRIPTIONS = {
+    "1" =>	"Public",
+    "2" =>	"Private not-for-profit",
+    "3" =>	"Private for-profit",
+    "-3" =>	"Not available"
+  }
+  
+  SECTOR_DESCRIPTIONS = {
+    "0" =>	"Administrative Unit",
+    "1" =>	"Public, 4-year or above",
+    "2" =>	"Private not-for-profit, 4-year or above",
+    "3" =>	"Private for-profit, 4-year or above",
+    "4" =>	"Public, 2-year",
+    "5" =>	"Private not-for-profit, 2-year",
+    "6" =>	"Private for-profit, 2-year",
+    "7" =>	"Public, less-than 2-year",
+    "8" =>	"Private not-for-profit, less-than 2-year",
+    "9" =>	"Private for-profit, less-than 2-year",
+    "99" =>	"Sector unknown (not active)"
+  }
+  
   self.primary_key = 'unitid'
 
   def geocoded?
@@ -91,6 +112,20 @@ class Institution < ActiveRecord::Base
 	def iclevel_description
 		ICLEVEL_DESCRIPTIONS[iclevel.to_s]
 	end
+  
+  # Returns the CONTROL description (public vs. private) for this Institution.
+  def control_description
+    CONTROL_DESCRIPTIONS[control.to_s]
+  end
+
+  # Returns the SECTOR description for this Institution, which is one of nine institutional 
+  # categories resulting from dividing the universe according to control and level. Control 
+  # categories are public, private not-for-profit, and private for-profit. Level categories 
+  # are 4-year and higher (4 year), 2-but-less-than 4-year (2 year), and less than 2-year. 
+  # For example: public, 4-year institutions.
+  def sector_description
+		SECTOR_DESCRIPTIONS[sector.to_s]
+  end
 
   # Returns the URL of this institution's record in the IPED's CollegeNavigator system.
   def college_navigator_url
@@ -186,4 +221,3 @@ class Institution < ActiveRecord::Base
   end
   
 end
-
