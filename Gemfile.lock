@@ -1,15 +1,16 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    CFPropertyList (2.3.2)
     RedCloth (4.2.9)
-    actionmailer (3.2.19)
-      actionpack (= 3.2.19)
-      mail (~> 2.5.4)
-    actionpack (3.2.19)
-      activemodel (= 3.2.19)
-      activesupport (= 3.2.19)
-      builder (~> 3.0.0)
+    actionmailer (4.0.13)
+      actionpack (= 4.0.13)
+      mail (~> 2.5, >= 2.5.4)
+    actionpack (4.0.13)
+      activesupport (= 4.0.13)
+      builder (~> 3.1.0)
       erubis (~> 2.7.0)
+<<<<<<< HEAD
       journey (~> 1.0.4)
       rack (~> 1.4.5)
       rack-cache (~> 1.2)
@@ -31,6 +32,33 @@ GEM
     activesupport (3.2.19)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
+=======
+      rack (~> 1.5.2)
+      rack-test (~> 0.6.2)
+    activemodel (4.0.13)
+      activesupport (= 4.0.13)
+      builder (~> 3.1.0)
+    activerecord (4.0.13)
+      activemodel (= 4.0.13)
+      activerecord-deprecated_finders (~> 1.0.2)
+      activesupport (= 4.0.13)
+      arel (~> 4.0.0)
+    activerecord-deprecated_finders (1.0.4)
+    activerecord-session_store (0.1.2)
+      actionpack (>= 4.0.0, < 5)
+      activerecord (>= 4.0.0, < 5)
+      railties (>= 4.0.0, < 5)
+    activeresource (4.0.0)
+      activemodel (~> 4.0)
+      activesupport (~> 4.0)
+      rails-observers (~> 0.1.1)
+    activesupport (4.0.13)
+      i18n (~> 0.6, >= 0.6.9)
+      minitest (~> 4.2)
+      multi_json (~> 1.3)
+      thread_safe (~> 0.1)
+      tzinfo (~> 0.3.37)
+>>>>>>> migration/rails4
     acts-as-taggable-on (3.5.0)
       activerecord (>= 3.2, < 5)
     acts_as_list (0.7.2)
@@ -39,15 +67,16 @@ GEM
       activerecord (>= 2.3.9)
       axlsx (>= 1.0.13)
       i18n (>= 0.4.1)
-    addressable (2.3.6)
+    addressable (2.4.0)
     aes (0.5.0)
-    ansi (1.4.3)
-    apartment (0.26.0)
+    ansi (1.5.0)
+    apartment (1.0.2)
       activerecord (>= 3.1.2, < 5.0)
       rack (>= 1.3.6)
-    apartment-sidekiq (0.1.0)
-      apartment (>= 0.25)
+    apartment-sidekiq (1.0.0)
+      apartment (~> 1.0)
       sidekiq (>= 2.11)
+<<<<<<< HEAD
     arel (3.0.3)
     ast (2.2.0)
     awesome_print (1.6.1)
@@ -57,11 +86,19 @@ GEM
       jmespath (~> 1.0)
     aws-sdk-resources (2.2.30)
       aws-sdk-core (= 2.2.30)
+=======
+    arel (4.0.2)
+    aws (2.10.2)
+      http_connection
+      uuidtools
+      xml-simple
+>>>>>>> migration/rails4
     axlsx (1.3.6)
       htmlentities (~> 4.3.1)
       nokogiri (>= 1.4.1)
       rubyzip (>= 0.9.5)
     bcrypt-ruby (3.0.1)
+<<<<<<< HEAD
     brakeman (3.2.1)
       erubis (~> 2.6)
       haml (>= 3.0, < 5.0)
@@ -81,46 +118,79 @@ GEM
       debugger-linecache (~> 1.2)
       slop (~> 3.6)
     carrierwave (0.10.0)
+=======
+    builder (3.1.4)
+    byebug (8.2.2)
+    carrierwave (0.11.0)
+>>>>>>> migration/rails4
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
       json (>= 1.7)
       mime-types (>= 1.16)
+<<<<<<< HEAD
     celluloid (0.16.0)
       timers (~> 4.0.0)
     code_analyzer (0.4.5)
       sexp_processor
     coderay (1.1.0)
     coffee-rails (3.2.2)
+=======
+    celluloid (0.17.3)
+      celluloid-essentials
+      celluloid-extras
+      celluloid-fsm
+      celluloid-pool
+      celluloid-supervision
+      timers (>= 4.1.1)
+    celluloid-essentials (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-extras (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-fsm (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-pool (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-supervision (0.20.5)
+      timers (>= 4.1.1)
+    coderay (1.1.1)
+    coffee-rails (4.1.1)
+>>>>>>> migration/rails4
       coffee-script (>= 2.2.0)
-      railties (~> 3.2.0)
-    coffee-script (2.3.0)
+      railties (>= 4.0.0, < 5.1.x)
+    coffee-script (2.4.1)
       coffee-script-source
       execjs
-    coffee-script-source (1.8.0)
-    columnize (0.8.9)
-    connection_pool (2.1.0)
+    coffee-script-source (1.10.0)
+    concurrent-ruby (1.0.1)
+    connection_pool (2.2.0)
     countries (0.9.3)
       currencies (~> 0.4.2)
     country_select (1.3.1)
       countries (= 0.9.3)
     currencies (0.4.2)
+<<<<<<< HEAD
     debugger-linecache (1.2.0)
     dotenv (2.1.0)
+=======
+>>>>>>> migration/rails4
     erubis (2.7.0)
-    excon (0.40.0)
-    execjs (2.2.2)
+    excon (0.49.0)
+    execjs (2.6.0)
     ey_config (0.0.7)
-    fabrication (2.14.0)
-    faker (1.4.3)
+    fabrication (2.15.0)
+    faker (1.6.3)
       i18n (~> 0.5)
-    faraday (0.9.0)
+    faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
     fast_stack (0.1.0)
       rake
       rake-compiler
     fastercsv (1.5.5)
+    fission (0.5.0)
+      CFPropertyList (~> 2.2)
     flamegraph (0.1.0)
       fast_stack
+<<<<<<< HEAD
     flay (2.7.0)
       erubis (~> 2.7.0)
       ruby_parser (~> 3.0)
@@ -128,41 +198,139 @@ GEM
     fog (1.24.0)
       fog-brightbox
       fog-core (~> 1.23)
+=======
+    fog (1.38.0)
+      fog-aliyun (>= 0.1.0)
+      fog-atmos
+      fog-aws (>= 0.6.0)
+      fog-brightbox (~> 0.4)
+      fog-cloudatcost (~> 0.1.0)
+      fog-core (~> 1.32)
+      fog-dynect (~> 0.0.2)
+      fog-ecloud (~> 0.1)
+      fog-google (<= 0.1.0)
+>>>>>>> migration/rails4
       fog-json
+      fog-local
+      fog-openstack
+      fog-powerdns (>= 0.1.1)
+      fog-profitbricks
+      fog-rackspace
       fog-radosgw (>= 0.0.2)
+      fog-riakcs
       fog-sakuracloud (>= 0.0.4)
+      fog-serverlove
       fog-softlayer
+      fog-storm_on_demand
+      fog-terremark
+      fog-vmfusion
+      fog-voxel
+      fog-vsphere (>= 0.4.0)
+      fog-xenserver
+      fog-xml (~> 0.1.1)
       ipaddress (~> 0.5)
-      nokogiri (~> 1.5, >= 1.5.11)
-    fog-brightbox (0.6.1)
+    fog-aliyun (0.1.0)
+      fog-core (~> 1.27)
+      fog-json (~> 1.0)
+      ipaddress (~> 0.8)
+      xml-simple (~> 1.1)
+    fog-atmos (0.1.0)
+      fog-core
+      fog-xml
+    fog-aws (0.9.2)
+      fog-core (~> 1.27)
+      fog-json (~> 1.0)
+      fog-xml (~> 0.1)
+      ipaddress (~> 0.8)
+    fog-brightbox (0.10.1)
       fog-core (~> 1.22)
       fog-json
-      inflecto
-    fog-core (1.24.0)
+      inflecto (~> 0.0.2)
+    fog-cloudatcost (0.1.2)
+      fog-core (~> 1.36)
+      fog-json (~> 1.0)
+      fog-xml (~> 0.1)
+      ipaddress (~> 0.8)
+    fog-core (1.37.0)
       builder
-      excon (~> 0.38)
+      excon (~> 0.45)
       formatador (~> 0.2)
-      mime-types
-      net-scp (~> 1.1)
-      net-ssh (>= 2.1.3)
-    fog-json (1.0.0)
-      multi_json (~> 1.0)
-    fog-radosgw (0.0.3)
+    fog-dynect (0.0.3)
+      fog-core
+      fog-json
+      fog-xml
+    fog-ecloud (0.3.0)
+      fog-core
+      fog-xml
+    fog-google (0.1.0)
+      fog-core
+      fog-json
+      fog-xml
+    fog-json (1.0.2)
+      fog-core (~> 1.0)
+      multi_json (~> 1.10)
+    fog-local (0.3.0)
+      fog-core (~> 1.27)
+    fog-openstack (0.1.2)
+      fog-core (>= 1.35)
+      fog-json (>= 1.0)
+      fog-xml (>= 0.1)
+      ipaddress (>= 0.8)
+    fog-powerdns (0.1.1)
+      fog-core (~> 1.27)
+      fog-json (~> 1.0)
+      fog-xml (~> 0.1)
+    fog-profitbricks (0.0.5)
+      fog-core
+      fog-xml
+      nokogiri
+    fog-rackspace (0.1.1)
+      fog-core (>= 1.35)
+      fog-json (>= 1.0)
+      fog-xml (>= 0.1)
+      ipaddress (>= 0.8)
+    fog-radosgw (0.0.5)
       fog-core (>= 1.21.0)
       fog-json
       fog-xml (>= 0.0.1)
-    fog-sakuracloud (0.1.1)
+    fog-riakcs (0.1.0)
       fog-core
       fog-json
-    fog-softlayer (0.3.22)
+      fog-xml
+    fog-sakuracloud (1.7.5)
       fog-core
       fog-json
-    fog-xml (0.1.0)
+    fog-serverlove (0.1.2)
+      fog-core
+      fog-json
+    fog-softlayer (1.1.0)
+      fog-core
+      fog-json
+    fog-storm_on_demand (0.1.1)
+      fog-core
+      fog-json
+    fog-terremark (0.1.0)
+      fog-core
+      fog-xml
+    fog-vmfusion (0.1.0)
+      fission
+      fog-core
+    fog-voxel (0.1.0)
+      fog-core
+      fog-xml
+    fog-vsphere (0.6.3)
+      fog-core
+      rbvmomi (~> 1.8)
+    fog-xenserver (0.2.3)
+      fog-core
+      fog-xml
+    fog-xml (0.1.2)
       fog-core
       nokogiri (~> 1.5, >= 1.5.11)
     formatador (0.2.5)
-    formtastic (3.0.0)
+    formtastic (3.1.4)
       actionpack (>= 3.2.13)
+<<<<<<< HEAD
     geocoder (1.2.5)
     gitlab (3.6.1)
       httparty
@@ -183,75 +351,97 @@ GEM
     jmespath (1.1.3)
     journey (1.0.4)
     jquery-rails (3.1.2)
+=======
+    geocoder (1.3.3)
+    hashie (3.4.3)
+    hitimes (1.2.3)
+    htmlentities (4.3.4)
+    http_connection (1.4.4)
+    i18n (0.7.0)
+    inflecto (0.0.2)
+    ipaddress (0.8.3)
+    jquery-rails (3.1.4)
+>>>>>>> migration/rails4
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
-    jquery-tablesorter (1.15.0)
-      railties (>= 3.2, < 5)
-    jquery-ui-rails (5.0.2)
+    jquery-tablesorter (1.20.7)
+      railties (>= 3.2, < 6)
+    jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
-    json (1.8.1)
-    jwt (1.0.0)
-    kgio (2.9.2)
-    le (2.6.2)
-    mail (2.5.4)
-      mime-types (~> 1.16)
-      treetop (~> 1.4.8)
+    json (1.8.3)
+    jwt (1.5.1)
+    kgio (2.10.0)
+    le (2.7.1)
+    mail (2.6.4)
+      mime-types (>= 1.16, < 4)
     mandrill-api (1.0.53)
       excon (>= 0.16.0, < 1.0)
       json (>= 1.7.7, < 2.0)
     memory_profiler (0.9.6)
-    mime-types (1.25.1)
-    mini_magick (4.2.0)
-    mini_portile (0.6.0)
+    mime-types (3.0)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2016.0221)
+    mini_magick (4.5.1)
+    mini_portile2 (2.0.0)
     minitest (4.7.5)
-    multi_json (1.10.1)
+    multi_json (1.11.2)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
+<<<<<<< HEAD
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
+=======
+    mysql2 (0.3.20)
+>>>>>>> migration/rails4
     net-sftp (2.1.2)
       net-ssh (>= 2.6.5)
-    net-ssh (2.9.1)
-    nokogiri (1.6.3.1)
-      mini_portile (= 0.6.0)
-    oauth (0.4.7)
-    oauth2 (1.0.0)
+    net-ssh (3.1.1)
+    nokogiri (1.6.7.2)
+      mini_portile2 (~> 2.0.0.rc2)
+    oauth (0.5.1)
+    oauth2 (1.1.0)
       faraday (>= 0.8, < 0.10)
-      jwt (~> 1.0)
+      jwt (~> 1.0, < 1.5.2)
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
+<<<<<<< HEAD
       rack (~> 1.2)
     octokit (4.3.0)
       sawyer (~> 0.7.0, >= 0.5.3)
     omniauth (1.2.2)
+=======
+      rack (>= 1.2, < 3)
+    omniauth (1.3.1)
+>>>>>>> migration/rails4
       hashie (>= 1.2, < 4)
-      rack (~> 1.0)
-    omniauth-facebook (2.0.0)
+      rack (>= 1.0, < 3)
+    omniauth-facebook (3.0.0)
       omniauth-oauth2 (~> 1.2)
-    omniauth-google-oauth2 (0.2.5)
-      omniauth (> 1.0)
-      omniauth-oauth2 (~> 1.1)
+    omniauth-google-oauth2 (0.4.0)
+      jwt (~> 1.5.0)
+      multi_json (~> 1.3)
+      omniauth (>= 1.1.1)
+      omniauth-oauth2 (>= 1.3.1)
     omniauth-identity (1.1.1)
       bcrypt-ruby (~> 3.0)
       omniauth (~> 1.0)
     omniauth-linkedin (0.2.0)
       omniauth-oauth (~> 1.0)
-    omniauth-oauth (1.0.1)
+    omniauth-oauth (1.1.0)
       oauth
       omniauth (~> 1.0)
-    omniauth-oauth2 (1.2.0)
-      faraday (>= 0.8, < 0.10)
-      multi_json (~> 1.3)
+    omniauth-oauth2 (1.4.0)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
-    omniauth-shibboleth (1.1.2)
+    omniauth-shibboleth (1.2.1)
       omniauth (>= 1.0.0)
-    omniauth-twitter (1.1.0)
-      multi_json (~> 1.3)
-      omniauth-oauth (~> 1.0)
-    omniauth-windowslive (0.0.9)
+    omniauth-twitter (1.2.1)
+      json (~> 1.3)
+      omniauth-oauth (~> 1.1)
+    omniauth-windowslive (0.0.9.1)
       multi_json (>= 1.0.3)
       omniauth-oauth2 (~> 1.0)
+<<<<<<< HEAD
     parser (2.3.0.7)
       ast (~> 2.2)
     pg (0.18.4)
@@ -321,9 +511,43 @@ GEM
     raindrops (0.13.0)
     rake (10.3.2)
     rake-compiler (0.9.5)
+=======
+    rack (1.5.5)
+    rack-mini-profiler (0.9.9.2)
+      rack (>= 1.2.0)
+    rack-test (0.6.3)
+      rack (>= 1.0)
+    rails (4.0.13)
+      actionmailer (= 4.0.13)
+      actionpack (= 4.0.13)
+      activerecord (= 4.0.13)
+      activesupport (= 4.0.13)
+      bundler (>= 1.3.0, < 2.0)
+      railties (= 4.0.13)
+      sprockets-rails (~> 2.0)
+    rails-observers (0.1.2)
+      activemodel (~> 4.0)
+    rails3-jquery-autocomplete (1.0.15)
+      rails (>= 3.2)
+    rails_autolink (1.0.4)
+      rails (>= 3.1.0)
+    railties (4.0.13)
+      actionpack (= 4.0.13)
+      activesupport (= 4.0.13)
+      rake (>= 0.8.7)
+      thor (>= 0.18.1, < 2.0)
+    raindrops (0.16.0)
+    rake (11.1.2)
+    rake-compiler (0.9.7)
+>>>>>>> migration/rails4
       rake
-    rdoc (3.12.2)
+    rbvmomi (1.8.2)
+      builder
+      nokogiri (>= 1.4.1)
+      trollop
+    rdoc (4.2.2)
       json (~> 1.4)
+<<<<<<< HEAD
     redis (3.2.0)
     redis-namespace (1.5.1)
       redis (~> 3.0, >= 3.0.4)
@@ -380,29 +604,72 @@ GEM
       celluloid (~> 0.16.0)
     temple (0.7.6)
     terminal-table (1.5.2)
+=======
+    redis (3.2.2)
+    rollbar (2.8.3)
+      multi_json
+    rubyzip (1.2.0)
+    sass (3.4.22)
+    sass-rails (5.0.4)
+      railties (>= 4.0.0, < 5.0)
+      sass (~> 3.1)
+      sprockets (>= 2.8, < 4.0)
+      sprockets-rails (>= 2.0, < 4.0)
+      tilt (>= 1.1, < 3)
+    select2-rails (4.0.1.1)
+      thor (~> 0.14)
+    sidekiq (4.1.1)
+      concurrent-ruby (~> 1.0)
+      connection_pool (~> 2.2, >= 2.2.0)
+      redis (~> 3.2, >= 3.2.1)
+    simple_calendar (1.1.10)
+      rails (>= 3.0)
+    sprockets (3.5.2)
+      concurrent-ruby (~> 1.0)
+      rack (> 1, < 3)
+    sprockets-rails (2.3.3)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      sprockets (>= 2.8, < 4.0)
+    sqlite3 (1.3.11)
+    stackprof (0.2.8)
+    sucker_punch (1.6.0)
+      celluloid (~> 0.17.2)
+>>>>>>> migration/rails4
     thor (0.19.1)
-    tilt (1.4.1)
-    timers (4.0.1)
+    thread_safe (0.3.5)
+    tilt (2.0.2)
+    timers (4.1.1)
       hitimes
-    treetop (1.4.15)
-      polyglot
-      polyglot (>= 0.3.1)
+    trollop (2.1.2)
     turn (0.9.7)
       ansi
       minitest (~> 4)
+<<<<<<< HEAD
     tzinfo (0.3.42)
     uglifier (2.5.3)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
     unicode-display_width (1.0.3)
     unicorn (4.8.3)
+=======
+    tzinfo (0.3.48)
+    uglifier (3.0.0)
+      execjs (>= 0.3.0, < 3)
+    unicorn (5.1.0)
+>>>>>>> migration/rails4
       kgio (~> 2.6)
-      rack
       raindrops (~> 0.7)
     unicorn-rails (2.2.0)
       rack
       unicorn
+<<<<<<< HEAD
     will_paginate (3.0.7)
+=======
+    uuidtools (2.1.5)
+    will_paginate (3.1.0)
+    xml-simple (1.1.5)
+>>>>>>> migration/rails4
     zip (2.0.2)
 
 PLATFORMS
@@ -410,8 +677,14 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth
+<<<<<<< HEAD
   activerecord-postgresql-adapter
   acts-as-taggable-on
+=======
+  activerecord-session_store
+  activeresource
+  acts-as-taggable-on (~> 3.4)
+>>>>>>> migration/rails4
   acts_as_list
   acts_as_xlsx
   addressable
@@ -464,8 +737,12 @@ DEPENDENCIES
   pronto-rubocop
   puma
   rack-mini-profiler
+<<<<<<< HEAD
   rack-timeout
   rails (= 3.2.19)
+=======
+  rails (= 4.0.13)
+>>>>>>> migration/rails4
   rails3-jquery-autocomplete
   rails_12factor
   rails_autolink

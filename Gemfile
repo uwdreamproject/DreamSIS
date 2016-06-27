@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
-ruby '2.1.3'
+ruby '2.2.4'
 
-gem 'rails', '3.2.19'
+gem 'rails', '4.0.13'
 gem "unicorn"
 gem "unicorn-rails"
 gem "puma"
@@ -60,6 +60,8 @@ gem 'rack-mini-profiler'
 gem 'flamegraph'
 gem 'stackprof'
 gem 'memory_profiler'
+gem 'activeresource', require: 'active_resource'
+gem 'activerecord-session_store'
 
 group :production do
   gem "pg", "0.18.4"
@@ -71,12 +73,12 @@ end
 
 group :development do
   gem "sqlite3"
-  # gem 'web-console'
+  gem 'web-console'
 end
 
 group :development, :test do
   gem 'dotenv'
-  # gem 'dotenv-rails'
+  gem 'dotenv-rails'
   gem 'brakeman', require: false
   gem 'bundler-audit'
   gem 'byebug'
@@ -97,7 +99,7 @@ end
 
 group :test do
   gem 'turn', require: false
-  # gem 'minitest'
-  # gem 'minitest-reporters'
-  # gem 'minitest-ci', git: 'git@github.com:circleci/minitest-ci.git'
+  gem 'minitest'
+  gem 'minitest-reporters'
+  gem 'minitest-ci', git: 'git@github.com:circleci/minitest-ci.git'
 end
