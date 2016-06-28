@@ -1,13 +1,13 @@
 class ObjectFilter < ActiveRecord::Base
   validates_presence_of :object_class, :title, :criteria  
   validate :validate_criteria
-  validates_format_of :title, :with => /\A[^.]+\Z/, :message => "cannot include a period"
+  validates_format_of :title, with: /\A[^.]+\Z/, message: "cannot include a period"
   after_save :expire_object_filters_cache
   
-  belongs_to :earliest_grade_level, :class_name => "GradeLevel", :primary_key => 'level', :foreign_key => 'earliest_grade_level_level'
-  belongs_to :latest_grade_level, :class_name => "GradeLevel", :primary_key => 'level', :foreign_key => 'latest_grade_level_level'
+  belongs_to :earliest_grade_level, class_name: "GradeLevel", primary_key: 'level', foreign_key: 'earliest_grade_level_level'
+  belongs_to :latest_grade_level, class_name: "GradeLevel", primary_key: 'level', foreign_key: 'latest_grade_level_level'
 
-  default_scope :order => "category IS NULL, category, position, earliest_grade_level_level, title"
+  default_scope order: "category IS NULL, category, position, earliest_grade_level_level, title"
 
   acts_as_list scope: [:category]
   
@@ -19,7 +19,7 @@ class ObjectFilter < ActiveRecord::Base
   
   # Returns true if the passed object passes the filter criteria using +instance_eval+. Pass the "purpose" option as "stats"
   # to change the behavior for filters marked as +stats_shows_opposite+.
-  def passes?(object, options = { :purpose => :filter })
+  def passes?(object, options = { purpose: :filter })
     result = object.instance_eval(criteria)
     result = false if result.nil?
     options[:purpose].to_sym == :stats && display_filter_as_opposite? ? !result : result

@@ -4,9 +4,9 @@ require 'uri'
 class Program < ActiveRecord::Base
   validates_presence_of :title, :abbreviation  
   has_and_belongs_to_many :people
-  has_and_belongs_to_many :participants, :class_name => "Person", :conditions => { :type => "Participant" }
-  default_scope :order => "title"
+  has_and_belongs_to_many :participants, class_name: "Person", conditions: { type: "Participant" }
+  default_scope order: "title"
   
-  validates_format_of :website_url, :with => URI.regexp(%w[http https]), :allow_blank => true
+  validates_format_of :website_url, with: URI.regexp(%w[http https]), allow_blank: true
   
 end

@@ -8,7 +8,7 @@ class CreateChanges < ActiveRecord::Migration
       t.string   "action_type"
       t.timestamps
     end
-    add_index "changes", ["change_loggable_id", "change_loggable_type"], :name => "index_changes_on_changable"
+    add_index "changes", ["change_loggable_id", "change_loggable_type"], name: "index_changes_on_changable"
   end
 
   def self.down

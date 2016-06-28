@@ -5,7 +5,7 @@ class CollegeMapperStudent < CollegeMapperResource
   self.caller_class = "CollegeMapperStudent"
   
   def colleges
-    @colleges ||= CollegeMapperCollege.find(:all, :params => { :user_id => id })
+    @colleges ||= CollegeMapperCollege.find(:all, params: { user_id: id })
   end
   
 end

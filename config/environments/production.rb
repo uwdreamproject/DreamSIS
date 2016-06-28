@@ -78,13 +78,13 @@ Dreamsis::Application.configure do
   # temp_api_keys = YAML.load_file(config_file_path)
   # mandrill_password = temp_api_keys["mandrill"][Rails.env]["key"]
   # config.action_mailer.smtp_settings = {
-  #   :address => "smtp.mandrillapp.com",
-  #   :port => 587,
-  #   :user_name => "matt@dreamsis.com",
-  #   :password => mandrill_password,
-  #   :authentication => :login,
-  #   :enable_starttls_auto => true,
-  #   :domain => 'dreamsis.com'
+  #   address: "smtp.mandrillapp.com",
+  #   port: 587,
+  #   user_name: "matt@dreamsis.com",
+  #   password: mandrill_password,
+  #   authentication: :login,
+  #   enable_starttls_auto: true,
+  #   domain: 'dreamsis.com'
   # }
   
 

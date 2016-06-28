@@ -2,30 +2,30 @@ class Mentor < Person
   extend FriendlyId
   friendly_id :friendly_slug, use: :slugged
 
-  has_many :mentor_terms, :conditions => { :deleted_at => nil } do
+  has_many :mentor_terms, conditions: { deleted_at: nil } do
     def for_term(term_id)
       term_id = term_id.id if term_id.is_a?(Term)
-      find :all, :joins => [:mentor_term_group], :conditions => { :mentor_term_groups => { :term_id => term_id }, :deleted_at => nil }
+      find :all, joins: [:mentor_term_group], conditions: { mentor_term_groups: { term_id: term_id }, deleted_at: nil }
     end
   end
-  has_many :mentor_term_groups, :through => :mentor_terms, :include => :mentors
+  has_many :mentor_term_groups, through: :mentor_terms, include: :mentors
   
-  has_many :mentor_participants, :conditions => { :deleted_at => nil }
-  has_many :participants, :through => :mentor_participants
+  has_many :mentor_participants, conditions: { deleted_at: nil }
+  has_many :participants, through: :mentor_participants
 	has_many :activity_logs
   
-  validates_uniqueness_of :reg_id, :allow_blank => true
+  validates_uniqueness_of :reg_id, allow_blank: true
 
   attr_accessor :validate_background_check_form, :validate_risk_form, :validate_conduct_form, :validate_driver_form
 
-  validates_inclusion_of :crimes_against_persons_or_financial, :drug_related_crimes, :related_proceedings_crimes, :medicare_healthcare_crimes, :general_convictions, :if => :validate_background_check_form, :in => [true,false], :message => "cannot be left blank"
-  validates_presence_of :background_check_authorized_at, :if => :validate_background_check_form
+  validates_inclusion_of :crimes_against_persons_or_financial, :drug_related_crimes, :related_proceedings_crimes, :medicare_healthcare_crimes, :general_convictions, if: :validate_background_check_form, in: [true,false], message: "cannot be left blank"
+  validates_presence_of :background_check_authorized_at, if: :validate_background_check_form
 
-  validates_presence_of :risk_form_signed_at, :risk_form_signature, :message => "cannot be left blank", :if => :validate_risk_form
+  validates_presence_of :risk_form_signed_at, :risk_form_signature, message: "cannot be left blank", if: :validate_risk_form
   
-  validates_presence_of :conduct_form_signed_at, :conduct_form_signature, :message => "cannot be left blank", :if => :validate_conduct_form
+  validates_presence_of :conduct_form_signed_at, :conduct_form_signature, message: "cannot be left blank", if: :validate_conduct_form
 
-  validates_presence_of :driver_form_signed_at, :driver_form_signature, :message => "cannot be left blank", :if => :validate_driver_form
+  validates_presence_of :driver_form_signed_at, :driver_form_signature, message: "cannot be left blank", if: :validate_driver_form
 
   after_save :send_driver_email
 
@@ -121,15 +121,15 @@ class Mentor < Person
     mandrill = Mandrill::API.new(MANDRILL_API_KEY)
     
     template_content = [
-      {:name => 'title', :content => "An account has been created for you by #{Customer.name_label}."},
-      {:name => 'main_message', :content => "#{Customer.name_label} is using DreamSIS.com to manage its program and keep track of student information. You can use the link below to login and setup your account. If you have any questions, please contact your program administrator."}
+      {name: 'title', content: "An account has been created for you by #{Customer.name_label}."},
+      {name: 'main_message', content: "#{Customer.name_label} is using DreamSIS.com to manage its program and keep track of student information. You can use the link below to login and setup your account. If you have any questions, please contact your program administrator."}
     ]
     message = {
-      :to => [{:name => fullname, :email => email }],
-      :global_merge_vars => [
-        {:name => "login_link", :content => login_link}
+      to: [{name: fullname, email: email }],
+      global_merge_vars: [
+        {name: "login_link", content: login_link}
       ],
-      :subject => "Your #{Customer.name_label} account on DreamSIS.com"
+      subject: "Your #{Customer.name_label} account on DreamSIS.com"
     }
 
     return mandrill.messages.send_template 'Account E-mail', template_content, message
@@ -246,9 +246,9 @@ Documentation for each filter:
     terms = Term.allowing_signups.collect(&:id)
     terms << Term.current_term.id if Term.current_term
     terms = terms.flatten.uniq
-    conditions = { :mentor_term_groups => { :term_id => terms }, :deleted_at => nil }
+    conditions = { mentor_term_groups: { term_id: terms }, deleted_at: nil }
     conditions[:mentor_term_groups][:location_id] = location.try(:id) if location
-    mentor_terms.find :all, :joins => [:mentor_term_group], :conditions => conditions
+    mentor_terms.find :all, joins: [:mentor_term_group], conditions: conditions
   end
   
   # Returns the locations for each of the #current_mentor_term_groups.
@@ -283,8 +283,8 @@ Documentation for each filter:
 
     return true if mentor_terms.collect(&:term).uniq.reject {|m| m == Term.current_term}.count > 0 rescue true
     !event_attendances.find(:all, 
-                            :include => { :event => :event_type }, 
-                            :conditions => { :attended => true, :event_types => { :name => "Mentor Workshop" }}
+                            include: { event: :event_type }, 
+                            conditions: { attended: true, event_types: { name: "Mentor Workshop" }}
                             ).empty?
   end
 
@@ -341,7 +341,7 @@ Documentation for each filter:
       end
       joins(:mentor_term_groups).where(conditions).where("van_driver_training_completed_at IS NOT NULL")
     else
-      find(:all, :conditions => ["van_driver_training_completed_at IS NOT NULL"])
+      find(:all, conditions: ["van_driver_training_completed_at IS NOT NULL"])
     end
   end
 
@@ -418,12 +418,12 @@ Documentation for each filter:
   # +college_mapper_id+ attribute. Returns +false+ if the account couldn't be created.
   def create_college_mapper_counselor
     @college_mapper_counselor = CollegeMapperCounselor.create({
-      :firstName => firstname.to_s.titlecase,
-      :lastName => lastname.to_s.titlecase,
-      :email => email,
-      :zipCode => (zip || 98105),
-      :allowVicariousLogin => true,
-      :dream => true
+      firstName: firstname.to_s.titlecase,
+      lastName: lastname.to_s.titlecase,
+      email: email,
+      zipCode: (zip || 98105),
+      allowVicariousLogin: true,
+      dream: true
     })
     self.update_attribute(:college_mapper_id, @college_mapper_counselor.id)
     @college_mapper_counselor
@@ -525,9 +525,9 @@ Documentation for each filter:
   def event_attendances_for_term(term = Term.current_term)
     event_attendances.find(
       :all,
-      :joins => "LEFT OUTER JOIN events ON event_attendances.event_id = events.id
+      joins: "LEFT OUTER JOIN events ON event_attendances.event_id = events.id
                  LEFT OUTER JOIN event_types ON events.event_type_id = event_types.id", 
-      :conditions => ["events.date >= ?
+      conditions: ["events.date >= ?
       AND events.date <= ?
       AND (rsvp = ? OR attended = ?)
       AND (event_type_id IS NULL OR event_types.name != ?)

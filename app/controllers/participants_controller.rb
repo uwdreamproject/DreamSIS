@@ -1,8 +1,8 @@
 class ParticipantsController < ApplicationController
-  protect_from_forgery :only => [:create, :update, :destroy, :bulk] 
-  skip_before_filter :login_required, :only => [:college_mapper_callback]
-  skip_before_filter :check_if_enrolled, :only => [:college_mapper_callback]
-  skip_before_filter :check_authorization, :except => [:index, :cohort, :destroy]
+  protect_from_forgery only: [:create, :update, :destroy, :bulk] 
+  skip_before_filter :login_required, only: [:college_mapper_callback]
+  skip_before_filter :check_if_enrolled, only: [:college_mapper_callback]
+  skip_before_filter :check_authorization, except: [:index, :cohort, :destroy]
   
 	before_filter :set_title_prefix
   before_filter :set_report_type
@@ -12,12 +12,12 @@ class ParticipantsController < ApplicationController
   def index
     return redirect_to Participant.find(params[:id]) if params[:id]
     @participants = Participant.page(params[:page])
-		@cache_key = fragment_cache_key(:action => :index, :format => :xlsx)
+		@cache_key = fragment_cache_key(action: :index, format: :xlsx)
     @export = report_type.for_key(@cache_key)
 
     respond_to do |format|
       format.html
-      format.xml  { render :xml => @participants.unpaginate }
+      format.xml  { render xml: @participants.unpaginate }
       format.js
       format.xlsx { respond_to_xlsx }
     end
@@ -32,12 +32,12 @@ class ParticipantsController < ApplicationController
     end
     
     @participants = @high_school.participants.page(params[:page])
-		@cache_key = fragment_cache_key(:action => :high_school, :id => @high_school.id, :format => :xlsx)
+		@cache_key = fragment_cache_key(action: :high_school, id: @high_school.id, format: :xlsx)
     @export = report_type.for_key(@cache_key)
 
     respond_to do |format|
-      format.html { render :action => 'index' }
-      format.xml  { render :xml => @participants.unpaginate }
+      format.html { render action: 'index' }
+      format.xml  { render xml: @participants.unpaginate }
       format.js   { render 'index'}
       format.xlsx { respond_to_xlsx }
     end
@@ -47,19 +47,19 @@ class ParticipantsController < ApplicationController
     @grad_year = params[:id]
     @participants = Participant.in_cohort(params[:id]).page(params[:page])
 		@title << @grad_year
-		@cache_key = fragment_cache_key(:action => :cohort, :id => @grad_year, :format => :xlsx)
+		@cache_key = fragment_cache_key(action: :cohort, id: @grad_year, format: :xlsx)
     @export = report_type.for_key(@cache_key)
     
     respond_to do |format|
-      format.html { render :action => 'index' }
-      format.xml  { render :xml => @participants.unpaginate }
+      format.html { render action: 'index' }
+      format.xml  { render xml: @participants.unpaginate }
       format.js   { render 'index'}
 		  format.xlsx { respond_to_xlsx }
     end
   end
 
   def high_school_cohort
-    return redirect_to(high_school_cohort_path(:high_school_id => params[:high_school_id], :year => params[:cohort])) if params[:cohort]
+    return redirect_to(high_school_cohort_path(high_school_id: params[:high_school_id], year: params[:cohort])) if params[:cohort]
     @grad_year = params[:year]
     @high_school = HighSchool.find(params[:high_school_id])
 		@title << @high_school
@@ -70,13 +70,13 @@ class ParticipantsController < ApplicationController
     end
     
     @participants = Participant.in_cohort(@grad_year).in_high_school(@high_school.try(:id)).page(params[:page])
-    @participant_groups = ParticipantGroup.find(:all, :conditions => { :location_id => @high_school, :grad_year => @grad_year })
-		@cache_key = fragment_cache_key(:action => :high_school_cohort, :id => @high_school.id, :cohort => @grad_year, :format => :xlsx)
+    @participant_groups = ParticipantGroup.find(:all, conditions: { location_id: @high_school, grad_year: @grad_year })
+		@cache_key = fragment_cache_key(action: :high_school_cohort, id: @high_school.id, cohort: @grad_year, format: :xlsx)
     @export = report_type.for_key(@cache_key)
 
     respond_to do |format|
-      format.html { render :action => 'index' }
-      format.xml  { render :xml => @participants.unpaginate }
+      format.html { render action: 'index' }
+      format.xml  { render xml: @participants.unpaginate }
       format.js   { render 'index'}
 		  format.xlsx { respond_to_xlsx }
     end    
@@ -87,7 +87,7 @@ class ParticipantsController < ApplicationController
     @participants = Participant.where("0=1").page(1)
     @stages = CollegeApplication::Stages
 		@title << @college
-		@cache_key = fragment_cache_key(:action => :college, :id => @college.try(:id), :format => :xlsx)
+		@cache_key = fragment_cache_key(action: :college, id: @college.try(:id), format: :xlsx)
     @export = report_type.for_key(@cache_key)
 
     if request.xhr?
@@ -102,8 +102,8 @@ class ParticipantsController < ApplicationController
     end
     
     respond_to do |format|
-      format.html { render :action => 'index' }
-      format.xml  { render :xml => @participants.unpaginate }
+      format.html { render action: 'index' }
+      format.xml  { render xml: @participants.unpaginate }
       format.js   { render 'index'}
 		  format.xlsx { respond_to_xlsx }
     end
@@ -115,12 +115,12 @@ class ParticipantsController < ApplicationController
     @participants = Participant.in_cohort(@grad_year).attending_college(@college.try(:id)).page(params[:page])
 		@title << @college
 		@title << @grad_year
-		@cache_key = fragment_cache_key(:action => :college_cohort, :id => @college.try(:id), :cohort => @grad_year, :format => :xlsx)
+		@cache_key = fragment_cache_key(action: :college_cohort, id: @college.try(:id), cohort: @grad_year, format: :xlsx)
     @export = report_type.for_key(@cache_key)
     
     respond_to do |format|
-      format.html { render :action => 'index' }
-      format.xml  { render :xml => @participants.unpaginate }
+      format.html { render action: 'index' }
+      format.xml  { render xml: @participants.unpaginate }
       format.js   { render 'index'}
 		  format.xlsx { respond_to_xlsx }
     end
@@ -130,12 +130,12 @@ class ParticipantsController < ApplicationController
     @mentor = Mentor.find(params[:mentor_id] == "me" ? User.current_user.try(:person_id) : params[:mentor_id])
     @participants = Participant.assigned_to_mentor(@mentor.try(:id)).page(params[:page]).readonly(false)
 		@title << "Assigned to #{@mentor.try(:fullname)}"
-		@cache_key = fragment_cache_key(:action => :mentor, :id => @mentor.id, :format => :xlsx)
+		@cache_key = fragment_cache_key(action: :mentor, id: @mentor.id, format: :xlsx)
     @export = report_type.for_key(@cache_key)
 		
 		respond_to do |format|
-      format.html { render :action => 'index' }
-      format.xml  { render :xml => @participants.unpaginate }
+      format.html { render action: 'index' }
+      format.xml  { render xml: @participants.unpaginate }
       format.js   { render 'index'}
 		  format.xlsx { respond_to_xlsx }
     end
@@ -145,12 +145,12 @@ class ParticipantsController < ApplicationController
     @program = Program.find(params[:program_id])
     @participants = @program.participants.page(params[:page])
 		@title << @program.try(:title)
-		@cache_key = fragment_cache_key(:action => :program, :id => @program.id, :format => :xlsx)
+		@cache_key = fragment_cache_key(action: :program, id: @program.id, format: :xlsx)
     @export = report_type.for_key(@cache_key)
     
     respond_to do |format|
-      format.html { render :action => 'index' }
-      format.xml  { render :xml => @participants.unpaginate }
+      format.html { render action: 'index' }
+      format.xml  { render xml: @participants.unpaginate }
       format.js   { render 'index'}
 		  format.xlsx { respond_to_xlsx }
     end
@@ -167,13 +167,13 @@ class ParticipantsController < ApplicationController
     end
     
     @participants = @participant_group.participants.page(params[:page])
-    @participant_groups = ParticipantGroup.find(:all, :conditions => { :location_id => @high_school, :grad_year => @grad_year })
-		@cache_key = fragment_cache_key(:action => :group, :id => @participant_group.id, :format => :xlsx)
+    @participant_groups = ParticipantGroup.find(:all, conditions: { location_id: @high_school, grad_year: @grad_year })
+		@cache_key = fragment_cache_key(action: :group, id: @participant_group.id, format: :xlsx)
     @export = report_type.for_key(@cache_key)
     
     respond_to do |format|
-      format.html { render :action => 'index' }
-      format.xml  { render :xml => @participants.unpaginate }
+      format.html { render action: 'index' }
+      format.xml  { render xml: @participants.unpaginate }
       format.js   { render 'index'}
 		  format.xlsx { respond_to_xlsx }
     end    
@@ -182,9 +182,9 @@ class ParticipantsController < ApplicationController
   def add_to_group
     @participant_group = ParticipantGroup.find(params[:participant_group_id])
     @participant = Participant.find(params[:id].split("_")[1])
-    @participant_groups = ParticipantGroup.find(:all, :conditions => { :location_id => @participant_group.location_id, :grad_year => @participant_group.grad_year })
+    @participant_groups = ParticipantGroup.find(:all, conditions: { location_id: @participant_group.location_id, grad_year: @participant_group.grad_year })
     @participant.update_attribute(:participant_group_id, @participant_group.id)
-    ParticipantGroup.update_counters @participant_group.id, :participants_count => @participant_group.participants.length    
+    ParticipantGroup.update_counters @participant_group.id, participants_count: @participant_group.participants.length    
     
     respond_to do |format|
       format.js
@@ -199,7 +199,7 @@ class ParticipantsController < ApplicationController
     @event_attendances = @participant.respond_to?(:relevant_event_attendances) ? @participant.relevant_event_attendances : @participant.event_attendances.non_visits
     @grad_year = @participant.grad_year
 		@term = Term.current_term
-    @title = @participant.try(:fullname, :middlename => false)
+    @title = @participant.try(:fullname, middlename: false)
     @visits = @high_school.events(@term, nil, true, 100) if @high_school
 		
     unless @current_user && @current_user.can_view?(@participant)
@@ -208,7 +208,7 @@ class ParticipantsController < ApplicationController
     
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @participant }
+      format.xml  { render xml: @participant }
     end
   end
 	
@@ -221,7 +221,7 @@ class ParticipantsController < ApplicationController
 		if @participant.avatar?
 			av = params[:size] ? @participant.avatar.versions[params[:size].to_sym] : @participant.avatar
 			return send_default_photo(params[:size]) if av.nil?
-      # return send_data(av.read, :disposition => 'inline', :type => 'image/jpeg')
+      # return send_data(av.read, disposition: 'inline', type: 'image/jpeg')
       return redirect_to av.url
     else
       return send_default_photo(params[:size]) if av.nil?
@@ -236,7 +236,7 @@ class ParticipantsController < ApplicationController
     
     respond_to do |format|
       format.json { 
-        render :json => @event_attendances.as_json(include: { 
+        render json: @event_attendances.as_json(include: { 
           event: { methods: [:attendance_options, :short_title] }
         }).group_by{|e| e[:event]["date"] }
       }
@@ -246,22 +246,22 @@ class ParticipantsController < ApplicationController
   # GET /participants/new
   # GET /participants/new.xml
   def new
-    @participant = Participant.new(:high_school_id => params[:high_school_id])
+    @participant = Participant.new(high_school_id: params[:high_school_id])
     @participant.intake_survey_date = Time.now  # only default to setting this field if we're manually creating a new record.
     @participant_groups = []
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @participant }
+      format.xml  { render xml: @participant }
     end
   end
 
   # GET /participants/1/edit
   def edit
     @participant = Participant.find(params[:id])
-    @participant_groups = ParticipantGroup.find(:all, :conditions => { 
-        :location_id => @participant.high_school_id, 
-        :grad_year => @participant.grad_year
+    @participant_groups = ParticipantGroup.find(:all, conditions: { 
+        location_id: @participant.high_school_id, 
+        grad_year: @participant.grad_year
       })
 
     unless @current_user && @current_user.can_edit?(@participant)
@@ -279,10 +279,10 @@ class ParticipantsController < ApplicationController
       if @participant.save
         flash[:notice] = 'Participant was successfully created.'
         format.html { redirect_to(@participant) }
-        format.xml  { render :xml => @participant, :status => :created, :location => @participant }
+        format.xml  { render xml: @participant, status: :created, location: @participant }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @participant.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @participant.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -310,8 +310,8 @@ class ParticipantsController < ApplicationController
         format.xml  { head :ok }
         format.js
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @participant.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @participant.errors, status: :unprocessable_entity }
         format.js
       end
     end
@@ -352,9 +352,9 @@ class ParticipantsController < ApplicationController
   
   def fetch_participant_group_options
     # @participant = Participant.find(params[:id])
-    @participant_groups = ParticipantGroup.find(:all, :conditions => { 
-        :location_id => params[:participant][:high_school_id], 
-        :grad_year => params[:participant][:grad_year] 
+    @participant_groups = ParticipantGroup.find(:all, conditions: { 
+        location_id: params[:participant][:high_school_id], 
+        grad_year: params[:participant][:grad_year] 
       })
       
     respond_to do |format|
@@ -371,21 +371,21 @@ class ParticipantsController < ApplicationController
       conditions << "grad_year = :grad_year" if params[:grad_year]
     
       @participants = Participant.find(:all, 
-                                        :conditions => [conditions.join(" AND "), 
-                                                        {:fullname => "%#{params[:term].downcase}%",
-                                                        :grad_year => params[:grad_year],
-                                                        :high_school_id => params[:high_school_id]
+                                        conditions: [conditions.join(" AND "), 
+                                                        {fullname: "%#{params[:term].downcase}%",
+                                                        grad_year: params[:grad_year],
+                                                        high_school_id: params[:high_school_id]
                                                         }])
     end
     
-    render :json => @participants.map { |result| 
+    render json: @participants.map { |result| 
       {
-        :id => result.id, 
-        :value => h(result.fullname),
-        :klass => result.class.to_s.underscore.titleize, 
-        :fullname => h(result.fullname),
-        :secondary => h(result.email),
-        :tertiary => h((Customer.current_customer.customer_label(result.class.to_s.underscore, :titleize => true) || result.class.to_s).titleize)
+        id: result.id, 
+        value: h(result.fullname),
+        klass: result.class.to_s.underscore.titleize, 
+        fullname: h(result.fullname),
+        secondary: h(result.email),
+        tertiary: h((Customer.current_customer.customer_label(result.class.to_s.underscore, titleize: true) || result.class.to_s).titleize)
       }
     }
   end
@@ -410,15 +410,15 @@ class ParticipantsController < ApplicationController
   def college_mapper_callback
     @participant = Participant.find_by_college_mapper_id(params[:user_id])
     @participant.update_college_list_from_college_mapper if params[:update] == 'colleges'
-    render :text => "OK\r\n", :status => 200
+    render text: "OK\r\n", status: 200
   rescue
-    render :text => "Error\r\n", :status => 500
+    render text: "Error\r\n", status: 500
   end
 
 	def check_export_status
 		@export = report_type.find(params[:id])
 		respond_to do |format|
-			format.html { render :text => (@export.try(:status) || "does not exist") }
+			format.html { render text: (@export.try(:status) || "does not exist") }
 			format.js
 		end
 	end
@@ -438,7 +438,7 @@ class ParticipantsController < ApplicationController
   def send_default_photo(size)
 		filename = size == "thumb" ? "blank_avatar_thumb.png" : "blank_avatar.png"
     send_file File.join(Rails.root, "public", "images", filename), 
-              :disposition => 'inline', :type => 'image/png', :status => 203
+              disposition: 'inline', type: 'image/png', status: 203
   end  
 
 	def respond_to_xlsx
@@ -446,11 +446,11 @@ class ParticipantsController < ApplicationController
 		if @export.generated? && params[:generate].nil?
 			if request.xhr?
 				headers["Content-Type"] = "text/javascript"
-				render :js => "window.location = '#{url_for(:format => 'xlsx', :report => @report)}'"
+				render js: "window.location = '#{url_for(format: 'xlsx', report: @report)}'"
 			else
         begin
           filename = @filename || "participants.xlsx"
-          send_data @export.file.read, :filename => filename, :disposition => 'inline', :type => @export.mime_type.to_s
+          send_data @export.file.read, filename: filename, disposition: 'inline', type: @export.mime_type.to_s
         rescue
           flash[:error] = "The file could not be read from the server. Please try regenerating the export."
           redirect_to :back
@@ -475,9 +475,9 @@ class ParticipantsController < ApplicationController
 		
 		if request.xhr?
 			headers["Content-Type"] = "text/javascript"
-			return render(:template => "participants/check_export_status.js.erb", :format => 'js')
+			return render(template: "participants/check_export_status.js.erb", format: 'js')
 		else
-			return redirect_to(:back, :format => 'html')
+			return redirect_to(:back, format: 'html')
 		end
 	end
 

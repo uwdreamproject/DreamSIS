@@ -9,7 +9,7 @@ class ParentsController < ParticipantsController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @parents }
+      format.xml  { render xml: @parents }
     end
   end
 
@@ -20,7 +20,7 @@ class ParentsController < ParticipantsController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @parent }
+      format.xml  { render xml: @parent }
     end
   end
 
@@ -31,7 +31,7 @@ class ParentsController < ParticipantsController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @parent }
+      format.xml  { render xml: @parent }
     end
   end
 
@@ -48,11 +48,11 @@ class ParentsController < ParticipantsController
     respond_to do |format|
       if @parent.save
         flash[:notice] = 'Parent was successfully created.'
-        format.html { redirect_to(participant_path(@participant, :anchor => "!/section/parents")) }
-        format.xml  { render :xml => @parent, :status => :created, :location => @participant }
+        format.html { redirect_to(participant_path(@participant, anchor: "!/section/parents")) }
+        format.xml  { render xml: @parent, status: :created, location: @participant }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @parent.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @parent.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -65,11 +65,11 @@ class ParentsController < ParticipantsController
     respond_to do |format|
       if @parent.update_attributes(params[:parent])
         flash[:notice] = 'Parent was successfully updated.'
-        format.html { redirect_to(participant_path(@participant, :anchor => "!/section/parents")) }
+        format.html { redirect_to(participant_path(@participant, anchor: "!/section/parents")) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @parent.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @parent.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -81,7 +81,7 @@ class ParentsController < ParticipantsController
     @parent.destroy
 
     respond_to do |format|
-      format.html { redirect_to(participant_path(@participant, :anchor => "!/section/parents")) }
+      format.html { redirect_to(participant_path(@participant, anchor: "!/section/parents")) }
       format.xml  { head :ok }
     end
   end

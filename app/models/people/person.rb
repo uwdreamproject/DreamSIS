@@ -3,39 +3,39 @@ class Person < ActiveRecord::Base
 
   has_many :event_attendances do
     def future_attending
-      find :all, :joins => [:event], :conditions => ["events.date >= ? AND rsvp = ?", Time.now.midnight, true]
+      find :all, joins: [:event], conditions: ["events.date >= ? AND rsvp = ?", Time.now.midnight, true]
     end
 		def non_visits
-			find :all, :joins => [:event], :conditions => ["type IS ? OR type = ? OR type = ?", nil, "Event", ""]
+			find :all, joins: [:event], conditions: ["type IS ? OR type = ? OR type = ?", nil, "Event", ""]
 		end
 		def visits
-			find :all, :joins => [:event], :conditions => ["type = ?", "Visit"]
+			find :all, joins: [:event], conditions: ["type = ?", "Visit"]
 		end
   end
-  has_many :events, :through => :event_attendances do
+  has_many :events, through: :event_attendances do
     def future
-      find :all, :conditions => ["date >= ?", Time.now.midnight]
+      find :all, conditions: ["date >= ?", Time.now.midnight]
     end
   end
   # has_many :how_did_you_hear_people
-  # has_many :how_did_you_hear_options, :through => :how_did_you_hear_people
+  # has_many :how_did_you_hear_options, through: :how_did_you_hear_people
   has_and_belongs_to_many :how_did_you_hear_options
-	belongs_to :highest_education_level, :class_name => "EducationLevel"
+	belongs_to :highest_education_level, class_name: "EducationLevel"
 
   has_many :users
 
-  validates_presence_of :lastname, :firstname, :if => :validate_name?
-  validates_uniqueness_of :survey_id, :allow_nil => true
-  validates_format_of :email, :with => /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i, :allow_blank => true
-  validates_format_of :email2, :with => /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i, :allow_blank => true
-  validates_presence_of :firstname, :lastname, :email, :sex, :phone_mobile, :birthdate, :if => :validate_ready_to_rsvp?
+  validates_presence_of :lastname, :firstname, if: :validate_name?
+  validates_uniqueness_of :survey_id, allow_nil: true
+  validates_format_of :email, with: /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i, allow_blank: true
+  validates_format_of :email2, with: /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i, allow_blank: true
+  validates_presence_of :firstname, :lastname, :email, :sex, :phone_mobile, :birthdate, if: :validate_ready_to_rsvp?
 
-  has_many :notes, :as => :notable, :conditions => "document_file_name IS NULL"
-  has_many :documents, :as => :notable, :class_name => "Note", :conditions => "document_file_name IS NOT NULL AND title IS NOT NULL"
+  has_many :notes, as: :notable, conditions: "document_file_name IS NULL"
+  has_many :documents, as: :notable, class_name: "Note", conditions: "document_file_name IS NOT NULL AND title IS NOT NULL"
 
   has_many :training_completions
-  has_many :trainings, :through => :training_completions, :source => :training
-  has_one :emergency_contact, :foreign_key => :child_id, :class_name => "Parent", :conditions => { :is_emergency_contact => true, :parent_type => "Emergency Contact" }
+  has_many :trainings, through: :training_completions, source: :training
+  has_one :emergency_contact, foreign_key: :child_id, class_name: "Parent", conditions: { is_emergency_contact: true, parent_type: "Emergency Contact" }
   accepts_nested_attributes_for :emergency_contact, allow_destroy: true
 
   has_and_belongs_to_many :programs
@@ -71,7 +71,7 @@ class Person < ActiveRecord::Base
 
   PERSON_RESOURCE_CACHE_LIFETIME = 1.day
 
-  default_scope :order => "lastname, firstname, middlename"
+  default_scope order: "lastname, firstname, middlename"
 
   geocoded_by :address do |obj, results|
     if geo = results.first
@@ -80,7 +80,7 @@ class Person < ActiveRecord::Base
     end
     [geo.latitude, geo.longitude] if geo
   end
-  after_validation :geocode, :if => :address_changed?
+  after_validation :geocode, if: :address_changed?
 
   def address_changed?
     street_changed? || city_changed? || state_changed? || zip_changed?
@@ -159,7 +159,7 @@ class Person < ActiveRecord::Base
   # Returns the person's fullname in the form: Firstname Middlename Lastname
   # If we have a valid +person_resource+, then pass back +person_resource.DisplayName+ instead.
   def fullname(opt = {})
-    options = { :middlename => true, :skip_update => false, :override_with_local => true, :ignore_nickname => false }.merge(opt)
+    options = { middlename: true, skip_update: false, override_with_local: true, ignore_nickname: false }.merge(opt)
     if person_resource? && !options[:skip_update]
       update_resource_cache! rescue nil
       return display_name unless options[:override_with_local]
@@ -193,11 +193,11 @@ class Person < ActiveRecord::Base
       return false unless events.include?(event)
       event_attendances.find_by_event_id(event.id).attended?
     elsif event.is_a?(EventGroup)
-      attendances = event_attendances.find(:all, :joins => [:event], :conditions => { :events => { :event_group_id => event.id }})
+      attendances = event_attendances.find(:all, joins: [:event], conditions: { events: { event_group_id: event.id }})
       return false if attendances.empty?
       attendances.collect(&:attended?).include?(true)
     elsif event.is_a?(EventType)
-      attendances = event_attendances.find(:all, :joins => [:event], :conditions => { :events => { :event_type_id => event.id }})
+      attendances = event_attendances.find(:all, joins: [:event], conditions: { events: { event_type_id: event.id }})
       return false if attendances.empty?
       attendances.collect(&:attended?).include?(true)
     else
@@ -275,15 +275,15 @@ class Person < ActiveRecord::Base
   def update_resource_cache!(force = false)
     if person_resource? && (resource_cache_expired? || force)
       return true if self.update_attributes(
-        :display_name   => person_resource.attributes["DisplayName"],
-        :firstname      => person_resource.attributes["RegisteredFirstMiddleName"],
-        :lastname       => person_resource.attributes["RegisteredSurname"],
-        :uw_net_id      => person_resource.attributes["UWNetID"],
-        :email          => person_resource.attributes["UWNetID"] + "@uw.edu",
-        :birthdate      => (Date.parse(student_person_resource.attributes["BirthDate"]) rescue nil),
-        :sex            => student_person_resource.attribute(:gender),
-        :uw_student_no  => student_person_resource.attribute(:student_number).to_s.rjust(7, "0"),
-        :resource_cache_updated_at => Time.now
+        display_name: person_resource.attributes["DisplayName"],
+        firstname: person_resource.attributes["RegisteredFirstMiddleName"],
+        lastname: person_resource.attributes["RegisteredSurname"],
+        uw_net_id: person_resource.attributes["UWNetID"],
+        email: person_resource.attributes["UWNetID"] + "@uw.edu",
+        birthdate: (Date.parse(student_person_resource.attributes["BirthDate"]) rescue nil),
+        sex: student_person_resource.attribute(:gender),
+        uw_student_no: student_person_resource.attribute(:student_number).to_s.rjust(7, "0"),
+        resource_cache_updated_at: Time.now
       )
     end
     false
@@ -394,7 +394,7 @@ class Person < ActiveRecord::Base
   # Returns true if this person has completed the specified training
   def completed_training?(training)
     return false if training.nil?
-    c = training_completions.find(:first, :conditions => { :training_id => training.id })
+    c = training_completions.find(:first, conditions: { training_id: training.id })
     c.nil? ? false : c.completed?
   end
 
@@ -496,12 +496,12 @@ class Person < ActiveRecord::Base
     salt = SecureRandom.hex(24)
     hash = token_hash(new_login_token, salt)
 
-    update_attributes(:login_token => concatenate_token_record(hash, salt), :login_token_expires_at => 1.week.from_now)
+    update_attributes(login_token: concatenate_token_record(hash, salt), login_token_expires_at: 1.week.from_now)
     new_login_token
   end
 
   def invalidate_login_token!
-    update_attributes(:login_token => nil, :login_token_expires_at => nil)
+    update_attributes(login_token: nil, login_token_expires_at: nil)
   end
 
   # This should never be called on an object that hasn't explicitly overridden this method

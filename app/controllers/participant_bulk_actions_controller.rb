@@ -1,17 +1,17 @@
 class ParticipantBulkActionsController < ParticipantsController
   before_filter :fetch_participants
   before_filter :check_authorization
-  before_filter :check_privileged, :only => :process_assign_mentor
-  before_filter :validate_emails, :only => :send_login_links
+  before_filter :check_privileged, only: :process_assign_mentor
+  before_filter :validate_emails, only: :send_login_links
   
 	def send_email
 		@emails = @participants.collect(&:email).flatten.uniq.compact.delete_if(&:blank?)
 		if @emails.empty?
 			flash[:error] = "You must select at least one record with an e-mail address."
-			render :js => "updateFlashes({ error: '#{flash[:error]}' })"
+			render js: "updateFlashes({ error: '#{flash[:error]}' })"
 		else
       flash[:notice] = "Sent #{@emails.count} #{"e-mail address".pluralize(@emails.count)} to your e-mail program."
-			render :js => "window.location.href = 'mailto:#{j @emails.join(",")}';"
+			render js: "window.location.href = 'mailto:#{j @emails.join(",")}';"
 		end
 	end
   
@@ -23,14 +23,14 @@ class ParticipantBulkActionsController < ParticipantsController
   end
   
   def flag_for_followup
-    @note = Note.new(:needs_followup => true)
+    @note = Note.new(needs_followup: true)
     respond_to do |format|
-      format.js { render :action => "add_note"}
+      format.js { render action: "add_note"}
     end    
   end
   
   def process_add_note
-    @notes = { :success => [], :error => [] }
+    @notes = { success: [], error: [] }
     for participant in @participants
       note = participant.notes.create(params[:note])
       if note.valid?
@@ -61,7 +61,7 @@ class ParticipantBulkActionsController < ParticipantsController
   def process_assign_mentor
     @mentor = Mentor.find params[:mentor_id]
     
-    @mentor_participants = { :success => [], :error => [] }
+    @mentor_participants = { success: [], error: [] }
     for participant in @participants
       begin
         participant.mentors << @mentor
@@ -73,7 +73,7 @@ class ParticipantBulkActionsController < ParticipantsController
     end
   rescue ActiveRecord::RecordNotFound => e
     flash[:error] = "Please specify a #{Customer.mentor_label} to assign."
-    return render :text => "Error"
+    return render text: "Error"
   end
   
   def assign_to_group
@@ -116,7 +116,7 @@ class ParticipantBulkActionsController < ParticipantsController
       render_error_context(error_text)
     else
       flash[:notice] = "#{success_count} login #{"email".pluralize(success_count)} successfully sent."
-      render :js => "updateFlashes({ notice: '#{flash[:notice]}' })"
+      render js: "updateFlashes({ notice: '#{flash[:notice]}' })"
     end
   end
   
@@ -166,7 +166,7 @@ class ParticipantBulkActionsController < ParticipantsController
   def render_error_context(error_text)
     if request.xhr?
       flash[:error] = error_text
-      return render :js => "updateFlashes({ error: '#{j flash[:error]}' })"
+      return render js: "updateFlashes({ error: '#{j flash[:error]}' })"
     else
       return render_error(error_text)
     end

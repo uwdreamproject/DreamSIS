@@ -7,7 +7,7 @@ class TestType < ActiveRecord::Base
   validates_presence_of :name, :score_calculation_method
   validates_numericality_of :maximum_total_score
   
-  default_scope :order => "name"
+  default_scope order: "name"
   
   # Returns a hash with the section name as key and the maximum score as value.
   # If no sections are defined, this returns an empty hash.

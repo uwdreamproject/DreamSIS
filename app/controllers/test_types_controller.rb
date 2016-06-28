@@ -5,7 +5,7 @@ class TestTypesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @test_types }
+      format.xml  { render xml: @test_types }
     end
   end
 
@@ -14,7 +14,7 @@ class TestTypesController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @test_type }
+      format.xml  { render xml: @test_type }
     end
   end
 
@@ -23,7 +23,7 @@ class TestTypesController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @test_type }
+      format.xml  { render xml: @test_type }
     end
   end
 
@@ -38,10 +38,10 @@ class TestTypesController < ApplicationController
       if @test_type.save
         flash[:notice] = "TestType was successfully created."
         format.html { redirect_to(@test_type) }
-        format.xml  { render :xml => @test_type, :status => :created, :location => @test_type }
+        format.xml  { render xml: @test_type, status: :created, location: @test_type }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @test_type.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @test_type.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -55,8 +55,8 @@ class TestTypesController < ApplicationController
         format.html { redirect_to(@test_type) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @test_type.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @test_type.errors, status: :unprocessable_entity }
       end
     end
   end

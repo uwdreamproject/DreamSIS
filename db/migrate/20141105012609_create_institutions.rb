@@ -1,7 +1,7 @@
 class CreateInstitutions < ActiveRecord::Migration
   def change
-    create_table :institutions, :id => false do |t|
-      t.integer :unitid, :primary => true
+    create_table :institutions, id: false do |t|
+      t.integer :unitid, primary: true
       t.string :instnm
       t.string :addr
       t.string :city

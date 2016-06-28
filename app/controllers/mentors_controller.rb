@@ -1,6 +1,6 @@
 class MentorsController < ApplicationController  
-  protect_from_forgery :except => [:auto_complete_for_mentor_fullname] 
-  skip_before_filter :login_required, :check_authorization, :save_user_in_current_thread, :check_if_enrolled, :only => [:check_if_valid_van_driver]
+  protect_from_forgery except: [:auto_complete_for_mentor_fullname] 
+  skip_before_filter :login_required, :check_authorization, :save_user_in_current_thread, :check_if_enrolled, only: [:check_if_valid_van_driver]
 
   def index
     return redirect_to Mentor.find(params[:id]) if params[:id]
@@ -8,10 +8,10 @@ class MentorsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @mentors }
+      format.xml  { render xml: @mentors }
       format.xls { 
         @mentors = Mentor.all
-        render :action => 'index', :layout => 'basic' 
+        render action: 'index', layout: 'basic' 
       }
     end
   end
@@ -20,15 +20,15 @@ class MentorsController < ApplicationController
     @mentor = Mentor.find(params[:id]) rescue Volunteer.find(params[:id])
     @participants = @mentor.try(:participants) if @mentor.respond_to?(:participants)
     @event_attendances = @mentor.event_attendances.find(:all, 
-                            :include => :event, 
-                            :joins => :event, 
-                            :conditions => ["(rsvp = ? OR attended = ?)", true, true]
+                            include: :event, 
+                            joins: :event, 
+                            conditions: ["(rsvp = ? OR attended = ?)", true, true]
                           )
     @layout_in_blocks = true
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @mentor }
+      format.xml  { render xml: @mentor }
     end
   end
 
@@ -37,7 +37,7 @@ class MentorsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.xml  { render :xml => @mentor }
+      format.xml  { render xml: @mentor }
     end
   end
 
@@ -47,7 +47,7 @@ class MentorsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @mentor }
+      format.xml  { render xml: @mentor }
     end
   end
 
@@ -63,10 +63,10 @@ class MentorsController < ApplicationController
       if @mentor.save
         flash[:notice] = 'Mentor was successfully created.'
         format.html { redirect_to(@mentor) }
-        format.xml  { render :xml => @mentor, :status => :created, :location => @mentor }
+        format.xml  { render xml: @mentor, status: :created, location: @mentor }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @mentor.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @mentor.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -81,8 +81,8 @@ class MentorsController < ApplicationController
         format.html { redirect_to(@mentor) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @mentor.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @mentor.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -112,7 +112,7 @@ class MentorsController < ApplicationController
       else
         flash[:error] = "Sorry, but we couldn't remove the mentee successfully."
         format.html { redirect_back_or_default(:back) }
-        format.xml  { render :xml => @mentor_participant.errors, :status => :unprocessable_entity }
+        format.xml  { render xml: @mentor_participant.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -123,7 +123,7 @@ class MentorsController < ApplicationController
 			if @mentor.avatar?
 				av = params[:size] ? @mentor.avatar.versions[params[:size].to_sym] : @mentor.avatar
 				return send_default_photo(params[:size]) if av.nil?
-        return send_data(av.read, :disposition => 'inline', :type => 'image/jpeg') rescue nil
+        return send_data(av.read, disposition: 'inline', type: 'image/jpeg') rescue nil
         # return redirect_to(av.url) rescue nil
       end
       if avatar_image_url = @mentor.users.try(:first).try(:person).try(:avatar_image_url)
@@ -135,7 +135,7 @@ class MentorsController < ApplicationController
 				file_path = nil
 			end
       if file_path
-        send_file file_path, :disposition => 'inline', :type => 'image/jpeg' # TODO :x_sendfile => true in production
+        send_file file_path, disposition: 'inline', type: 'image/jpeg' # TODO x_sendfile: true in production
       else
         send_default_photo(params[:size])
       end
@@ -146,20 +146,20 @@ class MentorsController < ApplicationController
   
   def auto_complete_for_mentor_fullname
     @mentors = Mentor.find(:all,
-                          :conditions => ["firstname LIKE :fullname
+                          conditions: ["firstname LIKE :fullname
                                             OR lastname LIKE :fullname
                                             OR display_name LIKE :fullname
                                             OR uw_net_id LIKE :fullname",
-                                          {:fullname => "%#{params[:term].downcase}%"}])
+                                          {fullname: "%#{params[:term].downcase}%"}])
 
-    render :json => @mentors.map { |mentor| 
+    render json: @mentors.map { |mentor| 
       {
-        :id => mentor.id, 
-        :value => h(mentor.fullname(:skip_update => true)),
-        :klass => mentor.class.to_s.underscore, 
-        :fullname => h(mentor.fullname),
-        :secondary => h(mentor.email),
-        :tertiary => h((Customer.current_customer.customer_label(mentor.class.to_s.underscore, :titleize => true) || result.class.to_s).titleize)
+        id: mentor.id, 
+        value: h(mentor.fullname(skip_update: true)),
+        klass: mentor.class.to_s.underscore, 
+        fullname: h(mentor.fullname),
+        secondary: h(mentor.email),
+        tertiary: h((Customer.current_customer.customer_label(mentor.class.to_s.underscore, titleize: true) || result.class.to_s).titleize)
       }
     }    
   end
@@ -177,7 +177,7 @@ class MentorsController < ApplicationController
     end
     respond_to do |format|
       format.html
-      format.js { render :partial => "table_ajax", :locals => {:row_partial => "mentor_onboarding"} }
+      format.js { render partial: "table_ajax", locals: {row_partial: "mentor_onboarding"} }
     end
   end
 
@@ -188,7 +188,7 @@ class MentorsController < ApplicationController
     respond_to do |format|
       if @mentor.update_attributes(params[:mentor])
         flash[:notice] = 'Mentor was successfully updated.'
-        format.html { render :partial => params[:row_partial], :object => @mentor }
+        format.html { render partial: params[:row_partial], object: @mentor }
       else
         flash[:error] = "Error updating mentor."
       end
@@ -198,7 +198,7 @@ class MentorsController < ApplicationController
   def onboarding_form
     @mentor = Mentor.find(params[:id])
     respond_to do |format|
-      format.html { render :partial => "onboarding_form"}
+      format.html { render partial: "onboarding_form"}
     end
   end
 
@@ -206,23 +206,23 @@ class MentorsController < ApplicationController
     @term = Term.find(params[:term_id])
     @mentors = @term.mentors(sort = :lastname)
     respond_to do |format|
-      format.json { render :json => { :background_check => h(view_context.background_check_textblock(@mentors)),
-                                      :sex_offender_check => h(view_context.sex_offender_check_textblock(@mentors)) } }
+      format.json { render json: { background_check: h(view_context.background_check_textblock(@mentors)),
+                                      sex_offender_check: h(view_context.sex_offender_check_textblock(@mentors)) } }
     end
   end
 
   def driver_edit_form
     @mentor = Mentor.find(params[:id])
     respond_to do |format|
-      format.html { render :partial => "driver_edit_form"}
+      format.html { render partial: "driver_edit_form"}
     end
   end
 
   def driver_training_status
     if Customer.link_to_uw?
-      render :json => UwDriver.check_uwfs_training(params[:id])
+      render json: UwDriver.check_uwfs_training(params[:id])
     else
-      return render :text => "Action not defined for current customer", :status => 400
+      return render text: "Action not defined for current customer", status: 400
     end
   end
 
@@ -251,16 +251,16 @@ class MentorsController < ApplicationController
     end
     respond_to do |format|
       format.html
-      format.js { render :partial => "table_ajax", :locals => { :row_partial => "mentor_driver" } }
+      format.js { render partial: "table_ajax", locals: { row_partial: "mentor_driver" } }
     end
   end
   
   def check_if_valid_van_driver
     @mentor = Mentor.find_by_husky_card_rfid(params[:tag])
     if @mentor && @mentor.valid_van_driver?
-      render :text => '1', :status => 200
+      render text: '1', status: 200
     else
-      render :text => '0', :status => 203
+      render text: '0', status: 203
     end
   end
   
@@ -269,7 +269,7 @@ class MentorsController < ApplicationController
   def send_default_photo(size)
 		filename = size == "thumb" ? "blank_avatar_thumb.png" : "blank_avatar.png"
     send_file File.join(Rails.root, "public", "images", filename), 
-              :disposition => 'inline', :type => 'image/png', :status => 404
+              disposition: 'inline', type: 'image/png', status: 404
   end
   
 end

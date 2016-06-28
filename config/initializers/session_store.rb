@@ -6,7 +6,7 @@
 Dreamsis::Application.config.session_store :active_record_store
 
 # ActionController::Base.session = {
-#   :key         => '_dreamsis_session',
-#   :secret      => ActiveSupport::SecureRandom.hex(64)
+#   key: '_dreamsis_session',
+#   secret: ActiveSupport::SecureRandom.hex(64)
 # }
 

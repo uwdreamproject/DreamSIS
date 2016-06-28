@@ -68,11 +68,11 @@ class CourseResource < UwWebResource
   def associated_sections
     course = self.attributes["Course"] || self
     curriculum = course.attributes["Curriculum"] || course
-    @associated_sections ||= CourseSectionResource.find(:all, :params => {
-      :year =>  curriculum.attributes["Year"],
-      :quarter => curriculum.attributes["Quarter"],
-      :curriculum_abbreviation => curriculum.attributes["CurriculumAbbreviation"],
-      :course_number => course.CourseNumber
+    @associated_sections ||= CourseSectionResource.find(:all, params: {
+      year:  curriculum.attributes["Year"],
+      quarter: curriculum.attributes["Quarter"],
+      curriculum_abbreviation: curriculum.attributes["CurriculumAbbreviation"],
+      course_number: course.CourseNumber
     }).collect(&:course_resource)
   end
   
@@ -92,13 +92,13 @@ class CourseResource < UwWebResource
   def active_registrations
     course = self.attributes["Course"] || self
     curriculum = course.attributes["Curriculum"] || course
-    @active_registrations ||= RegistrationResource.find(:all, :params => {
-      :curriculum_abbreviation => curriculum.attributes["CurriculumAbbreviation"], 
-      :year => curriculum.attributes["Year"], 
-      :quarter => curriculum.attributes["Quarter"], 
-      :course_number => course.attributes["CourseNumber"], 
-      :section_id => self.attributes["SectionID"],
-      :is_active => "on"
+    @active_registrations ||= RegistrationResource.find(:all, params: {
+      curriculum_abbreviation: curriculum.attributes["CurriculumAbbreviation"], 
+      year: curriculum.attributes["Year"], 
+      quarter: curriculum.attributes["Quarter"], 
+      course_number: course.attributes["CourseNumber"], 
+      section_id: self.attributes["SectionID"],
+      is_active: "on"
     })
   end
   
@@ -122,11 +122,11 @@ class CourseResource < UwWebResource
         for d in ds
           @meetings[d.attributes["Name"]] ||= []
           @meetings[d.attributes["Name"]] << {
-            :start_time => start_time,
-            :start_time_parsed => Time.parse(start_time),
-            :end_time => end_time,
-            :end_time_parsed => Time.parse(end_time),
-            :course => self
+            start_time: start_time,
+            start_time_parsed: Time.parse(start_time),
+            end_time: end_time,
+            end_time_parsed: Time.parse(end_time),
+            course: self
           }
         end
       end

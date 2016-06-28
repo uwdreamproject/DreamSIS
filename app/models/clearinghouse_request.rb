@@ -18,13 +18,13 @@ class ClearinghouseRequest < ActiveRecord::Base
   validate :overlimit_protection
   
   belongs_to :customer
-  belongs_to :user, :class_name => "User", :foreign_key => "created_by"
+  belongs_to :user, class_name: "User", foreign_key: "created_by"
   
   serialize :participant_ids
   serialize :filenames
   serialize :selection_criteria
   
-  scope :awaiting_retrieval, :conditions => "submitted_at IS NOT NULL AND retrieved_at IS NULL"
+  scope :awaiting_retrieval, conditions: "submitted_at IS NOT NULL AND retrieved_at IS NULL"
   
   attr_accessor :plain_ftp_password, :exclude_inactive, :exclude_not_target
   
@@ -64,7 +64,7 @@ class ClearinghouseRequest < ActiveRecord::Base
   # If +@participants+ instance variable is assigned, return that. Otherwise, find all of the participants
   # identified by the collection in the +participant_ids+ attribute.
   def participants
-    @participants ||= Participant.find(:all, :conditions => ["`id` IN (?)", participant_ids])
+    @participants ||= Participant.find(:all, conditions: ["`id` IN (?)", participant_ids])
   end
   
   # Returns the full title of the inquiry type for this request.
@@ -75,7 +75,7 @@ class ClearinghouseRequest < ActiveRecord::Base
   def plain_ftp_password=(pwd)
     return false if pwd.blank?
     iv = AES.iv(:base_64)
-    enc64 = AES.encrypt(pwd, aes_key, {:iv => iv})
+    enc64 = AES.encrypt(pwd, aes_key, {iv: iv})
     self.ftp_password = enc64
   end
   
@@ -120,7 +120,7 @@ class ClearinghouseRequest < ActiveRecord::Base
 
     if API_KEYS["logentries"]
       token = API_KEYS["logentries"][Rails.env]["nsc"]
-      @local_logger = Le.new(token, :debug => false, :local => log_path, :ssl => true, :tag => true)
+      @local_logger = Le.new(token, debug: false, local: log_path, ssl: true, tag: true)
     else
       @local_logger = Logger.new(log_path)
     end
@@ -196,7 +196,7 @@ class ClearinghouseRequest < ActiveRecord::Base
     begin
       log "process_detail_file(#{file_path})"
       participant_ids = []
-      CSV.foreach(file_path, :headers => true) do |row|
+      CSV.foreach(file_path, headers: true) do |row|
         attrs = row.to_hash
         log " "
         log "Processing row: " + attrs.inspect
@@ -222,8 +222,8 @@ class ClearinghouseRequest < ActiveRecord::Base
       end
       log "Done - updating request metadata"
       update_attributes(
-        :retrieved_at => Time.now,
-        :number_of_records_returned => participant_ids.uniq.size
+        retrieved_at: Time.now,
+        number_of_records_returned: participant_ids.uniq.size
       )
     end
     store_files(file_path)
@@ -285,20 +285,20 @@ class ClearinghouseRequest < ActiveRecord::Base
   def create_college_degree_from(attrs, participant_id)
     log "  -> Creating CollegeDegree record"
     cd = CollegeDegree.create(
-      :participant_id => participant_id,
-      :institution_id => Institution.find_by_opeid(attrs["College Code/Branch"]).try(:id),
-      :graduated_on => Date.parse(attrs["Graduation Date"]),
-      :degree_title => attrs["Degree Title"],
-      :major_1 => attrs["Degree Major 1"],
-      :major_1_cip => attrs["Degree CIP 1"],
-      :major_2 => attrs["Degree Major 2"],
-      :major_2_cip => attrs["Degree CIP 2"],
-      :major_3 => attrs["Degree Major 3"],
-      :major_3_cip => attrs["Degree CIP 3"],
-      :major_4 => attrs["Degree Major 4"],
-      :major_4_cip => attrs["Degree CIP 4"],
-      :source => "clearinghouse",
-      :clearinghouse_request_id => self.id
+      participant_id: participant_id,
+      institution_id: Institution.find_by_opeid(attrs["College Code/Branch"]).try(:id),
+      graduated_on: Date.parse(attrs["Graduation Date"]),
+      degree_title: attrs["Degree Title"],
+      major_1: attrs["Degree Major 1"],
+      major_1_cip: attrs["Degree CIP 1"],
+      major_2: attrs["Degree Major 2"],
+      major_2_cip: attrs["Degree CIP 2"],
+      major_3: attrs["Degree Major 3"],
+      major_3_cip: attrs["Degree CIP 3"],
+      major_4: attrs["Degree Major 4"],
+      major_4_cip: attrs["Degree CIP 4"],
+      source: "clearinghouse",
+      clearinghouse_request_id: self.id
     )
     log "     #{cd.inspect}"
     log "     Errors: #{cd.errors.messages.inspect}" unless cd.valid?
@@ -309,18 +309,18 @@ class ClearinghouseRequest < ActiveRecord::Base
   def create_college_enrollment_from(attrs, participant_id)
     log "  -> Creating CollegeEnrollment record"
     ce = CollegeEnrollment.create(
-      :participant_id => participant_id,
-      :institution_id => Institution.find_by_opeid(attrs["College Code/Branch"]).try(:id),
-      :began_on => Date.parse(attrs["Enrollment Begin"]),
-      :ended_on => Date.parse(attrs["Enrollment End"]),
-      :enrollment_status => attrs["Enrollment Status"],
-      :class_level => attrs["Class Level"],
-      :major_1 => attrs["Enrollment Major 1"],
-      :major_1_cip => attrs["Enrollment CIP 1"],
-      :major_2 => attrs["Enrollment Major 2"],
-      :major_2_cip => attrs["Enrollment CIP 2"],
-      :source => "clearinghouse",
-      :clearinghouse_request_id => self.id
+      participant_id: participant_id,
+      institution_id: Institution.find_by_opeid(attrs["College Code/Branch"]).try(:id),
+      began_on: Date.parse(attrs["Enrollment Begin"]),
+      ended_on: Date.parse(attrs["Enrollment End"]),
+      enrollment_status: attrs["Enrollment Status"],
+      class_level: attrs["Class Level"],
+      major_1: attrs["Enrollment Major 1"],
+      major_1_cip: attrs["Enrollment CIP 1"],
+      major_2: attrs["Enrollment Major 2"],
+      major_2_cip: attrs["Enrollment CIP 2"],
+      source: "clearinghouse",
+      clearinghouse_request_id: self.id
     )
     log "     #{ce.inspect}"
     log "     Errors: #{ce.errors.messages.inspect}" unless ce.valid?

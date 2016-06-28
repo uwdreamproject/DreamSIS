@@ -11,7 +11,7 @@ class PersonResource < UwWebResource
   end
   
   def self.find_by_uwnetid(uwnetid)
-    results = self.find(nil, :params => {:uwnetid => uwnetid})
+    results = self.find(nil, params: {uwnetid: uwnetid})
     return nil if results.Persons.nil?
     self.find results.Persons.Person.PersonURI.UWRegID
   end

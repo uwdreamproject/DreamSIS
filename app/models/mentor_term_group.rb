@@ -2,29 +2,29 @@ class MentorTermGroup < ActiveRecord::Base
   belongs_to :term 
   belongs_to :location
   
-  has_many :mentor_terms, :include => :mentor, :conditions => { :deleted_at => nil } do
+  has_many :mentor_terms, include: :mentor, conditions: { deleted_at: nil } do
     def leads
-      find(:all, :conditions => { :lead => true })
+      find(:all, conditions: { lead: true })
     end
   end
-  has_many :mentors, :through => :mentor_terms, :conditions => { :mentor_terms => { :deleted_at => nil } }, :order => "lastname, firstname"
-  has_many :deleted_mentor_terms, :class_name => "MentorTerm", :conditions => "deleted_at IS NOT NULL"
+  has_many :mentors, through: :mentor_terms, conditions: { mentor_terms: { deleted_at: nil } }, order: "lastname, firstname"
+  has_many :deleted_mentor_terms, class_name: "MentorTerm", conditions: "deleted_at IS NOT NULL"
 
   validates_presence_of :term_id
-  validates_uniqueness_of :course_id, :scope => :term_id, :allow_nil => true, :allow_blank => true
+  validates_uniqueness_of :course_id, scope: :term_id, allow_nil: true, allow_blank: true
   
-  belongs_to :linked_group, :class_name => "MentorTermGroup"
+  belongs_to :linked_group, class_name: "MentorTermGroup"
 
   after_create :sync_with_course!
   attr_accessor :skip_sync_after_create
 
-  default_scope :order => "title IS NULL, title, course_id"
+  default_scope order: "title IS NULL, title, course_id"
 
   PERMISSION_LEVELS = {
-		:current_school_current_cohort => "only participants in the current-year cohort for this high school (the default)",
-		:current_school_any_cohort => "participants in any cohort for this high school",
-		:current_school_future_cohorts => "participants in current and future cohorts for this high school",
-		:any => "any participant at any school in any cohort"
+		current_school_current_cohort: "only participants in the current-year cohort for this high school (the default)",
+		current_school_any_cohort: "participants in any cohort for this high school",
+		current_school_future_cohorts: "participants in current and future cohorts for this high school",
+		any: "any participant at any school in any cohort"
   }
 
   # Returns the course ID if no title is specified.
@@ -142,11 +142,11 @@ class MentorTermGroup < ActiveRecord::Base
       # Add in the new ones
       active_reg_ids.each{|reg_id|
         mentor = Mentor.find_or_create_from_reg_id(reg_id)
-        enroll!(mentor, :volunteer => false)
+        enroll!(mentor, volunteer: false)
       }
       # Update the counter cache
       diff = mentor_terms.count - mentor_terms_count
-      MentorTermGroup.update_counters self.id, :mentor_terms_count => diff
+      MentorTermGroup.update_counters self.id, mentor_terms_count: diff
       
       return true
     rescue ActiveResource::ResourceNotFound
@@ -163,7 +163,7 @@ class MentorTermGroup < ActiveRecord::Base
   # will properly handle a mentor who has previously been deleted and is now re-enrolling, such as
   # a mentor who was a volunteer but is now enrolled for credit. The options hash accepts a +volunteer+
   # parameter which will enable the +volunteer+ flag.
-  def enroll!(mentor, options = { :volunteer => false })
+  def enroll!(mentor, options = { volunteer: false })
     enroll_as_volunteer = options[:volunteer] || false
     mentor_term = mentor_term_for_mentor(mentor)
     begin
@@ -172,7 +172,7 @@ class MentorTermGroup < ActiveRecord::Base
         mentor_term.volunteer = enroll_as_volunteer
         mentor_term.save!
       else
-        mentor_term = mentor_terms.new(:mentor_id => mentor.id)
+        mentor_term = mentor_terms.new(mentor_id: mentor.id)
         mentor_term.volunteer = enroll_as_volunteer
         mentor_term.save!
       end
@@ -199,7 +199,7 @@ class MentorTermGroup < ActiveRecord::Base
     already_done = term.mentor_term_groups.collect(&:course_id).flatten
     for section_id in section_ids
       next if already_done.include?(section_id)
-      term.mentor_term_groups.create(:course_id => section_id, :skip_sync_after_create => true)
+      term.mentor_term_groups.create(course_id: section_id, skip_sync_after_create: true)
     end
     return true
   end

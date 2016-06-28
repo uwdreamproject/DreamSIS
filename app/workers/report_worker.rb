@@ -11,7 +11,7 @@ class ReportWorker
       end
     rescue => e
       Rails.logger.error { "[Report #{report_id.to_s}] ERROR: #{e.message}" }
-      Rollbar.error(e, :report_id => report_id)
+      Rollbar.error(e, report_id: report_id)
     end
   end
 

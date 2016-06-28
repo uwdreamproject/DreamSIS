@@ -6,7 +6,7 @@ class MentorTermsController < MentorTermGroupsController
   # 
   #   respond_to do |format|
   #     format.html # index.html.erb
-  #     format.xml  { render :xml => @mentor_term }
+  #     format.xml  { render xml: @mentor_term }
   #   end
   # end
 
@@ -15,7 +15,7 @@ class MentorTermsController < MentorTermGroupsController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @mentor_term }
+      format.xml  { render xml: @mentor_term }
     end
   end
 
@@ -24,7 +24,7 @@ class MentorTermsController < MentorTermGroupsController
   # 
   #   respond_to do |format|
   #     format.html # new.html.erb
-  #     format.xml  { render :xml => @mentor_term }
+  #     format.xml  { render xml: @mentor_term }
   #   end
   # end
   
@@ -36,7 +36,7 @@ class MentorTermsController < MentorTermGroupsController
     new_mentor_user = PubcookieUser.authenticate params[:uw_netid] if params[:uw_netid]
     @mentor = new_mentor_user.try(:person) || Mentor.find(params[:mentor_term][:mentor_id])
     if @mentor
-      m = @mentor_term_group.enroll!(@mentor, :volunteer => true)
+      m = @mentor_term_group.enroll!(@mentor, volunteer: true)
       if m.valid?
         flash[:notice] = "Successfully added #{@mentor.fullname} to this group."   
       else
@@ -45,7 +45,7 @@ class MentorTermsController < MentorTermGroupsController
     else
       flash[:error] = "Could not find anyone that user."
     end
-    redirect_to mentor_term_group_path(@mentor_term_group, :newly_added => m.try(:id))
+    redirect_to mentor_term_group_path(@mentor_term_group, newly_added: m.try(:id))
   end
 
   def update
@@ -62,7 +62,7 @@ class MentorTermsController < MentorTermGroupsController
       else
         flash[:error] = "Could not make changes to #{@mentor_term.fullname}'s record."
         format.html { redirect_to(@mentor_term_group) }
-        format.xml  { render :xml => @mentor_term.errors, :status => :unprocessable_entity }
+        format.xml  { render xml: @mentor_term.errors, status: :unprocessable_entity }
         format.js
       end
     end

@@ -12,7 +12,7 @@ class ClearinghouseRequestWorker
       end
     rescue => e
       request.log "ERROR: #{e.message}", :error
-      Rollbar.error(e, :clearinghouse_request_id => clearinghouse_request_id)
+      Rollbar.error(e, clearinghouse_request_id: clearinghouse_request_id)
     end
   end
 

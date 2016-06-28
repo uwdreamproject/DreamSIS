@@ -19,8 +19,8 @@ module ActionView
       # * If +date_only+ is set to true, only the first part will be returned.
       # * +empty_string+ will be used if the date passed is nil. Defaults to "unknown".
       def relative_timestamp(from_time, user_options = {})
-        user_options = { :separator => user_options } if user_options.is_a?(String)
-        options = { :separator => "at", :empty_string => "unknown" }.merge(user_options)
+        user_options = { separator: user_options } if user_options.is_a?(String)
+        options = { separator: "at", empty_string: "unknown" }.merge(user_options)
         return options[:empty_string] if from_time.nil?
         time_alone = from_time.midnight == from_time ? "" : "#{options[:separator]} %I:%M #{from_time.ampm}"
         time_alone = "" if options[:date_only]

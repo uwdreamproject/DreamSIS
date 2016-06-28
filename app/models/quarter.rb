@@ -1,8 +1,8 @@
 class Quarter < Term
   validates_presence_of :year
   validates_presence_of :quarter_code
-  validates_inclusion_of :quarter_code, :in => 1..4
-  validates_uniqueness_of :quarter_code, :scope => :year
+  validates_inclusion_of :quarter_code, in: 1..4
+  validates_uniqueness_of :quarter_code, scope: :year
 
   after_create :sync_with_resource!
   
@@ -59,8 +59,8 @@ class Quarter < Term
   # Syncs the start and end dates with the TermResource FirstDay and LastFinalExamDay.
   def sync_with_resource!
     self.update_attributes({
-      :start_date => term_resource.try(:FirstDay),
-      :end_date => term_resource.try(:LastFinalExamDay)
+      start_date: term_resource.try(:FirstDay),
+      end_date: term_resource.try(:LastFinalExamDay)
     }) if term_resource
   rescue
     false

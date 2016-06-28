@@ -2,7 +2,7 @@ class ParticipantSignupController < ApplicationController
   before_filter :fetch_participant, :check_authorization
 
   def index
-    redirect_to :action => :participant_signup_intake_form
+    redirect_to action: :participant_signup_intake_form
   end
 
   def intake_form

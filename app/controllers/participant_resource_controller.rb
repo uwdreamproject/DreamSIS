@@ -15,7 +15,7 @@ class ParticipantResourceController < ParticipantsController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @objects }
+      format.xml  { render xml: @objects }
     end
   end
 
@@ -25,7 +25,7 @@ class ParticipantResourceController < ParticipantsController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @object }
+      format.xml  { render xml: @object }
     end
   end
 
@@ -35,7 +35,7 @@ class ParticipantResourceController < ParticipantsController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @object }
+      format.xml  { render xml: @object }
     end
   end
 
@@ -51,11 +51,11 @@ class ParticipantResourceController < ParticipantsController
     respond_to do |format|
       if @object.save
         flash[:notice] = "#{self.class.object_name.titleize} was successfully created."
-        format.html { redirect_to participant_path(@participant, :anchor => "!/section/#{self.class.objects_name}") }
-        format.xml  { render :xml => @object, :status => :created, :location => @participant }
+        format.html { redirect_to participant_path(@participant, anchor: "!/section/#{self.class.objects_name}") }
+        format.xml  { render xml: @object, status: :created, location: @participant }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @object.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @object.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -66,11 +66,11 @@ class ParticipantResourceController < ParticipantsController
     respond_to do |format|
       if @object.update_attributes(params[self.class.object_name])
         flash[:notice] = "#{self.class.object_name.titleize} was successfully updated."
-        format.html { redirect_to participant_path(@participant, :anchor => "!/section/#{self.class.objects_name}") }
+        format.html { redirect_to participant_path(@participant, anchor: "!/section/#{self.class.objects_name}") }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @object.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @object.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -81,7 +81,7 @@ class ParticipantResourceController < ParticipantsController
     load_variables
 
     respond_to do |format|
-      format.html { redirect_to participant_path(@participant, :anchor => "!/section/#{self.class.objects_name}") }
+      format.html { redirect_to participant_path(@participant, anchor: "!/section/#{self.class.objects_name}") }
       format.xml  { head :ok }
     end
   end

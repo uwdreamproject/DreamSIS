@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_filter :check_authorization, :only => [:profile, :update_profile, :choose_identity, :update_identity]
+  skip_before_filter :check_authorization, only: [:profile, :update_profile, :choose_identity, :update_identity]
   before_filter :apply_extra_styles_if_requested
   before_filter :apply_extra_footer_content_if_requested
 
@@ -8,7 +8,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @users }
+      format.xml  { render xml: @users }
     end
   end
 
@@ -17,7 +17,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @user }
+      format.xml  { render xml: @user }
     end
   end
 
@@ -47,7 +47,7 @@ class UsersController < ApplicationController
           session[:apply_extra_styles] = nil
         }
       else
-        format.html { render :action => "profile" }
+        format.html { render action: "profile" }
       end
     end
 
@@ -77,7 +77,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @user }
+      format.xml  { render xml: @user }
     end
   end
 
@@ -92,10 +92,10 @@ class UsersController < ApplicationController
       if @user.save
         flash[:notice] = "User was successfully created."
         format.html { redirect_to(@user) }
-        format.xml  { render :xml => @user, :status => :created, :location => @user }
+        format.xml  { render xml: @user, status: :created, location: @user }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -111,33 +111,33 @@ class UsersController < ApplicationController
         format.html { redirect_to(user_path(@user)) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @user.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def auto_complete_for_user_login
     @users = User.find(:all,
-                          :joins => [:person],
-                          :conditions => ["login LIKE :login
+                          joins: [:person],
+                          conditions: ["login LIKE :login
                                               OR people.firstname LIKE :fullname
                                               OR people.lastname LIKE :fullname
                                               OR people.display_name LIKE :fullname
                                               OR people.uw_net_id LIKE :fullname",
-                                          {:login => "%#{params[:user][:login].downcase}%",
-                                          :fullname => "%#{params[:user][:login].downcase}%"}])
+                                          {login: "%#{params[:user][:login].downcase}%",
+                                          fullname: "%#{params[:user][:login].downcase}%"}])
     respond_to do |format|
       format.js
     end
   end
 
   def admin
-    @users = User.paginate :conditions => { :admin => true }, :page => params[:page], :per_page => 100
+    @users = User.paginate conditions: { admin: true }, page: params[:page], per_page: 100
 
     respond_to do |format|
-      format.html { render :action => 'index' }
-      format.xml  { render :xml => @users }
+      format.html { render action: 'index' }
+      format.xml  { render xml: @users }
     end
 
   end

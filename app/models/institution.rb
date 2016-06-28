@@ -2,15 +2,15 @@ require 'open-uri'
 
 # Models an Institution record, pulled from the Department of Education's list. You must load the institutions list from a CSV file by calling +Institution#load_from_csv!+.
 class Institution < ActiveRecord::Base
-  has_many :college_applications, :foreign_key => "institution_id"
+  has_many :college_applications, foreign_key: "institution_id"
   has_many :college_enrollments
   has_many :college_degrees
-  has_many :interested_participants, -> { uniq }, :class_name => "Participant", :through => :college_applications, :source => :participant
-  has_many :applied_participants, -> { where("date_applied IS NOT NULL").uniq }, :class_name => "Participant", :through => :college_applications, :source => :participant
-  has_many :planning_participants, -> { uniq }, :class_name => "Participant", :foreign_key => "college_attending_id", :source => :participant
-  has_many :enrolled_participants, -> { uniq }, :class_name => "Participant", :through => :college_enrollments, :source => :participant
-  has_many :current_participants, -> { where(["began_on > ?", CollegeEnrollment::CURRENT_ENROLLMENT_VALIDITY_PERIOD.ago]).uniq }, :class_name => "Participant", :through => :college_enrollments, :source => :participant
-  has_many :graduated_participants, -> { uniq }, :class_name => "Participant", :through => :college_degrees, :source => :participant
+  has_many :interested_participants, -> { uniq }, class_name: "Participant", through: :college_applications, source: :participant
+  has_many :applied_participants, -> { where("date_applied IS NOT NULL").uniq }, class_name: "Participant", through: :college_applications, source: :participant
+  has_many :planning_participants, -> { uniq }, class_name: "Participant", foreign_key: "college_attending_id", source: :participant
+  has_many :enrolled_participants, -> { uniq }, class_name: "Participant", through: :college_enrollments, source: :participant
+  has_many :current_participants, -> { where(["began_on > ?", CollegeEnrollment::CURRENT_ENROLLMENT_VALIDITY_PERIOD.ago]).uniq }, class_name: "Participant", through: :college_enrollments, source: :participant
+  has_many :graduated_participants, -> { uniq }, class_name: "Participant", through: :college_degrees, source: :participant
 
   alias_attribute :name, :instnm
   alias_attribute :title, :instnm
@@ -90,7 +90,7 @@ class Institution < ActiveRecord::Base
   # Returns an array of this institution's aliases, including the institution's name (stored in +instnm+).
   # This allows you to do a search on all names and aliases. If you want to see ONLY the aliases, pass
   # +false+ for the +:include_institution_name+ option.
-  def aliases(options = { :include_institution_name => true })
+  def aliases(options = { include_institution_name: true })
     aliases = []
     aliases << self[:name] if options[:include_institution_name]
     aliases << self[:ialias].split(",").split("|").flatten.collect(&:strip)
@@ -179,12 +179,12 @@ class Institution < ActiveRecord::Base
   # of Institution objects. If nothing is found, the method will try the search again with each word
   # in +search_term+ separated out and return an intersection of the results. By default, returns only
   # 100 results.
-  def self.find_all_by_name(search_term, options = { :try_separating_words_on_failure => true, :limit => 100 })
+  def self.find_all_by_name(search_term, options = { try_separating_words_on_failure: true, limit: 100 })
     limit = options[:limit].is_a?(Integer) ? options[:limit] : options[:limit].to_i
     search_term = search_term.gsub /[\(\)\#\d,]?/, "" # strip out parentheses and numbers
     search_term = search_term.gsub /\s/, " " # strip out tabs and such
-    first_try = Institution.find(:all, :conditions => ["instnm LIKE :t OR ialias LIKE :t", :t => "%#{search_term}%"])
-    extra_colleges = College.find(:all, :conditions => ["name LIKE ?", "%#{search_term}%"]).collect{|c| c.id = -c.id; c}
+    first_try = Institution.find(:all, conditions: ["instnm LIKE :t OR ialias LIKE :t", t: "%#{search_term}%"])
+    extra_colleges = College.find(:all, conditions: ["name LIKE ?", "%#{search_term}%"]).collect{|c| c.id = -c.id; c}
     first_try = [first_try + extra_colleges].flatten
     if first_try.empty?
       return [] unless options[:try_separating_words_on_failure] == true
@@ -194,7 +194,7 @@ class Institution < ActiveRecord::Base
 
     second_try = []
     for search_word in search_term.split(" ")
-      second_try << Institution.find_all_by_name(search_word, { :try_separating_words_on_failure => false })
+      second_try << Institution.find_all_by_name(search_word, { try_separating_words_on_failure: false })
     end
     second_try.inject(:"&").flatten.uniq[0..(limit-1)]
   end
@@ -208,7 +208,7 @@ class Institution < ActiveRecord::Base
   # with new information. Thus, you should be able to re-run this command anytime IPEDS releases
   # a new data file.
   def self.load_from_csv!(file_path)
-    input_arr = CSV.read(file_path, :encoding => "ISO-8859-1:UTF-8") # convert to UTF-8
+    input_arr = CSV.read(file_path, encoding: "ISO-8859-1:UTF-8") # convert to UTF-8
     headings = input_arr.shift
     input_arr.each do |inst|
       obj = Institution.find_or_initialize_by_unitid(inst[0])

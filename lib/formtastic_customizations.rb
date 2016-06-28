@@ -10,7 +10,7 @@ module Formtastic
         # If a custom HelpText exists for the model attribute that this input is rendering, the +hint+
         # stored in the database will be added as an extra +<p>+ element with the CSS class "customized".
         #
-        # To disable this functionality for a single form, specify +:label_customizations => false+ as an
+        # To disable this functionality for a single form, specify +label_customizations: false+ as an
         # option to +semantic_form_for()+.
         def hint_html
           return hint_html_without_customizations if builder.options[:label_customizations] == false
@@ -26,7 +26,7 @@ module Formtastic
             output << template.content_tag(
             :p,
             Formtastic::Util.html_safe(help_text.try(:hint)),
-            :class => "#{builder.default_hint_class} customized"
+            class: "#{builder.default_hint_class} customized"
             ) unless help_text.try(:hint).blank?
           end
           
@@ -45,7 +45,7 @@ module Formtastic
         # if the HelpText defines some +instructions+ text, that text will be rendered in a +<div>+ with the
         # CSS class "button icon info icon-only help-text", which can be styled as a tooltip as needed.
         #
-        # To disable this functionality for a single form, specify +:label_customizations => false+ as an
+        # To disable this functionality for a single form, specify +label_customizations: false+ as an
         # option to +semantic_form_for()+.
         def label_html
           return label_html_without_customizations if builder.options[:label_customizations] == false
@@ -60,7 +60,7 @@ module Formtastic
               template.content_tag(
                 :span, Formtastic::Util.html_safe(help_text.try(:instructions))
               ),
-              :class => "button icon info icon-only help-text"
+              class: "button icon info icon-only help-text"
             ) unless help_text.try(:instructions).blank?
             
             builder.label(input_name, custom_label_text, label_html_options)
@@ -81,7 +81,7 @@ module Formtastic
         # input. Additionally, if the HelpText defines some +instructions+ text, that text will be rendered in a +<div>+ 
         # with the CSS class "button icon info icon-only help-text", which can be styled as a tooltip as needed.
         #
-        # To disable this functionality for a single form, specify +:label_customizations => false+ as an
+        # To disable this functionality for a single form, specify +label_customizations: false+ as an
         # option to +semantic_form_for()+.
         def legend_html
           return legend_html_without_customizations if builder.options[:label_customizations] == false
@@ -95,7 +95,7 @@ module Formtastic
               template.content_tag(
                 :span, Formtastic::Util.html_safe(help_text.try(:instructions))
               ),
-              :class => "button icon info icon-only help-text"
+              class: "button icon info icon-only help-text"
             ) unless help_text.try(:instructions).blank?
             
             builder.label(input_name, custom_label_text, label_html_options)

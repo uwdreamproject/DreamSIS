@@ -1,6 +1,6 @@
 class CreateReports < ActiveRecord::Migration
   def self.up
-		create_table :reports, :force => true do |t|
+		create_table :reports, force: true do |t|
 			t.string :key
 		  t.text :object_ids
 			t.string :format

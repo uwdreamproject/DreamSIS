@@ -1,22 +1,22 @@
 class EventAttendance < ActiveRecord::Base
-  belongs_to :event, :inverse_of => :attendees
-  belongs_to :person, :touch => true
+  belongs_to :event, inverse_of: :attendees
+  belongs_to :person, touch: true
   belongs_to :event_shift
 
   validates_presence_of :person_id, :event_id
-  validates_uniqueness_of :person_id, :scope => :event_id, :message => "already has an event attendance record for this event"
-  validates_format_of :audience, :with => /(\AMentor\z)|(\AVolunteer\z)|(\AParticipant\z)|(\AStudent\z)/
+  validates_uniqueness_of :person_id, scope: :event_id, message: "already has an event attendance record for this event"
+  validates_format_of :audience, with: /(\AMentor\z)|(\AVolunteer\z)|(\AParticipant\z)|(\AStudent\z)/
 
-  validates :attendance_option, inclusion: { in: lambda{|option| Customer.visit_attendance_options_array } }, :allow_blank => true
+  validates :attendance_option, inclusion: { in: lambda{|option| Customer.visit_attendance_options_array } }, allow_blank: true
 
   validate :validate_event_shift
   
-  validate :validate_rsvp_limits, :if => :enforce_rsvp_limits?
+  validate :validate_rsvp_limits, if: :enforce_rsvp_limits?
 
   validate :validate_rsvps_not_disabled
   
-  delegate :fullname, :firstname, :lastname, :email, :to => :person
-  delegate :has_shifts?, :date, :start_time, :end_time, :to => :event, :allow_nil => true
+  delegate :fullname, :firstname, :lastname, :email, to: :person
+  delegate :has_shifts?, :date, :start_time, :end_time, to: :event, allow_nil: true
   
   after_save :send_email
   
@@ -27,9 +27,9 @@ class EventAttendance < ActiveRecord::Base
   after_destroy :update_filter_cache
   before_save :replace_blank_attendance_option
 
-  # default_scope :joins => :person, :order => "lastname, firstname"
-  scope :rsvpd, where(:rsvp => true)
-  scope :attended, where(:attended => true)
+  # default_scope joins: :person, order: "lastname, firstname"
+  scope :rsvpd, where(rsvp: true)
+  scope :attended, where(attended: true)
   
   acts_as_xlsx
 
@@ -52,7 +52,7 @@ class EventAttendance < ActiveRecord::Base
 
   # Class method to use along with other named scopes to limit results to a specific audience group.
   def self.audience(audience_name = Person)
-    joins(:person).where(["(audience = :audience) OR (people.type = :audience AND audience IS NULL)", {:audience => audience_name.to_s.classify}])
+    joins(:person).where(["(audience = :audience) OR (people.type = :audience AND audience IS NULL)", {audience: audience_name.to_s.classify}])
   end
   
   def enforce_rsvp_limits?
@@ -72,13 +72,13 @@ class EventAttendance < ActiveRecord::Base
   
   def validate_event_shift
     if event.has_shifts?(person.class) && rsvp_changed? && rsvp? && event_shift_id.nil?
-      errors.add :event_shift_id, :message => "must choose a shift from the list"
+      errors.add :event_shift_id, message: "must choose a shift from the list"
     end
   end
 
   def validate_rsvp_limits
     if event.full?(person) && rsvp_changed? && rsvp?
-      errors.add :rsvp, :message => "can't be saved because the capacity limit for this event has been reached"
+      errors.add :rsvp, message: "can't be saved because the capacity limit for this event has been reached"
       errors.add :enforce_rsvp_limits
     end
   end

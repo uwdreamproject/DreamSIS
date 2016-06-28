@@ -1,6 +1,6 @@
 class CreatePeoplePrograms < ActiveRecord::Migration
   def self.up
-    create_table :people_programs, :id => false do |t|
+    create_table :people_programs, id: false do |t|
       t.integer :person_id
       t.integer :program_id
       t.timestamps

@@ -5,31 +5,31 @@ The main purpose of the Customer model is to sandbox multiple organizations' dat
 =end
 class Customer < ActiveRecord::Base
   validates_presence_of :name
-  validates_presence_of :clearinghouse_customer_number, :clearinghouse_contract_start_date, :clearinghouse_number_of_submissions_allowed, :if => :validate_clearinghouse_configuration?
-  validates_numericality_of :clearinghouse_customer_number, :if => :validate_clearinghouse_configuration?
-  validates_format_of :stylesheet_url, :with => URI::regexp(%w(http https)), :allow_blank => true
+  validates_presence_of :clearinghouse_customer_number, :clearinghouse_contract_start_date, :clearinghouse_number_of_submissions_allowed, if: :validate_clearinghouse_configuration?
+  validates_numericality_of :clearinghouse_customer_number, if: :validate_clearinghouse_configuration?
+  validates_format_of :stylesheet_url, with: URI::regexp(%w(http https)), allow_blank: true
   
-  belongs_to :parent_customer, :class_name => "Customer"
+  belongs_to :parent_customer, class_name: "Customer"
   belongs_to :program
 
-  delegate :website_url, :to => :program
+  delegate :website_url, to: :program
 
 
   DEFAULT_LABEL = {
-    :mentor => "mentor",
-    :lead => "lead",
-    :participant => "participant",
-    :workbook => "workbook",
-    :intake_survey => "intake survey",
-    :mentee => "mentee",
-		:not_target => "not target",
-    :visit => "visit"
+    mentor: "mentor",
+    lead: "lead",
+    participant: "participant",
+    workbook: "workbook",
+    intake_survey: "intake survey",
+    mentee: "mentee",
+		not_target: "not target",
+    visit: "visit"
   }
   
   RESERVED_SUBDOMAINS = %w[www public assets admin identity development production staging test dreamsis]
   validates_presence_of :url_shortcut
   validates_uniqueness_of :url_shortcut
-  validates_exclusion_of :url_shortcut, :in => RESERVED_SUBDOMAINS, :message => "URL shortcut %s is not allowed"
+  validates_exclusion_of :url_shortcut, in: RESERVED_SUBDOMAINS, message: "URL shortcut %s is not allowed"
 
   OMNIAUTH_PROVIDERS = %w[facebook twitter google_oauth2 shibboleth windowslive linkedin identity]
 
@@ -51,7 +51,7 @@ class Customer < ActiveRecord::Base
   end
   
   def current_contract_clearinghouse_requests
-    clearinghouse_requests.find(:all, :conditions => ["submitted_at > ?", clearinghouse_contract_start_date])
+    clearinghouse_requests.find(:all, conditions: ["submitted_at > ?", clearinghouse_contract_start_date])
   end
   
   def uses_clearinghouse?
@@ -156,7 +156,7 @@ class Customer < ActiveRecord::Base
   def self.current_customer(reset = false)
     return Thread.current['customer'] if Thread.current['customer'] && !reset
     @current_customer ||= {}
-    @current_customer[Apartment::Tenant.current] ||= Customer.where(:url_shortcut => Apartment::Tenant.current).first || Customer.new
+    @current_customer[Apartment::Tenant.current] ||= Customer.where(url_shortcut: Apartment::Tenant.current).first || Customer.new
   end
   
   # Unset the customer attribute in the current thread. Used as an +after_save+ callback to pick up changes.
@@ -217,7 +217,7 @@ class Customer < ActiveRecord::Base
   # Automatically handle the same method_missing for individual Customer objects.
   def method_missing(method_name, *args)
     if m = method_name.to_s.match(/\A(\w+)_(label|Label)\Z/)
-      customer_label(m[1], :titleize => m[2] == "Label")
+      customer_label(m[1], titleize: m[2] == "Label")
     elsif respond_to?(method_name)
       try(method_name.to_s, *args)
     else
@@ -236,11 +236,11 @@ class Customer < ActiveRecord::Base
     method_name = "#{label_name.to_s}_label"
     return_label = self.try(method_name) if self.respond_to?(method_name)
     return_label = DEFAULT_LABEL[label_name.to_sym] if return_label.blank?
-    format_customer_label(return_label, :titleize => options[:titleize], :pluralize => pluralize)
+    format_customer_label(return_label, titleize: options[:titleize], pluralize: pluralize)
   end
 
   def format_customer_label(return_label, options = {})
-    options.merge({:titleize => false, :pluralize => false})
+    options.merge({titleize: false, pluralize: false})
     return_label = return_label.pluralize if options[:pluralize]
     return_label = return_label.titleize if options[:titleize]
     return return_label

@@ -8,14 +8,14 @@ class ApplicationController < ActionController::Base
   require 'array_math'
 
   before_filter :reset_tenant_if_admin_subdomain
-  before_filter :authenticated?, :except => %w[ ping ]
-  before_filter :login_required, :except => [ 'remove_vicarious_login', 'ping' ]
-  before_filter :save_user_in_current_thread, :except => %w[ ping ]
-  before_filter :save_return_to, :except => %w[ ping ]
+  before_filter :authenticated?, except: %w[ ping ]
+  before_filter :login_required, except: [ 'remove_vicarious_login', 'ping' ]
+  before_filter :save_user_in_current_thread, except: %w[ ping ]
+  before_filter :save_return_to, except: %w[ ping ]
   before_filter :check_rack_mini_profiler
-  before_filter :check_authorization, :except => %w[ ping ]
-  before_filter :check_if_enrolled, :except => %w[ ping ]
-  after_filter :flash_to_headers, :except => %w[ ping ]
+  before_filter :check_authorization, except: %w[ ping ]
+  before_filter :check_if_enrolled, except: %w[ ping ]
+  after_filter :flash_to_headers, except: %w[ ping ]
   
   helper_method :current_user
   
@@ -28,12 +28,12 @@ class ApplicationController < ActionController::Base
   end
   
   def ping
-    render :text => "200 OK", :status => :ok
+    render text: "200 OK", status: :ok
   end
   
   def sidekiq_status
-    statusHash = { :process_size => Sidekiq::ProcessSet.new.size }
-    render :json => statusHash, :status => (statusHash[:process_size] > 0 ? :ok : :not_found)
+    statusHash = { process_size: Sidekiq::ProcessSet.new.size }
+    render json: statusHash, status: (statusHash[:process_size] > 0 ? :ok : :not_found)
   end
 
   # Add return_to to session if it's been requested
@@ -92,7 +92,7 @@ class ApplicationController < ActionController::Base
     @error_title = error_title || "You aren't allowed to access that page."
     @error_message = error_message
     @body_class = "error #{status}"
-    return render(:template => "application/forbidden", :status => status) unless performed?
+    return render(template: "application/forbidden", status: status) unless performed?
   end
 
   def flash_to_headers

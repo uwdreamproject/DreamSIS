@@ -13,7 +13,7 @@ class ResourceController < ApplicationController
     
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @objects }
+      format.xml  { render xml: @objects }
     end
   end
   
@@ -23,7 +23,7 @@ class ResourceController < ApplicationController
   
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @object }
+      format.xml  { render xml: @object }
     end
   end
   
@@ -33,7 +33,7 @@ class ResourceController < ApplicationController
   
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @object }
+      format.xml  { render xml: @object }
     end
   end
   
@@ -50,10 +50,10 @@ class ResourceController < ApplicationController
       if @object.save
         flash[:notice] = "#{self.class.object_name.titleize} was successfully created."
         format.html { redirect_to(@object) }
-        format.xml  { render :xml => @object, :status => :created, :location => @object }
+        format.xml  { render xml: @object, status: :created, location: @object }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @object.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @object.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -68,8 +68,8 @@ class ResourceController < ApplicationController
         format.html { redirect_to(@object) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @object.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @object.errors, status: :unprocessable_entity }
       end
     end
   end

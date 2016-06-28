@@ -45,7 +45,7 @@ module Dreamsis
     config.assets.version = '1.2'
    
     # Setup global ActionMailer settings
-    config.action_mailer.default_url_options = { :host => "dreamsis.com" }
+    config.action_mailer.default_url_options = { host: "dreamsis.com" }
     
     # Prevent app initialization when precompiling assets
     config.assets.initialize_on_precompile = false

@@ -2,7 +2,7 @@ class PersonFafsa < ActiveRecord::Base
   self.table_name = "people_fafsas"
   belongs_to :person
   validates_presence_of :person_id, :year
-  validates_uniqueness_of :year, :scope => :person_id
+  validates_uniqueness_of :year, scope: :person_id
   
   attr_accessor :override_fafsa_date, :override_wasfa_date
   

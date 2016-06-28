@@ -7,7 +7,7 @@ class CollegeMapperCollege < CollegeMapperResource
   def self.delete(*args)
     sws_log args.inspect, "Delete"
     self.prefix = "/api/v1/students/#{args.last[:params][:user_id]}/" if args.last.is_a?(Hash)
-    self.post(args.first, {:_method => "DELETE"})
+    self.post(args.first, {_method: "DELETE"})
   end
   
   def id

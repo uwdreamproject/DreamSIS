@@ -2,9 +2,9 @@
 class Student < ExternalPerson
     
   belongs_to :high_school
-  validates_presence_of :birthdate, :high_school_id, :if => :validate_ready_to_rsvp?
+  validates_presence_of :birthdate, :high_school_id, if: :validate_ready_to_rsvp?
   
-  scope :in_cohort, lambda {|grad_year| {:conditions => { :grad_year => grad_year }}}
-  scope :in_high_school, lambda {|high_school_id| {:conditions => { :high_school_id => high_school_id }}}
+  scope :in_cohort, lambda {|grad_year| {conditions: { grad_year: grad_year }}}
+  scope :in_high_school, lambda {|high_school_id| {conditions: { high_school_id: high_school_id }}}
   
 end

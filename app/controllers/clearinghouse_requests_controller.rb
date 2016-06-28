@@ -5,7 +5,7 @@ class ClearinghouseRequestsController < ApplicationController
   
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @clearinghouse_requests }
+      format.xml  { render xml: @clearinghouse_requests }
     end
   end
   
@@ -15,17 +15,17 @@ class ClearinghouseRequestsController < ApplicationController
   
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @clearinghouse_request }
+      format.xml  { render xml: @clearinghouse_request }
     end
   end
   
   def new
-    @clearinghouse_request = ClearinghouseRequest.new(:inquiry_type => "DA")
+    @clearinghouse_request = ClearinghouseRequest.new(inquiry_type: "DA")
     @clearinghouse_request.customer_id = Customer.current_customer.id
   
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @clearinghouse_request }
+      format.xml  { render xml: @clearinghouse_request }
     end
   end
   
@@ -94,16 +94,16 @@ class ClearinghouseRequestsController < ApplicationController
     @clearinghouse_request = ClearinghouseRequest.new(params[:clearinghouse_request])
     @clearinghouse_request.customer_id = Customer.current_customer.id
     @clearinghouse_request.selection_criteria = params[:cohorts].collect{|c| "Class of #{c}"}
-    participants = Participant.where(:grad_year => params[:cohorts])
+    participants = Participant.where(grad_year: params[:cohorts])
     
     if ActiveRecord::ConnectionAdapters::Column.value_to_boolean(params[:clearinghouse_request][:exclude_inactive])
       @clearinghouse_request.selection_criteria << "Exclude inactive"
-      participants = participants.where(:inactive => [false, nil])
+      participants = participants.where(inactive: [false, nil])
     end
     
     if ActiveRecord::ConnectionAdapters::Column.value_to_boolean(params[:clearinghouse_request][:exclude_not_target])
       @clearinghouse_request.selection_criteria << "Exclude #{Customer.not_target_label}"
-      participants = participants.where(:not_target_participant => [false, nil])
+      participants = participants.where(not_target_participant: [false, nil])
     end
     
     @clearinghouse_request.participants = participants
@@ -112,10 +112,10 @@ class ClearinghouseRequestsController < ApplicationController
       if @clearinghouse_request.save
         flash[:notice] = 'Request was successfully created.'
         format.html { redirect_to(@clearinghouse_request) }
-        format.xml  { render :xml => @clearinghouse_request, :status => :created, :location => @clearinghouse_request }
+        format.xml  { render xml: @clearinghouse_request, status: :created, location: @clearinghouse_request }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @clearinghouse_request.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @clearinghouse_request.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -129,8 +129,8 @@ class ClearinghouseRequestsController < ApplicationController
         format.html { redirect_to(@clearinghouse_request) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @clearinghouse_request.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @clearinghouse_request.errors, status: :unprocessable_entity }
       end
     end
   end

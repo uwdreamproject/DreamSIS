@@ -20,19 +20,19 @@ set :deploy_via, :remote_cache
 
 role :app, "expo.uaa.washington.edu"
 role :web, "expo.uaa.washington.edu"
-role :db,  "expo.uaa.washington.edu", :primary => true
+role :db,  "expo.uaa.washington.edu", primary: true
 
 namespace :deploy do
-  task :start, :roles => :app do
+  task :start, roles: :app do
     run "touch #{current_release}/tmp/restart.txt"
   end
 
-  task :stop, :roles => :app do
+  task :stop, roles: :app do
     # Do nothing.
   end
 
   desc "Restart Application"
-  task :restart, :roles => :app do
+  task :restart, roles: :app do
     run "touch #{current_release}/tmp/restart.txt"
   end
   
@@ -69,7 +69,7 @@ namespace :deploy do
   end
     
   desc "[internal] Updates the symlink for database.yml and other files to the just deployed release."
-  task :config_symlink, :except => { :no_release => true } do
+  task :config_symlink, except: { no_release: true } do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml" 
     run "ln -nfs #{shared_path}/config/exceptional.yml #{release_path}/config/exceptional.yml" 
     run "ln -nfs #{shared_path}/config/google_analytics.yml #{release_path}/config/google_analytics.yml" 

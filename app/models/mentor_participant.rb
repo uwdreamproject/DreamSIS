@@ -1,14 +1,14 @@
 class MentorParticipant < ActiveRecord::Base
 
-  belongs_to :mentor, :touch => true
-  belongs_to :participant, :touch => true
+  belongs_to :mentor, touch: true
+  belongs_to :participant, touch: true
   
   validates_presence_of :mentor_id, :participant_id
-  validates_uniqueness_of :mentor_id, :scope => [:participant_id, :deleted_at]
+  validates_uniqueness_of :mentor_id, scope: [:participant_id, :deleted_at]
 
-  default_scope :order => "people.lastname, people.firstname", :include => :participant #, :joins => :participant
+  default_scope order: "people.lastname, people.firstname", include: :participant #, joins: :participant
   
-  # after_save :update_college_mapper_association, :if => :college_mapper_student_exists?
+  # after_save :update_college_mapper_association, if: :college_mapper_student_exists?
 
   after_save :update_filter_cache
   after_destroy :update_filter_cache
@@ -38,7 +38,7 @@ class MentorParticipant < ActiveRecord::Base
       return create_college_mapper_association if create_if_nil
       return nil
     end
-    @college_mapper_association ||= CollegeMapperAssociation.find(self.college_mapper_id, :params => { :account_type => "students", :user_id => participant.college_mapper_student.try(:id) })
+    @college_mapper_association ||= CollegeMapperAssociation.find(self.college_mapper_id, params: { account_type: "students", user_id: participant.college_mapper_student.try(:id) })
   end
 
   # Creates a CollegeMapperAssociation record for this participant and stores the CollegeMapper user ID in the
@@ -46,8 +46,8 @@ class MentorParticipant < ActiveRecord::Base
   def create_college_mapper_association
     return nil unless college_mapper_student_exists?
     @college_mapper_association = CollegeMapperAssociation.create({
-      :studentId => participant.college_mapper_student.try(:id),
-      :counselorId => mentor.college_mapper_counselor.try(:id)
+      studentId: participant.college_mapper_student.try(:id),
+      counselorId: mentor.college_mapper_counselor.try(:id)
     })
     self.update_attribute(:college_mapper_id, @college_mapper_association.id)
     @college_mapper_association
@@ -59,7 +59,7 @@ class MentorParticipant < ActiveRecord::Base
   def update_college_mapper_association
     return nil unless college_mapper_student_exists?
     if deleted? && self.college_mapper_id
-      CollegeMapperAssociation.delete(self.college_mapper_id, :params => { :account_type => "students", :user_id => participant.college_mapper_student.try(:id) })
+      CollegeMapperAssociation.delete(self.college_mapper_id, params: { account_type: "students", user_id: participant.college_mapper_student.try(:id) })
     elsif !college_mapper_id
       college_mapper_association(true)
     end

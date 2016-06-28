@@ -1,5 +1,5 @@
 class ScholarshipApplicationsController < ParticipantsController
-  before_filter :fetch_participant, :except => :auto_complete_for_scholarship_application_title
+  before_filter :fetch_participant, except: :auto_complete_for_scholarship_application_title
   skip_before_filter :check_authorization
   
   # GET /participant_colleges
@@ -9,7 +9,7 @@ class ScholarshipApplicationsController < ParticipantsController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @scholarship_applications }
+      format.xml  { render xml: @scholarship_applications }
     end
   end
 
@@ -20,7 +20,7 @@ class ScholarshipApplicationsController < ParticipantsController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @scholarship_application }
+      format.xml  { render xml: @scholarship_application }
     end
   end
 
@@ -31,7 +31,7 @@ class ScholarshipApplicationsController < ParticipantsController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @scholarship_application }
+      format.xml  { render xml: @scholarship_application }
     end
   end
 
@@ -48,11 +48,11 @@ class ScholarshipApplicationsController < ParticipantsController
     respond_to do |format|
       if @scholarship_application.save
         flash[:notice] = 'Scholarship application was successfully created.'
-        format.html { redirect_to(participant_path(@participant, :anchor => "!/section/scholarship_applications")) }
-        format.xml  { render :xml => @scholarship_application, :status => :created, :location => @participant }
+        format.html { redirect_to(participant_path(@participant, anchor: "!/section/scholarship_applications")) }
+        format.xml  { render xml: @scholarship_application, status: :created, location: @participant }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @scholarship_application.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @scholarship_application.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -65,11 +65,11 @@ class ScholarshipApplicationsController < ParticipantsController
     respond_to do |format|
       if @scholarship_application.update_attributes(params[:scholarship_application])
         flash[:notice] = 'Scholarship application was successfully updated.'
-        format.html { redirect_to(participant_path(@participant, :anchor => "!/section/scholarship_applications")) }
+        format.html { redirect_to(participant_path(@participant, anchor: "!/section/scholarship_applications")) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @scholarship_application.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @scholarship_application.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -88,16 +88,16 @@ class ScholarshipApplicationsController < ParticipantsController
 
   def auto_complete_for_scholarship_application_title
     @scholarships = Scholarship.find(:all, 
-                      :conditions => ["title LIKE ?", '%' + params[:scholarship_application][:title].downcase + '%'],
-                      :limit => 10)
-    render :json => @scholarships.map { |result| 
+                      conditions: ["title LIKE ?", '%' + params[:scholarship_application][:title].downcase + '%'],
+                      limit: 10)
+    render json: @scholarships.map { |result| 
       {
-        :id => result.id, 
-        :value => h(result.name),
-        :klass => result.class.to_s.underscore, 
-        :fullname => h(result.name),
-        :secondary => h(result.email),
-        :tertiary => h((Customer.current_customer.customer_label(result.class.to_s.underscore, :titleize => true) || result.class.to_s).titleize)
+        id: result.id, 
+        value: h(result.name),
+        klass: result.class.to_s.underscore, 
+        fullname: h(result.name),
+        secondary: h(result.email),
+        tertiary: h((Customer.current_customer.customer_label(result.class.to_s.underscore, titleize: true) || result.class.to_s).titleize)
       }
     }
   end

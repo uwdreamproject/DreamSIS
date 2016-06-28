@@ -16,7 +16,7 @@ class NonstandardWebServiceResult
 
   # Specifies that aliases that can be used for certain attributes. This helps with the integration of
   # existing EXPO components. For instance, UW web services use "student_name" instead of "fullname".
-  # Specifying +{ :student_name => [:fullname] }+ for this hash allows you to search using both.
+  # Specifying +{ student_name: [:fullname] }+ for this hash allows you to search using both.
   # You can (and should) override this in your subclasses.
   # 
   # The format of the hash is as follows:
@@ -44,7 +44,7 @@ class NonstandardWebServiceResult
   def document(options = {})
     cache = FileStoreWithExpiration.new("tmp/cache/web_service_result/#{self.class.to_s}")
     cache_key = options[:extension] ? "#{@id.to_s}#{options[:extension]}" : @id.to_s
-    @raw = cache.fetch(cache_key, {:expires_in => self.class.cache_lifetime}.merge(options)) do
+    @raw = cache.fetch(cache_key, {expires_in: self.class.cache_lifetime}.merge(options)) do
       connection.get(constructed_path(options[:extension]))
     end
     self.class.encapsulate_data(@raw)
@@ -52,7 +52,7 @@ class NonstandardWebServiceResult
   
   # Force-expires the cache and repulls the resource.
   def reload
-    document(:expires_in => -1)
+    document(expires_in: -1)
     self
   end
   

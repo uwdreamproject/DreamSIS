@@ -4,8 +4,8 @@ class WelcomeController < ApplicationController
   before_filter :apply_customer_styles
   
   def index
-    redirect_to :action => "mentor" if @current_user.person.is_a?(Mentor)
-    redirect_to :action => "participant" if @current_user.person.is_a?(Participant)
+    redirect_to action: "mentor" if @current_user.person.is_a?(Mentor)
+    redirect_to action: "participant" if @current_user.person.is_a?(Participant)
     @person = @current_user.person
     @events = @person.event_attendances.future_attending.collect(&:event)
     @event_groups = EventGroup.where(allow_external_volunteers: true)
@@ -25,7 +25,7 @@ class WelcomeController < ApplicationController
     @high_school = @mentor.current_lead_at.first
     @events = @mentor.event_attendances.future_attending.collect(&:event)
     @participants = Participant.in_cohort(Participant.current_cohort).in_high_school(@high_school.try(:id)).page(params[:page]) if @high_school
-    @participant_groups = ParticipantGroup.find :all, :conditions => { :location_id => @high_school.try(:id)} if @high_school
+    @participant_groups = ParticipantGroup.find :all, conditions: { location_id: @high_school.try(:id)} if @high_school
     @report = params[:report].blank? ? "basics" : ERB::Util.html_escape(params[:report])
   end
 

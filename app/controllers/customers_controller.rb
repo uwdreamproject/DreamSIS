@@ -1,5 +1,5 @@
 class CustomersController < ApplicationController
-  before_filter :require_admin_tenant, :except => [:show, :edit, :update]
+  before_filter :require_admin_tenant, except: [:show, :edit, :update]
   before_filter :restrict_to_current_tenant
   
   def index
@@ -7,7 +7,7 @@ class CustomersController < ApplicationController
   
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @customers }
+      format.xml  { render xml: @customers }
     end
   end
   
@@ -16,7 +16,7 @@ class CustomersController < ApplicationController
   
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @customer }
+      format.xml  { render xml: @customer }
     end
   end
   
@@ -25,7 +25,7 @@ class CustomersController < ApplicationController
   
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @customer }
+      format.xml  { render xml: @customer }
     end
   end
   
@@ -40,10 +40,10 @@ class CustomersController < ApplicationController
       if @customer.save
         flash[:notice] = 'Customer was successfully created.'
         format.html { redirect_to(@customer) }
-        format.xml  { render :xml => @customer, :status => :created, :location => @customer }
+        format.xml  { render xml: @customer, status: :created, location: @customer }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @customer.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @customer.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -57,8 +57,8 @@ class CustomersController < ApplicationController
         format.html { redirect_to(@customer) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @customer.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @customer.errors, status: :unprocessable_entity }
       end
     end
   end

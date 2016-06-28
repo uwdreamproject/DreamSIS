@@ -1,6 +1,6 @@
 if API_KEYS["logentries"]
   token = API_KEYS["logentries"][Rails.env]["default"]
-  Rails.logger = Le.new(token, :debug => true, :local => true, :ssl => true, :tag => true)
+  Rails.logger = Le.new(token, debug: true, local: true, ssl: true, tag: true)
   
   # Tag log entries with the server ID and the rails environment
   server_id_path = File.join(Rails.root, "config", "server_id.txt")

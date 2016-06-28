@@ -2,14 +2,14 @@
 # 
 # Quarter is now available as a subclass of this model so that quarter-specific funcationality can be retained.
 class Term < ActiveRecord::Base
-  has_many :mentor_term_groups, :include => { :mentor_terms => :mentor }
+  has_many :mentor_term_groups, include: { mentor_terms: :mentor }
 
   validates_presence_of :start_date
   validates_presence_of :end_date
 
-  default_scope :order => "year, quarter_code, title"
+  default_scope order: "year, quarter_code, title"
   
-  scope :allowing_signups, :conditions => { :allow_signups => true }
+  scope :allowing_signups, conditions: { allow_signups: true }
   
   # Overrides find to allow you to find a Term with any of the following types of ID's:
   # 
@@ -26,7 +26,7 @@ class Term < ActiveRecord::Base
     elsif id.is_a?(String) && id.is_integer?
       return super(*args)
     elsif id.is_a?(String) && m = id.match(/(\d{4}),([spring,winter,autumn,summer]+)/)
-      code_abbrevs = { :spring => "SPR", :winter => "WIN", :autumn => "AUT", :summer => "SUM" }
+      code_abbrevs = { spring: "SPR", winter: "WIN", autumn: "AUT", summer: "SUM" }
       abbrev = "#{code_abbrevs[m[2].to_sym]}#{m[1]}"
       return Quarter.find_by_abbrev(abbrev)
     elsif id.is_a?(String) && m = id.match(/([SPR,WIN,AUT,SUM]+)(\d{4})/)
@@ -66,7 +66,7 @@ class Term < ActiveRecord::Base
   
   # Finds the first Term where the specified date falls.
   def self.find_for_date(date)
-    where(":date >= start_date AND :date <= end_date", :date => date).first()
+    where(":date >= start_date AND :date <= end_date", date: date).first()
   end
   
   # Returns true if specified date falls between this Term's start and end dates.
@@ -90,11 +90,11 @@ class Term < ActiveRecord::Base
   def self.current_term
     @current_term ||= {}
     return @current_term[Apartment::Tenant.current] if @current_term[Apartment::Tenant.current]
-    @current_term[Apartment::Tenant.current] = Term.find(:first, :conditions => [ "? >= start_date AND ? < end_date", Time.now, Time.now])
-    @current_term[Apartment::Tenant.current] ||= Quarter.create(:year => Time.now.year,
-                         :quarter_code => Quarter.guess_quarter_code, 
-                         :start_date => Quarter.guess_first_day(Quarter.guess_quarter_code, Time.now.year),
-                         :end_date  => Quarter.guess_last_day(Quarter.guess_quarter_code, Time.now.year))
+    @current_term[Apartment::Tenant.current] = Term.find(:first, conditions: [ "? >= start_date AND ? < end_date", Time.now, Time.now])
+    @current_term[Apartment::Tenant.current] ||= Quarter.create(year: Time.now.year,
+                         quarter_code: Quarter.guess_quarter_code, 
+                         start_date: Quarter.guess_first_day(Quarter.guess_quarter_code, Time.now.year),
+                         end_date: Quarter.guess_last_day(Quarter.guess_quarter_code, Time.now.year))
     @current_term[Apartment::Tenant.current].valid? ? @current_term[Apartment::Tenant.current] : nil
   end
   

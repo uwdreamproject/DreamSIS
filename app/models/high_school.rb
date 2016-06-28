@@ -1,8 +1,8 @@
 class HighSchool < Location
 
-  default_scope :order => "name"
+  default_scope order: "name"
   
-  scope :partners, :conditions => { :partner_school => true }
+  scope :partners, conditions: { partner_school: true }
 
   has_many :participants do
     def in_participating_cohort(term)
@@ -10,13 +10,13 @@ class HighSchool < Location
     end
   end
   
-  has_many :visits, :foreign_key => 'location_id' do
+  has_many :visits, foreign_key: 'location_id' do
     def for(term)
       find_all {|visit| term.include?(visit.date)}
     end
   end
 
-  has_many :mentor_term_groups , :foreign_key => 'location_id' do
+  has_many :mentor_term_groups , foreign_key: 'location_id' do
     def for(term)
       find_all_by_term_id term.id
     end
@@ -24,7 +24,7 @@ class HighSchool < Location
   
   # Returns an array of unique graudation years
   def cohorts
-    # participants.find(:all, :select => [:grad_year]).collect(&:grad_year).uniq.compact.sort.reverse
+    # participants.find(:all, select: [:grad_year]).collect(&:grad_year).uniq.compact.sort.reverse
     @cohorts ||= participants.pluck(:grad_year).uniq.compact.sort.reverse
   end
 

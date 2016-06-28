@@ -18,8 +18,8 @@ class Parent < Person
   validates_presence_of :lastname, :firstname
   validates_presence_of :child_id
 
-  belongs_to :child_person, :class_name => "Person", :foreign_key => :child_id, :touch => true
-	belongs_to :highest_education_level, :class_name => "EducationLevel"
+  belongs_to :child_person, class_name: "Person", foreign_key: :child_id, touch: true
+	belongs_to :highest_education_level, class_name: "EducationLevel"
 
   validates_presence_of :lastname, :firstname, :parent_type
 

@@ -1,14 +1,14 @@
 class MentorTerm < ActiveRecord::Base
-  belongs_to :mentor_term_group, :counter_cache => true
+  belongs_to :mentor_term_group, counter_cache: true
   belongs_to :mentor
   
   validates_presence_of :mentor_id, :mentor_term_group_id
-  validates_uniqueness_of :mentor_id, :scope => :mentor_term_group_id, :message => "is already a member of this group"
+  validates_uniqueness_of :mentor_id, scope: :mentor_term_group_id, message: "is already a member of this group"
 
-  delegate :term, :term_id, :location, :title, :location_id, :permissions_level, :to => :mentor_term_group
-  delegate :fullname, :email, :reg_id, :participants, :mentor_participants, :to => :mentor
+  delegate :term, :term_id, :location, :title, :location_id, :permissions_level, to: :mentor_term_group
+  delegate :fullname, :email, :reg_id, :participants, :mentor_participants, to: :mentor
   
-  default_scope :order => "people.lastname, people.firstname", :joins => :mentor, :readonly => false
+  default_scope order: "people.lastname, people.firstname", joins: :mentor, readonly: false
   
   after_save :update_filter_cache
   after_destroy :update_filter_cache
