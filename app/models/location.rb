@@ -14,10 +14,10 @@ class Location < ActiveRecord::Base
       obj.city = geo.city
     end
     [geo.latitude, geo.longitude] if geo
-  end  
+  end
   after_validation :geocode, if: :address_changed?
 
-  default_scope order: "name"
+  default_scope { order("name") }
 
   include MultitenantProxyable
   acts_as_proxyable
@@ -25,12 +25,12 @@ class Location < ActiveRecord::Base
   def proxyable_attributes
     excluded = %w[id type created_at updated_at partner_school enable_college_mapper_integration customer_id]
     attributes.except(*excluded)
-  end  
+  end
 
   # Returns all the events that we should show on the attendance page for the requested term
   def events(term = nil, audience = nil, visits_only = true, limit = 1000)
     conditions = ""
-    conditions_values = { nil: nil, true: true } 
+    conditions_values = { nil: nil, true: true }
     conditions << "date >= '#{term.start_date.to_s(:db)}' AND date <= '#{term.end_date.to_s(:db)}'" if term
     if audience
       conditions << " AND show_for_mentors = :true " if audience.include?(:mentors)

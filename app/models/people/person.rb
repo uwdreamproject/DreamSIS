@@ -71,7 +71,7 @@ class Person < ActiveRecord::Base
 
   PERSON_RESOURCE_CACHE_LIFETIME = 1.day
 
-  default_scope order: "lastname, firstname, middlename"
+  default_scope { order("lastname, firstname, middlename") }
 
   geocoded_by :address do |obj, results|
     if geo = results.first

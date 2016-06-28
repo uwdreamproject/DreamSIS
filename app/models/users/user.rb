@@ -4,13 +4,13 @@ class User < ActiveRecord::Base
   validates_presence_of :login
   validates_uniqueness_of :uid, scope: [:provider], allow_nil: true
   attr_accessible :login, :email, :password, :password_confirmation, :identity_url, :person_attributes
-  default_scope order: 'login'
+  default_scope { order('login') }
   alias_attribute :username, :login
   delegate :email, :participants, :current_locations, to: :person
   
   acts_as_tagger
   
-  # Pulls the current user out of Thread.current. We try to avoid this when possible, but sometimes we need 
+  # Pulls the current user out of Thread.current. We try to avoid this when possible, but sometimes we need
   # to access the current user in a model (e.g., to check EmailQueue#messages_waiting?).
   def self.current_user
     Thread.current['user']
@@ -139,7 +139,7 @@ class User < ActiveRecord::Base
   end
   
   # Users will have the navbar displayed if any of the following are true:
-  # 
+  #
   # * User is an admin
   # * User Person is a Mentor and the mentor has #passed_basics?
   # * User Person is a Mentor and a #current_lead?

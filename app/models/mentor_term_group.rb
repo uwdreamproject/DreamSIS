@@ -1,5 +1,5 @@
 class MentorTermGroup < ActiveRecord::Base
-  belongs_to :term 
+  belongs_to :term
   belongs_to :location
   
   has_many :mentor_terms, include: :mentor, conditions: { deleted_at: nil } do
@@ -18,7 +18,7 @@ class MentorTermGroup < ActiveRecord::Base
   after_create :sync_with_course!
   attr_accessor :skip_sync_after_create
 
-  default_scope order: "title IS NULL, title, course_id"
+  default_scope { order("title IS NULL, title, course_id") }
 
   PERMISSION_LEVELS = {
 		current_school_current_cohort: "only participants in the current-year cohort for this high school (the default)",
@@ -109,8 +109,8 @@ class MentorTermGroup < ActiveRecord::Base
       next if other == self
       next if other.day_of_week != day_of_week
       next if other.depart_time.nil? || other.return_time.nil?
-      self_range = (depart_time.to_time.to_i..return_time.to_time.to_i)  
-      other_range = (other.depart_time.to_time.to_i..other.return_time.to_time.to_i)  
+      self_range = (depart_time.to_time.to_i..return_time.to_time.to_i)
+      other_range = (other.depart_time.to_time.to_i..other.return_time.to_time.to_i)
       match = self_range.intersection(other_range)
       matching_groups << other if match
     end
@@ -120,7 +120,7 @@ class MentorTermGroup < ActiveRecord::Base
   # Syncs this MentorTermGroup with the UW course it is linked with (if +course_id+ is not nil).
   # Creates a MentorTerm record for each active registration in the section and removes MentorTerm
   # records for mentors who have dropped the class.
-  # 
+  #
   # Returns true if the sync completed successfully or false if no sync occurred.
   def sync_with_course!
     return false if course_id.nil?

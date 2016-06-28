@@ -1,5 +1,5 @@
 class ObjectFilter < ActiveRecord::Base
-  validates_presence_of :object_class, :title, :criteria  
+  validates_presence_of :object_class, :title, :criteria
   validate :validate_criteria
   validates_format_of :title, with: /\A[^.]+\Z/, message: "cannot include a period"
   after_save :expire_object_filters_cache
@@ -7,7 +7,7 @@ class ObjectFilter < ActiveRecord::Base
   belongs_to :earliest_grade_level, class_name: "GradeLevel", primary_key: 'level', foreign_key: 'earliest_grade_level_level'
   belongs_to :latest_grade_level, class_name: "GradeLevel", primary_key: 'level', foreign_key: 'latest_grade_level_level'
 
-  default_scope order: "category IS NULL, category, position, earliest_grade_level_level, title"
+  default_scope { order("category IS NULL, category, position, earliest_grade_level_level, title") }
 
   acts_as_list scope: [:category]
   

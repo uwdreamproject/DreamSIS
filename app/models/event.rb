@@ -21,17 +21,17 @@ class Event < ActiveRecord::Base
   acts_as_proxyable parent: :event_group, dependents: [:location], parent_direction: :forward
 
   def proxyable_attributes
-    excluded = %w[id created_at updated_at event_group_id event_type_id 
+    excluded = %w[id created_at updated_at event_group_id event_type_id
                   earliest_grade_level latest_grade_level location_id event_coordinator_id]
     attributes.except(*excluded)
-  end  
+  end
   
   belongs_to :earliest_grade_level, class_name: "GradeLevel", primary_key: 'level', foreign_key: 'earliest_grade_level_level'
   belongs_to :latest_grade_level, class_name: "GradeLevel", primary_key: 'level', foreign_key: 'latest_grade_level_level'
   
   validates_presence_of :date
   
-  default_scope order("date, start_time")
+  default_scope { order("date, start_time") }
   scope :visits, where(type: "Visit")
   scope :past, lambda { where("date <= ?", Date.today) }
 
@@ -153,7 +153,7 @@ class Event < ActiveRecord::Base
   end
   
   # Returns true if the supplied User or Person has admin access to this event. This includes:
-  # 
+  #
   # * system-wide admins
   # * current mentor group leads
   # * event coordinator
@@ -214,15 +214,15 @@ class Event < ActiveRecord::Base
   end
 
   # Returns a human-readable bit of text describing the start and end times of this event, as follows:
-  # 
+  #
   # * If no +end_time+ is defined, then simply state the date and start time: <tt>(date) at (start_time)</tt>
   # * If an +end_time+ is defined and the dates for both the start and end are the same: <tt>(date) from (start_time) to (end_time)</tt>
   # * If +end_time+ is on a different date than +start_time+: <tt>(start_date) at (start_time) to (end_date) at (end_time)</tt>
-  # 
+  #
   # *Options*
-  # 
+  #
   # Allowable options include:
-  # 
+  #
   # * +use_words+: Use words like "from" and "at" instead of a hyphen or a space. Defaults to true.
   # * +date_format+: Format to use for date portions. Defaults to +date_with_day_of_week+.
   # * +time_format+: Format to use for time portions. Defaults to +time12+.
@@ -332,4 +332,3 @@ class Event < ActiveRecord::Base
     read_attribute(audience.to_s.downcase + "_" + attr.to_s)
   end
 end
-

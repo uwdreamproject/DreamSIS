@@ -6,8 +6,8 @@ class Note < ActiveRecord::Base
 	validates_presence_of :note, unless: :validate_document?
 	validates_presence_of :document, :title, if: :validate_document?
 
-  before_create :update_creator_id  
-  default_scope order: "created_at DESC"
+  before_create :update_creator_id
+  default_scope { order("created_at DESC") }
 
   after_save :update_parent_counter_cache
   
@@ -49,7 +49,7 @@ class Note < ActiveRecord::Base
   end
 
   # Provides a human-readable interpretation of the access level restrictions for this note.
-  # 
+  #
   # For 'creator' notes: "You are the only one who can see this note."
   def restriction_in_words
     if access_level == 'creator'

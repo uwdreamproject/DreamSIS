@@ -15,7 +15,7 @@ class EventGroup < ActiveRecord::Base
   belongs_to :volunteer_training, class_name: "Training"
   belongs_to :mentor_training, class_name: "Training"
 
-  default_scope order: "id DESC"
+  default_scope { order("id DESC") }
 
   include MultitenantProxyable
   acts_as_proxyable
