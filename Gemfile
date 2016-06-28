@@ -68,6 +68,9 @@ gem 'money-rails'
 gem 'sass-rails'
 gem 'coffee-rails'
 gem 'uglifier'
+gem 'protected_attributes'
+
+
 
 
 group :production do
