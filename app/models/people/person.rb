@@ -26,8 +26,8 @@ class Person < ActiveRecord::Base
 
   validates_presence_of :lastname, :firstname, if: :validate_name?
   validates_uniqueness_of :survey_id, allow_nil: true
-  validates_format_of :email, with: /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i, allow_blank: true
-  validates_format_of :email2, with: /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i, allow_blank: true
+  validates_format_of :email, with: /\A[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}\z/i, allow_blank: true
+  validates_format_of :email2, with: /\A[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}\z/i, allow_blank: true
   validates_presence_of :firstname, :lastname, :email, :sex, :phone_mobile, :birthdate, if: :validate_ready_to_rsvp?
 
   has_many :notes, as: :notable, conditions: "document_file_name IS NULL"

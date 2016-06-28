@@ -2,11 +2,11 @@ class PubcookieUser < User
 
   # after_create :attach_person_record // we do this manually in the authenticate method below, instead.
 
-  # Authenticates a user by their login name without a password.  Returns the user if found.  
+  # Authenticates a user by their login name without a password.  Returns the user if found.
   # If we don't find a user record, we create one. If we can't find a valid person in the Person
   # resource, then return false.
   def self.authenticate(uwnetid, password = nil, require_identity = nil, attach_mentor_record = true)
-    uwnetid = uwnetid.to_s.match(/^(\w+)(@.+)?$/).try(:[], 1) # strip out the '@uw.edu' if someone tries that
+    uwnetid = uwnetid.to_s.match(/\A(\w+)(@.+)?\z/).try(:[], 1) # strip out the '@uw.edu' if someone tries that
     return false if uwnetid.nil?
     u = self.find_by_login uwnetid
     if u.nil?
@@ -14,7 +14,7 @@ class PubcookieUser < User
       return false if pr.nil?
       u = PubcookieUser.create login: uwnetid, provider: 'shibboleth', uid: uwnetid
       if attach_mentor_record
-        u.attach_person_record 
+        u.attach_person_record
       else
         u.person = Person.create
         u.save
