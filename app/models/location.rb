@@ -4,7 +4,7 @@ class Location < ActiveRecord::Base
 
   validates_presence_of :name
   validates_uniqueness_of :name
-  validates_format_of :website_url, with: Addressable::URI::URIREGEX
+  validates :website_url, format: URI::regexp(%w(http https))
   
   geocoded_by :address do |obj, results|
     if geo = results.first
