@@ -1,8 +1,7 @@
 class HighSchool < Location
 
   default_scope { order("name") }
-  
-  scope :partners, conditions: { partner_school: true }
+  scope :partners, -> { where(partner_school: true) }
 
   has_many :participants do
     def in_participating_cohort(term)

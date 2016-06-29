@@ -9,8 +9,8 @@ class Participant < Person
   belongs_to :family_income_level, class_name: "IncomeLevel"
   belongs_to :participant_group, counter_cache: true
 
-  has_many :mentor_participants, conditions: { deleted_at: nil }
-  has_many :former_mentor_participants, class_name: "MentorParticipant", conditions: "deleted_at IS NOT NULL"
+  has_many :mentor_participants
+  has_many :former_mentor_participants, -> { MentorParticipant.deleted }, class_name: "MentorParticipant"
 	has_many :mentors, through: :mentor_participants
   has_many :parents, foreign_key: :child_id
   has_many :test_scores
@@ -25,12 +25,12 @@ class Participant < Person
 
   attr_accessor :override_binder_date, :override_fafsa_date, :override_wasfa_date, :create_college_mapper_student_after_save, :link_to_current_user_after_save
   
-  scope :in_cohort, lambda {|grad_year| {conditions: { grad_year: grad_year }}}
-  scope :in_high_school, lambda {|high_school_id| {conditions: { high_school_id: high_school_id }}}
-  scope :active, conditions: ["inactive IS NULL OR inactive = ?", false]
-  scope :target, conditions: ["not_target_participant IS NULL OR not_target_participant = ?", false]
-  scope :attending_college, lambda {|college_id| { conditions: { college_attending_id: college_id }}}
-  scope :assigned_to_mentor, lambda {|mentor_id| { joins: :mentor_participants, conditions: { mentor_participants: { mentor_id: mentor_id }}}}
+  scope :in_cohort, ->(grad_year) { where(grad_year: grad_year) }
+  scope :in_high_school, ->(high_school_id) { where(high_school_id: high_school_id) }
+  scope :active, -> { where(["inactive IS NULL OR inactive = ?", false]) }
+  scope :target, -> { where(["not_target_participant IS NULL OR not_target_participant = ?", false]) }
+  scope :attending_college, ->(college_id) { where(college_attending_id: college_id) }
+  scope :assigned_to_mentor, ->(mentor_id) { joins(:mentor_participants).where(mentor_participants: { mentor_id: mentor_id }) }
 
   # after_save :college_mapper_student, if: :create_college_mapper_student_after_save?
   after_create :link_to_current_user, if: :link_to_current_user_after_save?
@@ -39,8 +39,8 @@ class Participant < Person
 	POSTSECONDARY_GOAL_OPTIONS = [
     "2-year to 4-year transfer",
     "Gap year",
-		"Vocational school", 
-		"Military service", 
+		"Vocational school",
+		"Military service",
 		"Job",
 		"Not attend college",
 		"Earn GED",
@@ -68,13 +68,13 @@ class Participant < Person
   # Stores the possible ways that participant lists can be dynamically displayed.
   ReportTypes = {
     basics: "Basics",
-    college_applications: "College Applications", 
-    test_score_summaries: "Test Scores", 
-    rosters: "Roster", 
+    college_applications: "College Applications",
+    test_score_summaries: "Test Scores",
+    rosters: "Roster",
     parents: "Parents & Contacts",
-    attendance_summaries: "Attendance", 
+    attendance_summaries: "Attendance",
     financial_aid_packages: "Financial Aid",
-    college_stages: "College Pipeline" 
+    college_stages: "College Pipeline"
   }
 
   # Returns true if there is a value in the signature
@@ -100,7 +100,7 @@ class Participant < Person
   end
   
   # Returns the grad_year of the currently-active cohort:
-  # 
+  #
   # * if the current term is Winter, return current year
   # * if the current term is Summer, Autumn, or Spring, return current_year + 1
   def self.current_cohort
@@ -156,7 +156,7 @@ class Participant < Person
   # Tries to find duplicate records based on name and high school. Pass an array of participant data straight from your params
   # hash. Second parameter is a limit on the number of records to return (defaults to 50).
   def self.possible_duplicates(data, limit = 50)
-    Participant.find(:all, 
+    Participant.find(:all,
                     conditions: ["firstname LIKE ? AND lastname LIKE ?", "#{data[:firstname]}%", "#{data[:lastname]}%"],
                     limit: limit)
   end
@@ -218,7 +218,7 @@ class Participant < Person
   end
   alias :college_planning_to_attend :college_attending
   
-  # Returns the CollegeEnrollment representing where the student is _currently attending_, 
+  # Returns the CollegeEnrollment representing where the student is _currently attending_,
   # based on the current enrollment validity period set in CollegeEnrollment.
   def current_college_enrollment
     return nil if college_enrollments.empty?
@@ -294,14 +294,14 @@ class Participant < Person
 	def self.xlsx_columns
 		columns = []
 		columns << self.column_names.map { |c| c = c.to_sym }
-		columns << [:high_school_name, :raw_survey_id, :college_planning_to_attend_name, 
+		columns << [:high_school_name, :raw_survey_id, :college_planning_to_attend_name,
                 :currently_college_enrolled?, :current_college_name, :graduated_college?, :alma_mater_names,
-								:family_income_level_title, :program_titles, :assigned_mentor_names, 
-								:participant_group_title, :multiracial?, 
-                "fafsa_#{Time.now.year}_fafsa_submitted_at", "fafsa_#{Time.now.year}_wasfa_submitted_at", 
+								:family_income_level_title, :program_titles, :assigned_mentor_names,
+								:participant_group_title, :multiracial?,
+                "fafsa_#{Time.now.year}_fafsa_submitted_at", "fafsa_#{Time.now.year}_wasfa_submitted_at",
                 "fafsa_#{Time.now.year}_not_applicable"]
 		columns << Participant.object_filters.collect { |f| "Filter: #{f.title}" }
-		remove_columns = [:filter_cache, :login_token, :login_token_expires_at, :customer_id, 
+		remove_columns = [:filter_cache, :login_token, :login_token_expires_at, :customer_id,
 								:avatar, :college_mapper_id, :avatar_image_url, :college_mapper_id, :husky_card_rfid,
 								:survey_id, :relationship_to_child, :occupation,	:annual_income,	:needs_interpreter,
 								:meeting_availability, :child_id, :fafsa_submitted_date, :fafsa_not_applicable]
@@ -312,7 +312,7 @@ class Participant < Person
 	end
 	
 	def college_attending_name
-		college_attending.try(:name) 
+		college_attending.try(:name)
 	end
   alias :college_planning_to_attend_name :college_attending_name
 	
@@ -334,7 +334,7 @@ class Participant < Person
 	
 	def participant_group_title
 		participant_group.try(:title)
-	end	
+	end
   
   # Returns a collection of EventAttendance objects to be displayed on a Participant's detail page.
   # Starting with all existing event_attendances, this method adds in Event objects with a grade level range that
@@ -427,7 +427,7 @@ class Participant < Person
   end
   
   # Returns the objects that have a child relationship to this object:
-  # 
+  #
   # * college_applications
   # * scholarship_applications
   # * parents
@@ -437,7 +437,7 @@ class Participant < Person
   # * participant_mentors
   # * event_attendances
   def child_objects
-    collections = %w[college_applications scholarship_applications parents test_scores 
+    collections = %w[college_applications scholarship_applications parents test_scores
                      college_enrollments college_degrees mentor_participants event_attendances
                      notes
                    ]

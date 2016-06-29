@@ -32,8 +32,9 @@ class Event < ActiveRecord::Base
   validates_presence_of :date
   
   default_scope { order("date, start_time") }
-  scope :visits, where(type: "Visit")
-  scope :past, lambda { where("date <= ?", Date.today) }
+  scope :visits, -> { where(type: "Visit") }
+  scope :past, -> { where("date <= ?", Date.today) }
+  scope :future, -> { where("date >= ?", Time.now.midnight) }
 
   # Allows overwriting of type in controller, default is [+id+, +type+]
   def self.attributes_protected_by_default

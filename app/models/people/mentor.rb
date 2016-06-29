@@ -2,15 +2,10 @@ class Mentor < Person
   extend FriendlyId
   friendly_id :friendly_slug, use: :slugged
 
-  has_many :mentor_terms, conditions: { deleted_at: nil } do
-    def for_term(term_id)
-      term_id = term_id.id if term_id.is_a?(Term)
-      find :all, joins: [:mentor_term_group], conditions: { mentor_term_groups: { term_id: term_id }, deleted_at: nil }
-    end
-  end
-  has_many :mentor_term_groups, through: :mentor_terms, include: :mentors
+  has_many :mentor_terms, -> { MentorTerm.deleted }
+  has_many :mentor_term_groups, through: :mentor_terms
   
-  has_many :mentor_participants, conditions: { deleted_at: nil }
+  has_many :mentor_participants, -> { MentorParticipant.deleted }
   has_many :participants, through: :mentor_participants
 	has_many :activity_logs
   
@@ -69,7 +64,7 @@ class Mentor < Person
         if Customer.require_conduct_form?
       if !signed_conduct_form?
         summary << "* Must sign conduct agreement  "
-      end  
+      end
     end
     if Customer.require_background_checks?
       if !passed_background_check?
@@ -101,13 +96,13 @@ class Mentor < Person
     self.filter_cache
   end
 
-  # Returns true if there is a valid date in the +risk_form_signed_at+ attribute and any value in the 
+  # Returns true if there is a valid date in the +risk_form_signed_at+ attribute and any value in the
   # +risk_form_signature+ attribute.
   def signed_risk_form?
     !risk_form_signed_at.nil? && !risk_form_signature.blank?
   end
 
-  # Returns true if there is a valid date in the +conduct_form_signed_at+ attribute and any value in the 
+  # Returns true if there is a valid date in the +conduct_form_signed_at+ attribute and any value in the
   # +conduct_form_signature+ attribute.
   def signed_conduct_form?
     !conduct_form_signed_at.nil? && !conduct_form_signature.blank?
@@ -136,7 +131,7 @@ class Mentor < Person
     
   rescue Mandrill::Error => e
       puts "A mandrill error occurred: #{e.class} - #{e.message}"
-      raise    
+      raise
   end
 
   # Returns true if the mentor is enrolled for the current term.
@@ -154,7 +149,7 @@ as layed out in the given term's course dependencies
 MentorTermGroup.course_dependencies outline:
   
 (Dept Abv) (Course Number)(Letter optional):<----------------------|
-  never any: [(C.N.), (C.N.),..., (C.N.)]  <------| As many        | Repeat 
+  never any: [(C.N.), (C.N.),..., (C.N.)]  <------| As many        | Repeat
   not currently: [(C.N.), (C.N.),..., (C.N.)]     | as             | as
   require: [(C.N.), (C.N.),..., (C.N.)]           | needed         | needed
   have taken one: [(C.N.), (C.N.),..., (C.N.)] <--|<---------------|
@@ -190,22 +185,22 @@ Documentation for each filter:
  * Letter: Section letter (as stated above, this is optional). If a letter is used,
    the rules are valid for that section only
 
- Note: Valid combinations of the above include EDUC 360, EDUC 361A, etc. As you 
-       can see above, you can make a general listing for a course (see EDUC 361) and 
+ Note: Valid combinations of the above include EDUC 360, EDUC 361A, etc. As you
+       can see above, you can make a general listing for a course (see EDUC 361) and
        then give requirements for each section (see EDUC 361A and EDUC 361B).
 
- * never any: Lists course numbers a mentor can't have had before. It checks all 
-   past courses. If even just one of the courses listed has been had by the 
+ * never any: Lists course numbers a mentor can't have had before. It checks all
+   past courses. If even just one of the courses listed has been had by the
    mentor, the function returns false.
 
- * not currently: Lists courses you can't be concurrently enrolled in with. 
+ * not currently: Lists courses you can't be concurrently enrolled in with.
    If a mentor is enrolled in any of the list, returns false.
 
- * require: Lists a set of courses from which mentor must be currently enrolled in. 
+ * require: Lists a set of courses from which mentor must be currently enrolled in.
    If a mentor isn't signed up for any of the listed courses, returns false.
 
- * have taken one: Lists a set of courses from which a mentor must have been 
-   signed up for in the past. If the mentor hasn't taken any of the listed 
+ * have taken one: Lists a set of courses from which a mentor must have been
+   signed up for in the past. If the mentor hasn't taken any of the listed
    courses, returns false
  
 =end
@@ -224,7 +219,7 @@ Documentation for each filter:
       correct = true
       dependencies.each do |dep, rules|
         if current_sections.any? { |cur_sec| cur_sec.include? dep }
-          correct = check_dependency(current_sections, prev_sections, dep, rules) 
+          correct = check_dependency(current_sections, prev_sections, dep, rules)
         end
         return false if !correct
       end
@@ -248,7 +243,7 @@ Documentation for each filter:
     terms = terms.flatten.uniq
     conditions = { mentor_term_groups: { term_id: terms }, deleted_at: nil }
     conditions[:mentor_term_groups][:location_id] = location.try(:id) if location
-    mentor_terms.find :all, joins: [:mentor_term_group], conditions: conditions
+    mentor_terms.where(conditions).joins(:mentor_term_group)
   end
   
   # Returns the locations for each of the #current_mentor_term_groups.
@@ -282,8 +277,8 @@ Documentation for each filter:
     return c unless c.nil?
 
     return true if mentor_terms.collect(&:term).uniq.reject {|m| m == Term.current_term}.count > 0 rescue true
-    !event_attendances.find(:all, 
-                            include: { event: :event_type }, 
+    !event_attendances.find(:all,
+                            include: { event: :event_type },
                             conditions: { attended: true, event_types: { name: "Mentor Workshop" }}
                             ).empty?
   end
@@ -351,7 +346,7 @@ Documentation for each filter:
   end
 
   # Determines what objects this mentor can view.
-  # 
+  #
   # * A mentor can view a participant if they can edit it (See #can_edit?) or they are a current lead at any location.
   # * A mentor can view a high school if they are currently enrolled there.
   def can_view?(object)
@@ -368,12 +363,12 @@ Documentation for each filter:
   end
 
   # Determines the access level that this mentor has to certain objects.
-  # 
+  #
   # A mentor can edit a participant if:
   # * the participant is in the mentor's current list of mentees
   # * the participant is in the current cohort at a high school that the mentor attends
   # * the mentor is a current high school lead at that participant's high school
-  # 
+  #
   # Additionally, mentors can be assigned to a group which grants additional permissions.
   # See options at MentorTermGroup.PERMISSION_LEVELS for details.
   def can_edit?(object)
@@ -456,7 +451,7 @@ Documentation for each filter:
   def self.term_report_columns term_id
     columns = [:id, :firstname, :middlename, :lastname, :email, :uw_net_id,
       :uw_student_no, "enrollment_status_for_#{term_id}",  "section_status_for_#{term_id}",
-      "locations_for_#{term_id}", "section_summary_for_#{term_id}", :previous_participant_id, 'is_18?', 
+      "locations_for_#{term_id}", "section_summary_for_#{term_id}", :previous_participant_id, 'is_18?',
       :eighteenth_birthday, "event_summary_for_#{term_id}", "event_count_for_#{term_id}",
       :terms_participated, :date_joined, "current_lead?", :readiness_summary,
       "valid_van_driver?", "driver_trained?", "signed_driver_form?", "signed_risk_form?",
@@ -526,7 +521,7 @@ Documentation for each filter:
     event_attendances.find(
       :all,
       joins: "LEFT OUTER JOIN events ON event_attendances.event_id = events.id
-                 LEFT OUTER JOIN event_types ON events.event_type_id = event_types.id", 
+                 LEFT OUTER JOIN event_types ON events.event_type_id = event_types.id",
       conditions: ["events.date >= ?
       AND events.date <= ?
       AND (rsvp = ? OR attended = ?)

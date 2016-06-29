@@ -6,10 +6,9 @@ class MentorParticipant < ActiveRecord::Base
   validates_presence_of :mentor_id, :participant_id
   validates_uniqueness_of :mentor_id, scope: [:participant_id, :deleted_at]
 
-  default_scope { order("people.lastname, people.firstname").includes(:participant) }
+  default_scope { order("people.lastname, people.firstname").includes(:participant).where(deleted_at: nil) }
+  scope :deleted, -> { where.not(deleted_at: nil) }
   
-  # after_save :update_college_mapper_association, if: :college_mapper_student_exists?
-
   after_save :update_filter_cache
   after_destroy :update_filter_cache
 

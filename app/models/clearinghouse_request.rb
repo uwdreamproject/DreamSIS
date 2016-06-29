@@ -23,8 +23,7 @@ class ClearinghouseRequest < ActiveRecord::Base
   serialize :participant_ids
   serialize :filenames
   serialize :selection_criteria
-  
-  scope :awaiting_retrieval, conditions: "submitted_at IS NOT NULL AND retrieved_at IS NULL"
+	scope :awaiting_retrieval, -> { where.not(submitted_at: nil).where(retrieved_at: nil) }
   
   attr_accessor :plain_ftp_password, :exclude_inactive, :exclude_not_target
   
@@ -40,7 +39,7 @@ class ClearinghouseRequest < ActiveRecord::Base
   }
   
   # Returns the current "status" of this request.
-  # 
+  #
   # new::       Not submitted yet
   # submitted:: Submitted but not retrieved
   # retrieved:: Retrieved results
@@ -138,7 +137,7 @@ class ClearinghouseRequest < ActiveRecord::Base
 
   # Returns the path to the local log file.
   def log_path
-    "#{Rails.root}/tmp/nsc/#{id.to_s}/processing_log.log"    
+    "#{Rails.root}/tmp/nsc/#{id.to_s}/processing_log.log"
   end
   
   # Creates a token to prefix all log entries with, for easy retrieval in comingled logs.
@@ -184,10 +183,10 @@ class ClearinghouseRequest < ActiveRecord::Base
   end
   
   # Process a file that has been retrieved from the Clearinghouse.
-  # 
+  #
   # 1. Open the file from the file system.
-  # 2. For each row in the returned dataset, create a new CollegeEnrollment record (without importing 
-  #    duplicates). Note the ClearinghouseRequest ID and that the source is "clearinghouse" (instead 
+  # 2. For each row in the returned dataset, create a new CollegeEnrollment record (without importing
+  #    duplicates). Note the ClearinghouseRequest ID and that the source is "clearinghouse" (instead
   #    of a manual entry by a user).
   # 3. Update +retrieved_at+.
   # 4. Count number of unique returned DreamSIS ID numbers in file and update number_of_records_returned.
@@ -231,7 +230,7 @@ class ClearinghouseRequest < ActiveRecord::Base
   end
   
   # Performs cleanup and "closes" this request.
-  # 
+  #
   # 1. Delete the files from the server if needed.
   # 2. Delete FTP password
   def close
@@ -281,7 +280,7 @@ class ClearinghouseRequest < ActiveRecord::Base
 
   protected
   
-  # Creates a CollegeDegree record from the attributes provided. 
+  # Creates a CollegeDegree record from the attributes provided.
   def create_college_degree_from(attrs, participant_id)
     log "  -> Creating CollegeDegree record"
     cd = CollegeDegree.create(
@@ -305,7 +304,7 @@ class ClearinghouseRequest < ActiveRecord::Base
     cd
   end
   
-  # Creates a CollegeEnrollment record from the attributes provided. 
+  # Creates a CollegeEnrollment record from the attributes provided.
   def create_college_enrollment_from(attrs, participant_id)
     log "  -> Creating CollegeEnrollment record"
     ce = CollegeEnrollment.create(
@@ -327,7 +326,7 @@ class ClearinghouseRequest < ActiveRecord::Base
     ce
   end
 
-  # Moves the detail file and its two related files to permanent storage in 
+  # Moves the detail file and its two related files to permanent storage in
   # files/clearinghouse_request/:id/request. Returns a list of the files that
   # were copied. If the related files don't exist alongside the detail file
   # (e.g., if the detail file was provided manually and not automatically fetched),

@@ -6,8 +6,7 @@ class ActivityLog < ActiveRecord::Base
 	validates_uniqueness_of :start_date, scope: [ :mentor_id, :end_date ]
   
   default_scope { order("start_date DESC") }
-	
-	scope :submitted, conditions: "updated_at > created_at"
+	scope :submitted, -> { where("updated_at > created_at") }
 	
 	serialize :student_time
 	serialize :non_student_time

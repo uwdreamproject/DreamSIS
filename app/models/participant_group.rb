@@ -6,5 +6,5 @@ class ParticipantGroup < ActiveRecord::Base
   validates_uniqueness_of :title, scope: [:grad_year, :location_id]
   
   default_scope { order("grad_year DESC, title").joins(:location).readonly(false) }
-  scope :ordered, order: "locations.name, grad_year DESC, title"
+  scope :ordered, -> { order("locations.name, grad_year DESC, title") }
 end

@@ -25,6 +25,8 @@ class Parent < Person
 
   after_save :update_filter_cache
   after_destroy :update_filter_cache
+  
+  scope :emergency_contacts, -> { where(is_emergency_contact: true, parent_type: "Emergency Contact") }
 
   # Updates the participant filter cache
   def update_filter_cache

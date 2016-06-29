@@ -5,8 +5,8 @@ class HowDidYouHearOption < ActiveRecord::Base
   
   default_scope { order("name") }
   
-  scope :for_participants, conditions: { show_for_participants: true }
-  scope :for_mentors, conditions: { show_for_mentors: true }
+  scope :for_participants, -> { where(show_for_participants: true) }
+  scope :for_mentors, -> { where(show_for_mentors: true) }
   
   validates_presence_of :name
   validates_uniqueness_of :name

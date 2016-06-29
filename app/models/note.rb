@@ -8,6 +8,8 @@ class Note < ActiveRecord::Base
 
   before_create :update_creator_id
   default_scope { order("created_at DESC") }
+  scope :notes, -> { where(document_file_name: nil) }
+  scope :documents, -> { where.not(document_file_name: nil, title: nil) }
 
   after_save :update_parent_counter_cache
   

@@ -2,13 +2,9 @@ class MentorTermGroup < ActiveRecord::Base
   belongs_to :term
   belongs_to :location
   
-  has_many :mentor_terms, include: :mentor, conditions: { deleted_at: nil } do
-    def leads
-      find(:all, conditions: { lead: true })
-    end
-  end
-  has_many :mentors, through: :mentor_terms, conditions: { mentor_terms: { deleted_at: nil } }, order: "lastname, firstname"
-  has_many :deleted_mentor_terms, class_name: "MentorTerm", conditions: "deleted_at IS NOT NULL"
+  has_many :mentor_terms
+  has_many :mentors, through: :mentor_terms
+  has_many :deleted_mentor_terms, -> { MentorTerm.deleted }, class_name: "MentorTerm"
 
   validates_presence_of :term_id
   validates_uniqueness_of :course_id, scope: :term_id, allow_nil: true, allow_blank: true
@@ -18,7 +14,7 @@ class MentorTermGroup < ActiveRecord::Base
   after_create :sync_with_course!
   attr_accessor :skip_sync_after_create
 
-  default_scope { order("title IS NULL, title, course_id") }
+  default_scope { order("title IS NULL, title, course_id").includes(mentor_terms: :mentor) }
 
   PERMISSION_LEVELS = {
 		current_school_current_cohort: "only participants in the current-year cohort for this high school (the default)",

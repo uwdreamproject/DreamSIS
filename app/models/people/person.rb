@@ -1,24 +1,8 @@
 class Person < ActiveRecord::Base
   include Comparable
 
-  has_many :event_attendances do
-    def future_attending
-      find :all, joins: [:event], conditions: ["events.date >= ? AND rsvp = ?", Time.now.midnight, true]
-    end
-		def non_visits
-			find :all, joins: [:event], conditions: ["type IS ? OR type = ? OR type = ?", nil, "Event", ""]
-		end
-		def visits
-			find :all, joins: [:event], conditions: ["type = ?", "Visit"]
-		end
-  end
-  has_many :events, through: :event_attendances do
-    def future
-      find :all, conditions: ["date >= ?", Time.now.midnight]
-    end
-  end
-  # has_many :how_did_you_hear_people
-  # has_many :how_did_you_hear_options, through: :how_did_you_hear_people
+  has_many :event_attendances
+  has_many :events, through: :event_attendances
   has_and_belongs_to_many :how_did_you_hear_options
 	belongs_to :highest_education_level, class_name: "EducationLevel"
 
@@ -30,12 +14,12 @@ class Person < ActiveRecord::Base
   validates_format_of :email2, with: /\A[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}\z/i, allow_blank: true
   validates_presence_of :firstname, :lastname, :email, :sex, :phone_mobile, :birthdate, if: :validate_ready_to_rsvp?
 
-  has_many :notes, as: :notable, conditions: "document_file_name IS NULL"
-  has_many :documents, as: :notable, class_name: "Note", conditions: "document_file_name IS NOT NULL AND title IS NOT NULL"
+  has_many :notes, -> { Note.notes }, as: :notable
+  has_many :documents, -> { Note.documents }, as: :notable, class_name: "Note"
 
   has_many :training_completions
   has_many :trainings, through: :training_completions, source: :training
-  has_one :emergency_contact, foreign_key: :child_id, class_name: "Parent", conditions: { is_emergency_contact: true, parent_type: "Emergency Contact" }
+  has_one :emergency_contact, -> { Parent.emergency_contacts }, foreign_key: :child_id, class_name: "Parent"
   accepts_nested_attributes_for :emergency_contact, allow_destroy: true
 
   has_and_belongs_to_many :programs

@@ -10,9 +10,9 @@ class MultitenantProxy < ActiveRecord::Base
 
   ExcludedAttributes = %w[id created_at updated_at]
   
-  scope :master, where(role: "master")
-  scope :slave, where(role: "slave")
-  scope :for_customer, lambda{ |customer_id| where(other_customer_id: customer_id) }
+  scope :master, -> { where(role: "master") }
+  scope :slave, ->{ where(role: "slave") }
+  scope :for_customer, ->(customer_id) { where(other_customer_id: customer_id) }
   
   # Returns the object from the other side of the proxy, using Apartment::Tenant.process.
   def other_object

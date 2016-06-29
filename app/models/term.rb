@@ -2,14 +2,13 @@
 #
 # Quarter is now available as a subclass of this model so that quarter-specific funcationality can be retained.
 class Term < ActiveRecord::Base
-  has_many :mentor_term_groups, include: { mentor_terms: :mentor }
+  has_many :mentor_term_groups
 
   validates_presence_of :start_date
   validates_presence_of :end_date
 
   default_scope { order("year, quarter_code, title") }
-  
-  scope :allowing_signups, conditions: { allow_signups: true }
+  scope :allowing_signups, -> { where(allow_signups: true) }
   
   # Overrides find to allow you to find a Term with any of the following types of ID's:
   #
@@ -90,7 +89,7 @@ class Term < ActiveRecord::Base
   def self.current_term
     @current_term ||= {}
     return @current_term[Apartment::Tenant.current] if @current_term[Apartment::Tenant.current]
-    @current_term[Apartment::Tenant.current] = Term.find(:first, conditions: [ "? >= start_date AND ? < end_date", Time.now, Time.now])
+    @current_term[Apartment::Tenant.current] = Term.where([ "? >= start_date AND ? < end_date", Time.now, Time.now]).first
     @current_term[Apartment::Tenant.current] ||= Quarter.create(year: Time.now.year,
                          quarter_code: Quarter.guess_quarter_code,
                          start_date: Quarter.guess_first_day(Quarter.guess_quarter_code, Time.now.year),

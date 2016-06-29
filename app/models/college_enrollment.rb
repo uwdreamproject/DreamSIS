@@ -8,7 +8,7 @@ class CollegeEnrollment < Enrollment
 
   delegate :name, to: :institution
 
-  scope :from_clearinghouse_request, lambda { |clearinghouse_request_id| where(clearinghouse_request_id: clearinghouse_request_id) }
+  scope :from_clearinghouse_request, ->(clearinghouse_request_id) { where(clearinghouse_request_id: clearinghouse_request_id) }
 
   CLASS_LEVEL_NAMES = {
     "C" => "Certificate (Undergraduate)",

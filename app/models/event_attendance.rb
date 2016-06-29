@@ -27,9 +27,11 @@ class EventAttendance < ActiveRecord::Base
   after_destroy :update_filter_cache
   before_save :replace_blank_attendance_option
 
-  # default_scope joins: :person, order: "lastname, firstname"
-  scope :rsvpd, where(rsvp: true)
-  scope :attended, where(attended: true)
+  scope :rsvpd, -> { where(rsvp: true) }
+  scope :attended, -> { where(attended: true) }
+  scope :future_attending, -> { joins(:event).where(["events.date >= ? AND rsvp = ?", Time.now.midnight, true]) }
+  scope :non_visits, -> { joins(:event).where(["type IS ? OR type = ? OR type = ?", nil, "Event", ""]) }
+  scope :visits, -> { joins(:event).where(type: "Visit") }
   
   acts_as_xlsx
 
@@ -97,7 +99,7 @@ class EventAttendance < ActiveRecord::Base
     event_shift.nil? ? event.name : "#{event.name} (#{event_shift.title})"
   end
   
-  # Returns a string representation of the person type 
+  # Returns a string representation of the person type
   # this event attendance will be displayed under
   # Override
   def audience
