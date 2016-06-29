@@ -1,7 +1,5 @@
 class Event < ActiveRecord::Base
   include Comparable
-  extend SimpleCalendar
-  has_calendar attribute: :start_datetime
 
   has_many :attendees, inverse_of: :event, class_name: "EventAttendance"
   has_many :people, through: :attendees

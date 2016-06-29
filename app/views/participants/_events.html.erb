@@ -27,7 +27,7 @@
 
 <%- for month in [2,1,0].collect{|i| Date.today.beginning_of_month.months_ago(i) } -%>
 <div class="mini calendar calendar-container span4 attendance">
-	<%= month_calendar start_date: month, beginning_of_week: :sunday do |date| %>	
+	<%= month_calendar attribute: :start_datetime, start_date: month, beginning_of_week: :sunday do |date| %>
 		<%= content_tag :div, date.day, "data-date" => raw(date), :class => "attendance-day" %>
 	<% end %>
 </div>
