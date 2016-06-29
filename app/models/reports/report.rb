@@ -14,7 +14,7 @@ class Report < ActiveRecord::Base
 	# Finds the most recent Report object that corresponds to this cache_key.
 	# Returns nil if one doesn't exist.
 	def self.for_key(cache_key)
-		report = find(:first, conditions: { key: cache_key }, order: "updated_at DESC")
+    report = where(key: cache_key).order("updated_at DESC").first
 		report.update_attribute(:status, "expired") if report && report.expired?
 		report
 	end
