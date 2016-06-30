@@ -17,8 +17,6 @@ class Person < ActiveRecord::Base
       find :all, :conditions => ["date >= ?", Time.now.midnight]
     end
   end
-  # has_many :how_did_you_hear_people
-  # has_many :how_did_you_hear_options, :through => :how_did_you_hear_people
   has_and_belongs_to_many :how_did_you_hear_options
 	belongs_to :highest_education_level, :class_name => "EducationLevel"
 
@@ -68,6 +66,7 @@ class Person < ActiveRecord::Base
   end
 
   PERSON_RESOURCE_CACHE_LIFETIME = 1.day
+  CohortCacheGroups = %w[]
 
   default_scope :order => "lastname, firstname, middlename"
 
@@ -140,7 +139,7 @@ class Person < ActiveRecord::Base
     @filter_status ||= Customer.redis.hgetall(self.redis_key("filters"))
     return @filter_status unless object_filter
     key = object_filter.is_a?(ObjectFilter) ? object_filter.id.to_s : object_filter.to_s
-    @filter_status[key]
+    @filter_status[key] || ""
   end
   
   def update_filter_cache_if_needed
@@ -160,6 +159,7 @@ class Person < ActiveRecord::Base
       end
       commit_filter_result!(object_filter, result)
     end
+    update_cohort_cache!
     @filter_status = Customer.redis.hgetall(self.redis_key("filters"))
   end
   
@@ -169,12 +169,12 @@ class Person < ActiveRecord::Base
     Customer.redis.del(self.redis_key("filters"))
   end
   
-  # Deletes all current filters information stored in the redis cache.
+  # Deletes all current filters and cohort information stored in the redis cache.
   def self.reset_filter_cache!
+    key_queries = ["#{self.class}:*:filters*", "#{self.class}:*:cohorts*", "#{self.class}:cohorts*"]
+    keys = key_queries.collect{|q| Customer.redis.keys(q)}.flatten.compact
     Customer.redis.hdel("filters:counts:#{self.class}:warn")
-    if (keys = Customer.redis.keys("#{self.class}:*:filters*")) && !keys.empty?
-      Customer.redis.del(keys)
-    end
+    Customer.redis.del(keys) unless keys.empty?
   end
   
   # Given a filter and a result, make the necessary calls to redis to store it.
@@ -184,6 +184,22 @@ class Person < ActiveRecord::Base
       Customer.redis.hincrby("filters:counts:#{self.class}:warn", self.id, 1) if result.include?("warn")
       Customer.redis.sadd(object_filter.redis_key(result.include?("pass") ? "pass" : "fail"), self.id)
       Customer.redis.srem(object_filter.redis_key(result.include?("pass") ? "fail" : "pass"), self.id)
+    end
+  end
+  
+  # Store cohort membership for this participant in the redis cache. This is used in
+  # conjunction with the filter cache to limit the results of filter statistics. Uses the
+  # model's +CohortCacheGroups+ constant to determine which cohort groups to cache.
+  def update_cohort_cache!
+    return nil if self.class::CohortCacheGroups.empty?
+    for cohort_group in self.class::CohortCacheGroups
+      previous_value = Customer.redis.hget(self.redis_key("cohorts"), cohort_group).to_s
+      new_value = self.try(cohort_group).to_s
+      Customer.redis.pipelined do
+        Customer.redis.hset(self.redis_key("cohorts"), cohort_group, new_value)
+        Customer.redis.srem("#{self.class}:cohorts:#{cohort_group}:#{previous_value}", self.id)
+        Customer.redis.sadd("#{self.class}:cohorts:#{cohort_group}:#{new_value}", self.id)
+      end
     end
   end
   
@@ -198,8 +214,6 @@ class Person < ActiveRecord::Base
   # Updates the filter cache by checking each ObjectFilter, and then saves the current record
   # by calling +update_attribute+ so that +updated_at+ is not modified.
   def update_filter_cache_and_save!
-    # new_filter_cache = update_filter_cache!
-    # update_column(:filter_cache, new_filter_cache.to_yaml)
     update_filter_cache!
   end
 

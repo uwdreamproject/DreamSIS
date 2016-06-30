@@ -72,6 +72,8 @@ class Participant < Person
     attendance_summaries: "Attendance", 
     college_stages: "College Pipeline" 
   }
+  
+  CohortCacheGroups = %w[grad_year high_school_id inactive not_target_participant]
 
   # Returns true if there is a value in the signature
   def completed_intake_form?
