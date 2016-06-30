@@ -1,11 +1,12 @@
 class ParticipantsController < ApplicationController
-  protect_from_forgery only: [:create, :update, :destroy, :bulk] 
+  protect_from_forgery only: [:create, :update, :destroy, :bulk]
   skip_before_filter :login_required, only: [:college_mapper_callback]
   skip_before_filter :check_if_enrolled, only: [:college_mapper_callback]
   skip_before_filter :check_authorization, except: [:index, :cohort, :destroy]
   
 	before_filter :set_title_prefix
   before_filter :set_report_type
+  before_filter :fetch_filter_warning_counts
 
   # GET /participants
   # GET /participants.xml
@@ -79,7 +80,7 @@ class ParticipantsController < ApplicationController
       format.xml  { render xml: @participants.unpaginate }
       format.js   { render 'index'}
 		  format.xlsx { respond_to_xlsx }
-    end    
+    end
   end
 
   def college
@@ -176,7 +177,7 @@ class ParticipantsController < ApplicationController
       format.xml  { render xml: @participants.unpaginate }
       format.js   { render 'index'}
 		  format.xlsx { respond_to_xlsx }
-    end    
+    end
   end
   
   def add_to_group
@@ -184,7 +185,7 @@ class ParticipantsController < ApplicationController
     @participant = Participant.find(params[:id].split("_")[1])
     @participant_groups = ParticipantGroup.find(:all, conditions: { location_id: @participant_group.location_id, grad_year: @participant_group.grad_year })
     @participant.update_attribute(:participant_group_id, @participant_group.id)
-    ParticipantGroup.update_counters @participant_group.id, participants_count: @participant_group.participants.length    
+    ParticipantGroup.update_counters @participant_group.id, participants_count: @participant_group.participants.length
     
     respond_to do |format|
       format.js
@@ -218,13 +219,12 @@ class ParticipantsController < ApplicationController
       return render_error("You are not allowed to view that participant.")
     end
     
-		if @participant.avatar?
+    if @participant.avatar?
 			av = params[:size] ? @participant.avatar.versions[params[:size].to_sym] : @participant.avatar
 			return send_default_photo(params[:size]) if av.nil?
-      # return send_data(av.read, disposition: 'inline', type: 'image/jpeg')
-      return redirect_to av.url
+      redirect_to av.url
     else
-      return send_default_photo(params[:size]) if av.nil?
+      send_default_photo(params[:size]) if av.nil?
     end
   end
 	
@@ -235,8 +235,8 @@ class ParticipantsController < ApplicationController
     @event_attendances = @event_attendances.where("events.date IN (?)", params[:dates]) if params[:dates]
     
     respond_to do |format|
-      format.json { 
-        render json: @event_attendances.as_json(include: { 
+      format.json {
+        render json: @event_attendances.as_json(include: {
           event: { methods: [:attendance_options, :short_title] }
         }).group_by{|e| e[:event]["date"] }
       }
@@ -259,8 +259,8 @@ class ParticipantsController < ApplicationController
   # GET /participants/1/edit
   def edit
     @participant = Participant.find(params[:id])
-    @participant_groups = ParticipantGroup.find(:all, conditions: { 
-        location_id: @participant.high_school_id, 
+    @participant_groups = ParticipantGroup.find(:all, conditions: {
+        location_id: @participant.high_school_id,
         grad_year: @participant.grad_year
       })
 
@@ -341,8 +341,7 @@ class ParticipantsController < ApplicationController
   # Forces a refresh of the filter cache for this participant.
   def refresh_filter_cache
     @participant = Participant.find(params[:id])
-    @participant.update_filter_cache!
-    flash[:notice] = "Stats successfully updated." if @participant.save
+    flash[:notice] = "Stats successfully updated." if @participant.update_filter_cache!
     
     respond_to do |format|
       format.html { redirect_to :back }
@@ -350,11 +349,32 @@ class ParticipantsController < ApplicationController
     end
   end
   
+  # Returns a json payload of the matching objects for the selected filter criteria.
+  def filter_results
+    query = params[:filter_selections].blank? ? [] : params[:filter_selections].split(",")
+    @object_ids = ObjectFilter.intersect(query)
+    
+    respond_to do |format|
+      format.json { render(json: { object_ids: @object_ids, filter_counts: {} }) }
+    end
+  end
+  
+  # Returns the filters for the specified participant.
+  def filters
+    @object_filters = Participant.object_filters
+    @participant = Participant.find(params[:id]) rescue Student.find(params[:id])
+    @result = Hash[@object_filters.map{|f| [f.title, @participant.filter_status(f)] }]
+    
+    respond_to do |format|
+      format.json { render json: @result }
+    end
+  end
+  
   def fetch_participant_group_options
     # @participant = Participant.find(params[:id])
-    @participant_groups = ParticipantGroup.find(:all, conditions: { 
-        location_id: params[:participant][:high_school_id], 
-        grad_year: params[:participant][:grad_year] 
+    @participant_groups = ParticipantGroup.find(:all, conditions: {
+        location_id: params[:participant][:high_school_id],
+        grad_year: params[:participant][:grad_year]
       })
       
     respond_to do |format|
@@ -365,24 +385,24 @@ class ParticipantsController < ApplicationController
   def auto_complete_for_participant_fullname
     if params[:term].to_i != 0
       @participants = [ Participant.find(params[:term].to_i) ]
-    else      
+    else
       conditions = ["(firstname LIKE :fullname OR lastname LIKE :fullname)"]
       conditions << "high_school_id = :high_school_id" if params[:high_school_id]
       conditions << "grad_year = :grad_year" if params[:grad_year]
     
-      @participants = Participant.find(:all, 
-                                        conditions: [conditions.join(" AND "), 
+      @participants = Participant.find(:all,
+                                        conditions: [conditions.join(" AND "),
                                                         {fullname: "%#{params[:term].downcase}%",
                                                         grad_year: params[:grad_year],
                                                         high_school_id: params[:high_school_id]
                                                         }])
     end
     
-    render json: @participants.map { |result| 
+    render json: @participants.map { |result|
       {
-        id: result.id, 
+        id: result.id,
         value: h(result.fullname),
-        klass: result.class.to_s.underscore.titleize, 
+        klass: result.class.to_s.underscore.titleize,
         fullname: h(result.fullname),
         secondary: h(result.email),
         tertiary: h((Customer.current_customer.customer_label(result.class.to_s.underscore, titleize: true) || result.class.to_s).titleize)
@@ -434,12 +454,16 @@ class ParticipantsController < ApplicationController
 	def set_title_prefix
 		@title = ["Participants"]
 	end
+  
+  def fetch_filter_warning_counts
+    @filter_warning_counts = Customer.redis.hgetall("filters:counts:Participant:warn")
+  end
 
   def send_default_photo(size)
 		filename = size == "thumb" ? "blank_avatar_thumb.png" : "blank_avatar.png"
-    send_file File.join(Rails.root, "public", "images", filename), 
+    send_file File.join(Rails.root, "public", "images", filename),
               disposition: 'inline', type: 'image/png', status: 203
-  end  
+  end
 
 	def respond_to_xlsx
 		@export = report_type.find_or_initialize_by_key(@cache_key)

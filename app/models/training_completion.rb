@@ -3,7 +3,7 @@ class TrainingCompletion < ActiveRecord::Base
   validates_uniqueness_of :person_id, scope: :training_id
   
   belongs_to :training
-  belongs_to :person
+  belongs_to :person, touch: true
     
   def completed?
     !completed_at.nil?

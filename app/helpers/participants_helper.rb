@@ -35,5 +35,11 @@ module ParticipantsHelper
     url[:generate] = 'true' if force_generate
     return url
   end
+
+  def filter_warning_count_tag(participant)
+    count = @filter_warning_counts[participant.id.to_s]
+    return "" if count.nil? || count.to_i.zero?
+    content_tag(:a, count, class: "filter_results_count", href: "")
+  end
   
 end

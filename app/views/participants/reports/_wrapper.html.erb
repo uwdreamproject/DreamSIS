@@ -1,14 +1,16 @@
-<tr class="<%= "deselected" if participant.inactive? %> <%= "not-target" if participant.not_target_participant? %> <%= "needs-followup" if participant.needs_followup? %> <%= "not-first-child" unless row_index == 1 %> participant" data-participant-id="<%= participant.id.to_s %>">
+<tr class="<%= "deselected" if participant.inactive? %> <%= "not-target" if participant.not_target_participant? %> <%= "needs-followup" if participant.needs_followup? %> <%= "not-first-child" unless row_index == 1 %> participant">
 
 	<%- if row_index == 1 -%>
 		<td class="check_box_td multirow-highlight" rowspan="<%= row_count %>">
 			<input type="checkbox" name="selected[Participant][<%= participant.id %>]" class="index_check_box" value="1" onClick="updateWithSelectedActions()" />
 		</td>
+		<td class="avatar">
+			<%= image_tag participant.avatar.thumb.url, :class => "avatar" %>
+		</td>
 		<td rowspan="<%= row_count %>" class="name multirow-highlight">
-			<%#= image_tag participant_avatar_path(participant, :thumb), :class => "avatar" %>
-			<%= link_to h(participant.lastname_first), participant %>
-			<small class="inactive-note">(inactive)</small>
-			<small class="not-target-note">(<%= Customer.not_target_label %>)</small>
+			<%= link_to participant.lastname_first, participant %>
+			<small class="inactive-note">Inactive</small>
+			<small class="not-target-note"><%= Customer.not_target_label.titleize %></small>
 		</td>
 		<%= render :partial => "participants/reports/#{report.pluralize}", 
 					:locals => { :participant => participant, :collection => collection, :row_count => collection.size, :row_index => row_index } %>

@@ -26,5 +26,7 @@
 	<% end %>
 	
 	<%= f.input :category, :collection => Participant::FILTER_CATEGORIES.invert %>
+	
+	<%= f.input :warn_if_false, :hint => "Changes the way the filter is displayed when an object does not meet its criteria. Choosing <b>Warn if false</b> will display as a red mark (<span class='icon fail warn'>X</span>) and include the result in the overall filter count (<span class='filter_results_count'>3</span>), which is useful for alerting users that action may be required. The <b>Default</b> display is better suited for filters that are primarily for information and statistics.".html_safe %>
 											
 <% end -%>

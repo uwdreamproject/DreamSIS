@@ -66,9 +66,9 @@ class Customer < ActiveRecord::Base
     return_integer ? raw : raw.to_s.rjust(6, "0")
   end
   
-  # If the Customer defines a different name for use with ClearinghouseRequests, return that. 
+  # If the Customer defines a different name for use with ClearinghouseRequests, return that.
   # Otherwise, just return the name.
-  def name_for_clearinghouse 
+  def name_for_clearinghouse
     clearinghouse_customer_name || name
   end
   
@@ -203,6 +203,11 @@ class Customer < ActiveRecord::Base
       errors.add :base, "Tenant database must exist before Customer record is created."
     end
   end
+  
+  # Creates a Redis namespace for this customer to use.
+  def redis
+     @redis ||= Redis::Namespace.new(url_shortcut, redis: $redis)
+  end
 
   # Returns the current customer's name
   def self.name_label
@@ -262,7 +267,7 @@ class Customer < ActiveRecord::Base
 		end
 	end
 
-  private 
+  private
 
   # helper method to calculate and return the validity length as a string
   def helper_validity_length(length)

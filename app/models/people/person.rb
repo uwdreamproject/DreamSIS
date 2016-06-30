@@ -27,9 +27,7 @@ class Person < ActiveRecord::Base
   mount_uploader :avatar, AvatarUploader
 
   after_create :generate_survey_id
-
-  serialize :filter_cache
-  before_save :update_filter_cache!
+  after_save -> { PersonFiltersWorker.perform_async(self.id, Customer.tenant_name) }
 
   attr_accessor :validate_name
   attr_accessor :validate_ready_to_rsvp
@@ -97,18 +95,84 @@ class Person < ActiveRecord::Base
     []
   end
 
-  # def [](attr_name)
-  #   instance_eval(attr_name.to_s)
-  # end
+  # Returns true if there are any filters with warnings for this person.
+  def filter_warnings?
+    filter_results_count > 0
+  end
+  
+  # Returns the number of filters that this Participant doesn't pass. Useful for quick view of status.
+  def filter_results_count
+    Customer.redis.multi do
+      update_filter_cache_if_needed
+      @count = Customer.redis.hget("filters:counts:#{self.class}:warn", self.id)
+    end
+    @count.value.to_i
+  end
+
+  # Checks the +filter_cache+ to see whether or not this person passes the specified filter.
+  # If the +filter_cache+ doesn't exist, it creates it.
+  def passes_filter?(object_filter)
+    filter_status(object_filter).include?("pass") || filter_status(object_filter).include?("true")
+  end
+  
+  # Returns the latest status of filters for this person. Generally, this returns either "pass",
+  # "fail", or "fail warn" depending on the +filter_status+ result and the ObjectFilter's
+  # +warn_if_false+ setting. If no ObjectFilter is provided, then the hash of all results is
+  # returned directly from the cache.
+  def filter_status(object_filter = nil)
+    update_filter_cache_if_needed
+    @filter_status ||= Customer.redis.hgetall(self.redis_key("filters"))
+    return @filter_status unless object_filter
+    key = object_filter.is_a?(ObjectFilter) ? object_filter.id.to_s : object_filter.to_s
+    @filter_status[key] || ""
+  end
+  
+  def update_filter_cache_if_needed
+    return false if @filter_status
+    update_filter_cache! unless Customer.redis.exists(self.redis_key("filters"))
+  end
 
   # For each ObjectFilter relevant for this person type, run the filter on this person
   # and store the result value in +filter_cache+.
   def update_filter_cache!
-    self.filter_cache = {}
+    reset_filters!
     for object_filter in self.class.object_filters
-      self.filter_cache[object_filter.id] = object_filter.passes?(self)
+      if object_filter.display_for?(self)
+        result = object_filter.passes?(self) ? "pass" : (object_filter.warn_if_false? ? "fail warn" : "fail")
+      else
+        result = "hidden"
+      end
+      commit_filter_result!(object_filter, result)
     end
-    self.filter_cache
+    @filter_status = Customer.redis.hgetall(self.redis_key("filters"))
+  end
+  
+  # Reset this person's filter_warn count to zero and delete the person's filter cache.
+  def reset_filters!
+    Customer.redis.hset("filters:counts:#{self.class}:warn", self.id, 0)
+    Customer.redis.del(self.redis_key("filters"))
+  end
+  
+  # Deletes all current filters information stored in the redis cache.
+  def self.reset_filter_cache!
+    Customer.redis.hdel("filters:counts:#{self.class}:warn")
+    if (keys = Customer.redis.keys("#{self.class}:*:filters*")) && !keys.empty?
+      Customer.redis.del(keys)
+    end
+  end
+  
+  # Given a filter and a result, make the necessary calls to redis to store it.
+  def commit_filter_result!(object_filter, result)
+    Customer.redis.pipelined do
+      Customer.redis.hset(self.redis_key("filters"), object_filter.id, result)
+      Customer.redis.hincrby("filters:counts:#{self.class}:warn", self.id, 1) if result.include?("warn")
+      Customer.redis.sadd(object_filter.redis_key(result.include?("pass") ? "pass" : "fail"), self.id)
+      Customer.redis.srem(object_filter.redis_key(result.include?("pass") ? "fail" : "pass"), self.id)
+    end
+  end
+  
+  def redis_key(str)
+    "#{self.class}:#{self.id}:#{str}"
   end
 
   def self.object_filters
@@ -118,8 +182,9 @@ class Person < ActiveRecord::Base
   # Updates the filter cache by checking each ObjectFilter, and then saves the current record
   # by calling +update_attribute+ so that +updated_at+ is not modified.
   def update_filter_cache_and_save!
-    new_filter_cache = update_filter_cache!
-    update_column(:filter_cache, new_filter_cache.to_yaml)
+    # new_filter_cache = update_filter_cache!
+    # update_column(:filter_cache, new_filter_cache.to_yaml)
+    update_filter_cache!
   end
 
   def self.expire_object_filters_cache

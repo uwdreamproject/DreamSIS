@@ -69,9 +69,10 @@ gem 'sass-rails'
 gem 'coffee-rails'
 gem 'uglifier'
 gem 'protected_attributes'
-
-
-
+gem 'redis'
+gem 'redis-namespace'
+gem 'redis-rails'
+gem 'redis-rack-cache'
 
 group :production do
   gem "pg", "0.18.4"

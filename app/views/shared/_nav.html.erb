@@ -12,7 +12,7 @@
 					<% end %>
 					<%- for participant in @current_user.participants -%>
 						<li class="participant">
-							<%= content_tag :div, nil, :class => "avatar", :style => "background-image: url(#{participant_avatar_path(participant, :thumb)})" %>
+							<%= content_tag :div, nil, :class => "avatar", :style => "background-image: url(#{participant.avatar.thumb.url})" %>
 							<%= link_to truncate(participant.fullname), participant %>
 						</li>
 					<% end %>

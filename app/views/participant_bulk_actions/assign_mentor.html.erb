@@ -4,7 +4,7 @@
 <div style="position:relative">
 	<%= form_for :participant, :url => participant_bulk_action_path(:process_assign_mentor), :remote => true do |f| %>
 	
-		<input type="input" class="search autocomplete-search wide" placeholder="Lookup <%= Customer.mentor_label %>" data-source="<%= auto_complete_for_mentor_fullname_mentors_url %>" data-update-with-id="mentor_id" />		
+		<input type="input" class="search autocomplete-search wide" placeholder="Lookup <%= Customer.mentor_label %>" data-source="<%= auto_complete_for_mentor_fullname_mentors_url %>" data-update-with-id="mentor_id" />
 	
 		<%= hidden_field_tag "mentor_id" %>
 		
@@ -15,7 +15,7 @@
 		<p>
 			<%= f.submit "Assign #{Customer.mentor_label}", :disable_with => "Adding..." %>
 			<%= separator %>
-			<%= link_to_function "Cancel", "$(this).parents('.centered-modal').remove()", :class => "cancel button" %>
+			<%#= link_to_function "Cancel", "$(this).parents('.centered-modal').remove()", :class => "cancel button" %>
 		</p>
 		
 	<% end -%>

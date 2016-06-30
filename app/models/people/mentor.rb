@@ -86,14 +86,12 @@ class Mentor < Person
     super
 
     # Requires this to be called after mentor_term updates
-    self.filter_cache[:currently_enrolled] = currently_enrolled?
-
+    Customer.redis.hset(self.redis_key("filters"), "currently_enrolled", currently_enrolled?)
+    
     # Requires this to be called after event_attendance updates
-    if Customer.mentor_workshop_event_type
-      self.filter_cache[:attended_mentor_workshop] = attended_mentor_workshop?
-    end
+    Customer.redis.hset(self.redis_key("filters"), "attended_mentor_workshop", attended_mentor_workshop?) if Customer.mentor_workshop_event_type
 
-    self.filter_cache
+    @filter_status = Customer.redis.hgetall(self.redis_key("filters"))
   end
 
   # Returns true if there is a valid date in the +risk_form_signed_at+ attribute and any value in the
@@ -136,10 +134,7 @@ class Mentor < Person
 
   # Returns true if the mentor is enrolled for the current term.
   def currently_enrolled?
-    c = self.filter_cache.try(:[], :currently_enrolled)
-    return c unless c.nil?
-
-    !current_mentor_terms.empty?
+    passes_filter?(:currently_enrolled) || !current_mentor_terms.empty?
   end
 
 =begin
@@ -273,9 +268,8 @@ Documentation for each filter:
 
   # Returns true if the mentor has attended an event in the "Mentor Workshop" type.
   def attended_mentor_workshop?
-    c = self.filter_cache.try(:[], :attended_mentor_workshop)
-    return c unless c.nil?
-
+    return passes_filter?(:attended_mentor_workshop) unless passes_filter?(:attended_mentor_workshop).nil?
+    
     return true if mentor_terms.collect(&:term).uniq.reject {|m| m == Term.current_term}.count > 0 rescue true
     !event_attendances.find(:all,
                             include: { event: :event_type },

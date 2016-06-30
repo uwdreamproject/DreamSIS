@@ -1,12 +1,11 @@
-# Be sure to restart your server when you modify this file.
+endpoint = API_KEYS["redis"][Rails.env]["endpoint"]
+password = API_KEYS["redis"][Rails.env]["password"]
 
-# Use the database for sessions instead of the cookie-based default,
-# which shouldn't be used to store highly confidential information
-# (create the session table with "rails generate session_migration")
-Dreamsis::Application.config.session_store :active_record_store
+Dreamsis::Application.config.session_store :redis_store,
+  servers: { url: "redis://#{endpoint}", password: password, namespace: "session" },
+  expires_in: 8.hours
 
-# ActionController::Base.session = {
-#   key: '_dreamsis_session',
-#   secret: ActiveSupport::SecureRandom.hex(64)
-# }
-
+Dreamsis::Application.config.action_dispatch.rack_cache = {
+  meta_store: { url: "redis://#{endpoint}", network_timeout: 5, password: password, namespace: "meta_store" },
+  entity_store: { url: "redis://#{endpoint}", network_timeout: 5, password: password, namespace: "entity_store" }
+}

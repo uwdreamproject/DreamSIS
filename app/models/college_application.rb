@@ -13,7 +13,7 @@ class CollegeApplication < ActiveRecord::Base
   delegate :firstname, :lastname, :formal_firstname, :grad_year, to: :participant
   
   before_destroy :destroy_college_mapper_college, if: :do_college_mapper_functions?
-  after_create :create_college_mapper_college, if: :do_college_mapper_functions?  
+  after_create :create_college_mapper_college, if: :do_college_mapper_functions?
   
   Stages = %w[interested applied planning enrolled current graduated]
   
@@ -51,11 +51,11 @@ class CollegeApplication < ActiveRecord::Base
 		return @top_institutions[limit] if @top_institutions && @top_institutions[limit]
 		@top_institutions ||= []
 		@top_institutions[limit] = []
-    raw = CollegeApplication.find(:all, 
-      group: :institution_id, 
-      select: "institution_id, COUNT(institution_id) AS count", 
-      limit: limit,
-      order: "count DESC")
+    raw = CollegeApplication
+      .group(:institution_id)
+      .select("institution_id, COUNT(institution_id) AS count")
+      .limit(limit)
+      .order("count DESC")
 		raw.each do |college_application|
 			i = college_application.institution
       next if i.nil?

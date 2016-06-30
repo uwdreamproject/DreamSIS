@@ -1,4 +1,3 @@
-# require 'sidekiq/web'
 require 'sidekiq/api'
 
 Dreamsis::Application.routes.draw do
@@ -21,16 +20,16 @@ Dreamsis::Application.routes.draw do
     end
   end
   resources :quarters, controller: 'terms'
-  resources :notes do  
+  resources :notes do
     member do
       get :document
     end
   end
-  resources :trainings do  
+  resources :trainings do
     member do
       get :take
       post :complete
-    end  
+    end
   end
   resources :programs
   resources :test_types
@@ -41,7 +40,7 @@ Dreamsis::Application.routes.draw do
     end
     member do
       get :applications
-    end  
+    end
   end
   get 'changes/for/:model_name/:id' => 'changes#for_object', as: :changes_for_object
   get 'changes/trash' => 'changes#deleted', as: :deleted_records
@@ -77,7 +76,7 @@ Dreamsis::Application.routes.draw do
     end
     member do
       get :applications
-    end  
+    end
   end
   
   
@@ -115,13 +114,15 @@ Dreamsis::Application.routes.draw do
       get :check_export_status
       
       post :add_to_group
-      post :college_mapper_callback      
+      post :college_mapper_callback
+      get :filter_results
     end
     member do
       get :fetch_participant_group_options
       post :college_mapper_login
       post :refresh_filter_cache
       get :event_attendances
+      get :filters
     end
     resources :college_applications do
       collection do
@@ -141,7 +142,7 @@ Dreamsis::Application.routes.draw do
       end
       member do
         post :update_scores_fields
-      end    
+      end
     end
   end
   resources :students, only: [:show]
@@ -256,7 +257,7 @@ Dreamsis::Application.routes.draw do
   get '/auth/anonymous/' => 'session#create_anonymous', as: :anonymous_login_callback
   get '/auth/:provider/callback' => 'session#create', as: :omniauth_callback
   get '/auth/failure' => 'session#failure'
-  resource :session  
+  resource :session
 
   # Other
   # ---------------------------------------

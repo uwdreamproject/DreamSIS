@@ -132,19 +132,6 @@ class Participant < Person
     end
   end
   
-  # Returns the number of filters that this Participant doesn't pass. Useful for quick view of status.
-  def filter_results_count
-    update_filter_cache! unless filter_cache
-    filter_cache.select{|k,v| v == false }.count
-  end
-
-  # Checks the +filter_cache+ to see whether or not this person passes the specified filter.
-  # If the +filter_cache+ doesn't exist, it creates it.
-  def passes_filter?(object_filter)
-    update_filter_cache_and_save! if !filter_cache.is_a?(Hash) || self.filter_cache[object_filter.id].nil?
-    self.filter_cache[object_filter.id]
-  end
-
   def respond_to?(method_sym, include_private = false)
     if method_sym.to_s =~ /\Afafsa_(\d{4})_(.+)\Z/
       true
@@ -203,11 +190,11 @@ class Participant < Person
   end
   
   def fafsa(year = Time.now.year)
-    fafsa = fafsas.find_or_initialize_by_year(year)
+    fafsas.find_or_initialize_by_year(year)
   end
   
   def fafsa(year = Time.now.year)
-    fafsa = fafsas.find_or_initialize_by_year(year)
+    fafsas.find_or_initialize_by_year(year)
   end
 
   # Returns the Institution or College record for this Participant based on "college_attending_id",
@@ -422,7 +409,7 @@ class Participant < Person
   
   def new_mentor_id=(mentor_id)
     mentors << Mentor.find(mentor_id)
-  rescue ActiveRecord::RecordInvalid => e
+  rescue ActiveRecord::RecordInvalid
     errors.add(:new_mentor_id, "has already been added to this participant")
   end
   
