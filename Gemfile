@@ -73,6 +73,7 @@ gem 'redis'
 gem 'redis-namespace'
 gem 'redis-rails'
 gem 'redis-rack-cache'
+gem 'bootstrap-sass'
 
 group :production do
   gem "pg", "0.18.4"

@@ -8,6 +8,7 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require jquery-tablesorter
+//= require bootstrap-sprockets
 //= require autocomplete-rails
 //= require select2-full
 //= require autonumeric
