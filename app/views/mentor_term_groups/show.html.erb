@@ -37,7 +37,7 @@
 </table>
 
 <br>
-<%= link_to_function content_tag(:span, "Show", :id => "deleted_verb") +
+<%#= link_to_function content_tag(:span, "Show", :id => "deleted_verb") +
 					" deleted/dropped mentors (#{@mentor_term_group.deleted_mentor_terms.size})",
 					"showHideDeletedMentors()" unless @mentor_term_group.deleted_mentor_terms.empty? %>
 

@@ -106,7 +106,7 @@ class Event < ActiveRecord::Base
   
   # Returns all Events that are relevant to the requested GradeLevel.
   def self.for_grade_level(level)
-    find(:all, conditions: ["? >= earliest_grade_level_level AND ? <= latest_grade_level_level", level, level])
+    where(["? >= earliest_grade_level_level AND ? <= latest_grade_level_level", level, level])
   end
   
   def past?

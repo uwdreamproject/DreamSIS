@@ -12,8 +12,8 @@ class FinancialAidPackage < ActiveRecord::Base
   
   before_validation :calculate_totals
 
-  has_many :notes, as: :notable, conditions: "document_file_name IS NULL"
-  has_many :documents, as: :notable, class_name: "Note", conditions: "document_file_name IS NOT NULL AND title IS NOT NULL"
+  has_many :notes, -> { Note.notes }, as: :notable
+  has_many :documents, -> { Note.documents }, as: :notable, class_name: "Note"
 
   delegate :fullname, :high_school_name, to: :participant
   delegate :name, :iclevel_description, :control_description, :sector_description, to: :college_application

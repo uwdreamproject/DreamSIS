@@ -71,7 +71,7 @@
 						<span class="tertiary"><%= @event.event_coordinator.class.to_s %></span>
 					<% end -%>
 				</div>
-				<small><%= link_to_function "Change to a different person", 
+				<small><%#= link_to_function "Change to a different person", 
 										"Element.show('event_coordinator_details');
 										 Element.show('model_auto_completer_tf');
 										 $('model_auto_completer_tf').value = '';

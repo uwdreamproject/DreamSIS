@@ -46,7 +46,7 @@
 				<p>
 					<br /><%= link_to "Retrieve results now", retrieve_clearinghouse_request_path(@clearinghouse_request), :method => :post, :class => "download button" if @clearinghouse_request.retrievable? %>
 					<%= separator if @clearinghouse_request.retrievable? %>
-					<%= link_to_function "Upload results file", "$('#upload_form').show()", :class => "save button" unless @clearinghouse_request.closed? %>
+					<%#= link_to_function "Upload results file", "$('#upload_form').show()", :class => "save button" unless @clearinghouse_request.closed? %>
 				</p>
 				
 				<%= form_tag upload_clearinghouse_request_path(@clearinghouse_request), :id => 'upload_form', :style => "display:none", :multipart => true do |f| -%>

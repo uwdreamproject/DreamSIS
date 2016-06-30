@@ -1,6 +1,6 @@
 class Participant < Person
-  extend FriendlyId
-  friendly_id :fullname, use: :slugged
+  # extend FriendlyId
+  # friendly_id :fullname, use: :slugged
   belongs_to :high_school
   has_many :college_applications
   has_many :scholarship_applications
@@ -190,11 +190,11 @@ class Participant < Person
   end
   
   def fafsa(year = Time.now.year)
-    fafsas.find_or_initialize_by_year(year)
+    fafsas.find_or_initialize_by(year: year)
   end
   
   def fafsa(year = Time.now.year)
-    fafsas.find_or_initialize_by_year(year)
+    fafsas.find_or_initialize_by(year: year)
   end
 
   # Returns the Institution or College record for this Participant based on "college_attending_id",

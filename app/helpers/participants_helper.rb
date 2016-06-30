@@ -11,7 +11,8 @@ module ParticipantsHelper
       link_title << content_tag(:span, raw(count), class: "count #{'zero' if count.zero?}") if count
       link_title << content_tag(:span, raw(count), class: "count-bar count-#{h(count)}") if count
     end
-    content_tag :li, link_to_function(raw(link_title), "switchToTab('#{dom_id}')", class: "#{(active ? "active" : "")} #{dom_id}", id: "#{dom_id}_tab_link")
+    # content_tag :li, link_to_function(raw(link_title), "switchToTab('#{dom_id}')", class: "#{(active ? "active" : "")} #{dom_id}", id: "#{dom_id}_tab_link")
+    content_tag :li, "LINK"
   end
   
   # Outputs the link tag for triggering a bulk action. Specify the action to trigger as the main
@@ -20,8 +21,8 @@ module ParticipantsHelper
     options.merge!({
       "data-original-href" => participant_bulk_action_path(action_name),
       "data-extra-params" => options.delete(:extra_params),
-      class: "#{options.delete(:class)} button", 
-      remote: true, 
+      class: "#{options.delete(:class)} button",
+      remote: true,
       method: :post
     })
     link_to title, participant_bulk_action_path(action_name), options

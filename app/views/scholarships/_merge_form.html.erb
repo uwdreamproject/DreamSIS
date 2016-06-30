@@ -13,7 +13,7 @@
 
 
 <h3>Merge Records</h3>
-<p>To merge duplicate scholarship records, <%= link_to_function "enable merging", "$('merge_form').show(); this.up('p').hide();" %>.</p>
+<p>To merge duplicate scholarship records, <%#= link_to_function "enable merging", "$('merge_form').show(); this.up('p').hide();" %>.</p>
 
 <%= form_tag merge_scholarships_path, :id => "merge_form", :style => "display:none" %>
 	<p class="intro">Click on the row for the record to merge, then click the record to merge into. Then click Merge.</p>

@@ -9,7 +9,7 @@
 						Participant::POSTSECONDARY_GOAL_OPTIONS].flatten.uniq, participant.postsecondary_plan) %>
 					<%= f.submit "Save" %>
 					<%= separator %>
-					<%= link_to_function "Cancel", "javascript:;", :id => "postsecondary_plan_cancel_button" %>
+					<%#= link_to_function "Cancel", "javascript:;", :id => "postsecondary_plan_cancel_button" %>
 				<% end %>
 				<%= content_tag :div, "Note: Changing the postsecondary plan will unset the college that #{h(participant.firstname)} is planning to attend.", :class => "weak error-message no-icon small marginless" unless participant.college_attending_id.nil? %>
 			</span>

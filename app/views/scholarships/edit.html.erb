@@ -13,7 +13,7 @@
 <% end %>
 
 <div id="sidebar">
-	<p><%= link_to_function "Merge scholarship", "$('merge_form').show(); this.up('p').hide();", :class => "sync button" %></p>
+	<p><%#= link_to_function "Merge scholarship", "$('merge_form').show(); this.up('p').hide();", :class => "sync button" %></p>
 	
 	<%= form_tag merge_scholarships_path(:return_to => scholarships_path), :id => "merge_form", :style => "display:none" %>
 		<h3>Merge with another Scholarship</h3>

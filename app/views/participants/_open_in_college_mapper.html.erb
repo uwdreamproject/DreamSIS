@@ -14,5 +14,5 @@
 	<input type="hidden" name="redirect_to" id="college_mapper_redirect_to" value="<%= "/counselors/timeline/#{@participant.college_mapper_id}" %>">
 	<input type="submit" value="Go to CollegeMapper website" onClick="this.form.hide(); return true;">
 	<%= separator %>
-	<%= link_to_function "Cancel", "this.parentElement.hide()" %>
+	<%#= link_to_function "Cancel", "this.parentElement.hide()" %>
 </form>
