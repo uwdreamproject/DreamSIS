@@ -2,7 +2,7 @@ class EventShiftsController < ApplicationController
   before_filter :fetch_event
   
   def index
-    @event_shift = @event.shifts.find :all
+    @event_shift = @event.shifts
 
     respond_to do |format|
       format.html # index.html.erb

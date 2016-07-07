@@ -3,7 +3,7 @@ class CustomersController < ApplicationController
   before_filter :restrict_to_current_tenant
   
   def index
-    @customers = Customer.find :all
+    @customers = Customer.all
   
     respond_to do |format|
       format.html # index.html.erb

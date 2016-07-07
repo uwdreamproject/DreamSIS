@@ -2,7 +2,7 @@ class TrainingsController < ApplicationController
   skip_before_filter :check_authorization, only: [:take]
   
   def index
-    @trainings = Training.find :all
+    @trainings = Training.all
 
     respond_to do |format|
       format.html # index.html.erb

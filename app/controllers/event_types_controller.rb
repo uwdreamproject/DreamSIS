@@ -1,6 +1,6 @@
 class EventTypesController < ApplicationController
   def index
-    @event_types = EventType.find :all
+    @event_types = EventType.all
 
     respond_to do |format|
       format.html # index.html.erb

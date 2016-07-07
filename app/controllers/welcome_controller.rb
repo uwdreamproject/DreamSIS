@@ -25,7 +25,7 @@ class WelcomeController < ApplicationController
     @high_school = @mentor.current_lead_at.first
     @events = @mentor.event_attendances.future_attending.collect(&:event)
     @participants = Participant.in_cohort(Participant.current_cohort).in_high_school(@high_school.try(:id)).page(params[:page]) if @high_school
-    @participant_groups = ParticipantGroup.find :all, conditions: { location_id: @high_school.try(:id)} if @high_school
+    @participant_groups = ParticipantGroup.where(location_id: @high_school.try(:id)) if @high_school
     @report = params[:report].blank? ? "basics" : ERB::Util.html_escape(params[:report])
   end
 

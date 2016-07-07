@@ -3,7 +3,7 @@ class ProgramsController < ApplicationController
 
   
   def index
-    @programs = Program.find :all
+    @programs = Program.all
 
     respond_to do |format|
       format.html # index.html.erb

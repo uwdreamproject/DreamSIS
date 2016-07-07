@@ -1,7 +1,7 @@
 class ClearinghouseRequestsController < ApplicationController
   
   def index
-    @clearinghouse_requests = ClearinghouseRequest.find :all
+    @clearinghouse_requests = ClearinghouseRequest.all
   
     respond_to do |format|
       format.html # index.html.erb
@@ -84,7 +84,7 @@ class ClearinghouseRequestsController < ApplicationController
       flash[:error] = "There was a problem closing out the request."
     end
     redirect_to(@clearinghouse_request)
-  end  
+  end
   
   def results
     @clearinghouse_request = ClearinghouseRequest.find(params[:id])
@@ -121,7 +121,7 @@ class ClearinghouseRequestsController < ApplicationController
   end
   
   def update
-    @clearinghouse_request = ClearinghouseRequest.find(params[:id])      
+    @clearinghouse_request = ClearinghouseRequest.find(params[:id])
   
     respond_to do |format|
       if @clearinghouse_request.update_attributes(params[:clearinghouse_request])

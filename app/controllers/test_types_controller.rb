@@ -1,7 +1,7 @@
 class TestTypesController < ApplicationController
   
   def index
-    @test_types = TestType.find :all
+    @test_types = TestType.all
 
     respond_to do |format|
       format.html # index.html.erb

@@ -2,7 +2,7 @@ class ParticipantGroupsController < ApplicationController
   skip_before_filter :check_authorization, only: [:show]
   
   def index
-    @participant_groups = ParticipantGroup.find :all, include: [ :location ]
+    @participant_groups = ParticipantGroup.includes(:location)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -12,7 +12,7 @@ class ParticipantGroupsController < ApplicationController
 
   def high_school
     @high_school = HighSchool.find(params[:high_school_id])
-    @participant_groups = ParticipantGroup.find :all, include: [ :location ], conditions: { location_id: @high_school }
+    @participant_groups = ParticipantGroup.includes(:location).where(location_id: @high_school)
     
     respond_to do |format|
       format.html { render action: 'index' }

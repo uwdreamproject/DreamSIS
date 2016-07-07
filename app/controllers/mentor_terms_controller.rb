@@ -2,8 +2,8 @@ class MentorTermsController < MentorTermGroupsController
   before_filter :fetch_mentor_term_group
   
   # def index
-  #   @mentor_term = @mentor_term_group.mentor_terms.find :all
-  # 
+  #   @mentor_term = @mentor_term_group.mentor_terms
+  #
   #   respond_to do |format|
   #     format.html # index.html.erb
   #     format.xml  { render xml: @mentor_term }
@@ -21,7 +21,7 @@ class MentorTermsController < MentorTermGroupsController
 
   # def new
   #   @mentor_term = @mentor_term_group.mentor_terms.new
-  # 
+  #
   #   respond_to do |format|
   #     format.html # new.html.erb
   #     format.xml  { render xml: @mentor_term }
@@ -38,7 +38,7 @@ class MentorTermsController < MentorTermGroupsController
     if @mentor
       m = @mentor_term_group.enroll!(@mentor, volunteer: true)
       if m.valid?
-        flash[:notice] = "Successfully added #{@mentor.fullname} to this group."   
+        flash[:notice] = "Successfully added #{@mentor.fullname} to this group."
       else
         flash[:error] = "Could not add #{@mentor.fullname} to this group, because #{m.errors.full_messages.to_sentence}."
       end
