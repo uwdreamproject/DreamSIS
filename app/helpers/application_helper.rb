@@ -3,7 +3,7 @@ module ApplicationHelper
   def file_extension_from_content_type(content_type)
 		extension = Rack::Mime::MIME_TYPES.invert[content_type] || ""
 		extension = extension.dup.to_s
-		extension.gsub!(".", "")    
+		extension.gsub!(".", "")
   end
 
 	# Creates an image tag with the icon for the requested MIME content type. Defaults to the 32px size.
@@ -20,7 +20,7 @@ module ApplicationHelper
     filename = ["icons", "Free-file-icons", "#{h(size)}px", "#{h(extension)}.png"]
     # extension = "_blank" unless File.exists?(image_path(File.join(filename)))
 		image_tag File.join(filename), title: title
-	end  
+	end
   
   # Fetch the favicon for a requested site, like a college home page.
   def fetch_favicon_tag(url, options = {})
@@ -42,7 +42,7 @@ module ApplicationHelper
 
   # Generate a collection of upcoming years for a dropdown
   def years_collection
-    for year in (Time.now.year-2..Time.now.year+10) 
+    for year in (Time.now.year-2..Time.now.year+10)
     end
   end
   
@@ -126,4 +126,20 @@ module ApplicationHelper
     content_tag(:time, time.to_s, options.merge(datetime: time.iso8601)) if time
   end
 
+  def alert_class_for(flash_type)
+    case flash_type.to_s
+      when "success"
+        "alert-success"   # Green
+      when "error"
+        "alert-danger"    # Red
+      when "alert"
+        "alert-warning"   # Yellow
+      when "notice"
+        "alert-info"      # Blue
+      else
+        flash_type.to_s
+    end
+  end
+
+  
 end

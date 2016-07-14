@@ -55,89 +55,53 @@
 		</script>
 	<%- end -%>
 
+	<script src="https://use.fontawesome.com/fbb74a9d9b.js"></script>
 </head>
 
 <body class="<%= "admin" if @current_user.try(:admin?) || @current_user.try(:person).try(:current_lead?) %> <%= controller.action_name %> <%= controller.controller_name %> <%= @current_user.try(:person).try(:type) || @audience.to_s %> <%= @body_class %>" id="body">
 
-	<div id="header">
-		<h1><%= link_to content_tag(:strong, "DreamSIS"), root_url %></h1>
-		<a href="#" id="menu_expander_link">
-			<span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></span>
-		</a>
-		
-		<div id="login_logout">
-			<% unless @current_user.blank? || @current_user == :false %>
-				<%= image_tag(@current_user.person.avatar_image_url, :height => 30, :class => "avatar") if @current_user.person && @current_user.person.avatar_image_url %>
-				<ul>
-					<li><span class="hide_when_small">Logged in as </span><strong title="You are logged in as a <%= @current_user.person.type || "generic person" %>"><%= @current_user.fullname %></strong></li>
-					<%-
-						path_hash = {}
-						path_hash[:return_to_after_profile] = request.url
-						path_hash[:apply_extra_styles] = true if @extra_stylesheet
-						path_hash[:apply_extra_footer_content] = true if @extra_footer_content
-					 -%>
-					<li><%= link_to "Profile", profile_path(path_hash) %></li>
-					<li><%= link_to "Logout", logout_path, :class => "logout" unless @current_user.is_a?(PubcookieUser) %></li>
-				</ul>
-			<% else %>
-				<em>Not logged in.</em>
-				<%= link_to 'Login', login_path(:return_to => request.url) %>
-			<% end %>
-		</div>
-
-	</div>
-
-	<%= render :partial => "shared/nav" %>
+	<header>
+		<%= render "shared/nav" %>
+	</header>
 	
 	<div id="sidebar-header">
 		<a href="#" id="sidebar_expander_link"><span>Show Sidebar</span></a>
 	</div>
 
-	<div id="content">
+	<div class="<%= @container_class || 'container-fluid' %>">
 
-		<div id="notifications">
-			<% %w(error notice info saved).each do |key| -%>
-				<div id="<%= key %>_notification" class="alert <%= key %> <%= "visible" unless flash[key.to_sym].blank? %>"><%=h flash[key.to_sym] %></div>
-			<% end -%>
+		<% flash.each do |type, message| %>
+		<div class="alert <%= alert_class_for(type) %> alert-dismissible fade in">
+			<button type="button" class="close" aria-label="Close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+			<%= message %>
 		</div>
+		<% end %>
 
-		<div id="content-wrap" class="<%= "blocked" if @layout_in_blocks %>">
+		<section id="content-wrap" class="<%= "blocked" if @layout_in_blocks %>">
 			<%= render :partial => "shared/share_links" if @share_links && API_KEYS['sharethis'] %>
 			
 			<%= yield %>
 			
 			<%- unless @extra_footer_content.blank? -%>
-				<div class="event-footer-content extra-footer-content">
+				<section class="event-footer-content extra-footer-content">
 					<%= sanitize textilize(@extra_footer_content),
 							:tags => %w(div table tr td h2 p a ul li strong em img),
 							:attributes => %w(id class style href src role) %>
-				</div>
+				</section>
 			<% end -%>
-		</div>
+		</section>
 
-		<div id="footer">
-			The DreamSIS software and name are copyright &copy; 2006&ndash;<%= Time.now.year %> by
-				<%= link_to "University of Washington", "http://uw.edu", :target => "_blank" %>.
-				The DreamSIS name is used under license.
-				
-			Student data provided in this system are protected by
-				<%= link_to "FERPA", "http://www.washington.edu/students/reg/ferpafac.html", :target => "_blank" %>.
-				You are expected to understand and abide by these protections.
-				
-			<code class="git branch">[<%= `git rev-parse --short HEAD`.strip %>]</code>
-		</div>
+		<footer>
+			&copy; 2006&ndash;<%= Time.now.year %> by
+			<%= link_to "University of Washington", "http://uw.edu", target: "_blank" %>.
+			The DreamSIS name is used under license.
+			Operated by <%= link_to "CDS", "http://dreamsis.com", target: "_blank" %>.
+			
+			<code class="git branch"><%= `git rev-parse --short HEAD`.strip %></code>
+		</footer>
 
-		<%- if Rails.env.development? -%>
-		<div id="dev-inspector-container">
-			<div class="git branch">Env <strong><%= Rails.env %></strong></div>
-			<div class="git branch <%= `git rev-parse --symbolic-full-name --abbrev-ref HEAD` %>">Branch <strong><%= `git rev-parse --symbolic-full-name --abbrev-ref HEAD` %></strong></div>
-			<div class="git branch">Rails <strong><%= Rails.version %></strong></div>
-			<div class="git branch">User <strong><%= current_user.try(:id) || "nil" %></strong></div>
-			<div class="git branch">Customer <strong><%= Customer.name_label rescue nil %></strong></div>
-			<div class="git branch">Tenant <strong><%= Apartment::Tenant.current_tenant rescue nil %></strong></div>
-		</div>
-		<%- end -%>
-
+		<%#= render "shared/dev_inspector" if Rails.env.development? %>
+		
 	</div>
 	
 	<div id="indicator">
