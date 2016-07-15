@@ -60,6 +60,7 @@ gem 'acts-as-taggable-on', '~> 3.4'
 gem 'select2-rails'
 gem 'autonumeric-rails'
 gem 'money-rails'
+gem 'searchkick'
 
 group :production do
   gem 'mysql2', '~> 0.3.7'

@@ -596,7 +596,6 @@ ActiveRecord::Schema.define(:version => 20160611174922) do
     t.integer  "customer_id"
     t.string   "category"
     t.integer  "position"
-    t.boolean  "warn_if_false"
   end
 
   add_index "object_filters", ["customer_id"], :name => "index_object_filters_on_customer_id"
