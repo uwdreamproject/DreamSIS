@@ -1,0 +1,25 @@
+<h1><%= Customer.mentors_Label %></h1>
+
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th><%= Customer.link_to_uw? ? "UW NetID" : "E-mail" %></th>
+			<th>Current High School Group</th>
+			<th class="functions">Functions</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<%- @mentors.each do |mentor| %>
+			<tr>
+				<td><%= mentor.fullname %></td>
+				<td><%= mentor.email %></td>
+				<td>Nil</td>
+			</tr>
+		<% end -%>
+	</tbody>
+
+</table>
+
+<%= render :partial => 'sidebar' %>

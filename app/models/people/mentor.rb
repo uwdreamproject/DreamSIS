@@ -1,4 +1,5 @@
 class Mentor < Person
+  searchkick
   extend FriendlyId
   friendly_id :friendly_slug, use: :slugged
 
