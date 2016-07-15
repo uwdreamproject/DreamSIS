@@ -29,7 +29,7 @@
 	</tbody>
 </table>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<p><%= link_to "Back to request", @clearinghouse_request, :class => "back button" %></p>
 	<p><small class="info">The <strong>Record Found</strong> column will show True if <em>any</em> Clearinghouse Request has ever returned a record for that person. It is not necessarily a result from this specific request. Enrollments and degrees are specific to this request, however.</small></p>
-</div>
+<%- end -%>

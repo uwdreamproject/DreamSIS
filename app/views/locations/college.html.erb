@@ -39,20 +39,20 @@
 	<%- if @location.respond_to?(:college_navigator_url) && !@location.try(:college_navigator_url).nil? %>
 	<dt>CollegeNavigator</dt>
 	<dd class="ipeds">
-		<%= link_to "Open in CollegeNavigator", 
-					@location.try(:college_navigator_url), 
-					:target => "_blank", 
+		<%= link_to "Open in CollegeNavigator",
+					@location.try(:college_navigator_url),
+					:target => "_blank",
 					:class => "offsite" %>
 		</dd>
 	<% end -%>
 
 </dl>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<p><%= link_to 'Back to all locations', locations_path, :class => 'back button' %></p>
 	
 	<div class="auto_complete">
 		<input type="input" class="search autocomplete-search" placeholder="Search colleges" data-source="<%= auto_complete_for_institution_name_colleges_url %>" data-target="<%= college_url("id") %>" />
 	</div>
 	
-</div>
+<%- end -%>

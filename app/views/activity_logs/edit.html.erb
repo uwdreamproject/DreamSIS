@@ -24,7 +24,7 @@
 
 <%= render :partial => "participants" if @participants && !@participants.empty? %>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<p><%= link_to "Back to Dashboard", my_dashboard_path, :class => "photo-tile button" %></p>
 	
 	<p><%= link_to "Previous Week", my_activity_log_path((@date - 1.week).year, (@date - 1.week).month, (@date - 1.week).day), :class => "back button" %></p>
@@ -38,4 +38,4 @@
 		<p><%= link_to "Weekly summary", activity_log_current_week_summary_path, :class => "lock button" %></p>
 	<% end %>
 	
-</div>
+<%- end -%>

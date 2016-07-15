@@ -18,12 +18,12 @@
 		<tr>
 			<td class="name"><%= link_to h(college_application.participant.try(:fullname)), college_application.participant %></td>
 			<td><%=h college_application.choice %></td>
-			<td><%= content_tag :span, 
-								(college_application.applied? ? "Y" : "N"), 
+			<td><%= content_tag :span,
+								(college_application.applied? ? "Y" : "N"),
 								:class => "icon #{college_application.applied? ? "pass" : "fail"}" %></td>
 			<td><%=h college_application.decision %></td>
-			<td><%= content_tag :span, 
-								(college_application.attending? ? "Y" : "N"), 
+			<td><%= content_tag :span,
+								(college_application.attending? ? "Y" : "N"),
 								:class => "icon #{college_application.attending? ? "pass" : "fail"}" %></td>
 			<td></td>
 		</tr>
@@ -31,6 +31,6 @@
 	</tbody>
 </table>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<%= link_to "Back to #{@location.name}", college_path(@location), :class => 'back button' %>
-</div>
+<%- end -%>

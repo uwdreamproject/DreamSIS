@@ -21,6 +21,6 @@
     </tbody>
 </table>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
     <p><%= link_to "Return to record", @object, :class => "back button" rescue nil %></p>
-</div>
+<%- end -%>

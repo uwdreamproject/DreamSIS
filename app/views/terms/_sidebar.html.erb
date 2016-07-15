@@ -1,6 +1,6 @@
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 
-	<%= render :partial => "shared/term_select", 
+	<%= render :partial => "shared/term_select",
 				:locals => { :form_url => term_path(:search)},
 				:object => (Term.current_term || Term.allowing_signups.try(:first) || Term.last) rescue nil %>
 
@@ -8,4 +8,4 @@
 		<%= link_to "Add new term", new_term_path, :class => "add button" unless Customer.use_quarters? %>
 	</p>
 				
-</div>
+<%- end -%>

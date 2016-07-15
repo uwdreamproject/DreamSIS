@@ -21,6 +21,6 @@
 </table>
 
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<%= link_to 'Add new test type', new_test_type_path, :class => "add button" %>
-</div>
+<%- end -%>

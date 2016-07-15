@@ -23,7 +23,7 @@
 
 </table>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<p><%= link_to 'New location', new_location_path, :class => "add button" %></p>
 	<p><%= link_to 'New high school', new_location_path(:type => "HighSchool"), :class => "add button" %></p>
 	<p><%= link_to 'New college', new_location_path(:type => "College"), :class => "add button" %></p>
@@ -33,4 +33,4 @@
 
 		<input type="input" class="search autocomplete-search" placeholder="Search locations" data-source="<%= auto_complete_for_location_name_locations_url %>" data-target="<%= location_url("id") %>" />
 	</div>
-</div>
+<%- end -%>

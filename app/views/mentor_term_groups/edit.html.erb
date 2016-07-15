@@ -12,6 +12,6 @@
 
 <% end %>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<%= render :partial => 'time_schedule_details', :object => @mentor_term_group.course_resource if @mentor_term_group.course_resource %>
-</div>
+<%- end -%>

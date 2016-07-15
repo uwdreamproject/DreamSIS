@@ -12,7 +12,7 @@
 
 <% end %>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<p><%#= link_to_function "Merge scholarship", "$('merge_form').show(); this.up('p').hide();", :class => "sync button" %></p>
 	
 	<%= form_tag merge_scholarships_path(:return_to => scholarships_path), :id => "merge_form", :style => "display:none" %>
@@ -47,4 +47,4 @@
 	
 		<p><%= submit_tag "Merge", :confirm => "Are you sure you want to merge these scholarships?" %></p>
 	</form>
-</div>
+<%- end -%>

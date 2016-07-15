@@ -32,7 +32,7 @@
 	
 </dl>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<p><%= link_to "Back to participant", participant_path(@participant, :anchor => "test_scores"), :class => "back button" %></p>
 	<p><%= link_to 'Edit this test', edit_participant_test_score_path(@participant, @test_score), :class => "edit button" %></p>
-</div>
+<%- end -%>

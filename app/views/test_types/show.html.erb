@@ -30,7 +30,7 @@
 
 </dl>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<p><%= link_to 'Edit this test type', edit_test_type_path(@test_type), :class => "edit button" %></p>
 	<p><%= link_to 'Back to test types', test_types_path, :class => "back button" %></p>
-</div>
+<%- end -%>

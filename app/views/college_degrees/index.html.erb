@@ -24,6 +24,6 @@
 </table>
 
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<%= link_to 'Add college degree', new_participant_college_degrees_path, :class => 'add button' %>
-</div>
+<%- end -%>

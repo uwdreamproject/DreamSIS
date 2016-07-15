@@ -18,7 +18,7 @@
 <% end %>
 </table>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
   <p><%= link_to 'New high school', new_high_school_path, :class => 'add button' %></p>
   <p><%= link_to "All locations", locations_path, :class => 'list button' %></p>
-</div>
+<%- end -%>

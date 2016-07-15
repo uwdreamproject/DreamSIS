@@ -15,12 +15,12 @@
   <dd><%= number_to_phone @location.phone %></dd>
 
   <dt>Website URL</dt>
-  <dd><%= link_to Addressable::URI.heuristic_parse(@location.website_url).to_s, 
+  <dd><%= link_to Addressable::URI.heuristic_parse(@location.website_url).to_s,
                   Addressable::URI.heuristic_parse(@location.website_url).to_s %></dd>
 
 </dl>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
   <p><%= link_to 'Edit this location', edit_location_path(@location), :class => 'edit button' %></p>
   <p><%= link_to 'Back to all locations', locations_path, :class => 'back button' %></p>
-</div>
+<%- end -%>

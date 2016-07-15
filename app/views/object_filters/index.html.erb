@@ -44,7 +44,7 @@
 
 </table>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<p><%= link_to 'New stat filter', new_object_filter_path, :class => "add button" %></p>
 
 	<p>
@@ -53,4 +53,4 @@
 		</label>
 	</p>
 	
-</div>
+<%- end -%>

@@ -15,6 +15,6 @@
 	<%= render :partial => 'event', :collection => @events %>
 </table>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<%= link_to 'Create new event', new_event_path, :class => 'add button' %>
-</div>
+<%- end -%>

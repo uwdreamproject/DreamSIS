@@ -15,11 +15,11 @@
     <td><%= link_to customer.program.try(:abbreviation), customer.program if customer.program %></td>
     <td class="functions"><%= link_to 'Show', customer %></td>
     <td class="functions"><%= link_to 'Edit', edit_customer_path(customer) %></td>
-    <td class="functions"><%= link_to 'Destroy', customer, :confirm => 'Are you sure?', :method => :delete %></td>	
+    <td class="functions"><%= link_to 'Destroy', customer, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<%= link_to 'New customer', new_customer_path, :class => "add button" %>
-</div>
+<%- end -%>

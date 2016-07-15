@@ -1,4 +1,4 @@
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<p>
 		<%= link_to 'Check-in Mentors/Volunteers', checkin_event_event_attendances_path(@event, :audience => "Mentor"), :class => 'sync button' unless @audience.to_s == "Mentor" %>
 		<%= link_to 'Check-in Students/Participants', checkin_event_event_attendances_path(@event, :audience => "Participant"), :class => 'sync button' unless @audience.to_s == "Participant" %>
@@ -11,4 +11,4 @@
 		<%= render :partial => "events/details", :object => @event %>
 	</dl>
 	
-</div>
+<%- end -%>

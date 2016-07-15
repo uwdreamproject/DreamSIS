@@ -1,4 +1,4 @@
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 
 	<p><%= link_to "My #{Customer.mentees_label}", my_participants_path, :class => "people button" %></p>
 	<%= content_tag :p, link_to("Track my week", my_current_activity_log_path, :class => "calendar button") if Customer.uses_activity_logs? %>
@@ -43,4 +43,4 @@
 	</dl>
 	
 	
-</div>
+<%- end -%>

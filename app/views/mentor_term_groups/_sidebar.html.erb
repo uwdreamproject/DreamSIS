@@ -1,12 +1,12 @@
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 
-	<p><%= render :partial => "shared/term_select", 
+	<p><%= render :partial => "shared/term_select",
 				:locals => { :form_url => mentor_term_groups_term_path(:search) },
 				:object => (@term || Term.current_term || Term.allowing_signups.try(:first) || Term.last) %></p>
 
 	<% if @term %>
-		<p><%= link_to "Add a new group", 
-						new_mentor_term_group_path(:term_id => @term.to_param), 
+		<p><%= link_to "Add a new group",
+						new_mentor_term_group_path(:term_id => @term.to_param),
 						:class => 'add button' %></p>
 		
 		<% unless @term.course_ids.blank? %>
@@ -30,4 +30,4 @@
 		<p><%= link_to "Add a new mentor group", new_mentor_term_group_path, :class => 'add button' %></p>
 	<% end -%>
 
-</div>
+<%- end -%>

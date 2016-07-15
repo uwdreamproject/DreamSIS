@@ -44,7 +44,7 @@
 	</tbody>
 </table>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<h3>Filters</h3>
 	
 	<p>Show <%= Customer.mentors_label %> who RSVP'd for fewer than <span id="current_rsvp_limit"><%= @rsvp_counts.max+2 %></span> event(s):
@@ -66,4 +66,4 @@
 	<p>
 	<%- end -%>
 	<%= javascript_tag "$(document).ready(function() { update_event_status_rows(\"load\"); });" %>
-</div>
+<%- end -%>

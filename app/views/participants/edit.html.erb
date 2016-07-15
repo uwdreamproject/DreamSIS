@@ -18,9 +18,9 @@
 	<%= default_form_actions(f) %>
 <% end %>
 
-<div id="sidebar">
-	<div id="participant_duplicate_warning"></div>
+<%= content_for(:sidebar) do %>
+	<div id="participant_duplicate_warning">
 	
 	<%#= link_to_function "Save changes", "$('#participant_form').submit()", :class => "save button" %>
 	<%= link_to "Back to participant", @participant, :confirm => "Any changes you have made will not be saved. Are you sure?", :class => "back button" %>
-</div>
+<%- end -%>

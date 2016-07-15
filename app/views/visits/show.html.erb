@@ -32,12 +32,11 @@
 			</tr>
 		<% end -%>
 	</tbody>
-</table>	
+</table>
 	
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<p><%= link_to "Edit this #{Customer.visit_label}", edit_event_path(@event), :class => 'edit button' %></p>
 	<p><%= link_to "Back to #{Customer.visits_label}", high_school_visits_path(@high_school, :term_id => @term), :class => 'back button' %></p>
 	<p><%= link_to "Take Attendance", attendance_high_school_visits_path(@high_school, :term_id => @term), :class => "list button" %></p>
 	<p><%= link_to "Check-in Individuals", checkin_event_event_attendances_path(@event), :class => 'edit button' %>
-</div>
-
+<%- end -%>

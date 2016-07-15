@@ -18,10 +18,9 @@
 	<a href="javascript:lines%20=%20prompt('Enter%20names%20block%20in%20proper%20format:').split(/'%20'|\r\n|\n/);f%20=%20document.forms[0];for(i=0;i<lines.length;i++){names=lines[i].split('|');document.forms[0].target='window'+i;document.getElementById('firstName').value=names[0];document.getElementById('lastName').value=names[1];window.open(f.action,f.target);f.submit();}" class="up button">NSOPW Auto-search Bookmarklet</a>
 </div>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<h3>Update Mentor Information</h3>
 	<div id="form-container">Click a row to begin editing</div>
-</div>
-
+<% end %>
 
 <%= render :partial => "table_ajax", :locals => {:table_partial => "onboarding_table"} %>

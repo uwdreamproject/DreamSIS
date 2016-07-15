@@ -4,9 +4,9 @@
 
 <div class="event-filters">
 	<p>
-		Only show events for 
-		<%= select_tag :county_filter, 
-						options_for_select([["All Counties", "reset"]] + @counties.collect{|k,v| [(k ? "#{h(k)} County" : "Other"), k.to_s.parameterize.to_s]}) 
+		Only show events for
+		<%= select_tag :county_filter,
+						options_for_select([["All Counties", "reset"]] + @counties.collect{|k,v| [(k ? "#{h(k)} County" : "Other"), k.to_s.parameterize.to_s]})
 						 %>
 	</p>
 </div>
@@ -38,9 +38,9 @@
 	<% end -%>
 </table>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<p><%= link_to "Back to event listing", event_group_rsvp_path(@event_group), :class => "back button" if @event_group %></p>
-</div>
+<%- end -%>
 
 <script>
 document.observe("dom:loaded", function() {

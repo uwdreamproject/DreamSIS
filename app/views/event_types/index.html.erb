@@ -18,6 +18,6 @@
 <% end %>
 </table>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<%= link_to 'Create new event type', new_event_type_path, :class => 'add button' %>
-</div>
+<%- end -%>

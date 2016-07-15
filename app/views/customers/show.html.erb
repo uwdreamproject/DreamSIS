@@ -65,7 +65,7 @@
 
 </dl>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<h3>Web Address</h3>
 	<p><%= @customer.name %> users should use this custom web address when logging in:</p>
 	<strong>
@@ -78,4 +78,4 @@
 		<p><%= link_to 'Back to customers', customers_path, :class => "back button" %></p>
 	<% end %>
 	
-</div>
+<%- end -%>

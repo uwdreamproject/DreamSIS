@@ -9,7 +9,7 @@
 		</tr>
 
 		<%- leads = high_school.mentor_term_groups.for(@term).collect{|g| g.mentor_terms.leads}.flatten.collect(&:mentor).flatten -%>
-		<%= render :partial => "mentors/mentor", 
+		<%= render :partial => "mentors/mentor",
 					:collection => leads,
 					:locals => { :include_image => true } %>
 		
@@ -21,9 +21,8 @@
 <% end -%>
 </table>
 
-
-<div id="sidebar">
-	<p><%= render :partial => "shared/term_select", 
+<%= content_for(:sidebar) do %>
+	<p><%= render :partial => "shared/term_select",
 					:locals => { :form_url => leads_mentors_path },
 					:object => (@term || Term.current_term || Term.allowing_signups.try(:first) || Term.last) %></p>
-</div>
+<%- end -%>

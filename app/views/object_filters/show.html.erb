@@ -1,7 +1,7 @@
 <h3 class="pre-title"><%=h @cohort.to_s %></h3>
 <h1><%= @object_filter.object_class %> <%=h @object_filter.title %></h1>
 
-<% 
+<%
 participants ||= @participants
 active_participants = participants.select{|p| !p.inactive? && !p.not_target_participant? }
 hide_title ||= false
@@ -19,18 +19,18 @@ hide_title ||= false
 		<th></th>
 	</tr>
 
-	<%= render :partial => "object_filters/high_school", 
+	<%= render :partial => "object_filters/high_school",
 				:collection => [:all],
-				:locals => { 
+				:locals => {
 					:participants => participants,
 					:active_participants => active_participants,
 					:hide_title => hide_title,
 					:summary => :all
 				} %>
 	
-	<%= render :partial => "object_filters/high_school", 
+	<%= render :partial => "object_filters/high_school",
 				:collection => @high_schools,
-				:locals => { 
+				:locals => {
 					:participants => participants,
 					:active_participants => active_participants,
 					:hide_title => hide_title
@@ -42,7 +42,7 @@ hide_title ||= false
 
 
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<p><%= link_to "Back to filters", object_filters_path, :class => "back button" %></p>
 	<p><%= link_to "Edit this filter", edit_object_filter_path(@object_filter), :class => 'edit button' %></p>
 	<p><%= link_to "Show all stats", stats_high_schools_url(:cohort => @cohort), :class => 'list button' %></p>
@@ -78,4 +78,4 @@ hide_title ||= false
 
 	</dl>
 
-</div>
+<%- end -%>

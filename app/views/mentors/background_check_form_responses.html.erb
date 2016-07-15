@@ -1,7 +1,7 @@
 <div align="right" style="float:right" class="photo">
-	<%= image_tag photo_mentor_path(@mentor, :size => :large), 
-			:class => 'student_photo', 
-			:size => "100x130", 
+	<%= image_tag photo_mentor_path(@mentor, :size => :large),
+			:class => 'student_photo',
+			:size => "100x130",
 			:alt => "" %>
 </div>
 
@@ -32,7 +32,7 @@
 			<li>
 				<%= @mentor.medicare_healthcare_crimes? ? content_tag(:span, "Y", :class => 'red tag') : content_tag(:span, "N", :class => 'outline tag') %>
 				Medicare&ndash;Medicaid/Healthcare-related Crimes
-			</li>			
+			</li>
 		</ul>
 	</dd>
 	
@@ -57,6 +57,6 @@
 	
 </dl>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<%= link_to "View your Background Check Form", mentor_signup_background_check_form_path %>
-</div>
+<%- end -%>

@@ -1,4 +1,4 @@
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<%= form_for :user, :html => { :onSubmit => "return false;" } do |f| %>
 		<input id="user_login" name="user[login]" size="30" type="input" class="search" placeholder="Search for user" />
 		<div class="auto_complete" id="user_login_auto_complete"></div>
@@ -42,4 +42,4 @@
 	</p>
 
 
-</div>
+<% end %>

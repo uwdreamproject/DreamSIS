@@ -8,16 +8,16 @@
 </h1>
 <dl class="institution-details inline-definitions one-line">
   <dt>Sector</dt>
-  <dd><%= @financial_aid_package.college_application.try(:institution).try(:sector_description) %></dd>  
+  <dd><%= @financial_aid_package.college_application.try(:institution).try(:sector_description) %></dd>
   
   <dt>Location</dt>
   <dd><%= @financial_aid_package.college_application.try(:institution).try(:location_detail) %></dd>
   
   <dt>Details</dt>
   <dd class="ipeds">
-    <%= link_to "Open in CollegeNavigator", 
-          @financial_aid_package.college_application.try(:institution).try(:college_navigator_url), 
-          :target => "_blank", 
+    <%= link_to "Open in CollegeNavigator",
+          @financial_aid_package.college_application.try(:institution).try(:college_navigator_url),
+          :target => "_blank",
           :class => "offsite" %>
     </dd>
 </dl>
@@ -36,7 +36,7 @@
 <%= render partial: "documents" %>
 <%= render partial: "notes" %>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
   <%= link_to "Back to #{Customer.participant_label}", participant_path(@participant, anchor: "!/section/scholarship_applications"), class: "back button" %>
   <%= link_to "Edit package details", [:edit, @participant, @financial_aid_package], class: 'edit button' %>
   
@@ -59,4 +59,4 @@
     <% end %>
     
   </dl>
-</div>
+<%- end -%>

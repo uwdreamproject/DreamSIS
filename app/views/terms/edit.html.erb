@@ -12,13 +12,13 @@
 
 <% end %>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	
 	<p><%= link_to "Back to terms", terms_path, :class => "back button" %></p>
 	
-	<p><%= link_to "Sync with UW Calendar", 
-				sync_term_path(@term), 
-				:method => :put, 
+	<p><%= link_to "Sync with UW Calendar",
+				sync_term_path(@term),
+				:method => :put,
 				:confirm => "Are you sure you want to sync this term with the UW calendar?",
 				:class => "sync button" if Customer.link_to_uw? %></p>
 				
@@ -30,7 +30,7 @@
 	<%= javascript_tag("checkExportStatusUrl = '#{check_export_status_terms_url(:id => "__id__")}'") %>
 	
 	<p id="export_status" class="below">
-		<%- if @export -%>	
+		<%- if @export -%>
 			<%=h @export.status.try(:titleize) %> <%=h relative_timestamp @export.updated_at %>
 			<%= link_to "Regenerate", { :action => :show, :generate => true, :format => 'xlsx' }, url_options = { :remote => true } %>
 			<%= javascript_tag("checkExportStatus = true; exportReportId = '#{@export.id.to_s}';") unless @export.generated? %>
@@ -39,4 +39,4 @@
 		<% end %>
 	</p>
 
-</div>
+<%- end -%>

@@ -30,13 +30,13 @@
 			<tr class="empty">
 				<td colspan=10>No events yet.</td>
 			</tr>
-		<% end -%>		
+		<% end -%>
 	</tbody>
 	
 </table>
 
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<p><%= link_to "Edit this event type", edit_event_type_path(@event_type), :class => 'edit button' %></p>
 	<p><%= link_to "Back to event types", event_types_path, :class => 'back button' %></p>
-</div>
+<%- end -%>

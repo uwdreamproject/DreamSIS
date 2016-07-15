@@ -20,6 +20,6 @@
 <% end %>
 </table>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<%= link_to 'Add new program', new_program_path, :class => "add button" %>
-</div>
+<%- end -%>

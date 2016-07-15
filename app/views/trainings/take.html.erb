@@ -37,7 +37,7 @@ $('video').mediaelementplayer({
 });
 </script>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<h3>Chapters</h3>
 	<div id="chapters_sidebar"></div>
-</div>
+<%- end -%>

@@ -11,7 +11,7 @@
 	<%= render :partial => 'participants/fields/family_history', :locals => { :f => f } %>
 	<%= render :partial => 'participants/fields/parents', :locals => { :f => f } %>
 	<%= render :partial => 'participants/fields/financial', :locals => { :f => f } %>
-	<%= render :partial => 'participants/fields/administrative', :locals => { :f => f } %>	
+	<%= render :partial => 'participants/fields/administrative', :locals => { :f => f } %>
 
 	<%= f.inputs :name => "Create Record" do -%>
 		<%= f.input :link_to_current_user_after_save, :as => :boolean, :label => "Automatically link me to this student after creating the student record" %>
@@ -21,6 +21,6 @@
 	
 <% end %>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<div id="participant_duplicate_warning"></div>
-</div>
+<%- end -%>

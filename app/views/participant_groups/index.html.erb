@@ -13,6 +13,6 @@
 	<%= render :partial => 'participant_group', :collection => @participant_groups %>
 </table>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<%= link_to 'Create new group', new_participant_group_path(:participant_group => { :location_id => @high_school.try(:id)}), :class => 'add button' %>
-</div>
+<%- end -%>

@@ -29,7 +29,7 @@
 	
 </table>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<h2>Sign up</h2>
 	<p>Use this page to sign up for a high school visit. If you've already signed up on MyUW, it will appear in the list.</p>
 	<%= link_to "Back to Welcome", root_url, :class => "back button" %>
@@ -39,4 +39,4 @@
 	<h2>Registering for credit?</h2>
 	<p>You can earn two credits per term by registering for the Dream Project on MyUW:</p>
 	<%= link_to "UW Time Schedule", "http://www.washington.edu/students/timeschd/#{@term.to_param}/indsrf.html", :class => "list button", :target => "_blank" %>
-</div>
+<%- end -%>

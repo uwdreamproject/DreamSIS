@@ -25,7 +25,7 @@
 
 <br class="clear">
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<form>
         <h3>Cohort</h3>
         <p><%= select_tag :cohort, options_for_select(@high_school.cohorts.collect(&:to_s), @current_cohort.to_s) %>
@@ -41,4 +41,4 @@
             <br><%= submit_tag "Update" %></p>
         
 	</form>
-</div>
+<%- end -%>

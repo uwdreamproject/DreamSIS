@@ -28,12 +28,12 @@
 			<p>
 				<br /><%= link_to "Submit request now", submit_clearinghouse_request_path(@clearinghouse_request), :method => :post, :class => "upload button" if @clearinghouse_request.submittable? %>
 				<%= separator if @clearinghouse_request.submittable? %>
-				<%= link_to "Mark as submitted", clearinghouse_request_path(@clearinghouse_request, :clearinghouse_request => { 
-						:submitted_at => Time.now, 
+				<%= link_to "Mark as submitted", clearinghouse_request_path(@clearinghouse_request, :clearinghouse_request => {
+						:submitted_at => Time.now,
 						:number_of_records_submitted => @clearinghouse_request.participant_ids.size }
 					), :method => :put, :class => "ok button" %>
 			</p>
-		<% end %>		
+		<% end %>
 	</dd>
 	
 	<dt>Submitted</dt>
@@ -102,15 +102,15 @@
 
 </dl>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<p><%= link_to "Back to requests", clearinghouse_requests_path, :class => "back button" %></p>
 	
 	<%- unless @clearinghouse_request.closed? -%>
 		<p><%= link_to "Close this request", [:close, @clearinghouse_request], :class => "cancel button", :method => :post, :confirm => "Are you sure you want to close out this request?" %></p>
 	<% end %>
-</div>
+<%- end -%>
 
 <%= javascript_tag "$( function() {
-	$.ajax('#{refresh_status_clearinghouse_request_path(@clearinghouse_request, :current_status => @clearinghouse_request.status)}', 
+	$.ajax('#{refresh_status_clearinghouse_request_path(@clearinghouse_request, :current_status => @clearinghouse_request.status)}',
 		{ dataType: 'script' })
 	})" if @clearinghouse_request.submitted? && @clearinghouse_request.retrievable? %>
