@@ -139,6 +139,10 @@
 								path_hash[:apply_extra_footer_content] = true if @extra_footer_content
 							 -%>
 							<li><%= link_to "Edit Profile", profile_path(path_hash) %></li>
+              
+              <%- if @current_user.person_type == "Mentor" %>
+                <li><%= link_to "My Participation", my_participation_url %></li>
+              <% end %>
 							
 							<li role="separator" class="divider"></li>
 							<li><%= link_to "Logout", logout_path, glyph: 'sign-out' unless @current_user.is_a?(PubcookieUser) %></li>

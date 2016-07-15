@@ -164,6 +164,7 @@ Dreamsis::Application.routes.draw do
     end
   end
   get '/my/mentees' => 'participants#mentor', as: :my_participants, mentor_id: 'me'
+  get '/my/participation' => 'welcome#participation', as: :my_participation
   get '/participants/:id/avatar/:size' => 'participants#avatar', as: :participant_avatar
   get 'participants/all' => 'participants#index', as: :all_participants
   get '/participants/mentor/:mentor_id' => 'participants#mentor', as: :mentor_participants
