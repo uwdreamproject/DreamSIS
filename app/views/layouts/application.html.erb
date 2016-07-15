@@ -62,11 +62,12 @@
 
 	<header>
 		<%= render "shared/nav" %>
+
+		<div id="sidebar-header">
+			<a href="#" id="sidebar_expander_link"><span>Show Sidebar</span></a>
+		</div>
 	</header>
 	
-	<div id="sidebar-header">
-		<a href="#" id="sidebar_expander_link"><span>Show Sidebar</span></a>
-	</div>
 
 	<div class="<%= @container_class || 'container-fluid' %>">
 
@@ -77,7 +78,7 @@
 		</div>
 		<% end %>
 
-		<section id="content-wrap" class="<%= "blocked" if @layout_in_blocks %>">
+		<section id="content-wrap">
 			<%= render :partial => "shared/share_links" if @share_links && API_KEYS['sharethis'] %>
 			
 			<%= yield %>

@@ -1,5 +1,5 @@
-class MentorsController < ApplicationController  
-  protect_from_forgery except: [:auto_complete_for_mentor_fullname] 
+class MentorsController < ApplicationController
+  protect_from_forgery except: [:auto_complete_for_mentor_fullname]
   skip_before_filter :login_required, :check_authorization, :save_user_in_current_thread, :check_if_enrolled, only: [:check_if_valid_van_driver]
 
   def index
@@ -9,9 +9,9 @@ class MentorsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render xml: @mentors }
-      format.xls { 
+      format.xls {
         @mentors = Mentor.all
-        render action: 'index', layout: 'basic' 
+        render action: 'index', layout: 'basic'
       }
     end
   end
@@ -19,13 +19,12 @@ class MentorsController < ApplicationController
   def show
     @mentor = Mentor.find(params[:id]) rescue Volunteer.find(params[:id])
     @participants = @mentor.try(:participants) if @mentor.respond_to?(:participants)
-    @event_attendances = @mentor.event_attendances.find(:all, 
-                            include: :event, 
-                            joins: :event, 
+    @event_attendances = @mentor.event_attendances.find(:all,
+                            include: :event,
+                            joins: :event,
                             conditions: ["(rsvp = ? OR attended = ?)", true, true]
                           )
-    @layout_in_blocks = true
-
+                          
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render xml: @mentor }
@@ -152,16 +151,16 @@ class MentorsController < ApplicationController
                                             OR uw_net_id LIKE :fullname",
                                           {fullname: "%#{params[:term].downcase}%"}])
 
-    render json: @mentors.map { |mentor| 
+    render json: @mentors.map { |mentor|
       {
-        id: mentor.id, 
+        id: mentor.id,
         value: h(mentor.fullname(skip_update: true)),
-        klass: mentor.class.to_s.underscore, 
+        klass: mentor.class.to_s.underscore,
         fullname: h(mentor.fullname),
         secondary: h(mentor.email),
         tertiary: h((Customer.current_customer.customer_label(mentor.class.to_s.underscore, titleize: true) || result.class.to_s).titleize)
       }
-    }    
+    }
   end
   
   def onboarding
@@ -268,7 +267,7 @@ class MentorsController < ApplicationController
   
   def send_default_photo(size)
 		filename = size == "thumb" ? "blank_avatar_thumb.png" : "blank_avatar.png"
-    send_file File.join(Rails.root, "public", "images", filename), 
+    send_file File.join(Rails.root, "public", "images", filename),
               disposition: 'inline', type: 'image/png', status: 404
   end
   

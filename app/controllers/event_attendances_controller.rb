@@ -9,7 +9,7 @@ class EventAttendancesController < EventsController
   before_filter :check_authorization_conditional, only: [:create, :update, :destroy]
   before_filter :attendee_params, only: [:create, :update]
 
-  protect_from_forgery only: [:create, :update, :destroy] 
+  protect_from_forgery only: [:create, :update, :destroy]
 
   def index
     @attendees = @event.attendees
@@ -22,8 +22,6 @@ class EventAttendancesController < EventsController
   end
 
   def checkin
-    @layout_in_blocks = true
-    
     respond_to do |format|
       format.html
     end
@@ -93,7 +91,7 @@ class EventAttendancesController < EventsController
       .where(type: @audiences.collect(&:to_s))
       .where([conditions.join(" OR "), matches])
       .limit(30)
-    @people = @people.includes(:high_school) if @audiences.include?(Participant) || @audiences.include?(Student)      
+    @people = @people.includes(:high_school) if @audiences.include?(Participant) || @audiences.include?(Student)
     @event_attendances = Hash[EventAttendance.where(event_id: @event.id, person_id: @people.collect(&:id)).map{|ea| [ea.person_id, ea]}]
     
     respond_to do |format|
@@ -138,7 +136,7 @@ class EventAttendancesController < EventsController
       @audiences = [Mentor, Volunteer]
     else
       @audiences = [Participant, Student]
-    end 
+    end
   end
   
   # Allow any fully registered Mentor (or admin) to access

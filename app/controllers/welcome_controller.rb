@@ -9,7 +9,6 @@ class WelcomeController < ApplicationController
     @person = @current_user.person
     @events = @person.event_attendances.future_attending.collect(&:event)
     @event_groups = EventGroup.where(allow_external_volunteers: true)
-    # @layout_in_blocks = true
     apply_extra_stylesheet
     apply_extra_footer_content
   end
@@ -20,7 +19,6 @@ class WelcomeController < ApplicationController
       redirect_to mentor_signup_basics_path
     end
     @my_mentees = @mentor.try(:participants)
-    @layout_in_blocks = true
     @high_schools = @current_user.current_locations
     @high_school = @mentor.current_lead_at.first
     @events = @mentor.event_attendances.future_attending.collect(&:event)
