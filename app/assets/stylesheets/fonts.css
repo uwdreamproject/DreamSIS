@@ -1,0 +1,173 @@
+/* This CSS resource incorporates links to font software which is the
+   valuable copyrighted property of Type Network, Inc. and/or their
+   suppliers. You may not attempt to copy, install, redistribute,
+   convert, modify or reverse engineer this font software. Please
+   contact Type Network with any questions: www.typenetwork.com */
+
+/* Benton Sans Ex Lt */
+@font-face {
+	font-family: "Benton Sans";
+	font-weight: 200;
+	font-style: normal;
+	src: url("//cloud.typenetwork.com/licenseWeb/2903/fontfile/eot/");
+        src: url("//cloud.typenetwork.com/licenseWeb/2903/fontfile/eot/?#iefix") format("embedded-opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2903/fontfile/woff/") format("woff"),
+             url("//cloud.typenetwork.com/licenseWeb/2903/fontfile/ttf/") format("truetype"),
+             url("//cloud.typenetwork.com/licenseWeb/2903/fontfile/otf/") format("opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2903/fontfile/svg/#web") format("svg");
+
+}
+
+/* Benton Sans Ex Lt It */
+@font-face {
+	font-family: "Benton Sans";
+	font-weight: 200;
+	font-style: italic;
+	src: url("//cloud.typenetwork.com/licenseWeb/2904/fontfile/eot/");
+        src: url("//cloud.typenetwork.com/licenseWeb/2904/fontfile/eot/?#iefix") format("embedded-opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2904/fontfile/woff/") format("woff"),
+             url("//cloud.typenetwork.com/licenseWeb/2904/fontfile/ttf/") format("truetype"),
+             url("//cloud.typenetwork.com/licenseWeb/2904/fontfile/otf/") format("opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2904/fontfile/svg/#web") format("svg");
+
+}
+	
+/* Benton Sans Lt */
+@font-face {
+	font-family: "Benton Sans";
+	font-weight: 300;
+	font-style: normal;
+	src: url("//cloud.typenetwork.com/licenseWeb/2905/fontfile/eot/");
+        src: url("//cloud.typenetwork.com/licenseWeb/2905/fontfile/eot/?#iefix") format("embedded-opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2905/fontfile/woff/") format("woff"),
+             url("//cloud.typenetwork.com/licenseWeb/2905/fontfile/ttf/") format("truetype"),
+             url("//cloud.typenetwork.com/licenseWeb/2905/fontfile/otf/") format("opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2905/fontfile/svg/#web") format("svg");
+
+}
+	
+/* Benton Sans Lt It */
+@font-face {
+	font-family: "Benton Sans";
+	font-weight: 300;
+	font-style: italic;
+	src: url("//cloud.typenetwork.com/licenseWeb/2906/fontfile/eot/");
+        src: url("//cloud.typenetwork.com/licenseWeb/2906/fontfile/eot/?#iefix") format("embedded-opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2906/fontfile/woff/") format("woff"),
+             url("//cloud.typenetwork.com/licenseWeb/2906/fontfile/ttf/") format("truetype"),
+             url("//cloud.typenetwork.com/licenseWeb/2906/fontfile/otf/") format("opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2906/fontfile/svg/#web") format("svg");
+
+}
+	
+/* Benton Sans Bk */
+@font-face {
+	font-family: "Benton Sans";
+	font-weight: 500;
+	font-style: normal;
+	src: url("//cloud.typenetwork.com/licenseWeb/2907/fontfile/eot/");
+        src: url("//cloud.typenetwork.com/licenseWeb/2907/fontfile/eot/?#iefix") format("embedded-opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2907/fontfile/woff/") format("woff"),
+             url("//cloud.typenetwork.com/licenseWeb/2907/fontfile/ttf/") format("truetype"),
+             url("//cloud.typenetwork.com/licenseWeb/2907/fontfile/otf/") format("opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2907/fontfile/svg/#web") format("svg");
+
+}
+	
+/* Benton Sans Bk It */
+@font-face {
+	font-family: "Benton Sans";
+	font-weight: 500;
+	font-style: italic;
+	src: url("//cloud.typenetwork.com/licenseWeb/2908/fontfile/eot/");
+        src: url("//cloud.typenetwork.com/licenseWeb/2908/fontfile/eot/?#iefix") format("embedded-opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2908/fontfile/woff/") format("woff"),
+             url("//cloud.typenetwork.com/licenseWeb/2908/fontfile/ttf/") format("truetype"),
+             url("//cloud.typenetwork.com/licenseWeb/2908/fontfile/otf/") format("opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2908/fontfile/svg/#web") format("svg");
+
+}
+	
+/* Benton Sans Reg */
+@font-face {
+	font-family: "Benton Sans";
+	font-weight: 600;
+	font-style: normal;
+	src: url("//cloud.typenetwork.com/licenseWeb/2909/fontfile/eot/");
+        src: url("//cloud.typenetwork.com/licenseWeb/2909/fontfile/eot/?#iefix") format("embedded-opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2909/fontfile/woff/") format("woff"),
+             url("//cloud.typenetwork.com/licenseWeb/2909/fontfile/ttf/") format("truetype"),
+             url("//cloud.typenetwork.com/licenseWeb/2909/fontfile/otf/") format("opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2909/fontfile/svg/#web") format("svg");
+
+}
+	
+/* Benton Sans It */
+@font-face {
+	font-family: "Benton Sans";
+	font-weight: 600;
+	font-style: italic;
+	src: url("//cloud.typenetwork.com/licenseWeb/2910/fontfile/eot/");
+        src: url("//cloud.typenetwork.com/licenseWeb/2910/fontfile/eot/?#iefix") format("embedded-opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2910/fontfile/woff/") format("woff"),
+             url("//cloud.typenetwork.com/licenseWeb/2910/fontfile/ttf/") format("truetype"),
+             url("//cloud.typenetwork.com/licenseWeb/2910/fontfile/otf/") format("opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2910/fontfile/svg/#web") format("svg");
+
+}
+	
+/* Benton Sans Med */
+@font-face {
+	font-family: "Benton Sans Med";
+	font-weight: 700;
+	font-style: normal;
+	src: url("//cloud.typenetwork.com/licenseWeb/2911/fontfile/eot/");
+        src: url("//cloud.typenetwork.com/licenseWeb/2911/fontfile/eot/?#iefix") format("embedded-opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2911/fontfile/woff/") format("woff"),
+             url("//cloud.typenetwork.com/licenseWeb/2911/fontfile/ttf/") format("truetype"),
+             url("//cloud.typenetwork.com/licenseWeb/2911/fontfile/otf/") format("opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2911/fontfile/svg/#web") format("svg");
+
+}
+	
+/* Benton Sans Med It */
+@font-face {
+	font-family: "Benton Sans";
+	font-weight: 700;
+	font-style: italic;
+	src: url("//cloud.typenetwork.com/licenseWeb/2912/fontfile/eot/");
+        src: url("//cloud.typenetwork.com/licenseWeb/2912/fontfile/eot/?#iefix") format("embedded-opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2912/fontfile/woff/") format("woff"),
+             url("//cloud.typenetwork.com/licenseWeb/2912/fontfile/ttf/") format("truetype"),
+             url("//cloud.typenetwork.com/licenseWeb/2912/fontfile/otf/") format("opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2912/fontfile/svg/#web") format("svg");
+
+}
+
+/* Benton Sans Bd */
+@font-face {
+	font-family: "Benton Sans";
+	font-weight: 800;
+	font-style: normal;
+	src: url("//cloud.typenetwork.com/licenseWeb/2913/fontfile/eot/");
+        src: url("//cloud.typenetwork.com/licenseWeb/2913/fontfile/eot/?#iefix") format("embedded-opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2913/fontfile/woff/") format("woff"),
+             url("//cloud.typenetwork.com/licenseWeb/2913/fontfile/ttf/") format("truetype"),
+             url("//cloud.typenetwork.com/licenseWeb/2913/fontfile/otf/") format("opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2913/fontfile/svg/#web") format("svg");
+
+}
+	
+/* Benton Sans Bd It */
+@font-face {
+	font-family: "Benton Sans";
+	font-weight: 800;
+	font-style: italic;
+	src: url("//cloud.typenetwork.com/licenseWeb/2914/fontfile/eot/");
+        src: url("//cloud.typenetwork.com/licenseWeb/2914/fontfile/eot/?#iefix") format("embedded-opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2914/fontfile/woff/") format("woff"),
+             url("//cloud.typenetwork.com/licenseWeb/2914/fontfile/ttf/") format("truetype"),
+             url("//cloud.typenetwork.com/licenseWeb/2914/fontfile/otf/") format("opentype"),
+             url("//cloud.typenetwork.com/licenseWeb/2914/fontfile/svg/#web") format("svg");
+
+}
