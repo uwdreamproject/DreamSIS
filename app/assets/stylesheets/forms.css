@@ -19,3 +19,641 @@ input[type=file] {
   background: none !important;
   box-shadow: none !important;
 }
+
+
+
+
+tr.merge_source {
+	background-color: #f6a59c;
+}
+
+tr.merge_target {
+	background-color: #ace1a4;
+}
+
+#merge_form {
+  
+  .merge_item {
+  	padding: 0.5em;
+  	border: 2px dashed #dddcdc;
+  }
+
+  p.name {
+  	margin-bottom: 0;
+  }
+
+  p strong {
+  	display: block;
+  	font-size: 120%;
+  	line-height: 1.3em;
+  }
+
+  label {
+  	font-size: 85%;
+  }
+
+  em.separator {
+  	display: block;
+  	margin: 1em auto;
+  	text-align: center;
+  }
+
+  p.error-message, p.success-message {
+  	font-weight: normal;
+  	font-size: 85%;
+  	line-height: 1.2em;
+  	margin: -6px;
+  	margin-bottom: 0.5em;
+  	padding: 1em;
+  	border-bottom: 1px inset #e2e2e2;
+  	background: #ececec;
+  }
+
+  em.separator:before {
+  	content: '\2193  ';
+  	padding-right: 1em;
+  }
+
+  em.separator:after {
+  	content: '  \2193';
+  	padding-left: 1em;
+  }
+
+  input:not([type=submit]):not(.editable) {
+  	width: 2em;
+  	background: none;
+  	display: inline;
+  	padding: 0;
+  	border: none;
+  	box-shadow: none;
+  	font-size: 75%;
+  }
+}
+
+
+
+
+
+old {
+
+  
+  form.formtastic fieldset > ol > li p.inline-errors {
+  	display: block;
+  	// background: url() no-repeat;
+  	padding-left: 20px;
+  	padding-top: 1px;
+  	margin-top: 0;
+  	clear: left;
+  }
+
+  p.inline-errors:before {
+  	content: "This field ";
+  }
+
+  form.formtastic fieldset > ol > li.boolean p.inline-errors {
+  	clear: left;
+  	float: left;
+  	margin-top: 0.5em;
+  }
+
+  form.formtastic fieldset.actions li {
+  	margin-right: 0.25em;
+  	float: none;
+  	display: inline-block;
+  }
+
+  li.boolean label {
+  	display: block;
+  	float: none;
+  	padding-right: 1em;
+  }
+
+  form.formtastic label {
+  	font-weight: bold;
+  	color: #656565;
+  }
+
+  .required abbr {
+  	padding-left: 0.25em;
+  	font-weight: bold;
+    color: red;
+    border-bottom: none;
+  }
+
+  .fieldWithErrors {
+  	// background: url() center right no-repeat;
+  }
+
+  .fieldWithErrors input, .fieldWithErrors select, .fieldWithErrors textarea {
+  	border: 1px solid red;
+  }
+
+  form li.error input, form li.error select, form li.error textarea {
+  	border: 1px solid red;
+  	box-shadow: rgba(255, 0, 0, 0.5) 0px 1px 2px 0px inset;
+  }
+
+  form li.error label {
+  	color: red;
+  }
+
+  
+  form.fixed-width label {
+  	float: left;
+  	width: 200px;
+  	padding: 0 1em;
+  	text-align: left;
+  	margin-bottom: 20px;
+  }
+
+  form.fixed-width br {
+  	clear: both;
+  }
+
+  input, form.formtastic input, select, form.formtastic select, textarea {
+  	padding: 5px;
+  	margin: 4px 0px;
+  	border-radius: 3px;
+  	border: 1px solid #7f7f7f;
+  	box-shadow: rgba(0, 0, 0, 0.117188) 0px 1px 2px 0px inset;
+  	background-color: #fcfcfc;
+  	
+  /*	box-shadow: rgb(203, 210, 217) -1px -1px 1px 0px inset;
+  	border-radius: 4px;
+  	border: 1px solid #ddd;*/
+  	
+  	
+  	
+  	border: 1px solid #bcc3c5;
+  	padding: 6px 9px;
+  	color: #3c3c3c;
+  	background: #fff;
+  	box-shadow: none;
+  	
+  }
+
+  input:focus, form.formtastic input:focus, textarea:focus, form.formtastic textarea:focus {
+  	background: #edf5fe;
+  	color: #000;
+  	outline: 0;
+  	/*border-color: #036;*/
+  	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),0 0 8px rgba(82, 168, 236, 0.4);
+  }
+
+  input[disabled], select[disabled], textarea[disabled] {
+    cursor: not-allowed;
+    background: #eee !important;
+  }
+
+  input[type=checkbox]:focus, form.formtastic input[type=checkbox]:focus {
+    outline: 2px solid rgba(82, 168, 236, 0.4);
+  	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),0 0 8px rgba(82, 168, 236, 0.4);
+  }
+
+
+
+
+
+
+
+
+
+
+  input, textarea, select {
+  transition: border linear 0.2s,box-shadow linear 0.2s;
+  -moz-transition: border linear 0.2s,box-shadow linear 0.2s;
+  -ms-transition: border linear 0.2s,box-shadow linear 0.2s;
+  -o-transition: border linear 0.2s,box-shadow linear 0.2s;
+  transition: border linear 0.2s,box-shadow linear 0.2s;
+  }
+
+  textarea, form.formtastic textarea {
+  	padding: 0.25em;
+  }
+
+  /*form#participant_form label {
+  	padding-top: 1em;
+  }*/
+
+  form#participant_form li {
+  	list-style: none;
+  	margin-left: 0;
+  	padding-left: 0;
+  }
+
+  form#participant_form li li {
+  /*	margin-left: 3em;*/
+  	margin-right: 1em;
+  }
+
+
+  textarea.code {
+  	font-family: "Courier New", Courier, mono !important;
+  }
+
+  input[type=submit], input[type=button], form.formtastic input[type=submit], form.formtastic input[type=button], a.submit {
+  	padding: 5px 10px 5px 10px;
+  	text-decoration: none;
+  	background-position: 5px center;
+  	background-repeat: no-repeat;
+  	border: 1px outset #dadada;
+  	border-radius: 5px;
+  	background-color: #f9f9f9;
+  	cursor: default;
+  	color: #222;
+  	text-shadow: 0 1px 0 #fff;
+  	box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  	
+  	box-shadow: rgb(203, 210, 217) -1px -1px 0px 0px inset;
+  	border-radius: 4px;
+  	border: none;
+  }
+
+  input[type=submit]:active, input[type=button]:active, form.formtastic input[type=submit]:active, form.formtastic input[type=button]:active, a.submit:active {
+  	/*border-style: inset;*/
+  	background-color: #f2f2f2;
+  	
+  	box-shadow: rgb(203, 210, 217) 1px 1px 0px 0px inset;
+  	
+  }
+
+  input[type=submit], form.formtastic input[type=submit], a.submit {
+  	// background-image: url();
+  	padding-left: 25px;
+  	font-weight: bold;
+  	border-color: #cbcbcb;
+  }
+
+  input.search {
+  	margin: 0.5em 0;
+  	text-shadow: none;
+  	padding: 5px;
+  	padding-left: 25px !important;
+  	// background: white url() no-repeat 4px center;
+  	font: 13px/130% Helvetica, Arial, sans-serif;
+  	font-weight: lighter;
+  	color: rgba(0,0,0,0.9);
+  	border-radius: 5px;
+  	border-color: rgba(153,153,153,0.9);
+  }
+
+  input.search:focus {
+  	border-bottom-right-radius: 0;
+  	border-bottom-left-radius: 0;
+  	// background: #edf5fe url() no-repeat 4px center !important;
+  	padding-left: 25px !important;
+  }
+
+  input.search.wide {
+  	width: 20em;
+  }
+
+  input.active {
+  	background-color: rgba(58, 237, 58, 0.2);
+  }
+
+  select, form.formtastic select {
+  	padding: 10px;
+  	border-color: rgba(153,153,153,0.9);
+  	appearance:none;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari and Chrome */
+  	padding: 5px 25px 5px 10px;
+  	border: 1px outset rgba(153,153,153,.5);
+  	border-radius: 5px;
+  	color: rgba(0,0,0,0.8);
+  	text-shadow: 0 1px 0 #fff;
+  	box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  	font: 13px Helvetica, Arial, sans-serif;
+  	
+  	
+  	border: 1px solid #bcc3c5;
+  	padding: 6px 25px 6px 9px;
+  	color: #3c3c3c;
+  	/*background: #fff;*/
+  	box-shadow: none;
+  	
+  	background: url("data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTZweCIgdmlld0JveD0iMCAwIDI5Mi4zNjIgMjkyLjM2MiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMjkyLjM2MiAyOTIuMzYyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHBhdGggZD0iTTI4Ni45MzUsNjkuMzc3Yy0zLjYxNC0zLjYxNy03Ljg5OC01LjQyNC0xMi44NDgtNS40MjRIMTguMjc0Yy00Ljk1MiwwLTkuMjMzLDEuODA3LTEyLjg1LDUuNDI0ICAgQzEuODA3LDcyLjk5OCwwLDc3LjI3OSwwLDgyLjIyOGMwLDQuOTQ4LDEuODA3LDkuMjI5LDUuNDI0LDEyLjg0N2wxMjcuOTA3LDEyNy45MDdjMy42MjEsMy42MTcsNy45MDIsNS40MjgsMTIuODUsNS40MjggICBzOS4yMzMtMS44MTEsMTIuODQ3LTUuNDI4TDI4Ni45MzUsOTUuMDc0YzMuNjEzLTMuNjE3LDUuNDI3LTcuODk4LDUuNDI3LTEyLjg0N0MyOTIuMzYyLDc3LjI3OSwyOTAuNTQ4LDcyLjk5OCwyODYuOTM1LDY5LjM3N3oiIGZpbGw9IiNiY2MzYzUiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K") no-repeat right 6px center;
+  	background-size: 8px;
+  }
+
+  form.formtastic select {
+  	border-color: rgba(153,153,153,.9);
+  	border-radius: 3px;
+  	
+  }
+
+  select:focus, form.formtastic select:focus {
+  	color: #000;
+  	outline: 0;
+  /*	border-color: #036;*/
+  	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),0 0 8px rgba(82, 168, 236, 0.4);
+  	
+  }
+
+
+  #add_mentor_form h3 {
+  	margin-bottom: 0;
+  }
+
+  #add_mentor_form input.search {
+  	display: inline;
+  	width: 20em;
+  	float: left;
+  }
+
+  #add_mentor_form input[type=submit] {
+  	float: left;
+  	margin-left: 1em;
+  	top: 3px;
+  	position: relative;
+  	padding-top: 6px;
+  	padding-bottom: 6px;
+  }
+
+  /*form:not(.formtastic) fieldset {*/
+  fieldset, form.formtastic > fieldset {
+  	border: none;
+  	margin-bottom: 25px;
+  	padding: 0.5em;
+  	padding-top: 10px;
+  	overflow: hidden;
+  }
+
+  legend, form.formtastic legend {
+  	display: block;
+  	border-bottom: 1px solid #047391;
+  	background-color: #edf5fe;
+  	width: 99%;
+  	padding: 0.5em 0.75em;
+  	margin: -0.5em;
+  	margin-bottom: 1em;
+  	font-weight: bold;
+  	color: #036;
+  }
+
+  form.formtastic fieldset fieldset legend {
+  	border: inherit;
+  	background: inherit;
+  	padding: 0;
+  	margin: 0;
+  }
+
+  /* @group Second-level fieldsets for inline grouped fields */
+
+  form.formtastic fieldset fieldset.inline {
+  	padding: 0;
+  }
+
+  form.formtastic fieldset fieldset.inline legend {
+  	color: #656565;
+  	float: left;
+  	width: 25%;
+  }
+
+  form.formtastic fieldset fieldset.inline > ol > fieldset {
+  	padding: 0;
+  }
+
+  form.formtastic fieldset fieldset.inline > ol {
+  	margin-left: 25%;
+  }
+
+  form.formtastic fieldset fieldset.inline > ol li {
+  	display: inline-block;
+  	width: auto;
+  /*  max-width: 30%;*/
+  	margin-right: 1em;
+  	margin-bottom: 0.5em;
+  }
+
+  form.formtastic fieldset fieldset.inline > ol {
+  	margin-bottom: 1em;
+  }
+
+  form.formtastic fieldset fieldset.inline.compress-bottom > ol {
+  	margin-bottom: 0;
+  }
+
+
+  form.formtastic fieldset fieldset.inline > ol li input, form.formtastic fieldset fieldset.inline > ol li select {
+  	display: block;
+  	clear: both;
+  	max-width: 90%;
+  }
+
+  form.formtastic fieldset fieldset.inline > ol li.date {
+  	max-width: 100%;
+  }
+
+  form.formtastic fieldset fieldset.inline > ol li.date li {
+  	min-width: 5em;
+  }
+
+  form.formtastic fieldset fieldset.inline > ol li.date li:first-child {
+  	min-width: 11em;
+  }
+
+  form.formtastic fieldset fieldset.inline > ol li label {
+  	display: block;
+  	font-weight: normal;
+  	margin-bottom: 3px;
+  	font-size: 85%;
+  	width: auto;
+  }
+
+  form.formtastic fieldset fieldset.inline ol li.boolean {
+  	width: auto;
+  	max-width: 90%;
+  }
+
+  form.formtastic fieldset fieldset.inline ol li.boolean label {
+  	padding-left: 0;
+  	font-size: 100%;
+  }
+
+  form.formtastic fieldset fieldset.inline ol li.boolean label input {
+  	display: inline;
+  }
+
+  /* @end */
+
+  form.formtastic li.sameline-hint p.inline-hints {
+  	display: inline;
+  	margin: 0;
+  	margin-left: 0.5em;
+  }
+
+  form.formtastic li#participant_suffix_input input, form.formtastic li#parent_suffix_input input {
+  	width: 50px;
+  }
+
+  form.formtastic li#participant_state_input input, form.formtastic li#parent_state_input input {
+  	width: 4em;
+  }
+
+  form.formtastic li#participant_zip_input input, form.formtastic li#parent_zip_input input {
+  	width: 8em;
+  }
+
+  /*form.formtastic li#test_score_total_score_input {
+  	border-top: 1px solid rgba(0,0,0,0.25);
+  }*/
+
+
+  form.formtastic fieldset p:first-child {
+  	margin: -22px -2px 2em -7px;
+  	padding: 7px;
+  	background: rgba(0,0,0,0.03);
+  }
+
+  form.formtastic fieldset > ol > .inline-hints {
+  	color:#666;
+  	margin:-1em 0 1.5em 25%;
+  }
+
+  form.formtastic fieldset fieldset {
+  	margin: 0;
+  }
+
+  form.formtastic > fieldset > ol > li > label {
+  /*  width: 22%;*/
+  	padding-right: 3%;
+  }
+
+  .formtastic .label .button.help-text {
+    display: inline-block;
+    float: none;
+    margin-left: 0.5em;
+  }
+
+  /*input.currency:before {
+    content: "$ ";
+    float: left;
+    margin-right: 0.25em;
+    color: rgba(0,0,0,0.5);
+  }
+  */
+
+  input.heritage-input {
+  /*  position: absolute;
+    left: 20em;
+  */}
+
+  input.currency {
+  	// background-image: url() !important;
+    background-repeat: no-repeat !important;
+    background-position: left center !important;
+    min-width: 7em;
+  }
+
+  input.currency {
+  	text-align: right;
+  }
+
+  
+  fieldset ul.inline li {
+  	list-style: none;
+  	float: left;
+  	padding: 0;
+  	margin-right: 1em;
+  }
+
+  fieldset ul {
+  	clear: both;
+  	padding: 0;
+  	margin-bottom: 1em;
+  }
+
+
+
+  .info-section#notes form, .info-section#documents form {
+  	margin: 0;
+  	padding: 0;
+  	padding-bottom: 5px;
+  	border-bottom: 1px solid rgb(176, 183, 226);
+  	background-color: rgb(246, 248, 252);
+  	overflow: hidden;
+  	display: block;
+  }
+
+  .info-section#notes form h4, .info-section#documents form h4 {
+  	margin-top: 0;
+  	display: none;
+  }
+
+  .info-section form .full {
+  	margin: 0;
+  	background: rgba(255,255,255,0.65);
+  	padding: 10px 30px;
+  }
+
+  form.full {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .info-section form .full textarea, .info-section form .full input {
+  	background: none;
+  	border: none;
+  	box-shadow: none;
+  	font: 13px/130% "Helvetica Neue", Helvetica, Arial, sans-serif;
+  	margin: 0;
+  	margin-bottom: 5px;
+  	display: block;
+  	height: 3em;
+  }
+
+  .info-section form .full input {
+    height: auto;
+    width: 99%;
+  }
+
+  .info-section#notes form label, .info-section#documents form label {
+  	margin-left: 30px;
+  	font-weight: bold;
+  	color: #656565;
+  	font-size: 95%;
+  }
+
+  .info-section#notes form input.add.right, .info-section#documents form input.add.right {
+  	margin-right: 30px;
+  	font: 12px/130% "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  .info-section#notes form select, .info-section#documents form select {
+  	margin-left: 0.5em;
+  	font-size: 90%;
+  	padding: 5px auto 10px auto;
+  }
+
+  .info-section#notes form input[type=checkbox] {
+  	margin-right: 0.5em;
+  }
+
+
+
+  
+  #new_document_form {
+  	background: #f5f5f5;
+  	padding: 1em;
+  	margin-bottom: 1em;
+  	padding-bottom: 1em;
+  }
+
+  #new_participant_form_container h2, #new_volunteer_form_container h2 {
+  	margin: 0;
+  	padding-bottom: 0.25em;
+  	border-bottom: 1px solid #eee;
+  }
+
+  #new_participant_form_container {
+  	background: rgba(255,255,255,0.4);
+  }
+
+
+
+
+
+  
+}

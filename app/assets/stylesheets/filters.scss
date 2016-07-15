@@ -1,0 +1,156 @@
+
+
+ul.filters {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+ul.filters ul {
+  list-style: none;
+  padding-left: 0.5em;
+  padding-top: 3px;
+}
+
+ul.filters li ul {
+  transition: opacity 0.5s, height 0.5s;
+  overflow: hidden;
+}
+
+ul.filters li.closed ul {
+  opacity: 0;
+  height: 0;
+}
+
+.filters li {
+	clear: both;
+	margin-bottom: 5px;
+}
+
+.filters > li.category > h4 {
+	padding-top: 0.5em;
+  font-weight: bold;
+	text-transform: uppercase;
+	font-size: 85%;
+	font-family: "Oxygen", sans-serif;
+  cursor: pointer;
+}
+
+.filters > li.category:not(.closed) > h4:after, .filters > li.category:hover > h4:after {
+  content: '\25be';
+  padding-left: 0.35em;
+}
+
+.filters li:hover label small {
+	background: #999;
+	color: white;
+	text-shadow: 0 1px 0 #999;
+}
+
+.filters li input {
+	margin-right: 1em;
+	margin-left: -2em;
+}
+
+.filters li input.enabled {
+  visibility: hidden;
+}
+
+.filters li input.enabled ~ span {
+  background-repeat: no-repeat;
+  margin-right: 1em;
+  margin-left: -1.9em;
+  padding-left: 1.9em;
+}
+
+.filters li input[value=pass].enabled ~ span {
+}
+
+.filters li input[value=fail].enabled ~ span {
+}
+
+.filters li label {
+	left: 1.7em;
+	position: relative;
+}
+
+.filters li label small {
+	float: right;
+	margin: 1px;
+	margin-right: 0;
+	margin-left: 2.25em;
+	position: relative;
+	top: -2px;
+	right: 2em;
+	min-width: 1.25em;
+	font-weight: bold;
+	font-family: "Helvetica Neue", Helvetica, sans-serif;
+	color: #fff;
+	border-radius: 20px;
+	background: rgba(115, 115, 115, 0.6);
+	padding: 1px 7px;
+	font-size: 90%;
+	color: white;
+	text-align: center;
+	text-shadow: none;
+	box-shadow: 0px 1px 0 #fff;
+}
+
+ul.filter-results {
+	list-style: none;
+	padding: 0;
+	margin: 10px 20px;
+	columns: 3;
+	-webkit-columns: 3;
+}
+
+ul.filter-results li ul {
+	list-style: none;
+	padding: 0;
+  margin-bottom: 10px;
+}
+
+.filter-results li {
+	background: no-repeat left center;
+	padding: 7px;
+	border-bottom: 1px solid #eee;
+	-webkit-column-break-inside: avoid;
+	break-inside: avoid-column;
+	padding-left: 25px;
+}
+
+.filter-results li ul li {
+  border-bottom: none;
+  margin-left: 0px;
+}
+
+.filter-results li.pass, span.icon.pass {
+	
+}
+
+.filter-results li.fail, span.icon.fail {
+	
+	color: #ccc;
+}
+
+.filter-results li.fail.warn, span.icon.fail.warn {
+	
+	color: red;
+}
+
+
+
+
+
+
+.filterable {
+	transition: all 0.2s ease-in-out;
+}
+
+.filterable.hidden {
+	display: none;
+}
+
+.filterable.preview {
+	background: rgba(189, 211, 224, 0.2);
+}

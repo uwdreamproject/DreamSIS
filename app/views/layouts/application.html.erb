@@ -13,20 +13,15 @@
 
 	<%= stylesheet_link_tag "application", media: 'all' %>
 	<%= javascript_include_tag "application" %>
+	<%= javascript_include_tag "https://use.fontawesome.com/fbb74a9d9b.js" %>
 	<%= stylesheet_link_tag @customer_stylesheet unless @customer_stylesheet.blank? %>
 	<%= stylesheet_link_tag @extra_stylesheet unless @extra_stylesheet.blank? %>
 
-    <%- if @include_typekit -%>
-    	<script type="text/javascript" src="//use.typekit.net/vjh2nav.js"></script>
-    	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-    <% end %>
+  <%- if @include_typekit -%>
+  	<script type="text/javascript" src="//use.typekit.net/vjh2nav.js"></script>
+  	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+  <% end %>
 
-	<%- if @include_mediaelement -%>
-		<%= javascript_include_tag "//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js" %>
-		<script src="/mediaelement/mediaelement-and-player.js"></script>
-		<link rel="stylesheet" href="/mediaelement/mediaelementplayer.css" />
-	<%- end -%>
-	
 	<%- if @share_links && API_KEYS['sharethis'] -%>
 		<script type="text/javascript">var switchTo5x=true;</script>
 		<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
@@ -39,77 +34,73 @@
 		});</script>
 	<% end %>
 
-	<%- if Rails.env == 'production' && GOOGLE_ANALYTICS_TRACKING_ID -%>
-		<script type="text/javascript">
-
-		  var _gaq = _gaq || [];
-		  _gaq.push(['_setAccount', '<%= GOOGLE_ANALYTICS_TRACKING_ID %>']);
-		  _gaq.push(['_trackPageview']);
-
-		  (function() {
-		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		  })();
-
+	<%- if Rails.env.production? && GOOGLE_ANALYTICS_TRACKING_ID -%>
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+		  ga('create', '<%= GOOGLE_ANALYTICS_TRACKING_ID %>', 'auto');
+		  ga('send', 'pageview');
 		</script>
 	<%- end -%>
 
-	<script src="https://use.fontawesome.com/fbb74a9d9b.js"></script>
 </head>
 
 <body class="<%= "admin" if @current_user.try(:admin?) || @current_user.try(:person).try(:current_lead?) %> <%= controller.action_name %> <%= controller.controller_name %> <%= @current_user.try(:person).try(:type) || @audience.to_s %> <%= @body_class %>" id="body">
 
 	<header>
 		<%= render "shared/nav" %>
-
-		<div id="sidebar-header">
-			<a href="#" id="sidebar_expander_link"><span>Show Sidebar</span></a>
-		</div>
 	</header>
-	
 
 	<div class="<%= @container_class || 'container-fluid' %>">
 
 		<% flash.each do |type, message| %>
-		<div class="alert <%= alert_class_for(type) %> alert-dismissible fade in">
-			<button type="button" class="close" aria-label="Close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
-			<%= message %>
-		</div>
+			<div class="alert <%= alert_class_for(type) %> alert-dismissible fade in">
+				<button type="button" class="close" aria-label="Close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+				<%= message %>
+			</div>
 		<% end %>
 
-		<section id="content-wrap">
-			<%= render :partial => "shared/share_links" if @share_links && API_KEYS['sharethis'] %>
+		<div class="row">
 			
-			<%= yield %>
+			<div class="col-md-10" role="main">
+				<%= render :partial => "shared/share_links" if @share_links && API_KEYS['sharethis'] %>
+
+				<%= yield %>
+				
+				<%- unless @extra_footer_content.blank? -%>
+					<section class="event-footer-content extra-footer-content">
+						<%= sanitize textilize(@extra_footer_content),
+									:tags => %w(div table tr td h2 p a ul li strong em img),
+									:attributes => %w(id class style href src role) %>
+					</section>
+				<% end -%>
+
+				<footer>
+					&copy; 2006&ndash;<%= Time.now.year %>
+					<%= link_to "University of Washington", "http://uw.edu", target: "_blank" %>.
+					Operated with <%= glyph('heart') %> by <%= link_to "CDS", "http://dreamsis.com", target: "_blank" %>.
+					<code class="hidden"><%= `git rev-parse --short HEAD`.strip %></code>
+				</footer>
+
+			</div>
 			
-			<%- unless @extra_footer_content.blank? -%>
-				<section class="event-footer-content extra-footer-content">
-					<%= sanitize textilize(@extra_footer_content),
-							:tags => %w(div table tr td h2 p a ul li strong em img),
-							:attributes => %w(id class style href src role) %>
+			<div class="col-md-2" role="complementary">
+				<section id="sidebar" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
+					<%= yield :sidebar %>
 				</section>
-			<% end -%>
-		</section>
-
-		<footer>
-			&copy; 2006&ndash;<%= Time.now.year %> by
-			<%= link_to "University of Washington", "http://uw.edu", target: "_blank" %>.
-			The DreamSIS name is used under license.
-			Operated by <%= link_to "CDS", "http://dreamsis.com", target: "_blank" %>.
-			
-			<code class="git branch"><%= `git rev-parse --short HEAD`.strip %></code>
-		</footer>
-
-		<%#= render "shared/dev_inspector" if Rails.env.development? %>
+			</div>
 		
+		</div>
+			
 	</div>
 	
-	<div id="indicator">
-		Loading...
-		<a href="#" class="stop-loading">Stop</a>
+	<div id="indicator" class="hidden">
+		Loading... <a href="#" class="stop-loading">Stop</a>
 		<%= render :partial => "shared/progress" %>
 	</div>
 
+	<%= render "shared/dev_inspector" if Rails.env.development? %>
 </body>
 </html>
