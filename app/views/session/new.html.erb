@@ -1,4 +1,4 @@
-<h1>Login</h1>
+<h1>Welcome</h1>
 
 <%- if Customer.allowable_login_method?(:shibboleth) -%>
 	<p>UW students, staff, faculty and alumni:</p>
@@ -9,7 +9,7 @@
 	</div>
 <% end %>
 
-<p><%= Customer.allowable_login_method?(:shibboleth) ? "All other users, log in" : "Log in" %> using one of the following services:</p>
+<p><%= Customer.allowable_login_method?(:shibboleth) ? "All other users, log in" : "Please log in" %> using one of the following services:</p>
 <div class="login-links">
 	<%= link_to raw("<span>&nbsp;</span> Google"), "auth/google_oauth2", :class => "google login-link" if Customer.allowable_login_method?(:google_oauth2) %>
 	<%= link_to raw("<span>&nbsp;</span> Facebook"), "auth/facebook", :class => "facebook login-link" if Customer.allowable_login_method?(:facebook) %>

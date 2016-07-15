@@ -1,6 +1,6 @@
 <%- cache ["shared/nav", Customer.cache_key, (@current_user.cache_key if @current_user), Date.today.to_s].join("/") do -%>
 
-<nav class="navbar navbar-default navbar-static-top">
+<nav class="navbar navbar-inverse navbar-static-top">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -10,7 +10,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-			<%= link_to content_tag(:strong, "DreamSIS"), root_url, class: "navbar-brand" %>
+			<%= link_to image_tag('dreamsis-logo-transp-2x.png', alt: "DreamSIS"), root_url, class: "navbar-brand" %>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -24,7 +24,7 @@
 						<%- if Customer.uses_activity_logs? -%>
 							<li><%= link_to "Track my week", my_current_activity_log_url, glyph: "calendar-check-o" %></li>
 						<% end %>
-						
+            
 						<li role="separator" class="divider"></li>
 						<%- for participant in @current_user.participants -%>
 							<li class="participant">
@@ -123,7 +123,7 @@
 			<% unless @current_user.blank? || @current_user == :false %>
 				<ul class="nav navbar-nav navbar-right user">
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						<a href="#" class="dropdown-toggle avatar" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 							<%= image_tag(@current_user.person.avatar_image_url, :height => 30, :class => "avatar") if @current_user.person && @current_user.person.avatar_image_url %> <span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu">
