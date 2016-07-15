@@ -9,12 +9,12 @@
 	
 	<%- if college_application.attending? -%>
 		<span class="primary">
-			<%= content_tag(:span, "Planning to Attend", :class => "green attending tag") %>
+			<%= content_tag(:span, "Planning to Attend", class: "green attending tag") %>
 			<%= separator + link_to('Not Attending', 
-								participant_url(@participant, :participant => { :college_attending_id => nil }),
-								:method => :put,
-								:confirm => "Are you sure this student is no longer attending this college?",
-								:class => 'small weak') %>
+								participant_url(@participant, participant: { college_attending_id: nil }),
+								method: :put,
+								confirm: "Are you sure this student is no longer attending this college?",
+								class: 'small weak') %>
 		</span>
 	<% end %>
 
@@ -24,7 +24,7 @@
 </td>
 
 <td class="college-applied centered inline-when-small" data-text="<%= college_application.applied? %>">
-	<%= content_tag :span, "Y", :class => "icon pass" if college_application.applied? %>
+	<%= content_tag :span, "Y", class: "icon pass" if college_application.applied? %>
 </td>
 
 <td class="college-decision inline-when-small">

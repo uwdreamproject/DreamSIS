@@ -1,33 +1,33 @@
 <%= content_for(:sidebar) do %>
 
-	<p><%= render :partial => "shared/term_select",
-				:locals => { :form_url => mentor_term_groups_term_path(:search) },
-				:object => (@term || Term.current_term || Term.allowing_signups.try(:first) || Term.last) %></p>
+	<p><%= render partial: "shared/term_select",
+				locals: { form_url: mentor_term_groups_term_path(:search) },
+				object: (@term || Term.current_term || Term.allowing_signups.try(:first) || Term.last) %></p>
 
 	<% if @term %>
 		<p><%= link_to "Add a new group",
-						new_mentor_term_group_path(:term_id => @term.to_param),
-						:class => 'add button' %></p>
+						new_mentor_term_group_path(term_id: @term.to_param),
+						class: 'add button' %></p>
 		
 		<% unless @term.course_ids.blank? %>
 		<p><%= link_to "Match Time Schedule",
-		 				create_from_linked_sections_mentor_term_groups_path(:term_id => @term.to_param),
-						:method => :put,
-		 				:class => "sync button",
-						:confirm => "Are you sure? This will create new groups for any linked section that doesn't already have a group.",
-		 				:disable_with => "Syncing..." %></p>
+		 				create_from_linked_sections_mentor_term_groups_path(term_id: @term.to_param),
+						method: :put,
+		 				class: "sync button",
+						confirm: "Are you sure? This will create new groups for any linked section that doesn't already have a group.",
+		 				disable_with: "Syncing..." %></p>
 		
 		<p><%= link_to "Sync course enrollees",
-		 				sync_mentor_term_groups_path(:term_id => @term.to_param),
-						:method => :put,
-		 				:class => "sync button",
-						:confirm => "Are you sure? This will sync the enrollees from the student database in each section.",
-		 				:disable_with => "Syncing..." %></p>
+		 				sync_mentor_term_groups_path(term_id: @term.to_param),
+						method: :put,
+		 				class: "sync button",
+						confirm: "Are you sure? This will sync the enrollees from the student database in each section.",
+		 				disable_with: "Syncing..." %></p>
 		
 		<% end -%>
 		
 	<%- else -%>
-		<p><%= link_to "Add a new mentor group", new_mentor_term_group_path, :class => 'add button' %></p>
+		<p><%= link_to "Add a new mentor group", new_mentor_term_group_path, class: 'add button' %></p>
 	<% end -%>
 
 <%- end -%>

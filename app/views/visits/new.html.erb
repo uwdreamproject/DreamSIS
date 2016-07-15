@@ -5,9 +5,9 @@
 
 	<%= default_form_errors(f) %>
 
-	<%= render :partial => "events/fields", :locals => { :f => f } %>
+	<%= render partial: "events/fields", locals: { f: f } %>
 	
-	<%= f.submit "Create", :disable_with => 'Creating...' %>
+	<%= f.submit "Create", disable_with: 'Creating...' %>
 	<%= separator %>
 	<%= link_to 'Cancel', high_school_visits_path(@high_school) %>
 

@@ -1,6 +1,6 @@
 $("#bulk_action_task").remove()
 $("body").append(
   $("<div id='bulk_action_task' class='centered-modal' />")
-    .html("<%=j render :template => 'participant_bulk_actions/add_note.html.erb' %>")
+    .html("<%=j render template: 'participant_bulk_actions/add_note.html.erb' %>")
 )
 $("#bulk_action_task form textarea").focus()

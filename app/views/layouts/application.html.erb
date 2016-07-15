@@ -65,15 +65,15 @@
 		<div class="row">
 			
 			<div class="col-md-10" role="main">
-				<%= render :partial => "shared/share_links" if @share_links && API_KEYS['sharethis'] %>
+				<%= render partial: "shared/share_links" if @share_links && API_KEYS['sharethis'] %>
 
 				<%= yield %>
 				
 				<%- unless @extra_footer_content.blank? -%>
 					<section class="event-footer-content extra-footer-content">
 						<%= sanitize textilize(@extra_footer_content),
-									:tags => %w(div table tr td h2 p a ul li strong em img),
-									:attributes => %w(id class style href src role) %>
+									tags: %w(div table tr td h2 p a ul li strong em img),
+									attributes: %w(id class style href src role) %>
 					</section>
 				<% end -%>
 
@@ -98,7 +98,7 @@
 	
 	<div id="indicator" class="hidden">
 		Loading... <a href="#" class="stop-loading">Stop</a>
-		<%= render :partial => "shared/progress" %>
+		<%= render partial: "shared/progress" %>
 	</div>
 
 	<%= render "shared/dev_inspector" if Rails.env.development? %>

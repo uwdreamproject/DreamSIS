@@ -1,16 +1,16 @@
 <tr class="event_attendance" id="event_attendance_<%= event_attendance.id %>" data-shift-id="<%= event_attendance.event_shift_id %>" data-email="<%=h event_attendance.email rescue nil %>" data-attending="<%= event_attendance.rsvp? %>" data-attended="<%= event_attendance.attended? %>">
 	
 	<td class="name">
-		<%= link_to h(event_attendance.try(:person).try(:fullname)), event_attendance.try(:person), :target => "_blank" %>
-		<%= content_tag(:span, "admin", :class => 'admin tag') if event_attendance.admin? %>
+		<%= link_to h(event_attendance.try(:person).try(:fullname)), event_attendance.try(:person), target: "_blank" %>
+		<%= content_tag(:span, "admin", class: 'admin tag') if event_attendance.admin? %>
 		<% p = event_attendance.try(:person)%>
-		<%= content_tag(:span, "Driver", :class => 'driver tag') if p.type == "Mentor" && p.valid_van_driver? %>
+		<%= content_tag(:span, "Driver", class: 'driver tag') if p.type == "Mentor" && p.valid_van_driver? %>
 	</td>
 	
 	<%= content_tag(:td, event_attendance.try(:person).try(:high_school).try(:name)) if audience.to_s.downcase == "participant" || audience.to_s.downcase == "student" %>
 	
 	<td><%= safe_join(event_attendance.person.try(:programs).to_a.collect{ |p| 
-				content_tag(:abbr, p.abbreviation, :title => p.title.html_safe, :class => 'initialism')
+				content_tag(:abbr, p.abbreviation, title: p.title.html_safe, class: 'initialism')
 			}, ", ") %></td>
 	
 	<td><%= number_to_phone event_attendance.person.try(:phone_mobile) %></td>
@@ -18,13 +18,13 @@
 	<td><%=h event_attendance.shift.try(:title) %></td>
 	
 	<%- if @event.training_required?(@audience.to_s) -%>
-		<td class="centered"><%= event_attendance.completed_training? ? content_tag(:span, "Y", :class => 'green tag') : content_tag(:span, "-", :class => 'light') %></td>
+		<td class="centered"><%= event_attendance.completed_training? ? content_tag(:span, "Y", class: 'green tag') : content_tag(:span, "-", class: 'light') %></td>
 	<% end -%>
 	
-	<td class="centered"><%= event_attendance.rsvp? ? content_tag(:span, "Y", :class => 'green tag') : content_tag(:span, "-", :class => 'light') %></td>
+	<td class="centered"><%= event_attendance.rsvp? ? content_tag(:span, "Y", class: 'green tag') : content_tag(:span, "-", class: 'light') %></td>
 	
-	<td class="centered"><%= event_attendance.attended? ? content_tag(:span, "Y", :class => 'green tag') : content_tag(:span, "-", :class => 'light') %></td>
+	<td class="centered"><%= event_attendance.attended? ? content_tag(:span, "Y", class: 'green tag') : content_tag(:span, "-", class: 'light') %></td>
 	
-	<td class="functions"><%= link_to "Edit", edit_event_event_attendance_path(event_attendance.event, event_attendance), :class => "button" %></td>
+	<td class="functions"><%= link_to "Edit", edit_event_event_attendance_path(event_attendance.event, event_attendance), class: "button" %></td>
 	
 </tr>

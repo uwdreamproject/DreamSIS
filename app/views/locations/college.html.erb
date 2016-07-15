@@ -1,5 +1,5 @@
 <h3 class="pre-title"><%=h @location.class.to_s.titleize %></h3>
-<h1><%= fetch_favicon_tag @location.try(:formatted_website_url), :size => 20 %>
+<h1><%= fetch_favicon_tag @location.try(:formatted_website_url), size: 20 %>
 	<%=h @location.name %></h1>
 
 <div class="when-and-where">
@@ -16,7 +16,7 @@
 	<%- for stage in CollegeApplication::Stages -%>
 	<li>
 		<%= link_to content_tag(:strong, @location.try("#{stage}_participants").count) + content_tag(:p, stage),
-					college_participants_path(@location.id, :report => "college_stages", :anchor => "!stages=#{stage}") %>
+					college_participants_path(@location.id, report: "college_stages", anchor: "!stages=#{stage}") %>
 	</li>
 	<% end %>
 	
@@ -33,7 +33,7 @@
 	<dd><%= number_to_phone @location.phone %></dd>
 
 	<dt>Website URL</dt>
-	<dd><%= link_to @location.try(:formatted_website_url), @location.try(:formatted_website_url), :target => "_blank" %>
+	<dd><%= link_to @location.try(:formatted_website_url), @location.try(:formatted_website_url), target: "_blank" %>
 		</dd>
 
 	<%- if @location.respond_to?(:college_navigator_url) && !@location.try(:college_navigator_url).nil? %>
@@ -41,15 +41,15 @@
 	<dd class="ipeds">
 		<%= link_to "Open in CollegeNavigator",
 					@location.try(:college_navigator_url),
-					:target => "_blank",
-					:class => "offsite" %>
+					target: "_blank",
+					class: "offsite" %>
 		</dd>
 	<% end -%>
 
 </dl>
 
 <%= content_for(:sidebar) do %>
-	<p><%= link_to 'Back to all locations', locations_path, :class => 'back button' %></p>
+	<p><%= link_to 'Back to all locations', locations_path, class: 'back button' %></p>
 	
 	<div class="auto_complete">
 		<input type="input" class="search autocomplete-search" placeholder="Search colleges" data-source="<%= auto_complete_for_institution_name_colleges_url %>" data-target="<%= college_url("id") %>" />

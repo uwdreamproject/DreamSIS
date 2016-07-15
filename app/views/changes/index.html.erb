@@ -10,7 +10,7 @@
     </thead>
 
     <tbody>
-        <%= render :partial => "change", :collection => @changes %>
+        <%= render partial: "change", collection: @changes %>
         
         <%- if @changes.empty? -%>
         <tr class="empty">
@@ -22,5 +22,5 @@
 </table>
 
 <%= content_for(:sidebar) do %>
-    <p><%= link_to "Return to record", @object, :class => "back button" rescue nil %></p>
+    <p><%= link_to "Return to record", @object, class: "back button" rescue nil %></p>
 <%- end -%>

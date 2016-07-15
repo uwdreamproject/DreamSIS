@@ -1,10 +1,10 @@
 <h1>Editing <%= @user.login %></h1>
 
-<%= semantic_form_for @user, :as => 'user', :url => user_path(@user) do |f| %>
+<%= semantic_form_for @user, as: 'user', url: user_path(@user) do |f| %>
 	<%= default_form_errors(f) %>
 
 	<%= f.inputs "Admin Rights" do -%>
-		<%= f.input :admin, :label => "Assign admin rights to this user", :hint => "Admin users have full access to all features and all #{Customer.name_label} records." unless @user.is_a?(AnonymousUser) %>
+		<%= f.input :admin, label: "Assign admin rights to this user", hint: "Admin users have full access to all features and all #{Customer.name_label} records." unless @user.is_a?(AnonymousUser) %>
 	<% end -%>
 	
 	<%= default_form_actions(f) %>

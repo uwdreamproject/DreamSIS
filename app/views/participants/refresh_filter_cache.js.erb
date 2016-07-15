@@ -1,4 +1,4 @@
-$("#filter_results_container").replaceWith("<%=j render :partial => 'participants/filter_results' %>")
+$("#filter_results_container").replaceWith("<%=j render partial: 'participants/filter_results' %>")
 $("#filter_results_tab_link").children('.count').html('<%= @participant.filter_results_count %>').addClass('calculating')
 setTimeout("$('#filter_results_tab_link').children('.count').removeClass('calculating')", 500)
 $('#filter_results_tab_link').children('.count-bar').addClass('count-<%= @participant.filter_results_count %>')

@@ -17,13 +17,13 @@ end
 
 # Prep the alt text for the progress meter
 my_alt_text = []
-my_alt_text << "#{number_to_percentage active_percentage, :precision => 0} of active participants"
-my_alt_text << "#{number_to_percentage total_percentage, :precision => 0} of all participants"
-my_alt_text << "Target: #{number_to_percentage object_filter.target_percentage, :precision => 0}" unless object_filter.target_percentage.blank?
-my_alt_text << "Warning below #{number_to_percentage object_filter.warning_threshold, :precision => 0}" unless object_filter.warning_threshold.blank?
+my_alt_text << "#{number_to_percentage active_percentage, precision: 0} of active participants"
+my_alt_text << "#{number_to_percentage total_percentage, precision: 0} of all participants"
+my_alt_text << "Target: #{number_to_percentage object_filter.target_percentage, precision: 0}" unless object_filter.target_percentage.blank?
+my_alt_text << "Warning below #{number_to_percentage object_filter.warning_threshold, precision: 0}" unless object_filter.warning_threshold.blank?
 %>
 <tr class="<%= meter_class %>">
-	<td class="title"><%= link_to h(object_filter.title), object_filter_path(object_filter, :cohort => @cohort) %></td>
+	<td class="title"><%= link_to h(object_filter.title), object_filter_path(object_filter, cohort: @cohort) %></td>
 	<td class="number"><%= filtered_participants.size %></td>
 	<td class="percentage-meter">
 		<div class="signup-meter stat-meter <%= meter_class %>">
@@ -35,5 +35,5 @@ my_alt_text << "Warning below #{number_to_percentage object_filter.warning_thres
 			</div>
 		</div>
 		</td>
-	<td class="percentage signup-numbers"><%= number_to_percentage(active_percentage, :precision => 0) rescue 0.0/0.0 %></td>
+	<td class="percentage signup-numbers"><%= number_to_percentage(active_percentage, precision: 0) rescue 0.0/0.0 %></td>
 </tr>

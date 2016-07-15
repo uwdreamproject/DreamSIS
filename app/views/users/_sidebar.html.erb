@@ -1,5 +1,5 @@
 <%= content_for(:sidebar) do %>
-	<%= form_for :user, :html => { :onSubmit => "return false;" } do |f| %>
+	<%= form_for :user, html: { onSubmit: "return false;" } do |f| %>
 		<input id="user_login" name="user[login]" size="30" type="input" class="search" placeholder="Search for user" />
 		<div class="auto_complete" id="user_login_auto_complete"></div>
 
@@ -16,7 +16,7 @@
 						var target = $(this);
 						thread = setTimeout(function() {
 							request = $.ajax({
-								url: '#{auto_complete_for_user_login_users_url(:format => :js)}?user[login]=' + target.val(),
+								url: '#{auto_complete_for_user_login_users_url(format: :js)}?user[login]=' + target.val(),
 								cache: false
 							});
 						}, 500);
@@ -35,9 +35,9 @@
 
 	<p>
 		<%- if controller.action_name == 'admin' -%>
-			<%= link_to "All Users", users_path, :class => 'list button' %>
+			<%= link_to "All Users", users_path, class: 'list button' %>
 		<% else %>
-			<%= link_to raw("<span class='admin tag'>Admin</span> Users"), admin_users_path, :class => "list button" %>
+			<%= link_to raw("<span class='admin tag'>Admin</span> Users"), admin_users_path, class: "list button" %>
 		<% end -%>
 	</p>
 

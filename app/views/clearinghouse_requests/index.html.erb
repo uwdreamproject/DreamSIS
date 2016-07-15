@@ -14,11 +14,11 @@
 	</thead>
 	
 	<tbody>
-		<%= render :partial => 'clearinghouse_request', :collection => @clearinghouse_requests %>
+		<%= render partial: 'clearinghouse_request', collection: @clearinghouse_requests %>
 	</tbody>
 </table>
 
 
 <%= content_for(:sidebar) do %>
-	<%= link_to 'Add new request', new_clearinghouse_request_path, :class => 'add button' %>
+	<%= link_to 'Add new request', new_clearinghouse_request_path, class: 'add button' %>
 <%- end -%>

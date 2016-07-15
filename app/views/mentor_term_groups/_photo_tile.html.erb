@@ -1,12 +1,12 @@
 	<li class="photo">
-		<%= content_tag(:span, "L", :class => 'admin tag') if photo_tile.lead? %>
-		<%= content_tag(:span, "V", :class => 'orange tag') if photo_tile.volunteer? %>
-		<%= content_tag(:span, "D", :class => 'grey tag') if photo_tile.driver? %>
+		<%= content_tag(:span, "L", class: 'admin tag') if photo_tile.lead? %>
+		<%= content_tag(:span, "V", class: 'orange tag') if photo_tile.volunteer? %>
+		<%= content_tag(:span, "D", class: 'grey tag') if photo_tile.driver? %>
 		<%= safe_join photo_tile.tag_list.collect{ |tag| content_tag(:span, tag.to_s[0], class: 'tag') } %>
 		
-		<%= image_tag photo_mentor_path(photo_tile.try(:mentor), :size => :default), 
-						:class => 'student_photo', 
-						:width => "120x150", 
-						:alt => "" %>
+		<%= image_tag photo_mentor_path(photo_tile.try(:mentor), size: :default), 
+						class: 'student_photo', 
+						width: "120x150", 
+						alt: "" %>
 		<div class="mentor name"><%= photo_tile.fullname %></div>
 	</li>

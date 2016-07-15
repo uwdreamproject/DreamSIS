@@ -1,7 +1,7 @@
 <h3 class="pre-title"><%= link_to h(@participant.fullname), @participant %></h3>
 <h1>Colleges</h1>
 
-<%= render :partial => "participants/college_applications" %>
+<%= render partial: "participants/college_applications" %>
 <br />
 
-<%= link_to 'Add college', new_participant_college_application_path, :class => 'add button' %>
+<%= link_to 'Add college', new_participant_college_application_path, class: 'add button' %>

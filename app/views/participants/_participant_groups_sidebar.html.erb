@@ -2,11 +2,11 @@
 	<ul class="quick_nav" style="margin-top: 0">
 		<%- for participant_group in @participant_groups -%>
 			<li id="participant_group_dropzone_<%= participant_group.id %>">
-				<%= link_to participant_group.try(:title), participant_group_path(participant_group), :class => 'redirect-link' %>
+				<%= link_to participant_group.try(:title), participant_group_path(participant_group), class: 'redirect-link' %>
 			</li>
 			<%#= TODO drop_receiving_element "participant_group_dropzone_#{participant_group.id}",
-			 							:url => add_to_group_participants_path(:participant_group_id => participant_group.id),
-										:accept => 'participant',
-										:hoverclass => 'dropzone' %>
+			 							url: add_to_group_participants_path(participant_group_id: participant_group.id),
+										accept: 'participant',
+										hoverclass: 'dropzone' %>
 		<% end -%>
 	</ul>

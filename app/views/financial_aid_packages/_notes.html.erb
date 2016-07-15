@@ -5,18 +5,18 @@
 
 <div class="info-section full" id="notes" style="display: none">
 	
-	<%= form_for @financial_aid_package.notes.new, { :url => notes_path, :remote => true, :html => { :multipart => true } } do |f| -%>
+	<%= form_for @financial_aid_package.notes.new, { url: notes_path, remote: true, html: { multipart: true } } do |f| -%>
 		<div class="full">
-	    <%= f.text_area :note, :style => "width:99%", :rows => 2, :placeholder => "Add a new note about this financial aid package." %>
+	    <%= f.text_area :note, style: "width:99%", rows: 2, placeholder: "Add a new note about this financial aid package." %>
 		</div>
 		
-	  <%= f.hidden_field :notable_type, :value => "FinancialAidPackage" %>
-		<%= f.hidden_field :notable_id, :value => @financial_aid_package.id %>	
+	  <%= f.hidden_field :notable_type, value: "FinancialAidPackage" %>
+		<%= f.hidden_field :notable_id, value: @financial_aid_package.id %>	
 	  
-		<%= f.submit "Add Note", :disable_with => 'Adding note...', :class => 'add notes right' %>
+		<%= f.submit "Add Note", disable_with: 'Adding note...', class: 'add notes right' %>
 	<% end -%>
 </div>
 
 <div class="notes_container" id="notes_container_<%= @financial_aid_package.id %>">
-	<%= render :partial => "shared/notes", :object => @financial_aid_package %>
+	<%= render partial: "shared/notes", object: @financial_aid_package %>
 </div>

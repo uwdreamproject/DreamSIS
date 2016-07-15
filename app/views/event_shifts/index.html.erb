@@ -11,11 +11,11 @@
 		<th colspan=4>Functions</th>
 	</tr>
 
-	<%= render :partial => @event.shifts %>
+	<%= render partial: @event.shifts %>
 	
 </table>
 
 <%= content_for(:sidebar) do %>
-	<p><%= link_to 'Add another shift', new_event_event_shift_path(@event), :class => 'add button' %></p>
-	<p><%= link_to "Back to event", event_path(@event), :class => 'back button' %></p>
+	<p><%= link_to 'Add another shift', new_event_event_shift_path(@event), class: 'add button' %></p>
+	<p><%= link_to "Back to event", event_path(@event), class: 'back button' %></p>
 <%- end -%>

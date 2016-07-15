@@ -3,11 +3,11 @@
 <tr id="mentor_<%= mentor.id %>">
 	
 	<%- if include_image -%>
-		<td class="mini photo-list"><%= image_tag photo_mentor_path(mentor, :size => "50"), :size => "", :class => 'photo' %></td>
+		<td class="mini photo-list"><%= image_tag photo_mentor_path(mentor, size: "50"), size: "", class: 'photo' %></td>
 	<% end %>
 	
 	
-	<td class="name"><%= link_to highlight(h(mentor.fullname(:skip_update => true)), (params[:mentor][:fullname] rescue nil)), mentor %></td>
+	<td class="name"><%= link_to highlight(h(mentor.fullname(skip_update: true)), (params[:mentor][:fullname] rescue nil)), mentor %></td>
 	<td><%#= auto_link Customer.link_to_uw? ? h(mentor.uw_net_id) : h(mentor.email) %></td>
 	<td></td>
 	<td class="functions">

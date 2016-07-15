@@ -1,6 +1,6 @@
 <div class="inline">
 	<h1>Request #<%= @clearinghouse_request.id.to_s %></h1> &nbsp;
-	<%= content_tag :span, @clearinghouse_request.status, :class => "#{@clearinghouse_request.status} status tag" %>
+	<%= content_tag :span, @clearinghouse_request.status, class: "#{@clearinghouse_request.status} status tag" %>
 </div>
 
 <dl class="inline-definitions">
@@ -26,12 +26,12 @@
 
 		<%- unless @clearinghouse_request.submitted? -%>
 			<p>
-				<br /><%= link_to "Submit request now", submit_clearinghouse_request_path(@clearinghouse_request), :method => :post, :class => "upload button" if @clearinghouse_request.submittable? %>
+				<br /><%= link_to "Submit request now", submit_clearinghouse_request_path(@clearinghouse_request), method: :post, class: "upload button" if @clearinghouse_request.submittable? %>
 				<%= separator if @clearinghouse_request.submittable? %>
-				<%= link_to "Mark as submitted", clearinghouse_request_path(@clearinghouse_request, :clearinghouse_request => {
-						:submitted_at => Time.now,
-						:number_of_records_submitted => @clearinghouse_request.participant_ids.size }
-					), :method => :put, :class => "ok button" %>
+				<%= link_to "Mark as submitted", clearinghouse_request_path(@clearinghouse_request, clearinghouse_request: {
+						submitted_at: Time.now,
+						number_of_records_submitted: @clearinghouse_request.participant_ids.size }
+					), method: :put, class: "ok button" %>
 			</p>
 		<% end %>
 	</dd>
@@ -44,19 +44,19 @@
 			
 			<%- unless @clearinghouse_request.retrieved? -%>
 				<p>
-					<br /><%= link_to "Retrieve results now", retrieve_clearinghouse_request_path(@clearinghouse_request), :method => :post, :class => "download button" if @clearinghouse_request.retrievable? %>
+					<br /><%= link_to "Retrieve results now", retrieve_clearinghouse_request_path(@clearinghouse_request), method: :post, class: "download button" if @clearinghouse_request.retrievable? %>
 					<%= separator if @clearinghouse_request.retrievable? %>
-					<%#= link_to_function "Upload results file", "$('#upload_form').show()", :class => "save button" unless @clearinghouse_request.closed? %>
+					<%#= link_to_function "Upload results file", "$('#upload_form').show()", class: "save button" unless @clearinghouse_request.closed? %>
 				</p>
 				
-				<%= form_tag upload_clearinghouse_request_path(@clearinghouse_request), :id => 'upload_form', :style => "display:none", :multipart => true do |f| -%>
+				<%= form_tag upload_clearinghouse_request_path(@clearinghouse_request), id: 'upload_form', style: "display:none", multipart: true do |f| -%>
 					<p><br />Upload the detail file that was returned by National Student Clearinghouse.</p>
 					<%= file_field_tag 'retrieved_file' %>
 					<%= submit_tag "Upload" %>
 				<% end %>
 			<% end %>
 		<% else %>
-			<%= content_tag(:em, "Not submitted", :class => 'light') %>
+			<%= content_tag(:em, "Not submitted", class: 'light') %>
 		<% end %>
 		</dd>
 	
@@ -66,9 +66,9 @@
 			<%= @clearinghouse_request.retrieved_at.to_s(:date_with_full_month) %>
 			with <%= pluralize @clearinghouse_request.number_of_records_returned, "record" %>
 			
-			<p><br /><%= link_to "List results", results_clearinghouse_request_path(@clearinghouse_request), :class => "list button" %></p>
+			<p><br /><%= link_to "List results", results_clearinghouse_request_path(@clearinghouse_request), class: "list button" %></p>
 		<% else %>
-			<%= content_tag(:em, "Not retrieved", :class => 'light') %>
+			<%= content_tag(:em, "Not retrieved", class: 'light') %>
 		<% end %>
 		</dd>
 	
@@ -77,14 +77,14 @@
 		<ul>
 			<li>
 				<%= link_to "#{@clearinghouse_request.nsc.send_filename}",
-					 	file_clearinghouse_request_path(@clearinghouse_request, :file => 'submission') %>
+					 	file_clearinghouse_request_path(@clearinghouse_request, file: 'submission') %>
 						(Submission file)
 			</li>
 			
 			<%- if @clearinghouse_request.retrieved? -%>
 				<%- for file_name, index in @clearinghouse_request.files.each_with_index %>
 					<li>
-						<%= link_to file_name, file_clearinghouse_request_path(@clearinghouse_request, :file => index) %>
+						<%= link_to file_name, file_clearinghouse_request_path(@clearinghouse_request, file: index) %>
 						<%= "(Aggregate report)" if File.basename(file_name).match("aggrrpt") %>
 						<%= "(Control report)" if File.basename(file_name).match("cntlrpt") %>
 					</li>
@@ -103,14 +103,14 @@
 </dl>
 
 <%= content_for(:sidebar) do %>
-	<p><%= link_to "Back to requests", clearinghouse_requests_path, :class => "back button" %></p>
+	<p><%= link_to "Back to requests", clearinghouse_requests_path, class: "back button" %></p>
 	
 	<%- unless @clearinghouse_request.closed? -%>
-		<p><%= link_to "Close this request", [:close, @clearinghouse_request], :class => "cancel button", :method => :post, :confirm => "Are you sure you want to close out this request?" %></p>
+		<p><%= link_to "Close this request", [:close, @clearinghouse_request], class: "cancel button", method: :post, confirm: "Are you sure you want to close out this request?" %></p>
 	<% end %>
 <%- end -%>
 
 <%= javascript_tag "$( function() {
-	$.ajax('#{refresh_status_clearinghouse_request_path(@clearinghouse_request, :current_status => @clearinghouse_request.status)}',
+	$.ajax('#{refresh_status_clearinghouse_request_path(@clearinghouse_request, current_status: @clearinghouse_request.status)}',
 		{ dataType: 'script' })
 	})" if @clearinghouse_request.submitted? && @clearinghouse_request.retrievable? %>

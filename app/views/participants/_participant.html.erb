@@ -22,13 +22,13 @@
 	
 		<%- (collection.empty? ? 1 : collection.size).times do -%>
 			<%- row_index += 1 -%>
-			<%= render :partial => "participants/reports/wrapper", 
-						:locals => { 
-							:collection => collection, 
-							:participant => participant, 
-							:report => report, 
-							:row_count => (collection.empty? ? 1 : collection.size),
-							:row_index => row_index
+			<%= render partial: "participants/reports/wrapper", 
+						locals: { 
+							collection: collection, 
+							participant: participant, 
+							report: report, 
+							row_count: (collection.empty? ? 1 : collection.size),
+							row_index: row_index
 						} %>
 		<% end %>
 	</tbody>

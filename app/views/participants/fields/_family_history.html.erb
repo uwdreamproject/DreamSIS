@@ -1,28 +1,28 @@
-<%= f.inputs :name => "Family History Information" do -%>
+<%= f.inputs name: "Family History Information" do -%>
 	<%- person_collection_string = current_user.person_type == "Participant" ? "I am" : "Student is" -%>
-	<%= f.input :first_generation, :label => "", :as => :select, :collection => { "No (#{person_collection_string} first generation to college)" => true, "Yes (#{person_collection_string} NOT first generation to college)" => false } %>
+	<%= f.input :first_generation, label: "", as: :select, collection: { "No (#{person_collection_string} first generation to college)" => true, "Yes (#{person_collection_string} NOT first generation to college)" => false } %>
 	
-	<%= f.input :family_members_who_went_to_college, :input_html => { :size => "90%" } %>
-	<%= f.input :family_members_graduated, :label => "Did any of them graduate?" %>    
+	<%= f.input :family_members_who_went_to_college, input_html: { size: "90%" } %>
+	<%= f.input :family_members_graduated, label: "Did any of them graduate?" %>    
 	
-	<%= f.inputs :name => "Attended school outside USA", :class => "inline" do -%>
-		<%= f.input :attended_school_outside_usa, :label => "Yes" %>
-		<%= f.input :countries_attended_school_outside_usa, :label => "In what countries?" %>
+	<%= f.inputs name: "Attended school outside USA", class: "inline" do -%>
+		<%= f.input :attended_school_outside_usa, label: "Yes" %>
+		<%= f.input :countries_attended_school_outside_usa, label: "In what countries?" %>
 	<% end %>
 	
-	<%= f.inputs :name => "Grades attended outside USA", :class => "inline" do -%>
+	<%= f.inputs name: "Grades attended outside USA", class: "inline" do -%>
 		<%- for grade in 1..12 -%>
-			<%= f.input "attended_grade_#{grade}_outside_usa", :label => grade.to_s %>
+			<%= f.input "attended_grade_#{grade}_outside_usa", label: grade.to_s %>
 		<% end %>
 	<% end %>
 
-	<%= f.inputs :name => "Marriage/Children", :class => "inline" do -%>
+	<%= f.inputs name: "Marriage/Children", class: "inline" do -%>
 		<%= f.input :married %>
-		<%= f.input :aliases, :label => "Maiden Name", :as => :string %>
-		<%= f.input :number_of_children, :collection => 0..5, :as => :select %>
+		<%= f.input :aliases, label: "Maiden Name", as: :string %>
+		<%= f.input :number_of_children, collection: 0..5, as: :select %>
 	<% end %>
 	
-	<%= f.input :subsidized_housing, :as =>:radio %>
-	<%= f.input :homeless, :as => :radio %>
+	<%= f.input :subsidized_housing, as::radio %>
+	<%= f.input :homeless, as: :radio %>
 
 <% end %>

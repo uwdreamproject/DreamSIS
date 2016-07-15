@@ -4,24 +4,24 @@
 </div>
 
 <div class="info-section full" id="documents" style="display: none">
-	<%= form_for @financial_aid_package.notes.new, { :url => notes_path(return_to: url_for([@participant, @financial_aid_package])), :remote => true, :html => { :multipart => true } } do |f| -%>
+	<%= form_for @financial_aid_package.notes.new, { url: notes_path(return_to: url_for([@participant, @financial_aid_package])), remote: true, html: { multipart: true } } do |f| -%>
 
 		<h4 style="margin-bottom: 2px">Add New Document</h4>
 		<div class="full">
 	    <%= f.file_field :document %>
-			<%= f.text_field :title, :placeholder => "Document title", :style => "width:99%" %>
-			<%= f.text_area :note, :style => "width:99%", :rows => 2, :placeholder => "Add additional notes or comments about this document" %>	
+			<%= f.text_field :title, placeholder: "Document title", style: "width:99%" %>
+			<%= f.text_area :note, style: "width:99%", rows: 2, placeholder: "Add additional notes or comments about this document" %>	
 
 		</div>
 		
-	  <%= f.hidden_field :notable_type, :value => "FinancialAidPackage" %>
-		<%= f.hidden_field :notable_id, :value => @financial_aid_package.id %>	
-	  <%= f.hidden_field :validate_document, :value => "true" %>
+	  <%= f.hidden_field :notable_type, value: "FinancialAidPackage" %>
+		<%= f.hidden_field :notable_id, value: @financial_aid_package.id %>	
+	  <%= f.hidden_field :validate_document, value: "true" %>
 	  
-		<%= f.submit "Upload", :disable_with => 'Uploading...', :class => 'add notes right' %>
+		<%= f.submit "Upload", disable_with: 'Uploading...', class: 'add notes right' %>
 	<% end -%>
 </div>
 
 <div class="documents_container" id="documents_container_<%= @financial_aid_package.id %>">
-  <%= render :partial => "shared/documents", :object => @financial_aid_package %>
+  <%= render partial: "shared/documents", object: @financial_aid_package %>
 </div>

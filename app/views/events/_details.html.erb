@@ -5,7 +5,7 @@
 
 <dt>Date/Time</dt>
 <dd><%= details.time_detail %>
-	<%= content_tag(:span, "Time TBA", :class => 'outline tag') if details.time_tba? %></dd>
+	<%= content_tag(:span, "Time TBA", class: 'outline tag') if details.time_tba? %></dd>
 
 <%- unless details.location_text.blank? -%>
 	<dt>Location</dt>
@@ -23,10 +23,10 @@
 		<div class="signup-meter <%= "full" if details.full? %>">
 			<div class="capacity" 
 				 style="width: 30%;"
-				 title="<%= number_to_percentage details.percent_full, :precision => 0 %> full">
+				 title="<%= number_to_percentage details.percent_full, precision: 0 %> full">
 
 				<div class="size" style="width: <%= details.percent_full %>%">
-					<%= details.full? ? content_tag(:span, "full", :class => "full_label") : "&nbsp;".html_safe %>
+					<%= details.full? ? content_tag(:span, "full", class: "full_label") : "&nbsp;".html_safe %>
 				</div>					
 			</div>
 		</div>

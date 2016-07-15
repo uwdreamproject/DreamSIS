@@ -1,8 +1,8 @@
-<%= f.inputs :name => "High School" do -%>
-	<%= f.input :grad_year, :as => :select, :collection => (2004..Date.current.year+5), :include_blank => true, :label => "Graduation Year" %>
-	<%= f.input :high_school, :collection => HighSchool.all, :input_html => { :disabled => !@current_user.can_edit?(f.object, :high_school_id) } %>
-	<%= f.input :gpa, :label => "High School GPA", :input_html => { :size => 5 } %>
-	<%= f.input :gpa_date, :label => "GPA Date", :hint => raw("Enter the date this GPA was calculated. #{link_to_now('participant_gpa_date')}") %>
-	<%= f.input :student_id_number, :label => "District Student ID Number", :input_html => { :size => 15 } %>
+<%= f.inputs name: "High School" do -%>
+	<%= f.input :grad_year, as: :select, collection: (2004..Date.current.year+5), include_blank: true, label: "Graduation Year" %>
+	<%= f.input :high_school, collection: HighSchool.all, input_html: { disabled: !@current_user.can_edit?(f.object, :high_school_id) } %>
+	<%= f.input :gpa, label: "High School GPA", input_html: { size: 5 } %>
+	<%= f.input :gpa_date, label: "GPA Date", hint: raw("Enter the date this GPA was calculated. #{link_to_now('participant_gpa_date')}") %>
+	<%= f.input :student_id_number, label: "District Student ID Number", input_html: { size: 15 } %>
 	<%= f.input :on_track_to_graduate if @current_user.can_edit?(f.object, :on_track_to_graduate) %>
 <% end %>

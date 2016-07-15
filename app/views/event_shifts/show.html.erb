@@ -19,8 +19,8 @@
 
 
 <%= content_for(:sidebar) do %>
-	<p><%= link_to 'Add another shift', new_event_event_shift_path(@event), :class => 'add button' %></p>
-	<p><%= link_to "Edit this shift", edit_event_event_shift_path(@event, @event_shift), :class => 'edit button' %></p>
-	<p><%= link_to "Back to event shifts", event_event_shifts_path(@event), :class => 'back button' %></p>
-	<p><%= link_to "Back to event", @event, :class => 'back button' %></p>
+	<p><%= link_to 'Add another shift', new_event_event_shift_path(@event), class: 'add button' %></p>
+	<p><%= link_to "Edit this shift", edit_event_event_shift_path(@event, @event_shift), class: 'edit button' %></p>
+	<p><%= link_to "Back to event shifts", event_event_shifts_path(@event), class: 'back button' %></p>
+	<p><%= link_to "Back to event", @event, class: 'back button' %></p>
 <%- end -%>

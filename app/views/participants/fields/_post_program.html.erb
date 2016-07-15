@@ -1,5 +1,5 @@
-<%= f.inputs :name => "Post-Program Information" do -%>
+<%= f.inputs name: "Post-Program Information" do -%>
 
-	<%= f.input :college_attending_id, :collection => Hash[f.object.college_applications.map{|ca| [ca.name, ca.institution_id]}] %>
+	<%= f.input :college_attending_id, collection: Hash[f.object.college_applications.map{|ca| [ca.name, ca.institution_id]}] %>
 	
 <% end %>

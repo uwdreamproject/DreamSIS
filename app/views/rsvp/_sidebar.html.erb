@@ -3,11 +3,11 @@
 	<p>Use this page to RSVP for an event. If you can't attend, please come back to change your RSVP.</p>
 	
 	<%- if @event -%>
-		<p><%= link_to "Edit this event", edit_event_path(@event), :class => "edit button" if @current_user && @event.allows_admin_access_for?(@current_user) %></p>
-		<p><%= link_to "See admin view", event_path(@event), :class => "lock button" if @current_user && @event.allows_admin_access_for?(@current_user) %></p>
-		<p><%= link_to "Back to event listing", event_group_rsvp_path(@event.event_group, :audience => @audience), :class => "back button" if @event.event_group %></p>
+		<p><%= link_to "Edit this event", edit_event_path(@event), class: "edit button" if @current_user && @event.allows_admin_access_for?(@current_user) %></p>
+		<p><%= link_to "See admin view", event_path(@event), class: "lock button" if @current_user && @event.allows_admin_access_for?(@current_user) %></p>
+		<p><%= link_to "Back to event listing", event_group_rsvp_path(@event.event_group, audience: @audience), class: "back button" if @event.event_group %></p>
 	<% end -%>
 	
-	<%= render :partial => 'training_required_note', :locals => { :event_or_group => @event || @event_group } if @event || @event_group %>
+	<%= render partial: 'training_required_note', locals: { event_or_group: @event || @event_group } if @event || @event_group %>
 	
 <%- end -%>

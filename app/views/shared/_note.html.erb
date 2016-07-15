@@ -2,14 +2,14 @@
 
 	<cite>
 		<%= content_tag :div, nil,
-				:class => "avatar",
-				:style => "background-image: url(#{photo_mentor_path(note.user.try(:person), :size => :thumb)});" if note.user %>
+				class: "avatar",
+				style: "background-image: url(#{photo_mentor_path(note.user.try(:person), size: :thumb)});" if note.user %>
 
 		<h5 class="username"><%= note.user == @current_user ? "You" : note.fullname rescue nil %></h5>
 	</cite>
 	
 	<div class="note-body">
-		<%= content_tag(:p, note.contact_type, :class => "contact-type") unless note.contact_type.blank? %>
+		<%= content_tag(:p, note.contact_type, class: "contact-type") unless note.contact_type.blank? %>
 		<%= auto_link RedCloth.new(note.note).to_html %>
 	</div>
 	
@@ -23,19 +23,19 @@
 		<%- if note.needs_followup? -%>
 			<p class="needs-followup">
 				Needs Follow-up
-				<%= link_to "(Clear)", note_path(note, :note => { :needs_followup => false }), :method => :put, :remote => true %>
+				<%= link_to "(Clear)", note_path(note, note: { needs_followup: false }), method: :put, remote: true %>
 			</p>
 		<% end %>
 	
 		<%- if note.user == @current_user -%>
 			<p class="note_edit_buttons functions">
-				<%= link_to "Edit", edit_note_path(note, :return_to => params[:return_to] || request.url), :class => "edit button" %>
+				<%= link_to "Edit", edit_note_path(note, return_to: params[:return_to] || request.url), class: "edit button" %>
 				<%= link_to "Delete",
-							note_path(note, :return_to => params[:return_to] || request.url),
-							:remote => true,
-							:method => :delete,
-							:confirm => "Are you sure you want to delete this note?",
-							:class => "delete button" %>
+							note_path(note, return_to: params[:return_to] || request.url),
+							remote: true,
+							method: :delete,
+							confirm: "Are you sure you want to delete this note?",
+							class: "delete button" %>
 			</p>
 		<% end -%>
 	</div>

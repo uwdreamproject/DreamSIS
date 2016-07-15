@@ -4,9 +4,9 @@
 <%= semantic_form_for([@participant, @scholarship_application]) do |f| %>
   	<%= default_form_errors(f) %>
 
-	<%= render :partial => "fields", :locals => { :f => f } %>
+	<%= render partial: "fields", locals: { f: f } %>
 	
-	<%= f.submit "Save", :disable_with => 'Saving...' %>
+	<%= f.submit "Save", disable_with: 'Saving...' %>
 	<span class="separator">&mdash; or &mdash;</span>
 	<%= link_to 'Cancel', @participant %>
 

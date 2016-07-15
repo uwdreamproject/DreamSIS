@@ -2,12 +2,12 @@
 <h1><%= @user.login %></h1>
 
 <p>
-	<%= content_tag :span, "admin", :class => 'admin tag' if @user.admin? %>
+	<%= content_tag :span, "admin", class: 'admin tag' if @user.admin? %>
 </p>
 
 <p>Linked to <%= link_to_unless @user.person.class == Person, h(@user.person.fullname), @user.person rescue nil %></p>
 
 <%= content_for(:sidebar) do %>
-	<p><%= link_to "Edit this user", edit_user_path(@user), :class => 'edit button' %></p>
-	<p><%= link_to "Back to users", users_path, :class => "back button" %></p>
+	<p><%= link_to "Edit this user", edit_user_path(@user), class: 'edit button' %></p>
+	<p><%= link_to "Back to users", users_path, class: "back button" %></p>
 <%- end -%>

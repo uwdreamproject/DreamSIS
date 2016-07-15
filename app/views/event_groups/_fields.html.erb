@@ -1,33 +1,33 @@
 <%= f.inputs do %>
 	<%= f.input :name %>
-	<%= f.input :description, :input_html => { :rows => 6 }, :label => "General Description", 
-				:hint => "To override this description for specific audience groups, edit the group-specific descriptions below." %>
+	<%= f.input :description, input_html: { rows: 6 }, label: "General Description", 
+				hint: "To override this description for specific audience groups, edit the group-specific descriptions below." %>
 	<%= f.input :event_type %>
 <% end -%>
 
 <%= f.inputs "Access to the Public" do %>
 	<p>Use these options to allow events in this group to be open to members of the public.</p>
-	<%= f.input :allow_external_students, :label => "Allow external students to RSVP" %>
-	<%= f.input :allow_external_volunteers, :label => "Allow external volunteers to sign up" %>
+	<%= f.input :allow_external_students, label: "Allow external students to RSVP" %>
+	<%= f.input :allow_external_volunteers, label: "Allow external volunteers to sign up" %>
 <% end -%>
 
 <%= f.inputs "Access to Mentors" do %>
-	<%= f.input :open_to_mentors, :label => "Open to All #{Customer.mentors_Label}", :hint => "If marked, events in this event group will appear on the #{link_to "upcoming events", mentor_available_rsvp_path} page for #{Customer.mentors_label}.".html_safe %>
+	<%= f.input :open_to_mentors, label: "Open to All #{Customer.mentors_Label}", hint: "If marked, events in this event group will appear on the #{link_to "upcoming events", mentor_available_rsvp_path} page for #{Customer.mentors_label}.".html_safe %>
 <% end -%>
 
 <%= f.inputs "Audience-Specific Descriptions" do %>
 	<p>Descriptions entered here will be used instead of the description above for members of the specified audience. Otherwise, the default from above will be displayed.</p>
-	<%= f.input :student_description, :input_html => { :rows => 6 }, :hint => "Note: The student description is shown for both Students and Participants." %>
-	<%= f.input :volunteer_description, :input_html => { :rows => 6 } %>
-	<%= f.input :mentor_description, :input_html => { :rows => 6 } %>
+	<%= f.input :student_description, input_html: { rows: 6 }, hint: "Note: The student description is shown for both Students and Participants." %>
+	<%= f.input :volunteer_description, input_html: { rows: 6 } %>
+	<%= f.input :mentor_description, input_html: { rows: 6 } %>
 <% end -%>
 
 <%= f.inputs "Registration Confirmation Messages" do %>
 	<p>By default, the group description is displayed in the registration confirmation message/e-mail. To add extra messaging to your confirmation messages, add them here.</p>
-	<%= f.input :hide_description_in_confirmation_message, :hint => "Set this option to suppress the descriptions above in your confirmation message. That way only the text below will be included in the confirmation message." %>
-	<%= f.input :student_confirmation_message, :input_html => { :rows => 6 }, :hint => "Note: The student confirmation message is shown for both Students and Participants." %>
-	<%= f.input :volunteer_confirmation_message, :input_html => { :rows => 6 } %>
-	<%= f.input :mentor_confirmation_message, :input_html => { :rows => 6 }, :label => "#{Customer.mentor_Label} confirmation message" %>
+	<%= f.input :hide_description_in_confirmation_message, hint: "Set this option to suppress the descriptions above in your confirmation message. That way only the text below will be included in the confirmation message." %>
+	<%= f.input :student_confirmation_message, input_html: { rows: 6 }, hint: "Note: The student confirmation message is shown for both Students and Participants." %>
+	<%= f.input :volunteer_confirmation_message, input_html: { rows: 6 } %>
+	<%= f.input :mentor_confirmation_message, input_html: { rows: 6 }, label: "#{Customer.mentor_Label} confirmation message" %>
 <% end -%>
 
 <%= f.inputs "RSVP Cancellation Disabling" do %>
@@ -36,24 +36,24 @@
 	<br />
 	Note that a message must be set for that audience if a number of hours is set. This message will be displayed in place of a cancel button, e.g. "Please contact Elmo at Sesame Street to cancel your RSVP."</p>
 
-	<%= f.input :mentor_hours_prior_disable_cancel, :label => "Hours before to disable for #{Customer.mentors_label}" %>
-	<%= f.input :mentor_disable_message, :input_html => { :rows => 3 }, :label => "Cancellation message for #{Customer.mentors_Label}" %>
-	<%= f.input :volunteer_hours_prior_disable_cancel, :label => "Hours before to disable for volunteers" %>
-	<%= f.input :volunteer_disable_message, :input_html => { :rows => 3 }, :label => "Cancellation message for volunteers" %>
-	<%= f.input :student_hours_prior_disable_cancel, :label => "Hours before to disable for students", :hint => "Note: this applies to both Students and Participants." %>
-	<%= f.input :student_disable_message, :input_html => { :rows => 3 }, :label => "Cancellation message for students" %>
+	<%= f.input :mentor_hours_prior_disable_cancel, label: "Hours before to disable for #{Customer.mentors_label}" %>
+	<%= f.input :mentor_disable_message, input_html: { rows: 3 }, label: "Cancellation message for #{Customer.mentors_Label}" %>
+	<%= f.input :volunteer_hours_prior_disable_cancel, label: "Hours before to disable for volunteers" %>
+	<%= f.input :volunteer_disable_message, input_html: { rows: 3 }, label: "Cancellation message for volunteers" %>
+	<%= f.input :student_hours_prior_disable_cancel, label: "Hours before to disable for students", hint: "Note: this applies to both Students and Participants." %>
+	<%= f.input :student_disable_message, input_html: { rows: 3 }, label: "Cancellation message for students" %>
 <% end %>
 
 <%= f.inputs "Training" do %>
-	<%= f.input :mentor_training_id, :label => "#{h Customer.mentor_Label} training", :as => :select, :collection => Training.all %>
-	<%= f.input :mentor_training_optional, :label => "#{h Customer.mentor_Label} training optional" %>
-	<%= f.input :volunteer_training_id, :as => :select, :collection => Training.all %>
+	<%= f.input :mentor_training_id, label: "#{h Customer.mentor_Label} training", as: :select, collection: Training.all %>
+	<%= f.input :mentor_training_optional, label: "#{h Customer.mentor_Label} training optional" %>
+	<%= f.input :volunteer_training_id, as: :select, collection: Training.all %>
 	<%= f.input :volunteer_training_optional %>
 <% end -%>
 
 <%= f.inputs "Styling" do %>
-	<%= f.input :stylesheet_url, :label => "Stylesheet URL",
-	 			:hint => "Provide the URL for a stylesheet that should be applied to events in this group. HTTPS addresses are recommended." %>
-	<%= f.input :footer_content, :input_html => { :rows => 6 },
-				:hint => "Use this space to add details to the bottom of the event group pages. Often this is used for sponsor logos." %>
+	<%= f.input :stylesheet_url, label: "Stylesheet URL",
+	 			hint: "Provide the URL for a stylesheet that should be applied to events in this group. HTTPS addresses are recommended." %>
+	<%= f.input :footer_content, input_html: { rows: 6 },
+				hint: "Use this space to add details to the bottom of the event group pages. Often this is used for sponsor logos." %>
 <% end -%>

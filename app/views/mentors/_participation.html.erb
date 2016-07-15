@@ -15,13 +15,13 @@
 				<%= link_to "Sign up now", mentor_signup_term_path(term) if term.allow_signups? %>
 			<%- else -%>
 				<table class="borderless">
-					<%= render :partial => 'mentor_signup/mentor_term', :collection => mentor_terms %>
+					<%= render partial: 'mentor_signup/mentor_term', collection: mentor_terms %>
 				</table>
 			<% end -%>
 		</td>
 		<td><%= link_to "Change my high-school group(s)",
 						mentor_signup_term_path(term),
-						:class => "edit button" if term.allow_signups? %></td>
+						class: "edit button" if term.allow_signups? %></td>
 	</tr>
 	<% end -%>
 </table>

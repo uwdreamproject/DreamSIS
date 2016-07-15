@@ -17,6 +17,6 @@
 </dl>
 
 <%= content_for(:sidebar) do %>
-	<p><%= link_to 'Edit this program', edit_program_path(@program), :class => "edit button" %></p>
-	<p><%= link_to 'Back to programs', programs_path, :class => "back button" %></p>
+	<p><%= link_to 'Edit this program', edit_program_path(@program), class: "edit button" %></p>
+	<p><%= link_to 'Back to programs', programs_path, class: "back button" %></p>
 <%- end -%>

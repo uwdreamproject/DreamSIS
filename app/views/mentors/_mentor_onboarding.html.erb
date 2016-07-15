@@ -6,41 +6,41 @@
 				<td><%=h mentor_onboarding.birthdate.to_s %>
 					<%- if !mentor_onboarding.is_18? -%>
 					  <%- if mentor_onboarding.parental_consent_on_file? -%>
-					    <%= content_tag(:span, "Y", :class => 'approved tag') %>
+					    <%= content_tag(:span, "Y", class: 'approved tag') %>
 					  <%- else -%>
-						<%= content_tag(:span, "N", :class => 'red tag') %>
+						<%= content_tag(:span, "N", class: 'red tag') %>
 					  <%- end -%>
 					<%- end -%>
 				</td>
-				<td class="centered"><%= mentor_onboarding.has_aliases? ? content_tag(:span, "Y", :class => 'red tag') : "-" %></td>
-				<td class="centered"><%= mentor_onboarding.signed_risk_form? ? content_tag(:span, "Y", :class => 'approved tag') : "-" %></td>
+				<td class="centered"><%= mentor_onboarding.has_aliases? ? content_tag(:span, "Y", class: 'red tag') : "-" %></td>
+				<td class="centered"><%= mentor_onboarding.signed_risk_form? ? content_tag(:span, "Y", class: 'approved tag') : "-" %></td>
 				<td class="centered">
 					<%- if mentor_onboarding.background_check_result.blank? -%>
 						<% if mentor_onboarding.has_background_check_form_responses? || mentor_onboarding.has_aliases? %>
-							<%= link_to("Check form responses", background_check_form_responses_mentor_path(mentor_onboarding), :target => "_blank") %>
+							<%= link_to("Check form responses", background_check_form_responses_mentor_path(mentor_onboarding), target: "_blank") %>
 						<%- elsif mentor_onboarding.background_check_authorized -%>
-							<%= content_tag(:span, "P", :class => 'tag') %>
+							<%= content_tag(:span, "P", class: 'tag') %>
 						<%- else -%>
 							-
 						<%- end -%>
 					<%- elsif mentor_onboarding.passed_background_check? -%>
-						<%= content_tag(:span, "Y", :class => 'approved tag') %>
+						<%= content_tag(:span, "Y", class: 'approved tag') %>
 					<%- else -%>
-						<%= content_tag(:span, "N", :class => 'red tag') %>
+						<%= content_tag(:span, "N", class: 'red tag') %>
 					<% end -%>
 				</td>
 				<td class="centered">
 					<% if mentor_onboarding.sex_offender_check_result.blank? %>
 						<%- if mentor_onboarding.background_check_authorized -%>
-							<%= content_tag(:span, "P", :class => 'tag') %>
+							<%= content_tag(:span, "P", class: 'tag') %>
 						<%- else -%>
 			        -
 						<%- end -%>
 					<% elsif mentor_onboarding.passed_sex_offender_check? %>
-						<%= content_tag(:span, "Y", :class => 'approved tag') %>
+						<%= content_tag(:span, "Y", class: 'approved tag') %>
 					<% else %>
-						<%= content_tag(:span, "N", :class => 'red tag') %>
+						<%= content_tag(:span, "N", class: 'red tag') %>
 					<% end %>
 				</td>
-				<td class="centered"><%= mentor_onboarding.attended_mentor_workshop? ? content_tag(:span, "Y", :class => 'approved tag') : "-" %></td>
+				<td class="centered"><%= mentor_onboarding.attended_mentor_workshop? ? content_tag(:span, "Y", class: 'approved tag') : "-" %></td>
 			</tr>

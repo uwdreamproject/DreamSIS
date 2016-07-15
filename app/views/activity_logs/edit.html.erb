@@ -1,4 +1,4 @@
-<%= content_tag :h3, "Submitted by " + link_to(h(@activity_log.try(:mentor).try(:fullname)), @activity_log.try(:mentor)), :class => "pre-title" unless @activity_log.belongs_to?(@current_user) %>
+<%= content_tag :h3, "Submitted by " + link_to(h(@activity_log.try(:mentor).try(:fullname)), @activity_log.try(:mentor)), class: "pre-title" unless @activity_log.belongs_to?(@current_user) %>
 <h1>Activity Log
 	<small class="light">&raquo; <%= @activity_log.this_week? ? "This Week of #{(Date.today.beginning_of_week.to_s(:date_with_full_month))}" : "Week of #{@activity_log.start_date.to_s(:date_with_full_month)}" %></small></h1>
 
@@ -6,7 +6,7 @@
 	
 <%= semantic_form_for(@activity_log) do |f| %>
   	<%= default_form_errors(f) %>
-	<%= render :partial => "fields", :locals => { :f => f } %>
+	<%= render partial: "fields", locals: { f: f } %>
 
 	<%= default_form_actions(f) %>
 
@@ -22,20 +22,20 @@
 			});
 });") %>
 
-<%= render :partial => "participants" if @participants && !@participants.empty? %>
+<%= render partial: "participants" if @participants && !@participants.empty? %>
 
 <%= content_for(:sidebar) do %>
-	<p><%= link_to "Back to Dashboard", my_dashboard_path, :class => "photo-tile button" %></p>
+	<p><%= link_to "Back to Dashboard", my_dashboard_path, class: "photo-tile button" %></p>
 	
-	<p><%= link_to "Previous Week", my_activity_log_path((@date - 1.week).year, (@date - 1.week).month, (@date - 1.week).day), :class => "back button" %></p>
+	<p><%= link_to "Previous Week", my_activity_log_path((@date - 1.week).year, (@date - 1.week).month, (@date - 1.week).day), class: "back button" %></p>
 	
-	<p><%= link_to "This Week", my_current_activity_log_path, :class => "calendar_day button" unless @activity_log.this_week? %></p>
+	<p><%= link_to "This Week", my_current_activity_log_path, class: "calendar_day button" unless @activity_log.this_week? %></p>
 	
-	<p><%= link_to "Next Week", my_activity_log_path((@date + 1.week).year, (@date + 1.week).month,(@date + 1.week).day), :class => "forward button" %></p>
+	<p><%= link_to "Next Week", my_activity_log_path((@date + 1.week).year, (@date + 1.week).month,(@date + 1.week).day), class: "forward button" %></p>
 	
 	<%- if @current_user.admin? -%>
 		<h3>Admin View</h3>
-		<p><%= link_to "Weekly summary", activity_log_current_week_summary_path, :class => "lock button" %></p>
+		<p><%= link_to "Weekly summary", activity_log_current_week_summary_path, class: "lock button" %></p>
 	<% end %>
 	
 <%- end -%>

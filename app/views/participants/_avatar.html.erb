@@ -6,15 +6,15 @@
 	<div class="controls arrow-box arrow-top">
 		<%= image_tag @participant.avatar.medium if @participant.avatar? %>
 		
-		<%= semantic_form_for(@participant, :html => {:id => "avatar_form", :multipart => true}) do |f| %>
+		<%= semantic_form_for(@participant, html: {id: "avatar_form", multipart: true}) do |f| %>
 		<h3>Choose a new picture:</h3>
 		
 			<%= default_form_errors(f) %>
 
-			<%= f.file_field :avatar, :class => "submit-on-change" %>
+			<%= f.file_field :avatar, class: "submit-on-change" %>
 		    <%= f.submit "Save" %>
 		    <%= separator %>
-		    <%#= link_to_function "Cancel", "$(this).parents('.controls').removeClass('expanded')", :class => "cancel" %>
+		    <%#= link_to_function "Cancel", "$(this).parents('.controls').removeClass('expanded')", class: "cancel" %>
 		<% end %>
 	</div>
 </div>

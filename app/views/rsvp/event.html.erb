@@ -6,7 +6,7 @@
 	<h3 class="proxyable">Coordinated by <%= proxy.other_customer.name %></h3>
 <% end %>
 
-<h2 class="date"><%= @event.time_detail(:audience => event_audience) %></h2>
+<h2 class="date"><%= @event.time_detail(audience: event_audience) %></h2>
 
 
 <div class="when-and-where">
@@ -18,8 +18,8 @@
 		<p class="address"><%= @event.location.address %></p>
 	<% end -%>
 	<p class="location_text"><%= @event.location_text %></p>
-	<p class="time"><%= @event.time_detail(:audience => event_audience) %>
-		<%= content_tag(:p, content_tag(:span, "Time TBA", :class => 'outline tag')) if @event.time_tba? %></p>
+	<p class="time"><%= @event.time_detail(audience: event_audience) %>
+		<%= content_tag(:p, content_tag(:span, "Time TBA", class: 'outline tag')) if @event.time_tba? %></p>
 </div>
 
 <div class="details">
@@ -27,8 +27,8 @@
 
 		<dt>Date &amp; Time</dt>
 		<dd class="date">
-			<%= @event.time_detail(:audience => event_audience) %> 
-			<%= content_tag(:span, "Time TBA", :class => 'outline tag') if @event.time_tba? %>
+			<%= @event.time_detail(audience: event_audience) %> 
+			<%= content_tag(:span, "Time TBA", class: 'outline tag') if @event.time_tba? %>
 			
 			<%- if @event.time_is_audience_specific?(event_audience) -%>
 				<br><small class="light">
@@ -80,10 +80,10 @@
 
 </div>
 
-<%= render :partial => 'training_required_note', :locals => { :event_or_group => @event } %>
+<%= render partial: 'training_required_note', locals: { event_or_group: @event } %>
 
 <table class="highlightless rsvp">
-	<%= render :partial => 'event', :object => @event %>
+	<%= render partial: 'event', object: @event %>
 </table>
 
-<%= render :partial => 'sidebar' %>
+<%= render partial: 'sidebar' %>

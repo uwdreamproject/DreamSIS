@@ -19,11 +19,11 @@
 	<td><ul><%= raw event_group.events.collect{|e| content_tag(:li, link_to(h(e.name), event_path(e)))}.join %></ul></td>
     <td class="functions"><%= link_to 'Show', event_group_path(event_group) %></td>
     <td class="functions"><%= link_to 'Edit', edit_event_group_path(event_group) %></td>
-    <td class="functions"><%= link_to 'Destroy', event_group_path(event_group), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td class="functions"><%= link_to 'Destroy', event_group_path(event_group), confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <%= content_for(:sidebar) do %>
-	<%= link_to 'Create new event group', new_event_group_path, :class => 'add button' %>
+	<%= link_to 'Create new event group', new_event_group_path, class: 'add button' %>
 <%- end -%>

@@ -13,13 +13,13 @@
 	
 	<%= link_to link_label, event_event_attendances_path(
 				event_attendance.event, 
-				:attendee => { 
-					:person_id => event_attendance.person_id, 
-					:attended => attended 
+				attendee: { 
+					person_id: event_attendance.person_id, 
+					attended: attended 
 				}),
 			{ 
-				:remote => true,
-				:method => :post 
+				remote: true,
+				method: :post 
 			} %>
 </td>
 

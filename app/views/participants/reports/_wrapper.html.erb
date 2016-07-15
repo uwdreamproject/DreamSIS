@@ -5,26 +5,26 @@
 			<input type="checkbox" name="selected[Participant][<%= participant.id %>]" class="index_check_box" value="1" onClick="updateWithSelectedActions()" />
 		</td>
 		<td class="avatar">
-			<%= image_tag participant.avatar.thumb.url, :class => "avatar" %>
+			<%= image_tag participant.avatar.thumb.url, class: "avatar" %>
 		</td>
 		<td rowspan="<%= row_count %>" class="name multirow-highlight">
 			<%= link_to participant.lastname_first, participant %>
 			<small class="inactive-note">Inactive</small>
 			<small class="not-target-note"><%= Customer.not_target_label.titleize %></small>
 		</td>
-		<%= render :partial => "participants/reports/#{report.pluralize}", 
-					:locals => { :participant => participant, :collection => collection, :row_count => collection.size, :row_index => row_index } %>
+		<%= render partial: "participants/reports/#{report.pluralize}", 
+					locals: { participant: participant, collection: collection, row_count: collection.size, row_index: row_index } %>
 	<% end %>
 
 	<%- unless collection.empty? -%>
-		<%= render :partial => "participants/reports/#{report.singularize}", 
-					:object => collection[row_index-1],
-					:locals => { :participant => participant, :row_index => row_index } %>
+		<%= render partial: "participants/reports/#{report.singularize}", 
+					object: collection[row_index-1],
+					locals: { participant: participant, row_index: row_index } %>
 	<% end %>
 
 	<%- if row_index == 1 -%>	
 		<td rowspan="<%= row_count %>" class="functions multirow-highlight">
-			<%= link_to 'Show', participant_path(participant, :anchor => "!/section/#{report}") %>
+			<%= link_to 'Show', participant_path(participant, anchor: "!/section/#{report}") %>
 			<%= link_to 'Edit', edit_participant_path(participant) %>
 		</td>
 	<% end %>

@@ -1,21 +1,21 @@
 <h1>Editing scholarship</h1>
 
-<%= semantic_form_for @scholarship, :html => { :method => :put } do |f| %>
+<%= semantic_form_for @scholarship, html: { method: :put } do |f| %>
 
 	<%= default_form_errors(f) %>
 
-	<%= render :partial => "fields", :locals => { :f => f } %>
+	<%= render partial: "fields", locals: { f: f } %>
 	
-	<%= f.submit "Save", :disable_with => 'Saving...' %>
+	<%= f.submit "Save", disable_with: 'Saving...' %>
 	<span class="separator">&mdash; or &mdash;</span>
 	<%= link_to 'Cancel', @scholarship %>
 
 <% end %>
 
 <%= content_for(:sidebar) do %>
-	<p><%#= link_to_function "Merge scholarship", "$('merge_form').show(); this.up('p').hide();", :class => "sync button" %></p>
+	<p><%#= link_to_function "Merge scholarship", "$('merge_form').show(); this.up('p').hide();", class: "sync button" %></p>
 	
-	<%= form_tag merge_scholarships_path(:return_to => scholarships_path), :id => "merge_form", :style => "display:none" %>
+	<%= form_tag merge_scholarships_path(return_to: scholarships_path), id: "merge_form", style: "display:none" %>
 		<h3>Merge with another Scholarship</h3>
 		<p class="intro">Specify the ID for the scholarship to merge into. Then click Merge.</p>
 	
@@ -45,6 +45,6 @@
 			<input name="target_id" id="merge_target_id" class="editable">
 		</div>
 	
-		<p><%= submit_tag "Merge", :confirm => "Are you sure you want to merge these scholarships?" %></p>
+		<p><%= submit_tag "Merge", confirm: "Are you sure you want to merge these scholarships?" %></p>
 	</form>
 <%- end -%>

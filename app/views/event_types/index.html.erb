@@ -13,11 +13,11 @@
     <td class="functions"><%= link_to 'Show', event_type_path(event_type) %></td>
 	<td class="functions"><%= link_to 'RSVP', event_type_rsvp_path(event_type) %></td>
     <td class="functions"><%= link_to 'Edit', edit_event_type_path(event_type) %></td>
-    <td class="functions"><%= link_to 'Destroy', event_type_path(event_type), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td class="functions"><%= link_to 'Destroy', event_type_path(event_type), confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <%= content_for(:sidebar) do %>
-	<%= link_to 'Create new event type', new_event_type_path, :class => 'add button' %>
+	<%= link_to 'Create new event type', new_event_type_path, class: 'add button' %>
 <%- end -%>

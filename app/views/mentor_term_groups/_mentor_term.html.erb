@@ -1,57 +1,57 @@
 <tr id="mentor_term_<%= mentor_term.id %>" class="hoverable <%= "newly_added" if params[:newly_added]==mentor_term.id.to_s %>
 <%= "bright-red-background" if !mentor_term.mentor.passed_basics? %>">
-	<td class="photo"><%= image_tag photo_mentor_path(mentor_term.try(:mentor), :size => :medium), 
-						:class => 'student_photo thumb', 
-						:width => 64, 
-						:alt => "" %>
+	<td class="photo"><%= image_tag photo_mentor_path(mentor_term.try(:mentor), size: :medium), 
+						class: 'student_photo thumb', 
+						width: 64, 
+						alt: "" %>
 		</td>
 		
 	<td>
-	<strong class="mentor name"><%= link_to mentor_term.fullname(:skip_update => true), mentor_term.mentor %></strong>
+	<strong class="mentor name"><%= link_to mentor_term.fullname(skip_update: true), mentor_term.mentor %></strong>
 		<br><%= auto_link mentor_term.email %>
 		<div>
-			<%= raw "#{content_tag :span, Customer.lead_Label, :class => 'admin tag'}" if mentor_term.lead? %>
-			<%= raw "#{content_tag :span, "Enrolled", :class => 'green tag'}" unless mentor_term.volunteer? %>
-			<%= raw "#{content_tag :span, "Driver", :class => 'grey tag'}" if mentor_term.driver? || mentor_term.mentor.valid_van_driver? %>
+			<%= raw "#{content_tag :span, Customer.lead_Label, class: 'admin tag'}" if mentor_term.lead? %>
+			<%= raw "#{content_tag :span, "Enrolled", class: 'green tag'}" unless mentor_term.volunteer? %>
+			<%= raw "#{content_tag :span, "Driver", class: 'grey tag'}" if mentor_term.driver? || mentor_term.mentor.valid_van_driver? %>
 			
 			<%= safe_join mentor_term.tag_list.collect{ |tag| content_tag(:span, tag, class: 'tag') } %>
 		</div>
 			<% if !mentor_term.mentor.passed_basics? %>
 	  <div><strong><%= mentor_term.mentor.readiness_summary %></strong></div>
 	<% end %>
-		<%= render :partial => 'note_form', 
-					:locals => { :mentor_term => mentor_term } %>
+		<%= render partial: 'note_form', 
+					locals: { mentor_term: mentor_term } %>
 
 		</td>
 		
 	<td>
 		<ul id="participants_<%= mentor_term.id %>" class="mini_participants">
 			<%- mini_participants = mentor_term.mentor_participants -%>
-			<%= render :partial => 'mini_participant', 
-						:collection => mini_participants[0..4].select{|m| !m.participant.nil? },
-						:locals => { :mentor_term => mentor_term } %>
-			<%= content_tag :li, "#{mini_participants.size-5} more", :class => 'extra note' if mini_participants.size > 5 %>
+			<%= render partial: 'mini_participant', 
+						collection: mini_participants[0..4].select{|m| !m.participant.nil? },
+						locals: { mentor_term: mentor_term } %>
+			<%= content_tag :li, "#{mini_participants.size-5} more", class: 'extra note' if mini_participants.size > 5 %>
 		</ul>
-		<%= render :partial => 'participant_form', 
-					:locals => { :mentor_term => mentor_term } if mentor_term.try(:location) %>
+		<%= render partial: 'participant_form', 
+					locals: { mentor_term: mentor_term } if mentor_term.try(:location) %>
 		</td>
 		
 	<td class="functions">
 		<%- if mentor_term.deleted? -%>
 			<%= link_to "Undelete",
 						mentor_term_group_mentor_term_path(mentor_term.mentor_term_group, mentor_term,
-							:mentor_term => { :deleted_at => nil, :volunteer => true },
-							:increment_counter => true), 
-						:method => :put,
-						:confirm => "Are you sure you want to undelete this mentor?" %>
+							mentor_term: { deleted_at: nil, volunteer: true },
+							increment_counter: true), 
+						method: :put,
+						confirm: "Are you sure you want to undelete this mentor?" %>
 		<% else -%>
 
 			<%= link_to "Edit", edit_mentor_term_group_mentor_term_path(mentor_term.mentor_term_group, mentor_term) %>
 			<%- if mentor_term.volunteer? -%>
 				<%= link_to "Delete", 
 							mentor_term_group_mentor_term_path(mentor_term.mentor_term_group, mentor_term), 
-							:method => :delete,
-							:confirm => "Are you sure you want to remove this volunteer?" %>
+							method: :delete,
+							confirm: "Are you sure you want to remove this volunteer?" %>
 			<% end -%>
 			
 		<% end -%>

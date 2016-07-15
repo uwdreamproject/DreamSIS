@@ -9,8 +9,8 @@
 	</thead>
 
 	<tbody>
-		<%= render :partial => "scholarship_applications/scholarship_application", 
-					:collection => @participant.scholarship_applications %>
+		<%= render partial: "scholarship_applications/scholarship_application", 
+					collection: @participant.scholarship_applications %>
 				
 		<%- if @participant.scholarship_applications.empty? -%>
 		<tr class="empty">

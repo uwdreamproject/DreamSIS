@@ -1,19 +1,19 @@
-<%= render :partial => "avatar" %>
+<%= render partial: "avatar" %>
 
 <div class="name">
 	<h3 class="pre-title"><%= @participant.class.to_s %></h3>
 	<h1>
-		<%=h @participant.fullname(:middlename => false, :nickname => true) %>
-		<%= content_tag :small, "##{@participant.id.to_s}", :class => "outline tag" %>
+		<%=h @participant.fullname(middlename: false, nickname: true) %>
+		<%= content_tag :small, "##{@participant.id.to_s}", class: "outline tag" %>
 	</h1>
 	<%- if @participant.inactive? || @participant.not_target_participant? -%>
 		<div class="note-band">
-			<%= content_tag :span, "Inactive", :class => "inactive tag" if @participant.inactive? %>
-			<%= content_tag :span, "#{Customer.not_target_Label}", :class => "not-target tag" if @participant.not_target_participant? %>
+			<%= content_tag :span, "Inactive", class: "inactive tag" if @participant.inactive? %>
+			<%= content_tag :span, "#{Customer.not_target_Label}", class: "not-target tag" if @participant.not_target_participant? %>
 		</div>
 	<% end %>
 
-	<%= link_to "Needs Follow-up", "", :onclick => "switchToTab('notes', undefined, 'show=needs_followup'); return false;", :class => "needs-followup" if @participant.needs_followup? %>
+	<%= link_to "Needs Follow-up", "", onclick: "switchToTab('notes', undefined, 'show=needs_followup'); return false;", class: "needs-followup" if @participant.needs_followup? %>
 </div>
 
 <div class="details">
@@ -22,14 +22,14 @@
 		<dd>
 			<%= link_to "#{@participant.high_school.name} #{@participant.grad_year}", 
 					high_school_cohort_path(@participant.high_school, (@participant.grad_year || 0)), 
-					:class => 'redirect-link' unless @participant.high_school.nil? %>
+					class: 'redirect-link' unless @participant.high_school.nil? %>
 		</dd>
 
 		<%- if @participant.respond_to?(:participant_group) && @participant.participant_group -%>
 			<dt>Group</dt>
 			<dd>
 				<%= link_to @participant.participant_group.try(:title), 
-							participant_group_path(@participant.participant_group.try(:id)), :class => 'redirect-link' %>
+							participant_group_path(@participant.participant_group.try(:id)), class: 'redirect-link' %>
 			</dd>
 		<% end -%>
 		
@@ -49,8 +49,8 @@
 			<dt>Most Recent College</dt>
 			<dd>
 					<%= link_to enrollment.institution.try(:name), 
-							college_participants_path(enrollment.institution, :report => "college_stages"),
-							:class => 'redirect-link' %>
+							college_participants_path(enrollment.institution, report: "college_stages"),
+							class: 'redirect-link' %>
 							
 					<div class="small light">
 						<%= "#{enrollment.enrollment_status_name}, " unless enrollment.enrollment_status_name.blank? %>

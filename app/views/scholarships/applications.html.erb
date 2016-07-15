@@ -19,10 +19,10 @@
 			<td><%=h number_to_currency scholarship_application.amount %></td>
 			<td><%= content_tag :span,
 								(scholarship_application.awarded? ? "Y" : "N"),
-								:class => "icon #{scholarship_application.awarded? ? "pass" : "fail"}" %></td>
+								class: "icon #{scholarship_application.awarded? ? "pass" : "fail"}" %></td>
 			<td><%= content_tag :span,
 								(scholarship_application.accepted? ? "Y" : "N"),
-								:class => "icon #{scholarship_application.accepted? ? "pass" : "fail"}" %></td>
+								class: "icon #{scholarship_application.accepted? ? "pass" : "fail"}" %></td>
 			<td></td>
 		</tr>
 		<% end %>
@@ -30,6 +30,6 @@
 </table>
 
 <%= content_for(:sidebar) do %>
-	<p><%= link_to "Back to scholarship", @scholarship, :class => "back button" %></p>
-	<p><%= link_to "Download in Excel", { :format => :xls }, :class => "xls button" %></p>
+	<p><%= link_to "Back to scholarship", @scholarship, class: "back button" %></p>
+	<p><%= link_to "Download in Excel", { format: :xls }, class: "xls button" %></p>
 <%- end -%>

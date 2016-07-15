@@ -1,12 +1,12 @@
 <h1>Editing program</h1>
 
-<%= semantic_form_for @program, :html => { :method => :put } do |f| %>
+<%= semantic_form_for @program, html: { method: :put } do |f| %>
 
 	<%= default_form_errors(f) %>
 
-	<%= render :partial => "fields", :locals => { :f => f } %>
+	<%= render partial: "fields", locals: { f: f } %>
 	
-	<%= f.submit "Save", :disable_with => 'Saving...' %>
+	<%= f.submit "Save", disable_with: 'Saving...' %>
 	<span class="separator">&mdash; or &mdash;</span>
 	<%= link_to 'Cancel', @program %>
 

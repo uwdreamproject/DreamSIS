@@ -1,19 +1,19 @@
 <h3 class="pre-title">Edit</h3>
 <h1><%=h @participant.fullname %></h1>
 
-<%= semantic_form_for(@participant, :html => {:id => "participant_form", :multipart => true}) do |f| %>
+<%= semantic_form_for(@participant, html: {id: "participant_form", multipart: true}) do |f| %>
 	<%= default_form_errors(f) %>
 
-	<%= render :partial => 'participants/fields/name_and_personal', :locals => { :f => f } %>
-	<%= render :partial => 'participants/fields/contact', :locals => { :f => f } %>
-	<%= render :partial => 'participants/fields/high_school', :locals => { :f => f } %>
-	<%= render :partial => 'participants/fields/background', :locals => { :f => f } %>
-	<%= render :partial => 'participants/fields/race_ethnicity', :locals => { :f => f } %>
-	<%= render :partial => 'participants/fields/family_history', :locals => { :f => f } %>
-	<%= render :partial => 'participants/fields/financial', :locals => { :f => f } %>
-	<%= render :partial => 'participants/fields/parents', :locals => { :f => f } %>
-	<%= render :partial => 'participants/fields/administrative', :locals => { :f => f } %>
-	<%#= render :partial => 'participants/fields/post_program', :locals => { :f => f } %>
+	<%= render partial: 'participants/fields/name_and_personal', locals: { f: f } %>
+	<%= render partial: 'participants/fields/contact', locals: { f: f } %>
+	<%= render partial: 'participants/fields/high_school', locals: { f: f } %>
+	<%= render partial: 'participants/fields/background', locals: { f: f } %>
+	<%= render partial: 'participants/fields/race_ethnicity', locals: { f: f } %>
+	<%= render partial: 'participants/fields/family_history', locals: { f: f } %>
+	<%= render partial: 'participants/fields/financial', locals: { f: f } %>
+	<%= render partial: 'participants/fields/parents', locals: { f: f } %>
+	<%= render partial: 'participants/fields/administrative', locals: { f: f } %>
+	<%#= render partial: 'participants/fields/post_program', locals: { f: f } %>
 
 	<%= default_form_actions(f) %>
 <% end %>
@@ -21,6 +21,6 @@
 <%= content_for(:sidebar) do %>
 	<div id="participant_duplicate_warning">
 	
-	<%#= link_to_function "Save changes", "$('#participant_form').submit()", :class => "save button" %>
-	<%= link_to "Back to participant", @participant, :confirm => "Any changes you have made will not be saved. Are you sure?", :class => "back button" %>
+	<%#= link_to_function "Save changes", "$('#participant_form').submit()", class: "save button" %>
+	<%= link_to "Back to participant", @participant, confirm: "Any changes you have made will not be saved. Are you sure?", class: "back button" %>
 <%- end -%>

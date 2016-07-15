@@ -1,13 +1,13 @@
 <h1>Editing event</h1>
 
-<%= semantic_form_for(@event, :url => event_path(@event)) do |f| %>
+<%= semantic_form_for(@event, url: event_path(@event)) do |f| %>
 
 	<%= default_form_errors(f) %>
 
-	<%= render :partial => "fields", :locals => { :f => f } %>
+	<%= render partial: "fields", locals: { f: f } %>
 
-	<%= f.submit "Update", :disable_with => 'Updating...' %>
+	<%= f.submit "Update", disable_with: 'Updating...' %>
 	<%= separator %>
-	<%= link_to 'Cancel', event_path(@event), :class => '' %>
+	<%= link_to 'Cancel', event_path(@event), class: '' %>
 
 <% end -%>

@@ -1,25 +1,25 @@
 <h1>Tell Us About Yourself, <%= @participant.firstname %></h1>
 <p>Please enter as much of the information below as possible. If you have any questions, check with your <%= Customer.lead_label %>.</p>
 
-<%= semantic_form_for @participant, :url => { :action => 'intake_form'} do |f| %>
+<%= semantic_form_for @participant, url: { action: 'intake_form'} do |f| %>
 
   <%= default_form_errors(f) %>
-  <%= render :partial => 'participants/fields/name_and_personal.html.erb', :locals => { :f => f } %>
-  <%= render :partial => 'participants/fields/contact.html.erb', :locals => { :f => f } %>
-  <%= render :partial => 'participants/fields/race_ethnicity.html.erb', :locals => { :f => f } %>
-  <%= render :partial => 'participants/fields/family_history.html.erb', :locals => { :f => f } %>
-  <%= render :partial => 'participants/fields/high_school.html.erb', :locals => { :f => f } %>
-  <%= render :partial => 'participants/fields/background.html.erb', :locals => { :f => f } %>
-  <%= render :partial => 'participants/fields/parents.html.erb', :locals => { :f => f } %>
-  <%= render :partial => 'participants/fields/financial.html.erb', :locals => { :f => f } %>
+  <%= render partial: 'participants/fields/name_and_personal.html.erb', locals: { f: f } %>
+  <%= render partial: 'participants/fields/contact.html.erb', locals: { f: f } %>
+  <%= render partial: 'participants/fields/race_ethnicity.html.erb', locals: { f: f } %>
+  <%= render partial: 'participants/fields/family_history.html.erb', locals: { f: f } %>
+  <%= render partial: 'participants/fields/high_school.html.erb', locals: { f: f } %>
+  <%= render partial: 'participants/fields/background.html.erb', locals: { f: f } %>
+  <%= render partial: 'participants/fields/parents.html.erb', locals: { f: f } %>
+  <%= render partial: 'participants/fields/financial.html.erb', locals: { f: f } %>
 
   <hr>
 
   	<%= f.inputs do %>
-		<%= f.input :intake_form_signature, :required => true, :label => "Enter your full legal name as signature" %>
+		<%= f.input :intake_form_signature, required: true, label: "Enter your full legal name as signature" %>
 	<% end -%>
   
 	<%= f.actions do %>
-		<%= f.action :submit, :label=> "Submit" %>
+		<%= f.action :submit, label: "Submit" %>
 	<% end -%>
 <% end -%>

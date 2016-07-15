@@ -1,4 +1,4 @@
-<h1><%= content_tag :span, "Admin", :class => 'admin tag' if controller.action_name == 'admin' %>
+<h1><%= content_tag :span, "Admin", class: 'admin tag' if controller.action_name == 'admin' %>
 	Users</h1>
 
 <%= will_paginate @users %>
@@ -16,10 +16,10 @@
 	</thead>
 
 	<tbody id="original_users">
-		<%= render :partial => "user", :collection => @users %>
+		<%= render partial: "user", collection: @users %>
 	</tbody>
 	
 	<tbody id="user_search_results"></tbody>
 </table>
 
-<%= render :partial => 'sidebar' %>
+<%= render partial: 'sidebar' %>

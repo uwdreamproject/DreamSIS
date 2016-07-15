@@ -1,6 +1,6 @@
 <div class="right">
-	<%= link_to "Show #{Customer.mentors_label}", {:show => "mentors"}, :class => "list button" unless @showing.include?(:mentors) %>
-	<%= link_to "Show #{Customer.participants_label}", {:show => "participants"}, :class => "list button" unless @showing.include?(:participants) %>
+	<%= link_to "Show #{Customer.mentors_label}", {show: "mentors"}, class: "list button" unless @showing.include?(:mentors) %>
+	<%= link_to "Show #{Customer.participants_label}", {show: "participants"}, class: "list button" unless @showing.include?(:participants) %>
 </div>
 
 <h1>Attendance: <%= @showing.collect{|s| s.to_s.titleize }.to_sentence %></h1>
@@ -31,7 +31,7 @@
 		<% end -%>
 
 		<tr <%= "class='deselected'" if participant.inactive? %> id="participant_row_<%= participant.id.to_s %>" data-participant-id="<%= participant.id.to_s %>">
-		    <td class="name"><%= link_to participant.lastname_first, participant_url(participant, :anchor => "!/section/events"), :popup => true %>
+		    <td class="name"><%= link_to participant.lastname_first, participant_url(participant, anchor: "!/section/events"), popup: true %>
 				<small class="inactive-note">(inactive)</small>
 				</td>
 			<%- @visits.each_with_index do |visit, index| -%>
@@ -53,7 +53,7 @@
 		<h3>Term</h3>
 		<p>Select a different term:
 		<br>
-		<%= select_tag "new_term_id", options_from_collection_for_select(Term.all, :id, :title, :selected => @term.id) %>
+		<%= select_tag "new_term_id", options_from_collection_for_select(Term.all, :id, :title, selected: @term.id) %>
 		<%= submit_tag "Go" %>
 		</p>
 
@@ -68,17 +68,17 @@
 		Only events that are pertinent to this group of people are shown.</p>
 	
 	<p><%= link_to "Add new high school visit",
-					new_high_school_visit_path(@high_school, :term_id => @term),
-					:class => 'add button' %></p>
+					new_high_school_visit_path(@high_school, term_id: @term),
+					class: 'add button' %></p>
 	
 	<%- unless @participants.empty? -%>
 		<p><%= link_to "Return to #{@high_school.name} #{@participants.first.grad_year} list",
 						high_school_cohort_path(@high_school, (@participants.first.grad_year || 0)),
-						:class => "back button" %></p>
+						class: "back button" %></p>
 	<% end -%>
 					
 	<p><%= link_to "Return to visits list",
 	 				high_school_visits_path(@high_school),
-	 				:class => "back button" %></p>
+	 				class: "back button" %></p>
 		
 <%- end -%>

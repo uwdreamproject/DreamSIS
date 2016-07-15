@@ -19,10 +19,10 @@
 			</tr>
 		<% end %>
 
-		<%= render :partial => "college_enrollments/college_enrollment", :collection => @participant.college_enrollments %>
+		<%= render partial: "college_enrollments/college_enrollment", collection: @participant.college_enrollments %>
 	</tbody>
 
 </table>	
 
 <br />
-<%= link_to 'Add college enrollment', new_participant_college_enrollment_path(@participant), :class => 'add button' %>
+<%= link_to 'Add college enrollment', new_participant_college_enrollment_path(@participant), class: 'add button' %>

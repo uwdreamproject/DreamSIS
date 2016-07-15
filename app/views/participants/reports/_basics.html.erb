@@ -1,18 +1,18 @@
-<td class="cohort"><%= link_to "#{truncate(participant.high_school.name, :length => 30)} #{participant.grad_year}", 
+<td class="cohort"><%= link_to "#{truncate(participant.high_school.name, length: 30)} #{participant.grad_year}", 
 				high_school_cohort_path(participant.high_school, (participant.grad_year || 0)), 
-				:class => 'redirect-link' unless participant.high_school.nil? %></td>
+				class: 'redirect-link' unless participant.high_school.nil? %></td>
 
 <td class="group-title">
 	<%- if @participant_groups -%>
-		<%= link_to truncate(h(participant.participant_group.try(:title)), :length => 30), 
+		<%= link_to truncate(h(participant.participant_group.try(:title)), length: 30), 
 					participant.participant_group, 
-					:class => 'redirect-link' if participant.participant_group %>
+					class: 'redirect-link' if participant.participant_group %>
 	<% end -%>
 </td>
 
 <td class="badges">
 	<span class="filter_warning_counts_container"><%= filter_warning_count_tag(participant) %></span>
-	<%= render :partial => "participants/followup_notes_container", :locals => { :participant => participant } %>
+	<%= render partial: "participants/followup_notes_container", locals: { participant: participant } %>
 </td>
 
 <td class="last-updated <%= "old" if participant.updated_at < 3.months.ago %>">

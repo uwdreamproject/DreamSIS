@@ -1,11 +1,11 @@
 <div>
 	<%= link_to 'Add college', 
 				new_participant_college_application_path(@participant),
-				:class => "add button" %>
+				class: "add button" %>
 
 	<span id="postsecondary_plan_add_link" <%= "style='display:none'" unless @participant.postsecondary_plan.blank? %>>
 		<%= separator %>
-		<%= link_to "Add a different postsecondary plan", "javascript:;", :class => "add button", :id => "add_postsecondary_plan" %>
+		<%= link_to "Add a different postsecondary plan", "javascript:;", class: "add button", id: "add_postsecondary_plan" %>
 	
 		<%= javascript_tag "
 				$('#add_postsecondary_plan').click(function() {

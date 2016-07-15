@@ -1,6 +1,6 @@
 // Update the table header row and setup the export actions on the first page load
 if (<%=j @participants.current_page.to_s %> == 1) {
-  $("#participants_table thead").html("<%=j render(:partial => 'participants/reports/table_header') %>")
+  $("#participants_table thead").html("<%=j render(partial: 'participants/reports/table_header') %>")
   $("#export_actions").html("<%=j render('export_actions') %>")
   exportReportType = "<%=j @report %>"
   exportReportTitle = "<%=j @export.try{ |e| e.class.to_s.titleize } %>"
@@ -12,7 +12,7 @@ $("#participants_table")
   .removeClass("loading")
   .attr("data-report", "<%= @report %>")
   .addClass("<%= @report %>")
-  .append("<%=j render(:partial => 'participant', :collection => @participants, :locals => { :report => @report }) %>")
+  .append("<%=j render(partial: 'participant', collection: @participants, locals: { report: @report }) %>")
 
 // Update the loading indicator's progress bar
 updateLoadProgress("<%= number_to_percentage(params[:page].to_f / @participants.total_pages.to_i * 100) %>")
@@ -39,7 +39,7 @@ updateRelativeTimestamps()
 // Fetch the next page of participants
 if ("<%=j @participants.next_page.to_s %>" && !stopLoading) {
   console.log("Fetching page <%=j @participants.next_page.to_s %>")
-  $.ajax({ url: '<%=j url_for(:report => @report, :page => @participants.next_page) %>', dataType: 'script' });
+  $.ajax({ url: '<%=j url_for(report: @report, page: @participants.next_page) %>', dataType: 'script' });
 } else {
   hideLoadProgress()
   prepareFollowupPanels()

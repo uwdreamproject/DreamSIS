@@ -9,7 +9,7 @@
 	</thead>
 
 	<tbody>
-		<%= render :partial => "college_degrees/college_degree", :collection => @participant.college_degrees %>
+		<%= render partial: "college_degrees/college_degree", collection: @participant.college_degrees %>
 				
 		<%- if @participant.college_degrees.empty? -%>
 		<tr class="empty">
@@ -22,4 +22,4 @@
 
 
 <br />
-<%= link_to 'Add college degree', new_participant_college_degree_path(@participant), :class => 'add button' %>
+<%= link_to 'Add college degree', new_participant_college_degree_path(@participant), class: 'add button' %>

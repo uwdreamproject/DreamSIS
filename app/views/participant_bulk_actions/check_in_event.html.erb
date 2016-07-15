@@ -1,6 +1,6 @@
 <h2>Event Check-in</h2>
 <p>Check in <%= raw(@participants.collect{ |p| link_to p.fullname, p }.to_sentence) %> to the following event:</p>
 
-<%#= form_for @note, { :url => participant_bulk_action_path(:process_add_note), :remote => true } do |f| -%>
+<%#= form_for @note, { url: participant_bulk_action_path(:process_add_note), remote: true } do |f| -%>
 	
 <%# end -%>

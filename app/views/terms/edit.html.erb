@@ -1,12 +1,12 @@
 <h1><%= @term.title %></h1>
 
-<%= semantic_form_for @term, :as => :term, :url => term_path(@term), :html => { :method => :put } do |f| %>
+<%= semantic_form_for @term, as: :term, url: term_path(@term), html: { method: :put } do |f| %>
 
 	<%= default_form_errors(f) %>
 
-	<%= render :partial => "fields", :locals => { :f => f } %>
+	<%= render partial: "fields", locals: { f: f } %>
 	
-	<%= f.submit "Save", :disable_with => 'Saving...' %>
+	<%= f.submit "Save", disable_with: 'Saving...' %>
 	<span class="separator">&mdash; or &mdash;</span>
 	<%= link_to 'Cancel', terms_path %>
 
@@ -14,25 +14,25 @@
 
 <%= content_for(:sidebar) do %>
 	
-	<p><%= link_to "Back to terms", terms_path, :class => "back button" %></p>
+	<p><%= link_to "Back to terms", terms_path, class: "back button" %></p>
 	
 	<p><%= link_to "Sync with UW Calendar",
 				sync_term_path(@term),
-				:method => :put,
-				:confirm => "Are you sure you want to sync this term with the UW calendar?",
-				:class => "sync button" if Customer.link_to_uw? %></p>
+				method: :put,
+				confirm: "Are you sure you want to sync this term with the UW calendar?",
+				class: "sync button" if Customer.link_to_uw? %></p>
 				
 
-	<%- xlsx_url = { :action => :show, :format => :xlsx }  -%>
-	<p><%= link_to "Download #{Customer.mentors_Label} in Excel", xlsx_url, {:class=> "button xls with-below", :id => "export_download_button", :remote => true} %></p>
+	<%- xlsx_url = { action: :show, format: :xlsx }  -%>
+	<p><%= link_to "Download #{Customer.mentors_Label} in Excel", xlsx_url, {class: "button xls with-below", id: "export_download_button", remote: true} %></p>
 
 	<%= javascript_tag("checkExportStatus = false;") %>
-	<%= javascript_tag("checkExportStatusUrl = '#{check_export_status_terms_url(:id => "__id__")}'") %>
+	<%= javascript_tag("checkExportStatusUrl = '#{check_export_status_terms_url(id: "__id__")}'") %>
 	
 	<p id="export_status" class="below">
 		<%- if @export -%>
 			<%=h @export.status.try(:titleize) %> <%=h relative_timestamp @export.updated_at %>
-			<%= link_to "Regenerate", { :action => :show, :generate => true, :format => 'xlsx' }, url_options = { :remote => true } %>
+			<%= link_to "Regenerate", { action: :show, generate: true, format: 'xlsx' }, url_options = { remote: true } %>
 			<%= javascript_tag("checkExportStatus = true; exportReportId = '#{@export.id.to_s}';") unless @export.generated? %>
 		<% else %>
 		  Not yet generated

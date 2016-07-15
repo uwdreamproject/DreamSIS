@@ -10,7 +10,7 @@ previous_date = nil
 	<% for note in objects %>
 		<% if note.allows?(@current_user) %>
 			<%= date_interval_tag(previous_date, note.created_at) %>
-			<%= render :partial => "/shared/note", :object => note  %>
+			<%= render partial: "/shared/note", object: note  %>
 			<%- previous_date = note.created_at.to_date -%>
 		<% end -%>
 	<% end -%>

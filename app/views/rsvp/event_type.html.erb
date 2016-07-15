@@ -2,7 +2,7 @@
 <p><%= sanitize textilize(@event_type.description) %></p>
 
 <table class="highlightless rsvp">
-	<%= render :partial => 'event', :collection => @event_type.events.future %>
+	<%= render partial: 'event', collection: @event_type.events.future %>
 </table>
 
-<%= render :partial => 'sidebar' %>
+<%= render partial: 'sidebar' %>

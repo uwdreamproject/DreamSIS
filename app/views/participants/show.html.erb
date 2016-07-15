@@ -29,30 +29,30 @@
 
 		<%- cache [@participant.cache_key, "details"].join("/") do -%>
 			<div class="record-header" onclick="void(0)">
-					<%= render :partial => "details" %>
+					<%= render partial: "details" %>
 			</div>
 		<% end %>
 
 		<%- cache [@participant.cache_key, "filter_results"].join("/") do -%>
 			<div class="info-section active" id="filter_results">
-				<div class="right"><%= link_to "Recalculate stats", refresh_filter_cache_participant_path(@participant), :remote => true, :method => :post %></div>
+				<div class="right"><%= link_to "Recalculate stats", refresh_filter_cache_participant_path(@participant), remote: true, method: :post %></div>
 				<h2>Current Stats</h2>
-				<%= render :partial => 'filter_results' %>
+				<%= render partial: 'filter_results' %>
 			</div>
 		<% end %>
 	
 		<div class="info-section" id="contact">
 			<h2>Contact Information &amp; Attributes</h2>
-			<div><%= render :partial => 'contact' %></div>
+			<div><%= render partial: 'contact' %></div>
 		</div>
 	
 		<%- if @participant.respond_to?(:college_applications) -%>
 				<div class="info-section" id="college_applications">
 					<h2>Colleges &amp; Postsecondary Plans 
 						<%= content_tag :em, "Synced with CollegeMapper", 
-							:class => "right synced-with-collegemapper-note" if @participant.college_mapper_id %></h2>
-					<%= render :partial => 'college_applications' %>
-					<%= render :partial => 'college_application_controls' %>
+							class: "right synced-with-collegemapper-note" if @participant.college_mapper_id %></h2>
+					<%= render partial: 'college_applications' %>
+					<%= render partial: 'college_application_controls' %>
 				</div>
 		<% end %>
 	
@@ -61,29 +61,29 @@
 			<%- if @participant.respond_to?(:scholarship_applications) -%>
 				<div class="info-section" id="scholarship_applications">
 					<h2>Financial Aid &amp; Scholarships</h2>
-					<%= render :partial => "fafsas" if @participant.respond_to?(:fafsas) %>
+					<%= render partial: "fafsas" if @participant.respond_to?(:fafsas) %>
 					<br />
 					
-					<%= render :partial => 'scholarship_applications' %>
+					<%= render partial: 'scholarship_applications' %>
 					<p><%= link_to 'Add scholarship', 
 													new_participant_scholarship_application_path(@participant),
-													:class => "add button" %></p>
+													class: "add button" %></p>
 					
-					<%= render :partial => "financial_aid_packages" if @participant.respond_to?(:financial_aid_packages) %>
+					<%= render partial: "financial_aid_packages" if @participant.respond_to?(:financial_aid_packages) %>
 					<p><%= link_to 'Add financial aid package', 
 													new_participant_financial_aid_package_path(@participant),
-													:class => "add button" %></p>
+													class: "add button" %></p>
 				</div>
 			<% end -%>
 
 			<%- if @participant.respond_to?(:parents) -%>
 				<div class="info-section" id="parents">
 					<h2>Parents/Guardians &amp; Contacts</h2>
-					<%= render :partial => 'parents' %>
+					<%= render partial: 'parents' %>
 					<br>
 					<%= link_to 'Add parent/guardian or contact', 
 								new_participant_parent_path(@participant),
-								:class => "add button" %>
+								class: "add button" %>
 				</div>
 			<% end -%>
 
@@ -91,25 +91,25 @@
 			<%- if @participant.respond_to?(:test_scores) -%>
 				<div class="info-section" id="test_scores">
 					<h2>Tests</h2>
-					<%= render :partial => 'test_scores' %>
+					<%= render partial: 'test_scores' %>
 					<br>
 					<%= link_to 'Add test', 
 								new_participant_test_score_path(@participant),
-								:class => "add button" %>
+								class: "add button" %>
 				</div>
 			<% end -%>
 
 			<%- if @participant.respond_to?(:college_enrollments) -%>
 				<div class="info-section" id="college_enrollments">
 					<h2>College Enrollment</h2>
-					<%= render :partial => 'college_enrollments' %>
+					<%= render partial: 'college_enrollments' %>
 				</div>
 			<% end -%>
 
 			<%- if @participant.respond_to?(:college_degrees) -%>
 				<div class="info-section" id="college_degrees">
 					<h2>College Degrees</h2>
-					<%= render :partial => 'college_degrees' %>
+					<%= render partial: 'college_degrees' %>
 				</div>
 			<% end -%>
 		
@@ -119,16 +119,16 @@
 			<div class="info-section" id="mentors">
 				<%- cache [@participant.cache_key, "mentors"].join("/") do -%>
 					<h2><%= Customer.mentors_Label %></h2>
-					<%= render :partial => 'mentors' %>
+					<%= render partial: 'mentors' %>
 				<% end %>
 				<br>
-				<%= render :partial => 'add_mentor_form' %>
+				<%= render partial: 'add_mentor_form' %>
 
 				<%- cache [@participant.cache_key, "former-mentors"].join("/") do -%>			
 					<%- unless @participant.former_mentor_participants.empty? -%>
 						<br>
 						<h3>Former <%= Customer.mentors_Label %></h3>
-						<%= render :partial => 'former_mentors' %>
+						<%= render partial: 'former_mentors' %>
 					<% end %>
 				<% end %>
 			</div>
@@ -137,25 +137,25 @@
 		<%- if @participant.respond_to?(:event_attendances) -%>
 			<div class="info-section" id="events">
 				<h2>Events &amp; Activities</h2>
-				<%= render :partial => 'events' %>
+				<%= render partial: 'events' %>
 			</div>
 		<% end -%>
 
 		<%- if @participant.respond_to?(:submitted_fafsa?) || @participant.respond_to?(:fafsas) -%>
 			<div class="info-section" id="paperwork">
-				<%= render :partial => 'paperwork_status' %>
+				<%= render partial: 'paperwork_status' %>
 			</div>
 		<% end -%>
 
 		<div class="info-section" id="documents">
-			<%= render :partial => "documents" %>
+			<%= render partial: "documents" %>
 		</div>
 
 		<div class="info-section" id="notes">
-			<%= render :partial => "notes" %>
+			<%= render partial: "notes" %>
 		</div>
 
 	</div>
 
 </div>
-<%= render :partial => "sidebar" %>
+<%= render partial: "sidebar" %>

@@ -1,16 +1,16 @@
-<%= content_tag :span, "Experimental", :class => 'orange tag right' if @customer.experimental? %>
+<%= content_tag :span, "Experimental", class: 'orange tag right' if @customer.experimental? %>
 <h1><%= @customer.name %></h1>
 
 <dl class="inline-definitions">
 
 	<dt>Web Address</dt>
-	<dd><code><%= link_to root_url(:subdomain => @customer.url_shortcut), root_url(:subdomain => @customer.url_shortcut) %></code></dd>
+	<dd><code><%= link_to root_url(subdomain: @customer.url_shortcut), root_url(subdomain: @customer.url_shortcut) %></code></dd>
 
 	<dt>Program</dt>
 	<dd><%= link_to h(@customer.program.try(:title)), @customer.program %></dd>
 	
 	<dt>Term System</dt>
-	<dd><%=h @customer.term_system.blank? ? content_tag(:em, "Not specified", :class => 'light') : @customer.term_system %>
+	<dd><%=h @customer.term_system.blank? ? content_tag(:em, "Not specified", class: 'light') : @customer.term_system %>
 		<%= @customer.link_to_uw? ? "(linked to UW)" : "" %>
 		</dd>
 
@@ -22,13 +22,13 @@
 	</dd>
 	<dt>Login Methods</dt>
 	<dd>
-		<%= content_tag :a, raw("<span>&nbsp;</span>UW NetID"), :class => "uwnetid login-link" if @customer.allowable_login_method?(:shibboleth) %>
-		<%= content_tag :a, raw("<span>&nbsp;</span>Google"), :class => "google login-link" if @customer.allowable_login_method?(:google_oauth2) %>
-		<%= content_tag :a, raw("<span>&nbsp;</span>Facebook"), :class => "facebook login-link" if @customer.allowable_login_method?(:facebook) %>
-		<%= content_tag :a, raw("<span>&nbsp;</span>Twitter"), :class => "twitter login-link" if @customer.allowable_login_method?(:twitter) %>
-		<%= content_tag :a, raw("<span>&nbsp;</span>Live"), :class => "windowslive login-link" if @customer.allowable_login_method?(:windowslive) %>
-		<%= content_tag :a, raw("<span>&nbsp;</span>LinkedIn"), :class => "linkedin login-link" if @customer.allowable_login_method?(:linkedin) %>
-		<%= content_tag :a, raw("<span>&nbsp;</span>Other"), :class => "identity login-link" if @customer.allowable_login_method?(:identity) %>
+		<%= content_tag :a, raw("<span>&nbsp;</span>UW NetID"), class: "uwnetid login-link" if @customer.allowable_login_method?(:shibboleth) %>
+		<%= content_tag :a, raw("<span>&nbsp;</span>Google"), class: "google login-link" if @customer.allowable_login_method?(:google_oauth2) %>
+		<%= content_tag :a, raw("<span>&nbsp;</span>Facebook"), class: "facebook login-link" if @customer.allowable_login_method?(:facebook) %>
+		<%= content_tag :a, raw("<span>&nbsp;</span>Twitter"), class: "twitter login-link" if @customer.allowable_login_method?(:twitter) %>
+		<%= content_tag :a, raw("<span>&nbsp;</span>Live"), class: "windowslive login-link" if @customer.allowable_login_method?(:windowslive) %>
+		<%= content_tag :a, raw("<span>&nbsp;</span>LinkedIn"), class: "linkedin login-link" if @customer.allowable_login_method?(:linkedin) %>
+		<%= content_tag :a, raw("<span>&nbsp;</span>Other"), class: "identity login-link" if @customer.allowable_login_method?(:identity) %>
 		</dd>
 
 	<dt>Labels</dt>
@@ -37,7 +37,7 @@
 		<%- for label_name in Customer::DEFAULT_LABEL.keys.collect(&:to_s) -%>
 			<%- unless @customer.read_attribute("#{label_name}_label").blank? -%>
 				<dt><%= label_name.titleize %></dt>
-				<dd><%=h @customer.customer_label(label_name, :titleize => true) %></dd>
+				<dd><%=h @customer.customer_label(label_name, titleize: true) %></dd>
 			<% end %>
 		<% end %>
         
@@ -69,13 +69,13 @@
 	<h3>Web Address</h3>
 	<p><%= @customer.name %> users should use this custom web address when logging in:</p>
 	<strong>
-		<%= link_to root_url(:subdomain => @customer.url_shortcut).gsub(/(http|https)\:\/\//, ""), root_url(:subdomain => @customer.url_shortcut), :class => "url button" %>
+		<%= link_to root_url(subdomain: @customer.url_shortcut).gsub(/(http|https)\:\/\//, ""), root_url(subdomain: @customer.url_shortcut), class: "url button" %>
 	</strong>
 
-	<p><%= link_to 'Edit these settings', edit_customer_path(@customer), :class => "edit button" %></p>
+	<p><%= link_to 'Edit these settings', edit_customer_path(@customer), class: "edit button" %></p>
 	
 	<%- if request.subdomain == 'admin' -%>
-		<p><%= link_to 'Back to customers', customers_path, :class => "back button" %></p>
+		<p><%= link_to 'Back to customers', customers_path, class: "back button" %></p>
 	<% end %>
 	
 <%- end -%>

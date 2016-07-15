@@ -9,5 +9,5 @@
 </table>
 
 <%= javascript_tag "$( function() {
-	 $.ajax({ url: '#{mentor_participants_path(@mentor, :report => 'basics', :page => 1)}', dataType: 'script' });
+	 $.ajax({ url: '#{mentor_participants_path(@mentor, report: 'basics', page: 1)}', dataType: 'script' });
 })" %>

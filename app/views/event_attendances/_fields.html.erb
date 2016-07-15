@@ -1,8 +1,8 @@
 <%= f.inputs("Attendance") do %>
-	<p><%= content_tag :span, "Based on this event's settings, changing the values below will trigger an email to the attendee.", :class => "weak error-message" if @event.send_attendance_emails? %></p>
+	<p><%= content_tag :span, "Based on this event's settings, changing the values below will trigger an email to the attendee.", class: "weak error-message" if @event.send_attendance_emails? %></p>
 
-	<%= f.input :rsvp, :label => "Attending/RSVP'd" %>
-	<%= f.input :attended, :label => "Attended" %>
+	<%= f.input :rsvp, label: "Attending/RSVP'd" %>
+	<%= f.input :attended, label: "Attended" %>
 <% end -%>
 
 <%= f.inputs("Shift/Role") do %>
@@ -14,16 +14,16 @@
 									:id,
 									:details_string,
 									{ 
-										:prompt => "-- Choose a shift/role --",
-										:selected => f.object.try(:event_shift_id)
+										prompt: "-- Choose a shift/role --",
+										selected: f.object.try(:event_shift_id)
 									 },
 									{ 
-										:id => "event_attendance_event_shift_id_#{@event.id}"
+										id: "event_attendance_event_shift_id_#{@event.id}"
 									} %>
 	</div>
 	<p>&nbsp;</p>
 
 	<%= f.input :admin, 
-				:label => "Grant admin access", 
-				:hint => "Admin users can view and edit event details, and manage event attendance." unless f.object.try(:person).try(:is_anonymous_user?) %>
+				label: "Grant admin access", 
+				hint: "Admin users can view and edit event details, and manage event attendance." unless f.object.try(:person).try(:is_anonymous_user?) %>
 <% end -%>

@@ -4,10 +4,10 @@
 
 	<%= default_form_errors(f) %>
 
-	<%= render :partial => "fields", :locals => { :f => f } %>
+	<%= render partial: "fields", locals: { f: f } %>
 
-	<%= f.submit "Create", :disable_with => 'Creating...' %>
+	<%= f.submit "Create", disable_with: 'Creating...' %>
 	<%= separator %>
-	<%= link_to 'Cancel', participant_groups_path, :class => '' %>
+	<%= link_to 'Cancel', participant_groups_path, class: '' %>
 
 <% end %>

@@ -21,19 +21,19 @@
 				<table class="attendance highlightless">
 					<%- for visit in participant.visits_during_week(@activity_log.start_date || Date.today) -%>
 					<tr>
-						<%= render :partial => "visits/_checkboxes/attended", 
-									:locals => { :participant => participant, :visit => visit, :i => 0, 
-													:show_date => true, :high_school => participant.high_school,
-													:term => Term.current_term } %>
+						<%= render partial: "visits/_checkboxes/attended", 
+									locals: { participant: participant, visit: visit, i: 0, 
+													show_date: true, high_school: participant.high_school,
+													term: Term.current_term } %>
 					</tr>
 					<% end %>
 				</table>
 			</td>
 			<td class="notes" id="notes_container_<%= participant.id %>">
-				<%= render :partial => "participants/notes", 
-							:locals => { :participant => participant, 
-										:start_date => @activity_log.start_date, 
-										:end_date => @activity_log.end_date } %>
+				<%= render partial: "participants/notes", 
+							locals: { participant: participant, 
+										start_date: @activity_log.start_date, 
+										end_date: @activity_log.end_date } %>
 			</td>
 		</tr>
 	<% end %>

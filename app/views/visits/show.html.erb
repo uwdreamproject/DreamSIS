@@ -3,7 +3,7 @@
 
 <dl class="inline-definitions">
 
-	<%= render :partial => "events/details", :object => @event %>
+	<%= render partial: "events/details", object: @event %>
 
 </dl>
 
@@ -24,19 +24,19 @@
 		<%- for audience in [:participant, :mentor, nil] -%>
 			<tr <%= "class=total" if audience.nil? %>>
 				<td><%= audience.nil? ? "Total" : audience.to_s.titleize.pluralize %>
-					<%= content_tag :span, "not shown", :class => 'outline tag' unless @event["show_for_#{audience.to_s.pluralize}"] || audience.nil? %></td>
+					<%= content_tag :span, "not shown", class: 'outline tag' unless @event["show_for_#{audience.to_s.pluralize}"] || audience.nil? %></td>
 				<td><%=h @event.attendees.rsvpd(audience).count %></td>
 				<td><%=h audience ? @event["#{audience.to_s}_capacity"] : @event[:capacity] %></td>
 				<td><%=h @event.attendees.attended(audience).count %></td>
-				<td class="functions"><%= link_to "Details", event_event_attendances_path(@event, :audience => audience) unless audience.nil? %></td>
+				<td class="functions"><%= link_to "Details", event_event_attendances_path(@event, audience: audience) unless audience.nil? %></td>
 			</tr>
 		<% end -%>
 	</tbody>
 </table>
 	
 <%= content_for(:sidebar) do %>
-	<p><%= link_to "Edit this #{Customer.visit_label}", edit_event_path(@event), :class => 'edit button' %></p>
-	<p><%= link_to "Back to #{Customer.visits_label}", high_school_visits_path(@high_school, :term_id => @term), :class => 'back button' %></p>
-	<p><%= link_to "Take Attendance", attendance_high_school_visits_path(@high_school, :term_id => @term), :class => "list button" %></p>
-	<p><%= link_to "Check-in Individuals", checkin_event_event_attendances_path(@event), :class => 'edit button' %>
+	<p><%= link_to "Edit this #{Customer.visit_label}", edit_event_path(@event), class: 'edit button' %></p>
+	<p><%= link_to "Back to #{Customer.visits_label}", high_school_visits_path(@high_school, term_id: @term), class: 'back button' %></p>
+	<p><%= link_to "Take Attendance", attendance_high_school_visits_path(@high_school, term_id: @term), class: "list button" %></p>
+	<p><%= link_to "Check-in Individuals", checkin_event_event_attendances_path(@event), class: 'edit button' %>
 <%- end -%>

@@ -19,21 +19,21 @@ hide_title ||= false
 		<th></th>
 	</tr>
 
-	<%= render :partial => "object_filters/high_school",
-				:collection => [:all],
-				:locals => {
-					:participants => participants,
-					:active_participants => active_participants,
-					:hide_title => hide_title,
-					:summary => :all
+	<%= render partial: "object_filters/high_school",
+				collection: [:all],
+				locals: {
+					participants: participants,
+					active_participants: active_participants,
+					hide_title: hide_title,
+					summary: :all
 				} %>
 	
-	<%= render :partial => "object_filters/high_school",
-				:collection => @high_schools,
-				:locals => {
-					:participants => participants,
-					:active_participants => active_participants,
-					:hide_title => hide_title
+	<%= render partial: "object_filters/high_school",
+				collection: @high_schools,
+				locals: {
+					participants: participants,
+					active_participants: active_participants,
+					hide_title: hide_title
 				} %>
 
 </table>
@@ -43,14 +43,14 @@ hide_title ||= false
 
 
 <%= content_for(:sidebar) do %>
-	<p><%= link_to "Back to filters", object_filters_path, :class => "back button" %></p>
-	<p><%= link_to "Edit this filter", edit_object_filter_path(@object_filter), :class => 'edit button' %></p>
-	<p><%= link_to "Show all stats", stats_high_schools_url(:cohort => @cohort), :class => 'list button' %></p>
+	<p><%= link_to "Back to filters", object_filters_path, class: "back button" %></p>
+	<p><%= link_to "Edit this filter", edit_object_filter_path(@object_filter), class: 'edit button' %></p>
+	<p><%= link_to "Show all stats", stats_high_schools_url(cohort: @cohort), class: 'list button' %></p>
 	
 	<h3>Change Cohort</h3>
 	<p>
 		<form method="get">
-			<%= select_tag :cohort, options_for_select(Participant.cohorts, @cohort.to_i), :onChange => "this.form.submit()" %>
+			<%= select_tag :cohort, options_for_select(Participant.cohorts, @cohort.to_i), onChange: "this.form.submit()" %>
 		</form>
 	</p>
 
@@ -68,12 +68,12 @@ hide_title ||= false
 	
 		<%- unless @object_filter.target_percentage.blank? -%>
 			<dt>Target</dt>
-			<dd><%= number_to_percentage @object_filter.target_percentage, :precision => 0 %></dd>
+			<dd><%= number_to_percentage @object_filter.target_percentage, precision: 0 %></dd>
 		<% end -%>
 
 		<%- unless @object_filter.warning_threshold.blank? -%>
 			<dt>Warning Threshold</dt>
-			<dd><%= number_to_percentage @object_filter.warning_threshold, :precision => 0 %></dd>
+			<dd><%= number_to_percentage @object_filter.warning_threshold, precision: 0 %></dd>
 		<% end -%>
 
 	</dl>

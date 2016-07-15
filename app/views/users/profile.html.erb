@@ -1,34 +1,34 @@
 <h1>About You</h1>
 <p class="intro">Tell us about yourself so that we can communicate with you effectively. We promise we won't sell your information or send you spam.</p>
 
-<%= semantic_form_for @person, :as => :person, :url => update_profile_path, :method => :post, :label_customizations => false do |f| %>
+<%= semantic_form_for @person, as: :person, url: update_profile_path, method: :post, label_customizations: false do |f| %>
 
 	<%= default_form_errors(f) %>
 
 	<%= f.inputs do -%>
-        <%= f.inputs(:name => "First Name", :class => "inline") do -%>
-    		<%= f.input :firstname, :label => "Legal/Given Name", :input_html => { :disabled => !@current_user.can_edit?(@person, :firstname) } %>
-    		<%= f.input :nickname, :label => "Preferred/Nickname", :input_html => { :size => 10 } %>
+        <%= f.inputs(name: "First Name", class: "inline") do -%>
+    		<%= f.input :firstname, label: "Legal/Given Name", input_html: { disabled: !@current_user.can_edit?(@person, :firstname) } %>
+    		<%= f.input :nickname, label: "Preferred/Nickname", input_html: { size: 10 } %>
         <% end %>
 
-		<%= f.input :lastname, :label => "Last Name", :input_html => { :disabled => !@current_user.can_edit?(@person, :lastname) } %>
+		<%= f.input :lastname, label: "Last Name", input_html: { disabled: !@current_user.can_edit?(@person, :lastname) } %>
 
-		<%= f.input :email, :label => "E-mail Address", :input_html => { :disabled => !@current_user.can_edit?(@person, :email) }, :hint => "We've pulled your email address from the login service that you used (if it was provided). You can change the email address here if you'd like to use a different address instead." %>
-		<%= f.input :sex, :label => "Gender", :as => :select, :collection => {"Male" => "M", "Female" => "F", "No Response" => "NR"} %>
-		<%= f.input :phone_mobile, :label => "Phone", :input_html => { :value => number_to_phone(f.object.phone_mobile) }, :hint => "We only use your phone number to get ahold of you about events and activities that you've signed up for on this site." %>
-		<%= f.input :birthdate, :label => "Birth Date", :start_year => Time.now.year-13, :end_year => 1930 %>
-        <%= f.input :other_languages, :label => "Other languages you speak", :hint => "If you speak any languages other than English, enter them here to help coordinate event planning and project assignment." %>
+		<%= f.input :email, label: "E-mail Address", input_html: { disabled: !@current_user.can_edit?(@person, :email) }, hint: "We've pulled your email address from the login service that you used (if it was provided). You can change the email address here if you'd like to use a different address instead." %>
+		<%= f.input :sex, label: "Gender", as: :select, collection: {"Male" => "M", "Female" => "F", "No Response" => "NR"} %>
+		<%= f.input :phone_mobile, label: "Phone", input_html: { value: number_to_phone(f.object.phone_mobile) }, hint: "We only use your phone number to get ahold of you about events and activities that you've signed up for on this site." %>
+		<%= f.input :birthdate, label: "Birth Date", start_year: Time.now.year-13, end_year: 1930 %>
+        <%= f.input :other_languages, label: "Other languages you speak", hint: "If you speak any languages other than English, enter them here to help coordinate event planning and project assignment." %>
 
 		<%- if @current_user.can_edit?(@person, :high_school_id) && @person.respond_to?(:high_school) -%>
 			<li class="select optional <%= "error" if @person.errors.include?(:high_school_id) %>" id="person_high_school_id_input">
 				<label>High School</label>
 				<%= select_tag :high_school_district,
 								options_for_select(HighSchool.all_by_district(
-									:prompt => "-- Choose District --").keys.sort,
-									:selected => (@person.try(:high_school_id).nil? ? "-- Choose District --" : @person.try(:high_school).try(:district))
+									prompt: "-- Choose District --").keys.sort,
+									selected: (@person.try(:high_school_id).nil? ? "-- Choose District --" : @person.try(:high_school).try(:district))
 								) %>
-				<%= f.collection_select :high_school_id, (HighSchool.all_by_district[f.object.try(:high_school).try(:district)] || []), :id, :name, :selected => f.object.try(:high_school).try(:id) %>
-				<%= content_tag(:p, @person.errors.include?(:high_school_id), :class => "inline-errors") if @person.errors.include?(:high_school_id) %>
+				<%= f.collection_select :high_school_id, (HighSchool.all_by_district[f.object.try(:high_school).try(:district)] || []), :id, :name, selected: f.object.try(:high_school).try(:id) %>
+				<%= content_tag(:p, @person.errors.include?(:high_school_id), class: "inline-errors") if @person.errors.include?(:high_school_id) %>
 
 				<%= javascript_tag "
 					$('select#high_school_district').change(function() {
@@ -42,29 +42,29 @@
 		<% end -%>
 
 		<%- if @person.is_a?(Volunteer) -%>
-			<%= f.input :organization, :label => "Employer/Organization" %>
-			<!--<%= f.input :shirt_size, :as => :select, :collection => %w[XS S M L XL XXL 3XL] %>-->
+			<%= f.input :organization, label: "Employer/Organization" %>
+			<!--<%= f.input :shirt_size, as: :select, collection: %w[XS S M L XL XXL 3XL] %>-->
 		<% end -%>
 	<% end -%>
 
   <%= f.inputs("Emergency Contact Information") do -%>
 		<p>Who can we contact in case of emergency? We will only use this information for contact during emergencies and for no other purpose.</p>
 		<%= f.fields_for :emergency_contact, (@person.emergency_contact || Parent.new) do |contact| %>
-	    <%= contact.inputs("Name", :class => "inline") do %>
-	      <%= contact.input :firstname, :label => "First" %>
-				<%= contact.input :lastname, :label => "Last" %>
+	    <%= contact.inputs("Name", class: "inline") do %>
+	      <%= contact.input :firstname, label: "First" %>
+				<%= contact.input :lastname, label: "Last" %>
 	    <% end %>
-	    <%= contact.input :relationship_to_child, :label => "Relationship", :collection => Parent::RELATIONSHIP_TYPES %>
-	    <%= contact.input :phone_mobile, :label => "Phone Number" %>
-	    <%= contact.input :email, :label => "Email" %>
-			<%= contact.input :id, :as => :hidden %>
+	    <%= contact.input :relationship_to_child, label: "Relationship", collection: Parent::RELATIONSHIP_TYPES %>
+	    <%= contact.input :phone_mobile, label: "Phone Number" %>
+	    <%= contact.input :email, label: "Email" %>
+			<%= contact.input :id, as: :hidden %>
 		<% end %>
   <% end -%>
 
 	<%- unless Program.count.zero? -%>
 		<%= f.inputs("Program Affiliations") do -%>
 			<p>Which of the following programs are you affiliated with or do you participate in?</p>
-			<%= f.input :programs, :as => :check_boxes %>
+			<%= f.input :programs, as: :check_boxes %>
 		<% end -%>
 	<% end %>
 
@@ -76,19 +76,19 @@
 			</ul>
 			<br style="clear: left" />	-->
 
-			<%= f.input :crimes_against_persons_or_financial, :label => "", :as => :radio %>
-			<%= f.input :aliases, :label => "Aliases/Maiden Name", :as => :string %>
+			<%= f.input :crimes_against_persons_or_financial, label: "", as: :radio %>
+			<%= f.input :aliases, label: "Aliases/Maiden Name", as: :string %>
 		<% end -%>
 
 
 		<p>I certify that the information contained in the above-stated information is true, correct, and complete to the best of my knowledge. I understand that consideration for participation in <%= Customer.name_label %> activities and the continuation of subsequent participation depend on true, accurate and complete representation of these facts as stated or implied in all application-related materials. I authorize <%= Customer.name_label %> to make inquiries regarding my criminal conviction history. I understand that participation may be conditioned on receipt of a satisfactory Criminal Conviction Report from the Washington State Patrol or other law-enforcement related agency.</p>
 
 		<%= f.inputs do %>
-			<%= f.input :background_check_authorized, :as => :boolean, :label => "I understand the statement above." %>
+			<%= f.input :background_check_authorized, as: :boolean, label: "I understand the statement above." %>
 		<% end -%>
 
 	<% end -%>
 
-	<%= f.submit "Save", :disable_with => 'Saving...' %>
+	<%= f.submit "Save", disable_with: 'Saving...' %>
 
 <% end -%>

@@ -2,22 +2,22 @@
 	
 	<h3>With Selected <span id="bulk_actions_count"></span></h3>
 	
-	<p><%= link_to_participant_bulk_action "Send e-mail", :send_email, :class => "email button"  %></p>
+	<p><%= link_to_participant_bulk_action "Send e-mail", :send_email, class: "email button"  %></p>
 
 	<%- if @current_user.admin? || @current_user.person.current_lead? -%>
 		<%- if @participant_groups && !@participant_groups.empty? -%>
-			<p><%= link_to_participant_bulk_action "Add to group", :assign_to_group, :class => "people button", 
-						:extra_params => "participant_group_ids=#{@participant_groups.collect(&:id).join(",")}" %></p>
+			<p><%= link_to_participant_bulk_action "Add to group", :assign_to_group, class: "people button", 
+						extra_params: "participant_group_ids=#{@participant_groups.collect(&:id).join(",")}" %></p>
 		<% end %>
 		
-		<p><%= link_to_participant_bulk_action "Assign to #{Customer.mentor_label}", :assign_mentor, :class => "add user button"  %></p>
+		<p><%= link_to_participant_bulk_action "Assign to #{Customer.mentor_label}", :assign_mentor, class: "add user button"  %></p>
 	<%- end %>
 
-	<!-- <p><%#= link_to_participant_bulk_action "Check-in for event", :check_in_event, :class => "calendar_day button"  %></p> -->
-	<p><%= link_to_participant_bulk_action "Flag for follow-up", :flag_for_followup, :class => "followup button"  %></p>
-	<p><%= link_to_participant_bulk_action "Add note", :add_note, :class => "add note button"  %></p>
+	<!-- <p><%#= link_to_participant_bulk_action "Check-in for event", :check_in_event, class: "calendar_day button"  %></p> -->
+	<p><%= link_to_participant_bulk_action "Flag for follow-up", :flag_for_followup, class: "followup button"  %></p>
+	<p><%= link_to_participant_bulk_action "Add note", :add_note, class: "add note button"  %></p>
 	<%- if Customer.allow_participant_login? -%>
-		<p><%= link_to_participant_bulk_action "Send Login Links", :send_login_links, :class => "send-login button", :confirm => "Are you sure you want to send login links to these students? This will allow them to create new accounts in DreamSIS."  %></p>
+		<p><%= link_to_participant_bulk_action "Send Login Links", :send_login_links, class: "send-login button", confirm: "Are you sure you want to send login links to these students? This will allow them to create new accounts in DreamSIS."  %></p>
 	<%- end -%>
 	
 </div>

@@ -28,7 +28,7 @@
 						<li role="separator" class="divider"></li>
 						<%- for participant in @current_user.participants -%>
 							<li class="participant">
-								<%= content_tag :div, nil, :class => "avatar", :style => "background-image: url(#{participant.avatar.thumb.url})" %>
+								<%= content_tag :div, nil, class: "avatar", style: "background-image: url(#{participant.avatar.thumb.url})" %>
 								<%= link_to truncate(participant.fullname), participant %>
 							</li>
 						<% end %>
@@ -53,9 +53,9 @@
 						<li><%= link_to "#{Customer.mentor_Label} Groups", mentor_term_groups_url, glyph: 'users' %></li>
 					
 						<li role="separator" class="divider"></li>
-						<li><%= link_to "On-boarding", onboarding_mentors_url(:term_id => Term.current_term) %></li>
-						<li><%= link_to "Event Status", event_status_mentors_url(:term_id => Term.current_term) %></li>
-						<li><%= link_to Customer.leads_Label, leads_mentors_url(:term_id => Term.current_term) %></li>
+						<li><%= link_to "On-boarding", onboarding_mentors_url(term_id: Term.current_term) %></li>
+						<li><%= link_to "Event Status", event_status_mentors_url(term_id: Term.current_term) %></li>
+						<li><%= link_to Customer.leads_Label, leads_mentors_url(term_id: Term.current_term) %></li>
 						<li><%= link_to "Drivers", van_drivers_mentors_url %></li>
 					<% end %>
 
@@ -83,7 +83,7 @@
 						<li role="separator" class="divider"></li>
 						<% for college in CollegeApplication.top_institutions(10) %>
 							<li>
-								<%= link_to fetch_favicon_tag(college.try(:formatted_website_url)) + " #{college.name} (#{college.count})", college_url(college.try(:id)), :title => college.name %>
+								<%= link_to fetch_favicon_tag(college.try(:formatted_website_url)) + " #{college.name} (#{college.count})", college_url(college.try(:id)), title: college.name %>
 							</li>
 						<% end -%>
 					<% end %>
@@ -93,7 +93,7 @@
 						<li><%= link_to "Add new event", new_event_url, glyph: 'plus-square' %></li>
 						
 						<li role="separator" class="divider"></li>
-						<li><%= link_to Customer.visits_Label, events_url(:type => "Visit") %></li>
+						<li><%= link_to Customer.visits_Label, events_url(type: "Visit") %></li>
 						<li><%= link_to "Groups", event_groups_url %></li>
 						<li><%= link_to "Types", event_types_url %></li>
 					<% end %>
@@ -124,7 +124,7 @@
 				<ul class="nav navbar-nav navbar-right user">
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle avatar" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-							<%= image_tag(@current_user.person.avatar_image_url, :height => 30, :class => "avatar") if @current_user.person && @current_user.person.avatar_image_url %> <span class="caret"></span>
+							<%= image_tag(@current_user.person.avatar_image_url, height: 30, class: "avatar") if @current_user.person && @current_user.person.avatar_image_url %> <span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu">
 							<li>
@@ -151,7 +151,7 @@
 				</ul>
 			<% else %>
 				<p class="navbar-text navbar-right">
-					<%= link_to 'Login', login_path(:return_to => request.url), glyph: 'sign-in', class: 'btn btn-success' %>
+					<%= link_to 'Login', login_path(return_to: request.url), glyph: 'sign-in', class: 'btn btn-success' %>
 				</p>
 			<% end %>
 

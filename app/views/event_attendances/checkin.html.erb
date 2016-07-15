@@ -2,9 +2,9 @@
 	<h1><%=h @audiences.collect(&:to_s).join("/") %> Check-in
 		<small class="light">&raquo; <%= @event.name %></small></h1>
 
-	<%= content_tag :p, "This event has passed... are you sure you want to be checking in attendees?", :class => "weak error-message" if @event.date.far_past? %>
+	<%= content_tag :p, "This event has passed... are you sure you want to be checking in attendees?", class: "weak error-message" if @event.date.far_past? %>
 	  <div>
-			<input type="text" size="30" id="person_fullname" class="search" placeholder="Search for a <%= @audiences.collect(&:to_s).join("/") %>" data-source="<%= auto_complete_for_person_fullname_event_event_attendances_url(:format => :js) + "?audience=#{@audience.to_s}&person[fullname]=" %>" />
+			<input type="text" size="30" id="person_fullname" class="search" placeholder="Search for a <%= @audiences.collect(&:to_s).join("/") %>" data-source="<%= auto_complete_for_person_fullname_event_event_attendances_url(format: :js) + "?audience=#{@audience.to_s}&person[fullname]=" %>" />
 	  </div>
 		<div class="auto_complete" id="person_fullname_auto_complete"></div>
 	<br />
@@ -31,10 +31,10 @@
 	<p>This will add a new student to the database. Only use this option to check-in students who don't 
 		already exist in DreamSIS as a <%=h Customer.name_label %> <%=h Customer.participant_label %>.</p>
 	<span class="error-message no-icon" id="new_participant_error"></span>
-	<%= form_for(:new_participant, :url => checkin_new_participant_event_event_attendances_path(@event), :method => :put, :html => { :id => 'new_participant_form' }, :remote => true) do |f| %>
+	<%= form_for(:new_participant, url: checkin_new_participant_event_event_attendances_path(@event), method: :put, html: { id: 'new_participant_form' }, remote: true) do |f| %>
 		First Name: <%= f.text_field :firstname %>
 		Last Name: <%= f.text_field :lastname %>
-		High School: <%= f.collection_select :high_school_id, HighSchool.all, :id, :name, :prompt => true %>
+		High School: <%= f.collection_select :high_school_id, HighSchool.all, :id, :name, prompt: true %>
 		<%= f.submit "Check-in" %>
 	<% end -%>
 </div>
@@ -42,7 +42,7 @@
 <div id="new_volunteer_form_container" style="display:none" class="content-block">
 	<h2>Quick Add New Volunteer</h2>
 	<span class="error-message no-icon" id="new_volunteer_error"></span>
-	<%= form_for(:new_volunteer, :url => checkin_new_volunteer_event_event_attendances_path(@event), :method => :put, :html => { :id => 'new_volunteer_form' }, :remote => true) do |f| %>
+	<%= form_for(:new_volunteer, url: checkin_new_volunteer_event_event_attendances_path(@event), method: :put, html: { id: 'new_volunteer_form' }, remote: true) do |f| %>
 		First Name: <%= f.text_field :firstname %>
 		Last Name: <%= f.text_field :lastname %>
 		<%= f.submit "Check-in" %>
@@ -50,6 +50,6 @@
 </div>
 
 
-<%= render :partial => 'sidebar' %>
+<%= render partial: 'sidebar' %>
 
 <%= javascript_tag "$(function() { $('#person_fullname').select() })" %>

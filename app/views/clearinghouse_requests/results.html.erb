@@ -15,7 +15,7 @@
 			<tr>
 				<td class="name"><%= link_to participant.fullname, participant %></td>
 				<td class="centered">
-					<%= content_tag :span, participant.clearinghouse_record_found?, :class => "icon pass" if participant.clearinghouse_record_found? %>
+					<%= content_tag :span, participant.clearinghouse_record_found?, class: "icon pass" if participant.clearinghouse_record_found? %>
 				</td>
 				<td class="centered">
 					<%= p = participant.college_enrollments.from_clearinghouse_request(@clearinghouse_request.id); p.size unless p.empty? %>
@@ -30,6 +30,6 @@
 </table>
 
 <%= content_for(:sidebar) do %>
-	<p><%= link_to "Back to request", @clearinghouse_request, :class => "back button" %></p>
+	<p><%= link_to "Back to request", @clearinghouse_request, class: "back button" %></p>
 	<p><small class="info">The <strong>Record Found</strong> column will show True if <em>any</em> Clearinghouse Request has ever returned a record for that person. It is not necessarily a result from this specific request. Enrollments and degrees are specific to this request, however.</small></p>
 <%- end -%>

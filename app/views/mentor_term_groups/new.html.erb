@@ -4,9 +4,9 @@
 
 	<%= default_form_errors(f) %>
 
-	<%= render :partial => "fields", :locals => { :f => f } %>
+	<%= render partial: "fields", locals: { f: f } %>
 	
-	<%= f.submit "Create", :disable_with => 'Creating...' %>
+	<%= f.submit "Create", disable_with: 'Creating...' %>
 	<span class="separator">&mdash; or &mdash;</span>
 	<%= link_to 'Cancel', mentor_term_groups_path %>
 

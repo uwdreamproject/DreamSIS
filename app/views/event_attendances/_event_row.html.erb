@@ -2,9 +2,9 @@
 	<td class="name">
 		<%= link_to h(event_row.event.try(:name)), (@current_user.admin? ? event_path(event_row.event) : checkin_event_event_attendances_path(event_row.event)) %>
 	</td>
-	<td class="date"><%=h event_row.event.try(:time_detail, {:date_only => true}) %></td>
+	<td class="date"><%=h event_row.event.try(:time_detail, {date_only: true}) %></td>
 	<td class="time"><%=h event_row.event.try(:time_only) %></td>
-	<td class="centered inline-when-small"><%= event_row.rsvp? ? content_tag(:span, "Y", :class => 'green tag') : content_tag(:span, "-", :class => 'light') %></td>
-	<td class="centered inline-when-small"><%= event_row.attended? ? content_tag(:span, "Y", :class => 'green tag') : content_tag(:span, "-", :class => 'light') %></td>	
-	<%= render :partial => "event_attendances/checkbox", :object => event_row %>
+	<td class="centered inline-when-small"><%= event_row.rsvp? ? content_tag(:span, "Y", class: 'green tag') : content_tag(:span, "-", class: 'light') %></td>
+	<td class="centered inline-when-small"><%= event_row.attended? ? content_tag(:span, "Y", class: 'green tag') : content_tag(:span, "-", class: 'light') %></td>	
+	<%= render partial: "event_attendances/checkbox", object: event_row %>
 </tr>

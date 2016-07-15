@@ -1,5 +1,5 @@
 <tr id="college_enrollment_<%= college_enrollment.id %>">
-	<td class="college-logo"><%= fetch_favicon_tag college_enrollment.institution.try(:formatted_website_url), :size => 20 %></td>
+	<td class="college-logo"><%= fetch_favicon_tag college_enrollment.institution.try(:formatted_website_url), size: 20 %></td>
 	<td class="name"><%= link_to college_enrollment.institution.try(:name), college_url(college_enrollment.institution) %></td>
 	<td class="inline-when-small"><%= college_enrollment.began_on.try(:to_s, :short_date) || "Unknown" %></td>
 	<td class="inline-when-small"><%= college_enrollment.ended_on.try(:to_s, :short_date) || "Unknown" %></td>
@@ -9,6 +9,6 @@
 	<td class="functions">
 		<%= link_to "Details", [@participant, college_enrollment] %>
 		<%= link_to "Edit", edit_participant_college_enrollment_path(@participant, college_enrollment) %>
-		<%= link_to 'Delete', [@participant, college_enrollment], :confirm => 'Are you sure?', :method => :delete %>
+		<%= link_to 'Delete', [@participant, college_enrollment], confirm: 'Are you sure?', method: :delete %>
 	</td>
 </tr>

@@ -21,6 +21,6 @@
 </dl>
 
 <%= content_for(:sidebar) do %>
-  <p><%= link_to 'Edit this location', edit_location_path(@location), :class => 'edit button' %></p>
-  <p><%= link_to 'Back to all locations', locations_path, :class => 'back button' %></p>
+  <p><%= link_to 'Edit this location', edit_location_path(@location), class: 'edit button' %></p>
+  <p><%= link_to 'Back to all locations', locations_path, class: 'back button' %></p>
 <%- end -%>

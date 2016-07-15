@@ -21,22 +21,22 @@
 			<td class="handle">&#9776;</td>
 			<td><%=h object_filter.category_name %></td>
 			<td class="name">
-			   	<%= link_to h(object_filter.title), object_filter_path(object_filter), :title => h(object_filter.criteria) %>
+			   	<%= link_to h(object_filter.title), object_filter_path(object_filter), title: h(object_filter.criteria) %>
 				<code data-id="<%= object_filter.id %>" class="criteria syntax" id="criteria_<%= object_filter.id %>" style="display:none">
 					<%=raw CodeRay.scan(object_filter.criteria, :ruby).html(
-							:wrap => nil,
-							:line_numbers => nil,
-							:css => :style
+							wrap: nil,
+							line_numbers: nil,
+							css: :style
 					) %>
 				</code>
 			</td>
-			<td><%= number_to_percentage object_filter.target_percentage, :precision => 0 %></td>
-			<td><%= number_to_percentage object_filter.warning_threshold, :precision => 0 %></td>
+			<td><%= number_to_percentage object_filter.target_percentage, precision: 0 %></td>
+			<td><%= number_to_percentage object_filter.warning_threshold, precision: 0 %></td>
 			<td><%= safe_join(object_filter.grade_levels, '&ndash;'.html_safe) %></td>
 			<td><%= content_tag :span, "Yes", class: (object_filter.warn_if_false ? "icon fail warn" : "icon fail") %></td>
 			<td class="functions"><%= link_to 'Show', object_filter_path(object_filter) %></td>
 			<td class="functions"><%= link_to 'Edit', edit_object_filter_path(object_filter) %></td>
-			<td class="functions"><%= link_to 'Destroy', object_filter_path(object_filter), :confirm => 'Are you sure?', :method => :delete %></td>
+			<td class="functions"><%= link_to 'Destroy', object_filter_path(object_filter), confirm: 'Are you sure?', method: :delete %></td>
 		</tr>
 		<% end %>
 	</tbody>
@@ -45,7 +45,7 @@
 </table>
 
 <%= content_for(:sidebar) do %>
-	<p><%= link_to 'New stat filter', new_object_filter_path, :class => "add button" %></p>
+	<p><%= link_to 'New stat filter', new_object_filter_path, class: "add button" %></p>
 
 	<p>
 		<label for="show_criteria">

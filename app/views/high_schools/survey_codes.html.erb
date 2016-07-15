@@ -1,12 +1,12 @@
 <div class="right">
-	<%= link_to "Print Cards", survey_code_cards_high_school_path(@high_school, :n => @n, :mentor_id => @mentor.try(:id), :cohort => @current_cohort), :class => "photo-tile button noprint" %>
+	<%= link_to "Print Cards", survey_code_cards_high_school_path(@high_school, n: @n, mentor_id: @mentor.try(:id), cohort: @current_cohort), class: "photo-tile button noprint" %>
 </div>
 
 <h3 class="pre-title"><%=h @high_school.name %></h3>
 <h1>Survey Codes
 	<span class="light">&raquo; </span>
-	<%= content_tag(:span, "Class of #{h(@current_cohort.to_s)}", :class => "light") if @current_cohort %></h1>
-	<%= content_tag(:h2, h("(#{@mentor.fullname})"), :class => 'light') if @mentor %>
+	<%= content_tag(:span, "Class of #{h(@current_cohort.to_s)}", class: "light") if @current_cohort %></h1>
+	<%= content_tag(:h2, h("(#{@mentor.fullname})"), class: 'light') if @mentor %>
 	
 <table>
 	<tr>
@@ -46,7 +46,7 @@
 
 		<h3>Options</h3>
 		<p>How many extra codes would you like to generate? (0&ndash;1000)
-			<br><%= text_field_tag :n, @n, :size => 4 %>
+			<br><%= text_field_tag :n, @n, size: 4 %>
 			<%= hidden_field_tag :mentor_id, @mentor.try(:id) if @mentor %>
 			<%= submit_tag "Generate" %></p>
 		

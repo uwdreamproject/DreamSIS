@@ -3,19 +3,19 @@
 		Postsecondary plan: 
 			<strong id="postsecondary_plan_display"><%=h participant.postsecondary_plan %></strong>
 			<span id="postsecondary_plan_form" style="display:none">
-				<%= form_for participant, :remote => true, :method => :put, :html => { :style => "display: inline;" } do |f| -%>
+				<%= form_for participant, remote: true, method: :put, html: { style: "display: inline;" } do |f| -%>
 					<%= f.select :postsecondary_plan, options_for_select([nil,
 						h(participant.postsecondary_plan),
 						Participant::POSTSECONDARY_GOAL_OPTIONS].flatten.uniq, participant.postsecondary_plan) %>
 					<%= f.submit "Save" %>
 					<%= separator %>
-					<%#= link_to_function "Cancel", "javascript:;", :id => "postsecondary_plan_cancel_button" %>
+					<%#= link_to_function "Cancel", "javascript:;", id: "postsecondary_plan_cancel_button" %>
 				<% end %>
-				<%= content_tag :div, "Note: Changing the postsecondary plan will unset the college that #{h(participant.firstname)} is planning to attend.", :class => "weak error-message no-icon small marginless" unless participant.college_attending_id.nil? %>
+				<%= content_tag :div, "Note: Changing the postsecondary plan will unset the college that #{h(participant.firstname)} is planning to attend.", class: "weak error-message no-icon small marginless" unless participant.college_attending_id.nil? %>
 			</span>
 		</td>
 	<td class="functions">
-		<%= link_to "Change", "javascript:;", :id => "postsecondary_plan_change_button" %>		
+		<%= link_to "Change", "javascript:;", id: "postsecondary_plan_change_button" %>		
 	</td>
 </tr>
 

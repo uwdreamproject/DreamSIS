@@ -6,7 +6,7 @@
 </table>
 
 <div>
-	<p><%= link_to "Refresh Textblocks", onboarding_textblocks_mentors_path(:format => :json, :term_id => @term.id), :class => "sync button", :id => "refresh-button" %></p>
+	<p><%= link_to "Refresh Textblocks", onboarding_textblocks_mentors_path(format: :json, term_id: @term.id), class: "sync button", id: "refresh-button" %></p>
 
 	<h3>First 10 students for background checks (in WATCH auto-fill format):</h3>
 	<textarea id="background-check-block" rows=11 cols=60 style="font-family:monospace" onClick="this.select()"><%= background_check_textblock(@mentors) %></textarea><br>
@@ -23,4 +23,4 @@
 	<div id="form-container">Click a row to begin editing</div>
 <% end %>
 
-<%= render :partial => "table_ajax", :locals => {:table_partial => "onboarding_table"} %>
+<%= render partial: "table_ajax", locals: {table_partial: "onboarding_table"} %>

@@ -2,7 +2,7 @@
   $("#new_participant_form_container").hide();
   $("#new_volunteer_form_container").hide();
 <%- else %>
-  $('#person_search_results').html("<%= raw j render :partial => 'event_attendances/person', :collection => @people %>");
+  $('#person_search_results').html("<%= raw j render partial: 'event_attendances/person', collection: @people %>");
   <%- if @audience.to_s == "Participant" || @audience.to_s == "Student" -%>
     $("#new_participant_form_container").show();
   <%- end %>

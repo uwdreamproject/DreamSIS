@@ -1,25 +1,25 @@
-<%= f.inputs :name => "Scores", :id => "scores_fields" do -%>
+<%= f.inputs name: "Scores", id: "scores_fields" do -%>
 
 	<%- if f.object.try(:test_type) -%>
 		<%- for section, maximum_score in f.object.try(:test_type).try(:section_scores_hash).sort_by{|k,v| k} -%>
 			<%= f.input "section_score_#{section}",
-						:wrapper_html => { :class => "sameline-hint" },
-						:hint => "out of #{maximum_score}",
-						:label => section.titleize.to_s,
-						:input_html => { 
-							:class => "section_score", 
-							:size => 5,
+						wrapper_html: { class: "sameline-hint" },
+						hint: "out of #{maximum_score}",
+						label: section.titleize.to_s,
+						input_html: { 
+							class: "section_score", 
+							size: 5,
 							"data-score-calculation-method" => f.object.try(:test_type).try(:score_calculation_method)
 						} %>
 		<% end %>
 	<% end %>
 
 	<%= f.input :total_score, 
-				:as => :string,
-				:input_html => { :size => 5 }, 
-				:wrapper_html => { :class => "sameline-hint" },
-				:hint => ("out of #{f.object.test_type.try(:maximum_total_score).to_i}" unless f.object.test_type.try(:maximum_total_score).blank?) %>
+				as: :string,
+				input_html: { size: 5 }, 
+				wrapper_html: { class: "sameline-hint" },
+				hint: ("out of #{f.object.test_type.try(:maximum_total_score).to_i}" unless f.object.test_type.try(:maximum_total_score).blank?) %>
 				
-    <%= f.input :passed, :hint => "Did the student pass the minimum score?" if f.object.test_type.try(:passable?) %>
+    <%= f.input :passed, hint: "Did the student pass the minimum score?" if f.object.test_type.try(:passable?) %>
 	
 <% end %>

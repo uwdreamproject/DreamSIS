@@ -35,7 +35,7 @@
 					<em class="rsvp_status not_attending">Not Attending</em>
 				<% end -%>
 				<br /><br />
-				<p style="margin-top: 1em"><%= link_to "Change your RSVP", event_rsvp_url(@event), :class => "edit button" %></p>
+				<p style="margin-top: 1em"><%= link_to "Change your RSVP", event_rsvp_url(@event), class: "edit button" %></p>
 			<% end -%>
 			
 			<%- if @event.training_required?(@event_attendance.person) -%>
@@ -46,10 +46,10 @@
 
 					<%- if completed -%>
 						<p>You've already completed the necessary training for this event. Thank you!</p>
-						<p><%= link_to "Watch the training again", take_training_url(@event.training_for(@event_attendance.person)), :class => "view button", :target => "_blank" %></p>
+						<p><%= link_to "Watch the training again", take_training_url(@event.training_for(@event_attendance.person)), class: "view button", target: "_blank" %></p>
 					<% else %>	  
 						<p>Participating in this event requires that you watch a training video before the event.</p>
-						<p><%= link_to "Watch the training now", take_training_url(@event.training_for(@event_attendance.person)), :class => "view button", :target => "_blank" %></p>
+						<p><%= link_to "Watch the training now", take_training_url(@event.training_for(@event_attendance.person)), class: "view button", target: "_blank" %></p>
 					<% end -%>
 
 				</div>
@@ -59,7 +59,7 @@
 
 		<td class="when-and-where">
 			<h3>When &amp; Where</h3>
-			<%= image_tag "http://maps.google.com/maps/api/staticmap?size=250x250&sensor=false&zoom=12&markers=#{@event.location.try(:latitude)}%2C#{@event.location.try(:longitude)}", :id => "map" if @event.location.try(:geocoded?) rescue nil %>
+			<%= image_tag "http://maps.google.com/maps/api/staticmap?size=250x250&sensor=false&zoom=12&markers=#{@event.location.try(:latitude)}%2C#{@event.location.try(:longitude)}", id: "map" if @event.location.try(:geocoded?) rescue nil %>
 
 			<%- if @event.location -%>
 				<p class="location"><strong><%= @event.location.name %></strong></p>

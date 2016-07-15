@@ -2,7 +2,7 @@
 <p>You've signed up for the following upcoming events:</p>
 
 <table class="highlightless rsvp">
-	<%= render :partial => 'rsvp/event', :collection => @events %>
+	<%= render partial: 'rsvp/event', collection: @events %>
 	
 	<%- if @events.empty? -%>
 	<tr class="empty">
@@ -21,4 +21,4 @@
 	</p>
 <% end %>
 
-<%= render :partial => "other_sidebar" %>
+<%= render partial: "other_sidebar" %>

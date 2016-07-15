@@ -16,7 +16,7 @@
 	</thead>
 
 	<tbody id="original_locations">
-		<%= render :partial => 'location', :collection => @locations %>
+		<%= render partial: 'location', collection: @locations %>
 	</tbody>
 
 	<tbody id="location_search_results"></tbody>
@@ -24,9 +24,9 @@
 </table>
 
 <%= content_for(:sidebar) do %>
-	<p><%= link_to 'New location', new_location_path, :class => "add button" %></p>
-	<p><%= link_to 'New high school', new_location_path(:type => "HighSchool"), :class => "add button" %></p>
-	<p><%= link_to 'New college', new_location_path(:type => "College"), :class => "add button" %></p>
+	<p><%= link_to 'New location', new_location_path, class: "add button" %></p>
+	<p><%= link_to 'New high school', new_location_path(type: "HighSchool"), class: "add button" %></p>
+	<p><%= link_to 'New college', new_location_path(type: "College"), class: "add button" %></p>
 
 	<div class="auto_complete">
 		<input type="input" class="search autocomplete-search" placeholder="Search colleges" data-source="<%= auto_complete_for_institution_name_colleges_url %>" data-target="<%= college_url("id") %>" />

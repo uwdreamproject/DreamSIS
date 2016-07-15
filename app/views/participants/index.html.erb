@@ -1,4 +1,4 @@
-<%= render :partial => "report_select" %>
+<%= render partial: "report_select" %>
 
 <h1 style="margin-bottom: 0.25em">
 	<%= "Participants" unless @high_school && @grad_year %>
@@ -35,8 +35,8 @@
 	</tfoot>
 </table>
 
-<%= render :partial => "sidebar" %>
+<%= render partial: "sidebar" %>
 
 <%= javascript_tag "$( function() {
-	$.ajax({ url: '#{url_for(:report => @report, :page => 1)}', dataType: 'script' });
+	$.ajax({ url: '#{url_for(report: @report, page: 1)}', dataType: 'script' });
 })" %>

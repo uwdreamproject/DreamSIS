@@ -3,26 +3,26 @@
 <%- if Customer.allowable_login_method?(:shibboleth) -%>
 	<p>UW students, staff, faculty and alumni:</p>
 	<div class="login-links">
-		<p>If you are having trouble logging in, please visit <%= link_to "this page", "https://uwnetid.washington.edu/manage/?google", :target => "_blank" %> <span class="red">and turn on Google Apps for your NetID</span>, and make sure you <span class="red">change your email forwarding to your original email address.</span></p>
+		<p>If you are having trouble logging in, please visit <%= link_to "this page", "https://uwnetid.washington.edu/manage/?google", target: "_blank" %> <span class="red">and turn on Google Apps for your NetID</span>, and make sure you <span class="red">change your email forwarding to your original email address.</span></p>
 		<p>Contact <%= link_to "mwh12@uw.edu", "mailto:mwh12@uw.edu" %> with questions.</p>
-		<%= link_to raw("<span>&nbsp;</span>Login with your UW NetID"), "auth/shibboleth", :class => "uwnetid login-link" %>
+		<%= link_to raw("<span>&nbsp;</span>Login with your UW NetID"), "auth/shibboleth", class: "uwnetid login-link" %>
 	</div>
 <% end %>
 
 <p><%= Customer.allowable_login_method?(:shibboleth) ? "All other users, log in" : "Please log in" %> using one of the following services:</p>
 <div class="login-links">
-	<%= link_to raw("<span>&nbsp;</span> Google"), "auth/google_oauth2", :class => "google login-link" if Customer.allowable_login_method?(:google_oauth2) %>
-	<%= link_to raw("<span>&nbsp;</span> Facebook"), "auth/facebook", :class => "facebook login-link" if Customer.allowable_login_method?(:facebook) %>
-	<%= link_to raw("<span>&nbsp;</span> Twitter"), "auth/twitter", :class => "twitter login-link" if Customer.allowable_login_method?(:twitter) %>
-	<%= link_to raw("<span>&nbsp;</span> LinkedIn"), "auth/linkedin", :class => "linkedin login-link" if Customer.allowable_login_method?(:linkedin) %>
-	<%= link_to raw("<span>&nbsp;</span> Live"), "auth/windowslive", :class => "windowslive login-link" if Customer.allowable_login_method?(:windowslive) %>
-	<%= link_to raw("<span>&nbsp;</span> Other"), "auth/identity", :class => "identity login-link" if Customer.allowable_login_method?(:identity) %>
+	<%= link_to raw("<span>&nbsp;</span> Google"), "auth/google_oauth2", class: "google login-link" if Customer.allowable_login_method?(:google_oauth2) %>
+	<%= link_to raw("<span>&nbsp;</span> Facebook"), "auth/facebook", class: "facebook login-link" if Customer.allowable_login_method?(:facebook) %>
+	<%= link_to raw("<span>&nbsp;</span> Twitter"), "auth/twitter", class: "twitter login-link" if Customer.allowable_login_method?(:twitter) %>
+	<%= link_to raw("<span>&nbsp;</span> LinkedIn"), "auth/linkedin", class: "linkedin login-link" if Customer.allowable_login_method?(:linkedin) %>
+	<%= link_to raw("<span>&nbsp;</span> Live"), "auth/windowslive", class: "windowslive login-link" if Customer.allowable_login_method?(:windowslive) %>
+	<%= link_to raw("<span>&nbsp;</span> Other"), "auth/identity", class: "identity login-link" if Customer.allowable_login_method?(:identity) %>
 </div>
 
 <%- if session[:external_login_context] == :rsvp -%>
 	<p>I don't have one of these accounts.</p>
 	<div class="anonymous login-links">
-		<%= link_to "Continue without logging in", anonymous_login_callback_path, :class => 'anonymous button' %>
+		<%= link_to "Continue without logging in", anonymous_login_callback_path, class: 'anonymous button' %>
 	</div>
 <% end -%>
 

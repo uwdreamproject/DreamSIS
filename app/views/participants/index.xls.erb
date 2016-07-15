@@ -335,7 +335,7 @@
 	<ss:Cell><ss:Data ss:Type="String"><%=h participant.mother_education_country %></ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String"><%=h participant.father_education_country %></ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String"><%=h participant.family_income_level.title if participant.family_income_level %></ss:Data></ss:Cell>
-	<ss:Cell><ss:Data ss:Type="String"><%=h participant.parents.find(:all, :conditions => { :lives_with => true }).collect(&:parent_type).join(", ") rescue "#ErrData" %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h participant.parents.find(:all, conditions: { lives_with: true }).collect(&:parent_type).join(", ") rescue "#ErrData" %></ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String"><%=h participant.college_attending.name if participant.college_attending %></ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String"><%=h participant.household_size %></ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String"><%=h participant.single_parent_household %></ss:Data></ss:Cell>
@@ -458,7 +458,7 @@
 	<ss:Cell><ss:Data ss:Type="String"><%=h participant.mother_education_country %></ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String"><%=h participant.father_education_country %></ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String"><%=h participant.family_income_level.title if participant.family_income_level %></ss:Data></ss:Cell>
-	<ss:Cell><ss:Data ss:Type="String"><%=h participant.parents.find(:all, :conditions => { :lives_with => true }).collect(&:parent_type).join(", ") rescue "#ErrData" %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h participant.parents.find(:all, conditions: { lives_with: true }).collect(&:parent_type).join(", ") rescue "#ErrData" %></ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String"><%=h participant.college_attending.name if participant.college_attending %></ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String"><%=h participant.household_size %></ss:Data></ss:Cell>
 	<ss:Cell><ss:Data ss:Type="String"><%=h participant.single_parent_household %></ss:Data></ss:Cell>

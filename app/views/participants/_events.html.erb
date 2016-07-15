@@ -11,7 +11,7 @@
 	</thead>
 
 	<tbody>
-		<%= render :partial => "event_attendances/event_row", :collection => @event_attendances %>
+		<%= render partial: "event_attendances/event_row", collection: @event_attendances %>
 		
 		<%- if @event_attendances.empty? -%>
 			<tr class="empty">
@@ -28,7 +28,7 @@
 <%- for month in [2,1,0].collect{|i| Date.today.beginning_of_month.months_ago(i) } -%>
 <div class="mini calendar calendar-container span4 attendance">
 	<%= month_calendar attribute: :start_datetime, start_date: month, beginning_of_week: :sunday do |date| %>
-		<%= content_tag :div, date.day, "data-date" => raw(date), :class => "attendance-day" %>
+		<%= content_tag :div, date.day, "data-date" => raw(date), class: "attendance-day" %>
 	<% end %>
 </div>
 <% end %>

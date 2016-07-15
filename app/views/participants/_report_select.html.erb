@@ -3,6 +3,6 @@ reports = Participant::ReportTypes.dup
 reports.delete(:college_stages) unless @stages
 -%>
 
-<%= form_tag({}, :method => :get, :remote => true, :id => "report_selector") do -%>
-	Display: <%= select_tag "report", options_for_select(reports.invert, @report.try(:pluralize)), :class => 'submit-on-change' %>
+<%= form_tag({}, method: :get, remote: true, id: "report_selector") do -%>
+	Display: <%= select_tag "report", options_for_select(reports.invert, @report.try(:pluralize)), class: 'submit-on-change' %>
 <% end %>

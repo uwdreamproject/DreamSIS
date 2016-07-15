@@ -21,7 +21,7 @@
 		<ul>
 		<%- for section, maximum_score in @test_type.section_scores_hash -%>
 			<li><%=h section.titleize %>
-				<%= content_tag :span, "(out of #{h(maximum_score)})", :class => "light" if maximum_score %>
+				<%= content_tag :span, "(out of #{h(maximum_score)})", class: "light" if maximum_score %>
 			</li>
 			<% end %>
 		</ul>
@@ -31,6 +31,6 @@
 </dl>
 
 <%= content_for(:sidebar) do %>
-	<p><%= link_to 'Edit this test type', edit_test_type_path(@test_type), :class => "edit button" %></p>
-	<p><%= link_to 'Back to test types', test_types_path, :class => "back button" %></p>
+	<p><%= link_to 'Edit this test type', edit_test_type_path(@test_type), class: "edit button" %></p>
+	<p><%= link_to 'Back to test types', test_types_path, class: "back button" %></p>
 <%- end -%>

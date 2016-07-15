@@ -1,17 +1,17 @@
 <div class="right">
-	<%= link_to "Print List", survey_codes_high_school_path(@high_school, :n => @n, :mentor_id => @mentor.try(:id), :cohort => @current_cohort), :class => "list button noprint" %>
+	<%= link_to "Print List", survey_codes_high_school_path(@high_school, n: @n, mentor_id: @mentor.try(:id), cohort: @current_cohort), class: "list button noprint" %>
 </div>
 
 
 <h3 class="pre-title noprint"><%=h @high_school.name %></h3>
 <h1 class="noprint">Survey Codes
 	<span class="light">&raquo; </span>
-	<%= content_tag(:span, "Class of #{h(@current_cohort.to_s)}", :class => "light") if @current_cohort %></h1>
-	<%= content_tag(:h2, h("(#{@mentor.fullname})"), :class => 'light') if @mentor %>
+	<%= content_tag(:span, "Class of #{h(@current_cohort.to_s)}", class: "light") if @current_cohort %></h1>
+	<%= content_tag(:h2, h("(#{@mentor.fullname})"), class: 'light') if @mentor %>
 	
 <div>
 	<% @participants.each_with_index do |participant, i| %>
-		<%= render :partial => "survey_code_card", :locals => { :participant => participant, :code => participant.survey_id, :i => i } %>
+		<%= render partial: "survey_code_card", locals: { participant: participant, code: participant.survey_id, i: i } %>
 	<% end -%>
 </div>
 
@@ -19,7 +19,7 @@
 <div>
 	<h2>Unassigned Survey Codes</h2>
 	<% @unassigned_codes.each_with_index do |code, u| %>
-		<%= render :partial => "survey_code_card", :locals => { :participant => nil, :code => code, :i => u } %>
+		<%= render partial: "survey_code_card", locals: { participant: nil, code: code, i: u } %>
 	<% end -%>
 </div>
 
@@ -33,11 +33,11 @@
 	
 		<h3>Options</h3>
 		<p>How many extra codes would you like to generate? (0&ndash;1000)
-            <br><%= text_field_tag :n, @n, :size => 4 %>
+            <br><%= text_field_tag :n, @n, size: 4 %>
             <%= submit_tag "Generate" %></p>
         
         <p>What survey URL would you like printed on the cards?
-            <br><%= text_field_tag :survey_url, @survey_url, :style => "width: 95%" %>
+            <br><%= text_field_tag :survey_url, @survey_url, style: "width: 95%" %>
             <br><%= submit_tag "Update" %></p>
         
 	</form>

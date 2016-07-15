@@ -1,10 +1,10 @@
 <tr id="clearinghouse_request_<%= clearinghouse_request.id.to_s %> <%= clearinghouse_request.status %>">
 	<td class="name"><%= link_to "##{clearinghouse_request.id.to_s}", clearinghouse_request %></td>
 	<td><%= clearinghouse_request.created_at.to_s(:short_date) %></td>
-	<td><%= content_tag :span, clearinghouse_request.status, :class => "#{clearinghouse_request.status} status tag" %></td>
+	<td><%= content_tag :span, clearinghouse_request.status, class: "#{clearinghouse_request.status} status tag" %></td>
 	<td class="centered number"><%= clearinghouse_request.participant_ids.size %></td>
 	<td class="centered number"><%= clearinghouse_request.number_of_records_submitted %></td>
 	<td class="centered number"><%= clearinghouse_request.number_of_records_returned %></td>
     <td class="functions"><%= link_to 'Show', clearinghouse_request %></td>
-    <td class="functions"><%= link_to 'Destroy', clearinghouse_request, :confirm => 'Are you sure?', :method => :delete unless clearinghouse_request.submitted? %></td>
+    <td class="functions"><%= link_to 'Destroy', clearinghouse_request, confirm: 'Are you sure?', method: :delete unless clearinghouse_request.submitted? %></td>
 </tr>
