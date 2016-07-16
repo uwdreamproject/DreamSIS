@@ -1,4 +1,4 @@
-# This controller handles the login/logout function of the site.  
+# This controller handles the login/logout function of the site.
 class SessionController < ApplicationController
   skip_before_filter :login_required, :check_authorization, :check_for_limited_login, :check_if_enrolled, :authenticated?, :save_user_in_current_thread
   before_filter :login_required, only: [ :map_to_person ]
@@ -7,6 +7,7 @@ class SessionController < ApplicationController
   def new
     redirect_to locator_url(subdomain: false) if Customer.current_customer.nil? || Customer.current_customer.new_record?
     redirect_to "/auth/#{Customer.allowable_login_methods_list.first}" if Customer.allowable_login_methods_list.size == 1 && session[:external_login_context] != :rsvp
+    render layout: "basic"
   end
   
   def locator

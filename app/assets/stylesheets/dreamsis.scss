@@ -37,10 +37,22 @@ header {
 
 }
 
+.container-fluid {
+	padding-left: 40px;
+	padding-right: 40px;
+}
+
+#main-content {
+	// min-height: calc(100vh - 150px);
+}
+
 footer {
 	font-size: 90%;
   clear: both;
 	color: rgb(150, 163, 182);
+	margin-top: 50px;
+	padding-top: 15px;
+	padding-bottom: 15px;
 }
 
 // h2 {
@@ -131,7 +143,18 @@ table.participants {
 
 }
 
+dl {
+	@extend .dl-horizontal;
+}
+
+.sidebar-container {
+}
+
 #sidebar {
+	height: calc(100vh - 50px);
+	display: block;
+	background-color: rgb(247, 248, 251);
+	margin-right: -40px;
 
 	// 	position: fixed;
 	// 	top: 65px;
@@ -149,7 +172,6 @@ table.participants {
 	// 	clear: both;
 	//   height: 100%;
 	//   border-left: 1px solid #e0e0e0;
-
 	
 	h3 {
 		margin-top: 1.5em;
@@ -157,7 +179,6 @@ table.participants {
 		font-weight: bold;
 		text-transform: uppercase;
 		font-size: 90%;
-		font-family: "Oxygen", sans-serif;
 	}
 
 	h3 > a.right {
@@ -170,14 +191,10 @@ table.participants {
 	  text-decoration: underline;
 	}
 
-	:first-child {
-		margin-top: 0;
-	}
-
 	a.button {
 		border: none;
 		box-shadow: none;
-		margin: 0 -20px;
+		// margin: 0 -20px;
 		background-color: transparent;
 		display: block;
 		border-radius: 0;

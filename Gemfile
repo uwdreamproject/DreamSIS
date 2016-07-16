@@ -6,6 +6,7 @@ gem "unicorn"
 gem "unicorn-rails"
 gem "puma"
 gem 'formtastic'
+gem 'formtastic-bootstrap'
 gem 'will_paginate'
 gem 'nokogiri'
 gem 'json'

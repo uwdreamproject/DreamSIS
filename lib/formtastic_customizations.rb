@@ -75,10 +75,10 @@ module Formtastic
 
         alias_method :legend_html_without_customizations, :legend_html
 
-        # Overrides the legend_html method to include customer customizations for radio inputs defined using HelpText 
+        # Overrides the legend_html method to include customer customizations for radio inputs defined using HelpText
         # objects. If a custom HelpText exists for the model attribute that this input is rendering, the +title+
         # stored in the database with the specified +audience+ will be used instead of the default label text for this
-        # input. Additionally, if the HelpText defines some +instructions+ text, that text will be rendered in a +<div>+ 
+        # input. Additionally, if the HelpText defines some +instructions+ text, that text will be rendered in a +<div>+
         # with the CSS class "button icon info icon-only help-text", which can be styled as a tooltip as needed.
         #
         # To disable this functionality for a single form, specify +label_customizations: false+ as an
@@ -105,6 +105,29 @@ module Formtastic
         end
       
       end
+    end
+  end
+  
+end
+
+
+module FormtasticBootstrap
+  module Helpers
+    module ActionsHelper
+
+      alias_method :actions_without_wrapper, :actions
+      
+      # Add an extra wrapper around our actions so that we can stylize horizontal forms properly.
+      def actions(*args, &block)
+        return actions_without_wrapper(*args) unless block_given?
+        actions_without_wrapper(*args) do
+          template.content_tag(:div,
+            template.capture(&block),
+            class: "actions-wrapper"
+          )
+        end
+      end
+      
     end
   end
 end

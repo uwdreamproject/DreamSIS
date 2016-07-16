@@ -6,8 +6,10 @@
 
 	<%= render partial: "fields", locals: { f: f } %>
 	
-	<%= f.submit "Save", disable_with: 'Saving...' %>
-	<span class="separator">&mdash; or &mdash;</span>
-	<%= link_to 'Cancel', @program %>
-
+	<%= f.actions do %>
+		<%= f.action :submit, disable_with: 'Saving...' %>
+		<span class="separator">&mdash; or &mdash;</span>
+		<%= link_to 'Cancel', @program %>
+	<% end %>
+	
 <% end %>

@@ -3,18 +3,6 @@ var showAjaxIndicator = true;
 var loadCount = 0;
 var debug = false;
 
-
-// Observe window scroll to readjust when we scroll past the header
-$( window ).scroll(function() {
-  if ( $(body).scrollTop() > $("#header").height() ){
-    $(body).addClass('scrolled-past-header');
-  } else {
-    $(body).removeClass('scrolled-past-header');
-    // var newtop = $("#header").height() - $(body).scrollTop()
-    // $("#sidebar").css({ top: newtop + 'px' });
-  }
-});
-
 // Scrolls the page to the provided element
 function scrollToObject(jqObj) {
   $("html, body").animate(
@@ -124,11 +112,15 @@ function updateActivityTimeDescription(elem) {
 }
 
 function registerTableSorters() {
+  return false
+  //
+  //
+  //
   $("th.functions").addClass("sorter-false")
   $(":not(.calendar) > table:not(.no-sort)").tablesorter({ theme: "dreamsis", sortStable: true })
 
-  $("table.object_filters > tbody").sortable({ 
-    axis: 'y', 
+  $("table.object_filters > tbody").sortable({
+    axis: 'y',
     cursor: 'move',
     handle: '.handle',
     update: function(elem) {
@@ -157,7 +149,7 @@ $( function() {
   // A form element with .send-on-change and a data-url attribute will send that data to the url.
   $(".send-on-change").change( function() {
     $.post(
-      $( this ).attr('data-url'), 
+      $( this ).attr('data-url'),
       $( this ).serialize()
     );
   })
@@ -175,4 +167,3 @@ $( function() {
   registerTableSorters()
   
 })
-
