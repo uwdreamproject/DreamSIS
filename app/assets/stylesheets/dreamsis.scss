@@ -84,6 +84,9 @@ footer {
 // }
 
 table {
+	
+	@extend .table;
+	@extend .table-hover;
 
 	th {
 		border-bottom: 1px solid rgb(176, 183, 226);
