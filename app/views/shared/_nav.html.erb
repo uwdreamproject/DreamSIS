@@ -42,6 +42,7 @@
 						<% end %>
 					
 						<li role="separator" class="divider"></li>
+            <h4>Cohorts</h4>
 						<% for cohort in Participant.cohorts %>
 							<li><%= link_to "#{cohort.to_s} Cohort", cohort_url(cohort) %></li>
 						<% end -%>

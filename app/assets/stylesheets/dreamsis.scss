@@ -1,6 +1,3 @@
-$primary-gradient: linear-gradient(rgb(95, 92, 154), rgb(67, 47, 115));
-$font-stack: "Benton Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-
 html {
 	height: 100%;
 }
@@ -8,8 +5,6 @@ html {
 body {
 	font-family: $font-stack;
 	font-weight: 600;
-	font-size: 13px;
-	line-height: 18px;
 	-webkit-font-smoothing: antialiased;
 	color: rgb(63, 63, 68);
 }
@@ -53,6 +48,10 @@ footer {
 	margin-top: 50px;
 	padding-top: 15px;
 	padding-bottom: 15px;
+}
+
+h1, .h1 {
+	margin-bottom: 20px;
 }
 
 // h2 {
