@@ -8,7 +8,7 @@
 
 		<div class="row">
 			
-			<div class="col-md-10" role="main">
+			<div class="<%= content_for?(:sidebar) ? "col-md-10" : "col-md-12" %>" role="main">
 
 				<% flash.each do |type, message| %>
 					<div class="alert <%= alert_class_for(type) %> alert-dismissible fade in">
@@ -40,11 +40,13 @@
 
 			</div>
 			
+			<%- if content_for?(:sidebar) %>
 			<div class="col-md-2" role="complementary" class="sidebar-container">
 				<section id="sidebar" data-spy="affix" data-offset-top="50" data-offset-bottom="0">
 					<%= yield :sidebar %>
 				</section>
 			</div>
+			<% end %>
 		
 		</div>
 			
