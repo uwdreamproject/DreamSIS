@@ -81,10 +81,10 @@ module ApplicationHelper
 	end
   
   def default_form_actions(form)
-    content_tag(:fieldset, class: "actions") do
-      content_tag(:ol) do
-        form.action(:submit, label: "Save") +
-        content_tag(:li, separator, class: "action") +
+    form.inputs do
+      form.actions do
+        form.action(:submit, label: "Save", disable_with: "Saving...") +
+        separator +
         form.action(:cancel, label: "Cancel")
       end
     end
@@ -93,7 +93,7 @@ module ApplicationHelper
   def default_form_errors(form)
     raise Exception.new("This helper method can only be used with Formtastic forms") unless form.is_a?(Formtastic::FormBuilder)
       unless form.object.errors.empty?
-        content_tag :div, class: "errorExplanation" do
+        content_tag :div, class: "bg-danger" do
           concat content_tag(:h2, "There are some problems with this record.")
           concat content_tag(:p, "Please correct the errors below and try to save the record again.")
           concat form.semantic_errors(*form.object.errors.keys)

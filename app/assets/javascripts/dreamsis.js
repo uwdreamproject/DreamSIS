@@ -179,6 +179,12 @@ $( function() {
       });
   });
   
+  $("a[data-submit]").on('click', function(event) {
+    event.preventDefault();
+    var f = $( this ).data('submit') == "main" ? $("#main-content form").first() : $( this ).closest('form');
+    f.submit();
+  })
+
   
   // Enable all tablesorter tables
   registerTableSorters()

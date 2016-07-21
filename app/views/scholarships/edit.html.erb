@@ -1,4 +1,10 @@
-<h1>Editing scholarship</h1>
+<%= content_for(:subheader) do %>
+	<h1>Editing scholarship</h1>
+<% end %>
+<%= content_for(:operations) do %>
+	<%= link_to "Save", "", class: "btn btn-default", data: { submit: 'main' } %>
+	<%= link_to "Merge scholarship", "", class: "btn btn-default", glyph: "code-fork" %>
+<% end %>
 
 <%= semantic_form_for @scholarship, html: { method: :put } do |f| %>
 
@@ -12,39 +18,35 @@
 
 <% end %>
 
-<%= content_for(:sidebar) do %>
-	<p><%#= link_to_function "Merge scholarship", "$('merge_form').show(); this.up('p').hide();", class: "sync button" %></p>
-	
-	<%= form_tag merge_scholarships_path(return_to: scholarships_path), id: "merge_form", style: "display:none" %>
-		<h3>Merge with another Scholarship</h3>
-		<p class="intro">Specify the ID for the scholarship to merge into. Then click Merge.</p>
-	
-		<div class="merge_item">
-			<p class="error-message">
-				<strong>Source:</strong>
-				This scholarship will be deleted. All existing scholarship applications assigned
-				to this scholarship will be reassigned to the target scholarship below.</p>
-			<p class="name">
-				<span id="merge_source_name"><%=h @scholarship.title %></span>
-			</p>
-			<label>ID:</label>
-			<input name="source_id" id="merge_source_id" value="<%= @scholarship.id %>" readonly>
-		</div>
-	
-		<em class="separator">into</em>
+<%= form_tag merge_scholarships_path(return_to: scholarships_path), id: "merge_form", style: "display:none" %>
+	<h3>Merge with another Scholarship</h3>
+	<p class="intro">Specify the ID for the scholarship to merge into. Then click Merge.</p>
 
-		<div class="merge_item">
-			<p class="success-message">
-				<strong>Target:</strong>
-				This scholarship will be kept and all applications will be reassigned to this one.
-			</p>
-			<!-- <p class="name">
-				<span id="merge_target_name">(Not selected)</span>
-			</p> -->
-			<label>ID:</label>
-			<input name="target_id" id="merge_target_id" class="editable">
-		</div>
-	
-		<p><%= submit_tag "Merge", confirm: "Are you sure you want to merge these scholarships?" %></p>
-	</form>
-<%- end -%>
+	<div class="merge_item">
+		<p class="error-message">
+			<strong>Source:</strong>
+			This scholarship will be deleted. All existing scholarship applications assigned
+			to this scholarship will be reassigned to the target scholarship below.</p>
+		<p class="name">
+			<span id="merge_source_name"><%=h @scholarship.title %></span>
+		</p>
+		<label>ID:</label>
+		<input name="source_id" id="merge_source_id" value="<%= @scholarship.id %>" readonly>
+	</div>
+
+	<em class="separator">into</em>
+
+	<div class="merge_item">
+		<p class="success-message">
+			<strong>Target:</strong>
+			This scholarship will be kept and all applications will be reassigned to this one.
+		</p>
+		<!-- <p class="name">
+			<span id="merge_target_name">(Not selected)</span>
+		</p> -->
+		<label>ID:</label>
+		<input name="target_id" id="merge_target_id" class="editable">
+	</div>
+
+	<p><%= submit_tag "Merge", confirm: "Are you sure you want to merge these scholarships?" %></p>
+</form>

@@ -1,12 +1,10 @@
-<%= f.inputs(name: "About the Scholarship") do -%>
-	<p>Provide the key details about the scholarship here.</p>
+<%= f.inputs(name: "About the Scholarship", hint: "Provide the key details about the scholarship here.") do -%>
 	<%= f.input :title, hint: "Be as specific and accurate as possible." %>
 	<%= f.input :organization_name, hint: "The name of the organization, school, company, or entity that funds or provides the scholarship." %>
 	<%= f.input :description, input_html: { rows: 5 } %>
 <% end %>
 
-<%= f.inputs(name: "Default Settings") do -%>
-	<p>These defaults are used when creating a scholarship application for a student. These can be overidden for each application separately.</p>
+<%= f.inputs(name: "Default Settings", hint: "These defaults are used when creating a scholarship application for a student. These can be overidden for each application separately.") do -%>
 	<%= f.input :default_amount, as: :string, label: "Amount", input_html: { size: 7, class: "currency" } %>
 
 	<%= f.inputs(name: "Renewable", class: "inline") do -%>
