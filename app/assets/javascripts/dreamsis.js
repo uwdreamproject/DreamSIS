@@ -84,6 +84,23 @@ function registerDateInputHelpers() {
     setToClear($(event.target).data('target'))
     event.preventDefault();
   })
+  
+  $('input[type=datetime-local]').datepicker({
+      format: "yyyy-mm-dd 00:00:00",
+      todayBtn: "linked",
+      todayHighlight: true,
+      disableTouchKeyboard: true,
+      autoclose: true
+  });
+  
+  $('input[type=date]').datepicker({
+      format: "yyyy-mm-dd",
+      todayBtn: "linked",
+      todayHighlight: true,
+      disableTouchKeyboard: true,
+      autoclose: true
+  });
+  
 }
 
 function setToNow(element_id) {
