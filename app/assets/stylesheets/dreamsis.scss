@@ -9,36 +9,13 @@ body {
 	color: rgb(63, 63, 68);
 }
 
-header {
-
-	img.avatar {
-		/*border: 1px solid #919191;*/
-		border-radius: 50px;
-	}
-
-	.navbar-brand > img {
-		height: 25px;
-	}
-
-	nav {
-		background-repeat: no-repeat;
-	  background-image: $primary-gradient;
-		
-		a.avatar {
-			padding-top: 10px;
-			padding-bottom: 10px;
-		}
-	}
-
-}
-
 .container-fluid {
 	padding-left: 40px;
 	padding-right: 40px;
 }
 
 #main-content {
-	// min-height: calc(100vh - 150px);
+	padding-top: 20px;
 }
 
 footer {
@@ -53,34 +30,6 @@ footer {
 h1, .h1 {
 	margin-bottom: 20px;
 }
-
-// h2 {
-//   text-transform: uppercase;
-//   font-weight: 800;
-// }
-//
-// h3 {
-// 	font-size: 90%;
-//   text-transform: uppercase;
-//   font-weight: 600;
-// }
-//
-// h3.pre-title {
-// 	text-transform: uppercase;
-// 	color: #979798;
-// 	margin: 0;
-// 	margin-bottom: 0.25em;
-// 	font-weight: bold;
-// 	letter-spacing: 1px;
-// 	font-size: 90%;
-// 	font-weight: normal;
-// }
-//
-// h4 {
-// 	margin: 0;
-// 	color: #81a4cc;
-// 	margin-top: 10px;
-// }
 
 table {
 	
@@ -147,6 +96,22 @@ table.participants {
 
 dl {
 	@extend .dl-horizontal;
+	
+	&.dl-inline {
+		
+		> dt, > dd {
+			display: inline-block;
+			width: auto;
+			text-align: left;
+			margin-left: 0;
+			float: none;
+		}
+		
+		> dd {
+			margin-left: 5px;
+			margin-right: 20px;
+		}
+	}
 }
 
 .sidebar-container {
@@ -158,26 +123,8 @@ dl {
 	background-color: rgb(247, 248, 251);
 	margin-right: -40px;
 
-	// 	position: fixed;
-	// 	top: 65px;
-	// 	right: 0;
-	// 	width: 190px;
-	//   background: #f7f7f7;
-	// 	padding: 20px;
-	// 	padding-top: 13px;
-	// 	bottom: 20px;
-	// 	overflow-x: hidden;
-	// 	overflow: auto;
-	// 	text-shadow: 0 1px 0 white;
-	// 	z-index: 25;
-	// 	color: #4c4c4c;
-	// 	clear: both;
-	//   height: 100%;
-	//   border-left: 1px solid #e0e0e0;
-	
 	h3 {
 		margin-top: 1.5em;
-		/*border-bottom: 1px solid #047391;*/
 		font-weight: bold;
 		text-transform: uppercase;
 		font-size: 90%;
@@ -284,6 +231,7 @@ dl {
 
 #dev-inspector {
 	position: fixed;
+	margin: 0;
 	bottom: 0;
 	left: 0;
 	font-size: 10px;
@@ -311,6 +259,10 @@ p#separator, .separator {
 
 .borderless {
 	border: none !important;
+}
+
+.needs-followup > .fa {
+	color: $orange !important;
 }
 
 .record-header {

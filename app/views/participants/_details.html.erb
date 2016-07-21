@@ -1,7 +1,6 @@
-<%= render partial: "avatar" %>
+<%#= render partial: "avatar" %>
 
 <div class="name">
-	<h3 class="pre-title"><%= @participant.class.to_s %></h3>
 	<h1>
 		<%=h @participant.fullname(middlename: false, nickname: true) %>
 		<%= content_tag :small, "##{@participant.id.to_s}", class: "outline tag" %>
@@ -12,56 +11,50 @@
 			<%= content_tag :span, "#{Customer.not_target_Label}", class: "not-target tag" if @participant.not_target_participant? %>
 		</div>
 	<% end %>
-
-	<%= link_to "Needs Follow-up", "", onclick: "switchToTab('notes', undefined, 'show=needs_followup'); return false;", class: "needs-followup" if @participant.needs_followup? %>
 </div>
 
-<div class="details">
-	<dl>
-		<dt>Cohort</dt>
+<dl class="dl-inline">
+	<dt><%= glyph(:users) %> <span class="text-hide">Cohort</span></dt>
+	<dd>
+		<%= link_to "#{@participant.high_school.name} #{@participant.grad_year}",
+				high_school_cohort_path(@participant.high_school, (@participant.grad_year || 0)),
+				class: 'redirect-link' unless @participant.high_school.nil? %>
+	</dd>
+
+	<%- if @participant.respond_to?(:participant_group) && @participant.participant_group -%>
+	<dt><%= glyph('object-group') %> <span class="text-hide">Participant Group</span></dt>
 		<dd>
-			<%= link_to "#{@participant.high_school.name} #{@participant.grad_year}", 
-					high_school_cohort_path(@participant.high_school, (@participant.grad_year || 0)), 
-					class: 'redirect-link' unless @participant.high_school.nil? %>
+			<%= link_to @participant.participant_group.try(:title),
+						participant_group_path(@participant.participant_group.try(:id)), class: 'redirect-link' %>
 		</dd>
+	<% end -%>
+	
+	<%- if @participant.respond_to?(:postsecondary_goal) && @participant.postsecondary_goal -%>
+		<dt><%= glyph('map-o') %> <span class="text-hide">Postsecondary Goal</span></dt>
+		<dd><%= @participant.postsecondary_goal %></dd>
+	<% end %>
 
-		<%- if @participant.respond_to?(:participant_group) && @participant.participant_group -%>
-			<dt>Group</dt>
-			<dd>
-				<%= link_to @participant.participant_group.try(:title), 
-							participant_group_path(@participant.participant_group.try(:id)), class: 'redirect-link' %>
-			</dd>
-		<% end -%>
-		
-		<%- if @participant.respond_to?(:postsecondary_goal) && @participant.postsecondary_goal -%>
-			<dt>Postsecondary Goal</dt>
-			<dd><%= @participant.postsecondary_goal %></dd>
-		<% end %>
+	<% if @participant.respond_to?(:college_attending) && (!@participant.college_attending.blank? && !@participant.postsecondary_plan.blank?) %>
+		<dt><%= glyph('map') %> <span class="text-hide">Postsecondary Plan</span></dt>
+		<dd>
+			<%= @participant.college_attending ? @participant.college_attending.name : @participant.postsecondary_plan %>
+		</dd>
+	<% end -%>
 
-		<% if @participant.respond_to?(:college_attending) && (!@participant.college_attending.blank? && !@participant.postsecondary_plan.blank?) %>
-			<dt>Postsecondary Plan</dt>
-			<dd>
-				<%= @participant.college_attending ? @participant.college_attending.name : @participant.postsecondary_plan %>
-			</dd>
-		<% end -%>
+	<%- if enrollment = @participant.latest_college_enrollment %>
+	<dt><%= glyph(:university) %> <span class="text-hide">Most Recent College</span></dt>
+		<dd>
+				<%= link_to enrollment.institution.try(:name),
+						college_participants_path(enrollment.institution, report: "college_stages"),
+						class: 'redirect-link' %>
+						
+				<div class="small light">
+					<%= "#{enrollment.enrollment_status_name}, " unless enrollment.enrollment_status_name.blank? %>
+					<%= safe_join([enrollment.began_on.try(:to_s, :month_year), enrollment.ended_on.try(:to_s, :month_year)].compact, '&ndash;'.html_safe) %>
+					<%= "<br>".html_safe + content_tag(:b, "Major".pluralize(enrollment.majors_count)) +
+								": ".html_safe + enrollment.majors_list unless enrollment.majors_list.blank? %>
+				</div>
+		</dd>
+	<% end %>
 
-		<%- if enrollment = @participant.latest_college_enrollment %>
-			<dt>Most Recent College</dt>
-			<dd>
-					<%= link_to enrollment.institution.try(:name), 
-							college_participants_path(enrollment.institution, report: "college_stages"),
-							class: 'redirect-link' %>
-							
-					<div class="small light">
-						<%= "#{enrollment.enrollment_status_name}, " unless enrollment.enrollment_status_name.blank? %>
-						<%= safe_join([enrollment.began_on.try(:to_s, :month_year), enrollment.ended_on.try(:to_s, :month_year)].compact, '&ndash;'.html_safe) %>
-						<%= "<br>".html_safe + content_tag(:b, "Major".pluralize(enrollment.majors_count)) +
-									": ".html_safe + enrollment.majors_list unless enrollment.majors_list.blank? %>
-					</div>
-			</dd>
-		<% end %>
-
-	</dl>
-</div>
-
-<div class="clear"></div>
+</dl>

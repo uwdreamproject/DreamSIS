@@ -1,7 +1,14 @@
+<%- if @current_user.can_view?(@participant.high_school) -%>
+	<p><%= link_to "Return to #{@participant.high_school.try(:name)} #{@participant.grad_year} list",
+					high_school_cohort_path(@participant.high_school, (@participant.grad_year || 0)),
+					class: 'back button' if @participant.high_school && @participant.grad_year %></p>
+<% end %>
+
+
 <div class="info-section-container vertical">
 	
 	<%- cache [@participant.cache_key, "tabs"].join("/") do -%>
-		<ul class="tabs">
+		<ul class="tabs hidden">
 			<%= link_to_section_li @participant, "Current Stats", :filter_results, 'filter_results', true %>
 			<%= link_to_section_li @participant, "Contact Information", :contact, 'contact' %>
 			<%= link_to_section_li @participant, "Colleges", :college_applications, 'college_applications' %>
@@ -28,9 +35,9 @@
 	<div class="tab-content">
 
 		<%- cache [@participant.cache_key, "details"].join("/") do -%>
-			<div class="record-header" onclick="void(0)">
-					<%= render partial: "details" %>
-			</div>
+			<%= content_for :subheader do %>
+				<%= render partial: "details" %>
+			<% end %>
 		<% end %>
 
 		<%- cache [@participant.cache_key, "filter_results"].join("/") do -%>
@@ -48,8 +55,8 @@
 	
 		<%- if @participant.respond_to?(:college_applications) -%>
 				<div class="info-section" id="college_applications">
-					<h2>Colleges &amp; Postsecondary Plans 
-						<%= content_tag :em, "Synced with CollegeMapper", 
+					<h2>Colleges &amp; Postsecondary Plans
+						<%= content_tag :em, "Synced with CollegeMapper",
 							class: "right synced-with-collegemapper-note" if @participant.college_mapper_id %></h2>
 					<%= render partial: 'college_applications' %>
 					<%= render partial: 'college_application_controls' %>
@@ -65,12 +72,12 @@
 					<br />
 					
 					<%= render partial: 'scholarship_applications' %>
-					<p><%= link_to 'Add scholarship', 
+					<p><%= link_to 'Add scholarship',
 													new_participant_scholarship_application_path(@participant),
 													class: "add button" %></p>
 					
 					<%= render partial: "financial_aid_packages" if @participant.respond_to?(:financial_aid_packages) %>
-					<p><%= link_to 'Add financial aid package', 
+					<p><%= link_to 'Add financial aid package',
 													new_participant_financial_aid_package_path(@participant),
 													class: "add button" %></p>
 				</div>
@@ -81,7 +88,7 @@
 					<h2>Parents/Guardians &amp; Contacts</h2>
 					<%= render partial: 'parents' %>
 					<br>
-					<%= link_to 'Add parent/guardian or contact', 
+					<%= link_to 'Add parent/guardian or contact',
 								new_participant_parent_path(@participant),
 								class: "add button" %>
 				</div>
@@ -93,7 +100,7 @@
 					<h2>Tests</h2>
 					<%= render partial: 'test_scores' %>
 					<br>
-					<%= link_to 'Add test', 
+					<%= link_to 'Add test',
 								new_participant_test_score_path(@participant),
 								class: "add button" %>
 				</div>
@@ -124,7 +131,7 @@
 				<br>
 				<%= render partial: 'add_mentor_form' %>
 
-				<%- cache [@participant.cache_key, "former-mentors"].join("/") do -%>			
+				<%- cache [@participant.cache_key, "former-mentors"].join("/") do -%>
 					<%- unless @participant.former_mentor_participants.empty? -%>
 						<br>
 						<h3>Former <%= Customer.mentors_Label %></h3>
@@ -158,4 +165,27 @@
 	</div>
 
 </div>
-<%= render partial: "sidebar" %>
+
+<%= operations wrap: false do %>
+
+	<%= link_to(glyph(:flag, "Needs Followup"), "", class: "needs-followup") if @participant.needs_followup? %>
+	
+	<div class="btn-group" role="group" aria-label="Operations Links">
+		<%= link_to 'Edit', edit_participant_path(@participant), class: 'btn btn-default', glyph: 'pencil' %>
+		
+		<div class="btn-group" role="group">
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				More
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<%- if (is_admin = @current_user.admin?) -%>
+			      <li><%= link_to "Record History", changes_for_object_path("participant", @participant), glyph: "history" %></li>
+			  <%- end -%>
+			  <% if is_admin || @current_user.person.current_lead? -%>
+			      <li><%= link_to "Delete this #{Customer.participant_label}", @participant, method: :delete, confirm: "Are you sure you want to delete this #{Customer.participant_label}?", glyph: "trash" %></li>
+			  <% end %>
+			</ul>
+		</div>
+	</div>
+<% end %>

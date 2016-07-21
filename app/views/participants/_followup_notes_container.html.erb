@@ -1,4 +1,4 @@
-<div class="needs-followup-container">
+<div class="needs-followup-container hidden">
 	<a href="#" class="needs-followup icon">&nbsp;</a>
 	<div class="controls arrow-box arrow-top" data-count="<%= participant.followup_note_count %>">
 		<p><%= link_to "Show follow-up notes", participant_path(participant, anchor: raw("!/section/notes&show=needs_followup")), class: "redirect-link" %></p>

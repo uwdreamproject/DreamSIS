@@ -1,0 +1,141 @@
+header.main {
+
+	img.avatar {
+		/*border: 1px solid #919191;*/
+		border-radius: 50px;
+	}
+
+	.navbar-brand > img {
+		height: 25px;
+	}
+
+	nav.navbar {
+		background-repeat: no-repeat;
+	  background-image: $primary-gradient;
+		margin-bottom: 0;
+		
+		a.avatar {
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+	}
+
+	.navbar-inverse .navbar-nav > li > a {
+		color: #e9e9e9;
+		font-weight: 700;
+	}
+
+	.navbar-brand {
+		padding: 10px;
+		
+		> img {
+			height: 30px;
+		}
+	}
+}
+
+header.sub {
+	background-color: $alternate-background-color;
+	border-bottom: 1px solid rgb(231, 235, 243);
+	padding-top: 10px;
+	padding-bottom: 10px;
+	width: 100%;
+	transition: all 0.25s ease-in-out;
+	z-index: 10;
+	
+	&.affix {
+		top: 0;
+	}
+	
+	.breadcrumb {
+		margin-bottom: 0;
+		padding-left: 0;
+		display: inline-block;
+		background: none;
+		font-size: 125%;
+		font-weight: 700;
+		margin-left: -13px;
+		
+		> li > a {
+			padding: 10px;
+			color: $primary-dark;
+			border-radius: $border-radius-base;
+			text-decoration: none;
+			
+			&:hover {
+				background: #eee;
+			}
+		}
+			
+		> li + li:before {
+			content: '\f105';
+			font-family: FontAwesome;
+		}
+	}
+	
+	.page-operations {
+		margin-top: 10px;
+		
+		.dropdown-menu {
+			@extend .dropdown-menu-right;
+		}
+		
+		> a:not(.btn) {
+			margin-right: 20px;
+			text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+		}
+		
+		.btn-default {
+			border-color: $primary-dark;
+			color: $primary-dark;
+			font-weight: 700;
+			border-width: 0.5px;
+		}
+			
+		.fa {
+			margin-right: 5px;
+			color: lighten($primary-dark, 5%);
+		}
+		
+		.needs-followup > .fa {
+			font-size: 22px;
+			top: 3px;
+			position: relative;
+		}
+		
+	}
+
+	dl.dl-inline {
+		color: rgb(89, 105, 129);
+		margin-bottom: 5px;
+	}
+	
+	h1 {
+		margin-bottom: 10px;
+	}
+}
+
+.dropdown-menu {
+	
+	> li > a {
+		color: rgb(89, 105, 129);
+		font-size: 13px;
+		font-weight: 600;
+		padding: 5px 30px 5px 20px;
+		
+		> i, > img {
+			margin-right: 0.5em;
+		}
+		
+	}
+	
+	> h4 {
+		@extend .navbar-text;
+		font-size: 11px;
+		font-weight: 600;
+		padding: 5px 25px 5px 20px;
+		margin: 0;
+		text-transform: uppercase;
+	}
+	
+}

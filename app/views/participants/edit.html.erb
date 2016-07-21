@@ -1,5 +1,5 @@
-<h3 class="pre-title">Edit</h3>
-<h1><%=h @participant.fullname %></h1>
+<%= breadcrumbs :participants, @participant %>
+<%= operations :save %>
 
 <%= semantic_form_for(@participant, html: {id: "participant_form", multipart: true}) do |f| %>
 	<%= default_form_errors(f) %>
@@ -17,10 +17,3 @@
 
 	<%= default_form_actions(f) %>
 <% end %>
-
-<%= content_for(:sidebar) do %>
-	<div id="participant_duplicate_warning">
-	
-	<%#= link_to_function "Save changes", "$('#participant_form').submit()", class: "save button" %>
-	<%= link_to "Back to participant", @participant, confirm: "Any changes you have made will not be saved. Are you sure?", class: "back button" %>
-<%- end -%>

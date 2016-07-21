@@ -1,21 +1,35 @@
 <%= render layout: "layouts/wrap" do %>
 
-	<header>
+	<header class="main">
 		<%= render "shared/nav" %>
 	</header>
+
+	<% if content_for(:subheader) || content_for(:breadcrumbs) %>
+		<header class="sub" data-spy="affix" data-offset-top="30">
+		  <div class="container-fluid">
+				<div class="pull-right page-operations">
+					<%= yield(:operations) %>
+				</div>
+				<%= yield(:subheader) %>
+				<%= yield(:breadcrumbs) %>
+			</div>
+		</header>
+	<% end %>
 
 	<div class="<%= @container_class || 'container-fluid' %>">
 
 		<div class="row">
 			
 			<div class="<%= content_for?(:sidebar) ? "col-md-10" : "col-md-12" %>" role="main">
-
-				<% flash.each do |type, message| %>
-					<div class="alert <%= alert_class_for(type) %> alert-dismissible fade in">
-						<button type="button" class="close" aria-label="Close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
-						<%= message %>
-					</div>
-				<% end %>
+				
+				<div class="alerts-container" data-spy="affix" data-offset-top="50">
+					<% flash.each do |type, message| %>
+						<div class="alert <%= alert_class_for(type) %> alert-dismissible fade in">
+							<button type="button" class="close" aria-label="Close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+							<%= message %>
+						</div>
+					<% end %>
+				</div>
 				
 				<%= render partial: "shared/share_links" if @share_links && API_KEYS['sharethis'] %>
 

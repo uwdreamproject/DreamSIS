@@ -1,18 +1,36 @@
 <%= render partial: "report_select" %>
 
-<h1 style="margin-bottom: 0.25em">
-	<%= "Participants" unless @high_school && @grad_year %>
-	<%=h @high_school.name if @high_school%>
-	<%= "at " + h(@college.name) if @college %>
-	<%= "in " + link_to(h(@program.title), @program) if @program %>
-	<%= "assigned to " + (params[:mentor_id] == "me" ? "me" : h(@mentor.fullname)) if @mentor %>
-	<%=h @grad_year.to_s if @grad_year %>
-</h1>
-<h3 class="light" style="margin-top: 0">
-	Listing
-	<span id="filtered_record_count"></span>
-	<span id="total_record_count"><%= @participants.total_entries %></span>
-</h3>
+<%= content_for(:subheader) do %>
+	<h1 style="margin-bottom: 0.25em">
+		<%= "Participants" unless @high_school && @grad_year %>
+		<%=h @high_school.name if @high_school%>
+		<%= "at " + h(@college.name) if @college %>
+		<%= "in " + link_to(h(@program.title), @program) if @program %>
+		<%= "assigned to " + (params[:mentor_id] == "me" ? "me" : h(@mentor.fullname)) if @mentor %>
+		<%=h @grad_year.to_s if @grad_year %>
+	</h1>
+	<h3 class="light" style="margin-top: 0">
+		Listing
+		<span id="filtered_record_count"></span>
+		<span id="total_record_count"><%= @participants.total_entries %></span>
+	</h3>
+<% end %>
+
+<%= content_for(:operations) do %>
+	<%= link_to "Add new", new_participant_path(high_school_id: @high_school.try(:id) || @participant.try(:high_school_id)), class: "btn btn-default", glyph: "plus" %>
+	
+	<div class="btn-group" role="group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <%= glyph(:download) %> Download
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li><a href="#">Dropdown link</a></li>
+      <li><a href="#">Dropdown link</a></li>
+    </ul>
+	</div>
+<% end %>
+
 <div id="stages_selector"></div>
 <div id="filter_bucket"></div>
 
@@ -22,8 +40,6 @@
 		<span class="light">(<%= link_to "view all", high_school_cohort_path(@high_school, @grad_year) %>)</span>
 	</h2>
 <% end -%>
-
-<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="top" title="These are your students"></span>
 
 <table class="participants multirow active-report table" id="participants_table">
 	<thead></thead>
