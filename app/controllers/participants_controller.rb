@@ -207,8 +207,6 @@ class ParticipantsController < ApplicationController
       return render_error("You are not allowed to view that participant.")
     end
     
-    flash[:notice] = "Success!"
-    
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render xml: @participant }
