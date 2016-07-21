@@ -1,6 +1,4 @@
 class Participant < Person
-  # extend FriendlyId
-  # friendly_id :fullname, use: :slugged
   belongs_to :high_school
   has_many :college_applications
   has_many :scholarship_applications

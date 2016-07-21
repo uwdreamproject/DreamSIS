@@ -1,6 +1,6 @@
 class Mentor < Person
   extend FriendlyId
-  friendly_id :friendly_slug, use: :slugged
+  friendly_id :friendly_slug
 
   has_many :mentor_terms, -> { MentorTerm.deleted }
   has_many :mentor_term_groups, through: :mentor_terms

@@ -71,7 +71,7 @@ class ParticipantsController < ApplicationController
     end
     
     @participants = Participant.in_cohort(@grad_year).in_high_school(@high_school.try(:id)).page(params[:page])
-    @participant_groups = ParticipantGroup.find(:all, conditions: { location_id: @high_school, grad_year: @grad_year })
+    @participant_groups = ParticipantGroup.where({ location_id: @high_school, grad_year: @grad_year })
 		@cache_key = fragment_cache_key(action: :high_school_cohort, id: @high_school.id, cohort: @grad_year, format: :xlsx)
     @export = report_type.for_key(@cache_key)
 
@@ -168,7 +168,7 @@ class ParticipantsController < ApplicationController
     end
     
     @participants = @participant_group.participants.page(params[:page])
-    @participant_groups = ParticipantGroup.find(:all, conditions: { location_id: @high_school, grad_year: @grad_year })
+    @participant_groups = ParticipantGroup.where({ location_id: @high_school, grad_year: @grad_year })
 		@cache_key = fragment_cache_key(action: :group, id: @participant_group.id, format: :xlsx)
     @export = report_type.for_key(@cache_key)
     
@@ -183,7 +183,7 @@ class ParticipantsController < ApplicationController
   def add_to_group
     @participant_group = ParticipantGroup.find(params[:participant_group_id])
     @participant = Participant.find(params[:id].split("_")[1])
-    @participant_groups = ParticipantGroup.find(:all, conditions: { location_id: @participant_group.location_id, grad_year: @participant_group.grad_year })
+    @participant_groups = ParticipantGroup.where(location_id: @participant_group.location_id, grad_year: @participant_group.grad_year)
     @participant.update_attribute(:participant_group_id, @participant_group.id)
     ParticipantGroup.update_counters @participant_group.id, participants_count: @participant_group.participants.length
     
@@ -206,6 +206,8 @@ class ParticipantsController < ApplicationController
     unless @current_user && @current_user.can_view?(@participant)
       return render_error("You are not allowed to view that participant.")
     end
+    
+    flash[:notice] = "Success!"
     
     respond_to do |format|
       format.html # show.html.erb
@@ -259,7 +261,7 @@ class ParticipantsController < ApplicationController
   # GET /participants/1/edit
   def edit
     @participant = Participant.find(params[:id])
-    @participant_groups = ParticipantGroup.find(:all, conditions: {
+    @participant_groups = ParticipantGroup.where({
         location_id: @participant.high_school_id,
         grad_year: @participant.grad_year
       })
@@ -372,7 +374,7 @@ class ParticipantsController < ApplicationController
   
   def fetch_participant_group_options
     # @participant = Participant.find(params[:id])
-    @participant_groups = ParticipantGroup.find(:all, conditions: {
+    @participant_groups = ParticipantGroup.where({
         location_id: params[:participant][:high_school_id],
         grad_year: params[:participant][:grad_year]
       })
@@ -390,12 +392,12 @@ class ParticipantsController < ApplicationController
       conditions << "high_school_id = :high_school_id" if params[:high_school_id]
       conditions << "grad_year = :grad_year" if params[:grad_year]
     
-      @participants = Participant.find(:all,
-                                        conditions: [conditions.join(" AND "),
-                                                        {fullname: "%#{params[:term].downcase}%",
-                                                        grad_year: params[:grad_year],
-                                                        high_school_id: params[:high_school_id]
-                                                        }])
+      @participants = Participant.where(
+                                    [conditions.join(" AND "),
+                                    {fullname: "%#{params[:term].downcase}%",
+                                    grad_year: params[:grad_year],
+                                    high_school_id: params[:high_school_id]
+                                    }])
     end
     
     render json: @participants.map { |result|

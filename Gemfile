@@ -2,8 +2,8 @@ source 'https://rubygems.org'
 ruby '2.2.4'
 
 gem 'rails', '4.2.6'
-gem "unicorn"
-gem "unicorn-rails"
+# gem "unicorn"
+# gem "unicorn-rails"
 gem "puma"
 gem 'formtastic'
 gem 'formtastic-bootstrap'
