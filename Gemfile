@@ -76,6 +76,8 @@ gem 'redis-rails'
 gem 'redis-rack-cache'
 gem 'bootstrap-sass'
 gem 'turbolinks', '~> 5.0.0'
+gem 'searchkick'
+gem 'twitter-typeahead-rails'
 
 group :production do
   gem "pg", "0.18.4"
@@ -109,5 +111,5 @@ group :test do
   gem 'turn', require: false
   gem 'minitest'
   gem 'minitest-reporters'
-  gem 'minitest-ci', git: 'git@github.com:circleci/minitest-ci.git'
+  gem 'minitest-ci', :git => "https://github.com/circleci/minitest-ci.git"
 end

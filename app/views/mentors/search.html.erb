@@ -1,0 +1,17 @@
+<h1>Search results for "<%= @input %>"</h1>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th><%= Customer.link_to_uw? ? "UW NetID" : "E-mail" %></th>
+		</tr>
+	</thead>
+	<tbody>
+		<%- @mentors.each do |mentor| %>
+			<tr>
+				<td><%= mentor.fullname %></td>
+				<td><%= mentor.email %></td>
+			</tr>
+		<% end -%>
+	</tbody>
+</table>

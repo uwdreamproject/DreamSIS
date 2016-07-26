@@ -1,0 +1,16 @@
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th><%= Customer.link_to_uw? ? "UW NetID" : "E-mail" %></th>
+		</tr>
+	</thead>
+	<tbody>
+		<%- @participants.each do |participant| %>
+			<tr>
+				<td><%= participant.fullname %></td>
+				<td><%= participant.email %></td>
+			</tr>
+		<% end -%>
+	</tbody>
+</table>

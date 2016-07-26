@@ -108,6 +108,7 @@ Dreamsis::Application.routes.draw do
   # ---------------------------------------
   resources :participants do
     collection do
+      get 'search'
       get :auto_complete_for_participant_fullname
       get :check_duplicate
       get :fetch_participant_group_options
@@ -182,6 +183,7 @@ Dreamsis::Application.routes.draw do
   # ---------------------------------------
   resources :mentors do
     collection do
+      get 'search'
       get :auto_complete_for_mentor_fullname
       get :onboarding
       get :onboarding_textblocks

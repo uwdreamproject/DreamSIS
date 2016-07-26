@@ -11,5 +11,6 @@
 //= require bootstrap-sprockets
 //= require select2-full
 //= require autonumeric
+//= require twitter/typeahead.min
 //= require dreamsis.js
 //=  require_tree .

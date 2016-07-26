@@ -1,4 +1,8 @@
 class Mentor < Person
+  #for searchkick
+  include SchemaSearchable
+  searchkick index_name: tenant_index_name
+  
   extend FriendlyId
   friendly_id :friendly_slug
 

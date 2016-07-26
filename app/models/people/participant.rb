@@ -1,4 +1,8 @@
 class Participant < Person
+  # for searchkick
+  include SchemaSearchable
+  searchkick index_name: tenant_index_name
+
   belongs_to :high_school
   has_many :college_applications
   has_many :scholarship_applications

@@ -5,9 +5,9 @@ class SessionController < ApplicationController
   before_filter :apply_customer_styles
 
   def new
-    redirect_to locator_url(subdomain: false) if Customer.current_customer.nil? || Customer.current_customer.new_record?
-    redirect_to "/auth/#{Customer.allowable_login_methods_list.first}" if Customer.allowable_login_methods_list.size == 1 && session[:external_login_context] != :rsvp
-    render layout: "basic"
+    redirect_to locator_url(subdomain: false) and return if Customer.current_customer.nil? || Customer.current_customer.new_record?
+    redirect_to "/auth/#{Customer.allowable_login_methods_list.first}" and return if Customer.allowable_login_methods_list.size == 1 && session[:external_login_context] != :rsvp
+    render layout: "basic" and return
   end
   
   def locator

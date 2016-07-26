@@ -19,7 +19,7 @@
 				
 				<%- if @current_user && @current_user.display_navbar? -%>
 				
-					<%= nav_dropdown("My #{Customer.mentees_label}") do %>
+					<%= nav_dropdown("My #{Customer.mentees_label}") do %>				
 						<li><%= link_to "All my #{Customer.mentees_label}", my_participants_url, glyph: 'users' %></li>
 						<%- if Customer.uses_activity_logs? -%>
 							<li><%= link_to "Track my week", my_current_activity_log_url, glyph: "calendar-check-o" %></li>
@@ -35,6 +35,12 @@
 					<% end %>
 
 					<%= nav_dropdown(Customer.participants_Label) do %>
+						<%= form_tag search_participants_path, method: :get, class:"navbar-form input-group", role: "search" do %>
+								<%=	text_field_tag :search, params[:search], class: "form-control input-xs", placeholder: "Search #{Customer.participants_Label.pluralize}" %>
+								<span class="input-group-btn">
+									<%= submit_tag "Search", class: "btn btn-default" %>
+								</span>
+						<% end -%>	
 						<li><%= link_to "All #{Customer.participants_Label}", participants_url, glyph: 'users' %></li>
 						<li><%= link_to "Add new #{Customer.participant_label}", new_participant_url, glyph: 'plus-square' %></li>
 						<%- if Customer.uses_clearinghouse? && @current_user.admin? -%>
@@ -49,6 +55,12 @@
 					<% end %>
 
 					<%= nav_dropdown(Customer.mentors_Label) do %>
+						<%= form_tag search_mentors_path, method: :get, class:"navbar-form input-group", role: "search" do %>
+								<%=	text_field_tag :search, params[:search], class: "form-control input-xs", placeholder: "Search #{Customer.mentors_Label.pluralize}" %>
+								<span class="input-group-btn">
+									<%= submit_tag "Search", class: "btn btn-default" %>
+								</span>
+						<% end -%>
 						<li><%= link_to "All #{Customer.mentors_Label}", mentors_url, glyph: 'users' %></li>
 						<li><%= link_to "Add new #{Customer.mentor_label}", new_mentor_url, glyph: 'plus-square' %></li>
 						<li><%= link_to "#{Customer.mentor_Label} Groups", mentor_term_groups_url, glyph: 'users' %></li>
