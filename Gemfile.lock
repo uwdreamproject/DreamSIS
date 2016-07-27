@@ -94,8 +94,6 @@ GEM
     bcrypt (3.1.11)
     bcrypt-ruby (3.1.5)
       bcrypt (>= 3.1.3)
-    binding_of_caller (0.7.2)
-      debug_inspector (>= 0.0.1)
     bootstrap-sass (3.3.6)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
@@ -130,7 +128,6 @@ GEM
       countries (~> 1.2.0)
       sort_alphabetical (~> 1.0)
     currencies (0.4.2)
-    debug_inspector (0.0.2)
     dotenv (2.1.1)
     dotenv-rails (2.1.1)
       dotenv (= 2.1.1)
@@ -580,11 +577,6 @@ GEM
       execjs (>= 0.3.0, < 3)
     unicode-display_width (1.1.0)
     unicode_utils (1.4.0)
-    web-console (2.3.0)
-      activemodel (>= 4.0)
-      binding_of_caller (>= 0.7.2)
-      railties (>= 4.0)
-      sprockets-rails (>= 2.0, < 4.0)
     will_paginate (3.1.0)
     xml-simple (1.1.5)
     zip (2.0.2)
@@ -683,7 +675,6 @@ DEPENDENCIES
   turn
   twitter-typeahead-rails
   uglifier
-  web-console (~> 2.0)
   will_paginate
   zip
 

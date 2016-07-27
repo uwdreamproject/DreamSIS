@@ -2,8 +2,6 @@ source 'https://rubygems.org'
 ruby '2.2.4'
 
 gem 'rails', '4.2.6'
-# gem "unicorn"
-# gem "unicorn-rails"
 gem "puma"
 gem 'formtastic'
 gem 'formtastic-bootstrap'
@@ -89,7 +87,7 @@ end
 
 group :development do
   gem "sqlite3"
-  gem 'web-console', '~> 2.0'
+  # gem 'web-console', '~> 2.0'
 end
 
 group :development, :test do
