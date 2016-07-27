@@ -13,6 +13,13 @@
 				<%= yield(:subheader) %>
 				<%= yield(:breadcrumbs) %>
 			</div>
+			
+			<% if content_for(:tabs) %>
+				<div class="container-fluid tabs">
+					<%= yield(:tabs) %>
+				</div>
+			<% end %>
+
 		</header>
 	<% end %>
 

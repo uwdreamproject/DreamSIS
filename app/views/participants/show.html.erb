@@ -1,60 +1,65 @@
-<%- if @current_user.can_view?(@participant.high_school) -%>
-	<p><%= link_to "Return to #{@participant.high_school.try(:name)} #{@participant.grad_year} list",
-					high_school_cohort_path(@participant.high_school, (@participant.grad_year || 0)),
-					class: 'back button' if @participant.high_school && @participant.grad_year %></p>
+<%- cache [@participant.cache_key, "details"].join("/") do -%>
+	<%= content_for :subheader do %>
+		<%= render partial: "details" %>
+	<% end %>
 <% end %>
 
-
-<div class="info-section-container vertical">
+<div class="info-section-container">
 	
 	<%- cache [@participant.cache_key, "tabs"].join("/") do -%>
-		<ul class="tabs hidden">
-			<%= link_to_section_li @participant, "Current Stats", :filter_results, 'filter_results', true %>
-			<%= link_to_section_li @participant, "Contact Information", :contact, 'contact' %>
-			<%= link_to_section_li @participant, "Colleges", :college_applications, 'college_applications' %>
-			<%= link_to_section_li @participant, "Financial", :scholarship_applications, 'scholarship_applications' %>
-			<%= link_to_section_li @participant, "Parents/Contacts", :parents, 'parents' %>
-			<%= link_to_section_li @participant, "Tests", :test_scores, 'test_scores' %>
-			<%= link_to_section_li @participant, "College Enrollment", :college_enrollments, 'college_enrollments' %>
-			<%= link_to_section_li @participant, "College Degrees", :college_degrees, 'college_degrees' %>
-			<%= link_to_section_li @participant, Customer.mentors_Label, :mentor_participants, 'mentors' %>
-			<%= link_to_section_li @participant, "Events", :event_attendances, 'events' %>
-			<%= link_to_section_li @participant, "Paperwork", nil, 'paperwork' %>
-			<%= link_to_section_li @participant, "Documents", :documents, 'documents' %>
-			<%= link_to_section_li @participant, "Notes", :notes, 'notes' %>
-			
-			<li class="tips">
-				<a>
-					<strong>Keyboard Shortcut:</strong>
-					Use <span class="keyboard">&uarr;</span> and <span class="keyboard">&darr;</span> to navigate
-				</a>
-			</li>
-		</ul>
+		<%= content_for(:tabs) do %>
+			<ul class="nav nav-tabs" role="tablist">
+				<%= link_to_section_li @participant, glyph(:dashboard), :dashboard, 'dashboard', true %>
+				<%= link_to_section_li @participant, "Stats", :filter_results, 'filter_results' %>
+				<%= link_to_section_li @participant, "Contact", :contact, 'contact' %>
+				<%= link_to_section_li @participant, "Colleges", :college_applications, 'college_applications' %>
+				<%= link_to_section_li @participant, "Financial", :scholarship_applications, 'scholarship_applications' %>
+				<%= link_to_section_li @participant, "Tests", :test_scores, 'test_scores' %>
+				<%= link_to_section_li @participant, "Enrollment", :college_enrollments, 'college_enrollments' %>
+				<%= link_to_section_li @participant, Customer.mentors_Label, :mentor_participants, 'mentors' %>
+				<%= link_to_section_li @participant, "Events", :event_attendances, 'events' %>
+				<%= link_to_section_li @participant, "Documents", :documents, 'documents' %>
+				<%= link_to_section_li @participant, "Notes", :notes, 'notes' %>
+			</ul>
+		<% end %>
 	<% end %>
-	
+
 	<div class="tab-content">
 
-		<%- cache [@participant.cache_key, "details"].join("/") do -%>
-			<%= content_for :subheader do %>
-				<%= render partial: "details" %>
-			<% end %>
-		<% end %>
+		<div role="tabpanel" class="tab-pane fade active" id="dashboard">
+			<pre>
+				- highest priority Stats
+				- latest notes
+				- follow up flag
+				- visits attendance
+				- colleges
+			</pre>
+		</div>
 
 		<%- cache [@participant.cache_key, "filter_results"].join("/") do -%>
-			<div class="info-section active" id="filter_results">
-				<div class="right"><%= link_to "Recalculate stats", refresh_filter_cache_participant_path(@participant), remote: true, method: :post %></div>
+			<div role="tabpanel" class="tab-pane fade" id="filter_results">
+				<%= link_to "Recalculate stats", refresh_filter_cache_participant_path(@participant), remote: true, method: :post, class: "pull-right" %>
 				<h2>Current Stats</h2>
 				<%= render partial: 'filter_results' %>
 			</div>
 		<% end %>
 	
-		<div class="info-section" id="contact">
+		<div role="tabpanel" class="tab-pane fade" id="contact">
 			<h2>Contact Information &amp; Attributes</h2>
 			<div><%= render partial: 'contact' %></div>
+			
+			<%- if @participant.respond_to?(:parents) -%>
+				<h2>Parents/Guardians &amp; Contacts</h2>
+				<%= render partial: 'parents' %>
+				<br>
+				<%= link_to 'Add parent/guardian or contact',
+							new_participant_parent_path(@participant),
+							class: "add button" %>
+			<% end -%>
 		</div>
 	
 		<%- if @participant.respond_to?(:college_applications) -%>
-				<div class="info-section" id="college_applications">
+				<div role="tabpanel" class="tab-pane fade" id="college_applications">
 					<h2>Colleges &amp; Postsecondary Plans
 						<%= content_tag :em, "Synced with CollegeMapper",
 							class: "right synced-with-collegemapper-note" if @participant.college_mapper_id %></h2>
@@ -66,7 +71,7 @@
 		<%- cache [@participant.cache_key, "column2-a"].join("/") do -%>
 	
 			<%- if @participant.respond_to?(:scholarship_applications) -%>
-				<div class="info-section" id="scholarship_applications">
+				<div role="tabpanel" class="tab-pane fade" id="scholarship_applications">
 					<h2>Financial Aid &amp; Scholarships</h2>
 					<%= render partial: "fafsas" if @participant.respond_to?(:fafsas) %>
 					<br />
@@ -83,20 +88,8 @@
 				</div>
 			<% end -%>
 
-			<%- if @participant.respond_to?(:parents) -%>
-				<div class="info-section" id="parents">
-					<h2>Parents/Guardians &amp; Contacts</h2>
-					<%= render partial: 'parents' %>
-					<br>
-					<%= link_to 'Add parent/guardian or contact',
-								new_participant_parent_path(@participant),
-								class: "add button" %>
-				</div>
-			<% end -%>
-
-
 			<%- if @participant.respond_to?(:test_scores) -%>
-				<div class="info-section" id="test_scores">
+				<div role="tabpanel" class="tab-pane fade" id="test_scores">
 					<h2>Tests</h2>
 					<%= render partial: 'test_scores' %>
 					<br>
@@ -107,23 +100,20 @@
 			<% end -%>
 
 			<%- if @participant.respond_to?(:college_enrollments) -%>
-				<div class="info-section" id="college_enrollments">
+				<div role="tabpanel" class="tab-pane fade" id="college_enrollments">
 					<h2>College Enrollment</h2>
 					<%= render partial: 'college_enrollments' %>
+					
+					<h2>College Degrees</h2>
+					<%= render partial: 'college_degrees' %>
+
 				</div>
 			<% end -%>
 
-			<%- if @participant.respond_to?(:college_degrees) -%>
-				<div class="info-section" id="college_degrees">
-					<h2>College Degrees</h2>
-					<%= render partial: 'college_degrees' %>
-				</div>
-			<% end -%>
-		
 		<% end %>
 
 		<%- if @participant.respond_to?(:mentors) -%>
-			<div class="info-section" id="mentors">
+			<div role="tabpanel" class="tab-pane fade" id="mentors">
 				<%- cache [@participant.cache_key, "mentors"].join("/") do -%>
 					<h2><%= Customer.mentors_Label %></h2>
 					<%= render partial: 'mentors' %>
@@ -142,23 +132,18 @@
 		<% end %>
 
 		<%- if @participant.respond_to?(:event_attendances) -%>
-			<div class="info-section" id="events">
+			<div role="tabpanel" class="tab-pane fade" id="events">
 				<h2>Events &amp; Activities</h2>
 				<%= render partial: 'events' %>
 			</div>
 		<% end -%>
 
-		<%- if @participant.respond_to?(:submitted_fafsa?) || @participant.respond_to?(:fafsas) -%>
-			<div class="info-section" id="paperwork">
-				<%= render partial: 'paperwork_status' %>
-			</div>
-		<% end -%>
-
-		<div class="info-section" id="documents">
+		<div role="tabpanel" class="tab-pane fade" id="documents">
+			<%= render partial: 'paperwork_status' if @participant.respond_to?(:submitted_fafsa?) || @participant.respond_to?(:fafsas) %>
 			<%= render partial: "documents" %>
 		</div>
 
-		<div class="info-section" id="notes">
+		<div role="tabpanel" class="tab-pane fade" id="notes">
 			<%= render partial: "notes" %>
 		</div>
 
@@ -169,6 +154,7 @@
 <%= operations wrap: false do %>
 
 	<%= link_to(glyph(:flag, "Needs Followup"), "", class: "needs-followup") if @participant.needs_followup? %>
+	<%= link_to(glyph(:star, "My Students"), "", class: "my-mentee") if @current_user.participants.include?(@participant) %>
 	
 	<div class="btn-group" role="group" aria-label="Operations Links">
 		<%= link_to 'Edit', edit_participant_path(@participant), class: 'btn btn-default', glyph: 'pencil' %>

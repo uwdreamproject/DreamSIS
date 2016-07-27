@@ -22,7 +22,7 @@
 	</dd>
 
 	<%- if @participant.respond_to?(:participant_group) && @participant.participant_group -%>
-	<dt><%= glyph('object-group') %> <span class="text-hide">Participant Group</span></dt>
+		<dt><%= glyph('object-group') %> <span class="text-hide">Participant Group</span></dt>
 		<dd>
 			<%= link_to @participant.participant_group.try(:title),
 						participant_group_path(@participant.participant_group.try(:id)), class: 'redirect-link' %>
