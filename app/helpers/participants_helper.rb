@@ -9,7 +9,7 @@ module ParticipantsHelper
       count = participant.try("#{collection_name}_count") if participant.respond_to?("#{collection_name}_count")
       count ||= participant.try(&collection_name).try(&:count) if participant.respond_to?("#{collection_name}")
       badge = content_tag(:span, "#{count.to_i}", class: "badge #{'zero' if count.zero?}") if count
-      link_title = safe_join([link_title, badge], " ")
+      link_title = safe_join([link_title, badge], " ") if count && !count.zero?
     end
     content_tag :li, class: "#{'active' if active}", role: "presentation" do
       link_to link_title, "##{dom_id}", aria: { controls: dom_id }, role: "tab", data: { toggle: "tab" }
