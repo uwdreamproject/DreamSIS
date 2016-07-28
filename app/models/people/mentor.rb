@@ -1,15 +1,11 @@
 class Mentor < Person
-  #for searchkick
-  include SchemaSearchable
-  searchkick index_name: tenant_index_name
-  
   extend FriendlyId
   friendly_id :friendly_slug
 
-  has_many :mentor_terms, -> { MentorTerm.deleted }
+  has_many :mentor_terms
   has_many :mentor_term_groups, through: :mentor_terms
   
-  has_many :mentor_participants, -> { MentorParticipant.deleted }
+  has_many :mentor_participants
   has_many :participants, through: :mentor_participants
 	has_many :activity_logs
   

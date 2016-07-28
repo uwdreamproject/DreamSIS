@@ -1,9 +1,4 @@
 <%= content_for(:sidebar) do %>
 	<p><%= link_to "Download in Excel", { format: :xls }, class: 'button xls' %></p>
 	<p><%= link_to "Add new #{Customer.mentor_label}", new_mentor_path, class: "add button" %>
-	
-	<div class="auto_complete">
-		<input type="input" class="search autocomplete-search" placeholder="Search <%= Customer.mentors_Label %>" data-source="<%= auto_complete_for_mentor_fullname_mentors_url %>" data-target="<%= mentor_url("id") %>" />
-	</div>
-	
-	<%- end -%>
+<%- end -%>

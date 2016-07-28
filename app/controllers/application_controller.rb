@@ -56,6 +56,19 @@ class ApplicationController < ActionController::Base
   def local_request?
     false
   end
+  
+  def search
+    @results = Searchkick.search(
+      params[:q],
+      index_name: [Location, Institution, Person, Event],
+      fields: %w[firstname^8 lastname^9 name^10 instnm^7 ialias^7 title^9 email id^20],
+      misspellings: { edit_distance: 2 }
+    )
+    
+    respond_to do |format|
+      format.json { render json: @results.collect(&:as_search_result_json) }
+    end
+  end
 
   protected
 

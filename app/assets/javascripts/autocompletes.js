@@ -1,71 +1,94 @@
-// Initialize autocompletes on page load
-$(function() {
-	prepAutocompletes();
-  prepEventCheckinAutocompletes();
-  
-  $("#main-nav > ul > li.trigger-autocomplete > a").click(function(event) {
-    $(event.target).parents("li").find("input.search").focus();
-    event.preventDefault();
-  });
-});
+$(document).on('turbolinks:load', function() {
 
-// Prep the autocompletes on the page
-function prepAutocompletes() {
-	$( ".autocomplete-search" ).autocomplete(
+	var allRecords = new Bloodhound({
+	  datumTokenizer: Bloodhound.tokenizers.obj.whitespace(['name', 'email']),
+	  queryTokenizer: Bloodhound.tokenizers.whitespace,
+	  remote: {
+	    url: '/search.json?q=%QUERY',
+	    wildcard: '%QUERY'
+	  }
+	});
+	
+	$('.global-search').typeahead({
+		hint: true,
+		highlight: true,
+		minLength: 1
+	},
 	{
-    minLength: 2,
-		source: null,
-		select: function( event, ui ) {
-			$(this).val( ui.item.fullname );
-      if ( $(this).data("target") ) {
-        var newLocation = $(this).data("target").replace("id", ui.item.id);
-        window.location = newLocation;
-      }
-      if ( $(this).data("after-select") == 'display-details') {
-        display_autocomplete_details(ui.item, $("#" + $(this).data('details-container')))
-        $(this).hide()
-      }
-      if ( $(this).data("update-with-id") ) {
-        $("#" + $(this).data('update-with-id')).val(ui.item.id)
-      }
-      return false;
-		},
-    create: function() {
-      $(this).data('ui-autocomplete')._renderItem = function( ul, item ) {
-        return $( "<li>" )
-          .append( "<a>" +
-            "<span class='primary'>" + item.fullname + "</span>" + 
-            "<span class='secondary'>" + item.secondary + "</span>" +
-            "<span class='tertiary'>" + item.klass + " " + item.id + "</span>" +
-            "</a>")
-          .appendTo( ul );
-      };
-      $(this).autocomplete("option", "source", $(this).data("source"));
-    }
-	}).attr("spellcheck", "false").attr("autocomplete", "off").attr("autocapitalize", "off");
-}
+		name: 'all-records',
+		display: 'fullname',
+		source: allRecords,
+		limit: 10,
+		templates: {
+	    empty: "<p class='text-warning'>Sorry, couldn't find anything!</p>",
+	    suggestion: function(data) { return suggestionContent(data); },
+			pending: "<p class='loading'><i class='fa fa-spin fa-spinner'></i> Searching...</p>",
+			footer: "<p class='small text-muted footer'><b>Tip:</b> Search at any time by pressing the <kbd>/</kbd> key.</p>"
+	  }
+	})
+	.attr("spellcheck", "false")
+	.attr("autocomplete", "off")
+	.attr("autocapitalize", "off")
+	.on('typeahead:select', function(ev, suggestion) {
+		if($(this).data('action') == 'navigate') {
+		  Turbolinks.visit(suggestion.url);
+		} else {
+			alert("This feature is still under construction.")
+		}
+	});
+	
+	// Focus on the global search if the "/" key is pressed.
+	$(document).keydown(function(event) {
+		if ( $(event.target).is('input, textarea, select, [contenteditable]') ) { return; }
+		if ( event.which == 191 ) {
+	   event.preventDefault();
+		 $("header .global-search").select();
+	  }
+	})
+	
+})
 
-function display_autocomplete_details(item, container) {
-  container.find(".primary").html(item.fullname)
-  container.find(".id").html("(#" + item.id + ")")
-  container.find(".secondary").html(item.secondary)
-  container.find(".tertiary").html(item.klass)
-  container.show()
-}
+// Returns a block of HTML for displaying a typeahead suggestion. The result is dependent
+// on the type of object that's been found, for example a 'Participant' object will include
+// information about the person's cohort membership in the search result.
+function suggestionContent(data) {
+	var name = data.name;
+	var icon = "user";
+	var details = [data.type + ' #' + data.id]
 
-function prepEventCheckinAutocompletes() {
-  var thread = null;
-
-  $('#person_fullname.search').on('keyup', function() {
-    if ($(this).val().length > 2) {
-    	clearTimeout(thread);
-      var target = $(this)
-    	thread = setTimeout(function() {
-    		$.ajax({
-    			url: target.data("source") + target.val(),
-    			cache: false
-    		});
-    	}, 250);
-    }
-  }).attr("spellcheck", "false").attr("autocomplete", "off").attr("autocapitalize", "off");
+	
+	switch(data.type) {
+    case "Mentor":
+		case "Parent":
+		case "Participant":
+			icon = "graduation-cap";
+		default:
+			details.push(data.email);
+			break;
+		case "Visit":
+		case "Event":
+			icon = "calendar-o";
+			break;
+		case "HighSchool":
+			icon = "map-marker";
+			break;
+		case "Institution":
+			icon = "institution";
+			break;
+	}
+	var compiled_details = $.map( details, function(v){
+	  return v === "" ? null : v;
+	}).join(" &bull; ");
+	
+	return [
+		"<div class='suggestion media'>",
+			"<div class='media-left'>",
+				"<i class='fa fa-fw fa-" + icon + " media-object' aria-hidden='true'></i>",
+			"</div>",
+			"<div class='media-body'>",
+				"<strong class='name'>" + name + "</strong>",
+				"<p class='text-muted small'>" + compiled_details + "</p>",
+			"</div>",
+		"</div>"
+	].join("\n");
 }

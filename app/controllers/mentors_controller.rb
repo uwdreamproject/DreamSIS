@@ -2,25 +2,6 @@ class MentorsController < ApplicationController
   protect_from_forgery except: [:auto_complete_for_mentor_fullname]
   skip_before_filter :login_required, :check_authorization, :save_user_in_current_thread, :check_if_enrolled, only: [:check_if_valid_van_driver]
 
-  def search
-    Mentor.reindex
-    if params[:search].present?
-      @mentors = Mentor.search(params[:search], misspellings: {edit_distance: 5})
-      @input = params[:search]
-    else
-      @mentors = Mentor.all
-    end
-  end
-
-  def autocomplete
-    render json: Mentor.search(params[:search],{
-        fields: ["firstname^5", "middlename^5", "lastname^5", "email"],
-        limit: 10,
-        load: false,
-        misspellings: {below: 5}
-      }).map(&:firstname)
-  end
-
   def index
     return redirect_to Mentor.find(params[:id]) if params[:id]
     @mentors = Mentor.page(params[:page])

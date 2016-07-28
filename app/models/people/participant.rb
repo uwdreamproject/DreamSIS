@@ -1,8 +1,4 @@
 class Participant < Person
-  # for searchkick
-  include SchemaSearchable
-  searchkick index_name: tenant_index_name
-
   belongs_to :high_school
   has_many :college_applications
   has_many :scholarship_applications
@@ -324,6 +320,10 @@ class Participant < Person
 	def participant_group_title
 		participant_group.try(:title)
 	end
+  
+  def search_result
+    super.merge(cohort: [high_school_name.to_s, grad_year.to_s].join(" "))
+  end
   
   # Returns a collection of EventAttendance objects to be displayed on a Participant's detail page.
   # Starting with all existing event_attendances, this method adds in Event objects with a grade level range that

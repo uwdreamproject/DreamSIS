@@ -2,6 +2,9 @@ require 'open-uri'
 
 # Models an Institution record, pulled from the Department of Education's list. You must load the institutions list from a CSV file by calling +Institution#load_from_csv!+.
 class Institution < ActiveRecord::Base
+  include SchemaSearchable
+  searchkick index_name: tenant_index_name, callbacks: :async
+
   has_many :college_applications, foreign_key: "institution_id"
   has_many :college_enrollments
   has_many :college_degrees
@@ -84,6 +87,10 @@ class Institution < ActiveRecord::Base
     first_url = self.webaddr.is_a?(Array) ? self.webaddr.first : self.webaddr
     Addressable::URI.heuristic_parse(first_url).to_s
   end
+  
+  def search_result
+    super.merge(url: Rails.application.routes.url_helpers.college_path(self))
+  end
 	
 	attr_accessor :count
   
@@ -103,11 +110,11 @@ class Institution < ActiveRecord::Base
   end
 	
 	# Returns the ICLEVEL description for this Institution:
-	# 
+	#
 	# 1: 	4-year college/university
 	# 2: 	2-year college
 	# 3: 	Less than 2-year college
-	# 
+	#
 	# Any other values return nil
 	def iclevel_description
 		ICLEVEL_DESCRIPTIONS[iclevel.to_s]
@@ -118,10 +125,10 @@ class Institution < ActiveRecord::Base
     CONTROL_DESCRIPTIONS[control.to_s]
   end
 
-  # Returns the SECTOR description for this Institution, which is one of nine institutional 
-  # categories resulting from dividing the universe according to control and level. Control 
-  # categories are public, private not-for-profit, and private for-profit. Level categories 
-  # are 4-year and higher (4 year), 2-but-less-than 4-year (2 year), and less than 2-year. 
+  # Returns the SECTOR description for this Institution, which is one of nine institutional
+  # categories resulting from dividing the universe according to control and level. Control
+  # categories are public, private not-for-profit, and private for-profit. Level categories
+  # are 4-year and higher (4 year), 2-but-less-than 4-year (2 year), and less than 2-year.
   # For example: public, 4-year institutions.
   def sector_description
 		SECTOR_DESCRIPTIONS[sector.to_s]
@@ -136,7 +143,7 @@ class Institution < ActiveRecord::Base
   # Returns nil if College Board returns no results. If there's only a single result, returns just
   # that code. Otherwise, you'll get a hash of CEEB codes and college names as they are returned by
   # College Board.
-  # 
+  #
   # If needed, pass a different +name_value+ to try a slightly different version of the name in the
   # search.
   def ceeb_code_guess(name_value = self.name.gsub("-"," ").gsub("Campus",""), try_again_on_failure = true)

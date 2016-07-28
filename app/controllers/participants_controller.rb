@@ -8,15 +8,6 @@ class ParticipantsController < ApplicationController
   before_filter :set_report_type
   before_filter :fetch_filter_warning_counts
 
-  def search
-    Participant.reindex
-    if params[:search].present?
-      @participants = Participant.search(params[:search])
-    else
-      @participants = Participant.all
-    end
-  end
-
   # GET /participants
   # GET /participants.xml
   def index

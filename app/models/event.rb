@@ -1,5 +1,8 @@
 class Event < ActiveRecord::Base
   include Comparable
+  
+  include SchemaSearchable
+  searchkick index_name: tenant_index_name, callbacks: :async
 
   has_many :attendees, inverse_of: :event, class_name: "EventAttendance"
   has_many :people, through: :attendees

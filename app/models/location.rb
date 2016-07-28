@@ -2,6 +2,9 @@ class Location < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name
 
+  include SchemaSearchable
+  searchkick index_name: tenant_index_name, callbacks: :async
+
   validates_presence_of :name
   validates_uniqueness_of :name
   validates :website_url, format: URI::regexp(%w(http https))

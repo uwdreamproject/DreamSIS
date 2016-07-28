@@ -108,8 +108,6 @@ Dreamsis::Application.routes.draw do
   # ---------------------------------------
   resources :participants do
     collection do
-      get 'search'
-      get :auto_complete_for_participant_fullname
       get :check_duplicate
       get :fetch_participant_group_options
       get :check_export_status
@@ -183,8 +181,6 @@ Dreamsis::Application.routes.draw do
   # ---------------------------------------
   resources :mentors do
     collection do
-      get 'search'
-      get :auto_complete_for_mentor_fullname
       get :onboarding
       get :onboarding_textblocks
       get :event_status
@@ -266,6 +262,7 @@ Dreamsis::Application.routes.draw do
   # ---------------------------------------
   # mount Sidekiq::Web, at: "/sidekiq"
   get 'sidekiq/status' => 'application#sidekiq_status'
+  get 'search' => 'application#search'
   get '/' => 'welcome#index'
   get 'ping' => 'application#ping'
   root to: 'welcome#index'

@@ -1,4 +1,7 @@
 class Person < ActiveRecord::Base
+  include SchemaSearchable
+  searchkick index_name: tenant_index_name, callbacks: :async
+
   include Comparable
 
   has_many :event_attendances
