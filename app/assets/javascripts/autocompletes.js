@@ -1,3 +1,14 @@
+// Hide the global search when the user clicks anywhere else on screen.
+$(document).on('click', function(e) {
+	if($("#nav-global-search").has($(e.target)).length) {
+		e.preventDefault();
+		$("#nav-global-search").removeClass('minimized').find("input.search").focus();
+	} else {
+		$("#nav-global-search").addClass("minimized");
+	}
+})
+
+// Initialize the global search on each page/turbolinks load.
 $(document).on('turbolinks:load', function() {
 
 	var allRecords = new Bloodhound({
@@ -42,7 +53,7 @@ $(document).on('turbolinks:load', function() {
 		if ( $(event.target).is('input, textarea, select, [contenteditable]') ) { return; }
 		if ( event.which == 191 ) {
 	   event.preventDefault();
-		 $("header .global-search").select();
+		 $("#nav-global-search").removeClass('minimized').find("input.search").focus();
 	  }
 	})
 	

@@ -1,7 +1,6 @@
 header.main {
 
 	img.avatar {
-		/*border: 1px solid #919191;*/
 		border-radius: 50px;
 	}
 
@@ -191,4 +190,36 @@ header.sub {
 
 .tab-content.vertical {
 	@extend .col-md-10;
+}
+
+#nav-global-search {
+	
+	> .form-group {
+		transition: all 0.25s ease-in-out;
+		margin-right: 0;
+		opacity: 1.0;
+		left: 0;
+		position: relative;
+	}
+	
+	> i.fa {
+		color: #e9e9e9;
+		margin-right: 10px;
+		transition: all 0.25s ease-in-out;
+		cursor: pointer;
+		font-size: 14px;
+	}
+}
+
+#nav-global-search.minimized {
+	
+	> .form-group {
+		width: 0;
+		overflow: hidden;
+		opacity: 0;
+	}
+	
+	> i.fa {
+		margin-right: 0;
+	}
 }

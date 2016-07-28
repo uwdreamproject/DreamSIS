@@ -122,14 +122,9 @@
 			</ul>
 
 			<% unless @current_user.blank? || @current_user == :false %>
-      
-        <form class="navbar-form navbar-left" action="/search">
-          <div class="form-group">
-            <input type="text" class="form-control search typeahead global-search" data-action="navigate" name="q" placeholder="Search">
-          </div>
-        </form>
-      
+
 				<ul class="nav navbar-nav navbar-right user">
+
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle avatar" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 							<%= image_tag(@current_user.person.avatar_image_url, height: 30, class: "avatar") if @current_user.person && @current_user.person.avatar_image_url %> <span class="caret"></span>
@@ -157,6 +152,14 @@
 						</ul>
 					</li>
 				</ul>
+        
+        <form class="navbar-form navbar-right minimized" id="nav-global-search" action="/search" role="search">
+          <%= glyph(:search) %>
+          <div class="form-group">
+            <input type="text" class="form-control search typeahead global-search" data-action="navigate" name="q" placeholder="Search">
+          </div>
+        </form>
+      
 			<% else %>
 				<p class="navbar-text navbar-right">
 					<%= link_to 'Login', login_path(return_to: request.url), glyph: 'sign-in', class: 'btn btn-success' %>
