@@ -1,0 +1,22 @@
+<%- @count = @results.count -%>
+<h1>Search results for "<%= @query %>"(<%= "#{@count} result".pluralize(@count)%> found)</h1>
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Type</th>
+		</tr>
+	</thead>
+	<tbody>
+		<%- @results.each do |result| %>
+			<%- name = result.try(:fullname) == nil ? result.name : result.fullname %>
+			<tr>
+				<td>
+					<%= link_to name, result %>
+				</td>
+				<td><%= result.try(:type) %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+

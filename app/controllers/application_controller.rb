@@ -64,8 +64,11 @@ class ApplicationController < ActionController::Base
       fields: %w[firstname^8 lastname^9 name^10 instnm^7 ialias^7 title^9 email id^20],
       misspellings: { edit_distance: 2 }
     )
+
+    @query = params[:q]
     
     respond_to do |format|
+      format.html # search.html.erb
       format.json { render json: @results.collect(&:as_search_result_json) }
     end
   end
