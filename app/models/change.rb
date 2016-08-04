@@ -25,6 +25,7 @@ class Change < ActiveRecord::Base
   def self.log_create(obj)
     return false if obj.is_a?(Change)
     return false if obj.is_a?(ActiveRecord::SessionStore::Session)
+    return false if obj.is_a?(Customer)
     Change.create(
       change_loggable_id: obj.id,
       change_loggable_type: obj.class.to_s,

@@ -22,6 +22,9 @@ module Dreamsis
 
     # Activate observers that should always be running.
     # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
+    
+    # Opt in to new callback error behavior.
+    config.active_record.raise_in_transactional_callbacks = true
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
@@ -50,13 +53,19 @@ module Dreamsis
     # Prevent app initialization when precompiling assets
     config.assets.initialize_on_precompile = false
     
-    config_file_path = File.join(Rails.root, "config", "api-keys.yml")
-    temp_api_keys = YAML.load_file(config_file_path)
-    redis_endpoint = temp_api_keys["redis"][Rails.env]["endpoint"]
-    redis_password = temp_api_keys["redis"][Rails.env]["password"]
-    config.cache_store = :redis_store, { 
-      url: "redis://#{redis_endpoint}", password: redis_password, namespace: "cache" 
-    }
+    # config_file_path = File.join(Rails.root, "config", "api-keys.yml")
+    # temp_api_keys = YAML.load_file(config_file_path)
+    # redis_endpoint = temp_api_keys["redis"][Rails.env]["endpoint"]
+    # redis_password = temp_api_keys["redis"][Rails.env]["password"]
+    # config.cache_store = :redis_store, {
+    #   url: "redis://#{redis_endpoint}", password: redis_password, namespace: "cache"
+    # }
+    
+    # Turn on json escaping
+    config.active_support.escape_html_entities_in_json = true
+    
+    # Use sidekiq as our ActiveJob backend
+    config.active_job.queue_adapter = :sidekiq
 
   end
 end

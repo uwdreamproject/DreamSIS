@@ -64,7 +64,7 @@ module BootstrapHelper
   end
   
   def operations(options = {}, &block)
-    options = { wrap: true }.merge(options) # wrap in an .btn-group div
+    options = { wrap: true }.merge(options) if options.respond_to?(:merge) # wrap in an .btn-group div
     content_for(:operations) do
       if block_given?
         content = capture(&block)
