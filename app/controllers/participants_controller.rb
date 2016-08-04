@@ -219,13 +219,8 @@ class ParticipantsController < ApplicationController
       return render_error("You are not allowed to view that participant.")
     end
     
-    if @participant.avatar?
-			av = params[:size] ? @participant.avatar.versions[params[:size].to_sym] : @participant.avatar
-			return send_default_photo(params[:size]) if av.nil?
-      redirect_to av.url
-    else
-      send_default_photo(params[:size]) if av.nil?
-    end
+    av = params[:size] ? @participant.avatar.versions[params[:size].to_sym] : @participant.avatar
+		redirect_to av.url
   end
 	
   def event_attendances
@@ -457,12 +452,6 @@ class ParticipantsController < ApplicationController
   
   def fetch_filter_warning_counts
     @filter_warning_counts = Customer.redis.hgetall("filters:counts:Participant:warn")
-  end
-
-  def send_default_photo(size)
-		filename = size == "thumb" ? "blank_avatar_thumb.png" : "blank_avatar.png"
-    send_file File.join(Rails.root, "public", "images", filename),
-              disposition: 'inline', type: 'image/png', status: 203
   end
 
 	def respond_to_xlsx

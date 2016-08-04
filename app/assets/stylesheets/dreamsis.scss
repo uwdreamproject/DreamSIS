@@ -84,18 +84,6 @@ table.participants {
 	  text-overflow: ellipsis;
 	}
 
-	td.avatar {
-		width: 32px;
-	}
-
-	img.avatar {
-		width: 32px;
-		height: 32px;
-		float: left;
-		margin-right: 1em;
-		border-radius: 3px;
-	}
-
 }
 
 dl {
@@ -269,82 +257,25 @@ p#separator, .separator {
 	color: $orange !important;
 }
 
-.record-header {
-	padding: 20px;
-	padding-top: 20px;
-	position: relative;
-	min-height: 5em;
-	/*background-color: rgb(247, 249, 250);*/
-	border-bottom: 5px solid rgb(236, 241, 245);
-	transition: all 0.25s ease-in-out;
-	/*width: 95%;*/
-
-	.photo-container {
-		z-index: 10;
-		margin: 0;
-		position: relative;
-		float: left;
-	}
-
-	.photo-container .avatar {
-		// background: url() 50% 50% / 105%;
-		transition: all 0.25s ease-in-out;
-	  width: 80px;
-	  height: 80px;
-	  display: block;
-	  border-radius: 100px;
-	  background-repeat: no-repeat;
-	}
-
-	.photo-container .avatar > em {
-	  display: block;
-	  text-align: center;
-	  top: 50%;
-	  position: absolute;
-	  width: 100%;
-	  color: white;
-	  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-	  font-variant: normal;
-	  opacity: 0;
-	}
-
-	.photo-container .avatar:hover {
-	  opacity: 0.9;
-	  cursor: pointer;
-	}
-
-	.photo-container .avatar:hover > em {
-	  opacity: 1;
-	}
-
-	.photo-container .controls {
-	  position: absolute;
-	  top: 105%;
-	  background: white;
-	  padding: 1em;
-		transition: all 0.25s ease-in-out;
-	  opacity: 0;
-	  visibility: hidden;
-	}
-
-	.photo-container .controls.expanded {
-	  opacity: 1;
-	  visibility: visible;
-	}
-
-	.photo-container .controls:after, .photo-container .controls:before {
-	  left: 40px;
-	}
-
-	.name {
-		float: left;
-		margin-left: 20px;
-		margin-top: 10px;
-		transition: all 0.25s ease-in-out;
-	  max-width: 50%;
-	}
-
+img.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50px;
+	background-color: lighten($primary-grey, 60%);
 }
+
+header.sub .avatar-container {
+  float: left;
+  display: block;
+  margin-right: 20px;
+  margin-top: 10px;
+  
+  > img.avatar {
+    width: 64px;
+    height: 64px;
+  }
+}
+
 
 .activity_logs.weekly_summary {
 	

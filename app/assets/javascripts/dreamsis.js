@@ -189,4 +189,9 @@ $( function() {
   // Enable all tablesorter tables
   registerTableSorters()
   
+  
+})
+
+$(document).on('turbolinks:load', function() {
+  $('[data-toggle="popover"]').popover()
 })

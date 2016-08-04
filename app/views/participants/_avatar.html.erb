@@ -1,9 +1,8 @@
-<div class="photo-container">
-	<a class="avatar" style="background-image: url(<%= participant_avatar_path(@participant, :small) %>);" onClick="$(this).siblings('.controls').toggleClass('expanded'); return false;">
-		<em></em>
-	</a>
+<a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Dismissible popover" data-content="And here's some amazing content. It's very engaging. Right?" class="avatar-container">
+	<%= image_tag participant_avatar_path(@participant, :small), class: 'avatar' %>
+</a>
 
-	<div class="controls arrow-box arrow-top">
+	<!-- <div class="controls arrow-box arrow-top">
 		<%= image_tag @participant.avatar.medium if @participant.avatar? %>
 		
 		<%= semantic_form_for(@participant, html: {id: "avatar_form", multipart: true}) do |f| %>
@@ -17,4 +16,4 @@
 		    <%#= link_to_function "Cancel", "$(this).parents('.controls').removeClass('expanded')", class: "cancel" %>
 		<% end %>
 	</div>
-</div>
+</div> -->
