@@ -2,22 +2,16 @@
 
 one:
   participant_id: 1
-  institution_id: 1
-  academic_year: 1
-  cost_of_attendance: 1
+  college_application_id: 1
+  academic_year: 2016
+  cost_of_attendance_cents: 5000
   cost_of_attendance_source: MyString
-  expected_family_contribution: 1
-  creator_id: 1
-  updater_id: 1
-  summary: MyText
+  expected_family_contribution_cents: 1
 
 two:
   participant_id: 1
-  institution_id: 1
-  academic_year: 1
-  cost_of_attendance: 1
+  college_application_id: 2
+  academic_year: 2016
+  cost_of_attendance_cents: 10000
   cost_of_attendance_source: MyString
-  expected_family_contribution: 1
-  creator_id: 1
-  updater_id: 1
-  summary: MyText
+  expected_family_contribution_cents: 1
