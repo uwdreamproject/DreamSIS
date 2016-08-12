@@ -23,7 +23,7 @@ module BootstrapHelper
   # icon will be prepended to the link text.
   def link_to(name = nil, options = nil, html_options = nil, &block)
     if html_options.try(:[], :glyph)
-      name = glyph(html_options.delete(:glyph)) + name
+      name = glyph(html_options.delete(:glyph) + " fa-fw") + name
       super(name, options, html_options, &block)
     else
       super

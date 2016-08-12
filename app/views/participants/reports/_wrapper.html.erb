@@ -9,20 +9,22 @@
 		</td> -->
 		<td rowspan="<%= row_count %>" class="name multirow-highlight">
 			<%= link_to participant.lastname_first, participant %>
-			<small class="inactive-note">Inactive</small>
-			<small class="not-target-note"><%= Customer.not_target_label.titleize %></small>
+			<div class="pull-right">
+				<%= content_tag :small, Customer.not_target_label.titleize, class: "label label-outline" if participant.not_target_participant? %>
+				<%= content_tag :small, "Inactive", class: "label label-danger" if participant.inactive? %>
+			</div>
 		</td>
-		<%= render partial: "participants/reports/#{report.pluralize}", 
+		<%= render partial: "participants/reports/#{report.pluralize}",
 					locals: { participant: participant, collection: collection, row_count: collection.size, row_index: row_index } %>
 	<% end %>
 
 	<%- unless collection.empty? -%>
-		<%= render partial: "participants/reports/#{report.singularize}", 
+		<%= render partial: "participants/reports/#{report.singularize}",
 					object: collection[row_index-1],
 					locals: { participant: participant, row_index: row_index } %>
 	<% end %>
 
-	<%- if row_index == 1 -%>	
+	<%- if row_index == 1 -%>
 		<td rowspan="<%= row_count %>" class="functions multirow-highlight">
 			<%= link_to 'Show', participant_path(participant, anchor: "!/section/#{report}") %>
 			<%= link_to 'Edit', edit_participant_path(participant) %>

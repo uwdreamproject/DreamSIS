@@ -31,6 +31,17 @@ h1, .h1 {
 	margin-bottom: 20px;
 }
 
+h4, .h4 {
+	font-size: 11px;
+	text-transform: uppercase;
+	font-weight: 700;
+	color: lighten($primary-grey, 20%);
+	
+	> a {
+		color: inherit;
+	}
+}
+
 .turbolinks-progress-bar {
   background-color: $primary-gold;
 }
@@ -41,7 +52,7 @@ table {
 	@extend .table-hover;
 
 	th {
-		border-bottom: 1px solid rgb(176, 183, 226);
+		border-bottom: 1px solid rgb(176, 183, 226) !important;
 		background-color: rgb(246, 248, 252);
 	}
 
@@ -75,6 +86,15 @@ table {
 		background-color: #eff9ff;
 	}
 
+	tbody + tbody {
+		border-top: none !important;
+	}
+}
+
+.table > thead > tr > th, table > thead > tr > th, .table > thead > tr > td, table > thead > tr > td, .table > tbody > tr > th, table > tbody > tr > th, .table > tbody > tr > td, table > tbody > tr > td, .table > tfoot > tr > th, table > tfoot > tr > th, .table > tfoot > tr > td, table > tfoot > tr > td {
+	border-bottom: 1px solid rgb(238, 241, 246);
+	vertical-align: middle;
+	border-top: none;
 }
 
 table.participants {
@@ -152,6 +172,21 @@ dl {
 p#separator, .separator {
 	font-variant: small-caps;
 	color: #999;
+}
+
+.badge.badge-minimal, .btn-default .badge.badge-minimal {
+	padding: 3px 7px;
+	font-size: 11px;
+	background-color: transparent;
+	color: $primary-grey;
+	
+	&:before {
+		content: "(";
+	}
+	
+	&:after {
+		content: ")";
+	}
 }
 
 .borderless {
