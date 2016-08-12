@@ -147,13 +147,6 @@ function registerTableSorters() {
 }
 
 /*
-  Execute timeago timestamp substitution
-*/
-function updateRelativeTimestamps() {
-  $('time.timeago').timeago();
-}
-
-/*
   Global Functions
 */
 $( function() {

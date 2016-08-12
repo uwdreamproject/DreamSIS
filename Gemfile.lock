@@ -336,6 +336,8 @@ GEM
       builder
       minitest (>= 5.0)
       ruby-progressbar
+    momentjs-rails (2.11.1)
+      railties (>= 3.1)
     monetize (1.4.0)
       money (~> 6.7)
     money (6.7.1)
@@ -632,6 +634,7 @@ DEPENDENCIES
   minitest
   minitest-ci!
   minitest-reporters
+  momentjs-rails
   money-rails
   net-sftp
   nokogiri
