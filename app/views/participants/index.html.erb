@@ -25,10 +25,14 @@
       <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
-      <li><a href="#">Dropdown link</a></li>
-      <li><a href="#">Dropdown link</a></li>
+			<% for key, title in Participant::ReportTypes do %>
+	      <li><a href="#"><%= title %></a></li>
+      <% end %>
     </ul>
 	</div>
+	
+	<%= render "participants/bulk_actions" %>
+	
 <% end %>
 
 <div id="stages_selector"></div>

@@ -1,23 +1,27 @@
-<div class="bulk_actions" id="bulk_actions" style="display:none">
-	
-	<h3>With Selected <span id="bulk_actions_count"></span></h3>
-	
-	<p><%= link_to_participant_bulk_action "Send e-mail", :send_email, class: "email button"  %></p>
-
-	<%- if @current_user.admin? || @current_user.person.current_lead? -%>
-		<%- if @participant_groups && !@participant_groups.empty? -%>
-			<p><%= link_to_participant_bulk_action "Add to group", :assign_to_group, class: "people button", 
-						extra_params: "participant_group_ids=#{@participant_groups.collect(&:id).join(",")}" %></p>
-		<% end %>
+<div class="btn-group bulk_actions" role="group">
+	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled title="Select one or more records below to enable bulk actions.">
+		<%= glyph(:bolt) %> Actions
+		<span class="badge" id="bulk_actions_count"></span>
+		<span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu">
 		
-		<p><%= link_to_participant_bulk_action "Assign to #{Customer.mentor_label}", :assign_mentor, class: "add user button"  %></p>
-	<%- end %>
+		<li><%= link_to_participant_bulk_action "Send e-mail", :send_email, glyph: "send"  %></li>
 
-	<!-- <p><%#= link_to_participant_bulk_action "Check-in for event", :check_in_event, class: "calendar_day button"  %></p> -->
-	<p><%= link_to_participant_bulk_action "Flag for follow-up", :flag_for_followup, class: "followup button"  %></p>
-	<p><%= link_to_participant_bulk_action "Add note", :add_note, class: "add note button"  %></p>
-	<%- if Customer.allow_participant_login? -%>
-		<p><%= link_to_participant_bulk_action "Send Login Links", :send_login_links, class: "send-login button", confirm: "Are you sure you want to send login links to these students? This will allow them to create new accounts in DreamSIS."  %></p>
-	<%- end -%>
-	
+		<%- if @current_user.admin? || @current_user.person.current_lead? -%>
+			<%- if @participant_groups && !@participant_groups.empty? -%>
+				<li><%= link_to_participant_bulk_action "Add to group", :assign_to_group, glyph: "object-group",
+							extra_params: "participant_group_ids=#{@participant_groups.collect(&:id).join(",")}" %></li>
+			<% end %>
+			
+			<li><%= link_to_participant_bulk_action "Assign to #{Customer.mentor_label}", :assign_mentor, glyph: "user-plus"  %></li>
+		<%- end %>
+
+		<li><%= link_to_participant_bulk_action "Flag for follow-up", :flag_for_followup, glyph: "flag"  %></li>
+		<li><%= link_to_participant_bulk_action "Add note", :add_note, glyph: "comment"  %></li>
+		<%- if Customer.allow_participant_login? -%>
+			<li><%= link_to_participant_bulk_action "Send Login Links", :send_login_links, glyph: "envelope", confirm: "Are you sure you want to send login links to these students? This will allow them to create new accounts in DreamSIS."  %></li>
+		<%- end -%>
+		
+	</ul>
 </div>

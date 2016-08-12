@@ -12,12 +12,10 @@ function scrollToObject(jqObj) {
 
 
 // Prep the bulk actions links to incorporate the currently selected rows with javascript.
-$( function() {
-  $(".bulk_actions a").click(function() {
-    var url = $(this).data("original-href") + "?" + selectedElements().serialize() + "&" + $(this).data("extra-params")
-    $( this ).attr("href", url)
-  })
-})
+// $(document).on("click", ".bulk_actions a", function() {
+//   var url = $(this).data("original-href") + "?" + selectedElements().serialize() + "&" + $(this).data("extra-params")
+//   $( this ).attr("href", url)
+// })
 
 // Returns the currently selected rows
 function selectedElements() {
@@ -28,10 +26,11 @@ function selectedElements() {
 function updateWithSelectedActions() {
 	if($(".bulk_actions")) {
 		if(selectedElements().length > 0) {
-			$(".bulk_actions").show()
-			$("#bulk_actions_count").text(selectedElements().length)
+			$(".bulk_actions > button").attr("disabled", false)
+			$("#bulk_actions_count").show().text(selectedElements().length)
 		} else {
-			$(".bulk_actions").hide()
+			$(".bulk_actions > button").attr("disabled", true)
+      $("#bulk_actions_count").hide()
 		}
 	}
 }
