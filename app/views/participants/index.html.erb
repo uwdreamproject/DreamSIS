@@ -10,11 +10,13 @@
 		<%=h @grad_year.to_s if @grad_year %>
 		<%= indicator(:participants) %>
 	</h1>
-	<h3 class="light" style="margin-top: 0">
-		Listing
-		<span id="filtered_record_count"></span>
-		<span id="total_record_count"><%= @participants.total_entries %></span>
-	</h3>
+	<ul class="list-inline" id="filter_bucket">
+		<li class="text-muted">
+			<%= glyph('filter hidden') %>
+			<span id="filtered_record_count"></span>
+			<span id="total_record_count"><%= pluralize @participants.total_entries, Customer.participant_label %></span>
+		</li>
+	</ul>
 <% end %>
 
 <%= operations do %>
@@ -37,7 +39,6 @@
 <% end %>
 
 <div id="stages_selector"></div>
-<div id="filter_bucket"></div>
 
 <%- if @participant_group -%>
 	<h2>
@@ -49,7 +50,7 @@
 <table class="participants multirow active-report table" id="participants_table">
 	<thead></thead>
 	
-	<tfoot id="empty_placeholder" style="display:none">
+	<tfoot id="empty_placeholder" class="hidden">
 		<tr class="empty">
 			<td colspan="20">No <%= Customer.participants_label %> match your selection.</td>
 		</tr>

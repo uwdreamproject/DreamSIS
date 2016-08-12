@@ -346,11 +346,19 @@ class ParticipantsController < ApplicationController
   
   # Returns a json payload of the matching objects for the selected filter criteria.
   def filter_results
-    query = params[:filter_selections].blank? ? [] : params[:filter_selections].split(",")
-    @object_ids = ObjectFilter.intersect(query)
+    if selections = params[:filter_selections]
+      query = selections.collect{ |key, value| "#{key}:#{value}" unless value.blank? }
+      @object_ids = ObjectFilter.intersect(query)
+    end
     
     respond_to do |format|
-      format.json { render(json: { object_ids: @object_ids, filter_counts: {} }) }
+      format.json { render(json: {
+        object_ids: @object_ids,
+        filter_selections: params[:filter_selections],
+        currentRequest: params[:currentRequest],
+        filter_counts: {},
+        total_record_count: @object_ids.try(:count)
+      }) }
     end
   end
   

@@ -27,23 +27,17 @@ if (typeof attendanceEventIds !== 'undefined') {
   buildAttendanceTable(attendanceEventIds)
 }
 
-// Run all of the page load hooks
-$("#stages_selector").html("<%=j render('stages') %>")
-$("#stages_selector a[data-stage]").click(clickStageSelector)
-$("a.filter_results_count").hover(loadFilterResultsCount, hideFilterResultsCount)
-updateFiltersWithLocationHash()
-executeFilters()
-updateRecordCount()
-updateRelativeTimestamps()
-
 // Fetch the next page of participants
 if ("<%=j @participants.next_page.to_s %>" && !stopLoading) {
   console.log("Fetching page <%=j @participants.next_page.to_s %>")
+  $("#participants_table").data("loading", true)
+  $(".indicator.table").removeClass('hidden')
   $.ajax({ url: '<%=j url_for(report: @report, page: @participants.next_page) %>', dataType: 'script' });
 } else {
   hideLoadProgress()
-  prepareFollowupPanels()
-  registerTableSorters()
-  setTimeout(prepareSelectAll, 1000)
+  // prepareFollowupPanels()
+  // registerTableSorters()
+  // setTimeout(prepareSelectAll, 1000)
   $("#participants_table").data("loading", false)
+  $(".indicator.table").addClass('hidden')
 }

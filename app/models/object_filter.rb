@@ -105,7 +105,7 @@ class ObjectFilter < ActiveRecord::Base
   # the intersection of those conditions in the filter cache. You can specify
   # direct redis keys ("ObjectFilter:6:pass") or short form ("6:pass").
   def self.intersect(filter_selections)
-    keys = filter_selections.map{ |s| s.start_with?("ObjectFilter:") ? s : "ObjectFilter:" + s }
+    keys = filter_selections.map{ |s| s.count(":") < 2 ? "ObjectFilter:" + s : s }
     Customer.redis.sinter(keys)
   end
 
