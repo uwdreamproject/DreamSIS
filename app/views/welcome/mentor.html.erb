@@ -9,8 +9,8 @@
 <div class="content-block">
 	<%#= render partial: "participants/report_select" %>
 	<h1 class="mentees">My Current <%= Customer.mentees_Label %></h1>
-	<p>This section shows the mentees that you're currently assigned to work with. 
-		If you start working with another <%= Customer.mentee_label %> as well, just tell your 
+	<p>This section shows the mentees that you're currently assigned to work with.
+		If you start working with another <%= Customer.mentee_label %> as well, just tell your
 		<%= Customer.lead_label %> and he or she will add the student to your list.</p>
 
 	<%= render partial: 'mentors/mentees' %>
@@ -51,4 +51,13 @@
 			</dd>
 		<% end %>
 
-<%= render partial: "mentor_sidebar" %>
+		<%- if Customer.require_risk_form? && @mentor.respond_to?(:signed_risk_form?) -%>
+			<dt>Acknowledgment of Risk Form</dt>
+			<dd>
+				<% if @mentor.signed_risk_form? %>
+					Signed on <%= @mentor.risk_form_signed_at.to_s(:short_date) %>
+				<%- else -%>
+					<span class="error-message">Not signed</span>
+				<% end -%>
+			</dd>
+		<% end -%>
