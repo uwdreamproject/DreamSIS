@@ -10,14 +10,6 @@ function scrollToObject(jqObj) {
   );
 }
 
-// Setup the onClick for the select-all checkbox
-function prepareSelectAll() {
-  $("input:checkbox.select-all").click(function() {
-    var currentState = $( this ).prop("checked")
-    $('input.index_check_box').prop("checked", currentState)
-    updateWithSelectedActions()
-  })
-}
 
 // Prep the bulk actions links to incorporate the currently selected rows with javascript.
 $( function() {
@@ -181,6 +173,13 @@ $( function() {
   
   // Enable all tablesorter tables
   registerTableSorters()
+
+
+  $(document).on("click", "input:checkbox.select-all", function() {
+    var currentState = $( this ).prop("checked")
+    $('input.index_check_box').prop("checked", currentState)
+    updateWithSelectedActions()
+  })
   
   
 })
