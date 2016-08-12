@@ -43,6 +43,12 @@ class WelcomeController < ApplicationController
     end
   end
 
+  def participation
+    respond_to do |format|
+      format.html
+    end
+  end
+
   protected
   
   def check_identity
