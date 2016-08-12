@@ -122,8 +122,8 @@ module ApplicationHelper
   end
 
   def timeago(time, options = {})
-    options[:class] ||= "timeago"
-    content_tag(:time, time.to_s, options.merge(datetime: time.iso8601)) if time
+    options[:class] ||= "livestamp"
+    content_tag(:time, time.to_s(:short), options.merge(datetime: time.iso8601, data: { livestamp: time.iso8601 })) if time
   end
 
   def alert_class_for(flash_type)
