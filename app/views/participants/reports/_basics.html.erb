@@ -1,21 +1,24 @@
-<td class="cohort"><%= link_to "#{truncate(participant.high_school.name, length: 30)} #{participant.grad_year}", 
-				high_school_cohort_path(participant.high_school, (participant.grad_year || 0)), 
+<td class="cohort"><%= link_to "#{truncate(participant.high_school.name, length: 30)} #{participant.grad_year}",
+				high_school_cohort_path(participant.high_school, (participant.grad_year || 0)),
 				class: 'redirect-link' unless participant.high_school.nil? %></td>
 
 <td class="group-title">
 	<%- if @participant_groups -%>
-		<%= link_to truncate(h(participant.participant_group.try(:title)), length: 30), 
-					participant.participant_group, 
+		<%= link_to truncate(h(participant.participant_group.try(:title)), length: 30),
+					participant.participant_group,
 					class: 'redirect-link' if participant.participant_group %>
 	<% end -%>
 </td>
 
 <td class="badges">
-	<span class="filter_warning_counts_container"><%= filter_warning_count_tag(participant) %></span>
-	<%= render partial: "participants/followup_notes_container", locals: { participant: participant } %>
+	<%= link_to @filter_warning_counts[participant.id.to_s], nil,
+				tabindex: 0, class: "badge", role: "button", title: "Alerts", data: { toggle: 'popover', trigger: 'focus', placement: 'bottom', url: filters_participant_path(participant, format: :json), function: 'filters' } %>
+	
+	<%= link_to glyph("flag text-muted fa-fw"), nil,
+				class: "needs-followup", role: 'button', title: "Flag for Follow-Up", tabindex: 0, data: { toggle: 'popover', trigger: 'focus', placement: 'bottom', url: participant_path(participant), function: 'followup_notes' } %>
 </td>
 
-<td class="last-updated <%= "old" if participant.updated_at < 3.months.ago %>">
+<td class="last-updated <%= "text-danger" if participant.updated_at < 2.months.ago %>">
 	<%= timeago(participant.updated_at.to_time) %>
 </td>
 <td class="functions"></td>

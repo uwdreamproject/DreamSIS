@@ -183,6 +183,34 @@ $( function() {
   
 })
 
-$(document).on('turbolinks:load', function() {
-  $('[data-toggle="popover"]').popover()
+// Enable our popovers using event delegation so that they will work with dynamic elements.
+$(document).popover({
+  selector: '[data-toggle="popover"]',
+  trigger: 'focus'
+})
+
+$(document).on('click', '[data-toggle="popover"]', function(event) {
+  event.preventDefault();
+})
+
+// Bind the popover events so we can perform async methods. To use this feature,
+// provide a `data-url` on the element and a `data-function` that refers to one
+// of the functions in popovers.js.
+$(document).on('inserted.bs.popover', function(event) {
+  var elem = $(event.target),
+      po = elem.data('bs.popover'),
+      tip = po.tip(),
+      content = tip.find('.popover-content');
+      
+  if (elem.hasClass('loaded')) return;
+  
+  if (elem.data('url')) {
+    $('.indicator.global').clone().removeClass('global hidden').appendTo(content)
+    $.get(elem.data('url'))
+      .done(function(data) {
+        po.options.html = true
+        po.options.content = popovers.functions[elem.data('function')](data)
+        elem.addClass('loaded').popover('show')
+      })
+  }
 })
