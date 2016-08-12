@@ -8,6 +8,7 @@
 		<%= "in " + link_to(h(@program.title), @program) if @program %>
 		<%= "assigned to " + (params[:mentor_id] == "me" ? "me" : h(@mentor.fullname)) if @mentor %>
 		<%=h @grad_year.to_s if @grad_year %>
+		<%= indicator(:participants) %>
 	</h1>
 	<h3 class="light" style="margin-top: 0">
 		Listing
@@ -54,6 +55,10 @@
 		</tr>
 	</tfoot>
 </table>
+
+<center>
+	<%= indicator :table, hidden: false %>
+</center>
 
 <%= render partial: "sidebar" %>
 

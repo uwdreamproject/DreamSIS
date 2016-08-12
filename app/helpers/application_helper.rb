@@ -141,5 +141,13 @@ module ApplicationHelper
     end
   end
 
+  def indicator(css_class = "", options = {})
+    options = { hidden: true }.merge(options)
+    content_tag(:div, class: "spinner indicator #{css_class} #{'hidden' if options[:hidden]}") do
+      content_tag(:div, nil, class: "bounce1") +
+      content_tag(:div, nil, class: "bounce2") +
+      content_tag(:div, nil, class: "bounce3")
+    end
+  end
   
 end
