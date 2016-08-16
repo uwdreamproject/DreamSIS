@@ -90,28 +90,24 @@ $highlight_4: #9f68d0;
 		}
 		.mentor {
 			color: $highlight_1;
-			// bullet point
 			&:before {
 				background: $highlight_1;
 			}
 		}
 		.participant {
 			color: $highlight_2;
-			// bullet point
 			&:before {
 				background: $highlight_2;
 			}
 		}
 		.event {
 			color: $highlight_3;
-			// bullet point
 			&:before {
 				background: $highlight_3;
 			}
 		}
 		.institution {
 			color: $highlight_4;
-			// bullet point
 			&:before {
 				background: $highlight_4;
 			}
