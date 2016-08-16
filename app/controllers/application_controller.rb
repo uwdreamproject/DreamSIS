@@ -66,9 +66,11 @@ class ApplicationController < ActionController::Base
     )
 
     @query = params[:q]
+
+    @search_results = @results.collect(&:search_result)
     
     respond_to do |format|
-      format.html # search.html.erb
+      format.html 
       format.json { render json: @results.collect(&:as_search_result_json) }
     end
   end

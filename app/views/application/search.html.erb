@@ -1,22 +1,56 @@
-<%- @count = @results.count -%>
-<h1>Search results for "<%= @query %>"(<%= "#{@count} result".pluralize(@count)%> found)</h1>
-<table class="table table-bordered table-striped">
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Type</th>
-		</tr>
-	</thead>
-	<tbody>
-		<%- @results.each do |result| %>
-			<%- name = result.try(:fullname) == nil ? result.name : result.fullname %>
-			<tr>
-				<td>
-					<%= link_to name, result %>
-				</td>
-				<td><%= result.try(:type) %></td>
-			</tr>
-		<% end %>
-	</tbody>
-</table>
+<%- @count = @search_results.count -%>
+<h1>Search results for "<%= @query %>"(<%= "#{@count} result".pluralize(@count) %> found)</h1>
+
+<ul id="search_results">
+	<%- @search_results.each do |result| %>
+		<%- url = result[:url] %>
+		<%- type = result[:type] %>
+		<%- img = result[:image] %>
+		<%- email = result[:email] %>
+		<%- phone = result[:phone] %>
+		<%- first_generation = result[:first_generation] %>
+		<%- type_class = "mentor" %>
+		<%- case type
+		when "Participant"
+			type_class = "participant"
+		when "College", "HighSchool"
+			type_class = "institution"
+		when "Event"
+			type_class = "event"
+		end %>
+		<%- birthdate = result[:birthdate] %>
+		<%- if img.nil? && (type == "Participant" || type == "Mentor") %>
+			<%- img = "blank_avatar.png" %>
+		<%- elsif img.nil? && (type == "College" || type == "HighSchool" || type == "Event") %>
+			<%- img = "blank_school.png"%>
+		<% end -%>
+		<a href= <%=url%>>
+			<li class="results clearfix">
+				<div class="image_wrapper">
+					<%= image_tag(img) %>
+				</div>
+				<div class="info">
+					<span class="name"><%= result[:name] %></span>
+					<span class="result_info">
+						<% if !email.nil? %>
+							<%= email %> 
+						<% end %> 
+						<% if !phone.nil? %>
+							<span>&bull;</span>
+							<%= phone %>
+						<% end %>
+						<% if !birthdate.nil? %>
+							<span>&bull;</span>
+							<%= birthdate %>
+						<% end %>
+						<%- if !first_generation.nil? %>
+							<span>&bull; First Generation</span>
+						<%- end %>
+					</span>
+				</div>
+				<span class="search_type <%= type_class %>"><%= result[:type] %></span>
+			</li>
+		</a>
+	<% end -%>
+</ul>
 

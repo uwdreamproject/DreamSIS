@@ -36,7 +36,7 @@ $(document).on('turbolinks:load', function() {
           },
           pending: "<p class='loading'><i class='fa fa-spin fa-spinner'></i> Searching...</p>",
           footer: function(query, suggestions) {
-            return "<a href='/search?q=" + query.query + "'>Advanced Search</a>" +
+            return "<a href='/search.html?q=" + query.query + "'>Advanced Search</a>" +
               "<p class='small text-muted footer'><b>Tip:</b> Search at any time by pressing the <kbd>/</kbd> key.</p>";
           }
         }

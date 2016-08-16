@@ -16,10 +16,13 @@ module SchemaSearchable
   def search_result
     {
       id: id,
+      image: try(:avatar_image_url),
       type: self.class.to_s,
       name: try(:fullname) || try(:name) || try(:title),
       email: try(:email),
       phone: number_to_phone(try(:phone_mobile)),
+      birthdate: try(:birthdate),
+      first_generation: try(:first_generation),
       url: Rails.application.routes.url_helpers.try(self.class.to_s.underscore + "_path", self)
     }
   end

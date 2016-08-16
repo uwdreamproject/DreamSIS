@@ -1,0 +1,126 @@
+$main: #34314c;
+$secondary: #9592ad;
+$border: #d9dee9;
+$white: #FFFFFF;
+$highlight_1: #fd7473; // red-color
+$highlight_2: #fec951; 
+$highlight_3: #47b8e0;
+$highlight_4: #9f68d0;
+
+.clearfix:before, .clearfix:after {
+	content: " ";
+	display: table;
+}
+
+.clearfix:after {
+	clear: both;
+}
+
+#search_results {
+	width: 100%;
+	position: relative;
+	list-style: none;
+	padding: 0;
+	a {
+		text-decoration: none;
+	}
+	.results {
+		background: $white;
+		border: 1px solid $border;
+		border-radius: .3em;
+		padding: 1em;
+		margin-bottom: 1em;
+		position: relative;
+		z-index: 1;
+		display: table;
+		width: 100%;
+		img, .info, .job_type {
+			display: table-cell;
+			vertical-align: middle;
+			font-size: .9em;
+			color: $secondary;
+		}
+		.image_wrapper {
+			width: 60px;
+			img {
+				width: 60px;
+				height: 60px;
+				display: block;
+				margin: 0 auto;
+				border-radius: .25em;
+			}
+		}
+		.info {
+			line-height: 1.25;
+			width: 100%;
+			padding-left: 25px;
+			.name {
+				font-weight: 700;
+				color: $main;
+				font-size: 1.5em;
+			}
+			.result_info {
+				padding-top: .5em;
+				color: $secondary;
+				display: block;
+				span {
+					margin: 0 .75em;
+				}
+			}
+		}
+		.search_type {
+			text-transform: uppercase;
+			font-weight: 700;
+			font-size: .75em;
+			position: relative;
+			white-space: nowrap;
+			padding-top: .6em;
+			top: 20px;
+			width: 100px;
+			&:before {
+				content: " ";
+				background: $highlight_1;
+				width: 10px;
+				height: 10px;
+				border-radius: 100%;
+				position: absolute;
+				left: -20px;
+				top: 7px;
+			}
+		}
+		.mentor {
+			color: $highlight_1;
+			// bullet point
+			&:before {
+				background: $highlight_1;
+			}
+		}
+		.participant {
+			color: $highlight_2;
+			// bullet point
+			&:before {
+				background: $highlight_2;
+			}
+		}
+		.event {
+			color: $highlight_3;
+			// bullet point
+			&:before {
+				background: $highlight_3;
+			}
+		}
+		.institution {
+			color: $highlight_4;
+			// bullet point
+			&:before {
+				background: $highlight_4;
+			}
+		}
+
+		transition: all .3s ease-in-out;
+		&:hover {
+			cursor: pointer;
+			box-shadow: 0px 2px 40px 0 rgba(0, 0, 0, 0.1);
+		}
+	}
+}
