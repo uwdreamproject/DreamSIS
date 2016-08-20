@@ -46,3 +46,5 @@ public/stylesheets/rmtc.css
 .env.development
 
 test/reports
+
+config/secrets.yml
