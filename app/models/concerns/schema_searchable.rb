@@ -22,7 +22,6 @@ module SchemaSearchable
       email: try(:email),
       phone: number_to_phone(try(:phone_mobile)),
       birthdate: try(:birthdate),
-      first_generation: try(:first_generation),
       url: Rails.application.routes.url_helpers.try(self.class.to_s.underscore + "_path", self)
     }
   end

@@ -8,7 +8,6 @@
 		<%- img = result[:image] %>
 		<%- email = result[:email] %>
 		<%- phone = result[:phone] %>
-		<%- first_generation = result[:first_generation] %>
 		<%- type_class = "mentor" %>
 		<%- case type
 		when "Participant"
@@ -32,20 +31,7 @@
 				<div class="info">
 					<span class="name"><%= result[:name] %></span>
 					<span class="result_info">
-						<% if !email.nil? %>
-							<%= email %> 
-						<% end %> 
-						<% if !phone.nil? %>
-							<span>&bull;</span>
-							<%= phone %>
-						<% end %>
-						<% if !birthdate.nil? %>
-							<span>&bull;</span>
-							<%= birthdate %>
-						<% end %>
-						<%- if !first_generation.nil? %>
-							<span>&bull; First Generation</span>
-						<%- end %>
+						<%= safe_join [email, phone, birthdate].compact, raw(" &bull;") %>
 					</span>
 				</div>
 				<span class="search_type <%= type_class %>"><%= result[:type] %></span>
