@@ -75,6 +75,7 @@ gem 'bootstrap-sass'
 gem 'turbolinks', '~> 5.0.0'
 gem 'searchkick'
 gem 'twitter-typeahead-rails'
+gem 'momentjs-rails'
 
 group :production do
   gem "pg", "0.18.4"

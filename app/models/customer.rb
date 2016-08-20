@@ -14,7 +14,6 @@ class Customer < ActiveRecord::Base
 
   delegate :website_url, to: :program
 
-
   DEFAULT_LABEL = {
     mentor: "mentor",
     lead: "lead",
@@ -26,15 +25,15 @@ class Customer < ActiveRecord::Base
     visit: "visit"
   }
   
-  RESERVED_SUBDOMAINS = %w[www public assets admin identity development production staging test dreamsis]
+  RESERVED_SUBDOMAINS = %w[www public assets admin identity development production staging dreamsis]
   validates_presence_of :url_shortcut
   validates_uniqueness_of :url_shortcut
   validates_exclusion_of :url_shortcut, in: RESERVED_SUBDOMAINS, message: "URL shortcut %s is not allowed"
 
   OMNIAUTH_PROVIDERS = %w[facebook twitter google_oauth2 shibboleth windowslive linkedin identity]
 
-  validate :tenant_database_must_exist
-  after_create :initialize_tenant!
+  # validate :tenant_database_must_exist
+  after_create :create_tenant!
   after_save :reset_customer_in_thread
 
   has_many :clearinghouse_requests
@@ -177,6 +176,7 @@ class Customer < ActiveRecord::Base
   # Create a new tenant database.
   def create_tenant!
     Apartment::Tenant.create(tenant_name) unless tenant_name.blank?
+    initialize_tenant!
   end
   
   # Loads the schema and seeds the Customer's tenant record to the latest migration.
@@ -185,7 +185,7 @@ class Customer < ActiveRecord::Base
     @database_seeds_file = Rails.root.join('db', 'seeds.rb')
     
     Customer.transaction do
-      Apartment::Tenant.process(tenant_name) do
+      Apartment::Tenant.switch(tenant_name) do
         load(@database_schema_file)
         load(@database_seeds_file) if Apartment.seed_after_create
       end
@@ -195,14 +195,15 @@ class Customer < ActiveRecord::Base
   end
   
   # Returns true if the tenant database exists, which must be done before creating a new Customer.
-  def tenant_database_must_exist
-    begin
-      Apartment::Tenant.process(tenant_name)
-      true
-    rescue Apartment::TenantNotFound => e
-      errors.add :base, "Tenant database must exist before Customer record is created."
-    end
-  end
+  # def tenant_database_must_exist
+  #   begin
+  #     Apartment::Tenant.switch(tenant_name) do
+  #       true
+  #     end
+  #   rescue Apartment::TenantNotFound => e
+  #     errors.add :base, "Tenant database must exist before Customer record is created."
+  #   end
+  # end
   
   # Creates a Redis namespace for this customer to use.
   def redis

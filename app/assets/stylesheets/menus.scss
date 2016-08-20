@@ -40,6 +40,7 @@ header.sub {
 	width: 100%;
 	transition: all 0.25s ease-in-out;
 	z-index: 10;
+	margin-bottom: 10px;
 	
 	&.affix {
 		top: 0;
@@ -95,7 +96,6 @@ header.sub {
 		}
 			
 		.fa {
-			margin-right: 5px;
 			color: lighten($primary-dark, 5%);
 		}
 		

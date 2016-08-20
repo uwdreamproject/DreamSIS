@@ -8,6 +8,6 @@ one:
 
 two:
   person_id: 1
-  event_id: 1
+  event_id: 2
   rsvp: false
   attended: false

@@ -10,22 +10,12 @@ function scrollToObject(jqObj) {
   );
 }
 
-// Setup the onClick for the select-all checkbox
-function prepareSelectAll() {
-  $("input:checkbox.select-all").click(function() {
-    var currentState = $( this ).prop("checked")
-    $('input.index_check_box').prop("checked", currentState)
-    updateWithSelectedActions()
-  })
-}
 
 // Prep the bulk actions links to incorporate the currently selected rows with javascript.
-$( function() {
-  $(".bulk_actions a").click(function() {
-    var url = $(this).data("original-href") + "?" + selectedElements().serialize() + "&" + $(this).data("extra-params")
-    $( this ).attr("href", url)
-  })
-})
+// $(document).on("click", ".bulk_actions a", function() {
+//   var url = $(this).data("original-href") + "?" + selectedElements().serialize() + "&" + $(this).data("extra-params")
+//   $( this ).attr("href", url)
+// })
 
 // Returns the currently selected rows
 function selectedElements() {
@@ -36,10 +26,11 @@ function selectedElements() {
 function updateWithSelectedActions() {
 	if($(".bulk_actions")) {
 		if(selectedElements().length > 0) {
-			$(".bulk_actions").show()
-			$("#bulk_actions_count").text(selectedElements().length)
+			$(".bulk_actions > button").attr("disabled", false)
+			$("#bulk_actions_count").show().text(selectedElements().length)
 		} else {
-			$(".bulk_actions").hide()
+			$(".bulk_actions > button").attr("disabled", true)
+      $("#bulk_actions_count").hide()
 		}
 	}
 }
@@ -147,13 +138,6 @@ function registerTableSorters() {
 }
 
 /*
-  Execute timeago timestamp substitution
-*/
-function updateRelativeTimestamps() {
-  $('time.timeago').timeago();
-}
-
-/*
   Global Functions
 */
 $( function() {
@@ -188,5 +172,45 @@ $( function() {
   
   // Enable all tablesorter tables
   registerTableSorters()
+
+
+  $(document).on("click", "input:checkbox.select-all", function() {
+    var currentState = $( this ).prop("checked")
+    $('input.index_check_box').prop("checked", currentState)
+    updateWithSelectedActions()
+  })
   
+  
+})
+
+// Enable our popovers using event delegation so that they will work with dynamic elements.
+$(document).popover({
+  selector: '[data-toggle="popover"]',
+  trigger: 'focus'
+})
+
+$(document).on('click', '[data-toggle="popover"]', function(event) {
+  event.preventDefault();
+})
+
+// Bind the popover events so we can perform async methods. To use this feature,
+// provide a `data-url` on the element and a `data-function` that refers to one
+// of the functions in popovers.js.
+$(document).on('inserted.bs.popover', function(event) {
+  var elem = $(event.target),
+      po = elem.data('bs.popover'),
+      tip = po.tip(),
+      content = tip.find('.popover-content');
+      
+  if (elem.hasClass('loaded')) return;
+  
+  if (elem.data('url')) {
+    $('.indicator.global').clone().removeClass('global hidden').appendTo(content)
+    $.get(elem.data('url'))
+      .done(function(data) {
+        po.options.html = true
+        po.options.content = popovers.functions[elem.data('function')](data)
+        elem.addClass('loaded').popover('show')
+      })
+  }
 })

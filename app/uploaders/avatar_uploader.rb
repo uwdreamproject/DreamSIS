@@ -20,10 +20,10 @@ class AvatarUploader < CarrierWave::Uploader::Base
 
   # Provide a default URL as a default if there hasn't been a file uploaded
   def default_url
-    "/images/blank_avatar_" + version_name.to_s + ".png"
+    "/assets/blank-participant.svg"
   end
   
-  # Create different versions of your uploaded files	
+  # Create different versions of your uploaded files
 	version :mini do
 		process resize_to_fill: [32, 32]
 	end

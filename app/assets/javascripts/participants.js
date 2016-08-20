@@ -33,21 +33,3 @@ function updateTotalScore(total_element_id, calculation_method) {
 	$("#" + total_element_id).val(new_total_score);
 	return new_total_score;
 }
-
-/*
-  Shows the control panel for the follow up flag for participants.
-*/
-function showFollowUpPanel(event) {
-  event.preventDefault()
-  $(".needs-followup-container .controls").removeClass("current")
-  $(this).siblings(".controls").toggleClass("visible").addClass("current")
-  $(".needs-followup-container .controls:not(.current)").removeClass("visible")
-  $(this).siblings(".controls").find("form textarea").focus()
-}
-
-/*
-  Enable the click handler for creating follow-up notes.
-*/
-function prepareFollowupPanels() {
-  $('.needs-followup-container > a').on("click", showFollowUpPanel);
-}

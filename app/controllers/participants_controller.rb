@@ -219,13 +219,8 @@ class ParticipantsController < ApplicationController
       return render_error("You are not allowed to view that participant.")
     end
     
-    if @participant.avatar?
-			av = params[:size] ? @participant.avatar.versions[params[:size].to_sym] : @participant.avatar
-			return send_default_photo(params[:size]) if av.nil?
-      redirect_to av.url
-    else
-      send_default_photo(params[:size]) if av.nil?
-    end
+    av = params[:size] ? @participant.avatar.versions[params[:size].to_sym] : @participant.avatar
+		redirect_to av.url
   end
 	
   def event_attendances
@@ -273,7 +268,7 @@ class ParticipantsController < ApplicationController
   # POST /participants
   # POST /participants.xml
   def create
-    @participant = Participant.new(params[:participant])
+    @participant = Participant.new(participant_params)
 
     respond_to do |format|
       if @participant.save
@@ -304,7 +299,7 @@ class ParticipantsController < ApplicationController
     params[:participant][:how_did_you_hear_option_ids] ||= []
 
     respond_to do |format|
-      if @participant.update_attributes(params[:participant])
+      if @participant.update_attributes(participant_params)
         flash[:notice] = 'Participant was successfully updated.'
         format.html { redirect_back_or_default(@participant) }
         format.xml  { head :ok }
@@ -351,11 +346,19 @@ class ParticipantsController < ApplicationController
   
   # Returns a json payload of the matching objects for the selected filter criteria.
   def filter_results
-    query = params[:filter_selections].blank? ? [] : params[:filter_selections].split(",")
-    @object_ids = ObjectFilter.intersect(query)
+    if selections = params[:filter_selections]
+      query = selections.collect{ |key, value| "#{key}:#{value}" unless value.blank? }
+      @object_ids = ObjectFilter.intersect(query)
+    end
     
     respond_to do |format|
-      format.json { render(json: { object_ids: @object_ids, filter_counts: {} }) }
+      format.json { render(json: {
+        object_ids: @object_ids,
+        filter_selections: params[:filter_selections],
+        currentRequest: params[:currentRequest],
+        filter_counts: {},
+        total_record_count: @object_ids.try(:count)
+      }) }
     end
   end
   
@@ -409,31 +412,6 @@ class ParticipantsController < ApplicationController
       }
     }
   end
-  
-  def college_mapper_login
-    @participant = Participant.find(params[:id])
-    render_error("You must be logged in as a Mentor to do that.") unless @current_user.try(:person).is_a?(Mentor)
-    @forbidden = !@participant.mentors.include?(@current_user.try(:person))
-    if @forbidden
-      message = "You must be linked to that student before you can view his/her CollegeMapper record."
-      flash[:error] = message
-      return render_error(message)
-    end
-    @login_token = @current_user.person.try(:college_mapper_counselor).try(:login_token, @participant.college_mapper_id)
-    render_error("Could not fetch login token") unless @login_token
-    
-    respond_to do |format|
-      format.js
-    end
-  end
-  
-  def college_mapper_callback
-    @participant = Participant.find_by_college_mapper_id(params[:user_id])
-    @participant.update_college_list_from_college_mapper if params[:update] == 'colleges'
-    render text: "OK\r\n", status: 200
-  rescue
-    render text: "Error\r\n", status: 500
-  end
 
 	def check_export_status
 		@export = report_type.find(params[:id])
@@ -457,12 +435,6 @@ class ParticipantsController < ApplicationController
   
   def fetch_filter_warning_counts
     @filter_warning_counts = Customer.redis.hgetall("filters:counts:Participant:warn")
-  end
-
-  def send_default_photo(size)
-		filename = size == "thumb" ? "blank_avatar_thumb.png" : "blank_avatar.png"
-    send_file File.join(Rails.root, "public", "images", filename),
-              disposition: 'inline', type: 'image/png', status: 203
   end
 
 	def respond_to_xlsx
@@ -526,6 +498,12 @@ class ParticipantsController < ApplicationController
     when "parents" then @participants.collect(&:parents).flatten.collect(&:id)
     else @participants.collect(&:id)
     end
+  end
+
+  private
+
+  def participant_params
+    params.require(:participant).permit(%w[lastname firstname middlename suffix nickname birthdate sex shirt_size avatar bad_address phone_home phone_mobile preferred_phone bad_phone email email2 check_email_regularly bad_email facebook_id computer_at_home preferred_contact_method grad_year high_school_id gpa gpa_date student_id_number on_track_to_graduate dietary_restrictions program_ids[] college_bound_scholarship after_school_activities postsecondary_goal african african_heritage african_american african_american_heritage american_indian american_indian_heritage asian asian_heritage asian_american asian_american_heritage caucasian caucasian_heritage hispanic hispanic_heritage latino latino_heritage middle_eastern middle_eastern_heritage pacific_islander pacific_islander_heritage other_ethnicity other_heritage birthplace immigrant first_generation family_members_who_went_to_college family_members_graduated attended_school_outside_usa countries_attended_school_outside_usa attended_grade_1_outside_usa attended_grade_2_outside_usa attended_grade_3_outside_usa attended_grade_4_outside_usa attended_grade_5_outside_usa attended_grade_6_outside_usa attended_grade_7_outside_usa attended_grade_8_outside_usa attended_grade_9_outside_usa attended_grade_10_outside_usa attended_grade_11_outside_usa attended_grade_12_outside_usa married aliases number_of_children subsidized_housing homeless free_reduced_lunch free_reduced_lunch_signed_up household_size english_not_primary_at_home parent_only_speaks_language other_languages single_parent_household foster_youth binder_date intake_survey_date photo_release_date survey_id participant_group_id inactive inactive_explanation not_target_participant])
   end
     
 end

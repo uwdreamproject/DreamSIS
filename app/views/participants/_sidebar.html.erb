@@ -1,6 +1,6 @@
 <%= content_for(:sidebar) do %>
 
-	<%= content_tag :div, render("export_actions"), id: "export_actions" %>
+	<%#= content_tag :div, render("export_actions"), id: "export_actions" %>
 
 	<%- if @high_school %>
 		<form>
@@ -17,7 +17,6 @@
 			</p>
 	<% end %>
 	
-	<%= render "bulk_actions" %>
 	<%= render "filter_controls" %>
 	<%= render "participant_groups_sidebar" if @participant_groups && !@participant_groups.empty? %>
 				

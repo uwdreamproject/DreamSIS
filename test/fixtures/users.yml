@@ -2,11 +2,10 @@
 
 admin:
   login: TestAdminUser
-  customer_id: 1
   crypted_password: MyString
   salt: MyString
   remember_token: MyString
   remember_token_expires_at: MyString
   identity_url: MyString
-  person_id: 1
+  person: admin
   admin: true
