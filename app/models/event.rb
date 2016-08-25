@@ -14,7 +14,7 @@ class Event < ActiveRecord::Base
   has_many :shifts, class_name: "EventShift" do
     def for(audience)
       return [] if audience.nil? || !%w(Volunteer Mentor).include?(audience.to_s)
-      find(:all, conditions: { "show_for_#{h(audience.to_s.pluralize)}" => true })
+      where({ "show_for_#{h(audience.to_s.pluralize)}" => true })
     end
   end
   

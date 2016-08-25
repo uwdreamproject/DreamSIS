@@ -47,7 +47,7 @@ class Location < ActiveRecord::Base
   # Returns an array of unassigned survey_ids that can be given to students at this location. The codes take this form:
   #   M <last 2 digitis of current year> <zero-padded location ID> <zero-padded number between 0 and 999>
   def unassigned_survey_ids
-    all_survey_ids = Person.find(:all, select: :survey_id).collect(&:survey_id)
+    all_survey_ids = Person.pluck(:survey_id)
     (0..999).collect{|n| "M#{Date.today.year.to_s[2,2]}#{id.to_s.rjust(2,"0")}#{n.to_s.rjust(2,"0")}"} - all_survey_ids
   end
 

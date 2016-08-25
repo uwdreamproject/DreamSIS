@@ -63,7 +63,7 @@ class ClearinghouseRequest < ActiveRecord::Base
   # If +@participants+ instance variable is assigned, return that. Otherwise, find all of the participants
   # identified by the collection in the +participant_ids+ attribute.
   def participants
-    @participants ||= Participant.find(:all, conditions: ["`id` IN (?)", participant_ids])
+    @participants ||= Participant.where(id: participant_ids)
   end
   
   # Returns the full title of the inquiry type for this request.

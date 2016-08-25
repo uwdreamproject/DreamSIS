@@ -190,8 +190,8 @@ class Institution < ActiveRecord::Base
     limit = options[:limit].is_a?(Integer) ? options[:limit] : options[:limit].to_i
     search_term = search_term.gsub /[\(\)\#\d,]?/, "" # strip out parentheses and numbers
     search_term = search_term.gsub /\s/, " " # strip out tabs and such
-    first_try = Institution.find(:all, conditions: ["instnm LIKE :t OR ialias LIKE :t", t: "%#{search_term}%"])
-    extra_colleges = College.find(:all, conditions: ["name LIKE ?", "%#{search_term}%"]).collect{|c| c.id = -c.id; c}
+    first_try = Institution.where(["instnm LIKE :t OR ialias LIKE :t", t: "%#{search_term}%"])
+    extra_colleges = College.where(["name LIKE ?", "%#{search_term}%"]).collect{|c| c.id = -c.id; c}
     first_try = [first_try + extra_colleges].flatten
     if first_try.empty?
       return [] unless options[:try_separating_words_on_failure] == true

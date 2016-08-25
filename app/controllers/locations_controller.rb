@@ -39,7 +39,7 @@ class LocationsController < ApplicationController
 
     respond_to do |format|
       format.html
-    end    
+    end
   end
 
   # GET /locations/new
@@ -109,12 +109,12 @@ class LocationsController < ApplicationController
   end
 
   def auto_complete_for_location_name
-    @locations = Location.find(:all, conditions: ["name LIKE ?", "%#{params[:term].to_s.downcase}%"])
+    @locations = Location.where(["name LIKE ?", "%#{params[:term].to_s.downcase}%"])
     render json: @locations.map { |result|
       {
-        id: result.id, 
+        id: result.id,
         value: h(result.name),
-        klass: result.class.to_s.underscore, 
+        klass: result.class.to_s.underscore,
         fullname: h(result.name),
         secondary: result.type.to_s.titleize
       }
@@ -123,18 +123,18 @@ class LocationsController < ApplicationController
 
   def auto_complete_for_institution_name
     @institutions = Institution.find_all_by_name(params[:term].to_s.downcase)[0..10]
-    render json: @institutions.map { |result| 
+    render json: @institutions.map { |result|
       {
-        id: result.id, 
+        id: result.id,
         value: h(result.name),
-        klass: "", 
+        klass: "",
         fullname: h(result.name),
         secondary: h(result.location_detail)
       }
     }
   end
   
-  protected 
+  protected
   
   def check_authorization
     unless @current_user && (@current_user.admin? || @current_user.try(:person).try(:current_lead?))

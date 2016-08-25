@@ -4,11 +4,11 @@ class ResourceController < ApplicationController
     attr_accessor :object_class
     
     def object_name; object_class.to_s.underscore; end
-    def objects_name; object_name.pluralize; end    
+    def objects_name; object_name.pluralize; end
   end
   
   def index
-    @objects = self.class.object_class.find(:all)
+    @objects = self.class.object_class.all
     load_variables
     
     respond_to do |format|
@@ -85,7 +85,7 @@ class ResourceController < ApplicationController
     end
   end
   
-  protected 
+  protected
   
   def load_variables
     self.instance_eval("@#{self.class.objects_name} = @objects") if @objects

@@ -23,7 +23,6 @@ class HighSchool < Location
   
   # Returns an array of unique graudation years
   def cohorts
-    # participants.find(:all, select: [:grad_year]).collect(&:grad_year).uniq.compact.sort.reverse
     @cohorts ||= participants.pluck(:grad_year).uniq.compact.sort.reverse
   end
 

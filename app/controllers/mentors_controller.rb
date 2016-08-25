@@ -19,11 +19,7 @@ class MentorsController < ApplicationController
   def show
     @mentor = Mentor.find(params[:id]) rescue Volunteer.find(params[:id])
     @participants = @mentor.try(:participants) if @mentor.respond_to?(:participants)
-    @event_attendances = @mentor.event_attendances.find(:all,
-                            include: :event,
-                            joins: :event,
-                            conditions: ["(rsvp = ? OR attended = ?)", true, true]
-                          )
+    @event_attendances = @mentor.event_attendances.includes(:event).joins(:event).where(["(rsvp = ? OR attended = ?)", true, true])
                           
     respond_to do |format|
       format.html # show.html.erb
@@ -144,8 +140,7 @@ class MentorsController < ApplicationController
   end
   
   def auto_complete_for_mentor_fullname
-    @mentors = Mentor.find(:all,
-                          conditions: ["firstname LIKE :fullname
+    @mentors = Mentor.where(["firstname LIKE :fullname
                                             OR lastname LIKE :fullname
                                             OR display_name LIKE :fullname
                                             OR uw_net_id LIKE :fullname",

@@ -6,11 +6,11 @@ class ParticipantResourceController < ParticipantsController
     attr_accessor :object_class
     
     def object_name; object_class.to_s.underscore; end
-    def objects_name; object_name.pluralize; end    
+    def objects_name; object_name.pluralize; end
   end
   
   def index
-    @objects = @participant.instance_eval("#{self.class.objects_name}.find(:all)")
+    @objects = @participant.instance_eval("#{self.class.objects_name}")
     load_variables
 
     respond_to do |format|
@@ -94,7 +94,7 @@ class ParticipantResourceController < ParticipantsController
     unless @current_user && @current_user.can_view?(@participant)
       flash[:error] = "You are not allowed to edit this participant"
       return redirect_to :back
-    end  
+    end
   end
 
   def load_object_by_id

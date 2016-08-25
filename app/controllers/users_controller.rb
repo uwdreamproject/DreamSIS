@@ -118,9 +118,7 @@ class UsersController < ApplicationController
   end
 
   def auto_complete_for_user_login
-    @users = User.find(:all,
-                          joins: [:person],
-                          conditions: ["login LIKE :login
+    @users = User.joins(:person).where(["login LIKE :login
                                               OR people.firstname LIKE :fullname
                                               OR people.lastname LIKE :fullname
                                               OR people.display_name LIKE :fullname

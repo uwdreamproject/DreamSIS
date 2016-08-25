@@ -109,7 +109,7 @@ class MentorTermGroupsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(@mentor_term_group || mentor_term_groups_term_path(@term.to_param)) }
       format.xml  { head :ok }
-    end    
+    end
   end
   
   def create_from_linked_sections
@@ -123,13 +123,13 @@ class MentorTermGroupsController < ApplicationController
         format.html { redirect_to(mentor_term_groups_term_path(@term.to_param)) }
         format.xml  { render xml: @mentor_term_group.errors, status: :unprocessable_entity }
       end
-    end    
+    end
   end
     
   protected
   
   def fetch_term
-    @term = (Term.find(params[:new_term_id] || params[:term_id]) rescue nil) || Term.current_term || Term.allowing_signups.try(:first) || Term.last
+    @term = (Term.find(params[:new_term_id] || params[:term_id] || params[:term]) rescue nil) || Term.current_term || Term.allowing_signups.try(:first) || Term.last
     unless @term
       return render_error("You must define a term first before you can modify mentor groups.", "Unable to display page.")
     end

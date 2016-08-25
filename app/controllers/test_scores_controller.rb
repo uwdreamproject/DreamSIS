@@ -5,7 +5,7 @@ class TestScoresController < ParticipantsController
   # GET /participant/test_scores
   # GET /participant/test_scores.xml
   def index
-    @test_scores = @participant.test_scores.find(:all)
+    @test_scores = @participant.test_scores
 
     respond_to do |format|
       format.html # index.html.erb

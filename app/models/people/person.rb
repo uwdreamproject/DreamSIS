@@ -245,11 +245,11 @@ class Person < ActiveRecord::Base
       return false unless events.include?(event)
       event_attendances.find_by_event_id(event.id).attended?
     elsif event.is_a?(EventGroup)
-      attendances = event_attendances.find(:all, joins: [:event], conditions: { events: { event_group_id: event.id }})
+      attendances = event_attendances.joins(:event).where({ events: { event_group_id: event.id }})
       return false if attendances.empty?
       attendances.collect(&:attended?).include?(true)
     elsif event.is_a?(EventType)
-      attendances = event_attendances.find(:all, joins: [:event], conditions: { events: { event_type_id: event.id }})
+      attendances = event_attendances.joins(:event).where({ events: { event_type_id: event.id }})
       return false if attendances.empty?
       attendances.collect(&:attended?).include?(true)
     else

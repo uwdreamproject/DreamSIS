@@ -5,7 +5,7 @@ class CollegeApplicationsController < ParticipantsController
   # GET /participant_colleges
   # GET /participant_colleges.xml
   def index
-    @college_applications = @participant.college_applications.find(:all)
+    @college_applications = @participant.college_applications
 
     respond_to do |format|
       format.html # index.html.erb
@@ -91,11 +91,11 @@ class CollegeApplicationsController < ParticipantsController
   def auto_complete_for_institution_name
     @institutions = Institution.find_all_by_name(params[:college_application][:institution_name].to_s.downcase)[0..10]
     
-    render json: @institutions.map { |result| 
+    render json: @institutions.map { |result|
       {
-        id: result.id, 
+        id: result.id,
         value: h(result.name),
-        klass: result.class.to_s.underscore, 
+        klass: result.class.to_s.underscore,
         fullname: h(result.name),
         secondary: h(result.location_detail)
       }

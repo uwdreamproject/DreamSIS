@@ -29,7 +29,7 @@ class EventGroup < ActiveRecord::Base
       conditions_string << "AND show_for_#{aud.to_s.downcase.pluralize} = :audience_filter"
       conditions_filters[:audience_filter] = true
     end
-    events.find(:all, conditions: [conditions_string, conditions_filters])
+    events.where([conditions_string, conditions_filters])
   end
   
   # Returns the description based on the type of person provided as a parameter (or a class name).

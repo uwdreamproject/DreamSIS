@@ -271,10 +271,7 @@ Documentation for each filter:
     return passes_filter?(:attended_mentor_workshop) unless passes_filter?(:attended_mentor_workshop).nil?
     
     return true if mentor_terms.collect(&:term).uniq.reject {|m| m == Term.current_term}.count > 0 rescue true
-    !event_attendances.find(:all,
-                            include: { event: :event_type },
-                            conditions: { attended: true, event_types: { name: "Mentor Workshop" }}
-                            ).empty?
+    !event_attendances.includes({ event: :event_type }).where({ attended: true, event_types: { name: "Mentor Workshop" }}).empty?
   end
 
   # Returns true if +van_driver_training_completed_at+ is not nil
@@ -330,7 +327,7 @@ Documentation for each filter:
       end
       joins(:mentor_term_groups).where(conditions).where("van_driver_training_completed_at IS NOT NULL")
     else
-      find(:all, conditions: ["van_driver_training_completed_at IS NOT NULL"])
+      where.not(van_driver_training_completed_at: nil)
     end
   end
 

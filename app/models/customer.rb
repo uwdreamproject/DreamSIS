@@ -50,7 +50,7 @@ class Customer < ActiveRecord::Base
   end
   
   def current_contract_clearinghouse_requests
-    clearinghouse_requests.find(:all, conditions: ["submitted_at > ?", clearinghouse_contract_start_date])
+    clearinghouse_requests.where(["submitted_at > ?", clearinghouse_contract_start_date])
   end
   
   def uses_clearinghouse?

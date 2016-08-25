@@ -5,7 +5,7 @@ class ParentsController < ParticipantsController
   # GET /participant/parents
   # GET /participant/parents.xml
   def index
-    @parents = @participant.parents.find(:all)
+    @parents = @participant.parents
 
     respond_to do |format|
       format.html # index.html.erb

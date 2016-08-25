@@ -3,7 +3,7 @@ class ScholarshipsController < ResourceController
 
   skip_before_filter :check_authorization, only: [:show, :auto_complete_for_scholarship_title, :index, :edit, :new, :create, :update]
 	before_filter :check_if_enrolled
-  protect_from_forgery except: [:auto_complete_for_scholarship_title] 
+  protect_from_forgery except: [:auto_complete_for_scholarship_title]
   
   def index
     return redirect_to Scholarship.find(params[:id]) if params[:id]
@@ -38,7 +38,7 @@ class ScholarshipsController < ResourceController
     respond_to do |format|
       format.html
       format.xls { render layout: 'basic' }
-    end    
+    end
   end
 
   def auto_complete_for_scholarship_title
@@ -46,13 +46,13 @@ class ScholarshipsController < ResourceController
 		if term.is_integer?
 			@scholarships = [Scholarship.find(term)]
 		else
-	    @scholarships = Scholarship.find(:all, conditions: ["title LIKE ?", "%#{term.to_s.downcase}%"], limit: 20)
+	    @scholarships = Scholarship.where(["title LIKE ?", "%#{term.to_s.downcase}%"]).limit(20)
 		end
-    render json: @scholarships.map { |result| 
+    render json: @scholarships.map { |result|
       {
-        id: result.id, 
+        id: result.id,
         value: h(result.title),
-        klass: "", 
+        klass: "",
         fullname: h(result.title),
         secondary: h(result.organization_name)
       }

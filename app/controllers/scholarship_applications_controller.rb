@@ -5,7 +5,7 @@ class ScholarshipApplicationsController < ParticipantsController
   # GET /participant_colleges
   # GET /participant_colleges.xml
   def index
-    @scholarship_applications = @participant.scholarship_applications.find(:all)
+    @scholarship_applications = @participant.scholarship_applications
 
     respond_to do |format|
       format.html # index.html.erb
@@ -87,14 +87,12 @@ class ScholarshipApplicationsController < ParticipantsController
   end
 
   def auto_complete_for_scholarship_application_title
-    @scholarships = Scholarship.find(:all, 
-                      conditions: ["title LIKE ?", '%' + params[:scholarship_application][:title].downcase + '%'],
-                      limit: 10)
-    render json: @scholarships.map { |result| 
+    @scholarships = Scholarship.where(["title LIKE ?", '%' + params[:scholarship_application][:title].downcase + '%']).limit(10)
+    render json: @scholarships.map { |result|
       {
-        id: result.id, 
+        id: result.id,
         value: h(result.name),
-        klass: result.class.to_s.underscore, 
+        klass: result.class.to_s.underscore,
         fullname: h(result.name),
         secondary: h(result.email),
         tertiary: h((Customer.current_customer.customer_label(result.class.to_s.underscore, titleize: true) || result.class.to_s).titleize)

@@ -141,9 +141,7 @@ class Participant < Person
   # Tries to find duplicate records based on name and high school. Pass an array of participant data straight from your params
   # hash. Second parameter is a limit on the number of records to return (defaults to 50).
   def self.possible_duplicates(data, limit = 50)
-    Participant.find(:all,
-                    conditions: ["firstname LIKE ? AND lastname LIKE ?", "#{data[:firstname]}%", "#{data[:lastname]}%"],
-                    limit: limit)
+    Participant.where(["firstname LIKE ? AND lastname LIKE ?", "#{data[:firstname]}%", "#{data[:lastname]}%"]).limit(limit)
   end
   
   # Returns true if multiple ethnicity checkboxes were checked
@@ -271,7 +269,7 @@ class Participant < Person
 	def visits_during_week(date = Date.today)
 		start_date = date.beginning_of_week
 		end_date = date.end_of_week
-		Visit.find(:all, conditions: ["date >= ? AND date <= ? AND location_id = ?", start_date, end_date, high_school_id])
+		Visit.where(["date >= ? AND date <= ? AND location_id = ?", start_date, end_date, high_school_id])
 	end
 	
 	# Determines the columns that are exported into xlsx pacakages. Includes most model columns
@@ -323,6 +321,12 @@ class Participant < Person
   
   def search_result
     super.merge(cohort: [high_school_name.to_s, grad_year.to_s].join(" "))
+  end
+  
+  def update_groupings_cache!
+    commit_group_result! 'cohort', grad_year
+    commit_group_result! 'high_school', high_school_id
+    commit_group_result! 'participant_group', participant_group_id
   end
   
   # Returns a collection of EventAttendance objects to be displayed on a Participant's detail page.

@@ -47,7 +47,7 @@ class ActivityLogsController < ApplicationController
 			conditions_values[:mentor_ids] = @mentor_term_group.mentor_ids
 		end
 
-		@activity_logs = ActivityLog.find(:all, conditions: [conditions_string, conditions_values])
+		@activity_logs = ActivityLog.where([conditions_string, conditions_values])
 		
 		@direct_interaction_count = @activity_logs.collect(&:direct_interaction_count).numeric_items
 		@indirect_interaction_count = @activity_logs.collect(&:indirect_interaction_count).numeric_items
@@ -56,7 +56,7 @@ class ActivityLogsController < ApplicationController
 		@activity_logs.each do |al|
 			for ctype in %w[student non_student]
 				if al.instance_eval("#{ctype}_time?")
-					al.instance_eval("#{ctype}_time").each do |category, value| 
+					al.instance_eval("#{ctype}_time").each do |category, value|
 						@time_breakdown["#{ctype}_time"][category] ||= 0
 						@time_breakdown["#{ctype}_time"][category] += value.to_i
 					end
@@ -98,7 +98,7 @@ class ActivityLogsController < ApplicationController
   end
   
   def update
-    @activity_log = ActivityLog.find(params[:id])      
+    @activity_log = ActivityLog.find(params[:id])
 		
     unless @current_user && (@current_user.admin? || @activity_log.belongs_to?(@current_user))
       return render_error("You are not allowed to update that activity log.")
