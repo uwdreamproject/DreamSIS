@@ -2,12 +2,9 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
-if defined?(Bundler)
-  # If you precompile assets before deploying to production, use this line
-  Bundler.require *Rails.groups(:assets => %w(development test))
-  # If you want your assets lazily compiled in production, use this line
-  # Bundler.require(:default, :assets, Rails.env)
-end
+# Require the gems listed in Gemfile, including any gems
+# you've limited to :test, :development, or :production.
+Bundler.require(*Rails.groups)
 
 module Dreamsis
   class Application < Rails::Application
@@ -25,6 +22,9 @@ module Dreamsis
 
     # Activate observers that should always be running.
     # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
+    
+    # Opt in to new callback error behavior.
+    config.active_record.raise_in_transactional_callbacks = true
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
@@ -45,10 +45,27 @@ module Dreamsis
     config.assets.enabled = true
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.1'
+    config.assets.version = '1.2'
    
     # Setup global ActionMailer settings
-    config.action_mailer.default_url_options = { :host => "dreamsis.com" }
+    config.action_mailer.default_url_options = { host: "dreamsis.com" }
     
+    # Prevent app initialization when precompiling assets
+    config.assets.initialize_on_precompile = false
+    
+    # config_file_path = File.join(Rails.root, "config", "api-keys.yml")
+    # temp_api_keys = YAML.load_file(config_file_path)
+    # redis_endpoint = temp_api_keys["redis"][Rails.env]["endpoint"]
+    # redis_password = temp_api_keys["redis"][Rails.env]["password"]
+    # config.cache_store = :redis_store, {
+    #   url: "redis://#{redis_endpoint}", password: redis_password, namespace: "cache"
+    # }
+    
+    # Turn on json escaping
+    config.active_support.escape_html_entities_in_json = true
+    
+    # Use sidekiq as our ActiveJob backend
+    config.active_job.queue_adapter = :sidekiq
+
   end
 end

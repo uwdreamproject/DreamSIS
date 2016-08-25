@@ -2,12 +2,12 @@ class MentorTermGroupsController < ApplicationController
   before_filter :fetch_term
 
   def term
-    return redirect_to :action => "index" if @term.nil?
+    return redirect_to action: "index" if @term.nil?
     return redirect_to mentor_term_groups_term_path(@term) if params[:new_term_id]
     @mentor_term_groups = @term.mentor_term_groups
     @max_term_cap = @mentor_term_groups.collect(&:capacity).numeric_items.max
     @max_term_size = @mentor_term_groups.collect(&:mentor_terms_count).numeric_items.max
-    render :action => (params[:show] == 'schedule' ? "schedule" : "index")
+    render action: (params[:show] == 'schedule' ? "schedule" : "index")
   end
   
   def index
@@ -17,7 +17,7 @@ class MentorTermGroupsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @mentor_term_groups }
+      format.xml  { render xml: @mentor_term_groups }
     end
   end
 
@@ -27,7 +27,7 @@ class MentorTermGroupsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @mentor_term_group }
+      format.xml  { render xml: @mentor_term_group }
     end
   end
 
@@ -41,11 +41,11 @@ class MentorTermGroupsController < ApplicationController
   end
 
   def new
-    @mentor_term_group = MentorTermGroup.new(:term_id => @term.try(:id))
+    @mentor_term_group = MentorTermGroup.new(term_id: @term.try(:id))
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @mentor_term_group }
+      format.xml  { render xml: @mentor_term_group }
     end
   end
 
@@ -60,10 +60,10 @@ class MentorTermGroupsController < ApplicationController
       if @mentor_term_group.save
         flash[:notice] = 'MentorTermGroup was successfully created.'
         format.html { redirect_to(@mentor_term_group) }
-        format.xml  { render :xml => @mentor_term_group, :status => :created, :location => @mentor_term_group }
+        format.xml  { render xml: @mentor_term_group, status: :created, location: @mentor_term_group }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @mentor_term_group.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @mentor_term_group.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -77,8 +77,8 @@ class MentorTermGroupsController < ApplicationController
         format.html { redirect_to(@mentor_term_group) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @mentor_term_group.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @mentor_term_group.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -109,7 +109,7 @@ class MentorTermGroupsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(@mentor_term_group || mentor_term_groups_term_path(@term.to_param)) }
       format.xml  { head :ok }
-    end    
+    end
   end
   
   def create_from_linked_sections
@@ -121,15 +121,15 @@ class MentorTermGroupsController < ApplicationController
       else
         flash[:error] = "Sorry, but something went wrong."
         format.html { redirect_to(mentor_term_groups_term_path(@term.to_param)) }
-        format.xml  { render :xml => @mentor_term_group.errors, :status => :unprocessable_entity }
+        format.xml  { render xml: @mentor_term_group.errors, status: :unprocessable_entity }
       end
-    end    
+    end
   end
     
   protected
   
   def fetch_term
-    @term = (Term.find(params[:new_term_id] || params[:term_id]) rescue nil) || Term.current_term || Term.allowing_signups.try(:first) || Term.last
+    @term = (Term.find(params[:new_term_id] || params[:term_id] || params[:term]) rescue nil) || Term.current_term || Term.allowing_signups.try(:first) || Term.last
     unless @term
       return render_error("You must define a term first before you can modify mentor groups.", "Unable to display page.")
     end

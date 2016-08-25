@@ -7,7 +7,7 @@
 
 		<ul>				
 			<%- for object_filter in object_filters -%>	
-				<%= content_tag :li, h(object_filter.title), :class => (@participant.passes_filter?(object_filter) ? "pass" : "fail") if object_filter.display_for?(@participant) %>
+				<%= content_tag :li, h(object_filter.title), class: @participant.filter_status(object_filter) if object_filter.display_for?(@participant) %>
 			<% end %>
 		</ul>
 	</li>

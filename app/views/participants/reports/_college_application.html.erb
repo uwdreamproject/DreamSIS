@@ -5,8 +5,8 @@
 <td><%=h college_application.choice %></td>
 <td><%= content_tag :span, 
 					(college_application.applied? ? "Y" : "N"), 
-					:class => "icon #{college_application.applied? ? "pass" : "fail"}" %></td>
+					class: "icon #{college_application.applied? ? "pass" : "fail"}" %></td>
 <td><%=h college_application.decision %></td>
 <td><%= content_tag :span, 
 					(college_application.attending? ? "Y" : "N"), 
-					:class => "icon #{college_application.attending? ? "pass" : "fail"}" %></td>
+					class: "icon #{college_application.attending? ? "pass" : "fail"}" %></td>

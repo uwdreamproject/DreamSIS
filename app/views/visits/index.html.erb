@@ -23,7 +23,7 @@
 	<td><%=h visit.attended_count %></td>
 	<td class="functions"><%= link_to 'Show', high_school_visit_path(@high_school, visit) %></td>
 	<td class="functions"><%= link_to 'Edit', edit_high_school_visit_path(@high_school, visit) %></td>
-	<td class="functions"><%= link_to 'Delete', high_school_visit_path(@high_school, visit), :confirm => 'Are you sure?', :method => :delete %></td>
+	<td class="functions"><%= link_to 'Delete', high_school_visit_path(@high_school, visit), confirm: 'Are you sure?', method: :delete %></td>
 </tr>
 <% end %>
 
@@ -31,13 +31,13 @@
 <tr class="empty">
 	<td colspan=10>
 		You haven't created any <%= Customer.visits_label %>. 
-		<%= link_to "Add a new #{Customer.visit_label}.", new_high_school_visit_path(@high_school, :term_id => @term) %>
+		<%= link_to "Add a new #{Customer.visit_label}.", new_high_school_visit_path(@high_school, term_id: @term) %>
 	</td>
 </tr>
 <% end -%>
 
 </table>
 
-<p><%= link_to "Add new #{Customer.visit_label}", new_high_school_visit_path(@high_school, :term_id => @term), :class => 'add button' %></p>
+<p><%= link_to "Add new #{Customer.visit_label}", new_high_school_visit_path(@high_school, term_id: @term), class: 'add button' %></p>
 
-<%= render :partial => "sidebar" %>
+<%= render partial: "sidebar" %>

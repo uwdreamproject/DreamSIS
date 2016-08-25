@@ -21,15 +21,15 @@
 			<td><% if @participant.received_binder? %>
 					<span><%= link_to "Give another workbook", 
 										participant_path(@participant, 
-														:participant => { :binder_date => Time.now,
-																		  :received_binder => true }),
-										:method => :put %></span>
+														participant: { binder_date: Time.now,
+																		  received_binder: true }),
+										method: :put %></span>
 				<% else %>
 				<span><%= link_to "Give workbook", 
 									participant_path(@participant, 
-													:participant => { :binder_date => Time.now,
-																	  :received_binder => true }),
-									:method => :put %></span>
+													participant: { binder_date: Time.now,
+																	  received_binder: true }),
+									method: :put %></span>
 				<% end -%>
 				</td>
 		</tr>
@@ -38,14 +38,14 @@
 		<tr>
 			<td class="name"><%= item.titleize %></td>
 			<td colspan="2">
-				<%= form_for @participant, :remote => true do |f| %>
+				<%= form_for @participant, remote: true do |f| %>
 				<table class="borderless">
 					<tr>
 					<%- for option in Customer.paperwork_status_options_array %>
 						<td class="inline-when-small">
 							<%= f.radio_button "#{item}_status", h(option), 
-									:id => "participant_#{item}_status_#{option.to_param}", 
-									:class => "submit-on-change" %>
+									id: "participant_#{item}_status_#{option.to_param}", 
+									class: "submit-on-change" %>
 							<%= f.label "#{item}_status_#{option.to_param}", h(option) %>
 						</td>
 					<% end %>

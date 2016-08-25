@@ -1,7 +1,7 @@
 class MentorSignupController < ApplicationController
   before_filter :fetch_mentor
-  before_filter :fetch_term, :except => ['background_check_form', 'risk_form', 'conduct_form', 'driver_form']
-	before_filter :check_if_signups_allowed, :except => ['basics', 'background_check_form', 'risk_form', 'conduct_form', 'driver_form']
+  before_filter :fetch_term, except: ['background_check_form', 'risk_form', 'conduct_form', 'driver_form']
+	before_filter :check_if_signups_allowed, except: ['basics', 'background_check_form', 'risk_form', 'conduct_form', 'driver_form']
   skip_before_filter :check_authorization, :check_if_enrolled
   before_filter :apply_customer_styles
 
@@ -12,7 +12,7 @@ class MentorSignupController < ApplicationController
     @max_term_size = @mentor_term_groups.collect(&:mentor_terms_count).numeric_items.max
     if params[:display] == 'schedule'
       @body_class = 'full'
-      render :action => 'schedule'
+      render action: 'schedule'
     end
   end
 
@@ -31,17 +31,17 @@ class MentorSignupController < ApplicationController
       end
     elsif request.get?
       if !@mentor.passed_background_check? && @mentor.background_check_authorized == true
-        @mentor.update_attributes({:background_check_authorized => false,
-                                   :background_check_authorized_at => nil,
-                                   :background_check_run_at => nil,
-                                   :background_check_result => nil
+        @mentor.update_attributes({background_check_authorized: false,
+                                   background_check_authorized_at: nil,
+                                   background_check_run_at: nil,
+                                   background_check_result: nil
                                   })
       end
       if !@mentor.passed_sex_offender_check? && @mentor.background_check_authorized == true
-        @mentor.update_attributes({:background_check_authorized => false,
-                                   :background_check_authorized_at => nil,
-                                   :sex_offender_check_run_at => nil,
-                                   :sex_offender_check_result => nil
+        @mentor.update_attributes({background_check_authorized: false,
+                                   background_check_authorized_at: nil,
+                                   sex_offender_check_run_at: nil,
+                                   sex_offender_check_result: nil
                                   })
       end
     end
@@ -104,10 +104,10 @@ class MentorSignupController < ApplicationController
       flash[:error] = "Sorry, but that group is full. Can you find another group that works in your schedule?"
       return redirect_to :back
     end
-    m = @mentor_term_group.mentor_terms.create(:mentor_id => @mentor.try(:id), :volunteer => true)
+    m = @mentor_term_group.mentor_terms.create(mentor_id: @mentor.try(:id), volunteer: true)
     unless m.valid?
       m = @mentor_term_group.deleted_mentor_terms.find_by_mentor_id(@mentor.id)
-      m.update_attributes({:deleted_at => nil, :volunteer => true})
+      m.update_attributes({deleted_at: nil, volunteer: true})
       MentorTermGroup.increment_counter(:mentor_terms_count, @mentor_term_group.id) if m.valid?
       # m.add_to_group if m.valid?
     end

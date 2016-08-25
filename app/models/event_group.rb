@@ -1,35 +1,35 @@
 class EventGroup < ActiveRecord::Base
   has_many :events do
     def future
-      find :all, :conditions => ["date >= ?", Time.now.midnight]
+      find :all, conditions: ["date >= ?", Time.now.midnight]
     end
   end
   
   belongs_to :event_type
   validates_presence_of :name
 
-  validates_presence_of :mentor_disable_message, :if => :mentor_hours_prior_disable_cancel
-  validates_presence_of :volunteer_disable_message, :if => :volunteer_hours_prior_disable_cancel
-  validates_presence_of :student_disable_message, :if => :student_hours_prior_disable_cancel
+  validates_presence_of :mentor_disable_message, if: :mentor_hours_prior_disable_cancel
+  validates_presence_of :volunteer_disable_message, if: :volunteer_hours_prior_disable_cancel
+  validates_presence_of :student_disable_message, if: :student_hours_prior_disable_cancel
 
-  belongs_to :volunteer_training, :class_name => "Training"
-  belongs_to :mentor_training, :class_name => "Training"
+  belongs_to :volunteer_training, class_name: "Training"
+  belongs_to :mentor_training, class_name: "Training"
 
-  default_scope :order => "id DESC"
+  default_scope { order("id DESC") }
 
   include MultitenantProxyable
   acts_as_proxyable
   
   # Returns future events that should be displayed for the particular person or audience type.
   def future_events(person_or_type = nil)
-    conditions_filters = { :date_filter => Time.now.midnight }
+    conditions_filters = { date_filter: Time.now.midnight }
     conditions_string = "date >= :date_filter "
     if person_or_type
       aud = Event.process_audience(person_or_type)
       conditions_string << "AND show_for_#{aud.to_s.downcase.pluralize} = :audience_filter"
       conditions_filters[:audience_filter] = true
     end
-    events.find(:all, :conditions => [conditions_string, conditions_filters])
+    events.where([conditions_string, conditions_filters])
   end
   
   # Returns the description based on the type of person provided as a parameter (or a class name).

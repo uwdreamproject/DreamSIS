@@ -1,26 +1,26 @@
-<%= f.inputs(:name => "Name and Personal Information") do -%>
+<%= f.inputs(name: "Name and Personal Information") do -%>
 	<%- collection_attributes = %i[lastname firstname middlename suffix] -%>
-	<%= f.inputs :name => "Name", :class => "inline" do %>
+	<%= f.inputs name: "Name", class: "inline" do %>
 		<%- collection_attributes.each do |attribute| %>
-			<%= f.input attribute, :input_html => { :disabled => !@current_user.can_edit?(f.object, attribute) } %>
+			<%= f.input attribute, input_html: { disabled: !@current_user.can_edit?(f.object, attribute) } %>
 		<% end -%>
 	<%- end -%>
 
 	<%#= TODO observe_field 'participant_lastname', 
-						:url => check_duplicate_participants_path, 
-						:with => "Form.serialize($('participant_form'))",
-						:condition => "$F('participant_firstname') != '' && F$('participant_lastname') != ''" %>
+						url: check_duplicate_participants_path, 
+						with: "Form.serialize($('participant_form'))",
+						condition: "$F('participant_firstname') != '' && F$('participant_lastname') != ''" %>
 						
 	<%#= observe_field 'participant_firstname', 
-						:url => check_duplicate_participants_path, 
-						:with => "Form.serialize($('participant_form'))",
-						:condition => "$F('participant_firstname') != '' && $F('participant_lastname') != ''" %>
+						url: check_duplicate_participants_path, 
+						with: "Form.serialize($('participant_form'))",
+						condition: "$F('participant_firstname') != '' && $F('participant_lastname') != ''" %>
 	
-	<%= f.input :nickname, :label => "Nickname/Preferred Name" %>
-	<%= f.input :birthdate, :start_year => 1985, :end_year => Time.now.year-10 %>
-	<%= f.input :sex, :collection => {"Male" => "M", "Female" => "F", "No Response" => "NR"}, :include_blank => true, :label => "Sex/Gender" %>
-	<%= f.input :shirt_size, :as => :select, :collection => %w[XS S M L XL XXL 3XL] %>
+	<%= f.input :nickname, label: "Nickname/Preferred Name" %>
+	<%= f.input :birthdate, start_year: 1985, end_year: Time.now.year-10 %>
+	<%= f.input :sex, collection: {"Male" => "M", "Female" => "F", "No Response" => "NR"}, include_blank: true, label: "Sex/Gender" %>
+	<%= f.input :shirt_size, as: :select, collection: %w[XS S M L XL XXL 3XL] %>
 	
-	<%= f.input :avatar, :label => "Profile Picture" %>
+	<%= f.input :avatar, label: "Profile Picture" %>
 	
 <%- end -%>

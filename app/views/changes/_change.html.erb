@@ -38,11 +38,11 @@
 		<%- if change[:action_type] == 'delete' %>
 			<%- if change.restored? %>
 				Restored by
-				<%= change.restored_user.nil? ? "The system" : link_to(h(change.restored_user.try(:fullname)), change.restored_user, :class => "default") %>
+				<%= change.restored_user.nil? ? "The system" : link_to(h(change.restored_user.try(:fullname)), change.restored_user, class: "default") %>
 		        <br>
 		        <%= change[:restored_at].try(:to_s, :date_time12) %>
 			<% else %>
-				<%= link_to "Undelete", undelete_change_path(change), :method => :delete, :confirm => "Are you sure you want to undelete this record?" %>
+				<%= link_to "Undelete", undelete_change_path(change), method: :delete, confirm: "Are you sure you want to undelete this record?" %>
 			<% end %>
 		<% end %>
 	</td>

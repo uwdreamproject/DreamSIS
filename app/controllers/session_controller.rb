@@ -1,22 +1,23 @@
-# This controller handles the login/logout function of the site.  
+# This controller handles the login/logout function of the site.
 class SessionController < ApplicationController
   skip_before_filter :login_required, :check_authorization, :check_for_limited_login, :check_if_enrolled, :authenticated?, :save_user_in_current_thread
-  before_filter :login_required, :only => [ :map_to_person ]
+  before_filter :login_required, only: [ :map_to_person ]
   before_filter :apply_customer_styles
 
   def new
-    redirect_to locator_url(:subdomain => false) if Customer.current_customer.nil? || Customer.current_customer.new_record?
-    redirect_to "/auth/#{Customer.allowable_login_methods_list.first}" if Customer.allowable_login_methods_list.size == 1 && session[:external_login_context] != :rsvp
+    redirect_to locator_url(subdomain: false) and return if Customer.current_customer.nil? || Customer.current_customer.new_record?
+    redirect_to "/auth/#{Customer.allowable_login_methods_list.first}" and return if Customer.allowable_login_methods_list.size == 1 && session[:external_login_context] != :rsvp
+    render layout: "basic" and return
   end
   
   def locator
     @body_class = "new session"
     
     unless params[:url_shortcut].blank?
-      if Customer.where(:url_shortcut => params[:url_shortcut]).empty?
+      if Customer.where(url_shortcut: params[:url_shortcut]).empty?
         flash[:error] = "That organization does not exist. Please try again."
       else
-        redirect_to root_url(:subdomain => params[:url_shortcut])
+        redirect_to root_url(subdomain: params[:url_shortcut])
       end
     end
   end
@@ -32,7 +33,7 @@ class SessionController < ApplicationController
       user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.create_with_omniauth(auth, request.subdomain)
       user.update_avatar_from_provider!(auth) if user
     end
-    return redirect_to(login_url, :error => "Could not login. Please try again.") unless user
+    return redirect_to(login_url, error: "Could not login. Please try again.") unless user
     session[:user_id] = user.id
     flash[:notice] = "Signed in!"
     redirect_back_or_default(return_to || root_url)
@@ -49,7 +50,7 @@ class SessionController < ApplicationController
     session[:user_id] = nil
     cookies.delete :auth_token
     reset_session
-    redirect_to login_url, :notice => "Signed out!"
+    redirect_to login_url, notice: "Signed out!"
   end
   
   def identity_login
@@ -69,7 +70,7 @@ class SessionController < ApplicationController
     @person = Person.find(params[:person_id])
     if @person.correct_login_token?(params[:token])
       flash[:info] = "Please login so that we can link your account."
-      redirect_to login_url(:return_to => map_to_person_url(@person, params[:token]))
+      redirect_to login_url(return_to: map_to_person_url(@person, params[:token]))
     else
       flash[:error] = "Sorry, but that login token is invalid. Please talk to your program administrator."
       redirect_to login_url

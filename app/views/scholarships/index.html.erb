@@ -17,7 +17,7 @@
 		<td class="align-right"><%= number_to_currency scholarship.default_amount %></td>
 		<td class="functions"><%= link_to 'Show', scholarship %></td>
 		<td class="functions"><%= link_to 'Edit', edit_scholarship_path(scholarship) %></td>
-		<td class="functions"><%= link_to 'Destroy', scholarship, :confirm => 'Are you sure?', :method => :delete %></td>
+		<td class="functions"><%= link_to 'Destroy', scholarship, confirm: 'Are you sure?', method: :delete %></td>
 	</tr>
 	<% end %>
 </table>
@@ -25,11 +25,11 @@
 <%= will_paginate @scholarships %>
 
 
-<div id="sidebar">
-	<p><%= link_to 'New scholarship', new_scholarship_path, :class => "add button" %></p>
-	<p><%= link_to "Download in Excel", scholarships_path(:format => :xls), :class => "xls button", :confirm => "This might take a few minutes." %></p>
-	<p><%= link_to "View all scholarships", scholarships_path(:per_page => 100000), :class => 'list button', :confirm => "Are you sure you want to list ALL of the scholarships? Depending on how many are in the database, this could take awhile to load." %></p>
+<%= content_for(:sidebar) do %>
+	<p><%= link_to 'New scholarship', new_scholarship_path, class: "add button" %></p>
+	<p><%= link_to "Download in Excel", scholarships_path(format: :xls), class: "xls button", confirm: "This might take a few minutes." %></p>
+	<p><%= link_to "View all scholarships", scholarships_path(per_page: 100000), class: 'list button', confirm: "Are you sure you want to list ALL of the scholarships? Depending on how many are in the database, this could take awhile to load." %></p>
 	
-	<%#= render :partial => "merge_form" if @current_user.admin? %>
+	<%#= render partial: "merge_form" if @current_user.admin? %>
 	
-</div>
+<%- end -%>

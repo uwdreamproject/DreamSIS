@@ -1,6 +1,6 @@
 class RsvpController < ApplicationController
   skip_before_filter :check_authorization, :check_if_enrolled
-  skip_before_filter :login_required, :except => [:event_type, :mentor_available]
+  skip_before_filter :login_required, except: [:event_type, :mentor_available]
   before_filter :load_audience
   
   def event
@@ -71,10 +71,10 @@ class RsvpController < ApplicationController
       session[:profile_validations_required] = "ready_to_rsvp"
       flash[:notice] = "Before you can RSVP for events, please login and complete your profile."
       respond_to do |format|
-        format.html { return redirect_to(profile_path(:apply_extra_styles => true, :apply_extra_footer_content => true)) }
+        format.html { return redirect_to(profile_path(apply_extra_styles: true, apply_extra_footer_content: true)) }
         format.js   {
           session[:return_to_after_profile].sub!(/.js(\Z|\?|\#)/, '\1')
-          return render(:js => "window.location.href = '#{profile_path(:apply_extra_styles => true, :apply_extra_footer_content => true)}'")
+          return render(js: "window.location.href = '#{profile_path(apply_extra_styles: true, apply_extra_footer_content: true)}'")
         }
       end
     end

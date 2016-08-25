@@ -1,20 +1,18 @@
 # Keeps track of changes made to associated models.
 class Change < ActiveRecord::Base
-  Change.partial_updates = false # disable partial_updates so that serialized columns get saved
-  
-  belongs_to :change_loggable, :polymorphic => true
+  belongs_to :change_loggable, polymorphic: true
   serialize :changes
   
   belongs_to :user
-  belongs_to :restored_user, :class_name => "User", :foreign_key => "restored_user_id"
+  belongs_to :restored_user, class_name: "User", foreign_key: "restored_user_id"
   
   NON_TRACKED_ATTRIBUTES = %w(created_at updated_at deleted_at creator_id updater_id deleter_id resource_cache_updated_at filter_cache)
   
-  scope :for, lambda { |klasses| { :conditions => self.conditions_for(klasses) } }  
-  scope :last50, :order => "created_at DESC", :limit => 50
-  scope :since, lambda { |time_ago| { :conditions => ['created_at > ?', time_ago] } }
+  scope :for, ->(klasses) { where self.conditions_for(klasses) }
+  scope :last50, -> { order("created_at DESC").limit(50) }
+  scope :since, ->(time_ago) { where ['created_at > ?', time_ago] }
 
-  default_scope :order => "created_at DESC"
+  default_scope { order("created_at DESC") }
 
   # Override this method so that we can use the reserved attribute name +changes+.
   # Since a Change object is never updated like a typical record (and therefore reliant
@@ -27,12 +25,13 @@ class Change < ActiveRecord::Base
   def self.log_create(obj)
     return false if obj.is_a?(Change)
     return false if obj.is_a?(ActiveRecord::SessionStore::Session)
+    return false if obj.is_a?(Customer)
     Change.create(
-      :change_loggable_id => obj.id, 
-      :change_loggable_type => obj.class.to_s,
-      :action_type => 'create',
-      :user_id => Thread.current['user'].try(:id),
-      :changes => cleanup_changes(obj.changes)
+      change_loggable_id: obj.id,
+      change_loggable_type: obj.class.to_s,
+      action_type: 'create',
+      user_id: Thread.current['user'].try(:id),
+      changes: cleanup_changes(obj.changes)
     )
   end
   
@@ -42,11 +41,11 @@ class Change < ActiveRecord::Base
     return false if obj.is_a?(ActiveRecord::SessionStore::Session)
     my_changes = cleanup_changes(obj.changes)
     Change.create(
-      :change_loggable_id => obj.id, 
-      :change_loggable_type => obj.class.to_s,
-      :action_type => 'update',
-      :user_id => Thread.current['user'].try(:id),
-      :changes => my_changes
+      change_loggable_id: obj.id,
+      change_loggable_type: obj.class.to_s,
+      action_type: 'update',
+      user_id: Thread.current['user'].try(:id),
+      changes: my_changes
     ) unless my_changes.empty?
   end
   
@@ -56,11 +55,11 @@ class Change < ActiveRecord::Base
     return false if obj.is_a?(ActiveRecord::SessionStore::Session)
     # if obj.class.respond_to?(:deleted_class)
     c = Change.create(
-      :change_loggable_id => obj.id, 
-      :change_loggable_type => obj.class.to_s,
-      :action_type => 'delete',
-      :user_id => Thread.current['user'].try(:id),
-      :changes => obj.attributes
+      change_loggable_id: obj.id,
+      change_loggable_type: obj.class.to_s,
+      action_type: 'delete',
+      user_id: Thread.current['user'].try(:id),
+      changes: obj.attributes
     )
       # c.update_attribute(:change_loggable_type, obj.class.deleted_class.to_s)
     # end

@@ -1,12 +1,12 @@
-<%= content_tag :h3, link_to(h(@mentor_term_group.title), @mentor_term_group), :class => "pre-title" if @mentor_term_group %>
+<%= content_tag :h3, link_to(h(@mentor_term_group.title), @mentor_term_group), class: "pre-title" if @mentor_term_group %>
 <h1>Weekly Summary
 	<small class="light">&raquo; <%= @start_date.this_week? ? "This Week (#{Date.today.beginning_of_week.to_s(:short)})" : "Week of #{@start_date.to_s(:short)}" %></small>
 </h1>
 
 <div class="spanhalf right">
 	<h2>Submitted Logs</h2>
-	<%= render :partial => "highlight", :collection => @activity_logs %>
-	<%= content_tag :div, "No logs submitted this week", :class => "empty left" if @activity_logs.empty? %>
+	<%= render partial: "highlight", collection: @activity_logs %>
+	<%= content_tag :div, "No logs submitted this week", class: "empty left" if @activity_logs.empty? %>
 </div>
 
 <div class="spanhalf left">
@@ -20,7 +20,7 @@
 			<strong>
 				<%= @direct_interaction_count.sum %></strong>
 			<strong class="smaller"><em>Avg.</em>
-				<%= number_with_precision @direct_interaction_count.average, :precision => 1 %></strong>
+				<%= number_with_precision @direct_interaction_count.average, precision: 1 %></strong>
 			<p>direct interactions</p>
 		</li>
 
@@ -28,7 +28,7 @@
 			<strong>
 				<%= @indirect_interaction_count.sum %></strong>
 			<strong class="smaller"><em>Avg.</em>
-				<%= number_with_precision @indirect_interaction_count.average, :precision => 1 %></strong>
+				<%= number_with_precision @indirect_interaction_count.average, precision: 1 %></strong>
 			<p>indirect interactions</p>
 		</li>
 	</ul>
@@ -36,24 +36,24 @@
 	<div style="<%= "display:none" if @activity_logs.empty? %>">
 		<h2>Time Breakdown</h2>
 		<table class="stats">
-			<%= render :partial => "time_breakdown", :collection => %w[student non_student] %>
-		</table>		
+			<%= render partial: "time_breakdown", collection: %w[student non_student] %>
+		</table>
 	</div>
 </div>
 
-<div id="sidebar">	
-	<p><%= link_to "Previous Week", activity_log_weekly_summary_path((@start_date - 7.days).year, (@start_date - 7.days).month, (@start_date - 7.days).day), :class => "back button" %></p>
-	<p><%= link_to "This Week", activity_log_current_week_summary_path, :class => "ok button" unless @start_date.this_week? %></p>
-	<p><%= link_to "Next Week", activity_log_weekly_summary_path((@start_date + 7.days).year, (@start_date + 7.days).month, (@start_date + 7.days).day), :class => "forward button" %></p>
+<%= content_for(:sidebar) do %>
+	<p><%= link_to "Previous Week", activity_log_weekly_summary_path((@start_date - 7.days).year, (@start_date - 7.days).month, (@start_date - 7.days).day), class: "back button" %></p>
+	<p><%= link_to "This Week", activity_log_current_week_summary_path, class: "ok button" unless @start_date.this_week? %></p>
+	<p><%= link_to "Next Week", activity_log_weekly_summary_path((@start_date + 7.days).year, (@start_date + 7.days).month, (@start_date + 7.days).day), class: "forward button" %></p>
 	
 	<h3><%= Customer.mentor_Label %> Group</h3>
-	<form><%= select_tag :mentor_term_group_id, 
+	<form><%= select_tag :mentor_term_group_id,
 						options_for_select(["All"] + @term.mentor_term_groups.collect{|g| [h(g.title), g.id]}, @mentor_term_group.try(:id) ),
-						:id => "mentor_term_group_select" if @term %>
+						id: "mentor_term_group_select" if @term %>
 	</form>
 	<%= javascript_tag("
 			$('#mentor_term_group_select').change(function() {
 				this.form.submit();
 			});
 	") %>
-</div>
+<%- end -%>

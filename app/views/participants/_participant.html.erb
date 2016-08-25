@@ -2,13 +2,7 @@
 <%- report ||= "basics" -%>
 <%- @participant_row_index = 1 -%>
 
-<%- cache [participant.cache_key, "participant-row", Participant.object_filters.collect(&:cache_key).hash, participant.filter_cache.hash, report.to_s].join("/") do -%>
-	<% 
-	filter_html_attributes = []
-	Participant.object_filters.each do |object_filter|
-		filter_html_attributes << "data-filter-#{object_filter.id}=#{participant.passes_filter?(object_filter)}" if object_filter.display_now?
-	end
-	-%>
+<%- cache [participant.cache_key, "participant-row", report.to_s].join("/") do -%>
 
 	<% 
 	if @stages
@@ -19,7 +13,7 @@
 	end
 	-%>
 
-	<tbody id="<%= dom_id %>" class="filterable" <%= filter_html_attributes.join(" ") %> data-stages="<%= stages.join(" ") if stages %>">
+	<tbody id="<%= dom_id %>" class="filterable" data-stages="<%= stages.join(" ") if stages %>" data-participant-id="<%= participant.id.to_s %>">
 	
 		<%- 
 		collection ||= (participant.instance_eval(report.pluralize) rescue []) 
@@ -28,14 +22,13 @@
 	
 		<%- (collection.empty? ? 1 : collection.size).times do -%>
 			<%- row_index += 1 -%>
-			<%= render :partial => "participants/reports/wrapper", 
-						:locals => { 
-							:collection => collection, 
-							:participant => participant, 
-							:report => report, 
-							:row_count => (collection.empty? ? 1 : collection.size),
-							:row_index => row_index,
-							:filter_html_attributes => filter_html_attributes
+			<%= render partial: "participants/reports/wrapper", 
+						locals: { 
+							collection: collection, 
+							participant: participant, 
+							report: report, 
+							row_count: (collection.empty? ? 1 : collection.size),
+							row_index: row_index
 						} %>
 		<% end %>
 	</tbody>

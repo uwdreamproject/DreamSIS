@@ -1,16 +1,16 @@
 class ObjectFilter < ActiveRecord::Base
-  validates_presence_of :object_class, :title, :criteria  
+  validates_presence_of :object_class, :title, :criteria
   validate :validate_criteria
-  validates_format_of :title, :with => /\A[^.]+\Z/, :message => "cannot include a period"
+  validates_format_of :title, with: /\A[^.]+\Z/, message: "cannot include a period"
   after_save :expire_object_filters_cache
   
-  belongs_to :earliest_grade_level, :class_name => "GradeLevel", :primary_key => 'level', :foreign_key => 'earliest_grade_level_level'
-  belongs_to :latest_grade_level, :class_name => "GradeLevel", :primary_key => 'level', :foreign_key => 'latest_grade_level_level'
+  belongs_to :earliest_grade_level, class_name: "GradeLevel", primary_key: 'level', foreign_key: 'earliest_grade_level_level'
+  belongs_to :latest_grade_level, class_name: "GradeLevel", primary_key: 'level', foreign_key: 'latest_grade_level_level'
 
-  default_scope :order => "category IS NULL, category, position, earliest_grade_level_level, title"
+  default_scope { order("category IS NULL, category, position, earliest_grade_level_level, title") }
 
   acts_as_list scope: [:category]
-  
+    
   # If there's a value in the +opposite_title+ attribute, then we'll display the opposite perspective on the filters
   # list on the participant list.
   def display_filter_as_opposite?
@@ -19,7 +19,7 @@ class ObjectFilter < ActiveRecord::Base
   
   # Returns true if the passed object passes the filter criteria using +instance_eval+. Pass the "purpose" option as "stats"
   # to change the behavior for filters marked as +stats_shows_opposite+.
-  def passes?(object, options = { :purpose => :filter })
+  def passes?(object, options = { purpose: :filter })
     result = object.instance_eval(criteria)
     result = false if result.nil?
     options[:purpose].to_sym == :stats && display_filter_as_opposite? ? !result : result
@@ -57,11 +57,16 @@ class ObjectFilter < ActiveRecord::Base
     [start_display_at.to_s(:month_day), end_display_at.to_s(:month_day)].join(delimiter)
   end
 
+  # Return the list of valid grade levels for this filter as an array.
+  def grade_levels
+    return [] unless !earliest_grade_level.nil? || !latest_grade_level.nil?
+    [earliest_grade_level_level, latest_grade_level_level]
+  end
+
   # Returns a string of the valid grade levels for this filter.
   def grade_levels_list_string(html = true)
-    return "" unless !earliest_grade_level.nil? || !latest_grade_level.nil?
     delimiter = html ? "&ndash;" : "-"
-    [earliest_grade_level_level, latest_grade_level_level].join(delimiter)
+    grade_levels.join(delimiter)
   end
   
   # Returns true if the display period is undefined, or if it is defined, if this filter should
@@ -83,6 +88,25 @@ class ObjectFilter < ActiveRecord::Base
   
   def expire_object_filters_cache
     object_class.constantize.expire_object_filters_cache
+  end
+
+  # Deletes all current filters information stored in the redis cache.
+  def self.reset_filter_cache!
+    if (keys = Customer.redis.keys("ObjectFilter*")) && !keys.empty?
+      Customer.redis.del(keys)
+    end
+  end
+  
+  def redis_key(str)
+    "ObjectFilter:#{self.id}:#{str}"
+  end
+  
+  # Takes an array of filter conditions and returns the matching object_ids for
+  # the intersection of those conditions in the filter cache. You can specify
+  # direct redis keys ("ObjectFilter:6:pass") or short form ("6:pass").
+  def self.intersect(filter_selections)
+    keys = filter_selections.map{ |s| s.count(":") < 2 ? "ObjectFilter:" + s : s }
+    Customer.redis.sinter(keys)
   end
 
 end

@@ -18,13 +18,15 @@ class Parent < Person
   validates_presence_of :lastname, :firstname
   validates_presence_of :child_id
 
-  belongs_to :child_person, :class_name => "Person", :foreign_key => :child_id, :touch => true
-	belongs_to :highest_education_level, :class_name => "EducationLevel"
+  belongs_to :child_person, class_name: "Person", foreign_key: :child_id, touch: true
+	belongs_to :highest_education_level, class_name: "EducationLevel"
 
   validates_presence_of :lastname, :firstname, :parent_type
 
   after_save :update_filter_cache
   after_destroy :update_filter_cache
+  
+  scope :emergency_contacts, -> { where(is_emergency_contact: true, parent_type: "Emergency Contact") }
 
   # Updates the participant filter cache
   def update_filter_cache

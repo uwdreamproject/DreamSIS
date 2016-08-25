@@ -1,32 +1,27 @@
-<h3>Filters
-	<%= link_to_function "clear", "clearAllFilters()", :class => "right small filter-clear-link", :style => "display:none" %>
-	<%= link_to_function "expand", "toggleExpandFiltersView()", :class => "right small filter-expand-link" %>
-</h3>
+<div class="filters">
+	<%= link_to "Clear", "#", class: "pull-right small hidden clear-filters" %>
+	<h3><%= glyph('filter fa-fw') %> Filters</h3>
 
-	<ul class="filters">
-		<%- for category, object_filters in Participant.object_filters.group_by(&:category) -%>
+	<%- for category, object_filters in Participant.object_filters.group_by(&:category) -%>
 	
-		<li class="category <%= "closed" unless category.to_s.starts_with?("-") %>" data-category="<%= category %>">
-			<h4><%= Participant::FILTER_CATEGORIES[category.to_s.to_sym] || "Other" %></h4>
-			<ul>
-					
-				<%- for object_filter in object_filters -%>
-				<li id="filter_li_<%= object_filter.id.to_s %>" data-category="<%= object_filter.category.to_s %>">		
+		<h4>
+			<a role="button" data-toggle="collapse" href="#filter_controls_<%= category %>" aria-expanded="true" aria-controls="#filter_controls_<%= category %>">
+				<%= Participant::FILTER_CATEGORIES[category.to_s.to_sym] || "Other" %>
+			</a>
+		</h4>
 
-					<% 
-					dom_id = "filter_#{object_filter.id.to_s}_true"
-					check_box_str = check_box_tag dom_id, true, false, 
-						:class => "#{object_filter.id.to_s}_filter_checkbox filter_checkbox", 
-						"data-target-filter-id" => object_filter.id.to_s
-					record_count_str = "<small id='record_count_#{object_filter.id}'>&nbsp;</small>"
-					%>
-					<%= label_tag(dom_id, raw("#{check_box_str}#{record_count_str}<span>#{h(object_filter.opposite_title)}</span>")) %>
-
-				</li>
-				<% end %>
+		<ul class="list-unstyled collapse" id="filter_controls_<%= category %>" data-category="<%= category %>">
 				
-			</ul>
-		</li>
+			<%- for object_filter in object_filters -%>
+			<li>
+				<%= link_to "#", class: "filter", data: { filter_id: "ObjectFilter:#{object_filter.id}" } do %>
+					<%= glyph("") %><%= content_tag :span, object_filter.opposite_title, class: "filter-title" %>
+					<%= content_tag :span, "", class: "badge pull-right record-count" %>
+				<% end %>
+			</li>
+			<% end %>
+			
+		</ul>
 	
-		<% end -%>
-	</ul>
+	<% end -%>
+</div>

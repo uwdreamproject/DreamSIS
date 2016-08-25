@@ -7,11 +7,11 @@
 							:id,
 							:details_string,
 							{ 
-								:prompt => "-- Choose a shift/role --",
-								:selected => event_attendance.try(:event_shift_id)
+								prompt: "-- Choose a shift/role --",
+								selected: event_attendance.try(:event_shift_id)
 							 },
 							{ 
-								:id => "event_attendance_event_shift_id_#{event.id}"} %>
+								id: "event_attendance_event_shift_id_#{event.id}"} %>
 	<%= javascript_tag("
 		$('#event_attendance_event_shift_id_#{event.id}').change(
 			function() {

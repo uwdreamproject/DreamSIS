@@ -1,6 +1,6 @@
 class HighSchoolsController < ApplicationController
-  skip_before_filter :login_required, :check_authorization, :only => [:in_district]
-  skip_before_filter :check_authorization, :only => [:stats]
+  skip_before_filter :login_required, :check_authorization, only: [:in_district]
+  skip_before_filter :check_authorization, only: [:stats]
   
   # GET /high_schools
   # GET /high_schools.xml
@@ -9,7 +9,7 @@ class HighSchoolsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @high_schools }
+      format.xml  { render xml: @high_schools }
     end
   end
 
@@ -21,7 +21,7 @@ class HighSchoolsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @high_school }
+      format.xml  { render xml: @high_school }
     end
   end
 
@@ -32,7 +32,7 @@ class HighSchoolsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @high_school }
+      format.xml  { render xml: @high_school }
     end
   end
 
@@ -50,11 +50,11 @@ class HighSchoolsController < ApplicationController
       if @high_school.save
         flash[:notice] = 'HighSchool was successfully created.'
         format.html { redirect_to(@high_school) }
-        format.xml  { render :xml => @high_school, :status => :created, :location => @high_school }
+        format.xml  { render xml: @high_school, status: :created, location: @high_school }
         format.js
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @high_school.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @high_school.errors, status: :unprocessable_entity }
         format.js
       end
     end
@@ -71,8 +71,8 @@ class HighSchoolsController < ApplicationController
         format.html { redirect_to(@high_school) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @high_school.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @high_school.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -123,7 +123,6 @@ class HighSchoolsController < ApplicationController
     @high_schools = params[:id].nil? ? HighSchool.partners : [HighSchool.find(params[:id])]
 		@all_schools = params[:id].nil?
     @cohort = params[:cohort] || Participant.current_cohort
-		@layout_in_blocks = true
 		
 		respond_to do |format|
 			format.html

@@ -1,6 +1,6 @@
 class EducationLevel < ActiveRecord::Base
 
-  default_scope :order => "sequence"
+  default_scope { order("sequence") }
   
   validates_uniqueness_of :title
   validates_presence_of :title, :sequence

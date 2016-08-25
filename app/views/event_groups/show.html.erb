@@ -32,10 +32,10 @@
 		<dt>Training</dt>
 		<dd>
 			Mentors: 	<%= link_to @event_group.mentor_training.title, @event_group.mentor_training %>
-						<%= content_tag(:span, "optional", :class => 'tag') if @event_group.mentor_training_optional? %>
+						<%= content_tag(:span, "optional", class: 'tag') if @event_group.mentor_training_optional? %>
 			<br />
 			Volunteers: <%= link_to @event_group.volunteer_training.title, @event_group.volunteer_training %>
-						<%= content_tag(:span, "optional", :class => 'tag') if @event_group.volunteer_training_optional? %>
+						<%= content_tag(:span, "optional", class: 'tag') if @event_group.volunteer_training_optional? %>
 		</dd>
 	<% end -%>
 
@@ -48,7 +48,7 @@
 		<dt>Sharing</dt>
 		<dd>
 			<%- for proxy in @event_group.proxies.master -%>
-				<p>Shared with <%= proxy.other_customer.name %> 
+				<p>Shared with <%= proxy.other_customer.name %>
 					<span class="light">(Event Group #<%= proxy.other_id %>)</span>
 				</p>
 			<% end %>
@@ -69,7 +69,7 @@
 	</tr>
 
 	<tbody>
-		<%= render :partial => 'events/event', :collection => @event_group.events %>
+		<%= render partial: 'events/event', collection: @event_group.events %>
 		
 		<%- if @event_group.events.empty? -%>
 			<tr class="empty">
@@ -81,8 +81,8 @@
 </table>
 
 
-<div id="sidebar">
-	<p><%= link_to "Edit this event group", edit_event_group_path(@event_group), :class => 'edit button' %></p>
-	<p><%= link_to "Add new event to this group", new_event_path(:event => {:event_group_id => @event_group}), :class => 'add button' %></p>
-	<p><%= link_to "Back to event groups", event_groups_path, :class => 'back button' %></p>
-</div>
+<%= content_for(:sidebar) do %>
+	<p><%= link_to "Edit this event group", edit_event_group_path(@event_group), class: 'edit button' %></p>
+	<p><%= link_to "Add new event to this group", new_event_path(event: {event_group_id: @event_group}), class: 'add button' %></p>
+	<p><%= link_to "Back to event groups", event_groups_path, class: 'back button' %></p>
+<%- end -%>

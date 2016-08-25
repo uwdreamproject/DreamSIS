@@ -1,18 +1,18 @@
 # Used to link an object to a master/slave object that belonds to another tenant. The primary use case is events that are open to people from other programs. An Event may be set up as a master object in the tenant that is running the event, and other programs' participants may RSVP for that Event. To maintain tenant separation, the proxy object keeps the two objects in sync, including slave objects like EventAttendance.
 class MultitenantProxy < ActiveRecord::Base
-  belongs_to :proxyable, :polymorphic => true, :touch => true
-  belongs_to :other_customer, :class_name => "Customer"
+  belongs_to :proxyable, polymorphic: true, touch: true
+  belongs_to :other_customer, class_name: "Customer"
   
   validates_presence_of :proxyable_type, :proxyable_id, :role, :other_customer_id
-  validates_uniqueness_of :proxyable_id, :scope => [:proxyable_type, :role, :other_customer_id, :other_id]
+  validates_uniqueness_of :proxyable_id, scope: [:proxyable_type, :role, :other_customer_id, :other_id]
   
   attr_accessible :other_id, :proxyable_id, :proxyable_type, :role, :other_customer_id
 
   ExcludedAttributes = %w[id created_at updated_at]
   
-  scope :master, where(role: "master")
-  scope :slave, where(role: "slave")
-  scope :for_customer, lambda{ |customer_id| where(other_customer_id: customer_id) }
+  scope :master, -> { where(role: "master") }
+  scope :slave, ->{ where(role: "slave") }
+  scope :for_customer, ->(customer_id) { where(other_customer_id: customer_id) }
   
   # Returns the object from the other side of the proxy, using Apartment::Tenant.process.
   def other_object

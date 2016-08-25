@@ -2,22 +2,22 @@
 <h2><%= @mentor_term_group.term.try(:title) %></h2>
 
 <ul class="photo-tile">
-	<%= render :partial => 'photo_tile', :collection => @mentor_terms %>
+	<%= render partial: 'photo_tile', collection: @mentor_terms %>
 </ul>
 
 <div style="clear:both"></div>
 
 <%- if @mentor_term_group.linked_group -%>
 <ul class="photo-tile">
-	<h3>Linked Section: 
+	<h3>Linked Section:
 		<%= link_to "#{@mentor_term_group.linked_group.title} (#{@mentor_term_group.linked_group.section_id})", @mentor_term_group.linked_group %>
 	</h3>
-	<%= render :partial => 'photo_tile', :collection => @mentor_term_group.linked_group.mentor_terms %>
+	<%= render partial: 'photo_tile', collection: @mentor_term_group.linked_group.mentor_terms %>
 </ul>
 <% end -%>
 
 <div style="clear:both"></div>
 
-<div id="sidebar">
-	<%= link_to "Back to mentor group", @mentor_term_group, :class => 'back button' %>
-</div>
+<%= content_for(:sidebar) do %>
+	<%= link_to "Back to mentor group", @mentor_term_group, class: 'back button' %>
+<%- end -%>

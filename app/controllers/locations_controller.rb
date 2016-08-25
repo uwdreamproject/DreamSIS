@@ -1,7 +1,7 @@
 class LocationsController < ApplicationController
-  # protect_from_forgery :except => [:auto_complete_for_location_name, :auto_complete_for_institution_name]
+  # protect_from_forgery except: [:auto_complete_for_location_name, :auto_complete_for_institution_name]
   
-  skip_before_filter :check_authorization, :only => [:show, :auto_complete_for_institution_name]
+  skip_before_filter :check_authorization, only: [:show, :auto_complete_for_institution_name]
   
   # GET /locations
   # GET /locations.xml
@@ -11,7 +11,7 @@ class LocationsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @locations }
+      format.xml  { render xml: @locations }
     end
   end
 
@@ -25,8 +25,8 @@ class LocationsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { render :action => (@location.is_a?(Institution) || @location.is_a?(College) ? 'college' : 'show')}
-      format.xml  { render :xml => @location }
+      format.html { render action: (@location.is_a?(Institution) || @location.is_a?(College) ? 'college' : 'show')}
+      format.xml  { render xml: @location }
     end
   end
 
@@ -39,7 +39,7 @@ class LocationsController < ApplicationController
 
     respond_to do |format|
       format.html
-    end    
+    end
   end
 
   # GET /locations/new
@@ -51,7 +51,7 @@ class LocationsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @location }
+      format.xml  { render xml: @location }
     end
   end
 
@@ -71,10 +71,10 @@ class LocationsController < ApplicationController
       if @location.save
         flash[:notice] = 'Location was successfully created.'
         format.html { redirect_to(@location) }
-        format.xml  { render :xml => @location, :status => :created, :location => @location }
+        format.xml  { render xml: @location, status: :created, location: @location }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @location.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @location.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -90,8 +90,8 @@ class LocationsController < ApplicationController
         format.html { redirect_to(@location) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @location.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @location.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -109,32 +109,32 @@ class LocationsController < ApplicationController
   end
 
   def auto_complete_for_location_name
-    @locations = Location.find(:all, :conditions => ["name LIKE ?", "%#{params[:term].to_s.downcase}%"])
-    render :json => @locations.map { |result|
+    @locations = Location.where(["name LIKE ?", "%#{params[:term].to_s.downcase}%"])
+    render json: @locations.map { |result|
       {
-        :id => result.id, 
-        :value => h(result.name),
-        :klass => result.class.to_s.underscore, 
-        :fullname => h(result.name),
-        :secondary => result.type.to_s.titleize
+        id: result.id,
+        value: h(result.name),
+        klass: result.class.to_s.underscore,
+        fullname: h(result.name),
+        secondary: result.type.to_s.titleize
       }
     }
   end
 
   def auto_complete_for_institution_name
     @institutions = Institution.find_all_by_name(params[:term].to_s.downcase)[0..10]
-    render :json => @institutions.map { |result| 
+    render json: @institutions.map { |result|
       {
-        :id => result.id, 
-        :value => h(result.name),
-        :klass => "", 
-        :fullname => h(result.name),
-        :secondary => h(result.location_detail)
+        id: result.id,
+        value: h(result.name),
+        klass: "",
+        fullname: h(result.name),
+        secondary: h(result.location_detail)
       }
     }
   end
   
-  protected 
+  protected
   
   def check_authorization
     unless @current_user && (@current_user.admin? || @current_user.try(:person).try(:current_lead?))

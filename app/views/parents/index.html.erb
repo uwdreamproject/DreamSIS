@@ -1,7 +1,7 @@
 <h3 class="pre-title"><%= link_to h(@participant.fullname), @participant %></h3>
 <h1>Parents/Guardians &amp; Contacts</h1>
 
-<%= render :partial => "participants/parents" %>
+<%= render partial: "participants/parents" %>
 <br />
 
-<%= link_to 'Add parent/guardian', new_participant_parent_path, :class => 'add button' %>
+<%= link_to 'Add parent/guardian', new_participant_parent_path, class: 'add button' %>

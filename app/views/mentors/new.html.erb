@@ -1,9 +1,9 @@
 <h1>New <%= Customer.mentor_Label %></h1>
 
-<%= semantic_form_for @mentor, :html => { :multipart => true } do |f| %>
+<%= semantic_form_for @mentor, html: { multipart: true } do |f| %>
 	<%= default_form_errors(f) %>
 	
-	<%= render :partial => 'fields', :locals => { :f => f } %>
+	<%= render partial: 'fields', locals: { f: f } %>
 	
 	<%= default_form_actions(f) %>
 

@@ -8,7 +8,7 @@ class FinancialAidSource < ActiveRecord::Base
   delegate :breakdown, to: :package
   validates_presence_of :package_id, :source_type_id
   monetize :amount_cents
-  default_scope includes(:source_type).order("financial_aid_source_types.category")
+  default_scope { includes(:source_type).order("financial_aid_source_types.category") }
   
   after_save -> { package.save }
   after_destroy -> { package.save }

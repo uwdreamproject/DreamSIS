@@ -16,18 +16,18 @@
 	</thead>
 
 	<tbody>
-		<%- if @college_enrollments.empty? -%>	
+		<%- if @college_enrollments.empty? -%>
 			<tr class="empty">
 				<td colspan="10">No college enrollments yet.</td>
 			</tr>
 		<% end %>
 
-		<%= render :partial => "college_enrollments/college_enrollment", :collection => enrollments %>
+		<%= render partial: "college_enrollments/college_enrollment", collection: enrollments %>
 	</tbody>
 
-</table>	
+</table>
 
 
-<div id="sidebar">
-	<%= link_to 'Add college enrollment', new_participant_college_enrollment_path, :class => 'add button' %>
-</div>
+<%= content_for(:sidebar) do %>
+	<%= link_to 'Add college enrollment', new_participant_college_enrollment_path, class: 'add button' %>
+<%- end -%>

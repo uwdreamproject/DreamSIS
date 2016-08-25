@@ -4,9 +4,9 @@
 
 <div class="event-filters">
 	<p>
-		Only show events for 
-		<%= select_tag :county_filter, 
-						options_for_select([["All Counties", "reset"]] + @counties.collect{|k,v| [(k ? "#{h(k)} County" : "Other"), k.to_s.parameterize.to_s]}) 
+		Only show events for
+		<%= select_tag :county_filter,
+						options_for_select([["All Counties", "reset"]] + @counties.collect{|k,v| [(k ? "#{h(k)} County" : "Other"), k.to_s.parameterize.to_s]})
 						 %>
 	</p>
 </div>
@@ -23,13 +23,13 @@
 					<%= image_tag( "https://maps.google.com/maps/api/staticmap?size=60x60&sensor=false&zoom=10&markers=#{location.try(:latitude)}%2C#{location.try(:longitude)}") if location.try(:geocoded?) %>
 				</td>
 				<td class="location name" rowspan="<%= events.size %>"><%=h location.nil? ? events.first.location_string : location.name %></td>
-				<%= render :partial => "event_mini", :object => events.first %>
+				<%= render partial: "event_mini", object: events.first %>
 			</tr>
 			
 			<%- if events.size > 1 -%>
 				<%- for event in events[1..99] -%>
 					<tr class="filterable-by-county county-<%= county.to_s.parameterize.to_s %>">
-						<%= render :partial => "event_mini", :object => event %>
+						<%= render partial: "event_mini", object: event %>
 					</tr>
 				<% end -%>
 			<% end -%>
@@ -38,9 +38,9 @@
 	<% end -%>
 </table>
 
-<div id="sidebar">
-	<p><%= link_to "Back to event listing", event_group_rsvp_path(@event_group), :class => "back button" if @event_group %></p>
-</div>
+<%= content_for(:sidebar) do %>
+	<p><%= link_to "Back to event listing", event_group_rsvp_path(@event_group), class: "back button" if @event_group %></p>
+<%- end -%>
 
 <script>
 document.observe("dom:loaded", function() {

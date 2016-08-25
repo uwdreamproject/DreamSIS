@@ -20,28 +20,28 @@ class AvatarUploader < CarrierWave::Uploader::Base
 
   # Provide a default URL as a default if there hasn't been a file uploaded
   def default_url
-    "/images/blank_avatar_" + version_name + ".png"
+    "/assets/blank-participant.svg"
   end
   
-  # Create different versions of your uploaded files	
+  # Create different versions of your uploaded files
 	version :mini do
-		process :resize_to_fill => [32, 32]
+		process resize_to_fill: [32, 32]
 	end
 
   version :thumb do
-    process :resize_to_fill => [50, 50]
+    process resize_to_fill: [50, 50]
   end
 
   version :small do
-    process :resize_to_fill => [150, 150]
+    process resize_to_fill: [150, 150]
   end
 	
 	version :medium do
-    process :resize_to_fill => [300, 300]
+    process resize_to_fill: [300, 300]
 	end
   
   version :large do
-    process :resize_to_limit => [600, 600]
+    process resize_to_limit: [600, 600]
   end
 
   # Add a white list of extensions which are allowed to be uploaded,

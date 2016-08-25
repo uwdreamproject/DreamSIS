@@ -5,36 +5,35 @@ The main purpose of the Customer model is to sandbox multiple organizations' dat
 =end
 class Customer < ActiveRecord::Base
   validates_presence_of :name
-  validates_presence_of :clearinghouse_customer_number, :clearinghouse_contract_start_date, :clearinghouse_number_of_submissions_allowed, :if => :validate_clearinghouse_configuration?
-  validates_numericality_of :clearinghouse_customer_number, :if => :validate_clearinghouse_configuration?
-  validates_format_of :stylesheet_url, :with => URI::regexp(%w(http https)), :allow_blank => true
+  validates_presence_of :clearinghouse_customer_number, :clearinghouse_contract_start_date, :clearinghouse_number_of_submissions_allowed, if: :validate_clearinghouse_configuration?
+  validates_numericality_of :clearinghouse_customer_number, if: :validate_clearinghouse_configuration?
+  validates_format_of :stylesheet_url, with: URI::regexp(%w(http https)), allow_blank: true
   
-  belongs_to :parent_customer, :class_name => "Customer"
+  belongs_to :parent_customer, class_name: "Customer"
   belongs_to :program
 
-  delegate :website_url, :to => :program
-
+  delegate :website_url, to: :program
 
   DEFAULT_LABEL = {
-    :mentor => "mentor",
-    :lead => "lead",
-    :participant => "participant",
-    :workbook => "workbook",
-    :intake_survey => "intake survey",
-    :mentee => "mentee",
-		:not_target => "not target",
-    :visit => "visit"
+    mentor: "mentor",
+    lead: "lead",
+    participant: "participant",
+    workbook: "workbook",
+    intake_survey: "intake survey",
+    mentee: "mentee",
+		not_target: "not target",
+    visit: "visit"
   }
   
-  RESERVED_SUBDOMAINS = %w[www public assets admin identity development production staging test dreamsis]
+  RESERVED_SUBDOMAINS = %w[www public assets admin identity development production staging dreamsis]
   validates_presence_of :url_shortcut
   validates_uniqueness_of :url_shortcut
-  validates_exclusion_of :url_shortcut, :in => RESERVED_SUBDOMAINS, :message => "URL shortcut %s is not allowed"
+  validates_exclusion_of :url_shortcut, in: RESERVED_SUBDOMAINS, message: "URL shortcut %s is not allowed"
 
   OMNIAUTH_PROVIDERS = %w[facebook twitter google_oauth2 shibboleth windowslive linkedin identity]
 
-  validate :tenant_database_must_exist
-  after_create :initialize_tenant!
+  # validate :tenant_database_must_exist
+  after_create :create_tenant!
   after_save :reset_customer_in_thread
 
   has_many :clearinghouse_requests
@@ -51,7 +50,7 @@ class Customer < ActiveRecord::Base
   end
   
   def current_contract_clearinghouse_requests
-    clearinghouse_requests.find(:all, :conditions => ["submitted_at > ?", clearinghouse_contract_start_date])
+    clearinghouse_requests.where(["submitted_at > ?", clearinghouse_contract_start_date])
   end
   
   def uses_clearinghouse?
@@ -66,9 +65,9 @@ class Customer < ActiveRecord::Base
     return_integer ? raw : raw.to_s.rjust(6, "0")
   end
   
-  # If the Customer defines a different name for use with ClearinghouseRequests, return that. 
+  # If the Customer defines a different name for use with ClearinghouseRequests, return that.
   # Otherwise, just return the name.
-  def name_for_clearinghouse 
+  def name_for_clearinghouse
     clearinghouse_customer_name || name
   end
   
@@ -156,7 +155,7 @@ class Customer < ActiveRecord::Base
   def self.current_customer(reset = false)
     return Thread.current['customer'] if Thread.current['customer'] && !reset
     @current_customer ||= {}
-    @current_customer[Apartment::Tenant.current] ||= Customer.where(:url_shortcut => Apartment::Tenant.current).first || Customer.new
+    @current_customer[Apartment::Tenant.current] ||= Customer.where(url_shortcut: Apartment::Tenant.current).first || Customer.new
   end
   
   # Unset the customer attribute in the current thread. Used as an +after_save+ callback to pick up changes.
@@ -177,6 +176,7 @@ class Customer < ActiveRecord::Base
   # Create a new tenant database.
   def create_tenant!
     Apartment::Tenant.create(tenant_name) unless tenant_name.blank?
+    initialize_tenant!
   end
   
   # Loads the schema and seeds the Customer's tenant record to the latest migration.
@@ -185,7 +185,7 @@ class Customer < ActiveRecord::Base
     @database_seeds_file = Rails.root.join('db', 'seeds.rb')
     
     Customer.transaction do
-      Apartment::Tenant.process(tenant_name) do
+      Apartment::Tenant.switch(tenant_name) do
         load(@database_schema_file)
         load(@database_seeds_file) if Apartment.seed_after_create
       end
@@ -195,13 +195,19 @@ class Customer < ActiveRecord::Base
   end
   
   # Returns true if the tenant database exists, which must be done before creating a new Customer.
-  def tenant_database_must_exist
-    begin
-      Apartment::Tenant.process(tenant_name)
-      true
-    rescue Apartment::DatabaseNotFound => e
-      errors.add :base, "Tenant database must exist before Customer record is created."
-    end
+  # def tenant_database_must_exist
+  #   begin
+  #     Apartment::Tenant.switch(tenant_name) do
+  #       true
+  #     end
+  #   rescue Apartment::TenantNotFound => e
+  #     errors.add :base, "Tenant database must exist before Customer record is created."
+  #   end
+  # end
+  
+  # Creates a Redis namespace for this customer to use.
+  def redis
+     @redis ||= Redis::Namespace.new(url_shortcut, redis: $redis)
   end
 
   # Returns the current customer's name
@@ -217,7 +223,7 @@ class Customer < ActiveRecord::Base
   # Automatically handle the same method_missing for individual Customer objects.
   def method_missing(method_name, *args)
     if m = method_name.to_s.match(/\A(\w+)_(label|Label)\Z/)
-      customer_label(m[1], :titleize => m[2] == "Label")
+      customer_label(m[1], titleize: m[2] == "Label")
     elsif respond_to?(method_name)
       try(method_name.to_s, *args)
     else
@@ -236,11 +242,11 @@ class Customer < ActiveRecord::Base
     method_name = "#{label_name.to_s}_label"
     return_label = self.try(method_name) if self.respond_to?(method_name)
     return_label = DEFAULT_LABEL[label_name.to_sym] if return_label.blank?
-    format_customer_label(return_label, :titleize => options[:titleize], :pluralize => pluralize)
+    format_customer_label(return_label, titleize: options[:titleize], pluralize: pluralize)
   end
 
   def format_customer_label(return_label, options = {})
-    options.merge({:titleize => false, :pluralize => false})
+    options.merge({titleize: false, pluralize: false})
     return_label = return_label.pluralize if options[:pluralize]
     return_label = return_label.titleize if options[:titleize]
     return return_label
@@ -262,7 +268,7 @@ class Customer < ActiveRecord::Base
 		end
 	end
 
-  private 
+  private
 
   # helper method to calculate and return the validity length as a string
   def helper_validity_length(length)

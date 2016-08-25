@@ -2,18 +2,18 @@
 <p>Assign <%= raw(@participants.collect{ |p| link_to p.fullname, p }.to_sentence) %> to the following group:</p>
 
 <div style="position:relative">
-	<%= form_for :participant, :url => participant_bulk_action_path(:process_assign_to_group), :remote => true do |f| %>
+	<%= form_for :participant, url: participant_bulk_action_path(:process_assign_to_group), remote: true do |f| %>
 			
-		<%= select_tag :participant_group_id, options_from_collection_for_select(@participant_groups, :id, :title, :blank => true) %>
+		<%= select_tag :participant_group_id, options_from_collection_for_select(@participant_groups, :id, :title, blank: true) %>
 	
 		<%- for id in @participants.collect(&:id) -%>
-			<%= hidden_field_tag "participant_ids[]", id, :multiple => true %>
+			<%= hidden_field_tag "participant_ids[]", id, multiple: true %>
 		<% end %>
 	
 		<p>
-			<%= f.submit "Assign to group", :disable_with => "Adding..." %>
+			<%= f.submit "Assign to group", disable_with: "Adding..." %>
 			<%= separator %>
-			<%= link_to_function "Cancel", "$(this).parents('.centered-modal').remove()", :class => "cancel button" %>
+			<%#= link_to_function "Cancel", "$(this).parents('.centered-modal').remove()", class: "cancel button" %>
 		</p>
 		
 	<% end -%>

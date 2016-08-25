@@ -10,9 +10,9 @@
 			<small class="light id"> (#<%=h parent_object.institution.try(:id) %>)</small>
 			<span class="secondary location"><%=h parent_object.institution.try(:location_detail) %></span>
 			<span class="tertiary"> <%= link_to h(parent_object.institution.try(:formatted_website_url)), 
-										h(parent_object.institution.try(:formatted_website_url)), :popup => true %></span>
+										h(parent_object.institution.try(:formatted_website_url)), popup: true %></span>
 		</div>
-		<small><%= link_to "Choose a different institution", "", :onclick => 
+		<small><%= link_to "Choose a different institution", "", onclick: 
 								"$('#institution_details').hide(); 
 								 $('#institution_name_auto_complete input.autocomplete-search').show().val('').focus();
 								 return false;" %></small>
@@ -22,4 +22,4 @@
 </div>
 </li>
 
-<%= f.input :institution_id, :as => :hidden %>
+<%= f.input :institution_id, as: :hidden %>

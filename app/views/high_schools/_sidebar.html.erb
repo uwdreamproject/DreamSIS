@@ -1,7 +1,7 @@
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 
-	<p><%= link_to 'Edit this school', edit_high_school_path(@high_school), :class => 'edit button' %></p>
+	<p><%= link_to 'Edit this school', edit_high_school_path(@high_school), class: 'edit button' %></p>
 
-	<p><%= link_to 'High School List', high_schools_path, :class => 'back button' %></p>
+	<p><%= link_to 'High School List', high_schools_path, class: 'back button' %></p>
 
-</div>
+<%- end -%>

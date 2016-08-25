@@ -1,154 +1,78 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<%= render layout: "layouts/wrap" do %>
 
-	<title><%= @title.blank? ? "" : "#{@title.is_a?(Array) ? @title.collect(&:to_title).join(" - ") : @title.to_title} - " %>DreamSIS
-		<%= " 🆔" if Rails.env == "development" %></title>
-	<meta name="viewport" content="width=device-width">
-	<%= favicon_link_tag %>
-	<link rel="apple-touch-icon" href="<%= image_path("dreamsis-logo-icon.png") %>"/>
+	<header class="main">
+		<%= render "shared/nav" %>
+	</header>
 
-	<%= csrf_meta_tags %>
+	<% if content_for(:subheader) || content_for(:breadcrumbs) %>
+		<header class="sub" data-spy="affix" data-offset-top="30">
+		  <div class="container-fluid">
+				<div class="pull-right page-operations">
+					<%= yield(:operations) %>
+				</div>
+				<%= yield(:subheader) %>
+				<%= yield(:breadcrumbs) %>
+			</div>
+			
+			<% if content_for(:tabs) %>
+				<div class="container-fluid tabs">
+					<%= yield(:tabs) %>
+				</div>
+			<% end %>
 
-	<%= stylesheet_link_tag "application", media: 'all' %>
-	<%= javascript_include_tag "application" %>
-	<%= stylesheet_link_tag @customer_stylesheet unless @customer_stylesheet.blank? %>
-	<%= stylesheet_link_tag @extra_stylesheet unless @extra_stylesheet.blank? %>
-
-    <%- if @include_typekit -%>
-    	<script type="text/javascript" src="//use.typekit.net/vjh2nav.js"></script>
-    	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-    <% end %>
-
-	<%- if @include_mediaelement -%>
-		<%= javascript_include_tag "//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js" %>
-		<script src="/mediaelement/mediaelement-and-player.js"></script>
-		<link rel="stylesheet" href="/mediaelement/mediaelementplayer.css" />
-	<%- end -%>
-	
-	<%- if @share_links && API_KEYS['sharethis'] -%>
-		<script type="text/javascript">var switchTo5x=true;</script>
-		<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
-		<script type="text/javascript">stLight.options({
-			publisher: "<%= API_KEYS['sharethis']['publisher_id'] %>", 
-			doNotHash: true, 
-			doNotCopy: false, 
-			hashAddressBar: false,
-			shorten: false
-		});</script>
+		</header>
 	<% end %>
 
-	<%- if Rails.env == 'production' && GOOGLE_ANALYTICS_TRACKING_ID -%>
-		<script type="text/javascript">
+	<div class="<%= @container_class || 'container-fluid' %>">
 
-		  var _gaq = _gaq || [];
-		  _gaq.push(['_setAccount', '<%= GOOGLE_ANALYTICS_TRACKING_ID %>']);
-		  _gaq.push(['_trackPageview']);
-
-		  (function() {
-		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		  })();
-
-		</script>
-	<%- end -%>
-
-</head>
-
-<body class="<%= "admin" if @current_user.try(:admin?) || @current_user.try(:person).try(:current_lead?) %> <%= controller.action_name %> <%= controller.controller_name %> <%= @current_user.try(:person).try(:type) || @audience.to_s %> <%= @body_class %>" id="body">
-
-	<div id="header">
-		<h1><%= link_to content_tag(:strong, "DreamSIS"), root_url %></h1>
-		
-		<%= link_to_function raw("<span><span class='icon-bar'></span><span class='icon-bar'></span><span class='icon-bar'></span></span>"),
-		 	"$('body').toggleClass('menu_view')", :id => "menu_expander_link" %>
-
-		<div id="login_logout">
-			<% unless @current_user.blank? || @current_user == :false %>
-				<%= image_tag(@current_user.person.avatar_image_url, :height => 30, :class => "avatar") if @current_user.person && @current_user.person.avatar_image_url %>
-				<ul>
-					<li><span class="hide_when_small">Logged in as </span><strong title="You are logged in as a <%= @current_user.person.type || "generic person" %>"><%= @current_user.fullname %></strong></li>
-					<%- 
-						path_hash = {}
-						path_hash[:return_to_after_profile] = request.url
-						path_hash[:apply_extra_styles] = true if @extra_stylesheet
-						path_hash[:apply_extra_footer_content] = true if @extra_footer_content
-					 -%>
-					<li><%= link_to "Profile", profile_path(path_hash) %></li>
-					<li><%= link_to "Logout", logout_path, :class => "logout" unless @current_user.is_a?(PubcookieUser) %></li>
-				</ul>
-			<% else %>
-				<em>Not logged in.</em>
-				<%= link_to 'Login', login_path(:return_to => request.url) %>
-			<% end %>
-		</div>
-
-	</div>
-
-	<%= render :partial => "shared/nav" %>
-	
-	<div id="sidebar-header">
-		<%= link_to_function content_tag(:span, "Show Sidebar"), "$('body').toggleClass('sidebar_view')", :id => "sidebar_expander_link" %>
-	</div>
-
-	<div id="content">	
-
-		<div id="notifications">
-			<% %w(error notice info saved).each do |key| -%>
-				<div id="<%= key %>_notification" class="alert <%= key %> <%= "visible" unless flash[key.to_sym].blank? %>"><%=h flash[key.to_sym] %></div>
-			<% end -%>
-		</div>
-
-		<div id="content-wrap" class="<%= "blocked" if @layout_in_blocks %>">
-			<%= render :partial => "shared/share_links" if @share_links && API_KEYS['sharethis'] %>
+		<div class="row">
 			
-			<%= yield %>
-			
-			<%- unless @extra_footer_content.blank? -%>
-				<div class="event-footer-content extra-footer-content">
-					<%= sanitize textilize(@extra_footer_content), 
-							:tags => %w(div table tr td h2 p a ul li strong em img), 
-							:attributes => %w(id class style href src role) %>
+			<div class="<%= content_for?(:sidebar) ? "col-md-10" : "col-md-12" %>" role="main">
+				
+				<div class="alerts-container" data-spy="affix" data-offset-top="50">
+					<% flash.each do |type, message| %>
+						<div class="alert <%= alert_class_for(type) %> alert-dismissible fade in">
+							<button type="button" class="close" aria-label="Close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+							<%= message %>
+						</div>
+					<% end %>
 				</div>
-			<% end -%>
-		</div>
-
-		<div id="footer">
-			The DreamSIS software and name are copyright &copy; 2006&ndash;<%= Time.now.year %> by
-				<%= link_to "University of Washington", "http://uw.edu", :target => "_blank" %>. 
-				The DreamSIS name is used under license.
 				
-			Student data provided in this system are protected by 
-				<%= link_to "FERPA", "http://www.washington.edu/students/reg/ferpafac.html", :target => "_blank" %>.
-				You are expected to understand and abide by these protections.
-				
-			<code class="git branch">[<%= `git rev-parse --short HEAD`.strip %>]</code>
-		</div>
+				<%= render partial: "shared/share_links" if @share_links && API_KEYS['sharethis'] %>
 
-		<%- if Rails.env == 'development' -%>
-		<div id="dev-inspector-container">
-			<%= link_to_function "Dev", "$('#dev-inspector').toggle()", :id => "dev-inspector-link" %>
-			<div class="git branch <%= `git rev-parse --symbolic-full-name --abbrev-ref HEAD` %>">Branch <strong><%= `git rev-parse --symbolic-full-name --abbrev-ref HEAD` %></strong></div>
-			<div class="git branch">Rails <strong><%= Rails.version %></strong></div>
-			<div class="git branch">User <strong><%= current_user.try(:id) || "nil" %></strong></div>
-			<div class="git branch">Customer <strong><%= Customer.name_label rescue nil %></strong></div>
-			<div class="git branch">Tenant <strong><%= Apartment::Tenant.current_tenant rescue nil %></strong></div>
-			<div id="dev-inspector" style="display:none">
-				<div class="session-info"><pre><%= session.to_yaml %></pre></div>
-				<div class="session-info"><pre><%#= request.env.to_yaml %></pre></div>
+				<section id="main-content">
+					<%= yield %>
+				</section>
+				
+				<%- unless @extra_footer_content.blank? -%>
+					<section class="event-footer-content extra-footer-content">
+						<%= sanitize textilize(@extra_footer_content),
+									tags: %w(div table tr td h2 p a ul li strong em img),
+									attributes: %w(id class style href src role) %>
+					</section>
+				<% end -%>
+
+				<footer>
+					&copy; 2006&ndash;<%= Time.now.year %>
+					<%= link_to "University of Washington", "http://uw.edu", target: "_blank" %>.
+					Operated with <%= glyph('heart') %> by <%= link_to "CDS", "http://dreamsis.com", target: "_blank" %>.
+					<code class="hidden"><%= `git rev-parse --short HEAD`.strip %></code>
+				</footer>
+
 			</div>
+			
+			<%- if content_for?(:sidebar) %>
+			<div class="col-md-2" role="complementary" class="sidebar-container">
+				<section id="sidebar" data-spy="affix" data-offset-top="50" data-offset-bottom="0">
+					<%= yield :sidebar %>
+				</section>
+			</div>
+			<% end %>
+
+			<%= indicator(:global) %>
+		
 		</div>
-		<%- end -%>
-
-	</div>
-	
-	<div id="indicator">
-		Loading...
-		<a href="#" class="stop-loading">Stop</a>
-		<%= render :partial => "shared/progress" %>
+			
 	</div>
 
-</body>
-</html>
+<% end %>

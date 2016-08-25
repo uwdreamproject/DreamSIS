@@ -1,0 +1,164 @@
+body.new.session {
+  height: 100%;
+  background-repeat: no-repeat;
+  background-image: $primary-gradient;
+}
+
+.welcome-card {
+	background: none;
+  margin: 0;
+  border: none;
+  max-width: 450px;
+  background-color: #F7F7F7;
+  padding: 20px 25px 30px;
+  margin: 0 auto 25px;
+  margin-top: 50px;
+  border-radius: 2px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+body.identity_login form {
+  margin: 1em 5em;
+}
+
+body.identity_login form .field {
+  margin-top: 1em;
+  font-weight: bold;
+}
+
+body.identity_login form input:not([type=submit]) {
+  width: 95%;
+  font-size: 110%;
+}
+
+body.identity_login form input[type=submit] {
+  font-size: 100%;
+  font-weight: normal;
+  margin: 1em auto;
+  display: block;
+}
+
+
+
+
+
+/*
+
+a.login-link {
+	display: inline-block;
+	font-size: 130%;
+	margin: 0.25em 1em 1em;
+	min-width: 64px;
+	text-align: center;
+	text-decoration: none;
+}
+
+a.login-link span {
+	display: block;
+	padding-top: 50px;
+	background-repeat: no-repeat;
+	background-position: center top;
+	transition: all 0.25s ease-out;
+}
+
+a.login-link:hover span {
+	-webkit-transform: scale(1.1);
+}
+
+.login-link.facebook span {
+	background-image: url(<%= asset_path 'icons/facebook_64.png' %>);
+}
+
+.login-link.twitter span {
+	background-image: url(<%= asset_path 'icons/twitter_64.png' %>);
+}
+
+.login-link.google span {
+	background-image: url(<%= asset_path 'icons/google_64.png' %>);
+}
+
+.login-link.windowslive span {
+	background-image: url(<%= asset_path 'icons/windowslive_64.png' %>);
+}
+
+.login-link.linkedin span {
+	background-image: url(<%= asset_path 'icons/linkedin_64.png' %>);
+}
+
+.login-link.identity span {
+  background-image: url(<%= asset_path 'icons/identity_64.png' %>);
+}
+
+.login-link.uwnetid span {
+	background-image: url(<%= asset_path 'icons/weblogin.gif' %>);
+	min-width: 198px;
+	padding-top: 40px;
+}
+
+.login-links {
+	border-left: 4px solid #f4f4f4;
+	padding-left: 1em;
+	margin-bottom: 3em;
+}
+
+body.new.session #content-wrap p {
+	font-size: 120%;
+  line-height: 140%;
+	font-weight: normal;
+}
+
+body.locator form p {
+  text-align: center;
+  font-weight: bold !important;
+}
+
+body.locator form p.input {
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  margin-bottom: 1em;
+  padding-bottom: 1em;
+}
+
+body.locator form input[type=text] {
+  font-size: 120%;
+  margin: 0.25em;
+  width: 6em;
+}
+
+body.locator form input[type=submit] {
+  font-size: 90%;
+}
+
+
+body.new.session #content-wrap {
+	padding: 2em 4em 1em 4em;
+	background: white url(<%= asset_path 'backgrounds/uw-purple-header.jpg' %>) repeat-x 0 -1px;
+	border-radius: 10px;
+	margin: 0;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+body.new.session h1 {
+	height: 50px;
+	background: url(<%= asset_path 'dreamsis-logo-transp-2x.png' %>) no-repeat;
+	background-size: 192px;
+	padding-left: 200px !important;
+	padding-top: 12px;
+	color: #e0e0e0;
+	font: normal 160% Helvetica, Arial, Geneva, sans-serif;
+	margin-bottom: 1.5em;
+}
+
+body.new.session h1:before {
+	content: '» ';
+}
+
+body.new.session #footer {
+	text-align: center;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	background: rgba(248, 203, 63, 1);
+  margin-right: inherit;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}*/

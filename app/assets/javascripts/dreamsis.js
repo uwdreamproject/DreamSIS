@@ -3,18 +3,6 @@ var showAjaxIndicator = true;
 var loadCount = 0;
 var debug = false;
 
-
-// Observe window scroll to readjust when we scroll past the header
-$( window ).scroll(function() {
-  if ( $(body).scrollTop() > $("#header").height() ){
-    $(body).addClass('scrolled-past-header');
-  } else {
-    $(body).removeClass('scrolled-past-header');
-    // var newtop = $("#header").height() - $(body).scrollTop()
-    // $("#sidebar").css({ top: newtop + 'px' });
-  }
-});
-
 // Scrolls the page to the provided element
 function scrollToObject(jqObj) {
   $("html, body").animate(
@@ -22,22 +10,12 @@ function scrollToObject(jqObj) {
   );
 }
 
-// Setup the onClick for the select-all checkbox
-function prepareSelectAll() {
-  $("input:checkbox.select-all").click(function() {
-    var currentState = $( this ).prop("checked")
-    $('input.index_check_box').prop("checked", currentState)
-    updateWithSelectedActions()
-  })
-}
 
 // Prep the bulk actions links to incorporate the currently selected rows with javascript.
-$( function() {
-  $(".bulk_actions a").click(function() {
-    var url = $(this).data("original-href") + "?" + selectedElements().serialize() + "&" + $(this).data("extra-params")
-    $( this ).attr("href", url)
-  })
-})
+// $(document).on("click", ".bulk_actions a", function() {
+//   var url = $(this).data("original-href") + "?" + selectedElements().serialize() + "&" + $(this).data("extra-params")
+//   $( this ).attr("href", url)
+// })
 
 // Returns the currently selected rows
 function selectedElements() {
@@ -48,10 +26,11 @@ function selectedElements() {
 function updateWithSelectedActions() {
 	if($(".bulk_actions")) {
 		if(selectedElements().length > 0) {
-			$(".bulk_actions").show()
-			$("#bulk_actions_count").text(selectedElements().length)
+			$(".bulk_actions > button").attr("disabled", false)
+			$("#bulk_actions_count").show().text(selectedElements().length)
 		} else {
-			$(".bulk_actions").hide()
+			$(".bulk_actions > button").attr("disabled", true)
+      $("#bulk_actions_count").hide()
 		}
 	}
 }
@@ -96,6 +75,23 @@ function registerDateInputHelpers() {
     setToClear($(event.target).data('target'))
     event.preventDefault();
   })
+  
+  $('input[type=datetime-local]').datepicker({
+      format: "yyyy-mm-dd 00:00:00",
+      todayBtn: "linked",
+      todayHighlight: true,
+      disableTouchKeyboard: true,
+      autoclose: true
+  });
+  
+  $('input[type=date]').datepicker({
+      format: "yyyy-mm-dd",
+      todayBtn: "linked",
+      todayHighlight: true,
+      disableTouchKeyboard: true,
+      autoclose: true
+  });
+  
 }
 
 function setToNow(element_id) {
@@ -124,24 +120,21 @@ function updateActivityTimeDescription(elem) {
 }
 
 function registerTableSorters() {
+  return false
+  //
+  //
+  //
   $("th.functions").addClass("sorter-false")
   $(":not(.calendar) > table:not(.no-sort)").tablesorter({ theme: "dreamsis", sortStable: true })
 
-  $("table.object_filters > tbody").sortable({ 
-    axis: 'y', 
+  $("table.object_filters > tbody").sortable({
+    axis: 'y',
     cursor: 'move',
     handle: '.handle',
     update: function(elem) {
       $.post($(this).data('update-url'), $(this).sortable('serialize'))
     }
   })
-}
-
-/*
-  Execute timeago timestamp substitution
-*/
-function updateRelativeTimestamps() {
-  $('time.timeago').timeago();
 }
 
 /*
@@ -157,7 +150,7 @@ $( function() {
   // A form element with .send-on-change and a data-url attribute will send that data to the url.
   $(".send-on-change").change( function() {
     $.post(
-      $( this ).attr('data-url'), 
+      $( this ).attr('data-url'),
       $( this ).serialize()
     );
   })
@@ -170,9 +163,54 @@ $( function() {
       });
   });
   
+  $("a[data-submit]").on('click', function(event) {
+    event.preventDefault();
+    var f = $( this ).data('submit') == "main" ? $("#main-content form").first() : $( this ).closest('form');
+    f.submit();
+  })
+
   
   // Enable all tablesorter tables
   registerTableSorters()
+
+
+  $(document).on("click", "input:checkbox.select-all", function() {
+    var currentState = $( this ).prop("checked")
+    $('input.index_check_box').prop("checked", currentState)
+    updateWithSelectedActions()
+  })
+  
   
 })
 
+// Enable our popovers using event delegation so that they will work with dynamic elements.
+$(document).popover({
+  selector: '[data-toggle="popover"]',
+  trigger: 'focus'
+})
+
+$(document).on('click', '[data-toggle="popover"]', function(event) {
+  event.preventDefault();
+})
+
+// Bind the popover events so we can perform async methods. To use this feature,
+// provide a `data-url` on the element and a `data-function` that refers to one
+// of the functions in popovers.js.
+$(document).on('inserted.bs.popover', function(event) {
+  var elem = $(event.target),
+      po = elem.data('bs.popover'),
+      tip = po.tip(),
+      content = tip.find('.popover-content');
+      
+  if (elem.hasClass('loaded')) return;
+  
+  if (elem.data('url')) {
+    $('.indicator.global').clone().removeClass('global hidden').appendTo(content)
+    $.get(elem.data('url'))
+      .done(function(data) {
+        po.options.html = true
+        po.options.content = popovers.functions[elem.data('function')](data)
+        elem.addClass('loaded').popover('show')
+      })
+  }
+})

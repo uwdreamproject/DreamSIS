@@ -1,9 +1,9 @@
 <div class="highlight_container">
 	<div align="left" class="photo">
-		<%= image_tag photo_mentor_path(highlight.try(:mentor), :size => :thumb), 
-				:class => 'student_photo thumb', 
-				:size => "50", 
-				:alt => "" %>
+		<%= image_tag photo_mentor_path(highlight.try(:mentor), size: :thumb), 
+				class: 'student_photo thumb', 
+				size: "50", 
+				alt: "" %>
 	</div>
 
 	<h4><%= h(highlight.try(:mentor).try(:fullname)) %></h4>

@@ -1,37 +1,6 @@
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 
-<p><%= link_to "Add new #{Customer.participant_label}", new_participant_path(:high_school_id => @high_school.try(:id) || @participant.try(:high_school_id)), :class => "add button" %></p>
-
-<% if controller.action_name == 'show' %>
-	
-	<p><%= link_to 'Edit this participant', edit_participant_path(@participant), :class => 'edit button' %></p>
-	
-	<%- if @current_user.can_view?(@participant.high_school) -%>
-		<p><%= link_to "Return to #{@participant.high_school.try(:name)} #{@participant.grad_year} list",
-		 				high_school_cohort_path(@participant.high_school, (@participant.grad_year || 0)),
-		 				:class => 'back button' if @participant.high_school && @participant.grad_year %></p>
-	<% end %>
-	
-    <%- if (is_admin = @current_user.admin?) -%>
-        <p><%= link_to "Record History", changes_for_object_path("participant", @participant), :class => "info button" %></p>
-    <%- end -%>
-    <% if is_admin || @current_user.person.current_lead? -%>
-        <p><%= link_to "Delete this #{Customer.participant_label}", @participant, :method => :delete, :confirm => "Are you SURE you want to delete this #{Customer.participant_label}?", :class => "delete button" %></p>
-    <% end %>
-    
-<% end -%>
-
-<%- 
-placeholder_text = ["Search"]
-placeholder_text << h(@grad_year.to_s) if @grad_year
-placeholder_text << h(@high_school.name) if @high_school
-placeholder_text <<  "all #{Customer.participants_label}" if !@grad_year || !@high_school
- -%>
-<input type="input" class="search autocomplete-search" placeholder="<%= placeholder_text.join(" ") %>" data-source="<%= auto_complete_for_participant_fullname_participants_url %>" data-target="<%= participant_url("id") %>" />
-	
-<% if controller.action_name != 'show' %>
-
-	<%= content_tag :div, render("export_actions"), :id => "export_actions" %>
+	<%#= content_tag :div, render("export_actions"), id: "export_actions" %>
 
 	<%- if @high_school %>
 		<form>
@@ -48,10 +17,7 @@ placeholder_text <<  "all #{Customer.participants_label}" if !@grad_year || !@hi
 			</p>
 	<% end %>
 	
-	<%= render "bulk_actions" %>
-	<%= render "filter_controls" %>		
+	<%= render "filter_controls" %>
 	<%= render "participant_groups_sidebar" if @participant_groups && !@participant_groups.empty? %>
-			
-<% end -%>
-</div>
-
+				
+<%- end -%>

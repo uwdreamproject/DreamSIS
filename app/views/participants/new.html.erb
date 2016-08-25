@@ -1,26 +1,26 @@
 <h1>New <%= Customer.participant_label %></h1>
 
-<%= semantic_form_for(@participant, :html => {:id => "participant_form", :multipart => true}) do |f| %>
+<%= semantic_form_for(@participant, html: {id: "participant_form", multipart: true}) do |f| %>
 	<%= default_form_errors(f) %>
 	
-	<%= render :partial => 'participants/fields/name_and_personal', :locals => { :f => f } %>
-	<%= render :partial => 'participants/fields/contact', :locals => { :f => f } %>
-	<%= render :partial => 'participants/fields/high_school', :locals => { :f => f } %>
-	<%= render :partial => 'participants/fields/background', :locals => { :f => f } %>
-	<%= render :partial => 'participants/fields/race_ethnicity', :locals => { :f => f } %>
-	<%= render :partial => 'participants/fields/family_history', :locals => { :f => f } %>
-	<%= render :partial => 'participants/fields/parents', :locals => { :f => f } %>
-	<%= render :partial => 'participants/fields/financial', :locals => { :f => f } %>
-	<%= render :partial => 'participants/fields/administrative', :locals => { :f => f } %>	
+	<%= render partial: 'participants/fields/name_and_personal', locals: { f: f } %>
+	<%= render partial: 'participants/fields/contact', locals: { f: f } %>
+	<%= render partial: 'participants/fields/high_school', locals: { f: f } %>
+	<%= render partial: 'participants/fields/background', locals: { f: f } %>
+	<%= render partial: 'participants/fields/race_ethnicity', locals: { f: f } %>
+	<%= render partial: 'participants/fields/family_history', locals: { f: f } %>
+	<%= render partial: 'participants/fields/parents', locals: { f: f } %>
+	<%= render partial: 'participants/fields/financial', locals: { f: f } %>
+	<%= render partial: 'participants/fields/administrative', locals: { f: f } %>
 
-	<%= f.inputs :name => "Create Record" do -%>
-		<%= f.input :link_to_current_user_after_save, :as => :boolean, :label => "Automatically link me to this student after creating the student record" %>
+	<%= f.inputs name: "Create Record" do -%>
+		<%= f.input :link_to_current_user_after_save, as: :boolean, label: "Automatically link me to this student after creating the student record" %>
 	<% end %>
 
 	<%= default_form_actions(f) %>
 	
 <% end %>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<div id="participant_duplicate_warning"></div>
-</div>
+<%- end -%>

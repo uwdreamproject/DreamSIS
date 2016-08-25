@@ -2,7 +2,7 @@ module MultitenantProxyable
   extend ActiveSupport::Concern
 
   included do
-    has_many :proxies, :as => :proxyable, :class_name => "MultitenantProxy", :dependent => :destroy
+    has_many :proxies, as: :proxyable, class_name: "MultitenantProxy", dependent: :destroy
     after_save :update_proxies
     after_create :create_proxies
   end

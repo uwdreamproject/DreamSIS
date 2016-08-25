@@ -10,16 +10,16 @@
 
 <% for customer in @customers %>
   <tr>
-	<td><code><%= link_to customer.url_shortcut, root_url(:subdomain => customer.url_shortcut) %></code></td>
+	<td><code><%= link_to customer.url_shortcut, root_url(subdomain: customer.url_shortcut) %></code></td>
     <td class="name"><%= link_to customer.name, customer %></td>
     <td><%= link_to customer.program.try(:abbreviation), customer.program if customer.program %></td>
     <td class="functions"><%= link_to 'Show', customer %></td>
     <td class="functions"><%= link_to 'Edit', edit_customer_path(customer) %></td>
-    <td class="functions"><%= link_to 'Destroy', customer, :confirm => 'Are you sure?', :method => :delete %></td>	
+    <td class="functions"><%= link_to 'Destroy', customer, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
 
-<div id="sidebar">
-	<%= link_to 'New customer', new_customer_path, :class => "add button" %>
-</div>
+<%= content_for(:sidebar) do %>
+	<%= link_to 'New customer', new_customer_path, class: "add button" %>
+<%- end -%>

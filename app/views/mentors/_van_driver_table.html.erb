@@ -17,6 +17,6 @@
 				<td colspan=10>No <%= Customer.mentors_label %> are currently trained to drive.</td>
 			</tr>
 		<% elsif !@ajax_load -%>
-			<%= render :partial=> "mentor_driver", :collection => @mentors %>
+			<%= render partial: "mentor_driver", collection: @mentors %>
 		<%- end %>
 	</tbody>

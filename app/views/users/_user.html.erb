@@ -1,9 +1,9 @@
 <tr>
 	<td class="login"><%= link_to user.login, user_path(user) %></td>
-	<td><%= content_tag :span, user.type, :class => 'outline tag' if user.type %></td>
-	<td><%= link_to_unless user.person.class == Person, h(user.person.try(:fullname, :skip_update => true)), user.person %></td>
-	<td><%= content_tag :span, user.person.class.to_s, :class => 'outline tag' unless user.person.class == Person %></td>
-	<td><%= user.admin? ? content_tag(:span, "admin", :class => 'admin tag') : "" %></td>
+	<td><%= content_tag :span, user.type, class: 'outline tag' if user.type %></td>
+	<td><%= link_to_unless user.person.class == Person, h(user.person.try(:fullname, skip_update: true)), user.person %></td>
+	<td><%= content_tag :span, user.person.class.to_s, class: 'outline tag' unless user.person.class == Person %></td>
+	<td><%= user.admin? ? content_tag(:span, "admin", class: 'admin tag') : "" %></td>
 	<td class="functions">
 		<%= link_to 'Show', user_path(user) %>
 		<%= link_to 'Edit', edit_user_path(user) %>

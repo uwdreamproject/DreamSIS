@@ -5,12 +5,12 @@
 	<h3 class="proxyable">Coordinated by <%= proxy.other_customer.name %></h3>
 <% end %>
 
-<p><%= sanitize textilize(@event_group.description(@current_user.try(:person) || @audience)), :tags => %w(table tr td h2 p a ul li strong em), :attributes => %w(id class style href) %></p>
+<p><%= sanitize textilize(@event_group.description(@current_user.try(:person) || @audience)), tags: %w(table tr td h2 p a ul li strong em), attributes: %w(id class style href) %></p>
 
-<%= render :partial => 'training_required_note', :locals => { :event_or_group => @event_group } %>
+<%= render partial: 'training_required_note', locals: { event_or_group: @event_group } %>
 
 <table class="highlightless rsvp">
-	<%= render :partial => 'event', :collection => @event_group.future_events(@audience || @current_user.try(:person)) %>
+	<%= render partial: 'event', collection: @event_group.future_events(@audience || @current_user.try(:person)) %>
 	
 	<%- if @event_group.future_events(@audience || @current_user.try(:person)).empty? -%>
 	<tr class="empty">
@@ -20,4 +20,4 @@
 	
 </table>
 
-<%= render :partial => 'sidebar' %>
+<%= render partial: 'sidebar' %>

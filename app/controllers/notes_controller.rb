@@ -1,6 +1,6 @@
 class NotesController < ApplicationController
   skip_before_filter :check_authorization
-  before_filter :verify_permissions, :only => [:edit, :update, :destroy]
+  before_filter :verify_permissions, only: [:edit, :update, :destroy]
   
   def edit
     @note = Note.find params[:id]
@@ -29,10 +29,10 @@ class NotesController < ApplicationController
     respond_to do |format|
       if @note.update_attributes(params[:note] || params[:document])
         flash[:notice] = "Successfully updated note."
-        format.html { redirect_to polymorphic_path(@note.notable, :anchor => "!/section/notes/#{@note.id}") }
+        format.html { redirect_to polymorphic_path(@note.notable, anchor: "!/section/notes/#{@note.id}") }
         format.js
       else
-        format.html { render :action => "edit" }
+        format.html { render action: "edit" }
         format.js
       end
     end
@@ -54,7 +54,7 @@ class NotesController < ApplicationController
     @note = Note.find params[:id]
     if @note.user != @current_user && @current_user.can_edit?(@note.notable) && params[:note].try(:[], :needs_followup)
       # The user is trying to change the followup flag, and has permission. Allow *only* this change.
-      params[:note] = { :needs_followup => params[:note].try(:[], :needs_followup) }
+      params[:note] = { needs_followup: params[:note].try(:[], :needs_followup) }
     else
       # The user does not own the note and cannot edit it.
       render_error("You can only edit or delete your own notes.") unless @note.user == @current_user

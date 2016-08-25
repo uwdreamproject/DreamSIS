@@ -1,27 +1,27 @@
 <%- participant ||= @participant -%>
-<%- locals = { :start_date => start_date, :end_date => end_date } rescue {} -%>
+<%- locals = { start_date: start_date, end_date: end_date } rescue {} -%>
 
 <h2>Documents</h2>
 
-<%= form_for participant.notes.new, { :url => notes_path(locals.merge(:return_to => participant_url(@participant, :anchor => "!/section/documents"))), :remote => true, :html => { :multipart => true, :id => "new_document_form" } } do |f| -%>
+<%= form_for participant.notes.new, { url: notes_path(locals.merge(return_to: participant_url(@participant, anchor: "!/section/documents"))), remote: true, html: { multipart: true, id: "new_document_form" } } do |f| -%>
 
 	<h4 style="margin-bottom: 2px">Add New Document</h4>	
 	<div class="full">
 		<%= f.file_field :document %>
-		<%= f.text_field :title, :placeholder => "Document title", :style => "width:99%" %>
-		<%= f.text_area :note, :style => "width:99%", :rows => 2, :placeholder => "Add additional notes or comments about this document" %>	
+		<%= f.text_field :title, placeholder: "Document title", style: "width:99%" %>
+		<%= f.text_area :note, style: "width:99%", rows: 2, placeholder: "Add additional notes or comments about this document" %>	
 	</div>
 	
-	<%= f.hidden_field :notable_type, :value => "Person" %>
-	<%= f.hidden_field :notable_id, :value => participant.id %>
-	<%= f.hidden_field :validate_document, :value => "true" %>
+	<%= f.hidden_field :notable_type, value: "Person" %>
+	<%= f.hidden_field :notable_id, value: participant.id %>
+	<%= f.hidden_field :validate_document, value: "true" %>
 	
-	<%= f.submit "Add Document", :disable_with => 'Adding document...', :class => 'add document right' %>
+	<%= f.submit "Add Document", disable_with: 'Adding document...', class: 'add document right' %>
 
 <% end -%>
 
 <%- cache [@participant, "documents"] do -%>
 	<div class="documents_container" id="documents_container_<%= participant.id %>">
-		<%= render :partial => "shared/documents", :object => participant, :locals => locals %>
+		<%= render partial: "shared/documents", object: participant, locals: locals %>
 	</div>
 <% end %>

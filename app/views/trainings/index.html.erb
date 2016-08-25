@@ -13,11 +13,11 @@
     <td><%=h training.completions.count %></td>
     <td><%= link_to 'Show', training %></td>
     <td><%= link_to 'Edit', edit_training_path(training) %></td>
-    <td><%= link_to 'Destroy', training, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Destroy', training, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New training', new_training_path, :class => "add button" %>
+<%= link_to 'New training', new_training_path, class: "add button" %>

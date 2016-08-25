@@ -4,10 +4,10 @@ Models a College institution as a subclass of Location. Most Institution informa
 This model can also be used to store inforamtion for Institutions that do not exist in the IPEDS database, such as international colleges. That way this College can be assigned to a CollegeApplication object. When this is done, the CollegeApplication will use the negative value of the College#id. So if the College ID is 831, the CollegeApplication institution_id can be set to -831 and the Institution model will properly return the relevant College object.
 =end
 class College < Location
-	validates_uniqueness_of :institution_id, :allow_nil => true
+	validates_uniqueness_of :institution_id, allow_nil: true
 	validates_presence_of :name
 
-  has_many :college_applications, :foreign_key => 'institution_id'
+  has_many :college_applications, foreign_key: 'institution_id'
 
 	# Overrides #find_one in case we receive a negative ID number. See note at College.
 	def self.find_one(id, *args)

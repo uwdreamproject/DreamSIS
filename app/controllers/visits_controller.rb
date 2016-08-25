@@ -2,14 +2,14 @@ class VisitsController < ApplicationController
   before_filter :fetch_high_school
   before_filter :fetch_term
   
-  skip_before_filter :check_authorization, :only => [:attendance, :update_attendance]
+  skip_before_filter :check_authorization, only: [:attendance, :update_attendance]
   
   def index
     @visits = @high_school.visits.for(@term)
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @visits }
+      format.xml  { render xml: @visits }
     end
   end
 
@@ -19,7 +19,7 @@ class VisitsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.xml  { render :xml => @visit }
+      format.xml  { render xml: @visit }
     end
   end
 
@@ -28,7 +28,7 @@ class VisitsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @visit }
+      format.xml  { render xml: @visit }
     end
   end
 
@@ -63,10 +63,10 @@ class VisitsController < ApplicationController
       if @visit.save
         flash[:notice] = 'Visit was successfully created.'
         format.html { redirect_to(high_school_visit_url(@high_school, @visit)) }
-        format.xml  { render :xml => @visit, :status => :created, :location => @visit }
+        format.xml  { render xml: @visit, status: :created, location: @visit }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @visit.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @visit.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -80,8 +80,8 @@ class VisitsController < ApplicationController
         format.html { redirect_to(high_school_visit_url(@high_school, @visit)) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @visit.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @visit.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -91,7 +91,7 @@ class VisitsController < ApplicationController
     @visit.destroy
 
     respond_to do |format|
-      format.html { redirect_to(high_school_visits_url(@high_school, :term_id => @term)) }
+      format.html { redirect_to(high_school_visits_url(@high_school, term_id: @term)) }
       format.xml  { head :ok }
     end
   end

@@ -1,11 +1,11 @@
 <table class="term_status">
-	<% 
-	conditions_query = "allow_signups = ? " 
+	<%
+	conditions_query = "allow_signups = ? "
 	qstr = @mentor.mentor_terms.collect{|mq| mq.term_id rescue nil}.compact.join(',')
 	conditions_query += "OR `id` IN (#{qstr})" unless qstr.blank?
 	%>
 	
-	<%- for term in Term.find(:all, :conditions => [conditions_query, true]).reverse -%>
+	<%- for term in Term.where([conditions_query, true]).reverse -%>
 	
 	<% mentor_terms = @mentor.mentor_terms.for_term(term.id) %>
 	<tr>
@@ -15,13 +15,13 @@
 				<%= link_to "Sign up now", mentor_signup_term_path(term) if term.allow_signups? %>
 			<%- else -%>
 				<table class="borderless">
-					<%= render :partial => 'mentor_signup/mentor_term', :collection => mentor_terms %>
+					<%= render partial: 'mentor_signup/mentor_term', collection: mentor_terms %>
 				</table>
 			<% end -%>
 		</td>
-		<td><%= link_to "Change my high-school group(s)", 
-						mentor_signup_term_path(term), 
-						:class => "edit button" if term.allow_signups? %></td>
+		<td><%= link_to "Change my high-school group(s)",
+						mentor_signup_term_path(term),
+						class: "edit button" if term.allow_signups? %></td>
 	</tr>
 	<% end -%>
 </table>

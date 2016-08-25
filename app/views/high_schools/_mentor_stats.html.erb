@@ -5,18 +5,18 @@
 	<ul class="mentor_stats_summary">
 
 	<% for mentor_term_group in mentor_term_groups %>
-		<li><%= content_tag :span, h(mentor_term_group.section_id), :class => 'section_id tag', :align => 'left' %>
-			<%= link_to h(mentor_term_group.title), mentor_term_group, :title => mentor_term_group.course_id %>
+		<li><%= content_tag :span, h(mentor_term_group.section_id), class: 'section_id tag', align: 'left' %>
+			<%= link_to h(mentor_term_group.title), mentor_term_group, title: mentor_term_group.course_id %>
 			(<%= link_to "Drivers", van_drivers_mentor_term_group_path(mentor_term_group)%>)
 			<br><%= mentor_term_group.times %>
 			
 			<div class="signup-meter <%= "full" if mentor_term_group.full? %>">
 				<div class="capacity" 
 					 style="width: 100%;"
-					 title="<%= number_to_percentage mentor_term_group.percent_full, :precision => 0 %> full">
+					 title="<%= number_to_percentage mentor_term_group.percent_full, precision: 0 %> full">
 
 					<div class="size" style="width: <%= mentor_term_group.percent_full %>%">
-						<%= mentor_term_group.full? ? content_tag(:span, "full", :class => "full_label") : "&nbsp;".html_safe %>
+						<%= mentor_term_group.full? ? content_tag(:span, "full", class: "full_label") : "&nbsp;".html_safe %>
 					</div>						
 				</div>
 			</div>

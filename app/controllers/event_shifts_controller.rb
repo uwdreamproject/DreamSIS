@@ -2,11 +2,11 @@ class EventShiftsController < ApplicationController
   before_filter :fetch_event
   
   def index
-    @event_shift = @event.shifts.find :all
+    @event_shift = @event.shifts
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @event_shift }
+      format.xml  { render xml: @event_shift }
     end
   end
 
@@ -15,7 +15,7 @@ class EventShiftsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @event_shift }
+      format.xml  { render xml: @event_shift }
     end
   end
 
@@ -24,7 +24,7 @@ class EventShiftsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @event_shift }
+      format.xml  { render xml: @event_shift }
     end
   end
 
@@ -39,10 +39,10 @@ class EventShiftsController < ApplicationController
       if @event_shift.save
         flash[:notice] = "Shift was successfully created."
         format.html { redirect_to([@event, @event_shift]) }
-        format.xml  { render :xml => @event_shift, :status => :created, :location => @event_shift }
+        format.xml  { render xml: @event_shift, status: :created, location: @event_shift }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @event_shift.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @event_shift.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -56,8 +56,8 @@ class EventShiftsController < ApplicationController
         format.html { redirect_to([@event, @event_shift]) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @event_shift.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @event_shift.errors, status: :unprocessable_entity }
       end
     end
   end

@@ -34,7 +34,7 @@
 
 </dl>
 
-<div id="sidebar">
-	<p><%= link_to 'Edit this scholarship', edit_scholarship_path(@scholarship), :class => "edit button" %></p>
-	<p><%= link_to 'Back to scholarships', scholarships_path, :class => "back button" %></p>
-</div>
+<%= content_for(:sidebar) do %>
+	<p><%= link_to 'Edit this scholarship', edit_scholarship_path(@scholarship), class: "edit button" %></p>
+	<p><%= link_to 'Back to scholarships', scholarships_path, class: "back button" %></p>
+<%- end -%>

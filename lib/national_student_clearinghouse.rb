@@ -67,8 +67,8 @@ class NationalStudentClearinghouse
     generate_file!
     return false if record_count < 1
     
-    Net::SFTP.start(NSC_FTP_HOST, @customer.clearinghouse_customer_number, :password => @request.decrypted_ftp_password) do |sftp|
-      sftp.upload!(local_send_file_path, remote_send_file_path, :progress => NSCUploadHandler.new(self))
+    Net::SFTP.start(NSC_FTP_HOST, @customer.clearinghouse_customer_number, password: @request.decrypted_ftp_password) do |sftp|
+      sftp.upload!(local_send_file_path, remote_send_file_path, progress: NSCUploadHandler.new(self))
     end
   end
   
@@ -78,7 +78,7 @@ class NationalStudentClearinghouse
   def retrieve_files!(process_after_retrieving = true)
     Rails.logger.info { "NSC retrieve request starting" }
     Rails.logger.info { " -- #{process_after_retrieving ? "will" : "will not"} process files after retrieving" }
-    Net::SFTP.start(NSC_FTP_HOST, @customer.clearinghouse_customer_number, :password => @request.decrypted_ftp_password) do |sftp|
+    Net::SFTP.start(NSC_FTP_HOST, @customer.clearinghouse_customer_number, password: @request.decrypted_ftp_password) do |sftp|
       
       Rails.logger.info { "Connected to server, getting dir list" }
       sftp.dir.foreach(remote_receive_file_path) do |entry|
@@ -94,7 +94,7 @@ class NationalStudentClearinghouse
   # Deletes the requested files from the /receive directory on the SFTP server.
   def delete_retrieved_files!(file_names)
     files_names = [file_names] unless file_names.is_a?(Array)
-    Net::SFTP.start(NSC_FTP_HOST, @customer.clearinghouse_customer_number, :password => @request.decrypted_ftp_password) do |sftp|
+    Net::SFTP.start(NSC_FTP_HOST, @customer.clearinghouse_customer_number, password: @request.decrypted_ftp_password) do |sftp|
       for file_name in file_names
         sftp.remove("#{remote_receive_file_path}/#{file_name}")
       end
@@ -249,9 +249,9 @@ class NSCUploadHandler
   def on_finish(uploader)
     Rails.logger.info { "finished." }
     @nsc.request.update_attributes(
-      :submitted_at => Time.now, 
-      :submitted_filename => @nsc.send_filename, 
-      :number_of_records_submitted => @nsc.record_count
+      submitted_at: Time.now, 
+      submitted_filename: @nsc.send_filename, 
+      number_of_records_submitted: @nsc.record_count
     )
   end
 end
@@ -269,7 +269,7 @@ class NSCDownloadHandler
   def on_finish(downloader)
     Rails.logger.info { "finished." }
     # @nsc.request.update_attributes(
-    #   :retrieved_at => Time.now
+    #   retrieved_at: Time.now
     # )
   end
 end

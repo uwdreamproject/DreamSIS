@@ -1,12 +1,12 @@
 class TrainingsController < ApplicationController
-  skip_before_filter :check_authorization, :only => [:take]
+  skip_before_filter :check_authorization, only: [:take]
   
   def index
-    @trainings = Training.find :all
+    @trainings = Training.all
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @trainings }
+      format.xml  { render xml: @trainings }
     end
   end
 
@@ -15,7 +15,7 @@ class TrainingsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @training }
+      format.xml  { render xml: @training }
     end
   end
   
@@ -44,7 +44,7 @@ class TrainingsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @training }
+      format.xml  { render xml: @training }
     end
   end
 
@@ -59,10 +59,10 @@ class TrainingsController < ApplicationController
       if @training.save
         flash[:notice] = "Training was successfully created."
         format.html { redirect_to(@training) }
-        format.xml  { render :xml => @training, :status => :created, :location => @training }
+        format.xml  { render xml: @training, status: :created, location: @training }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @training.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @training.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -76,8 +76,8 @@ class TrainingsController < ApplicationController
         format.html { redirect_to(@training) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @training.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @training.errors, status: :unprocessable_entity }
       end
     end
   end

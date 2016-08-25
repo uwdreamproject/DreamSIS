@@ -4,12 +4,15 @@
 // It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
 // the compiled file.
 //
-//= require jquery
+//= require jquery2
 //= require jquery_ujs
 //= require jquery-ui
-//= require jquery-tablesorter
-//= require autocomplete-rails
+//= require turbolinks
+//= require bootstrap-sprockets
 //= require select2-full
 //= require autonumeric
+//= require twitter/typeahead.min
+//= require moment
+//= require livestamp.min
 //= require dreamsis.js
 //=  require_tree .

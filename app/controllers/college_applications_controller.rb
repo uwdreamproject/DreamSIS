@@ -5,11 +5,11 @@ class CollegeApplicationsController < ParticipantsController
   # GET /participant_colleges
   # GET /participant_colleges.xml
   def index
-    @college_applications = @participant.college_applications.find(:all)
+    @college_applications = @participant.college_applications
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @college_applications }
+      format.xml  { render xml: @college_applications }
     end
   end
 
@@ -20,7 +20,7 @@ class CollegeApplicationsController < ParticipantsController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @college_application }
+      format.xml  { render xml: @college_application }
     end
   end
 
@@ -32,7 +32,7 @@ class CollegeApplicationsController < ParticipantsController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @college_application }
+      format.xml  { render xml: @college_application }
     end
   end
 
@@ -50,11 +50,11 @@ class CollegeApplicationsController < ParticipantsController
     respond_to do |format|
       if @college_application.save
         flash[:notice] = 'College Application was successfully created.'
-        format.html { redirect_to(participant_path(@participant, :anchor => "!/section/college_applications")) }
-        format.xml  { render :xml => @college_application, :status => :created, :location => @participant }
+        format.html { redirect_to(participant_path(@participant, anchor: "!/section/college_applications")) }
+        format.xml  { render xml: @college_application, status: :created, location: @participant }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @college_application.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @college_application.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -67,11 +67,11 @@ class CollegeApplicationsController < ParticipantsController
     respond_to do |format|
       if @college_application.update_attributes(params[:college_application])
         flash[:notice] = 'College Application was successfully updated.'
-        format.html { redirect_to(participant_path(@participant, :anchor => "!/section/college_applications")) }
+        format.html { redirect_to(participant_path(@participant, anchor: "!/section/college_applications")) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @college_application.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @college_application.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -83,7 +83,7 @@ class CollegeApplicationsController < ParticipantsController
     @college_application.destroy
 
     respond_to do |format|
-      format.html { redirect_to(participant_path(@participant, :anchor => "!/section/college_applications")) }
+      format.html { redirect_to(participant_path(@participant, anchor: "!/section/college_applications")) }
       format.xml  { head :ok }
     end
   end
@@ -91,13 +91,13 @@ class CollegeApplicationsController < ParticipantsController
   def auto_complete_for_institution_name
     @institutions = Institution.find_all_by_name(params[:college_application][:institution_name].to_s.downcase)[0..10]
     
-    render :json => @institutions.map { |result| 
+    render json: @institutions.map { |result|
       {
-        :id => result.id, 
-        :value => h(result.name),
-        :klass => result.class.to_s.underscore, 
-        :fullname => h(result.name),
-        :secondary => h(result.location_detail)
+        id: result.id,
+        value: h(result.name),
+        klass: result.class.to_s.underscore,
+        fullname: h(result.name),
+        secondary: h(result.location_detail)
       }
     }
   end

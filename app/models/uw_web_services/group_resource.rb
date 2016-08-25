@@ -18,7 +18,7 @@ class GroupResource < NonstandardWebServiceResult
   # returns its GroupResource object.
   def self.create(group_identifier, options = {})
     group_identifier = GroupResource.prep_group_identifier(group_identifier)
-    options = { :name => group_identifier.titleize }.merge(options)
+    options = { name: group_identifier.titleize }.merge(options)
     # puts GroupResource.new_group_xhtml(group_identifier, options)
     connection.put(self.element_path + "/#{group_identifier}", GroupResource.new_group_xhtml(group_identifier, options))
     GroupResource.find(group_identifier)

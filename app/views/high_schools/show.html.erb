@@ -1,23 +1,23 @@
 <h1><%=h @high_school.name %>
-	<%= image_tag "college_mapper_logo-150x44.png", :title => "Integrated with CollegeMapper", :class => "college_mapper_integration_bug" if @high_school.enable_college_mapper_integration? %>
+	<%= image_tag "college_mapper_logo-150x44.png", title: "Integrated with CollegeMapper", class: "college_mapper_integration_bug" if @high_school.enable_college_mapper_integration? %>
 </h1>
 
 <div class="span8 right panel-block">
 	<h2>Class of <%= Participant.current_cohort %>
-		<small><%= link_to "Details", stats_high_school_path(@high_school), :class => "right", :align => 'right' %></small>
+		<small><%= link_to "Details", stats_high_school_path(@high_school), class: "right", align: 'right' %></small>
 	</h2>
 	
 	<div id="participant_stats_<%= @high_school.id %>" class="loading">
 		<%= javascript_tag "$( document ).ready(function() {
 			$.ajax({
-				url: '#{stats_high_school_path(@high_school, :hide_title => true, :format => :js)}',
+				url: '#{stats_high_school_path(@high_school, hide_title: true, format: :js)}',
 				method: 'GET' }
 			);
 		});" %>
 
 	</div>
 	
-	<%= render :partial => "high_schools/mentor_stats" %>
+	<%= render partial: "high_schools/mentor_stats" %>
 </div>
 
 <div class="span4 panel-block">
@@ -25,13 +25,13 @@
 	<table>
 		<tr>
 			<td class="name"><%= link_to "All Cohorts", high_school_participants_url(@high_school) %></td>
-			<td><%#= link_to "<span>Excel</span>", high_school_participants_url(@high_school, :format => :xlsx), :class => "xls button icon-only right" %></td>
+			<td><%#= link_to "<span>Excel</span>", high_school_participants_url(@high_school, format: :xlsx), class: "xls button icon-only right" %></td>
 		</tr>
 		
 		<% for cohort in @high_school.cohorts %>
 			<tr>
 				<td><%= link_to "#{cohort.to_s} Cohort", high_school_cohort_url(@high_school, cohort) %></td>
-				<td><%#= link_to "<span>Excel</span>", high_school_cohort_url(@high_school, cohort, :format => :xlsx), :class => "xls button icon-only right" %></td>
+				<td><%#= link_to "<span>Excel</span>", high_school_cohort_url(@high_school, cohort, format: :xlsx), class: "xls button icon-only right" %></td>
 			</tr>
 		<% end -%>
 	</table>	
@@ -43,11 +43,11 @@
 	<h2><%= Customer.visits_Label %></h2>
 	<table>
 		<tr><td><%= link_to "#{Term.current_term.title} #{Customer.visits_Label}", 
-						high_school_visits_path(@high_school, :term_id => Term.current_term) %></td></tr>
+						high_school_visits_path(@high_school, term_id: Term.current_term) %></td></tr>
 		<tr><td><%= link_to "Take Attendance for #{Customer.mentees_Label}", 
-						attendance_high_school_visits_path(@high_school, :term_id => Term.current_term) %></td></tr>
+						attendance_high_school_visits_path(@high_school, term_id: Term.current_term) %></td></tr>
 		<tr><td><%= link_to "Take Attendance for #{Customer.mentors_Label}", 
-						attendance_high_school_visits_path(@high_school, :term_id => Term.current_term, :show => 'mentors') %></td></tr>
+						attendance_high_school_visits_path(@high_school, term_id: Term.current_term, show: 'mentors') %></td></tr>
 		
 		<%- if Customer.uses_activity_logs? -%>
 			<tr><td><%= link_to "Weekly Summary", activity_log_current_week_summary_path %></td></tr>
@@ -61,10 +61,10 @@
 	<table>
 		<tr><td><%= link_to "Survey Code List", survey_codes_high_school_path(@high_school) %></td></tr>
 		<tr><td><%= link_to "Survey Code Cards", survey_code_cards_high_school_path(@high_school) %></td></tr>
-		<tr><td><%= link_to "Manage Groups", high_school_participant_groups_path(:high_school_id => @high_school) %></td></tr>
+		<tr><td><%= link_to "Manage Groups", high_school_participant_groups_path(high_school_id: @high_school) %></td></tr>
 	</table>
 </div>
 
 <br style="clear:both">
 
-<%= render :partial => "sidebar" unless @sidebar_rendered %>
+<%= render partial: "sidebar" unless @sidebar_rendered %>

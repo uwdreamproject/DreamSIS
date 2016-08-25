@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
-  skip_before_filter :check_authorization, :only => :show # only skip this because we use #redirect_to_rsvp_if_not_admin instead for the #show action
-  before_filter :redirect_to_rsvp_if_not_admin, :only => :show
+  skip_before_filter :check_authorization, only: :show # only skip this because we use #redirect_to_rsvp_if_not_admin instead for the #show action
+  before_filter :redirect_to_rsvp_if_not_admin, only: :show
 
   # GET /events
   # GET /events.xml
@@ -11,9 +11,9 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @events.as_json(methods: [:short_title, :attendance_options]).group_by{|e| e["date"] } }
-      # format.json { render :json => @events.group_by(&:date) }
-      format.xml  { render :xml => @events }
+      format.json { render json: @events.as_json(methods: [:short_title, :attendance_options]).group_by{|e| e["date"] } }
+      # format.json { render json: @events.group_by(&:date) }
+      format.xml  { render xml: @events }
     end
   end
 
@@ -24,8 +24,8 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @event.as_json(methods: [:short_title, :attendance_options]) }
-      format.xml  { render :xml => @event }
+      format.json { render json: @event.as_json(methods: [:short_title, :attendance_options]) }
+      format.xml  { render xml: @event }
     end
   end
 
@@ -36,7 +36,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @event }
+      format.xml  { render xml: @event }
     end
   end
 
@@ -55,10 +55,10 @@ class EventsController < ApplicationController
       if @event.save
         flash[:notice] = 'Event was successfully created.'
         format.html { redirect_to(event_url(@event)) }
-        format.xml  { render :xml => @event, :status => :created, :location => event_url(@event) }
+        format.xml  { render xml: @event, status: :created, location: event_url(@event) }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @event.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @event.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -76,8 +76,8 @@ class EventsController < ApplicationController
         format.html { redirect_to(event_url(@event)) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @event.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @event.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -97,13 +97,13 @@ class EventsController < ApplicationController
   def auto_complete_model_for_person_fullname
     @people = Person.find(
       :all,
-      :conditions => ['lastname LIKE :q', 
-                        {:q => "%#{params[:person][:fullname].downcase}%"}],
-      :limit => 10
+      conditions: ['lastname LIKE :q', 
+                        {q: "%#{params[:person][:fullname].downcase}%"}],
+      limit: 10
     )
-    render :partial => "shared/auto_complete_person_fullname", 
-            :object => @people, 
-            :locals => { :highlight_phrase => params[:person][:fullname] }
+    render partial: "shared/auto_complete_person_fullname", 
+            object: @people, 
+            locals: { highlight_phrase: params[:person][:fullname] }
   end
   
 

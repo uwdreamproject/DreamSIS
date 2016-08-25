@@ -15,14 +15,14 @@
 		<%- if @test_score.try(:test_type) -%>
 			<%- for section, maximum_score in @test_score.try(:test_type).try(:section_scores_hash) -%>
 				<li class="section score">
-					<%= content_tag :span, h(section.titleize), :class => "section title" %>:
+					<%= content_tag :span, h(section.titleize), class: "section title" %>:
 					<%=h @test_score.section_score(section) %>
 					<em class="light">out of <%=h maximum_score %></em>
 				</li>
 			<% end %>
 			
 			<li class="total score">
-				<%= content_tag :span, "Total", :class => "total title" %>:
+				<%= content_tag :span, "Total", class: "total title" %>:
 				<%=h @test_score.total_score %>
 				<em class="light">out of <%= @test_score.test_type.try(:maximum_total_score).to_i %></em>
 			</li>
@@ -32,7 +32,7 @@
 	
 </dl>
 
-<div id="sidebar">
-	<p><%= link_to "Back to participant", participant_path(@participant, :anchor => "test_scores"), :class => "back button" %></p>
-	<p><%= link_to 'Edit this test', edit_participant_test_score_path(@participant, @test_score), :class => "edit button" %></p>
-</div>
+<%= content_for(:sidebar) do %>
+	<p><%= link_to "Back to participant", participant_path(@participant, anchor: "test_scores"), class: "back button" %></p>
+	<p><%= link_to 'Edit this test', edit_participant_test_score_path(@participant, @test_score), class: "edit button" %></p>
+<%- end -%>

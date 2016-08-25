@@ -1,8 +1,14 @@
-<%- 
+<%-
 reports = Participant::ReportTypes.dup
 reports.delete(:college_stages) unless @stages
 -%>
 
-<%= form_tag({}, :method => :get, :remote => true, :id => "report_selector") do -%>
-	Display: <%= select_tag "report", options_for_select(reports.invert, @report.try(:pluralize)), :class => 'submit-on-change' %>
+<%= content_for(:tabs) do %>
+	<ul class="nav nav-tabs" role="tablist">
+		<% for key, title in reports %>
+			<%= content_tag :li, class: "#{'active' if @report.to_s == key.to_s}", role: 'presentation' do %>
+				<%= link_to title, url_for(report: key), role: "tab", remote: true %>
+			<% end %>
+		<% end %>
+	</ul>
 <% end %>

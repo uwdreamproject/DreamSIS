@@ -1,17 +1,17 @@
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	
-	<p><%= link_to 'Take Attendance', attendance_high_school_visits_path(@high_school, :term_id => @term), :class => 'edit button' %></p>
+	<p><%= link_to 'Take Attendance', attendance_high_school_visits_path(@high_school, term_id: @term), class: 'edit button' %></p>
 
-	<p><%= link_to "Add new #{Customer.visit_label}", new_high_school_visit_path(@high_school, :term_id => @term), :class => 'add button' %></p>
+	<p><%= link_to "Add new #{Customer.visit_label}", new_high_school_visit_path(@high_school, term_id: @term), class: 'add button' %></p>
 	
 	<%- if @high_school -%>
-		<p><%= link_to "Back to #{h(@high_school.name)}", @high_school, :class => 'back button' %></p>
+		<p><%= link_to "Back to #{h(@high_school.name)}", @high_school, class: 'back button' %></p>
 	<% end %>
 
 	<p>
-	<%= render :partial => "shared/term_select", 
-				:locals => { :form_url => high_school_visits_path(@high_school, nil)},
-				:object => @term %>
+	<%= render partial: "shared/term_select",
+				locals: { form_url: high_school_visits_path(@high_school, nil)},
+				object: @term %>
 	</p>
 	
-</div>
+<%- end -%>

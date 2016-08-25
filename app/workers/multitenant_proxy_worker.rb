@@ -24,7 +24,7 @@ class MultitenantProxyWorker
       
     # rescue => e
     #   log multitenant_proxy_id, "ERROR: #{e.message}"
-    #   Rollbar.error(e, :multitenant_proxy_id => multitenant_proxy_id)
+    #   Rollbar.error(e, multitenant_proxy_id: multitenant_proxy_id)
     # end
   end
 

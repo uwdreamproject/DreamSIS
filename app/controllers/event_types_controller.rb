@@ -1,10 +1,10 @@
 class EventTypesController < ApplicationController
   def index
-    @event_types = EventType.find :all
+    @event_types = EventType.all
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @event_types }
+      format.xml  { render xml: @event_types }
     end
   end
 
@@ -13,7 +13,7 @@ class EventTypesController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @event_type }
+      format.xml  { render xml: @event_type }
     end
   end
 
@@ -22,7 +22,7 @@ class EventTypesController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @event_type }
+      format.xml  { render xml: @event_type }
     end
   end
 
@@ -37,10 +37,10 @@ class EventTypesController < ApplicationController
       if @event_type.save
         flash[:notice] = "EventType was successfully created."
         format.html { redirect_to(@event_type) }
-        format.xml  { render :xml => @event_type, :status => :created, :location => @event_type }
+        format.xml  { render xml: @event_type, status: :created, location: @event_type }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @event_type.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @event_type.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -54,8 +54,8 @@ class EventTypesController < ApplicationController
         format.html { redirect_to(@event_type) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @event_type.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @event_type.errors, status: :unprocessable_entity }
       end
     end
   end

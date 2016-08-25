@@ -2,15 +2,15 @@ require 'digest/sha1'
 class User < ActiveRecord::Base
   belongs_to :person
   validates_presence_of :login
-  validates_uniqueness_of :uid, :scope => [:provider], :allow_nil => true
+  validates_uniqueness_of :uid, scope: [:provider], allow_nil: true
   attr_accessible :login, :email, :password, :password_confirmation, :identity_url, :person_attributes
-  default_scope :order => 'login'
+  default_scope { order('login') }
   alias_attribute :username, :login
-  delegate :email, :participants, :current_locations, :to => :person
+  delegate :email, :participants, :current_locations, to: :person
   
   acts_as_tagger
   
-  # Pulls the current user out of Thread.current. We try to avoid this when possible, but sometimes we need 
+  # Pulls the current user out of Thread.current. We try to avoid this when possible, but sometimes we need
   # to access the current user in a model (e.g., to check EmailQueue#messages_waiting?).
   def self.current_user
     Thread.current['user']
@@ -70,12 +70,12 @@ class User < ActiveRecord::Base
     return nil if last_updated && Time.parse(last_updated) < person.resource_cache_updated_at
     avatar_image_url = auth["info"]["image"] || auth["extra"]["raw_info"]["profile_image_url_https"] rescue nil
     person.update_attributes({
-      :display_name => auth["info"]["name"],
-      :firstname => auth["info"]["first_name"],
-      :lastname => auth["info"]["last_name"],
-      :email => auth["info"]["email"],
-      :avatar_image_url => avatar_image_url,
-      :resource_cache_updated_at => Time.now
+      display_name: auth["info"]["name"],
+      firstname: auth["info"]["first_name"],
+      lastname: auth["info"]["last_name"],
+      email: auth["info"]["email"],
+      avatar_image_url: avatar_image_url,
+      resource_cache_updated_at: Time.now
     })
   end
   
@@ -87,7 +87,7 @@ class User < ActiveRecord::Base
   
   # Returns all User records with the same provider and UID combination. Useful for switching to another customer identity.
   def identities
-    User.where(:provider => provider, :uid => uid)
+    User.where(provider: provider, uid: uid)
   end
   
   # Returns a string describing the provider used to link this account, e.g., "Facebook" or "Google."
@@ -139,7 +139,7 @@ class User < ActiveRecord::Base
   end
   
   # Users will have the navbar displayed if any of the following are true:
-  # 
+  #
   # * User is an admin
   # * User Person is a Mentor and the mentor has #passed_basics?
   # * User Person is a Mentor and a #current_lead?

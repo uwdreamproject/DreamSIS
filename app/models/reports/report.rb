@@ -6,15 +6,15 @@ class Report < ActiveRecord::Base
 	VALIDITY_PERIOD = 1.day
 
 	validates_presence_of :key, :format, :model_name
-	validates_uniqueness_of :key, :scope => [ :customer_id, :format, :type ]
+	validates_uniqueness_of :key, scope: [ :customer_id, :format, :type ]
 	serialize :object_ids
 
-  mount_uploader :file, ReportUploader, :mount_on => :file_path
+  mount_uploader :file, ReportUploader, mount_on: :file_path
   
 	# Finds the most recent Report object that corresponds to this cache_key.
 	# Returns nil if one doesn't exist.
 	def self.for_key(cache_key)
-		report = find(:first, :conditions => { :key => cache_key }, :order => "updated_at DESC")
+    report = where(key: cache_key).order("updated_at DESC").first
 		report.update_attribute(:status, "expired") if report && report.expired?
 		report
 	end
@@ -65,9 +65,9 @@ class Report < ActiveRecord::Base
   			temp_file = Tempfile.new("report_#{id.to_s}_#{Time.now.to_i}")
   			xlsx_package.serialize temp_file.path
   		rescue => e
-  			update_attributes :status => "error: #{e.message}", :generated_at => nil
+  			update_attributes status: "error: #{e.message}", generated_at: nil
   			logger.warn { "ERROR generating file: #{e.message}" }
-        Rollbar.warning(e, :report_id => self.id)
+        Rollbar.warning(e, report_id: self.id)
   		else # no errors
         self.file = temp_file
         self.status = "generated"
@@ -81,7 +81,7 @@ class Report < ActiveRecord::Base
 	end
 	
 	def xlsx_package
-	  object_class.to_xlsx(:data => objects)
+	  object_class.to_xlsx(data: objects)
 	end
 
 	def generated?

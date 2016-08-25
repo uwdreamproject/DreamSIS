@@ -10,14 +10,14 @@ class ChangesController < ApplicationController
     conditions_string = ids.size.times.collect{ "(change_loggable_type = ? AND change_loggable_id = ?)" }.join(" OR ")
     @changes = Change.where([conditions_string] + ids.flatten)
 
-    render :action => "index"
+    render action: "index"
   end
   
   def deleted
     @changes = Change.paginate(:all, 
-      :conditions => ["change_loggable_type IN (?) AND action_type = ?", ALLOWABLE_MODELS, 'delete'], 
-      :page => params[:page], 
-      :per_page => 10)
+      conditions: ["change_loggable_type IN (?) AND action_type = ?", ALLOWABLE_MODELS, 'delete'], 
+      page: params[:page], 
+      per_page: 10)
     @allowable_models = ALLOWABLE_MODELS
   end
   

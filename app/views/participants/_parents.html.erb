@@ -12,7 +12,7 @@
 	</thead>
 
 	<tbody>
-		<%= render :partial => "parents/parent", :collection => @participant.parents %>
+		<%= render partial: "parents/parent", collection: @participant.parents %>
 				
 		<%- if @participant.parents.empty? -%>
 		<tr class="empty">

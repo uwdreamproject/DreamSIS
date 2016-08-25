@@ -1,8 +1,7 @@
 class HighSchool < Location
 
-  default_scope :order => "name"
-  
-  scope :partners, :conditions => { :partner_school => true }
+  default_scope { order("name") }
+  scope :partners, -> { where(partner_school: true) }
 
   has_many :participants do
     def in_participating_cohort(term)
@@ -10,13 +9,13 @@ class HighSchool < Location
     end
   end
   
-  has_many :visits, :foreign_key => 'location_id' do
+  has_many :visits, foreign_key: 'location_id' do
     def for(term)
       find_all {|visit| term.include?(visit.date)}
     end
   end
 
-  has_many :mentor_term_groups , :foreign_key => 'location_id' do
+  has_many :mentor_term_groups , foreign_key: 'location_id' do
     def for(term)
       find_all_by_term_id term.id
     end
@@ -24,17 +23,16 @@ class HighSchool < Location
   
   # Returns an array of unique graudation years
   def cohorts
-    # participants.find(:all, :select => [:grad_year]).collect(&:grad_year).uniq.compact.sort.reverse
-    @cohorts ||= participants.find(:all, :select => "DISTINCT grad_year").collect(&:grad_year).compact.sort.reverse
+    @cohorts ||= participants.pluck(:grad_year).uniq.compact.sort.reverse
   end
 
   # Attempts to fetch the CEEB code form the College Board website for this school.
-  # Returns nil if College Board returns no results. Returns a hash of CEEB codes and high school 
-  # names as they are returned by College Board. Unfortunately, the College Board only lets you 
-  # limit high school code searches to city (not school name), so this best guess will often return 
-  # many guesses. This method differs from Institution#ceeb_code_guess in that it always returns the 
+  # Returns nil if College Board returns no results. Returns a hash of CEEB codes and high school
+  # names as they are returned by College Board. Unfortunately, the College Board only lets you
+  # limit high school code searches to city (not school name), so this best guess will often return
+  # many guesses. This method differs from Institution#ceeb_code_guess in that it always returns the
   # hash of results, even if there's only one result.
-  # 
+  #
   # If needed, pass a different +name_value+ to try a slightly different version of the name in the
   # search.
   def ceeb_code_guess(name_value = self.name, try_again_on_failure = false)

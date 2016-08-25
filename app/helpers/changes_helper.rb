@@ -21,7 +21,7 @@ module ChangesHelper
       t = ""
     end
     
-    return content_tag(:code, s, :class => "change_value #{t}")
+    return content_tag(:code, s, class: "change_value #{t}")
   end
   
   def child_object_link(object, change)
@@ -39,7 +39,7 @@ module ChangesHelper
     }
     return change.change_loggable_type.to_s if !object.is_a?(Participant) || anchor_targets[change.change_loggable_type.to_s].nil?
     anchor = "!/section/#{anchor_targets[change.change_loggable_type]}"
-		link_to change.change_loggable_type.to_s, participant_path(@object, :anchor => anchor)
+		link_to change.change_loggable_type.to_s, participant_path(@object, anchor: anchor)
   end
   
 end

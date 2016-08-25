@@ -1,7 +1,7 @@
 <div class="right">
-	<%= link_to "Photo Tile Sheet", 
-				photo_tile_mentor_term_group_path(@mentor_term_group), 
-				:class => "photo-tile button" %>
+	<%= link_to "Photo Tile Sheet",
+				photo_tile_mentor_term_group_path(@mentor_term_group),
+				class: "photo-tile button" %>
 </div>
 
 <h3 class="pre-title"><%= @mentor_term_group.term.try(:title) %></h3>
@@ -15,7 +15,7 @@
 		<th class="functions">Functions</th>
 	</tr>
 
-	<%= render :partial => "mentor_term", :collection => @mentor_terms %>
+	<%= render partial: "mentor_term", collection: @mentor_terms %>
 	
 	<%- if @mentor_terms.empty? -%>
 	<tr class="empty">
@@ -26,18 +26,18 @@
 	<%- if @mentor_term_group.linked_group -%>
 		<tr class="rowset-header">
 			<td colspan=10>
-				Linked Section: 
+				Linked Section:
 				<%= link_to "#{@mentor_term_group.linked_group.title} (#{@mentor_term_group.linked_group.section_id})", @mentor_term_group.linked_group %>
 			</td>
 		</tr>
 	
-		<%= render :partial => "mentor_term", :collection => @mentor_term_group.linked_group.mentor_terms %>
+		<%= render partial: "mentor_term", collection: @mentor_term_group.linked_group.mentor_terms %>
 	<% end -%>
 	
 </table>
 
 <br>
-<%= link_to_function content_tag(:span, "Show", :id => "deleted_verb") +
+<%#= link_to_function content_tag(:span, "Show", id: "deleted_verb") +
 					" deleted/dropped mentors (#{@mentor_term_group.deleted_mentor_terms.size})",
 					"showHideDeletedMentors()" unless @mentor_term_group.deleted_mentor_terms.empty? %>
 
@@ -49,36 +49,36 @@
 		<th class="functions">Functions</th>
 	</tr>
 
-	<%= render :partial => "mentor_term", :collection => @mentor_term_group.deleted_mentor_terms %>
+	<%= render partial: "mentor_term", collection: @mentor_term_group.deleted_mentor_terms %>
 </table>
 
-<%= form_tag mentor_term_group_mentor_terms_path(@mentor_term_group), :method => :post, :id => "add_mentor_form" do %>
+<%= form_tag mentor_term_group_mentor_terms_path(@mentor_term_group), method: :post, id: "add_mentor_form" do %>
 	<h3>Add another <%= Customer.mentor_label %> to this group: </h3>
 	
-		<input type="input" class="search autocomplete-search" placeholder="Search <%= Customer.mentors_label %>" data-source="<%= auto_complete_for_mentor_fullname_mentors_url %>" data-update-with-id="mentor_term_mentor_id" />		
+		<input type="input" class="search autocomplete-search" placeholder="Search <%= Customer.mentors_label %>" data-source="<%= auto_complete_for_mentor_fullname_mentors_url %>" data-update-with-id="mentor_term_mentor_id" />
 		
 		<%= hidden_field_tag "mentor_term[mentor_id]" %>
-		<%= submit_tag "Add", :style => "display: inline" %>
+		<%= submit_tag "Add", style: "display: inline" %>
 		
 <% end -%>
 
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	
-	<p><%= link_to "Back to mentor groups", mentor_term_groups_term_path(@mentor_term_group.term), :class => 'back button' %></p>
+	<p><%= link_to "Back to mentor groups", mentor_term_groups_term_path(@mentor_term_group.term), class: 'back button' %></p>
 
-	<p><%= link_to "Edit this mentor group", 
-					edit_mentor_term_group_path(@mentor_term_group), 
-					:class => 'edit button' %></p>
+	<p><%= link_to "Edit this mentor group",
+					edit_mentor_term_group_path(@mentor_term_group),
+					class: 'edit button' %></p>
 					
 	<p><%= link_to "E-mail this mentor group",
 	 				"mailto:#{@mentor_term_group.mentors.collect(&:email).compact.join(",")}",
-					:class => 'email button' %></p>
+					class: 'email button' %></p>
 
 	<%- if Customer.uses_activity_logs? -%>
-		<p><%= link_to "Weekly summary", 
-						activity_log_current_week_summary_path(:mentor_term_group_id => @mentor_term_group), 
-						:class => "calendar button" %></p>
+		<p><%= link_to "Weekly summary",
+						activity_log_current_week_summary_path(mentor_term_group_id: @mentor_term_group),
+						class: "calendar button" %></p>
 	<% end %>
 
 	<h3>About this Group</h3>
@@ -89,8 +89,8 @@
 		
 		<%- if @mentor_term_group.non_default_permissions? %>
 			<dt class="red">Permissions Level</dt>
-			<dd><%= content_tag :abbr, @mentor_term_group.permissions_level.titleize, 
-								:title => @mentor_term_group.permissions_level_description %></dd>
+			<dd><%= content_tag :abbr, @mentor_term_group.permissions_level.titleize,
+								title: @mentor_term_group.permissions_level_description %></dd>
 		<% end %>
 
 		<dt>Term</dt>
@@ -100,9 +100,9 @@
 		<dd><%= @mentor_term_group.times %></dd>
 
 		<dt>Enrollment</dt>
-		<dd><%= @mentor_term_group.mentor_terms_count.to_i %> 
+		<dd><%= @mentor_term_group.mentor_terms_count.to_i %>
 			<%= "of #{@mentor_term_group.capacity}" unless @mentor_term_group.capacity.nil? %>
-			<%= content_tag :span, "full", :class => 'orange tag' if @mentor_term_group.full? %></dd>
+			<%= content_tag :span, "full", class: 'orange tag' if @mentor_term_group.full? %></dd>
 		
 		<%- if @mentor_term_group.linked_group -%>
 			<dt>Linked Group</dt>
@@ -111,25 +111,24 @@
 		
 	</dl>
 	
-	<%= render :partial => 'time_schedule_details', :object => @mentor_term_group.course_resource if @mentor_term_group.course_resource rescue [] %>
+	<%= render partial: 'time_schedule_details', object: @mentor_term_group.course_resource if @mentor_term_group.course_resource rescue [] %>
 	
 	<%- unless @mentor_term_group.mentor_terms.leads.empty? -%>
 		<h3><%= Customer.leads_Label %></h3>
 		<ul class="mini photo-list">
 		<% for lead in @mentor_term_group.mentor_terms.leads %>
 			<li>
-				<%= image_tag photo_mentor_path(lead.try(:mentor), :size => "50"), :size => "", :class => 'photo' %>
+				<%= image_tag photo_mentor_path(lead.try(:mentor), size: "50"), size: "", class: 'photo' %>
 				<%= lead.fullname %>
 				<br><small>
-					<%= link_to "Remove", 
-								mentor_term_group_mentor_term_path(@mentor_term_group, lead, 
-									:mentor_term => { :lead => false }), 
-								:method => :put,
-								:confirm => "Are you sure you want to remove this person as a #{Customer.lead_label}?" %>
+					<%= link_to "Remove",
+								mentor_term_group_mentor_term_path(@mentor_term_group, lead,
+									mentor_term: { lead: false }),
+								method: :put,
+								confirm: "Are you sure you want to remove this person as a #{Customer.lead_label}?" %>
 					</small>
 			</li>
 		<% end -%>
 		</ul>
 	<% end %>
-
-</div>
+<%- end -%>

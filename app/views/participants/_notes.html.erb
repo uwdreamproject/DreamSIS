@@ -1,26 +1,26 @@
 <%- participant ||= @participant -%>
-<%- locals = { :start_date => start_date, :end_date => end_date } rescue {} -%>
+<%- locals = { start_date: start_date, end_date: end_date } rescue {} -%>
 
 <h2>Notes</h2>
 	
-<%= form_for participant.notes.new, { :url => notes_path(locals.merge(:return_to => request.url)), :remote => true } do |f| -%>
+<%= form_for participant.notes.new, { url: notes_path(locals.merge(return_to: request.url)), remote: true } do |f| -%>
 	<h4 style="margin-bottom: 2px">Add New Note</h4>
 	<div class="full">
-		<%= f.text_area :note, :style => "width:99%", :rows => 4, :placeholder => "Add your note here" %>
+		<%= f.text_area :note, style: "width:99%", rows: 4, placeholder: "Add your note here" %>
 	</div>
 	
-	<%= f.hidden_field :notable_type, :value => "Person" %>
-	<%= f.hidden_field :notable_id, :value => participant.id %>
+	<%= f.hidden_field :notable_type, value: "Person" %>
+	<%= f.hidden_field :notable_id, value: participant.id %>
 	
 	<%= f.label :contact_type, "Contact Type:" %>
 	<%= f.select :contact_type, ["", "Phone", "E-mail", "Text", "Facebook", "In-person"] %>
 	<%= f.label :needs_followup, f.check_box(:needs_followup) + " Needs Follow-up" %>
-	<%= f.submit "Add Note", :disable_with => 'Adding note...', :class => 'add notes right' %>
+	<%= f.submit "Add Note", disable_with: 'Adding note...', class: 'add notes right' %>
 <% end -%>
 
 <%- cache [participant.cache_key, @current_user.cache_key, "notes"].join("/") do -%>
 	<div class="notes_container" id="notes_container_<%= participant.id %>">
 		<a href="#" style="display: none;" class="show_all_notes" onClick="toggleFollowupNotes(); return false">Show all notes</a>
-		<%= render :partial => "shared/notes", :object => participant, :locals => locals %>		
+		<%= render partial: "shared/notes", object: participant, locals: locals %>		
 	</div>
 <% end %>

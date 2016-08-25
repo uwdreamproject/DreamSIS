@@ -4,16 +4,16 @@ class ResourceController < ApplicationController
     attr_accessor :object_class
     
     def object_name; object_class.to_s.underscore; end
-    def objects_name; object_name.pluralize; end    
+    def objects_name; object_name.pluralize; end
   end
   
   def index
-    @objects = self.class.object_class.find(:all)
+    @objects = self.class.object_class.all
     load_variables
     
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @objects }
+      format.xml  { render xml: @objects }
     end
   end
   
@@ -23,7 +23,7 @@ class ResourceController < ApplicationController
   
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @object }
+      format.xml  { render xml: @object }
     end
   end
   
@@ -33,7 +33,7 @@ class ResourceController < ApplicationController
   
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @object }
+      format.xml  { render xml: @object }
     end
   end
   
@@ -50,10 +50,10 @@ class ResourceController < ApplicationController
       if @object.save
         flash[:notice] = "#{self.class.object_name.titleize} was successfully created."
         format.html { redirect_to(@object) }
-        format.xml  { render :xml => @object, :status => :created, :location => @object }
+        format.xml  { render xml: @object, status: :created, location: @object }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @object.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @object.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -68,8 +68,8 @@ class ResourceController < ApplicationController
         format.html { redirect_to(@object) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @object.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @object.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -85,7 +85,7 @@ class ResourceController < ApplicationController
     end
   end
   
-  protected 
+  protected
   
   def load_variables
     self.instance_eval("@#{self.class.objects_name} = @objects") if @objects

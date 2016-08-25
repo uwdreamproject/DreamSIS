@@ -1,37 +1,37 @@
-<%= f.inputs(:name => "Group Details") do -%>
+<%= f.inputs(name: "Group Details") do -%>
 	<%= f.input :term %>
-	<%= f.input :title, :hint => "Give this group a title. Usually this just matches the location name, like \"Foster High School\"." %>
-	<%= f.input :location, :hint => "Where does this group meet?", :collection => HighSchool.partners %>
-	<%= f.input :capacity, :input_html => { :size => 4 }, 
-					:hint => "Setting a capacity limit will prevent volunteers from signing up when this group is full." %>
-	<%= f.input :none_option, :hint => "This group does not meet normally like other groups. Often used for tracking leaders or admins who are not actually a part of a real group." %>
+	<%= f.input :title, hint: "Give this group a title. Usually this just matches the location name, like \"Foster High School\"." %>
+	<%= f.input :location, hint: "Where does this group meet?", collection: HighSchool.partners %>
+	<%= f.input :capacity, input_html: { size: 4 }, 
+					hint: "Setting a capacity limit will prevent volunteers from signing up when this group is full." %>
+	<%= f.input :none_option, hint: "This group does not meet normally like other groups. Often used for tracking leaders or admins who are not actually a part of a real group." %>
 <% end -%>
 
-<%= f.inputs(:name => "Meeting Times") do -%>
-	<%= f.input :times, :label => "Times Detail", :hint => "Describe when this group meets, including the day of week and time (if applicable). This will be displayed to users when looking at the list of groups." %>
-	<%= f.input :day_of_week, :as => :select, :collection => %w(Monday Tuesday Wednesday Thursday Friday Saturday) %>
-	<%= f.input :depart_time, :hint => "Specify the departure time for this group in 24-hour time. Leave blank to remove this group from the signup calendar view." %>
-	<%= f.input :return_time, :hint => "Specify the return time for this group in 24-hour time. Leave blank to remove this group from the signup calendar view." %>
+<%= f.inputs(name: "Meeting Times") do -%>
+	<%= f.input :times, label: "Times Detail", hint: "Describe when this group meets, including the day of week and time (if applicable). This will be displayed to users when looking at the list of groups." %>
+	<%= f.input :day_of_week, as: :select, collection: %w(Monday Tuesday Wednesday Thursday Friday Saturday) %>
+	<%= f.input :depart_time, hint: "Specify the departure time for this group in 24-hour time. Leave blank to remove this group from the signup calendar view." %>
+	<%= f.input :return_time, hint: "Specify the return time for this group in 24-hour time. Leave blank to remove this group from the signup calendar view." %>
 <% end -%>
 
-<%= f.inputs(:name => "Permissions") do %>
+<%= f.inputs(name: "Permissions") do %>
 	<p><%= Customer.mentors_Label %> in this group can view and edit the following:</p>
-	<%= f.input :permissions_level, :as => :radio, :collection => MentorTermGroup::PERMISSION_LEVELS.map{|k,v| [v,k]} %>	
+	<%= f.input :permissions_level, as: :radio, collection: MentorTermGroup::PERMISSION_LEVELS.map{|k,v| [v,k]} %>	
 <% end %>
 
 <%- if f.object.term.try(:courses) != [] -%>
-	<%= f.inputs(:name => "Link to Course") do %>
+	<%= f.inputs(name: "Link to Course") do %>
 		<% 
 			section_ids = f.object.term.courses.collect(&:linked_section_ids).flatten rescue {}
 			section_ids = f.object.term.course_ids.split.to_a if section_ids.empty?
 		 %>
-		<%= f.input :course_id, :as => :select, :collection => section_ids, :hint => "Choose the course section that this group is attached to (if applicable)." %>
+		<%= f.input :course_id, as: :select, collection: section_ids, hint: "Choose the course section that this group is attached to (if applicable)." %>
 		
 		<% 
-			linked_groups = {} # :title => :id
+			linked_groups = {} # title: :id
 			linked_groups_array = f.object.term.mentor_term_groups.select{|g| f.object != g }
 			linked_groups_array.each{|g| linked_groups["#{g.title} (#{g.section_id rescue nil})"] = g.id }
 		 %>
-		<%= f.input :linked_group_id, :as => :select, :collection => linked_groups.sort_by{|k,v| k}, :hint => "Link this group to another group so that program leaders can see these groups together when looking at the group." %>
+		<%= f.input :linked_group_id, as: :select, collection: linked_groups.sort_by{|k,v| k}, hint: "Link this group to another group so that program leaders can see these groups together when looking at the group." %>
 	<% end -%>
 <% end -%>

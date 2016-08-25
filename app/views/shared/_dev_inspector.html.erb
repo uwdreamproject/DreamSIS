@@ -1,0 +1,8 @@
+<ul id="dev-inspector" class="list-inline">
+  <li>Env <strong><%= Rails.env %></strong></li>
+  <li>Branch <strong><%= `git rev-parse --symbolic-full-name --abbrev-ref HEAD` %></strong></li>
+  <li>Rails <strong><%= Rails.version %></strong></li>
+  <li>User <strong><%= current_user.try{ |u| "#{u.fullname} (##{u.id})" } || "nil" %></strong></li>
+  <li>Customer <strong><%= Customer.name_label rescue nil %></strong></li>
+  <li>Tenant <strong><%= Apartment::Tenant.current_tenant rescue nil %></strong></li>
+</ul>

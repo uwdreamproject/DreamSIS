@@ -1,8 +1,9 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  name: MyString
-  program_id: 1
+test-customer:
+  name: "Test Customer"
+  url_shortcut: "test-customer"
 
 two:
-  name: MyString
+  name: "Helping Hands"
+  url_shortcut: "helpinghands"

@@ -2,27 +2,27 @@
 	<div class="content-block">
 		<h3 class="pre-title"><%= Customer.lead_label %> Panel</h3>
 		<% @sidebar_rendered = true %>
-		<%= render :file => "high_schools/show" %>
+		<%= render file: "high_schools/show" %>
 	</div>
 <% end -%>
 
 <div class="content-block">
-	<%#= render :partial => "participants/report_select" %>
+	<%#= render partial: "participants/report_select" %>
 	<h1 class="mentees">My Current <%= Customer.mentees_Label %></h1>
-	<p>This section shows the mentees that you're currently assigned to work with. 
-		If you start working with another <%= Customer.mentee_label %> as well, just tell your 
+	<p>This section shows the mentees that you're currently assigned to work with.
+		If you start working with another <%= Customer.mentee_label %> as well, just tell your
 		<%= Customer.lead_label %> and he or she will add the student to your list.</p>
 
-	<%= render :partial => 'mentors/mentees' %>
+	<%= render partial: 'mentors/mentees' %>
 	
 	<dl class="inline-definitions location-actions">
 
 	<%- for high_school in @high_schools -%>
 		<dt><h3><%=h high_school.name %>:</h3></dt>
 		<dd>
-			<%= link_to "All #{Customer.mentees_label}", high_school_cohort_path(high_school, Participant.current_cohort), :class => "list button" %>
-			<%= link_to "Take Attendance", attendance_high_school_visits_path(high_school, Term.current_term), :class => "edit button" %>
-			<%= link_to "Statistics", stats_high_school_path(high_school), :class => "stats button" %>
+			<%= link_to "All #{Customer.mentees_label}", high_school_cohort_path(high_school, Participant.current_cohort), class: "list button" %>
+			<%= link_to "Take Attendance", attendance_high_school_visits_path(high_school, Term.current_term), class: "edit button" %>
+			<%= link_to "Statistics", stats_high_school_path(high_school), class: "stats button" %>
 		</dd>
 	<% end -%>
 	</dl>
@@ -34,17 +34,30 @@
 		<p>You've signed up for the following upcoming events:</p>
 		
 		<table class="highlightless rsvp">
-			<%= render :partial => 'rsvp/event', :collection => @events %>
+			<%= render partial: 'rsvp/event', collection: @events %>
 		</table>
 	</div>
 <% end -%>
 
-<div class="content-block">
-	<h1 class="participation">My Participation</h1>
-	<p>This section shows you the terms in which you've participated in <%= Customer.name_label %>. 
-		If you want to change your high-school group for the current term, you can click the link on the right.</p>
-	
-	<%= render :partial => 'mentors/participation' %>
-</div>
+<h2>participation status</h2>
+<%- if Customer.require_background_checks? -%>
+			<dt>Background Checks</dt>
+			<dd>
+				<% if @mentor.passed_background_check? %>
+					Passed on <%= @mentor.background_check_run_at.to_s(:short_date) %>
+				<%- else -%>
+					<span class="error-message">Not passed</span>
+				<% end -%>
+			</dd>
+		<% end %>
 
-<%= render :partial => "mentor_sidebar" %>
+		<%- if Customer.require_risk_form? && @mentor.respond_to?(:signed_risk_form?) -%>
+			<dt>Acknowledgment of Risk Form</dt>
+			<dd>
+				<% if @mentor.signed_risk_form? %>
+					Signed on <%= @mentor.risk_form_signed_at.to_s(:short_date) %>
+				<%- else -%>
+					<span class="error-message">Not signed</span>
+				<% end -%>
+			</dd>
+		<% end -%>

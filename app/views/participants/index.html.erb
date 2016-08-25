@@ -1,20 +1,44 @@
-<%= render :partial => "report_select" %>
+<%= render partial: "report_select" %>
 
-<h1 style="margin-bottom: 0.25em">
-	<%= "Participants" unless @high_school && @grad_year %>
-	<%=h @high_school.name if @high_school%>
-	<%= "at " + h(@college.name) if @college %>
-	<%= "in " + link_to(h(@program.title), @program) if @program %>
-	<%= "assigned to " + (params[:mentor_id] == "me" ? "me" : h(@mentor.fullname)) if @mentor %>
-	<%=h @grad_year.to_s if @grad_year %>
-</h1>
-<h3 class="light" style="margin-top: 0">
-	Listing 
-	<span id="filtered_record_count"></span> 
-	<span id="total_record_count"><%= @participants.total_entries %></span>
-</h3>
+<%= content_for(:subheader) do %>
+	<h1 style="margin-bottom: 0.25em">
+		<%= "Participants" unless @high_school && @grad_year %>
+		<%=h @high_school.name if @high_school%>
+		<%= "at " + h(@college.name) if @college %>
+		<%= "in " + link_to(h(@program.title), @program) if @program %>
+		<%= "assigned to " + (params[:mentor_id] == "me" ? "me" : h(@mentor.fullname)) if @mentor %>
+		<%=h @grad_year.to_s if @grad_year %>
+		<%= indicator(:participants) %>
+	</h1>
+	<ul class="list-inline" id="filter_bucket">
+		<li class="text-muted">
+			<%= glyph('filter hidden') %>
+			<span id="filtered_record_count"></span>
+			<span id="total_record_count"><%= pluralize @participants.total_entries, Customer.participant_label %></span>
+		</li>
+	</ul>
+<% end %>
+
+<%= operations do %>
+	<%= link_to "Add new", new_participant_path(high_school_id: @high_school.try(:id) || @participant.try(:high_school_id)), class: "btn btn-default", glyph: "plus" %>
+	
+	<div class="btn-group" role="group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <%= glyph(:download) %> Download
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+			<% for key, title in Participant::ReportTypes do %>
+	      <li><a href="#"><%= title %></a></li>
+      <% end %>
+    </ul>
+	</div>
+	
+	<%= render "participants/bulk_actions" %>
+	
+<% end %>
+
 <div id="stages_selector"></div>
-<div id="filter_bucket"></div>
 
 <%- if @participant_group -%>
 	<h2>
@@ -23,18 +47,22 @@
 	</h2>
 <% end -%>
 
-<table class="participants multirow active-report" id="participants_table">
+<table class="participants multirow active-report table" id="participants_table">
 	<thead></thead>
 	
-	<tfoot id="empty_placeholder" style="display:none">
+	<tfoot id="empty_placeholder" class="hidden">
 		<tr class="empty">
 			<td colspan="20">No <%= Customer.participants_label %> match your selection.</td>
 		</tr>
 	</tfoot>
 </table>
 
-<%= render :partial => "sidebar" %>
+<center>
+	<%= indicator :table, hidden: false %>
+</center>
+
+<%= render partial: "sidebar" %>
 
 <%= javascript_tag "$( function() {
-	$.ajax({ url: '#{url_for(:report => @report, :page => 1)}', dataType: 'script' });
+	$.ajax({ url: '#{url_for(report: @report, page: 1)}', dataType: 'script' });
 })" %>

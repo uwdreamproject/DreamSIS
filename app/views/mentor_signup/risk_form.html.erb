@@ -1,6 +1,6 @@
 <h1>Consent Form for <%= Customer.mentors_Label %></h1>
 
-<%= semantic_form_for @mentor, :url => { :action => 'risk_form' } do |f| %>
+<%= semantic_form_for @mentor, url: { action: 'risk_form' } do |f| %>
 
 	<%= default_form_errors(f) %>
 
@@ -9,11 +9,11 @@
 <hr>
     
 	<%= f.inputs do %>
-		<%= f.input :risk_form_signature, :label => "Enter your full legal name as signature" %>
-		<%= f.input :risk_form_signed_at, :as => :boolean, :label => "I understand the statements above." %>
+		<%= f.input :risk_form_signature, label: "Enter your full legal name as signature" %>
+		<%= f.input :risk_form_signed_at, as: :boolean, label: "I understand the statements above." %>
 	<% end -%>
 
 	<%= f.actions do %>
-		<%= f.action :submit, :label=> "Submit" %>
+		<%= f.action :submit, label: "Submit" %>
 	<% end -%>
 <% end -%>

@@ -2,16 +2,16 @@
 
 	<td class="name"><%= link_to h(test_score.name), [@participant, test_score] %></td>
 	<td class="inline-when-small" data-text="<%= test_score.taken_at.try(:to_s, :short_date) %>"><%=h test_score.taken_at.try(:to_s, :date_with_day_of_week) %>
-		<%= content_tag :small, "(#{relative_timestamp(test_score.taken_at)})", :class => 'light' unless test_score.taken_at.blank? %>
+		<%= content_tag :small, "(#{relative_timestamp(test_score.taken_at)})", class: 'light' unless test_score.taken_at.blank? %>
 	</td>
 	<td class="inline-when-small">
         <%=h test_score.total_score_pretty %>
-        <%= content_tag :span, "passed", :class => "green tag" if test_score.passed? %>
+        <%= content_tag :span, "passed", class: "green tag" if test_score.passed? %>
     </td>
 	
 	<td class="functions">
 		<%= link_to 'Details', [@participant, test_score] %>
 		<%= link_to 'Edit', edit_participant_test_score_path(@participant, test_score) %>
-		<%= link_to 'Remove', [@participant, test_score], :confirm => 'Are you sure?', :method => :delete %>
+		<%= link_to 'Remove', [@participant, test_score], confirm: 'Are you sure?', method: :delete %>
 	</td>
 </tr>

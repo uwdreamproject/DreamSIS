@@ -1,12 +1,12 @@
 class ActivityLogsController < ApplicationController
-  skip_before_filter :check_authorization, :only => [:my_week, :my_current_week, :update]
+  skip_before_filter :check_authorization, only: [:my_week, :my_current_week, :update]
 	
   def index
     @activity_logs = ActivityLog.page(params[:page])
   
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @activity_logs }
+      format.xml  { render xml: @activity_logs }
     end
   end
   
@@ -15,7 +15,7 @@ class ActivityLogsController < ApplicationController
   
     respond_to do |format|
       format.html { redirect_to edit_activity_log_path(@activity_log) }
-      format.xml  { render :xml => @activity_log }
+      format.xml  { render xml: @activity_log }
     end
   end
 	
@@ -23,14 +23,14 @@ class ActivityLogsController < ApplicationController
 		@date = Date.strptime "#{params[:year]}-#{params[:month]}-#{params[:day]}"
 		@activity_log = ActivityLog.find_or_create_by_mentor_and_date(@current_user.try(:person), @date)
 		@participants = @activity_log.mentor.try(:participants)
-		render :action => 'edit'
+		render action: 'edit'
 	end
 	
 	def my_current_week
 		@activity_log = ActivityLog.current_for(@current_user.try(:person))
 		@participants = @activity_log.mentor.try(:participants)
     @date = @activity_log.start_date
-		render :action => 'edit'
+		render action: 'edit'
 	end
 
 	def weekly_summary
@@ -39,7 +39,7 @@ class ActivityLogsController < ApplicationController
 		
 		conditions_string = "start_date = :start_date AND end_date = :end_date "
 		conditions_string << "AND updated_at > created_at " # ensures that the user has actually submitted data not just created a new one.
-		conditions_values = { :start_date => @start_date, :end_date => @start_date + 6.days }
+		conditions_values = { start_date: @start_date, end_date: @start_date + 6.days }
 
 		if params[:mentor_term_group_id] && params[:mentor_term_group_id] != "All"
 			@mentor_term_group = MentorTermGroup.find params[:mentor_term_group_id]
@@ -47,7 +47,7 @@ class ActivityLogsController < ApplicationController
 			conditions_values[:mentor_ids] = @mentor_term_group.mentor_ids
 		end
 
-		@activity_logs = ActivityLog.find(:all, :conditions => [conditions_string, conditions_values])
+		@activity_logs = ActivityLog.where([conditions_string, conditions_values])
 		
 		@direct_interaction_count = @activity_logs.collect(&:direct_interaction_count).numeric_items
 		@indirect_interaction_count = @activity_logs.collect(&:indirect_interaction_count).numeric_items
@@ -56,7 +56,7 @@ class ActivityLogsController < ApplicationController
 		@activity_logs.each do |al|
 			for ctype in %w[student non_student]
 				if al.instance_eval("#{ctype}_time?")
-					al.instance_eval("#{ctype}_time").each do |category, value| 
+					al.instance_eval("#{ctype}_time").each do |category, value|
 						@time_breakdown["#{ctype}_time"][category] ||= 0
 						@time_breakdown["#{ctype}_time"][category] += value.to_i
 					end
@@ -71,7 +71,7 @@ class ActivityLogsController < ApplicationController
   
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @activity_log }
+      format.xml  { render xml: @activity_log }
     end
   end
   
@@ -89,16 +89,16 @@ class ActivityLogsController < ApplicationController
       if @activity_log.save
         flash[:notice] = 'Activity Log was successfully created.'
         format.html { redirect_to(@activity_log) }
-        format.xml  { render :xml => @activity_log, :status => :created, :location => @activity_log }
+        format.xml  { render xml: @activity_log, status: :created, location: @activity_log }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @activity_log.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @activity_log.errors, status: :unprocessable_entity }
       end
     end
   end
   
   def update
-    @activity_log = ActivityLog.find(params[:id])      
+    @activity_log = ActivityLog.find(params[:id])
 		
     unless @current_user && (@current_user.admin? || @activity_log.belongs_to?(@current_user))
       return render_error("You are not allowed to update that activity log.")
@@ -110,8 +110,8 @@ class ActivityLogsController < ApplicationController
         format.html { flash[:notice] = 'Activity Log was successfully updated.'; redirect_to(@activity_log) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @activity_log.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @activity_log.errors, status: :unprocessable_entity }
       end
     end
   end

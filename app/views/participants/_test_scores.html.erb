@@ -9,7 +9,7 @@
 	</thead>
 
 	<tbody>
-		<%= render :partial => "test_scores/test_score", :collection => @participant.test_scores %>
+		<%= render partial: "test_scores/test_score", collection: @participant.test_scores %>
 				
 		<%- if @participant.test_scores.empty? -%>
 		<tr class="empty">

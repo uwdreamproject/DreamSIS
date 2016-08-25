@@ -1,21 +1,21 @@
 <%- klass = f.object.is_a?(Visit) ? "visit" : "event" -%>
 
 <%= f.inputs do %>
-	<%= f.input :name, :hint => "Leave blank if this is a regular #{Customer.visit_label}." %>
+	<%= f.input :name, hint: "Leave blank if this is a regular #{Customer.visit_label}." %>
 	
-	<%= f.input :type, :as => :select, :collection => {"Regular Event" => nil, Customer.visit_Label => "Visit"} %>
+	<%= f.input :type, as: :select, collection: {"Regular Event" => nil, Customer.visit_Label => "Visit"} %>
 	
-	<%= f.input :location, :label => "High School/Location", :hint => "Leave blank if this is a program-wide event. Program-wide events show up on everyone's attendance sheets.", :collection => Location.all %>
+	<%= f.input :location, label: "High School/Location", hint: "Leave blank if this is a program-wide event. Program-wide events show up on everyone's attendance sheets.", collection: Location.all %>
 	
-	<%= f.input :always_show_on_attendance_pages, :label => "Always show on attendance sheets", :hint => "Check this box to make sure that this event shows up on everyone's attendance sheets, even if it's assigned a specific location above. Use this to be sure that a program-wide event is always included on the list." %>
+	<%= f.input :always_show_on_attendance_pages, label: "Always show on attendance sheets", hint: "Check this box to make sure that this event shows up on everyone's attendance sheets, even if it's assigned a specific location above. Use this to be sure that a program-wide event is always included on the list." %>
 
-	<%= f.input :location_text, :label => "Location Detail", :hint => "Specify the location here if the event is happening at a location that's not in the list, or if you want to add extra location information, like room number." %>
+	<%= f.input :location_text, label: "Location Detail", hint: "Specify the location here if the event is happening at a location that's not in the list, or if you want to add extra location information, like room number." %>
 	
 	<%= f.input :event_type %>
 	<%= f.input :event_group %>
 		
-	<%= f.input :date, :hint => link_to_now(f.object.class.to_s.underscore + "_date") %>
-	<%= f.input :time_tba, :label => "Time TBA", :input_html => { :onChange => "
+	<%= f.input :date, hint: link_to_now(f.object.class.to_s.underscore + "_date") %>
+	<%= f.input :time_tba, label: "Time TBA", input_html: { onChange: "
 					if(this.checked) {
 						$('#event_times_input').hide(); $('#audience_specific_times').hide();
 					} else {
@@ -24,17 +24,17 @@
 				"} %>
 	
 	<li class="string input optional stringish" id="event_times_input">
-		<%= label_tag "#{klass}_start_time", "Times", :class => "label" %>
-		From <%= text_field_tag "#{klass}[start_time]", f.object.try("start_time").try(:to_s, :time12), :size => 10 %>
-		to <%= text_field_tag "#{klass}[end_time]", f.object.try("end_time").try(:to_s, :time12), :size => 10 %>
+		<%= label_tag "#{klass}_start_time", "Times", class: "label" %>
+		From <%= text_field_tag "#{klass}[start_time]", f.object.try("start_time").try(:to_s, :time12), size: 10 %>
+		to <%= text_field_tag "#{klass}[end_time]", f.object.try("end_time").try(:to_s, :time12), size: 10 %>
 		<p class="inline-hints">Enter times like "11:30 AM" or "5:00 PM". You can enter audience-specific times below.</p>
 	</li>
 	
 	<%= javascript_tag "$('#{klass}_time_tba').onchange()" %>
 	
 	<%= f.input :description,
-				:input_html => { :rows => 3 }, 
-				:hint => "Use #{link_to("Textile", "http://redcloth.org/", :popup => true)} markup for formatting. You can enter
+				input_html: { rows: 3 }, 
+				hint: "Use #{link_to("Textile", "http://redcloth.org/", popup: true)} markup for formatting. You can enter
 						  audience-specific descriptions below.".html_safe %>
 	
 	<li class="input">
@@ -45,14 +45,14 @@
 									"#{klass}[event_coordinator_id]",
 									(@event.try(:event_coordinator_id) || nil),
 									{ 
-										:url => { :controller => 'events', :action => 'auto_complete_model_for_person_fullname' },
-										:append_random_suffix => false,
-										:after_update_element => "function(text_field, selection, hidden, id) { 
+										url: { controller: 'events', action: 'auto_complete_model_for_person_fullname' },
+										append_random_suffix: false,
+										after_update_element: "function(text_field, selection, hidden, id) { 
 																	person_lookup(text_field, selection, hidden, id) 
 																  }",
-										:regexp_for_id => '(-?\d+)$' },
-									{ :autocomplete => false, :style => ('display:none' if @event.try(:event_coordinator)), :size => 50, :class => "search" },
-									{ :skip_style => true } %>
+										regexp_for_id: '(-?\d+)$' },
+									{ autocomplete: false, style: ('display:none' if @event.try(:event_coordinator)), size: 50, class: "search" },
+									{ skip_style: true } %>
 			
 			<% javascript_tag do -%>	
 				function person_lookup(text_field, selection, hidden, id) {
@@ -71,7 +71,7 @@
 						<span class="tertiary"><%= @event.event_coordinator.class.to_s %></span>
 					<% end -%>
 				</div>
-				<small><%= link_to_function "Change to a different person", 
+				<small><%#= link_to_function "Change to a different person", 
 										"Element.show('event_coordinator_details');
 										 Element.show('model_auto_completer_tf');
 										 $('model_auto_completer_tf').value = '';
@@ -83,17 +83,17 @@
 
 <% end -%>
 
-<%= f.inputs(:name => "Attendees") do %>
+<%= f.inputs(name: "Attendees") do %>
 	
 	
-	<%= f.inputs :name => "Show for:", :class => "inline" do %>
-		<%= f.input :show_for_students, :label => "Students" %>
-		<%= f.input :show_for_participants, :label => "#{Customer.participants_Label}" %>
-		<%= f.input :show_for_volunteers, :label => "Volunteers" %>
-		<%= f.input :show_for_mentors, :label => "#{Customer.mentors_Label}" %>
+	<%= f.inputs name: "Show for:", class: "inline" do %>
+		<%= f.input :show_for_students, label: "Students" %>
+		<%= f.input :show_for_participants, label: "#{Customer.participants_Label}" %>
+		<%= f.input :show_for_volunteers, label: "Volunteers" %>
+		<%= f.input :show_for_mentors, label: "#{Customer.mentors_Label}" %>
 	<% end %>
 
-	<%= f.input :allow_rsvps, :label => "Allow people to RSVP before this event" %>
+	<%= f.input :allow_rsvps, label: "Allow people to RSVP before this event" %>
 
 	<%- unless f.object.is_a?(Visit) -%>
 		<%= f.input :send_attendance_emails %>
@@ -102,9 +102,9 @@
 		</p>
 	<% end %>
 	
-	<%= f.inputs :name => "Always Show for Grade Levels", :class => "inline" do -%>			
-		<%= f.input :earliest_grade_level_level, :label => "From", :as => :select, :collection => GradeLevel.all.collect{|g| [g.title, g.level]} %>
-		<%= f.input :latest_grade_level_level, :label => "To", :as => :select, :collection => GradeLevel.all.collect{|g| [g.title, g.level]} %>
+	<%= f.inputs name: "Always Show for Grade Levels", class: "inline" do -%>			
+		<%= f.input :earliest_grade_level_level, label: "From", as: :select, collection: GradeLevel.all.collect{|g| [g.title, g.level]} %>
+		<%= f.input :latest_grade_level_level, label: "To", as: :select, collection: GradeLevel.all.collect{|g| [g.title, g.level]} %>
 	<% end %>
 	<p class="inline-hints">
 		If you specify grade levels here, this event will always show up in the "Events" section
@@ -114,28 +114,28 @@
 	
 <% end -%>
 
-<%= f.inputs(:name => "Capacity Limits") do %>
+<%= f.inputs(name: "Capacity Limits") do %>
 <p>Leave capacity limits blank or 0 for no limit.</p>
-	<%= f.input :capacity, :hint => "Use this to set a combined limit regardless of audience type.", :input_html => {:size => 3}, :label => "Overall Capacity" %>
-	<%= f.input :student_capacity, :hint => "Student capacity applies to Students and #{Customer.participants_Label}.", :input_html => {:size => 3} %>
-	<%= f.input :mentor_capacity, :input_html => {:size => 3}, :label => "#{Customer.mentor_Label} Capacity" %>
-	<%= f.input :volunteer_capacity, :input_html => {:size => 3} %>
+	<%= f.input :capacity, hint: "Use this to set a combined limit regardless of audience type.", input_html: {size: 3}, label: "Overall Capacity" %>
+	<%= f.input :student_capacity, hint: "Student capacity applies to Students and #{Customer.participants_Label}.", input_html: {size: 3} %>
+	<%= f.input :mentor_capacity, input_html: {size: 3}, label: "#{Customer.mentor_Label} Capacity" %>
+	<%= f.input :volunteer_capacity, input_html: {size: 3} %>
 <% end -%>
 
 <%= f.inputs "Audience-Specific Descriptions" do %>
 	<p>Descriptions entered here will be used instead of the description above for members of the specified audience. Otherwise, the default from above will be displayed.</p>
-	<%= f.input :student_description, :input_html => { :rows => 6 }, :hint => "Note: The student description is shown for both Students and  #{Customer.participants_Label}." %>
-	<%= f.input :volunteer_description, :input_html => { :rows => 6 } %>
-	<%= f.input :mentor_description, :input_html => { :rows => 6 }, :label => "#{Customer.mentor_Label} Description" %>
+	<%= f.input :student_description, input_html: { rows: 6 }, hint: "Note: The student description is shown for both Students and  #{Customer.participants_Label}." %>
+	<%= f.input :volunteer_description, input_html: { rows: 6 } %>
+	<%= f.input :mentor_description, input_html: { rows: 6 }, label: "#{Customer.mentor_Label} Description" %>
 <% end -%>
 
-<%= f.inputs(:name => "Audience-Specific Times", :id => "audience_specific_times") do %>
+<%= f.inputs(name: "Audience-Specific Times", id: "audience_specific_times") do %>
 	<p>These times will be used instead of the event and start times above for members of the specific audience. Otherwise, the default from above will be displayed.</p>
 	<%- for audience in %w(student volunteer mentor) -%>
 	<li class="string input optional">
-		<%= label_tag "#{klass}_#{audience}_start_time", audience.titleize.pluralize, :class => "label" %>
-		From <%= text_field_tag "#{klass}[#{audience}_start_time]", f.object.try("#{audience}_start_time").try(:to_s, :time12), :size => 10 %>
-		to <%= text_field_tag "#{klass}[#{audience}_end_time]", f.object.try("#{audience}_end_time").try(:to_s, :time12), :size => 10 %>
+		<%= label_tag "#{klass}_#{audience}_start_time", audience.titleize.pluralize, class: "label" %>
+		From <%= text_field_tag "#{klass}[#{audience}_start_time]", f.object.try("#{audience}_start_time").try(:to_s, :time12), size: 10 %>
+		to <%= text_field_tag "#{klass}[#{audience}_end_time]", f.object.try("#{audience}_end_time").try(:to_s, :time12), size: 10 %>
 	</li>
 	<% end -%>
 <% end -%>

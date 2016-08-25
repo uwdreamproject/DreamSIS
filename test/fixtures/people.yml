@@ -1,13 +1,32 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-one:
+john:
   firstname: John
   lastname: Smith
+  nickname:
+  street: 1234 Test Street
+  city: Seattle
+  state: WA
+  zip: 98105
+  email: john@test.com
+  phone_home: 2065551212
+  phone_mobile: 2065551313
+  grad_year: 2017
+  birthdate: 1995-03-15
+  sex: M
   type: Participant
-  high_school_id: 1
 
-two:
+susie:
   firstname: Susie
   lastname: Johnson
   type: Participant
   high_school_id: 1
+  
+deleteme:
+  firstname: Not Going
+  lastname: To Last Long
+  type: Participant
+
+admin:
+  firstname: Admin
+  lastname: Superuser
+  type: Mentor
+  

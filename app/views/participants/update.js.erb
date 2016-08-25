@@ -1,9 +1,9 @@
 // if @college_application
-//   page.replace "college_applications_table", :partial => "college_applications"
+//   page.replace "college_applications_table", partial: "college_applications"
 //   page.visual_effect :highlight, "college_application_#{@college_application.id}"
 //   page << "$('postsecondary_plan_add_link')." + (@participant.postsecondary_plan.blank? ? 'show' : 'hide') + "()"
 // end
-$("#college_applications_table").replaceWith("<%=j render :partial => 'college_applications' %>")
+$("#college_applications_table").replaceWith("<%=j render partial: 'college_applications' %>")
 $('#postsecondary_plan_add_link').<%=j @participant.postsecondary_plan.blank? ? 'show' : 'hide' %>()
 
 // if params[:participant] && params[:participant][:received_binder]
@@ -18,7 +18,7 @@ $('#postsecondary_plan_add_link').<%=j @participant.postsecondary_plan.blank? ? 
 // end
 
 // Always replace the details partial and the stats at top.
-$("#filter_results_container").replaceWith("<%=j render :partial => 'participants/filter_results' %>")
+$("#filter_results_container").replaceWith("<%=j render partial: 'participants/filter_results' %>")
 $("#filter_results_tab_link").children('.count').html('<%= @participant.filter_results_count %>')
 
-$("table#mentors").replaceWith("<%=j render :partial => 'participants/mentors' %>")
+$("table#mentors").replaceWith("<%=j render partial: 'participants/mentors' %>")

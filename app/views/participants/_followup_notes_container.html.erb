@@ -1,26 +1,25 @@
-<div class="needs-followup-container">
-	<a href="#" class="needs-followup icon">&nbsp;</a>
+<div class="followup-notes-container hidden">
 	<div class="controls arrow-box arrow-top" data-count="<%= participant.followup_note_count %>">
-		<p><%= link_to "Show follow-up notes", participant_path(participant, :anchor => raw("!/section/notes&show=needs_followup")), :class => "redirect-link" %></p>
+		<p><%= link_to "Show follow-up notes", participant_path(participant, anchor: raw("!/section/notes&show=needs_followup")), class: "redirect-link" %></p>
 		
 		<h3>Flag for follow-up</h3>
-		<%= form_for participant.notes.new(:needs_followup => true), { :url => participant_bulk_action_path(:process_add_note), :remote => true } do |f| -%>
+		<%= form_for participant.notes.new(needs_followup: true), { url: participant_bulk_action_path(:process_add_note), remote: true } do |f| -%>
 		
 			<%= f.label :needs_followup, f.check_box(:needs_followup) + " Needs Follow-up" %>
 		
 			<div class="full">
-				<%= f.text_area :note, :style => "width:99%", :rows => 4, :placeholder => "Add a note" %>
+				<%= f.text_area :note, style: "width:99%", rows: 4, placeholder: "Add a note" %>
 			</div>
 	
-			<%= hidden_field_tag "participant_ids[]", participant.id, :multiple => true %>
+			<%= hidden_field_tag "participant_ids[]", participant.id, multiple: true %>
 	
 			<%= f.label :contact_type, "Contact Type:" %>
 			<%= f.select :contact_type, ["", "Phone", "E-mail", "Text", "Facebook", "In-person"] %>
 	
 			<p>
-				<%= f.submit "Add Follow-up", :disable_with => 'Adding note...', :class => 'add notes' %>
+				<%= f.submit "Add Follow-up", disable_with: 'Adding note...', class: 'add notes' %>
 				<%= separator %>
-				<%= link_to_function "Cancel", "$(this).parents('.controls').removeClass('visible')" %>
+				<%#= link_to_function "Cancel", "$(this).parents('.controls').removeClass('visible')" %>
 			</p>
 	
 		<% end -%>

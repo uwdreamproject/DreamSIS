@@ -1,8 +1,8 @@
 <div class="content-block">
 	<div class="right">
 		<%= link_to("Show", "#", html_options = {
-				:id => "show_participants_stats_all_link",
-				:class => "no-icon button"
+				id: "show_participants_stats_all_link",
+				class: "no-icon button"
 			}) if params[:id] %>
 		<%= javascript_tag "
 			$('#show_participants_stats_all_link').click(
@@ -16,7 +16,7 @@
 						a.innerHTML = 'Loading...';
 						$('#participant_stats_all').show();
 						$.ajax({
-							url: '#{stats_high_schools_path(:cohort => @cohort, :hide_title => true, :format => 'js')}',
+							url: '#{stats_high_schools_path(cohort: @cohort, hide_title: true, format: 'js')}',
 							cache: false
 						});
 						return false;
@@ -32,7 +32,7 @@
 			<%= javascript_tag "
 				$( document ).ready( function() {
 					$.ajax({
-						url: '#{stats_high_schools_path(:cohort => @cohort, :hide_title => true, :format => 'js')}',
+						url: '#{stats_high_schools_path(cohort: @cohort, hide_title: true, format: 'js')}',
 						cache: false
 					});
 				});" unless params[:id] %>
@@ -46,19 +46,19 @@
 		<div style="margin-bottom: 2em">
 			<div class="right">
 				<%= link_to("Show", "#", html_options = {
-								:id => "show_participants_stats_#{high_school.id}_link",
-								:class => "no-icon button",
-								:data => {:show => "#{high_school.id}"}
+								id: "show_participants_stats_#{high_school.id}_link",
+								class: "no-icon button",
+								data: {show: "#{high_school.id}"}
 							}) unless params[:id] %>
 									
-				<%= link_to "Show alone", url_for(:cohort => @cohort, :id => high_school), :class => "no-icon button" unless params[:id] %>
+				<%= link_to "Show alone", url_for(cohort: @cohort, id: high_school), class: "no-icon button" unless params[:id] %>
 			</div>
 			<h2><%=h high_school.name %></h2>
 			<div id="participant_stats_<%= high_school.id %>" class="loading" style="display:none">
 				<%= javascript_tag "
 				$( document ).ready( function() {
 					$.ajax({
-						url: '#{stats_high_school_path(high_school, :cohort => @cohort, :hide_title => true, :format => 'js')
+						url: '#{stats_high_school_path(high_school, cohort: @cohort, hide_title: true, format: 'js')
 						}',
 						cache: false
 					});
@@ -79,7 +79,7 @@
 					a.innerHTML = 'Loading...';
 					$('#participant_stats_'+hs_id).show();
 					$.ajax({
-						url: '#{stats_high_school_path(HighSchool.first, :cohort => @cohort, :hide_title => true, :format => 'js')}'.replace(/\\/\\d+\\//, '/' + hs_id + '/'),
+						url: '#{stats_high_school_path(HighSchool.first, cohort: @cohort, hide_title: true, format: 'js')}'.replace(/\\/\\d+\\//, '/' + hs_id + '/'),
 						cache: false
 					});
 					return false;
@@ -89,15 +89,15 @@
 	" unless params[:id] %>
 </div>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<%- if params[:id] -%>
-		<p><%= link_to "All high schools", url_for(:cohort => @cohort, :id => nil), :class => 'list button' %></p>
+		<p><%= link_to "All high schools", url_for(cohort: @cohort, id: nil), class: 'list button' %></p>
 	<% end %>
 	
 	<h3>Other Cohorts</h3>
 	<ul class="quick_nav">
 	<%- for cohort in Participant.cohorts.reverse -%>
-		<li><%= link_to cohort.to_s, url_for(:cohort => cohort, :id => params[:id]) %></li>
+		<li><%= link_to cohort.to_s, url_for(cohort: cohort, id: params[:id]) %></li>
 	<% end -%>
 	</ul>
-</div>
+<%- end -%>

@@ -5,7 +5,7 @@ class ObjectFiltersController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @object_filters }
+      format.xml  { render xml: @object_filters }
     end
   end
 
@@ -17,7 +17,7 @@ class ObjectFiltersController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @object_filter }
+      format.xml  { render xml: @object_filter }
     end
   end
 
@@ -26,7 +26,7 @@ class ObjectFiltersController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @object_filter }
+      format.xml  { render xml: @object_filter }
     end
   end
 
@@ -41,10 +41,10 @@ class ObjectFiltersController < ApplicationController
       if @object_filter.save
         flash[:notice] = "ObjectFilter was successfully created."
         format.html { redirect_to(object_filters_url) }
-        format.xml  { render :xml => @object_filter, :status => :created, :location => @object_filter }
+        format.xml  { render xml: @object_filter, status: :created, location: @object_filter }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @object_filter.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @object_filter.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -58,8 +58,8 @@ class ObjectFiltersController < ApplicationController
         format.html { redirect_to(object_filters_url) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @object_filter.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @object_filter.errors, status: :unprocessable_entity }
       end
     end
   end

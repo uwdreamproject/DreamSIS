@@ -18,10 +18,10 @@ class UwWebResource < ActiveResource::Base
     def ssl_options
       return {} unless check_cert_paths!
       @ssl_options ||= {
-        :cert         => OpenSSL::X509::Certificate.new(File.open(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:cert]))),
-        :key          => OpenSSL::PKey::RSA.new(File.open(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:key]))),
-        :ca_file      => File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:ca_file]),
-        :verify_mode  => OpenSSL::SSL::VERIFY_PEER
+        cert: OpenSSL::X509::Certificate.new(File.open(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:cert]))),
+        key: OpenSSL::PKey::RSA.new(File.open(File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:key]))),
+        ca_file: File.join(ENV['SHARED_CONFIG_ROOT'] || "#{Rails.root}/config", "certs", config_options[:ca_file]),
+        verify_mode: OpenSSL::SSL::VERIFY_PEER
       }
     end
 

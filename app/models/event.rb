@@ -1,19 +1,20 @@
 class Event < ActiveRecord::Base
   include Comparable
-  extend SimpleCalendar
-  has_calendar :attribute => :start_datetime
+  
+  include SchemaSearchable
+  searchkick index_name: tenant_index_name, callbacks: :async
 
-  has_many :attendees, :inverse_of => :event, :class_name => "EventAttendance"
-  has_many :people, :through => :attendees
+  has_many :attendees, inverse_of: :event, class_name: "EventAttendance"
+  has_many :people, through: :attendees
   belongs_to :location
   belongs_to :event_type
   belongs_to :event_group
-  belongs_to :event_coordinator, :class_name => "Person", :foreign_key => "event_coordinator_id"
+  belongs_to :event_coordinator, class_name: "Person", foreign_key: "event_coordinator_id"
   
-  has_many :shifts, :class_name => "EventShift" do
+  has_many :shifts, class_name: "EventShift" do
     def for(audience)
       return [] if audience.nil? || !%w(Volunteer Mentor).include?(audience.to_s)
-      find(:all, :conditions => { "show_for_#{h(audience.to_s.pluralize)}" => true })
+      where({ "show_for_#{h(audience.to_s.pluralize)}" => true })
     end
   end
   
@@ -21,19 +22,20 @@ class Event < ActiveRecord::Base
   acts_as_proxyable parent: :event_group, dependents: [:location], parent_direction: :forward
 
   def proxyable_attributes
-    excluded = %w[id created_at updated_at event_group_id event_type_id 
+    excluded = %w[id created_at updated_at event_group_id event_type_id
                   earliest_grade_level latest_grade_level location_id event_coordinator_id]
     attributes.except(*excluded)
-  end  
+  end
   
-  belongs_to :earliest_grade_level, :class_name => "GradeLevel", :primary_key => 'level', :foreign_key => 'earliest_grade_level_level'
-  belongs_to :latest_grade_level, :class_name => "GradeLevel", :primary_key => 'level', :foreign_key => 'latest_grade_level_level'
+  belongs_to :earliest_grade_level, class_name: "GradeLevel", primary_key: 'level', foreign_key: 'earliest_grade_level_level'
+  belongs_to :latest_grade_level, class_name: "GradeLevel", primary_key: 'level', foreign_key: 'latest_grade_level_level'
   
   validates_presence_of :date
   
-  default_scope order("date, start_time")
-  scope :visits, where(:type => "Visit")
-  scope :past, lambda { where("date <= ?", Date.today) }
+  default_scope { order("date, start_time") }
+  scope :visits, -> { where(type: "Visit") }
+  scope :past, -> { where("date <= ?", Date.today) }
+  scope :future, -> { where("date >= ?", Time.now.midnight) }
 
   # Allows overwriting of type in controller, default is [+id+, +type+]
   def self.attributes_protected_by_default
@@ -107,7 +109,7 @@ class Event < ActiveRecord::Base
   
   # Returns all Events that are relevant to the requested GradeLevel.
   def self.for_grade_level(level)
-    find(:all, :conditions => ["? >= earliest_grade_level_level AND ? <= latest_grade_level_level", level, level])
+    where(["? >= earliest_grade_level_level AND ? <= latest_grade_level_level", level, level])
   end
   
   def past?
@@ -153,7 +155,7 @@ class Event < ActiveRecord::Base
   end
   
   # Returns true if the supplied User or Person has admin access to this event. This includes:
-  # 
+  #
   # * system-wide admins
   # * current mentor group leads
   # * event coordinator
@@ -208,21 +210,21 @@ class Event < ActiveRecord::Base
     start_time(person_or_type) != start_time || end_time(person_or_type) != end_time
   end
   
-  # Convenience method for +time_detail(:time_only => true)+
+  # Convenience method for +time_detail(time_only: true)+
   def time_only(person_or_type = nil)
-    time_detail(:time_only => true, :audience => person_or_type)
+    time_detail(time_only: true, audience: person_or_type)
   end
 
   # Returns a human-readable bit of text describing the start and end times of this event, as follows:
-  # 
+  #
   # * If no +end_time+ is defined, then simply state the date and start time: <tt>(date) at (start_time)</tt>
   # * If an +end_time+ is defined and the dates for both the start and end are the same: <tt>(date) from (start_time) to (end_time)</tt>
   # * If +end_time+ is on a different date than +start_time+: <tt>(start_date) at (start_time) to (end_date) at (end_time)</tt>
-  # 
+  #
   # *Options*
-  # 
+  #
   # Allowable options include:
-  # 
+  #
   # * +use_words+: Use words like "from" and "at" instead of a hyphen or a space. Defaults to true.
   # * +date_format+: Format to use for date portions. Defaults to +date_with_day_of_week+.
   # * +time_format+: Format to use for time portions. Defaults to +time12+.
@@ -232,15 +234,15 @@ class Event < ActiveRecord::Base
   # * +audience+: Pass a person object or subclass of Person to use audience-specific times (if they exist).
   def time_detail(options = {})
     default_options = {
-     :use_words => true,
-     :date_format => :date_with_day_of_week,
-     :time_format => :time12,
-     :use_relative_dates => true,
-     :audience => nil
+     use_words: true,
+     date_format: :date_with_day_of_week,
+     time_format: :time12,
+     use_relative_dates: true,
+     audience: nil
     }
     options = default_options.merge(options)
     audience = options[:audience]
-    separator = options[:use_words] ? { :to => " to", :from => " from", :at => " at" } : { :to => " -", :from => "", :at => "" }
+    separator = options[:use_words] ? { to: " to", from: " from", at: " at" } : { to: " -", from: "", at: "" }
     _start_date = date.to_date.to_s(options[:date_format]).strip
     _start_date = "Today" if date.to_date == Time.now.to_date && options[:use_relative_dates]
     _start_date = "Tomorrow" if date.to_date == 1.day.from_now.to_date && options[:use_relative_dates]
@@ -332,4 +334,3 @@ class Event < ActiveRecord::Base
     read_attribute(audience.to_s.downcase + "_" + attr.to_s)
   end
 end
-

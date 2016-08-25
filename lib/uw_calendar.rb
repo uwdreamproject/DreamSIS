@@ -3,7 +3,7 @@ require 'open-uri'
 class UwCalendar
   RESULTS_CACHE = FileStoreWithExpiration.new("tmp/cache/uw_calendar")
   
-  # Fetches the holidays hash from the cache or regenerates them if needed. Pass :force => true to force
+  # Fetches the holidays hash from the cache or regenerates them if needed. Pass force: true to force
   # this method to requery the holidays from the calendar. Returns a hash of all the holidays found, with
   # the event date as keys and a hash of properties as values. This properties hash includes:
   # 
@@ -12,7 +12,7 @@ class UwCalendar
   # * title: The title of the event
   # * properties: The original raw properties hash from the original XML export
   def self.holidays(options = {})
-    RESULTS_CACHE.fetch("holidays", {:expires_in => 30.days}.merge(options)) do
+    RESULTS_CACHE.fetch("holidays", {expires_in: 30.days}.merge(options)) do
       self.fetch_holidays
     end
   end

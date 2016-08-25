@@ -1,6 +1,6 @@
   <tr id="event_<%= event.id %>">
     <td class="name">
-		<%= link_to (event.name.blank? && event.is_a?(Visit) ? content_tag(:span, Customer.visit_Label, :class => 'light') : h(event.name)), event_path(event) %>
+		<%= link_to (event.name.blank? && event.is_a?(Visit) ? content_tag(:span, Customer.visit_Label, class: 'light') : h(event.name)), event_path(event) %>
 		<%= content_tag :span, "shared", class: "shared tag" if event.proxies? %>
 	</td>
     <td><%=h event.date %></td>
@@ -10,5 +10,5 @@
     <td class="functions"><%= link_to 'Show', event_path(event) %></td>
     <td class="functions"><%= link_to 'Edit', edit_event_path(event) %></td>
     <td class="functions"><%= link_to 'RSVP', event_rsvp_path(event) %></td>
-    <td class="functions"><%= link_to 'Destroy', event_path(event), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td class="functions"><%= link_to 'Destroy', event_path(event), confirm: 'Are you sure?', method: :delete %></td>
   </tr>

@@ -1,52 +1,58 @@
-<%= f.inputs :name => "Contact Information &amp; Details" do -%>
+<%= f.inputs name: "Contact Information &amp; Details" do -%>
 	
-	<%= f.inputs :name => "Name", :class => "inline" do -%>
-		<%= f.input :firstname, :label => "First" %>
-		<%= f.input :middlename, :label => "Middle", :input_html => { :size => 5 } %>
-		<%= f.input :lastname, :label => "Last" %>
+	<%= f.inputs name: "Name", class: "inline" do -%>
+		<%= f.input :firstname, label: "First", placeholder: "First" %>
+		<%= f.input :middlename, label: "Middle", input_html: { size: 5 }, placeholder: "Middle" %>
+		<%= f.input :lastname, label: "Last", placeholder: "Last" %>
 	<% end %>
 	
-	<%= f.inputs :name => "Other Names", :class => "inline" do -%>
+	<%= f.inputs name: "Other Names", class: "inline" do -%>
 		<%= f.input :nickname %>
-		<%= f.input :aliases, :as => :string %>
+		<%= f.input :aliases, as: :string %>
 	<% end %>
 	
-	<%= f.input :email, :as => :email, :label => "E-mail Address" %>
-	<%= f.input :sex, :label => "Gender", :as => :select, :collection => {"Male" => "M", "Female" => "F", "No Response" => "NR"} %>
-	<%= f.input :phone_mobile, :as => :phone, :label => "Phone", :input_html => { :value => number_to_phone(f.object.phone_mobile), :size => 12 } %>
-	<%= f.input :birthdate, :label => "Birth Date", :start_year => Time.now.year-13, :end_year => 1930 %>
-	<%= f.input :shirt_size, :as => :select, :collection => %w[XS S M L XL XXL 3XL] %>
-	<%= f.input :avatar, :as => :file %>
+	<%= f.inputs name: "Contact Information", class: "inline" do %>
+		<%= f.input :email, as: :email, label: "E-mail Address" %>
+		<%= f.input :phone_mobile, as: :phone, label: "Phone", input_html: { value: number_to_phone(f.object.phone_mobile), size: 12 } %>
+	<% end %>
+	
+	<%= f.input :sex, label: "Gender", as: :select, collection: {"Male" => "M", "Female" => "F", "No Response" => "NR"} %>
+	<%= f.input :birthdate, label: "Birth Date", start_year: Time.now.year-13, end_year: 1930, as: :date_picker %>
+	<%= f.input :shirt_size, as: :select, collection: %w[XS S M L XL XXL 3XL] %>
+	<%= f.input :avatar, as: :file %>
 	
 <% end %>
 
-<%= f.inputs :name => "Administrative Information" do -%>
-	<%= f.input :background_check_run_at, :hint => link_to_now("#{f.object.type.to_s.underscore}_background_check_run_at") %>
-	<%= f.input :background_check_result, 
-			:hint => "Enter #{link_to_function('NO RECORD FOUND', 
+<%= f.inputs name: "Administrative Information", hint: "Your entries here may affect this person's ability to access or use DreamSIS." do -%>
+	<%= f.input :background_check_run_at, hint: link_to_now("#{f.object.type.to_s.underscore}_background_check_run_at") %>
+	<%= f.input :background_check_result %>
+	<%#= f.input :background_check_result,
+			hint: "Enter #{link_to_function('NO RECORD FOUND',
 				"$('##{f.object.type.to_s.underscore}_background_check_result').val('NO RECORD FOUND [#{j(@current_user.login)}]')")}
-				or #{link_to_function('OK', 
+				or #{link_to_function('OK',
 				"$('##{f.object.type.to_s.underscore}_background_check_result').val('OK  [#{j(@current_user.login)}]')")}
 				(include an explanation) if the #{f.object.type.to_s.underscore} passed the check.".html_safe  %>
 
 	<hr />
 
-  <%= f.input :sex_offender_check_run_at, :hint => link_to_now("#{f.object.type.to_s.underscore}_sex_offender_check_run_at") %>
-	<%= f.input :sex_offender_check_result, 
-			:hint => "Enter #{link_to_function('NO RECORD FOUND', 
-				"$('##{f.object.type.to_s.underscore}_sex_offender_check_result').val('NO RECORD FOUND [#{j(@current_user.login)}]')")} 
-				or #{link_to_function('OK', 
+  <%= f.input :sex_offender_check_run_at, hint: link_to_now("#{f.object.type.to_s.underscore}_sex_offender_check_run_at") %>
+	<%= f.input :sex_offender_check_result %>
+	<%#= f.input :sex_offender_check_result,
+			hint: "Enter #{link_to_function('NO RECORD FOUND',
+				"$('##{f.object.type.to_s.underscore}_sex_offender_check_result').val('NO RECORD FOUND [#{j(@current_user.login)}]')")}
+				or #{link_to_function('OK',
 				"$('##{f.object.type.to_s.underscore}_sex_offender_check_result').val('OK  [#{j(@current_user.login)}]')")}
 				(include an explanation) if the #{f.object.type.to_s.underscore} passed the check.".html_safe %>
 
 	<hr />
 
-	<%= f.input :van_driver_training_completed_at, :hint => link_to_now("#{f.object.type.to_s.underscore}_van_driver_training_completed_at"), :label => "Driver Training" %>
-    <%= f.input :driver_form_remarks, 
-			:hint => "Enter #{link_to_function('OK',
+	<%= f.input :van_driver_training_completed_at, hint: link_to_now("#{f.object.type.to_s.underscore}_van_driver_training_completed_at"), label: "Driver Training" %>
+	<%= f.input :driver_form_remarks %>
+    <%#= f.input :driver_form_remarks,
+			hint: "Enter #{link_to_function('OK',
                "$('##{f.object.type.to_s.underscore}_driver_form_remarks').val('OK  [#{j(@current_user.login)}]')")}
 				(include an explanation if necessary) if the #{f.object.type.to_s.underscore} is qualified to drive.".html_safe  %>
 	<hr />
 
-	<%= f.input :parental_consent_on_file, :as => :radio, :label => "Parental consent form on file" %>
+	<%= f.input :parental_consent_on_file, as: :radio, label: "Parental consent form on file" %>
 <% end -%>

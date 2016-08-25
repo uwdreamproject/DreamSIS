@@ -6,7 +6,7 @@
   
   <%- unless @clearinghouse_request.retrieved? -%>
     setTimeout(function() { 
-      $.ajax("<%=j refresh_status_clearinghouse_request_path(@clearinghouse_request, :current_status => @clearinghouse_request.status) %>", 
+      $.ajax("<%=j refresh_status_clearinghouse_request_path(@clearinghouse_request, current_status: @clearinghouse_request.status) %>", 
         { dataType: 'script' }) 
       }, 3000)
   <%- end -%>
@@ -14,5 +14,5 @@
 <%- end %>
 
 <%- if @clearinghouse_request.retrieved? -%>
-  window.location = "<%=j clearinghouse_request_path(@clearinghouse_request, :message => 'Done processing!') %>"
+  window.location = "<%=j clearinghouse_request_path(@clearinghouse_request, message: 'Done processing!') %>"
 <%- end %>

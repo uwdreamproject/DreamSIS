@@ -10,12 +10,12 @@
           <%= h event_group.name %>
           <%- if (desc = event_group.description(aud)) -%>
           <p>
-            <%= sanitize textilize(desc), :tags => %w(table tr td h2 p a ul li strong em), :attributes => %w(id class style href) %>
+            <%= sanitize textilize(desc), tags: %w(table tr td h2 p a ul li strong em), attributes: %w(id class style href) %>
           </p>
           <%- end %>
         </th>
       </tr>
-      <%= render :partial => 'event', :collection => ev_grp %>
+      <%= render partial: 'event', collection: ev_grp %>
     <%- end -%>
   <%- end -%>
   <%- unless any_events -%>
@@ -25,4 +25,4 @@
   <% end -%>
 </table>
 
-<%= render :partial => 'sidebar' %>
+<%= render partial: 'sidebar' %>

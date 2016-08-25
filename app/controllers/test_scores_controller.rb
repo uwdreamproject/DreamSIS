@@ -5,11 +5,11 @@ class TestScoresController < ParticipantsController
   # GET /participant/test_scores
   # GET /participant/test_scores.xml
   def index
-    @test_scores = @participant.test_scores.find(:all)
+    @test_scores = @participant.test_scores
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @test_scores }
+      format.xml  { render xml: @test_scores }
     end
   end
 
@@ -20,7 +20,7 @@ class TestScoresController < ParticipantsController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @test_score }
+      format.xml  { render xml: @test_score }
     end
   end
 
@@ -31,7 +31,7 @@ class TestScoresController < ParticipantsController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @test_score }
+      format.xml  { render xml: @test_score }
     end
   end
 
@@ -43,7 +43,7 @@ class TestScoresController < ParticipantsController
   # POST /participant/test_scores
   # POST /participant/test_scores.xml
   def create
-    @test_score = @participant.test_scores.new(:test_type_id => params[:test_score][:test_type_id])
+    @test_score = @participant.test_scores.new(test_type_id: params[:test_score][:test_type_id])
     @test_score.test_type.reload
     @test_score.add_section_score_attribute_methods
     @test_score.attributes = params[:test_score]
@@ -52,11 +52,11 @@ class TestScoresController < ParticipantsController
     respond_to do |format|
       if @test_score.save
         flash[:notice] = 'TestScore was successfully created.'
-        format.html { redirect_to participant_path(@participant, :anchor => "!/section/test_scores") }
-        format.xml  { render :xml => @test_score, :status => :created, :location => @participant }
+        format.html { redirect_to participant_path(@participant, anchor: "!/section/test_scores") }
+        format.xml  { render xml: @test_score, status: :created, location: @participant }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @test_score.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @test_score.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -72,11 +72,11 @@ class TestScoresController < ParticipantsController
     respond_to do |format|
       if @test_score.update_attributes(params[:test_score])
         flash[:notice] = 'TestScore was successfully updated.'
-        format.html { redirect_to participant_path(@participant, :anchor => "!/section/test_scores") }
+        format.html { redirect_to participant_path(@participant, anchor: "!/section/test_scores") }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @test_score.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @test_score.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -88,7 +88,7 @@ class TestScoresController < ParticipantsController
     @test_score.destroy
 
     respond_to do |format|
-      format.html { redirect_to participant_path(@participant, :anchor => "!/section/test_scores") }
+      format.html { redirect_to participant_path(@participant, anchor: "!/section/test_scores") }
       format.xml  { head :ok }
     end
   end

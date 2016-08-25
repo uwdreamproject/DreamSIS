@@ -8,8 +8,8 @@
 		<%- if controller.action_name == "show" -%>
 			<br><small><%= link_to "Sync course enrollees",
 									sync_mentor_term_group_path(@mentor_term_group), 
-									:method => :put,
-									:confirm => "Are you sure?" %></small>
+									method: :put,
+									confirm: "Are you sure?" %></small>
 		<% end %>
 		</dd>
 

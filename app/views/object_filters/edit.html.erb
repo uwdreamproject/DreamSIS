@@ -4,9 +4,9 @@
 
 	<%= default_form_errors(f) %>
 
-	<%= render :partial => "fields", :locals => { :f => f } %>
+	<%= render partial: "fields", locals: { f: f } %>
 	
-	<%= f.submit "Update", :disable_with => 'Updating...' %> - or -
+	<%= f.submit "Update", disable_with: 'Updating...' %> - or -
 	<%= link_to 'Cancel', object_filter_path(@object_filter) %>
 
 <% end %>

@@ -2,9 +2,9 @@
 
 <p>To login to your organization's account on DreamSIS, enter the account address that your administrator provided.</p>
 
-<%= form_tag nil, :method => :get do %>
+<%= form_tag nil, method: :get do %>
 	<p class="input">
-		https://<%= text_field_tag :url_shortcut, params[:url_shortcut], :placeholder => "my-org" %>.<%= request.host %>
+		https://<%= text_field_tag :url_shortcut, params[:url_shortcut], placeholder: "my-org" %>.<%= request.host %>
 	</p>
 	<p><%= submit_tag "Login" %></p>
 <% end %>

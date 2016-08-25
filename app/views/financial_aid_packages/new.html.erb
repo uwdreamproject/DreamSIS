@@ -2,6 +2,6 @@
 
 <%= render 'form' %>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
   <%= link_to "Back to #{Customer.participant_label}", participant_path(@participant, anchor: "!/section/scholarship_applications"), class: "back button" %>
-</div>
+<%- end -%>

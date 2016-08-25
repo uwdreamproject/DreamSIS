@@ -1,46 +1,44 @@
 class Participant < Person
-  extend FriendlyId
-  friendly_id :fullname, use: :slugged
   belongs_to :high_school
   has_many :college_applications
   has_many :scholarship_applications
-  belongs_to :mother_education_level, :class_name => "EducationLevel"
-  belongs_to :father_education_level, :class_name => "EducationLevel"
-  belongs_to :family_income_level, :class_name => "IncomeLevel"
-  belongs_to :participant_group, :counter_cache => true
+  belongs_to :mother_education_level, class_name: "EducationLevel"
+  belongs_to :father_education_level, class_name: "EducationLevel"
+  belongs_to :family_income_level, class_name: "IncomeLevel"
+  belongs_to :participant_group, counter_cache: true
 
-  has_many :mentor_participants, :conditions => { :deleted_at => nil }
-  has_many :former_mentor_participants, :class_name => "MentorParticipant", :conditions => "deleted_at IS NOT NULL"
-	has_many :mentors, :through => :mentor_participants
-  has_many :parents, :foreign_key => :child_id
+  has_many :mentor_participants
+  has_many :former_mentor_participants, -> { MentorParticipant.deleted }, class_name: "MentorParticipant"
+	has_many :mentors, through: :mentor_participants
+  has_many :parents, foreign_key: :child_id
   has_many :test_scores
   has_many :college_enrollments
   has_many :college_degrees
-  has_many :fafsas, :class_name => "PersonFafsa", :foreign_key => :person_id
+  has_many :fafsas, class_name: "PersonFafsa", foreign_key: :person_id
   has_many :financial_aid_packages
 
 	acts_as_xlsx
 	
-  validates_presence_of :birthdate, :high_school_id, :if => :validate_ready_to_rsvp?
+  validates_presence_of :birthdate, :high_school_id, if: :validate_ready_to_rsvp?
 
   attr_accessor :override_binder_date, :override_fafsa_date, :override_wasfa_date, :create_college_mapper_student_after_save, :link_to_current_user_after_save
   
-  scope :in_cohort, lambda {|grad_year| {:conditions => { :grad_year => grad_year }}}
-  scope :in_high_school, lambda {|high_school_id| {:conditions => { :high_school_id => high_school_id }}}
-  scope :active, :conditions => ["inactive IS NULL OR inactive = ?", false]
-  scope :target, :conditions => ["not_target_participant IS NULL OR not_target_participant = ?", false]
-  scope :attending_college, lambda {|college_id| { :conditions => { :college_attending_id => college_id }}}
-  scope :assigned_to_mentor, lambda {|mentor_id| { :joins => :mentor_participants, :conditions => { :mentor_participants => { :mentor_id => mentor_id }}}}
+  scope :in_cohort, ->(grad_year) { where(grad_year: grad_year) }
+  scope :in_high_school, ->(high_school_id) { where(high_school_id: high_school_id) }
+  scope :active, -> { where(["inactive IS NULL OR inactive = ?", false]) }
+  scope :target, -> { where(["not_target_participant IS NULL OR not_target_participant = ?", false]) }
+  scope :attending_college, ->(college_id) { where(college_attending_id: college_id) }
+  scope :assigned_to_mentor, ->(mentor_id) { joins(:mentor_participants).where(mentor_participants: { mentor_id: mentor_id }) }
 
-  # after_save :college_mapper_student, :if => :create_college_mapper_student_after_save?
-  after_create :link_to_current_user, :if => :link_to_current_user_after_save?
+  # after_save :college_mapper_student, if: :create_college_mapper_student_after_save?
+  after_create :link_to_current_user, if: :link_to_current_user_after_save?
   before_save :adjust_postsecondary_plan_to_match_college_attending
 
 	POSTSECONDARY_GOAL_OPTIONS = [
     "2-year to 4-year transfer",
     "Gap year",
-		"Vocational school", 
-		"Military service", 
+		"Vocational school",
+		"Military service",
 		"Job",
 		"Not attend college",
 		"Earn GED",
@@ -68,13 +66,13 @@ class Participant < Person
   # Stores the possible ways that participant lists can be dynamically displayed.
   ReportTypes = {
     basics: "Basics",
-    college_applications: "College Applications", 
-    test_score_summaries: "Test Scores", 
-    rosters: "Roster", 
+    college_applications: "College Applications",
+    test_score_summaries: "Test Scores",
+    rosters: "Roster",
     parents: "Parents & Contacts",
-    attendance_summaries: "Attendance", 
+    attendance_summaries: "Attendance",
     financial_aid_packages: "Financial Aid",
-    college_stages: "College Pipeline" 
+    college_stages: "College Pipeline"
   }
 
   # Returns true if there is a value in the signature
@@ -96,11 +94,11 @@ class Participant < Person
   
   # Returns an array of unique graudation years
   def self.cohorts
-    Participant.find(:all, :select => "DISTINCT grad_year").collect(&:grad_year).compact.sort.reverse
+    Participant.pluck(:grad_year).uniq.compact.sort.reverse
   end
   
   # Returns the grad_year of the currently-active cohort:
-  # 
+  #
   # * if the current term is Winter, return current year
   # * if the current term is Summer, Autumn, or Spring, return current_year + 1
   def self.current_cohort
@@ -132,19 +130,6 @@ class Participant < Person
     end
   end
   
-  # Returns the number of filters that this Participant doesn't pass. Useful for quick view of status.
-  def filter_results_count
-    update_filter_cache! unless filter_cache
-    filter_cache.select{|k,v| v == false }.count
-  end
-
-  # Checks the +filter_cache+ to see whether or not this person passes the specified filter.
-  # If the +filter_cache+ doesn't exist, it creates it.
-  def passes_filter?(object_filter)
-    update_filter_cache_and_save! if !filter_cache.is_a?(Hash) || self.filter_cache[object_filter.id].nil?
-    self.filter_cache[object_filter.id]
-  end
-
   def respond_to?(method_sym, include_private = false)
     if method_sym.to_s =~ /\Afafsa_(\d{4})_(.+)\Z/
       true
@@ -156,9 +141,7 @@ class Participant < Person
   # Tries to find duplicate records based on name and high school. Pass an array of participant data straight from your params
   # hash. Second parameter is a limit on the number of records to return (defaults to 50).
   def self.possible_duplicates(data, limit = 50)
-    Participant.find(:all, 
-                    :conditions => ["firstname LIKE ? AND lastname LIKE ?", "#{data[:firstname]}%", "#{data[:lastname]}%"],
-                    :limit => limit)
+    Participant.where(["firstname LIKE ? AND lastname LIKE ?", "#{data[:firstname]}%", "#{data[:lastname]}%"]).limit(limit)
   end
   
   # Returns true if multiple ethnicity checkboxes were checked
@@ -203,11 +186,11 @@ class Participant < Person
   end
   
   def fafsa(year = Time.now.year)
-    fafsa = fafsas.find_or_initialize_by_year(year)
+    fafsas.find_or_initialize_by(year: year)
   end
   
   def fafsa(year = Time.now.year)
-    fafsa = fafsas.find_or_initialize_by_year(year)
+    fafsas.find_or_initialize_by(year: year)
   end
 
   # Returns the Institution or College record for this Participant based on "college_attending_id",
@@ -218,7 +201,7 @@ class Participant < Person
   end
   alias :college_planning_to_attend :college_attending
   
-  # Returns the CollegeEnrollment representing where the student is _currently attending_, 
+  # Returns the CollegeEnrollment representing where the student is _currently attending_,
   # based on the current enrollment validity period set in CollegeEnrollment.
   def current_college_enrollment
     return nil if college_enrollments.empty?
@@ -286,7 +269,7 @@ class Participant < Person
 	def visits_during_week(date = Date.today)
 		start_date = date.beginning_of_week
 		end_date = date.end_of_week
-		Visit.find(:all, :conditions => ["date >= ? AND date <= ? AND location_id = ?", start_date, end_date, high_school_id])
+		Visit.where(["date >= ? AND date <= ? AND location_id = ?", start_date, end_date, high_school_id])
 	end
 	
 	# Determines the columns that are exported into xlsx pacakages. Includes most model columns
@@ -294,14 +277,14 @@ class Participant < Person
 	def self.xlsx_columns
 		columns = []
 		columns << self.column_names.map { |c| c = c.to_sym }
-		columns << [:high_school_name, :raw_survey_id, :college_planning_to_attend_name, 
+		columns << [:high_school_name, :raw_survey_id, :college_planning_to_attend_name,
                 :currently_college_enrolled?, :current_college_name, :graduated_college?, :alma_mater_names,
-								:family_income_level_title, :program_titles, :assigned_mentor_names, 
-								:participant_group_title, :multiracial?, 
-                "fafsa_#{Time.now.year}_fafsa_submitted_at", "fafsa_#{Time.now.year}_wasfa_submitted_at", 
+								:family_income_level_title, :program_titles, :assigned_mentor_names,
+								:participant_group_title, :multiracial?,
+                "fafsa_#{Time.now.year}_fafsa_submitted_at", "fafsa_#{Time.now.year}_wasfa_submitted_at",
                 "fafsa_#{Time.now.year}_not_applicable"]
 		columns << Participant.object_filters.collect { |f| "Filter: #{f.title}" }
-		remove_columns = [:filter_cache, :login_token, :login_token_expires_at, :customer_id, 
+		remove_columns = [:filter_cache, :login_token, :login_token_expires_at, :customer_id,
 								:avatar, :college_mapper_id, :avatar_image_url, :college_mapper_id, :husky_card_rfid,
 								:survey_id, :relationship_to_child, :occupation,	:annual_income,	:needs_interpreter,
 								:meeting_availability, :child_id, :fafsa_submitted_date, :fafsa_not_applicable]
@@ -312,7 +295,7 @@ class Participant < Person
 	end
 	
 	def college_attending_name
-		college_attending.try(:name) 
+		college_attending.try(:name)
 	end
   alias :college_planning_to_attend_name :college_attending_name
 	
@@ -334,7 +317,17 @@ class Participant < Person
 	
 	def participant_group_title
 		participant_group.try(:title)
-	end	
+	end
+  
+  def search_result
+    super.merge(cohort: [high_school_name.to_s, grad_year.to_s].join(" "))
+  end
+  
+  def update_groupings_cache!
+    commit_group_result! 'cohort', grad_year
+    commit_group_result! 'high_school', high_school_id
+    commit_group_result! 'participant_group', participant_group_id
+  end
   
   # Returns a collection of EventAttendance objects to be displayed on a Participant's detail page.
   # Starting with all existing event_attendances, this method adds in Event objects with a grade level range that
@@ -346,14 +339,14 @@ class Participant < Person
     return @eas if grad_year.nil? # If no grade level, then we're done
     event_ids = @eas.collect(&:event_id)
     Event.for_grade_level(grade).each do |event|
-      @eas << event_attendances.new(:event_id => event.id) unless event_ids.include?(event.id)
+      @eas << event_attendances.new(event_id: event.id) unless event_ids.include?(event.id)
     end
     @eas
   end
   
   # Returns the _n_ most recent events that are open for Participants. Defaults to 5.
   def self.recent_events(number = 5)
-    @recent_events ||= Event.past.where(:show_for_participants => true).reverse_order.limit(number)
+    @recent_events ||= Event.past.where(show_for_participants: true).reverse_order.limit(number)
   end
 
   # Returns the CollegeMapperStudent record for this individual if we have a college_mapper_id stored.
@@ -378,14 +371,14 @@ class Participant < Person
   # +college_mapper_id+ attribute. Returns +false+ if the account couldn't be created.
   def create_college_mapper_student
     @college_mapper_student = CollegeMapperStudent.create({
-      :firstName => firstname.to_s.titlecase,
-      :lastName => lastname.to_s.titlecase,
-      :email => email,
-      :zipCode => (zip || 98105),
-      :grade => grade,
-      :gender => (sex == "F" ? "female" : "male"),
-      :dream => true,
-      :youthforce => self.high_school.try(:name).include?("YouthForce")
+      firstName: firstname.to_s.titlecase,
+      lastName: lastname.to_s.titlecase,
+      email: email,
+      zipCode: (zip || 98105),
+      grade: grade,
+      gender: (sex == "F" ? "female" : "male"),
+      dream: true,
+      youthforce: self.high_school.try(:name).include?("YouthForce")
     })
     self.update_attribute(:college_mapper_id, @college_mapper_student.id)
     @college_mapper_student
@@ -422,12 +415,12 @@ class Participant < Person
   
   def new_mentor_id=(mentor_id)
     mentors << Mentor.find(mentor_id)
-  rescue ActiveRecord::RecordInvalid => e
+  rescue ActiveRecord::RecordInvalid
     errors.add(:new_mentor_id, "has already been added to this participant")
   end
   
   # Returns the objects that have a child relationship to this object:
-  # 
+  #
   # * college_applications
   # * scholarship_applications
   # * parents
@@ -437,7 +430,7 @@ class Participant < Person
   # * participant_mentors
   # * event_attendances
   def child_objects
-    collections = %w[college_applications scholarship_applications parents test_scores 
+    collections = %w[college_applications scholarship_applications parents test_scores
                      college_enrollments college_degrees mentor_participants event_attendances
                      notes
                    ]
@@ -462,15 +455,15 @@ class Participant < Person
     mandrill = Mandrill::API.new(MANDRILL_API_KEY)
 
     template_content = [
-      {:name => 'title', :content => "An account has been created for you by #{Customer.name_label}."},
-      {:name => 'main_message', :content => "#{Customer.name_label} is using DreamSIS.com to manage its program and keep track of student information. You can use the link below to login and setup your account. If you have any questions, please contact your #{Customer.mentor_label} or #{Customer.lead_label}."}
+      {name: 'title', content: "An account has been created for you by #{Customer.name_label}."},
+      {name: 'main_message', content: "#{Customer.name_label} is using DreamSIS.com to manage its program and keep track of student information. You can use the link below to login and setup your account. If you have any questions, please contact your #{Customer.mentor_label} or #{Customer.lead_label}."}
     ]
     message = {
-      :to => [{:name => fullname, :email => email }],
-      :global_merge_vars => [
-        {:name => "login_link", :content => login_link}
+      to: [{name: fullname, email: email }],
+      global_merge_vars: [
+        {name: "login_link", content: login_link}
       ],
-      :subject => "Your #{Customer.name_label} account on DreamSIS.com"
+      subject: "Your #{Customer.name_label} account on DreamSIS.com"
     }
 
     return mandrill.messages.send_template 'Account E-mail', template_content, message

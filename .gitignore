@@ -40,3 +40,9 @@ public/stylesheets/rmtc.css
 .run
 
 .env
+
+.env.test
+
+.env.development
+
+test/reports

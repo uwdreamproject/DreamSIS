@@ -3,7 +3,7 @@
 
 <%= semantic_form_for([@participant, @college_enrollment]) do |f| %>
   	<%= default_form_errors(f) %>
-	<%= render :partial => "fields", :locals => { :f => f } %>
+	<%= render partial: "fields", locals: { f: f } %>
 
 	<%= default_form_actions(f) %>
 

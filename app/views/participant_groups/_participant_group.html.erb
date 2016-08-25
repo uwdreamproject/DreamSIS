@@ -4,5 +4,5 @@
   <td><%= participant_group.grad_year %></td>
   <td><%= participant_group.participants_count %></td>
   <td class="functions"><%= link_to 'Edit', edit_participant_group_path(participant_group) %></td>
-  <td class="functions"><%= link_to 'Destroy', participant_group_path(participant_group), :confirm => 'Are you sure?', :method => :delete %></td>
+  <td class="functions"><%= link_to 'Destroy', participant_group_path(participant_group), confirm: 'Are you sure?', method: :delete %></td>
 </tr>

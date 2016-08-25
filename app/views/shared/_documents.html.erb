@@ -1,7 +1,7 @@
 <div>
 	<table class="notes documents" id="documents_<%= documents.id %>">
 		<% for document in documents.documents %>
-			<%= render :partial => "/shared/document", :object => document if document.allows?(@current_user) %>
+			<%= render partial: "/shared/document", object: document if document.allows?(@current_user) %>
 		<% end -%>
 	</table>	
 </div>

@@ -5,7 +5,7 @@ class TermsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @terms }
+      format.xml  { render xml: @terms }
     end
   end
 
@@ -17,11 +17,11 @@ class TermsController < ApplicationController
       @term = Term.find(params[:id])
     end
 
-     @cache_key = fragment_cache_key(:action => :show, :id => @term.id, :format => :xlsx)
+     @cache_key = fragment_cache_key(action: :show, id: @term.id, format: :xlsx)
 
     respond_to do |format|
       format.html { redirect_to edit_term_path(@term) }
-      format.xml  { render :xml => @term }
+      format.xml  { render xml: @term }
       format.xlsx { @mentors = @term.mentors
                     respond_to_xlsx }
     end
@@ -32,13 +32,13 @@ class TermsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @term }
+      format.xml  { render xml: @term }
     end
   end
 
   def edit
     @term = Term.find(params[:id])
-    @cache_key = fragment_cache_key(:action => :show, :id => @term.id, :format => :xlsx)
+    @cache_key = fragment_cache_key(action: :show, id: @term.id, format: :xlsx)
     @export = TermMentorsReport.for_key(@cache_key)
     respond_to do |format|
       format.html
@@ -48,7 +48,7 @@ class TermsController < ApplicationController
   def check_export_status
     @export = TermMentorsReport.find(params[:id])
     respond_to do |format|
-      format.html { render :text => (@export.try(:status) || "does not exist") }
+      format.html { render text: (@export.try(:status) || "does not exist") }
       format.js
     end
   end
@@ -60,10 +60,10 @@ class TermsController < ApplicationController
       if @term.save
         flash[:notice] = "Term was successfully created."
         format.html { redirect_to(@term) }
-        format.xml  { render :xml => @term, :status => :created, :location => @term }
+        format.xml  { render xml: @term, status: :created, location: @term }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @term.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @term.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -77,8 +77,8 @@ class TermsController < ApplicationController
         format.html { redirect_to(terms_path) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @term.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @term.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -104,7 +104,7 @@ class TermsController < ApplicationController
       else
         flash[:error] = "Couldn't sync term information."
         format.html { redirect_to @term }
-        format.xml  { render :xml => @term, :status => :unprocessable_entity }
+        format.xml  { render xml: @term, status: :unprocessable_entity }
       end
     end
   end
@@ -122,11 +122,11 @@ class TermsController < ApplicationController
     if @export.generated? && params[:generate].nil?
       if request.xhr?
         headers["Content-Type"] = "text/javascript"
-        render :js => "window.location = '#{url_for(:format => 'xlsx')}'"
+        render js: "window.location = '#{url_for(format: 'xlsx')}'"
       else
         begin
           filename = @filename || "term.xlsx"
-          send_data @export.file.read, :filename => filename, :disposition => 'inline', :type => @export.mime_type.to_s
+          send_data @export.file.read, filename: filename, disposition: 'inline', type: @export.mime_type.to_s
         rescue
           flash[:error] = "The file could not be read from the server. Please try regenerating the export."
           redirect_to :back
@@ -149,7 +149,7 @@ class TermsController < ApplicationController
 
     if request.xhr?
       headers["Content-Type"] = "text/javascript"
-      return render(:template => "terms/check_export_status.js.erb", :format => 'js')
+      return render(template: "terms/check_export_status.js.erb", format: 'js')
     else
       return redirect_to(term_path(@term))
     end

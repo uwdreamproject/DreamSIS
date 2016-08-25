@@ -1,7 +1,7 @@
 class AddShowFieldsToEvent < ActiveRecord::Migration
   def self.up
-    add_column :events, :show_for_participants, :boolean, :default => true
-    add_column :events, :show_for_mentors, :boolean, :default => true
+    add_column :events, :show_for_participants, :boolean, default: true
+    add_column :events, :show_for_mentors, :boolean, default: true
     add_column :events, :allow_rsvps, :boolean
   end
 

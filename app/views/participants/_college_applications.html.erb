@@ -12,8 +12,8 @@
 		</thead>
 
 		<tbody>
-			<%= render :partial => "college_applications/college_application", 
-						:collection => @participant.college_applications %>
+			<%= render partial: "college_applications/college_application", 
+						collection: @participant.college_applications %>
 				
 			<%- if @participant.college_applications.empty? -%>
 			<tr class="empty">
@@ -23,6 +23,6 @@
 		</tbody>
 	<% end %>
 	
-	<%= render :partial => "postsecondary_plan_row", :locals => { :participant => @participant } %>
+	<%= render partial: "postsecondary_plan_row", locals: { participant: @participant } %>
 
 </table>

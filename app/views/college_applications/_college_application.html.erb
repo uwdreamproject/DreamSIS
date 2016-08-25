@@ -1,14 +1,14 @@
 <tr id="college_application_<%= college_application.id %>" class="<%= "current" if college_application.attending? %>">
-	<%= render :partial => 'college_applications/columns', :locals => { :college_application => college_application, :participant => @participant } %>
+	<%= render partial: 'college_applications/columns', locals: { college_application: college_application, participant: @participant } %>
 	
 	<td class="functions">
 		<%= link_to 'Edit', edit_participant_college_application_path(@participant, college_application) %>
-		<%= link_to 'Remove', [@participant, college_application], :confirm => 'Are you sure?', :method => :delete %>
+		<%= link_to 'Remove', [@participant, college_application], confirm: 'Are you sure?', method: :delete %>
 		<%= link_to 'Attending', participant_url(@participant, 
-									:participant => { :college_attending_id => college_application.institution_id },
-									:college_application_id => college_application.id),
-								:remote => true,
-								:method => :put unless college_application.attending? %>
+									participant: { college_attending_id: college_application.institution_id },
+									college_application_id: college_application.id),
+								remote: true,
+								method: :put unless college_application.attending? %>
 	</td>
 	
 </tr>

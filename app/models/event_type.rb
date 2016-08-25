@@ -1,7 +1,7 @@
 class EventType < ActiveRecord::Base
   has_many :events do
     def future
-      find :all, :conditions => ["date >= ?", Time.now.midnight]
+      find :all, conditions: ["date >= ?", Time.now.midnight]
     end
   end
   

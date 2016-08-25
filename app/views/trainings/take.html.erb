@@ -26,7 +26,7 @@ $('video').mediaelementplayer({
 				$('#output').append( $('<div>' + e.type + '</div>') );
 				
 				if(e.type == 'ended') {
-					<%= remote_function :url => complete_training_path(@training), :method => :post %>
+					<%= remote_function url: complete_training_path(@training), method: :post %>
 				}
 			});
 			
@@ -37,7 +37,7 @@ $('video').mediaelementplayer({
 });
 </script>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 	<h3>Chapters</h3>
 	<div id="chapters_sidebar"></div>
-</div>
+<%- end -%>

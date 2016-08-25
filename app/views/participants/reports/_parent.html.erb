@@ -7,18 +7,18 @@
 </td>
 
 <!-- <td class="lives_with">
-	<%= content_tag(:span, "Y", :class => "icon pass") if parent.lives_with? %>
+	<%= content_tag(:span, "Y", class: "icon pass") if parent.lives_with? %>
 </td> -->
 
 <td class="email">
     <%= mail_to h(parent.email) %>
-	<%= content_tag(:div, "Preferred", :class => 'preferred-note') if parent.preferred_contact_method == 'Email' %>
+	<%= content_tag(:div, "Preferred", class: 'preferred-note') if parent.preferred_contact_method == 'Email' %>
 </td>
 
 <td class="phone">
     <% numbers = [] 
-		numbers << h(number_to_phone_pretty(parent.phone_home, :type => 'home')) unless parent.phone_home.blank?
-     	numbers << h(number_to_phone_pretty(parent.phone_mobile, :type => 'mobile')) unless parent.phone_mobile.blank? %>
+		numbers << h(number_to_phone_pretty(parent.phone_home, type: 'home')) unless parent.phone_home.blank?
+     	numbers << h(number_to_phone_pretty(parent.phone_mobile, type: 'mobile')) unless parent.phone_mobile.blank? %>
 	<%= numbers.join("<br />").html_safe %>
 </td>
 

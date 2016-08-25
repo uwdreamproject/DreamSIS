@@ -18,7 +18,7 @@
 			<td><%= activity_log.start_date.to_s(:short) %></td>
 		    <td class="functions"><%= link_to 'Show', activity_log %></td>
 		    <td class="functions"><%= link_to 'Edit', edit_activity_log_path(activity_log) %></td>
-		    <td class="functions"><%= link_to 'Destroy', activity_log, :confirm => 'Are you sure?', :method => :delete %></td>
+		    <td class="functions"><%= link_to 'Destroy', activity_log, confirm: 'Are you sure?', method: :delete %></td>
 		</tr>
 		<% end %>
 	</tbody>

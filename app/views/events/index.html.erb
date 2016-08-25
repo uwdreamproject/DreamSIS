@@ -12,9 +12,9 @@
 		<th colspan=4>Functions</th>
 	</tr>
 
-	<%= render :partial => 'event', :collection => @events %>
+	<%= render partial: 'event', collection: @events %>
 </table>
 
-<div id="sidebar">
-	<%= link_to 'Create new event', new_event_path, :class => 'add button' %>
-</div>
+<%= content_for(:sidebar) do %>
+	<%= link_to 'Create new event', new_event_path, class: 'add button' %>
+<%- end -%>

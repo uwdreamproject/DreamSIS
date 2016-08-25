@@ -1,5 +1,5 @@
 # Models a specific type of test that a Participant can take, like SAT or ACT. Defines the maximum scores and sections of the test as well.
-# 
+#
 # Note: The class name "TestType" is used to avoid namespace conflicts with Ruby or Rails' use of "Test".
 class TestType < ActiveRecord::Base
   has_many :test_scores
@@ -7,7 +7,7 @@ class TestType < ActiveRecord::Base
   validates_presence_of :name, :score_calculation_method
   validates_numericality_of :maximum_total_score
   
-  default_scope :order => "name"
+  default_scope { order("name") }
   
   # Returns a hash with the section name as key and the maximum score as value.
   # If no sections are defined, this returns an empty hash.

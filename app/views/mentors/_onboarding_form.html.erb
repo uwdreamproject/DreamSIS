@@ -28,21 +28,21 @@
 <h3>SO Check Block</h3>
 <textarea onClick="this.select()"><%=h soblock.join("\n") %></textarea>
 <hr />
-<%= semantic_form_for @mentor, :url => onboarding_update_mentor_path(@mentor.id), :html => {:id => 'onboarding-form'} do |f| %>
-<%= f.inputs :name => "Criminal Background Check" do -%>
-  <%= f.input :background_check_run_at, :hint => link_to_now("mentor_background_check_run_at") %>
+<%= semantic_form_for @mentor, url: onboarding_update_mentor_path(@mentor.id), html: {id: 'onboarding-form'} do |f| %>
+<%= f.inputs name: "Criminal Background Check" do -%>
+  <%= f.input :background_check_run_at, hint: link_to_now("mentor_background_check_run_at") %>
 	<%= f.input :background_check_result, 
-					:hint => "Enter #{link_to_function('NO RECORD FOUND',
+					hint: "Enter #{link_to_function('NO RECORD FOUND',
 									"$('#mentor_background_check_result').val('NO RECORD FOUND [#{@current_user.login}]')")}
 								or #{link_to_function('OK', 
 									"$('#mentor_background_check_result').val('OK  [#{@current_user.login}]')")}
 								(include an explanation) if the mentor passed the check.".html_safe %>
 <%- end -%>								
 	<hr />
-<%= f.inputs :name => "Sex Offender Check" do -%>
-  <%= f.input :sex_offender_check_run_at, :hint => link_to_now("mentor_sex_offender_check_run_at") %>
+<%= f.inputs name: "Sex Offender Check" do -%>
+  <%= f.input :sex_offender_check_run_at, hint: link_to_now("mentor_sex_offender_check_run_at") %>
 	<%= f.input :sex_offender_check_result,
-					:hint => "Enter #{link_to_function('NO RECORD FOUND',
+					hint: "Enter #{link_to_function('NO RECORD FOUND',
 									"$('#mentor_sex_offender_check_result').val('NO RECORD FOUND [#{@current_user.login}]')")}
 								or #{link_to_function('OK',
 									"$('#mentor_sex_offender_check_result').val('OK  [#{@current_user.login}]')")}
@@ -51,7 +51,7 @@
   <%= hidden_field_tag 'm_id', @mentor.id %>
 	<%= f.actions do -%>
 		<%= f.submit %>
-		<%= link_to "Cancel", "javascript:clearForm()", :class => 'cancel button' %>
+		<%= link_to "Cancel", "javascript:clearForm()", class: 'cancel button' %>
 	<% end -%>
 <% end %>
 

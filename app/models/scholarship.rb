@@ -2,10 +2,10 @@ class Scholarship < ActiveRecord::Base
   validates_presence_of :title
   has_many :scholarship_applications
   
-  default_scope :order => "title"
+  default_scope { order("title") }
 
 	ATTRIBUTES_TO_MERGE = %w[
-    title organization_name description default_amount default_renewable_years default_full_ride 
+    title organization_name description default_amount default_renewable_years default_full_ride
     default_gap_funding default_living_stipend default_renewable
   ]
 

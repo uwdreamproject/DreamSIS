@@ -1,0 +1,38 @@
+/*
+ * This is a manifest file that'll automatically include all the stylesheets available in this directory
+ * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
+ * the top of the compiled file, but it's generally better to create a new file per style scope.
+ *
+*/
+
+$primary-gradient: 				linear-gradient(to bottom right, rgb(95, 92, 154), rgb(67, 47, 115));
+$font-stack: 							"Benton Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-size-base: 					13px;
+$font-size-h1:            floor(($font-size-base * 2));
+$font-size-h2:            floor(($font-size-base * 1.7));
+$font-size-h3:            ceil(($font-size-base * 1.35));
+$font-size-h4:            ceil(($font-size-base * 1.2));
+$headings-font-weight: 		500;
+$alternate-background-color:  rgb(247, 248, 251);
+$primary-dark:            rgb(67, 47, 115);
+$primary-grey:            rgb(89, 105, 129);
+$orange:                  orange;
+$primary-gold:            rgb(233, 187, 34);
+
+@import "fonts";
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "formtastic-bootstrap";
+@import "forms";
+@import "typeaheadjs-bootstrap";
+@import "jquery-ui";
+@import "jquery-tablesorter/theme.dreamsis";
+@import "select2";
+@import "dreamsis";
+@import "login";
+@import "filters";
+@import "menus";
+@import "participants";
+@import "syntax";
+@import "mobile";
+@import "print";

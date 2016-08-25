@@ -18,7 +18,7 @@
 
 
 		<%- @group_ids.each_with_index do |group, i| -%>
-			$.ajax({ url: "<%= url_for(:group_id => group, :term_id => @term.id) %>",
+			$.ajax({ url: "<%= url_for(group_id: group, term_id: @term.id) %>",
 				dataType: "script",
 				success: function(data) { resultArray[<%= i %>] = data }
 			});

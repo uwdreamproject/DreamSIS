@@ -7,6 +7,6 @@
 	<td class="functions">
 		<%= link_to "Details", [@participant, college_degree] %>
 		<%= link_to "Edit", edit_participant_college_degree_path(@participant, college_degree) %>
-		<%= link_to 'Delete', [@participant, college_degree], :confirm => 'Are you sure?', :method => :delete %>
+		<%= link_to 'Delete', [@participant, college_degree], confirm: 'Are you sure?', method: :delete %>
 	</td>
 </tr>

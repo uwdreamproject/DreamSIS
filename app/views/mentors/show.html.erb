@@ -6,7 +6,7 @@
 
 <div class="content-block">
 
-	<div align="right" style="float:right; background-image: url(<%= photo_mentor_path(@mentor, :size => :medium) %>);" class="photo"></div>
+	<div align="right" style="float:right; background-image: url(<%= photo_mentor_path(@mentor, size: :medium) %>);" class="photo"></div>
 
 	<h3 class="pre-title"><%= Customer.current_customer.customer_label(@mentor.class.to_s.underscore) || @mentor.class.to_s %></h3>
 	<h1><%= @mentor.fullname %></h1>
@@ -22,10 +22,10 @@
 			</dd>
 
 		<dt>Email</dt>
-		<dd><%= @mentor.email.blank? ? content_tag(:strong, "No email address", :class => "error-message") : auto_link(h(@mentor.email)) %></dd>
+		<dd><%= @mentor.email.blank? ? content_tag(:strong, "No email address", class: "error-message") : auto_link(h(@mentor.email)) %></dd>
 
 		<dt>Aliases</dt>
-		<dd><%= @mentor.has_aliases? ? h(@mentor.aliases) : content_tag(:em, "None", :class => 'light') %></dd>
+		<dd><%= @mentor.has_aliases? ? h(@mentor.aliases) : content_tag(:em, "None", class: 'light') %></dd>
 
 		<dt>Gender</dt>
 		<dd><%= @mentor.sex %></dd>
@@ -66,37 +66,37 @@
 
 <%- if @participants -%>
 	<div class="content-block">
-		<%= link_to "See all #{Customer.mentees_label}", mentor_participants_path(@mentor), :class => "right list button" %>
+		<%= link_to "See all #{Customer.mentees_label}", mentor_participants_path(@mentor), class: "right list button" %>
 		<h1 class="mentees"><%= Customer.mentees_Label %>
 			<small class="light" id="total_record_count"></small>
 		</h1>
-		<%= render :partial => 'mentors/mentees' %>
+		<%= render partial: 'mentors/mentees' %>
 	</div>
 <% end -%>
 
 <div class="content-block">
 	<h1 class="events">Events</h1>
-	<%= render :partial => 'mentors/events' %>
+	<%= render partial: 'mentors/events' %>
 </div>
 
 <%- if @mentor.respond_to?(:mentor_terms) -%>
 	<div class="content-block">
 		<h1 class="participation">Participation</h1>
-		<%= render :partial => 'mentors/participation' %>
+		<%= render partial: 'mentors/participation' %>
 	</div>
 <% end -%>
 
-<div id="sidebar">
+<%= content_for(:sidebar) do %>
 
-	<p><%= link_to "Back to #{Customer.mentors_label}", mentors_path, :class => "back button" %></p>
-	<p><%= link_to "Edit this #{Customer.try(@mentor.class.to_s + "_label") || @mentor.class.to_s}", [:edit, @mentor], :class => 'edit button' %></p>
+	<p><%= link_to "Back to #{Customer.mentors_label}", mentors_path, class: "back button" %></p>
+	<p><%= link_to "Edit this #{Customer.try(@mentor.class.to_s + "_label") || @mentor.class.to_s}", [:edit, @mentor], class: 'edit button' %></p>
 
 	<%- if !Customer.link_to_uw? && @current_user.admin? && !@mentor.email.blank? -%>
 	<p class="login_link">
 		<%= link_to "Send login link", send_login_link_mentor_path(@mentor),
-					:method => :put,
-					:confirm => "Are you sure you want to send a login link email to this user?",
-					:class => "email button" %>
+					method: :put,
+					confirm: "Are you sure you want to send a login link email to this user?",
+					class: "email button" %>
 	</p>
 	<% end %>
 
@@ -104,14 +104,12 @@
 		<input type="input" class="search autocomplete-search" placeholder="Search <%= Customer.mentors_Label %>" data-source="<%= auto_complete_for_mentor_fullname_mentors_url %>" data-target="<%= mentor_url("id") %>" />
 	</div>
 
-
 	<h3>Contact Info</h3>
 
 	<dl class="sidebar">
 		<dt>Email</dt>
 		<dd><%= auto_link h(@mentor.email) %></dd>
 	</dl>
-
 
 	<h3>Administrative</h3>
 
@@ -125,7 +123,7 @@
 				<%- else -%>
 					<span class="error-message">Not passed</span>
 				<% end -%>
-				<br /><%= link_to "View responses", background_check_form_responses_mentor_path(@mentor), :class => 'small' %>
+				<br /><%= link_to "View responses", background_check_form_responses_mentor_path(@mentor), class: 'small' %>
 			</dd>
 		<% end %>
 
@@ -151,4 +149,5 @@
 		<% end -%>
 
 	</dl>
-</div>
+
+<% end %>
