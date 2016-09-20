@@ -1,0 +1,42 @@
+<%- @count = @search_results.count -%>
+<h1>Search results for "<%= @query %>"(<%= "#{@count} result".pluralize(@count) %> found)</h1>
+
+<ul id="search_results">
+	<%- @search_results.each do |result| %>
+		<%- url = result[:url] %>
+		<%- type = result[:type] %>
+		<%- img = result[:image] %>
+		<%- email = result[:email] %>
+		<%- phone = result[:phone] %>
+		<%- type_class = "mentor" %>
+		<%- case type
+		when "Participant"
+			type_class = "participant"
+		when "College", "HighSchool"
+			type_class = "institution"
+		when "Event"
+			type_class = "event"
+		end %>
+		<%- birthdate = result[:birthdate] %>
+		<%- if img.nil? && (type == "Participant" || type == "Mentor") %>
+			<%- img = "blank_avatar.png" %>
+		<%- elsif img.nil? && (type == "College" || type == "HighSchool" || type == "Event") %>
+			<%- img = "blank_school.png"%>
+		<% end -%>
+		<a href= <%=url%>>
+			<li class="results clearfix">
+				<div class="image_wrapper">
+					<%= image_tag(img) %>
+				</div>
+				<div class="info">
+					<span class="name"><%= result[:name] %></span>
+					<span class="result_info">
+						<%= safe_join [email, phone, birthdate].compact, raw(" &bull;") %>
+					</span>
+				</div>
+				<span class="search_type <%= type_class %>"><%= result[:type] %></span>
+			</li>
+		</a>
+	<% end -%>
+</ul>
+

@@ -41,6 +41,10 @@ span.twitter-typeahead .tt-suggestion:focus {
   p {
     color: lighten($primary-grey, 50%);
   }
+
+  a {
+    color: #ffffff;
+  }
 }
 
 span.twitter-typeahead .tt-dataset {
