@@ -69,7 +69,7 @@ class SessionController < ApplicationController
     @person = Person.find(params[:person_id])
     if @person.correct_login_token?(params[:token])
       flash[:info] = "Please login so that we can link your account."
-      redirect_to login_url(:return_to => map_to_person_url(@person, params[:token]))
+      redirect_to login_url(:return_to => map_to_person_url(@person.id, params[:token]))
     else
       flash[:error] = "Sorry, but that login token is invalid. Please talk to your program administrator."
       redirect_to login_url
