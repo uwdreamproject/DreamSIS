@@ -89,7 +89,7 @@ class MentorsController < ApplicationController
   
   def send_login_link
     @mentor = Mentor.find(params[:id])
-    result = @mentor.send_login_link(map_login_url(@mentor, @mentor.generate_login_token!))
+    result = @mentor.send_login_link(map_login_url(@mentor.id, @mentor.generate_login_token!))
     
     if result && result.first["status"] == 'sent'
       flash[:notice] = "Login link sent successfully."
