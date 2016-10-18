@@ -6,7 +6,7 @@
 	</thead>
 	
 	<tbody>
-	<%- for year in (@participant.grad_year || @participant.created_at.year)..Time.now.year -%>
+	<%- for year in (@participant.grad_year || @participant.created_at.year)..Time.now.year+1 -%>
 		<%- fafsa = @participant.fafsa(year) -%>
 		<tr>
 			<td class="name"><a><%= year %></a></td>
