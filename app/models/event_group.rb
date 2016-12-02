@@ -17,9 +17,6 @@ class EventGroup < ActiveRecord::Base
 
   default_scope { order("id DESC") }
 
-  include MultitenantProxyable
-  acts_as_proxyable
-  
   # Returns future events that should be displayed for the particular person or audience type.
   def future_events(person_or_type = nil)
     conditions_filters = { date_filter: Time.now.midnight }

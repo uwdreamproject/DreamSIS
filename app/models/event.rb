@@ -18,15 +18,6 @@ class Event < ActiveRecord::Base
     end
   end
   
-  include MultitenantProxyable
-  acts_as_proxyable parent: :event_group, dependents: [:location], parent_direction: :forward
-
-  def proxyable_attributes
-    excluded = %w[id created_at updated_at event_group_id event_type_id
-                  earliest_grade_level latest_grade_level location_id event_coordinator_id]
-    attributes.except(*excluded)
-  end
-  
   belongs_to :earliest_grade_level, class_name: "GradeLevel", primary_key: 'level', foreign_key: 'earliest_grade_level_level'
   belongs_to :latest_grade_level, class_name: "GradeLevel", primary_key: 'level', foreign_key: 'latest_grade_level_level'
   

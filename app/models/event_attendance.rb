@@ -35,13 +35,6 @@ class EventAttendance < ActiveRecord::Base
   
   acts_as_xlsx
 
-  include MultitenantProxyable
-  acts_as_proxyable parent: :event, dependents: [:person, :event_shift], parent_direction: :reverse
-
-  def proxyable_attributes
-    excluded = %w[id created_at updated_at admin person_id event_id event_shift_id]
-    new_attributes = attributes.except(*excluded)
-  end
 
   # Updates the participant/mentor filter cache
   def update_filter_cache

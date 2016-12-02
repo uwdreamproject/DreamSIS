@@ -545,16 +545,6 @@ ActiveRecord::Schema.define(version: 20160611174922) do
 
   add_index "mentor_terms", ["customer_id"], name: "index_mentor_terms_on_customer_id"
 
-  create_table "multitenant_proxies", force: :cascade do |t|
-    t.string   "proxyable_type",    limit: 255
-    t.integer  "proxyable_id"
-    t.string   "role",              limit: 255
-    t.integer  "other_customer_id"
-    t.integer  "other_id"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
-  end
-
   create_table "notes", force: :cascade do |t|
     t.text     "note"
     t.integer  "creator_id"

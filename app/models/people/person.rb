@@ -37,15 +37,6 @@ class Person < ActiveRecord::Base
 
   self.per_page = 50 # For pagination
 
-  include MultitenantProxyable
-  acts_as_proxyable
-
-  def proxyable_attributes
-    only = %w[firstname middlename lastname suffix nickname email phone_home phone_mobile phone_work birthdate sex other_languages dietary_restrictions vegetarian vegan kosher halal background_check_run_at background_check_result display_name aliases crimes_against_persons_or_financial drug_related_crimes related_proceedings_crimes medicare_healthcare_crimes victim_crimes_explanation general_convictions general_convictions_explanation background_check_authorized_at van_driver_training_completed_at avatar_image_url organization shirt_size gluten_free sex_offender_check_run_at sex_offender_check_result]
-    attributes.slice(*only)
-  end
-
-
   def validate_name?
     validate_name
   end
