@@ -45,13 +45,16 @@ module BootstrapHelper
           elsif arg.is_a?(ActiveRecord::Relation)
             concat(content_tag(:li, class: "dropdown") do
               concat(content_tag(:a, :class => "dropdown-toggle", "data-toggle" => "dropdown") do
-                concat(guess_label_text( arg.select{|a| current_page?(a) }))
+                concat(guess_label_text( arg.select{|a| @term ? a == @term : current_page?(a) }))
                 concat(" ")
                 concat(content_tag(:span, "", class: "caret"))
               end)
               concat(content_tag(:ul, class: "dropdown-menu") do
                 for object in arg
-                  concat(content_tag(:li, link_to(guess_label_text(object), object), class: ("active" if current_page?(object))))
+                  active = @term ? object == @term : current_page?(object)
+                  path = arg.klass.is_a?(Term) ? url_for(term: object) : object
+                  path = url_for(term: object)
+                  concat(content_tag(:li, link_to(guess_label_text(object), path), class: ("active" if active)))
                 end
               end)
             end)
@@ -79,10 +82,26 @@ module BootstrapHelper
     end
   end
   
+  def subheader(options = {}, &block)
+    content_for(:subheader) do
+      capture(&block)
+    end
+  end
+  
   def guess_label_text(arg)
     return guess_label_text(arg.last) if arg.is_a?(Array)
     methods = [:to_label, :fullname, :name, :title]
     arg.try(methods.find{ |m| arg.respond_to?(m) }) rescue nil
+  end
+
+  def modal(id, &block)
+    content_for :modals do
+      content_tag :div, class: "modal fade", tabindex: "-1", role: "dialog", id: "modal-#{id.to_s.dasherize}", aria: { labelledby: id } do
+        content_tag :div, class: "modal-dialog", role: "document" do
+          content_tag :div, capture(&block), class: "modal-content"
+        end
+      end
+    end
   end
 
 end

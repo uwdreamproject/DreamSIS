@@ -85,13 +85,13 @@ This stylesheet forms part of the Formtastic Rails Plugin
 
 /* BUTTONS & ACTIONS
 --------------------------------------------------------------------------------------------------*/
-.formtastic .buttons, 
+.formtastic .buttons,
 .formtastic .actions {
   overflow:hidden; /* clear containing floats */
   padding-left:25%;
 }
 
-.formtastic .button, 
+.formtastic .button,
 .formtastic .action {
   float:left;
   padding-right:0.5em;
@@ -2768,7 +2768,7 @@ table.participants.active-report td {
 }
 
 .gain_or_loss {
-	font-weight: bold;	
+	font-weight: bold;
 }
 
 .gain_or_loss.up {
@@ -3331,7 +3331,7 @@ body.scrolled-past-header ul.tabs {
 	list-style: none;
 	border: none;
 	font-weight: bold;
-	display: block;	
+	display: block;
 	font-size: 90%;
 	line-height: 100%;
 }
@@ -3810,7 +3810,7 @@ body.scrolled-past-header .record-header .photo {
 	width: 1em;
 	background: rgb(115, 115, 115);
 	padding: 1px 7px;
-	font-size: 90%;	
+	font-size: 90%;
 	color: white;
 	text-align: center;
 
@@ -3827,7 +3827,7 @@ body.scrolled-past-header .record-header .photo {
 	width: 1em;
 	background: rgb(115, 115, 115);
 	padding: 1px 7px;
-	font-size: 90%;	
+	font-size: 90%;
 	color: white;
 	text-align: center;*/
 }
@@ -3891,7 +3891,7 @@ body.scrolled-past-header .record-header .photo {
 	padding-left: 0;
 	padding-bottom: 50px;
 	min-height: 400px;
-	margin-right: -30px;	
+	margin-right: -30px;
 }
 
 .info-section-container .tab-content .info-section {
@@ -4016,7 +4016,7 @@ body.participants.show #content-wrap {
 }
 
 #avatar_container.expanded form {
-	display: block;	
+	display: block;
 }
 
 #avatar_container.expanded img {
@@ -4094,7 +4094,7 @@ body.participants.show #content-wrap {
 	font-size: 125%;
 	margin-bottom: 0;
 	background-color: rgb(236, 241, 245);
-	border-bottom: 1px solid rgb(229, 231, 241);	
+	border-bottom: 1px solid rgb(229, 231, 241);
   text-transform: none;
 }
 
@@ -4302,7 +4302,7 @@ abbr[title]:hover {
 }
 
 p.warning, div.warning {
-  background: rgba(255,206,0,0.25) url("../images/icons/silk/error.png") 0.5em 0.5em no-repeat;  
+  background: rgba(255,206,0,0.25) url("../images/icons/silk/error.png") 0.5em 0.5em no-repeat;
   border-radius: 5px;
   border: 1px solid rgba(255,206,0,0.3);
   padding: 0.5em;
@@ -4436,7 +4436,7 @@ ul.crimes-list li {
 	z-index: -100;
 	display: inline-block;
 	top: -50px !important;
-	position: absolute;	
+	position: absolute;
 	width: auto;
   border-top: none;
   border-top-right-radius: 0;
@@ -4643,7 +4643,7 @@ ul.stat-numbers li {
 }
 
 ul.stat-numbers li strong {
-	font-size: 40px;	
+	font-size: 40px;
 	display: inline-block;
 	vertical-align: bottom;
 }
@@ -4810,7 +4810,7 @@ body.attendance .success-marker {
 
 .attendance .optioned input, .attendance .optioned select {
 	display: none;
-} 
+}
 
 .attendance .optioned {
 	text-align: left;
@@ -4897,7 +4897,7 @@ body.attendance .success-marker {
 }
 
 .attendance td h5 {
-	margin: 0;	
+	margin: 0;
 	margin-bottom: 0.5em;
 	text-align: center;
 }
@@ -5007,7 +5007,7 @@ body.attendance .success-marker {
 	height: 0;
 	width: 0;
 	position: absolute;
-	pointer-events: none;  
+	pointer-events: none;
 }
 .arrow-box:after {
 	border-top-color: #ffffff;
@@ -5132,7 +5132,7 @@ input.active {
 select, form.formtastic select {
 	padding: 10px;
 	border-color: rgba(153,153,153,0.9);
-	-webkit-appearance: none;	
+	-webkit-appearance: none;
 	padding: 5px 25px 5px 10px;
 	border: 1px outset rgba(153,153,153,.5);
 	border-radius: 5px;
@@ -5175,7 +5175,7 @@ select:focus, form.formtastic select:focus {
 
 #sidebar input.search::-webkit-input-placeholder {
 	color: black;
-	text-shadow: 0 1px 0 white;	
+	text-shadow: 0 1px 0 white;
 }
 
 #sidebar p {
@@ -5341,9 +5341,9 @@ form.formtastic fieldset p:first-child {
 	background: rgba(0,0,0,0.03);
 }
 
-form.formtastic fieldset > ol > .inline-hints { 
-	color:#666; 
-	margin:-1em 0 1.5em 25%; 
+form.formtastic fieldset > ol > .inline-hints {
+	color:#666;
+	margin:-1em 0 1.5em 25%;
 }
 
 form.formtastic fieldset fieldset {
@@ -5420,7 +5420,7 @@ ul.time_categories > li > ul > li span.value {
 	margin-top: 10px;
 	line-height: 100%;
 	float: right;
-	width: 4em;	
+	width: 4em;
 }
 
 
@@ -5635,7 +5635,7 @@ a.button:active {
 }
 
 .button.icon-only:hover > span {
-	display: block;	
+	display: block;
 }
 
 .button.icon-only:hover:after {
@@ -5992,7 +5992,7 @@ ul.filters ul {
   padding-top: 3px;
 }
 
-ul.filters li ul { 
+ul.filters li ul {
   transition: opacity 0.5s, height 0.5s;
   overflow: hidden;
 }
@@ -6053,7 +6053,7 @@ ul.filters li.closed ul {
 
 .filters li label {
 	left: 1.7em;
-	position: relative;	
+	position: relative;
 }
 
 .filters li label small {
@@ -6071,7 +6071,7 @@ ul.filters li.closed ul {
 	border-radius: 20px;
 	background: rgba(115, 115, 115, 0.6);
 	padding: 1px 7px;
-	font-size: 90%;	
+	font-size: 90%;
 	color: white;
 	text-align: center;
 	text-shadow: none;
@@ -6083,7 +6083,7 @@ ul.filter-results {
 	padding: 0;
 	margin: 10px 20px;
 	columns: 3;
-	-webkit-columns: 3;  
+	-webkit-columns: 3;
 }
 
 ul.filter-results li ul {
@@ -6111,7 +6111,7 @@ ul.filter-results li ul {
 }
 
 .filter-results li.fail, span.icon.fail {
-	background-image: url(/assets/icons/silk/cross.png);	
+	background-image: url(/assets/icons/silk/cross.png);
 }
 
 span.icon.world {
@@ -6681,16 +6681,16 @@ h1 .shared.tag {
 	float: left;
 }
 
-#filter_bucket .filter.tag {
+.filter-bucket .filter.tag {
   margin-left: 0;
   padding: 3px 6px;
 }
 
-#filter_bucket .filter.tag em {
+.filter-bucket .filter.tag em {
   padding-right: 0.25em;
 }
 
-#filter_bucket {
+.filter-bucket {
   margin-left: -3px;
   margin-bottom: 0.5em;
 }
@@ -6943,7 +6943,7 @@ td.signup-meter {
 
 /* These settings are needed to override the generic div.warning settings above */
 div.signup-meter.warning {
-  background: none;  
+  background: none;
   border: none;
   padding: 0;
   padding-left: 0;
@@ -6968,7 +6968,7 @@ input.default-threshold {
 	border: 1px solid rgba(0,0,0,0.25) !important;
 }
 
-input.caution-threshold {	
+input.caution-threshold {
 	background: rgba(255,0,0,0.1) !important;
 	border: 1px solid rgba(255,0,0, 0.5) !important;
 }
@@ -7312,7 +7312,7 @@ a.show_all_notes {
 .info-section form .full {
 	margin: 0;
 	background: rgba(255,255,255,0.65);
-	padding: 10px 30px;	
+	padding: 10px 30px;
 }
 
 form.full {
@@ -7805,7 +7805,7 @@ body.rsvp.event .details h3 {
 
 body.rsvp.event .details p {
 	margin-top: 0;
-} 
+}
 
 body.rsvp.event .details .rsvp_status {
 	margin: 0;
@@ -8105,7 +8105,7 @@ body.admin #main-nav .admin {
 }
 
 
-/*style the top level hover*/ 
+/*style the top level hover*/
 .menu a:hover, .menu ul ul a:hover, .menu :hover > a, .menu ul ul :hover > a {
 	color: #fc0;
 	/*background: rgb(227,222,205);*/
@@ -8122,7 +8122,7 @@ body.admin #main-nav .admin {
 
 .menu ul li {
 	-webkit-transition: background 0.25s ease-in-out;
-	background-position: 40% 10px;	
+	background-position: 40% 10px;
 }
 
 .menu ul li:hover {
@@ -8135,7 +8135,7 @@ body.admin #main-nav .admin {
 	background: none;
 }
 
- /*style the second level links*/ 
+ /*style the second level links*/
 
 .menu ul ul a, .menu ul ul a:visited {
 	color: rgb(95,95,95);
@@ -8304,13 +8304,13 @@ body.admin #main-nav .admin {
 	height: auto;
 }
 
-/* ================================================================ 
+/* ================================================================
 This copyright notice must be untouched at all times.
 
 The original version of this stylesheet and the associated (x)html
 is available at http://www.cssplay.co.uk/menus/final_drop.html
 Copyright (c) 2005-2007 Stu Nicholls. All rights reserved.
-This stylesheet and the associated (x)html may be modified in any 
+This stylesheet and the associated (x)html may be modified in any
 way to fit your requirements.
 =================================================================== */
 
@@ -8445,7 +8445,7 @@ way to fit your requirements.
   display: block;
   background: white;
   visibility: hidden;
-  border-radius: 5px;  
+  border-radius: 5px;
 	background: white;
 	padding: 1em 2em 0.5em 2em;
   box-shadow: 0px 0px 4px rgba(0,0,0,0.3);
@@ -8483,7 +8483,7 @@ way to fit your requirements.
 	height: 0;
 	width: 0;
 	position: absolute;
-	pointer-events: none;  
+	pointer-events: none;
 }
 
 #login_logout ul:after {
@@ -9020,11 +9020,11 @@ td.functions:after, td.functions:before {
 	height: 0;
 	width: 0;
 	position: absolute;
-	pointer-events: none;  
+	pointer-events: none;
 }
 
 td.functions:after {
-	border-bottom-color: #ffffff;  
+	border-bottom-color: #ffffff;
 	border-width: 7px;
 	margin-left: -7px;
 }
@@ -9198,7 +9198,7 @@ form.formtastic input {
 }
 
 form.formtastic fieldset > ol > li fieldset legend.label label {
-	position: absolute; 
+	position: absolute;
 	color: #656565 !important;
 	display: block !important;
 	float: none !important;
@@ -9211,12 +9211,12 @@ form.formtastic fieldset > ol > li fieldset legend.label {
 	position: relative;
 }
 
-form.formtastic fieldset > ol > li fieldset ol { 
+form.formtastic fieldset > ol > li fieldset ol {
 	color: green !important;
-	float: none !important; 
-	width: 100%; 
-	margin:0; 
-	padding:0 0 0 0 !important; 
+	float: none !important;
+	width: 100%;
+	margin:0;
+	padding:0 0 0 0 !important;
 	display: block !important;
 	position: relative;
 }

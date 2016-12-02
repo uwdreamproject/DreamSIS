@@ -40,17 +40,17 @@
 			<div role="tabpanel" class="tab-pane fade" id="filter_results">
 				<%= link_to "Recalculate stats", refresh_filter_cache_participant_path(@participant), remote: true, method: :post, class: "pull-right" %>
 				<h2>Current Stats</h2>
-				<%= render partial: 'filter_results' %>
+				<%#= render partial: 'filter_results' %>
 			</div>
 		<% end %>
 	
 		<div role="tabpanel" class="tab-pane fade" id="contact">
 			<h2>Contact Information &amp; Attributes</h2>
-			<div><%= render partial: 'contact' %></div>
+			<div><%#= render partial: 'contact' %></div>
 			
 			<%- if @participant.respond_to?(:parents) -%>
 				<h2>Parents/Guardians &amp; Contacts</h2>
-				<%= render partial: 'parents' %>
+				<%#= render partial: 'parents' %>
 				<br>
 				<%= link_to 'Add parent/guardian or contact',
 							new_participant_parent_path(@participant),
@@ -60,11 +60,9 @@
 	
 		<%- if @participant.respond_to?(:college_applications) -%>
 				<div role="tabpanel" class="tab-pane fade" id="college_applications">
-					<h2>Colleges &amp; Postsecondary Plans
-						<%= content_tag :em, "Synced with CollegeMapper",
-							class: "right synced-with-collegemapper-note" if @participant.college_mapper_id %></h2>
-					<%= render partial: 'college_applications' %>
-					<%= render partial: 'college_application_controls' %>
+					<h2>Colleges &amp; Postsecondary Plans</h2>
+					<%#= render partial: 'college_applications' %>
+					<%#= render partial: 'college_application_controls' %>
 				</div>
 		<% end %>
 	
@@ -73,15 +71,15 @@
 			<%- if @participant.respond_to?(:scholarship_applications) -%>
 				<div role="tabpanel" class="tab-pane fade" id="scholarship_applications">
 					<h2>Financial Aid &amp; Scholarships</h2>
-					<%= render partial: "fafsas" if @participant.respond_to?(:fafsas) %>
+					<%#= render partial: "fafsas" if @participant.respond_to?(:fafsas) %>
 					<br />
 					
-					<%= render partial: 'scholarship_applications' %>
+					<%#= render partial: 'scholarship_applications' %>
 					<p><%= link_to 'Add scholarship',
 													new_participant_scholarship_application_path(@participant),
 													class: "add button" %></p>
 					
-					<%= render partial: "financial_aid_packages" if @participant.respond_to?(:financial_aid_packages) %>
+					<%#= render partial: "financial_aid_packages" if @participant.respond_to?(:financial_aid_packages) %>
 					<p><%= link_to 'Add financial aid package',
 													new_participant_financial_aid_package_path(@participant),
 													class: "add button" %></p>
@@ -91,7 +89,7 @@
 			<%- if @participant.respond_to?(:test_scores) -%>
 				<div role="tabpanel" class="tab-pane fade" id="test_scores">
 					<h2>Tests</h2>
-					<%= render partial: 'test_scores' %>
+					<%#= render partial: 'test_scores' %>
 					<br>
 					<%= link_to 'Add test',
 								new_participant_test_score_path(@participant),
@@ -102,10 +100,10 @@
 			<%- if @participant.respond_to?(:college_enrollments) -%>
 				<div role="tabpanel" class="tab-pane fade" id="college_enrollments">
 					<h2>College Enrollment</h2>
-					<%= render partial: 'college_enrollments' %>
+					<%#= render partial: 'college_enrollments' %>
 					
 					<h2>College Degrees</h2>
-					<%= render partial: 'college_degrees' %>
+					<%#= render partial: 'college_degrees' %>
 
 				</div>
 			<% end -%>
@@ -116,16 +114,16 @@
 			<div role="tabpanel" class="tab-pane fade" id="mentors">
 				<%- cache [@participant.cache_key, "mentors"].join("/") do -%>
 					<h2><%= Customer.mentors_Label %></h2>
-					<%= render partial: 'mentors' %>
+					<%#= render partial: 'mentors' %>
 				<% end %>
 				<br>
-				<%= render partial: 'add_mentor_form' %>
+				<%#= render partial: 'add_mentor_form' %>
 
 				<%- cache [@participant.cache_key, "former-mentors"].join("/") do -%>
 					<%- unless @participant.former_mentor_participants.empty? -%>
 						<br>
 						<h3>Former <%= Customer.mentors_Label %></h3>
-						<%= render partial: 'former_mentors' %>
+						<%#= render partial: 'former_mentors' %>
 					<% end %>
 				<% end %>
 			</div>
@@ -134,17 +132,17 @@
 		<%- if @participant.respond_to?(:event_attendances) -%>
 			<div role="tabpanel" class="tab-pane fade" id="events">
 				<h2>Events &amp; Activities</h2>
-				<%= render partial: 'events' %>
+				<%#= render partial: 'events' %>
 			</div>
 		<% end -%>
 
 		<div role="tabpanel" class="tab-pane fade" id="documents">
-			<%= render partial: 'paperwork_status' if @participant.respond_to?(:submitted_fafsa?) || @participant.respond_to?(:fafsas) %>
-			<%= render partial: "documents" %>
+			<%#= render partial: 'paperwork_status' if @participant.respond_to?(:submitted_fafsa?) || @participant.respond_to?(:fafsas) %>
+			<%#= render partial: "documents" %>
 		</div>
 
 		<div role="tabpanel" class="tab-pane fade" id="notes">
-			<%= render partial: "notes" %>
+			<%#= render partial: "notes" %>
 		</div>
 
 	</div>

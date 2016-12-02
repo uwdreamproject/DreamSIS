@@ -1,4 +1,6 @@
-<h1><%= Customer.mentors_Label %></h1>
+<%= subheader do %>
+	<h1><%= Customer.mentors_Label %></h1>
+<% end %>
 
 <%= will_paginate @mentors %>
 
@@ -19,4 +21,7 @@
 	<tbody id="mentor_search_results"></tbody>
 </table>
 
-<%= render partial: 'sidebar' %>
+<%= operations do %>
+	<%= link_to "Add new", new_mentor_path, class: "btn btn-default", glyph: 'plus' %>
+	<%= link_to "Download", { format: :xls }, class: 'btn btn-default', glyph: 'download' %>
+<%- end -%>

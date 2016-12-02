@@ -1,5 +1,4 @@
-<h1><%= Customer.mentor_Label %> Groups
-	<small class="light">&raquo; <%= @term.title %></small></h1>
+<%= breadcrumbs("#{Customer.mentor_Label} Groups", Term.all) %>
 
 <table>
 	<tr>
@@ -17,19 +16,19 @@
 	<td><%= content_tag :span, h(mentor_term_group.course_string), class: 'section_id tag' %></td>
 	<td class="name">
 		<%= link_to h(mentor_term_group.title), mentor_term_group, title: mentor_term_group.course_id %>
-		<%= content_tag :abbr, mentor_term_group.permissions_level.titleize, 
-						title: "Permissions Level: #{h(mentor_term_group.permissions_level.titleize)} (#{h(mentor_term_group.permissions_level_description)})", 
+		<%= content_tag :abbr, mentor_term_group.permissions_level.titleize,
+						title: "Permissions Level: #{h(mentor_term_group.permissions_level.titleize)} (#{h(mentor_term_group.permissions_level_description)})",
 						class: "unlocked tag" if mentor_term_group.non_default_permissions? %>
 	</td>
 	<td><%= mentor_term_group.times %></td>
 	<td class="signup-meter <%= "full" if mentor_term_group.full? %>">
-		<div class="capacity" 
+		<div class="capacity"
 		         style="width: 100%"
 			 title="<%= number_to_percentage mentor_term_group.percent_full, precision: 0 %> full">
 			
 			<div class="size" style="width: <%= mentor_term_group.percent_full %>%">
 				<%= raw mentor_term_group.full? ? content_tag(:span, "full", class: "full_label") : "&nbsp;" %>
-			</div>						
+			</div>
 		</div>
 	</td>
 	<td><%= content_tag :span, mentor_term_group.mentor_terms.size, class: "" %></td>

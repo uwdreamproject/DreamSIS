@@ -1,0 +1,27 @@
+<ol class="breadcrumb filter-groupings">
+  <li class="active">Participants</li>
+  <% for grouping in %w[cohort high_school participant_group] %>
+    <li class="dropdown hidden" data-grouping="<%= grouping %>" data-filter-id="Participant:<%= grouping %>">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <span class="title"><%= grouping.titleize %> <span class="caret"></span></span>
+        <span class="selected-value"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li class="any hidden" data-value="any">
+          <a href="#" class="filter"><i class="fa fa-fw fa-close"></i> Show all</a>
+        </li>
+        
+        <li role="separator" class="divider hidden"></li>
+        
+        <li class="template hidden" data-value="{value}">
+          <a href="#" class="filter">
+            <span class="filter-title">{value}</span>
+            <span class="badge pull-right record-count"></span>
+          </a>
+        </li>
+      </ul>
+    </li>
+  <% end %>
+</ol>
+
+<%= indicator(:participants, hidden: false) %>

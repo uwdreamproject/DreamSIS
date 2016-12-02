@@ -46,3 +46,6 @@ public/stylesheets/rmtc.css
 .env.development
 
 test/reports
+dump.rdb
+
+heroku.md

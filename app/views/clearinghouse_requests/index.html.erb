@@ -1,4 +1,6 @@
-<h1>National Student Clearinghouse&reg; Requests</h1>
+<%= subheader do %>
+	<h1>National Student Clearinghouse&reg; Requests</h1>
+<% end %>
 
 <table id="clearinghouse_requests">
 	<thead>
@@ -19,6 +21,6 @@
 </table>
 
 
-<%= content_for(:sidebar) do %>
-	<%= link_to 'Add new request', new_clearinghouse_request_path, class: 'add button' %>
+<%= operations do %>
+	<%= link_to 'Add new request', new_clearinghouse_request_path, class: 'btn btn-default', glyph: 'plus' %>
 <%- end -%>
