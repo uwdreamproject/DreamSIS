@@ -1,6 +1,6 @@
-class CollegeApplicationsReport < Report	
+class CollegeApplicationsReport < Report
 	
-	def model_name
+	def klass
 		CollegeApplication
 	end
 	

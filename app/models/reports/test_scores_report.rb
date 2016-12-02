@@ -1,6 +1,6 @@
-class TestScoresReport < Report	
+class TestScoresReport < Report
 	
-	def model_name
+	def klass
 		TestScore
 	end
 	

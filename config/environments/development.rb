@@ -18,6 +18,7 @@ Dreamsis::Application.configure do
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
+  config.logger = Logger.new(STDOUT)
 
   # Raise an error on page load if there are pending migrations
   config.active_record.migration_error = :page_load
@@ -29,4 +30,8 @@ Dreamsis::Application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+  
 end
+
+# Disable ActionCable origin restrictions in dev only
+ActionCable.server.config.disable_request_forgery_protection = true

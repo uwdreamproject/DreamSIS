@@ -143,9 +143,8 @@ class ClearinghouseRequestsController < ApplicationController
     File.open(path, 'w') do |file|
       file.write(file_io.read)
     end
-  	Rollbar.warning "Sidekiq not running" unless Report.sidekiq_ready?
     
-    if ClearinghouseRequestWorker.perform_async(@clearinghouse_request.id, path)
+    if ClearinghouseRequestJob.perform_later(@clearinghouse_request.id, path)
       flash[:notice] = "Retrieved file accepted for processing."
     else
       flash[:error] = "The file could not be processed."

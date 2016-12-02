@@ -1115,6 +1115,39 @@ ul.mini.photo-list {
 	
 }
 
+.list-group-item .progress {
+	margin-top: 12px;
+	margin-bottom: 6px;
+}
+
+.btn {
+	font-weight: 700;
+	border-width: 0.5px;
+}
+
+.btn-default {
+	border-color: $primary-dark;
+	color: $primary-dark;
+}
+
+.subscriptions {
+	
+	.list-group-item {
+		padding: 15px 2px;
+		border-width: 0;
+		border-top-width: 1px;
+		border-radius: 0 !important;
+	}
+}
+
+.notransition {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  -ms-transition: none !important;
+  transition: none !important;
+}
+
 .spinner {
   width: 50px;
   text-align: center;
@@ -1122,39 +1155,31 @@ ul.mini.photo-list {
 }
 
 .spinner > div {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   background-color: $primary-grey;
 	opacity: 0.5;
 	margin: 3px;
 
   border-radius: 100%;
   display: inline-block;
-  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
-  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.2s infinite ease-in-out both;
 }
 
 .spinner .bounce1 {
-  -webkit-animation-delay: -0.32s;
-  animation-delay: -0.32s;
+  animation-delay: -0.24s;
 }
 
 .spinner .bounce2 {
-  -webkit-animation-delay: -0.16s;
-  animation-delay: -0.16s;
-}
-
-@-webkit-keyframes sk-bouncedelay {
-  0%, 80%, 100% { -webkit-transform: scale(0) }
-  40% { -webkit-transform: scale(1.0) }
+  animation-delay: -0.12s;
 }
 
 @keyframes sk-bouncedelay {
   0%, 80%, 100% {
-    -webkit-transform: scale(0);
-    transform: scale(0);
+    transform: scale(0.75);
+		opacity: 0;
   } 40% {
-    -webkit-transform: scale(1.0);
     transform: scale(1.0);
+		opacity: 0.75;
   }
 }

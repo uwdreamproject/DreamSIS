@@ -30,7 +30,7 @@ class Person < ActiveRecord::Base
   mount_uploader :avatar, AvatarUploader
 
   after_create :generate_survey_id
-  after_save -> { PersonFiltersWorker.perform_async(self.id, Customer.tenant_name) }
+  after_save -> { PersonFiltersJob.perform_later(self.id, Customer.tenant_name) }
 
   attr_accessor :validate_name
   attr_accessor :validate_ready_to_rsvp
@@ -127,9 +127,11 @@ class Person < ActiveRecord::Base
   end
 
   # For each ObjectFilter relevant for this person type, run the filter on this person
-  # and store the result value in +filter_cache+.
+  # and store the result value in +filter_cache+. This also runs the +update_groupings_cache!+
+  # command which stores cohort and group identity information for this person.
   def update_filter_cache!
     reset_filters!
+    update_groupings_cache!
     for object_filter in self.class.object_filters
       if object_filter.display_for?(self)
         result = object_filter.passes?(self) ? "pass" : (object_filter.warn_if_false? ? "fail warn" : "fail")
@@ -165,8 +167,22 @@ class Person < ActiveRecord::Base
     end
   end
   
+  # Adds other relevant grouping info to the filter cache, like cohort and high school.
+  def update_groupings_cache!
+    true # override this method in inherited classes that need it.
+  end
+  
+  def commit_group_result!(group, new_value)
+    old_value = Customer.redis.get redis_key(group)
+    Customer.redis.pipelined do
+      Customer.redis.srem [self.class, group, old_value].join(":"), self.id
+      Customer.redis.sadd [self.class, group, new_value].join(":"), self.id
+      Customer.redis.set redis_key(group), new_value
+    end
+  end
+  
   def redis_key(str)
-    "#{self.class}:#{self.id}:#{str}"
+    [self.class, self.id, str].compact.join(":")
   end
 
   def self.object_filters

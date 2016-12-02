@@ -1,6 +1,6 @@
-class AttendanceSummariesReport < Report	
+class AttendanceSummariesReport < Report
 	
-	def model_name
+	def klass
 		EventAttendance
 	end
 	

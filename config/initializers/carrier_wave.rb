@@ -3,6 +3,7 @@ CarrierWave.configure do |config|
     provider: 'AWS',
     aws_access_key_id: API_KEYS['s3'][Rails.env]['access_key_id'],
     aws_secret_access_key: API_KEYS['s3'][Rails.env]['secret_access_key'],
+    region: API_KEYS['s3'][Rails.env]['region'],
     host: API_KEYS['s3'][Rails.env]['host'],
     endpoint: API_KEYS['s3'][Rails.env]['endpoint']
   }
@@ -12,4 +13,3 @@ CarrierWave.configure do |config|
   config.fog_use_ssl_for_aws = true
   config.enable_processing = true
 end
-

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160611174922) do
+ActiveRecord::Schema.define(version: 20160902215448) do
 
   create_table "activity_logs", force: :cascade do |t|
     t.date     "start_date"
@@ -849,19 +849,6 @@ ActiveRecord::Schema.define(version: 20160611174922) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "website_url",  limit: 255
-  end
-
-  create_table "reports", force: :cascade do |t|
-    t.string   "key",          limit: 255
-    t.text     "object_ids"
-    t.string   "format",       limit: 255
-    t.string   "type",         limit: 255
-    t.string   "file_path",    limit: 255
-    t.string   "status",       limit: 255
-    t.integer  "customer_id"
-    t.datetime "generated_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "scholarship_applications", force: :cascade do |t|

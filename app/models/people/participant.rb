@@ -73,6 +73,16 @@ class Participant < Person
     college_stages: "College Pipeline"
   }
 
+  # Stores the types of exports available for participants (might be different from ReportTypes).
+  ExportTypes = {
+    basics: "Basics",
+    college_applications: "College Applications",
+    test_score_summaries: "Test Scores",
+    parents: "Parents & Contacts",
+    attendance_summaries: "Attendance",
+    financial_aid_packages: "Financial Aid",
+  }
+
   # Returns true if there is a value in the signature
   def completed_intake_form?
     !intake_form_signature.blank?
@@ -105,6 +115,15 @@ class Participant < Person
   def self.object_filters
     @object_filters ||= {}
     @object_filters[Customer.current_customer.url_shortcut] ||= ObjectFilter.where(object_class: "Participant")
+  end
+  
+  # Takes an array of filter conditions and returns an ActiveRecord::Relation for
+  # the intersection of those conditions in the filter cache. You can specify
+  # direct redis keys ("ObjectFilter:6:pass") or short form ("6:pass").
+  def self.intersect(filter_selections)
+    return all if filter_selections.empty?
+    keys = filter_selections.map{ |s| s.count(":") < 2 ? "ObjectFilter:" + s : s }
+    Participant.where(id: Customer.redis.sinter(keys))
   end
 
   def method_missing(method_name, *args)
@@ -320,7 +339,7 @@ class Participant < Person
   def update_groupings_cache!
     commit_group_result! 'cohort', grad_year
     commit_group_result! 'high_school', high_school_id
-    commit_group_result! 'participant_group', participant_group_id
+    commit_group_result! 'participant_group', participant_group_id if participant_group_id
   end
   
   # Returns a collection of EventAttendance objects to be displayed on a Participant's detail page.

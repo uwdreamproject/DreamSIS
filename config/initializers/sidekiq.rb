@@ -1,16 +1,11 @@
-endpoint = API_KEYS["redis"][Rails.env]["endpoint"]
-password = API_KEYS["redis"][Rails.env]["password"]
-
 Sidekiq.configure_server do |config|
-  config.redis = { url: "redis://#{endpoint}", network_timeout: 5, password: password }
+  config.redis = { url: ENV['REDIS_URL'], network_timeout: 5 }
 end
 
 Sidekiq.configure_client do |config|
-  config.redis = { url: "redis://#{endpoint}", network_timeout: 5, password: password }
+  config.redis = { url: ENV['REDIS_URL'], network_timeout: 5 }
 end
 
 # Make generic redis available for other purposes
-$redis = Redis::Namespace.new("default", :redis => Redis.new({ 
-  url: "redis://#{endpoint}", network_timeout: 5, password: password
-}))
+$redis = Redis::Namespace.new("default", :redis => Redis.new({ url: ENV['REDIS_URL'], network_timeout: 5 }))
 $redis.client.logger = Rails.logger

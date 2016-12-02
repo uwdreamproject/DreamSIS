@@ -1,5 +1,5 @@
-class PersonFiltersWorker
-  include Sidekiq::Worker
+class PersonFiltersJob < ActiveJob::Base
+  queue_as :default
 
   # Refresh the filter cache for this person (or people, if multiple ID's are passed).
   def perform(person_id, tenant_name = Apartment::Tenant.current)
@@ -10,7 +10,7 @@ class PersonFiltersWorker
         person.collect(&:update_filter_cache!)
       end
     rescue => e
-      Rails.logger.error { "[PersonFiltersWorker] ERROR: #{e.message}" }
+      Rails.logger.error { "[PersonFiltersJob] ERROR: #{e.message}" }
       Rollbar.error(e, :person_id => person_id)
     end
   end

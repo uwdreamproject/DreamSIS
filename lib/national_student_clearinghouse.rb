@@ -44,8 +44,8 @@ class NationalStudentClearinghouse
       file = File.open(local_send_file_path, "w")
       file.write header_row + "\n"
       file.write dreamsis_control_row + "\n"
-      request.participants.each do |p| 
-        row = participant_row(p); 
+      request.participants.each do |p|
+        row = participant_row(p);
         unless row.nil?
           file.write row + "\n"
           @record_count += 1
@@ -73,7 +73,7 @@ class NationalStudentClearinghouse
   end
   
   # When a results report is returned in the /receive folder on the NSC server, there is no way to tell
-  # what request file it is related to until you download it. This method retrieves all the files that 
+  # what request file it is related to until you download it. This method retrieves all the files that
   # exist in the /recieve folder and then processes them.
   def retrieve_files!(process_after_retrieving = true)
     Rails.logger.info { "NSC retrieve request starting" }
@@ -103,7 +103,7 @@ class NationalStudentClearinghouse
   
   # Based on the name of the detail file in the file path provided, this method will determine the
   # names of the other two files (the control report and the aggregate report) that are related.
-  # 
+  #
   # If the detail report is 600209_T112660.201305130930_DA.csv, then:
   # * the aggregate report is 600209_T112660aggrrpt.201305130930_DA.csv
   # * the control report is 600209_T112660cntlrpt.201305130930_DA.htm
@@ -183,7 +183,7 @@ class NationalStudentClearinghouse
     strip_illegal_characters(elements.join("\t"))
   end
   
-  # Constructs a "D1" data row for the participant. Returns nil if there is no date of birth or 
+  # Constructs a "D1" data row for the participant. Returns nil if there is no date of birth or
   # grad_year defined (without these values, the search will fail).
   def participant_row(p)
     return nil if p.birthdate.nil? || p.grad_year.nil?
@@ -222,9 +222,8 @@ class NationalStudentClearinghouse
       cr = ClearinghouseRequest.find(match[1].to_i)
       Rails.logger.info { "Storing file in persistent store" }
       cr.store_permanently!(file_path)
-    	Rollbar.warning "Sidekiq not running" unless Report.sidekiq_ready?
-      ClearinghouseRequestWorker.perform_async(cr.id, file_path)
-    else 
+      ClearinghouseRequestJob.perform_later(cr.id, file_path)
+    else
       Rails.logger.info { "Did not match DreamSIS indicator in file contents! Quitting." }
     end
   end
@@ -249,8 +248,8 @@ class NSCUploadHandler
   def on_finish(uploader)
     Rails.logger.info { "finished." }
     @nsc.request.update_attributes(
-      submitted_at: Time.now, 
-      submitted_filename: @nsc.send_filename, 
+      submitted_at: Time.now,
+      submitted_filename: @nsc.send_filename,
       number_of_records_submitted: @nsc.record_count
     )
   end

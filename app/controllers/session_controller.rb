@@ -35,6 +35,7 @@ class SessionController < ApplicationController
     end
     return redirect_to(login_url, error: "Could not login. Please try again.") unless user
     session[:user_id] = user.id
+    cookies.signed[:user_id] = user.id
     flash[:notice] = "Signed in!"
     redirect_back_or_default(return_to || root_url)
   end
@@ -49,6 +50,7 @@ class SessionController < ApplicationController
   def destroy
     session[:user_id] = nil
     cookies.delete :auth_token
+    cookies.delete :user_id
     reset_session
     redirect_to login_url, notice: "Signed out!"
   end
@@ -65,6 +67,7 @@ class SessionController < ApplicationController
   def map_login
     session[:user_id] = nil
     cookies.delete :auth_token
+    cookies.delete :user_id
     reset_session
     
     @person = Person.find(params[:person_id])

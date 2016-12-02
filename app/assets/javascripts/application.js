@@ -15,4 +15,5 @@
 //= require moment
 //= require livestamp.min
 //= require dreamsis.js
-//=  require_tree .
+//= require_tree .
+//= require_tree ./channels

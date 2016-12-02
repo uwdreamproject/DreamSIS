@@ -1,6 +1,6 @@
-class FinancialAidReport < Report	
+class FinancialAidReport < Report
 	
-	def model_name
+	def klass
 		FinancialAidPackage
 	end
 	

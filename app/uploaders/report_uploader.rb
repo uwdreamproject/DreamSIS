@@ -3,11 +3,15 @@ class ReportUploader < CarrierWave::Uploader::Base
   storage :fog
 
   def store_dir
-    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    ["uploads", model.tenant, model.class.to_s.underscore, model.id].compact.join("/")
   end
 
   def cache_dir
-    "#{Rails.root}/tmp/" + store_dir
+    Rails.root.join('tmp')
+  end
+  
+  def move_to_cache
+    true
   end
 
 

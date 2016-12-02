@@ -12,173 +12,171 @@ class ParticipantsController < ApplicationController
   # GET /participants.xml
   def index
     return redirect_to Participant.find(params[:id]) if params[:id]
-    @participants = Participant.page(params[:page])
-		@cache_key = fragment_cache_key(action: :index, format: :xlsx)
-    @export = report_type.for_key(@cache_key)
+    @participants = (params[:ids] ? Participant.where(id: params[:ids]) : Participant.all).page(params[:page])
 
     respond_to do |format|
       format.html
       format.xml  { render xml: @participants.unpaginate }
       format.js
-      format.xlsx { respond_to_xlsx }
+      # format.xlsx { respond_to_xlsx }
     end
   end
 
-  def high_school
-    @high_school = HighSchool.find(params[:id] || params[:high_school_id])
-		@title << @high_school
-    
-    unless @current_user && @current_user.can_view?(@high_school)
-      return render_error("You are not allowed to view that high school.")
-    end
-    
-    @participants = @high_school.participants.page(params[:page])
-		@cache_key = fragment_cache_key(action: :high_school, id: @high_school.id, format: :xlsx)
-    @export = report_type.for_key(@cache_key)
-
-    respond_to do |format|
-      format.html { render action: 'index' }
-      format.xml  { render xml: @participants.unpaginate }
-      format.js   { render 'index'}
-      format.xlsx { respond_to_xlsx }
-    end
-  end
-
-  def cohort
-    @grad_year = params[:id]
-    @participants = Participant.in_cohort(params[:id]).page(params[:page])
-		@title << @grad_year
-		@cache_key = fragment_cache_key(action: :cohort, id: @grad_year, format: :xlsx)
-    @export = report_type.for_key(@cache_key)
-    
-    respond_to do |format|
-      format.html { render action: 'index' }
-      format.xml  { render xml: @participants.unpaginate }
-      format.js   { render 'index'}
-		  format.xlsx { respond_to_xlsx }
-    end
-  end
-
-  def high_school_cohort
-    return redirect_to(high_school_cohort_path(high_school_id: params[:high_school_id], year: params[:cohort])) if params[:cohort]
-    @grad_year = params[:year]
-    @high_school = HighSchool.find(params[:high_school_id])
-		@title << @high_school
-		@title << @grad_year
-    
-    unless @current_user && @current_user.can_view?(@high_school)
-      return render_error("You are not allowed to view that high school.")
-    end
-    
-    @participants = Participant.in_cohort(@grad_year).in_high_school(@high_school.try(:id)).page(params[:page])
-    @participant_groups = ParticipantGroup.where({ location_id: @high_school, grad_year: @grad_year })
-		@cache_key = fragment_cache_key(action: :high_school_cohort, id: @high_school.id, cohort: @grad_year, format: :xlsx)
-    @export = report_type.for_key(@cache_key)
-
-    respond_to do |format|
-      format.html { render action: 'index' }
-      format.xml  { render xml: @participants.unpaginate }
-      format.js   { render 'index'}
-		  format.xlsx { respond_to_xlsx }
-    end
-  end
-
-  def college
-    @college = Institution.find(params[:college_id].to_i)
-    @participants = Participant.where("0=1").page(1)
-    @stages = CollegeApplication::Stages
-		@title << @college
-		@cache_key = fragment_cache_key(action: :college, id: @college.try(:id), format: :xlsx)
-    @export = report_type.for_key(@cache_key)
-
-    if request.xhr?
-      @participant_ids = @college.interested_participants.select("people.id").collect(&:id)
-      @stages = {}
-      for stage in CollegeApplication::Stages
-        stage_participants = @college.try("#{stage}_participants")
-        @stages[stage] = stage_participants.collect(&:id)
-        @participant_ids += @stages[stage]
-      end
-      @participants = Participant.where(id: @participant_ids).page(params[:page])
-    end
-    
-    respond_to do |format|
-      format.html { render action: 'index' }
-      format.xml  { render xml: @participants.unpaginate }
-      format.js   { render 'index'}
-		  format.xlsx { respond_to_xlsx }
-    end
-  end
-
-  def college_cohort
-    @college = Institution.find(params[:college_id].to_i)
-    @grad_year = params[:year]
-    @participants = Participant.in_cohort(@grad_year).attending_college(@college.try(:id)).page(params[:page])
-		@title << @college
-		@title << @grad_year
-		@cache_key = fragment_cache_key(action: :college_cohort, id: @college.try(:id), cohort: @grad_year, format: :xlsx)
-    @export = report_type.for_key(@cache_key)
-    
-    respond_to do |format|
-      format.html { render action: 'index' }
-      format.xml  { render xml: @participants.unpaginate }
-      format.js   { render 'index'}
-		  format.xlsx { respond_to_xlsx }
-    end
-  end
-
-  def mentor
-    @mentor = Mentor.find(params[:mentor_id] == "me" ? User.current_user.try(:person_id) : params[:mentor_id])
-    @participants = Participant.assigned_to_mentor(@mentor.try(:id)).page(params[:page]).readonly(false)
-		@title << "Assigned to #{@mentor.try(:fullname)}"
-		@cache_key = fragment_cache_key(action: :mentor, id: @mentor.id, format: :xlsx)
-    @export = report_type.for_key(@cache_key)
-		
-		respond_to do |format|
-      format.html { render action: 'index' }
-      format.xml  { render xml: @participants.unpaginate }
-      format.js   { render 'index'}
-		  format.xlsx { respond_to_xlsx }
-    end
-  end
-
-  def program
-    @program = Program.find(params[:program_id])
-    @participants = @program.participants.page(params[:page])
-		@title << @program.try(:title)
-		@cache_key = fragment_cache_key(action: :program, id: @program.id, format: :xlsx)
-    @export = report_type.for_key(@cache_key)
-    
-    respond_to do |format|
-      format.html { render action: 'index' }
-      format.xml  { render xml: @participants.unpaginate }
-      format.js   { render 'index'}
-		  format.xlsx { respond_to_xlsx }
-    end
-  end
-
-  
-  def group
-    @participant_group = ParticipantGroup.find(params[:id])
-    @grad_year = @participant_group.grad_year
-    @high_school = @participant_group.location
-
-    unless @current_user && @current_user.can_view?(@high_school)
-      return render_error("You are not allowed to view that participant group.")
-    end
-    
-    @participants = @participant_group.participants.page(params[:page])
-    @participant_groups = ParticipantGroup.where({ location_id: @high_school, grad_year: @grad_year })
-		@cache_key = fragment_cache_key(action: :group, id: @participant_group.id, format: :xlsx)
-    @export = report_type.for_key(@cache_key)
-    
-    respond_to do |format|
-      format.html { render action: 'index' }
-      format.xml  { render xml: @participants.unpaginate }
-      format.js   { render 'index'}
-		  format.xlsx { respond_to_xlsx }
-    end
-  end
+  # def high_school
+  #   @high_school = HighSchool.find(params[:id] || params[:high_school_id])
+	# 	@title << @high_school
+  #
+  #   unless @current_user && @current_user.can_view?(@high_school)
+  #     return render_error("You are not allowed to view that high school.")
+  #   end
+  #
+  #   @participants = @high_school.participants.page(params[:page])
+	# 	@cache_key = fragment_cache_key(action: :high_school, id: @high_school.id, format: :xlsx)
+  #   @export = report_type.for_key(@cache_key)
+  #
+  #   respond_to do |format|
+  #     format.html { render action: 'index' }
+  #     format.xml  { render xml: @participants.unpaginate }
+  #     format.js   { render 'index'}
+  #     format.xlsx { respond_to_xlsx }
+  #   end
+  # end
+  #
+  # def cohort
+  #   @grad_year = params[:id]
+  #   @participants = Participant.in_cohort(params[:id]).page(params[:page])
+	# 	@title << @grad_year
+	# 	@cache_key = fragment_cache_key(action: :cohort, id: @grad_year, format: :xlsx)
+  #   @export = report_type.for_key(@cache_key)
+  #
+  #   respond_to do |format|
+  #     format.html { render action: 'index' }
+  #     format.xml  { render xml: @participants.unpaginate }
+  #     format.js   { render 'index'}
+	# 	  format.xlsx { respond_to_xlsx }
+  #   end
+  # end
+  #
+  # def high_school_cohort
+  #   return redirect_to(high_school_cohort_path(high_school_id: params[:high_school_id], year: params[:cohort])) if params[:cohort]
+  #   @grad_year = params[:year]
+  #   @high_school = HighSchool.find(params[:high_school_id])
+	# 	@title << @high_school
+	# 	@title << @grad_year
+  #
+  #   unless @current_user && @current_user.can_view?(@high_school)
+  #     return render_error("You are not allowed to view that high school.")
+  #   end
+  #
+  #   @participants = Participant.in_cohort(@grad_year).in_high_school(@high_school.try(:id)).page(params[:page])
+  #   @participant_groups = ParticipantGroup.where({ location_id: @high_school, grad_year: @grad_year })
+	# 	@cache_key = fragment_cache_key(action: :high_school_cohort, id: @high_school.id, cohort: @grad_year, format: :xlsx)
+  #   @export = report_type.for_key(@cache_key)
+  #
+  #   respond_to do |format|
+  #     format.html { render action: 'index' }
+  #     format.xml  { render xml: @participants.unpaginate }
+  #     format.js   { render 'index'}
+	# 	  format.xlsx { respond_to_xlsx }
+  #   end
+  # end
+  #
+  # def college
+  #   @college = Institution.find(params[:college_id].to_i)
+  #   @participants = Participant.where("0=1").page(1)
+  #   @stages = CollegeApplication::Stages
+	# 	@title << @college
+	# 	@cache_key = fragment_cache_key(action: :college, id: @college.try(:id), format: :xlsx)
+  #   @export = report_type.for_key(@cache_key)
+  #
+  #   if request.xhr?
+  #     @participant_ids = @college.interested_participants.select("people.id").collect(&:id)
+  #     @stages = {}
+  #     for stage in CollegeApplication::Stages
+  #       stage_participants = @college.try("#{stage}_participants")
+  #       @stages[stage] = stage_participants.collect(&:id)
+  #       @participant_ids += @stages[stage]
+  #     end
+  #     @participants = Participant.where(id: @participant_ids).page(params[:page])
+  #   end
+  #
+  #   respond_to do |format|
+  #     format.html { render action: 'index' }
+  #     format.xml  { render xml: @participants.unpaginate }
+  #     format.js   { render 'index'}
+	# 	  format.xlsx { respond_to_xlsx }
+  #   end
+  # end
+  #
+  # def college_cohort
+  #   @college = Institution.find(params[:college_id].to_i)
+  #   @grad_year = params[:year]
+  #   @participants = Participant.in_cohort(@grad_year).attending_college(@college.try(:id)).page(params[:page])
+	# 	@title << @college
+	# 	@title << @grad_year
+	# 	@cache_key = fragment_cache_key(action: :college_cohort, id: @college.try(:id), cohort: @grad_year, format: :xlsx)
+  #   @export = report_type.for_key(@cache_key)
+  #
+  #   respond_to do |format|
+  #     format.html { render action: 'index' }
+  #     format.xml  { render xml: @participants.unpaginate }
+  #     format.js   { render 'index'}
+	# 	  format.xlsx { respond_to_xlsx }
+  #   end
+  # end
+  #
+  # def mentor
+  #   @mentor = Mentor.find(params[:mentor_id] == "me" ? User.current_user.try(:person_id) : params[:mentor_id])
+  #   @participants = Participant.assigned_to_mentor(@mentor.try(:id)).page(params[:page]).readonly(false)
+	# 	@title << "Assigned to #{@mentor.try(:fullname)}"
+	# 	@cache_key = fragment_cache_key(action: :mentor, id: @mentor.id, format: :xlsx)
+  #   @export = report_type.for_key(@cache_key)
+	#
+	# 	respond_to do |format|
+  #     format.html { render action: 'index' }
+  #     format.xml  { render xml: @participants.unpaginate }
+  #     format.js   { render 'index'}
+	# 	  format.xlsx { respond_to_xlsx }
+  #   end
+  # end
+  #
+  # def program
+  #   @program = Program.find(params[:program_id])
+  #   @participants = @program.participants.page(params[:page])
+	# 	@title << @program.try(:title)
+	# 	@cache_key = fragment_cache_key(action: :program, id: @program.id, format: :xlsx)
+  #   @export = report_type.for_key(@cache_key)
+  #
+  #   respond_to do |format|
+  #     format.html { render action: 'index' }
+  #     format.xml  { render xml: @participants.unpaginate }
+  #     format.js   { render 'index'}
+	# 	  format.xlsx { respond_to_xlsx }
+  #   end
+  # end
+  #
+  #
+  # def group
+  #   @participant_group = ParticipantGroup.find(params[:id])
+  #   @grad_year = @participant_group.grad_year
+  #   @high_school = @participant_group.location
+  #
+  #   unless @current_user && @current_user.can_view?(@high_school)
+  #     return render_error("You are not allowed to view that participant group.")
+  #   end
+  #
+  #   @participants = @participant_group.participants.page(params[:page])
+  #   @participant_groups = ParticipantGroup.where({ location_id: @high_school, grad_year: @grad_year })
+	# 	@cache_key = fragment_cache_key(action: :group, id: @participant_group.id, format: :xlsx)
+  #   @export = report_type.for_key(@cache_key)
+  #
+  #   respond_to do |format|
+  #     format.html { render action: 'index' }
+  #     format.xml  { render xml: @participants.unpaginate }
+  #     format.js   { render 'index'}
+	# 	  format.xlsx { respond_to_xlsx }
+  #   end
+  # end
   
   def add_to_group
     @participant_group = ParticipantGroup.find(params[:participant_group_id])
@@ -346,18 +344,21 @@ class ParticipantsController < ApplicationController
   
   # Returns a json payload of the matching objects for the selected filter criteria.
   def filter_results
-    if selections = params[:filter_selections]
-      query = selections.collect{ |key, value| "#{key}:#{value}" unless value.blank? }
-      @object_ids = ObjectFilter.intersect(query)
-    end
+    query = (params[:filter_selections] || {}).collect{ |key, value| "#{key}:#{value}" unless value.blank? }
+    @participants = Participant.intersect(query)
     
     respond_to do |format|
       format.json { render(json: {
-        object_ids: @object_ids,
-        filter_selections: params[:filter_selections],
+        object_ids: @participants.pluck(:id),
+        filter_selections: (params[:filter_selections] || {}),
         currentRequest: params[:currentRequest],
         filter_counts: {},
-        total_record_count: @object_ids.try(:count)
+        groupings: {
+          cohort: Participant.cohorts.map{|c| { value: c, title: c }},
+          high_school: HighSchool.all.map{|h| { value: h.id, title: h.name }},
+          participant_group: ParticipantGroup.where(id: @participants.pluck(:participant_group_id)).map{|h| { value: h.id, title: h.title }}
+        },
+        total: @participants.size
       }) }
     end
   end
@@ -385,41 +386,52 @@ class ParticipantsController < ApplicationController
     end
   end
 	
-  def auto_complete_for_participant_fullname
-    if params[:term].to_i != 0
-      @participants = [ Participant.find(params[:term].to_i) ]
-    else
-      conditions = ["(firstname LIKE :fullname OR lastname LIKE :fullname)"]
-      conditions << "high_school_id = :high_school_id" if params[:high_school_id]
-      conditions << "grad_year = :grad_year" if params[:grad_year]
-    
-      @participants = Participant.where(
-                                    [conditions.join(" AND "),
-                                    {fullname: "%#{params[:term].downcase}%",
-                                    grad_year: params[:grad_year],
-                                    high_school_id: params[:high_school_id]
-                                    }])
-    end
-    
-    render json: @participants.map { |result|
-      {
-        id: result.id,
-        value: h(result.fullname),
-        klass: result.class.to_s.underscore.titleize,
-        fullname: h(result.fullname),
-        secondary: h(result.email),
-        tertiary: h((Customer.current_customer.customer_label(result.class.to_s.underscore, titleize: true) || result.class.to_s).titleize)
-      }
-    }
-  end
+  # def auto_complete_for_participant_fullname
+  #   if params[:term].to_i != 0
+  #     @participants = [ Participant.find(params[:term].to_i) ]
+  #   else
+  #     conditions = ["(firstname LIKE :fullname OR lastname LIKE :fullname)"]
+  #     conditions << "high_school_id = :high_school_id" if params[:high_school_id]
+  #     conditions << "grad_year = :grad_year" if params[:grad_year]
+  #
+  #     @participants = Participant.where(
+  #                                   [conditions.join(" AND "),
+  #                                   {fullname: "%#{params[:term].downcase}%",
+  #                                   grad_year: params[:grad_year],
+  #                                   high_school_id: params[:high_school_id]
+  #                                   }])
+  #   end
+  #
+  #   render json: @participants.map { |result|
+  #     {
+  #       id: result.id,
+  #       value: h(result.fullname),
+  #       klass: result.class.to_s.underscore.titleize,
+  #       fullname: h(result.fullname),
+  #       secondary: h(result.email),
+  #       tertiary: h((Customer.current_customer.customer_label(result.class.to_s.underscore, titleize: true) || result.class.to_s).titleize)
+  #     }
+  #   }
+  # end
 
-	def check_export_status
-		@export = report_type.find(params[:id])
+	def export_status
+		@export = report_type.new(params[:filter_selections].to_param)
+    @export.generate_in_background! if params[:generate] == 'if-needed' && @export.new?
 		respond_to do |format|
 			format.html { render text: (@export.try(:status) || "does not exist") }
-			format.js
+      format.json { render json: @export.attributes.merge(
+          regenerate_url: generate_export_participants_url(filter_selections: @export.filter_selections, report: @report)
+        )
+      }
 		end
 	end
+  
+  def generate_export
+    @export = report_type.new(params[:filter_selections].to_param)
+		@export.generate_in_background!
+		flash[:notice] = "We are generating your Excel file for you. Please wait."
+    render json: @export, status: :accepted
+  end
 
   protected
 
@@ -437,45 +449,45 @@ class ParticipantsController < ApplicationController
     @filter_warning_counts = Customer.redis.hgetall("filters:counts:Participant:warn")
   end
 
-	def respond_to_xlsx
-		@export = report_type.find_or_initialize_by_key(@cache_key)
-		if @export.generated? && params[:generate].nil?
-			if request.xhr?
-				headers["Content-Type"] = "text/javascript"
-				render js: "window.location = '#{url_for(format: 'xlsx', report: @report)}'"
-			else
-        begin
-          filename = @filename || "participants.xlsx"
-          send_data @export.file.read, filename: filename, disposition: 'inline', type: @export.mime_type.to_s
-        rescue
-          flash[:error] = "The file could not be read from the server. Please try regenerating the export."
-          redirect_to :back
-        end
-			end
-		else
-			respond_to_generate_xlsx
-		end
-	end
-  
-	def respond_to_generate_xlsx
-		@export = report_type.find_or_initialize_by_key(@cache_key)
-		@export.format = "xlsx"
-		@export.object_ids = report_object_ids
-		@export.reset_to_ungenerated
-		@export.status = "initializing"
-		@export.save
-    logger.debug { @export.to_yaml }
-    logger.debug { @export.errors.to_yaml }
-		@export.generate_in_background!
-		flash[:notice] = "We are generating your Excel file for you. Please wait."
-		
-		if request.xhr?
-			headers["Content-Type"] = "text/javascript"
-			return render(template: "participants/check_export_status.js.erb", format: 'js')
-		else
-			return redirect_to(:back, format: 'html')
-		end
-	end
+	# def respond_to_xlsx
+	# 	@export = report_type.find_or_initialize_by_key(@cache_key)
+	# 	if @export.generated? && params[:generate].nil?
+	# 		if request.xhr?
+	# 			headers["Content-Type"] = "text/javascript"
+	# 			render js: "window.location = '#{url_for(format: 'xlsx', report: @report)}'"
+	# 		else
+  #       begin
+  #         filename = @filename || "participants.xlsx"
+  #         send_data @export.file.read, filename: filename, disposition: 'inline', type: @export.mime_type.to_s
+  #       rescue
+  #         flash[:error] = "The file could not be read from the server. Please try regenerating the export."
+  #         redirect_to :back
+  #       end
+	# 		end
+	# 	else
+	# 		respond_to_generate_xlsx
+	# 	end
+	# end
+  #
+	# def respond_to_generate_xlsx
+	# 	@export = report_type.find_or_initialize_by_key(@cache_key)
+	# 	@export.format = "xlsx"
+	# 	@export.object_ids = report_object_ids
+	# 	@export.reset_to_ungenerated
+	# 	@export.status = "initializing"
+	# 	@export.save
+  #   logger.debug { @export.to_yaml }
+  #   logger.debug { @export.errors.to_yaml }
+	# 	@export.generate_in_background!
+	# 	flash[:notice] = "We are generating your Excel file for you. Please wait."
+	#
+	# 	if request.xhr?
+	# 		headers["Content-Type"] = "text/javascript"
+	# 		return render(template: "participants/check_export_status.js.erb", format: 'js')
+	# 	else
+	# 		return redirect_to(:back, format: 'html')
+	# 	end
+	# end
 
   def report_type
     case params[:report]
@@ -488,17 +500,17 @@ class ParticipantsController < ApplicationController
     end
   end
   
-  def report_object_ids
-    @participants = @participants.unpaginate
-    case params[:report]
-    when "test_score_summaries" then @participants.collect(&:test_scores).flatten.collect(&:id)
-    when "college_applications" then @participants.collect(&:college_applications).flatten.collect(&:id)
-    when "attendance_summaries" then @participants.collect(&:event_attendances).flatten.collect(&:id)
-    when "financial_aid_packages" then @participants.collect(&:financial_aid_packages).flatten.collect(&:id)
-    when "parents" then @participants.collect(&:parents).flatten.collect(&:id)
-    else @participants.collect(&:id)
-    end
-  end
+  # def report_object_ids
+  #   @participants = Participant.all
+  #   case params[:report]
+  #   when "test_score_summaries" then @participants.collect(&:test_scores).flatten.collect(&:id)
+  #   when "college_applications" then @participants.collect(&:college_applications).flatten.collect(&:id)
+  #   when "attendance_summaries" then @participants.collect(&:event_attendances).flatten.collect(&:id)
+  #   when "financial_aid_packages" then @participants.collect(&:financial_aid_packages).flatten.collect(&:id)
+  #   when "parents" then @participants.collect(&:parents).flatten.collect(&:id)
+  #   else @participants.collect(&:id)
+  #   end
+  # end
 
   private
 

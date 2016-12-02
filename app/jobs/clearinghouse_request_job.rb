@@ -1,5 +1,5 @@
-class ClearinghouseRequestWorker
-  include Sidekiq::Worker
+class ClearinghouseRequestJob < ActiveJob::Base
+  queue_as :default
 
   def perform(clearinghouse_request_id, file_path)
     begin

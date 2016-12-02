@@ -1,6 +1,8 @@
 require 'sidekiq/api'
 
 Dreamsis::Application.routes.draw do
+  
+  mount ActionCable.server => '/cable'
 
   # Top-level or Customer-level Objects
   # ---------------------------------------
@@ -110,10 +112,9 @@ Dreamsis::Application.routes.draw do
     collection do
       get :check_duplicate
       get :fetch_participant_group_options
-      get :check_export_status
-      
+      get :export_status
+      post :generate_export
       post :add_to_group
-      post :college_mapper_callback
       get :filter_results
     end
     member do

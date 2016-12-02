@@ -1,6 +1,6 @@
 class TermMentorsReport < Report
 
-  def model_name
+  def klass
     Mentor
   end
 

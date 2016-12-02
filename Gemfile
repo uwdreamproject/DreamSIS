@@ -33,7 +33,7 @@ gem 'axlsx'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'apartment'
-gem 'zip'
+# gem 'zip'
 gem 'net-sftp'
 gem 'rails_autolink'
 gem 'rollbar'
@@ -75,6 +75,7 @@ gem 'turbolinks', '~> 5.0.0'
 gem 'searchkick'
 gem 'twitter-typeahead-rails'
 gem 'momentjs-rails'
+gem 'actioncable', github: 'rails/actioncable', branch: 'archive'
 
 group :production do
   gem "pg", "0.18.4"
@@ -87,6 +88,7 @@ end
 group :development do
   gem "sqlite3"
   # gem 'web-console', '~> 2.0'
+  gem "dotrun"
 end
 
 group :development, :test do
