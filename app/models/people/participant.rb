@@ -348,62 +348,6 @@ class Participant < Person
   def self.recent_events(number = 5)
     @recent_events ||= Event.past.where(show_for_participants: true).reverse_order.limit(number)
   end
-
-  # Returns the CollegeMapperStudent record for this individual if we have a college_mapper_id stored.
-  # By default, if the record doesn't exist, we create it. You can override that by passing +false+ for
-  # +create_if_nil+. This method will also update the college list in DreamSIS to match the student's
-  # college list on CollegeMapper. Override that by passing +false+ for +update_college_list+.
-  def college_mapper_student(create_if_nil = true, update_college_list = true)
-    if !self.college_mapper_id
-      return create_college_mapper_student if create_if_nil
-      return nil
-    end
-    @college_mapper_student ||= CollegeMapperStudent.find(self.college_mapper_id)
-    update_college_list_from_college_mapper if update_college_list
-    @college_mapper_student
-  rescue Exception => e
-    logger.info { e.message }
-    ::Exceptional::Catcher.handle(e)  # log the error to Exceptional but continue along without error to the user.
-    return nil
-  end
-
-  # Creates a CollegeMapperStudent record for this participant and stores the CollegeMapper user ID in the
-  # +college_mapper_id+ attribute. Returns +false+ if the account couldn't be created.
-  def create_college_mapper_student
-    @college_mapper_student = CollegeMapperStudent.create({
-      firstName: firstname.to_s.titlecase,
-      lastName: lastname.to_s.titlecase,
-      email: email,
-      zipCode: (zip || 98105),
-      grade: grade,
-      gender: (sex == "F" ? "female" : "male"),
-      dream: true,
-      youthforce: self.high_school.try(:name).include?("YouthForce")
-    })
-    self.update_attribute(:college_mapper_id, @college_mapper_student.id)
-    @college_mapper_student
-  rescue Exception => e
-    logger.info { e.message }
-    ::Exceptional::Catcher.handle(e)  # log the error to Exceptional but continue along without error to the user.
-    return false
-  end
-  
-  # Fetches the college list for this student from CollegeMapper and updates the collection of CollegeApplications
-  # to match.
-  def update_college_list_from_college_mapper
-    college_mapper_colleges = college_mapper_student(true, false).colleges
-    college_ids = college_mapper_colleges.collect{|c| c.collegeId.to_i }
-    
-    # Delete colleges that no longer exist in CollegeMapper (if institution_id > 0)
-    for college_application in college_applications
-      college_application.destroy if college_application.institution_id > 0 && !college_ids.include?(college_application.institution_id.to_i)
-    end
-
-    # Create new colleges that exist in CollegeMapper
-    for college in college_mapper_colleges
-      college_applications.find_or_create_by_institution_id(college.collegeId) unless college.removed?
-    end
-  end
   
   # Creates a ParticipantMentor link between this Participant and the Mentor that is the current user.
   # This will only succeed if the current user (from User#current_user) is a Mentor person.
