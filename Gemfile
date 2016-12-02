@@ -30,7 +30,6 @@ gem "fog"
 gem "mini_magick"
 gem "rubyzip"
 gem 'axlsx'
-gem "acts_as_xlsx"
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'apartment'

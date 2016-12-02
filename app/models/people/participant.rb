@@ -17,8 +17,6 @@ class Participant < Person
   has_many :fafsas, class_name: "PersonFafsa", foreign_key: :person_id
   has_many :financial_aid_packages
 
-	acts_as_xlsx
-	
   validates_presence_of :birthdate, :high_school_id, if: :validate_ready_to_rsvp?
 
   attr_accessor :override_binder_date, :override_fafsa_date, :override_wasfa_date, :create_college_mapper_student_after_save, :link_to_current_user_after_save
@@ -83,11 +81,7 @@ class Participant < Person
   def validate_name?
     true
   end
-  
-  def create_college_mapper_student_after_save?
-    create_college_mapper_student_after_save == true || self.high_school.try(:enable_college_mapper_integration?)
-  end
-  
+    
   def link_to_current_user_after_save?
     link_to_current_user_after_save == true || link_to_current_user_after_save == "1"
   end

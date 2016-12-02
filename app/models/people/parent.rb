@@ -1,8 +1,7 @@
 # Models a parent, legal guardian, or other adult advocate of a student in the system. This model is linked to a student through +child_id+. Note that because "child" is a reserved word, the association is called "child_person" in this model.
 class Parent < Person
   include ActionView::Helpers::NumberHelper
-	acts_as_xlsx
-
+	
   RELATIONSHIP_TYPES = [
     "Mother", "Father",
     "Step-Mother", "Step-Father",

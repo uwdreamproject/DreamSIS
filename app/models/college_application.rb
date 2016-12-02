@@ -23,8 +23,6 @@ class CollegeApplication < ActiveRecord::Base
   after_destroy :update_filter_cache
 
   belongs_to :institution
-  
-  acts_as_xlsx
 
   # Updates the participant filter cache
   def update_filter_cache

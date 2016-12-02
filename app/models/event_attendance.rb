@@ -32,9 +32,6 @@ class EventAttendance < ActiveRecord::Base
   scope :future_attending, -> { joins(:event).where(["events.date >= ? AND rsvp = ?", Time.now.midnight, true]) }
   scope :non_visits, -> { joins(:event).where(["type IS ? OR type = ? OR type = ?", nil, "Event", ""]) }
   scope :visits, -> { joins(:event).where(type: "Visit") }
-  
-  acts_as_xlsx
-
 
   # Updates the participant/mentor filter cache
   def update_filter_cache

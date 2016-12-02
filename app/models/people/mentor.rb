@@ -24,8 +24,6 @@ class Mentor < Person
 
   after_save :send_driver_email
 
-  acts_as_xlsx
-
   def self.find_or_create_from_reg_id(reg_id)
     new_mentor = Mentor.find_or_initialize_by_reg_id(reg_id)
     new_mentor.validate_name = false

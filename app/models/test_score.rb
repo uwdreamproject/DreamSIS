@@ -17,8 +17,6 @@ class TestScore < ActiveRecord::Base
   after_save :update_filter_cache
   after_destroy :update_filter_cache
 
-	acts_as_xlsx
-
   # Updates the participant filter cache
   def update_filter_cache
     participant.save

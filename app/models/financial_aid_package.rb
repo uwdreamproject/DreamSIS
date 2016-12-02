@@ -18,8 +18,6 @@ class FinancialAidPackage < ActiveRecord::Base
   delegate :fullname, :high_school_name, to: :participant
   delegate :name, :iclevel_description, :control_description, :sector_description, to: :college_application
 
-  acts_as_xlsx
-  
   BREAKDOWN_TITLES = {
     expected_family_contribution: "EFC",
     grants: "Grants & Scholarships"
