@@ -100,14 +100,6 @@ class ObjectFilter < ActiveRecord::Base
   def redis_key(str)
     "ObjectFilter:#{self.id}:#{str}"
   end
-  
-  # Takes an array of filter conditions and returns the matching object_ids for
-  # the intersection of those conditions in the filter cache. You can specify
-  # direct redis keys ("ObjectFilter:6:pass") or short form ("6:pass").
-  def self.intersect(filter_selections)
-    keys = filter_selections.map{ |s| s.count(":") < 2 ? "ObjectFilter:" + s : s }
-    Customer.redis.sinter(keys)
-  end
 
 end
 

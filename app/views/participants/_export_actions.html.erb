@@ -1,17 +1,67 @@
-<%= link_to "Download #{@export.try{ |e| e.class.to_s.titleize }}", xlsx_url, html_options = { class: 'button xls with-below', id: "export_download_button", remote: true } %>
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-export-actions">
+  <%= glyph('download fa-fw') %> Download
+</button>
 
-<%= javascript_tag("checkExportStatus = false;") %>
-<%= javascript_tag("checkExportStatusUrl = '#{check_export_status_participants_url(id: "__id__", report: "__report__")}'") %>
-<%= javascript_tag("exportReportType = '#{params[:report]}'") %>
-<%= javascript_tag("exportReportTitle = '#{@export.try{ |e| e.class.to_s.titleize }}'") %>
-
-<p id="export_status" class="below">
-<%- if @export -%>	
-	<%= "#{@export.class.to_s.titleize} ##{@export.id.to_s}" %>
-	<%= @export.status.try(:titleize) %> <%=h relative_timestamp @export.updated_at %>
-	<%= link_to "Regenerate", xlsx_url(true), remote: true, id: "regenerate_download_button" %>
-	<%= javascript_tag("checkExportStatus = true; exportReportId = '#{@export.id.to_s}';") unless @export.generated? %>
-<% else %>
-  Not yet generated
+<%= modal :export_actions do %>
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h3 class="modal-title">
+			<%= glyph("download fa-fw") %> Download
+			<%= indicator :export_actions %>
+		</h3>
+	</div>
+	<div class="modal-body">
+    <p>
+      Export an Excel file of the selected records. Choose the type of report you want and click the button to download or generate the latest report.
+    </p>
+		<form class="export_actions form-horizontal">
+		  <div class="form-group">
+		    <label for="report" class="col-sm-3 control-label">Report Type</label>
+        <div class="col-sm-9">
+          <%= select_tag :report, options_for_select(Participant::ExportTypes.invert), class: 'form-control' %>
+        </div>
+		  </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">Selection</label>
+        <div class="col-sm-9">
+          <p class="form-control-static">
+            <span class="filtered_record_count"></span>
+            <span class="total_record_count"><%= pluralize @participants.total_entries, Customer.participant_label %></span>
+            <ul class="list-inline filter-bucket"></ul>
+          </p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+          <button type="submit" class="btn btn-default trigger">Check Status</button>
+        </div>
+      </div>
+    </form>
+    
+    <div class="list-group subscriptions"></div>
+    
+    <div class="list-group-item hidden template">
+      <div class="btn-group actions pull-right">
+        <a type="button" class="btn btn-primary download disabled">Download</a>
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="caret"></span>
+          <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <%= link_to "Regenerate", "#", class: 'regenerate disabled', glyph: 'undo', data: { remote: true, method: :post }  %>
+          </li>
+          <li>
+            <%= link_to "Remove from list", "#", class: 'remove', glyph: 'close' %>
+          </li>
+        </ul>
+      </div>
+      <h4 class="list-group-item-heading title">New Report</h4>
+      <p class="list-group-item-text status text-muted">Loading...</p>
+      <div class="progress">
+        <div class="progress-bar progress-bar-striped progress-bar-info active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">
+        </div>
+      </div>
+    </div>
+	</div>
 <% end %>
-</p>

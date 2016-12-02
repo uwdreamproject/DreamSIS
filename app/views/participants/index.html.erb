@@ -1,51 +1,23 @@
 <%= render partial: "report_select" %>
 
 <%= content_for(:subheader) do %>
-	<h1 style="margin-bottom: 0.25em">
-		<%= "Participants" unless @high_school && @grad_year %>
-		<%=h @high_school.name if @high_school%>
-		<%= "at " + h(@college.name) if @college %>
-		<%= "in " + link_to(h(@program.title), @program) if @program %>
-		<%= "assigned to " + (params[:mentor_id] == "me" ? "me" : h(@mentor.fullname)) if @mentor %>
-		<%=h @grad_year.to_s if @grad_year %>
-		<%= indicator(:participants) %>
-	</h1>
-	<ul class="list-inline" id="filter_bucket">
-		<li class="text-muted">
+	<%= render partial: "cohort_select" %>
+	<ul class="list-inline filter-bucket">
+		<li class="text-muted summary">
 			<%= glyph('filter hidden') %>
-			<span id="filtered_record_count"></span>
-			<span id="total_record_count"><%= pluralize @participants.total_entries, Customer.participant_label %></span>
+			<span class="filtered_record_count"></span>
+			<span class="total_record_count"><%= pluralize @participants.total_entries, Customer.participant_label %></span>
 		</li>
 	</ul>
 <% end %>
 
 <%= operations do %>
 	<%= link_to "Add new", new_participant_path(high_school_id: @high_school.try(:id) || @participant.try(:high_school_id)), class: "btn btn-default", glyph: "plus" %>
-	
-	<div class="btn-group" role="group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <%= glyph(:download) %> Download
-      <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu">
-			<% for key, title in Participant::ReportTypes do %>
-	      <li><a href="#"><%= title %></a></li>
-      <% end %>
-    </ul>
-	</div>
-	
+	<%= render "participants/export_actions" %>
 	<%= render "participants/bulk_actions" %>
-	
 <% end %>
 
 <div id="stages_selector"></div>
-
-<%- if @participant_group -%>
-	<h2>
-		Group: <%= @participant_group.try(:title) %>
-		<span class="light">(<%= link_to "view all", high_school_cohort_path(@high_school, @grad_year) %>)</span>
-	</h2>
-<% end -%>
 
 <table class="participants multirow active-report table" id="participants_table">
 	<thead></thead>
@@ -64,5 +36,6 @@
 <%= render partial: "sidebar" %>
 
 <%= javascript_tag "$( function() {
-	$.ajax({ url: '#{url_for(report: @report, page: 1)}', dataType: 'script' });
+	 //$.ajax({ url: '#{url_for(report: @report, page: 1)}', dataType: 'script' });
+	 // App.filterable.filters.execute()
 })" %>
