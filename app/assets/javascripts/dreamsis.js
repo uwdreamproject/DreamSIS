@@ -174,12 +174,12 @@ $( function() {
   registerTableSorters()
 
 
-  $(document).on("click", "input:checkbox.select-all", function() {
-    var currentState = $( this ).prop("checked")
-    $('input.index_check_box').prop("checked", currentState)
-    updateWithSelectedActions()
-  })
-  
+  // $(document).on("click", "input:checkbox.select-all", function() {
+  //   var currentState = $( this ).prop("checked")
+  //   $('input.index_check_box').prop("checked", currentState)
+  //   updateWithSelectedActions()
+  // })
+  //
   
 })
 
