@@ -1,4 +1,6 @@
-<h1>Changes for <%=h @object.class.to_s %> <%=h @object.id.to_s %></h1>
+<%= subheader do %>
+  <h1>Changes for <%=h @object.class.to_s %> <%=h @object.id.to_s %></h1>
+<% end %>
 
 <table>
     <thead>
@@ -21,6 +23,6 @@
     </tbody>
 </table>
 
-<%= content_for(:sidebar) do %>
-    <p><%= link_to "Return to record", @object, class: "back button" rescue nil %></p>
+<%= operations do %>
+	<%= link_to 'Return to Record', @object, class: 'btn btn-default', glyph: 'arrow-left' rescue nil %>
 <%- end -%>

@@ -163,6 +163,9 @@
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu">
+				<li class="disabled">
+					<%= link_to "DreamSIS ID: ##{@participant.id}", "#", glyph: "info-circle" %>
+				</li>
 				<%- if (is_admin = @current_user.admin?) -%>
 			      <li><%= link_to "Record History", changes_for_object_path("participant", @participant), glyph: "history" %></li>
 			  <%- end -%>
