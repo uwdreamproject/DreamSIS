@@ -11,8 +11,9 @@
 
 	<%= csrf_meta_tags %>
 	
-	<%= stylesheet_link_tag "application", media: 'all' %>
-	<%= javascript_include_tag "application" %>
+	<%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => "reload" %>
+	<%= javascript_include_tag "application", "data-turbolinks-track" => "reload" %>
+
 	<%= javascript_include_tag "//use.fontawesome.com/fbb74a9d9b.js" %>
 	<%= javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.min.js" %>
 	<%= stylesheet_link_tag "//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.min.css" %>

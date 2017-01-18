@@ -147,5 +147,7 @@ class UsersController < ApplicationController
       render_error("You are not allowed to access that page.")
     end
   end
+  
+  # TODO strong params should be :login, :email, :password, :password_confirmation, :identity_url, :person_attributes
 
 end
