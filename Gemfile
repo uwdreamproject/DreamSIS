@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
-ruby '2.2.4'
+ruby '2.3.1'
 
-gem 'rails', '4.2.6'
-gem "puma"
+gem 'rails', '5.0.1'
+gem 'puma'
 gem 'formtastic'
 gem 'formtastic-bootstrap'
 gem 'will_paginate'
@@ -17,12 +17,10 @@ gem 'omniauth-twitter'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-shibboleth'
 gem 'omniauth-identity'
-gem 'omniauth-windowslive'
-gem 'omniauth-linkedin'
 gem 'geocoder'
 gem 'aes'
 gem 'fastercsv'
-gem 'mandrill-api'
+# gem 'mandrill-api'
 gem 'ey_config'
 gem "mime-types"
 gem "carrierwave"
@@ -32,8 +30,7 @@ gem "rubyzip"
 gem 'axlsx'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'apartment'
-# gem 'zip'
+gem 'apartment', '~> 1.2'
 gem 'net-sftp'
 gem 'rails_autolink'
 gem 'rollbar'
@@ -43,8 +40,7 @@ gem 'sidekiq'
 gem 'apartment-sidekiq'
 gem "simple_calendar"
 gem 'friendly_id'
-# gem 'jquery-tablesorter'
-gem 'le'
+# gem 'le'
 gem 'coderay', require: 'coderay'
 gem 'acts_as_list'
 gem 'fabrication'
@@ -54,18 +50,18 @@ gem 'select2-rails'
 gem 'rails_12factor', group: :production
 gem "rack-timeout"
 gem 'aws-sdk'
-gem 'rack-mini-profiler'
-gem 'flamegraph'
-gem 'stackprof'
-gem 'memory_profiler'
-gem 'activeresource', require: 'active_resource'
-gem 'activerecord-session_store'
+# gem 'rack-mini-profiler'
+# gem 'flamegraph'
+# gem 'stackprof'
+# gem 'memory_profiler'
+# gem 'activeresource', require: 'active_resource'
+# gem 'activerecord-session_store'
 gem 'autonumeric-rails'
 gem 'money-rails'
 gem 'sass-rails'
 gem 'coffee-rails'
 gem 'uglifier'
-gem 'protected_attributes'
+# gem 'protected_attributes'
 gem 'redis'
 gem 'redis-namespace'
 gem 'redis-rails'
@@ -75,10 +71,12 @@ gem 'turbolinks', '~> 5.0.0'
 gem 'searchkick'
 gem 'twitter-typeahead-rails'
 gem 'momentjs-rails'
-gem 'actioncable', github: 'rails/actioncable', branch: 'archive'
+# gem 'actioncable', github: 'rails/actioncable', branch: 'archive'
+gem "sqlite3"
+
 
 group :production do
-  gem "pg", "0.18.4"
+  gem "pg" #, "0.18.4"
   gem "activerecord-postgresql-adapter"
 end
 
@@ -86,7 +84,7 @@ group :staging do
 end
 
 group :development do
-  gem "sqlite3"
+  # gem "sqlite3"
   # gem 'web-console', '~> 2.0'
   gem "dotrun"
 end

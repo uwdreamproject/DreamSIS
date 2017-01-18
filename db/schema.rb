@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -37,9 +36,8 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.datetime "updated_at"
     t.datetime "restored_at"
     t.integer  "restored_user_id"
+    t.index ["change_loggable_id", "change_loggable_type"], name: "index_changes_on_changable"
   end
-
-  add_index "changes", ["change_loggable_id", "change_loggable_type"], name: "index_changes_on_changable"
 
   create_table "clearinghouse_requests", force: :cascade do |t|
     t.integer  "customer_id"
@@ -135,9 +133,8 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "customer_id"
+    t.index ["customer_id"], name: "index_degrees_on_customer_id"
   end
-
-  add_index "degrees", ["customer_id"], name: "index_degrees_on_customer_id"
 
   create_table "education_levels", force: :cascade do |t|
     t.string   "title",       limit: 255
@@ -146,9 +143,8 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "customer_id"
+    t.index ["customer_id"], name: "index_education_levels_on_customer_id"
   end
-
-  add_index "education_levels", ["customer_id"], name: "index_education_levels_on_customer_id"
 
   create_table "enrollments", force: :cascade do |t|
     t.string   "type",                       limit: 255
@@ -170,9 +166,8 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.integer  "customer_id"
     t.boolean  "placed_in_remedial_math"
     t.boolean  "placed_in_remedial_english"
+    t.index ["customer_id"], name: "index_enrollments_on_customer_id"
   end
-
-  add_index "enrollments", ["customer_id"], name: "index_enrollments_on_customer_id"
 
   create_table "event_attendances", force: :cascade do |t|
     t.integer  "person_id"
@@ -186,12 +181,11 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.integer  "customer_id"
     t.string   "attendance_option", limit: 255
     t.string   "audience",          limit: 255
+    t.index ["customer_id"], name: "index_event_attendances_on_customer_id"
+    t.index ["event_id", "person_id"], name: "index_event_attendances_on_event_id_and_person_id", unique: true
+    t.index ["event_id"], name: "index_event_attendances_on_event_id"
+    t.index ["person_id"], name: "index_event_attendances_on_person_id"
   end
-
-  add_index "event_attendances", ["customer_id"], name: "index_event_attendances_on_customer_id"
-  add_index "event_attendances", ["event_id", "person_id"], name: "index_event_attendances_on_event_id_and_person_id", unique: true
-  add_index "event_attendances", ["event_id"], name: "index_event_attendances_on_event_id"
-  add_index "event_attendances", ["person_id"], name: "index_event_attendances_on_person_id"
 
   create_table "event_groups", force: :cascade do |t|
     t.string   "name",                                     limit: 255
@@ -222,9 +216,8 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.text     "mentor_disable_message"
     t.text     "student_disable_message"
     t.text     "volunteer_disable_message"
+    t.index ["customer_id"], name: "index_event_groups_on_customer_id"
   end
-
-  add_index "event_groups", ["customer_id"], name: "index_event_groups_on_customer_id"
 
   create_table "event_shifts", force: :cascade do |t|
     t.string   "title",               limit: 255
@@ -237,9 +230,8 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "customer_id"
+    t.index ["customer_id"], name: "index_event_shifts_on_customer_id"
   end
-
-  add_index "event_shifts", ["customer_id"], name: "index_event_shifts_on_customer_id"
 
   create_table "event_types", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -247,9 +239,8 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.datetime "updated_at"
     t.text     "description"
     t.integer  "customer_id"
+    t.index ["customer_id"], name: "index_event_types_on_customer_id"
   end
-
-  add_index "event_types", ["customer_id"], name: "index_event_types_on_customer_id"
 
   create_table "events", force: :cascade do |t|
     t.string   "name",                            limit: 255
@@ -289,9 +280,8 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.integer  "latest_grade_level_level"
     t.boolean  "send_attendance_emails"
     t.boolean  "always_show_on_attendance_pages"
+    t.index ["customer_id"], name: "index_events_on_customer_id"
   end
-
-  add_index "events", ["customer_id"], name: "index_events_on_customer_id"
 
   create_table "financial_aid_packages", force: :cascade do |t|
     t.integer  "participant_id"
@@ -336,11 +326,10 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.integer  "sluggable_id",               null: false
     t.string   "sluggable_type", limit: 40
     t.datetime "created_at"
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", unique: true
+    t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
+    t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
-
-  add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", unique: true
-  add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
-  add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
 
   create_table "grade_levels", force: :cascade do |t|
     t.string   "title",        limit: 255
@@ -368,17 +357,15 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "customer_id"
+    t.index ["customer_id"], name: "index_how_did_you_hear_options_on_customer_id"
   end
-
-  add_index "how_did_you_hear_options", ["customer_id"], name: "index_how_did_you_hear_options_on_customer_id"
 
   create_table "how_did_you_hear_options_people", id: false, force: :cascade do |t|
     t.integer "person_id"
     t.integer "how_did_you_hear_option_id"
     t.integer "customer_id"
+    t.index ["customer_id"], name: "index_how_did_you_hear_options_people_on_customer_id"
   end
-
-  add_index "how_did_you_hear_options_people", ["customer_id"], name: "index_how_did_you_hear_options_people_on_customer_id"
 
   create_table "identities", force: :cascade do |t|
     t.string   "name",            limit: 255
@@ -387,9 +374,8 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "customer_id"
+    t.index ["customer_id"], name: "index_identities_on_customer_id"
   end
-
-  add_index "identities", ["customer_id"], name: "index_identities_on_customer_id"
 
   create_table "income_levels", force: :cascade do |t|
     t.float    "min_level"
@@ -397,9 +383,8 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "customer_id"
+    t.index ["customer_id"], name: "index_income_levels_on_customer_id"
   end
-
-  add_index "income_levels", ["customer_id"], name: "index_income_levels_on_customer_id"
 
   create_table "institutions", id: false, force: :cascade do |t|
     t.integer  "unitid"
@@ -495,10 +480,9 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.boolean  "enable_college_mapper_integration"
     t.integer  "customer_id"
     t.string   "slug",                              limit: 255
+    t.index ["customer_id"], name: "index_locations_on_customer_id"
+    t.index ["slug"], name: "index_locations_on_slug", unique: true
   end
-
-  add_index "locations", ["customer_id"], name: "index_locations_on_customer_id"
-  add_index "locations", ["slug"], name: "index_locations_on_slug", unique: true
 
   create_table "mentor_participants", force: :cascade do |t|
     t.integer  "mentor_id"
@@ -526,9 +510,8 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.string   "day_of_week",        limit: 255
     t.integer  "customer_id"
     t.string   "permissions_level",  limit: 255
+    t.index ["customer_id"], name: "index_mentor_term_groups_on_customer_id"
   end
-
-  add_index "mentor_term_groups", ["customer_id"], name: "index_mentor_term_groups_on_customer_id"
 
   create_table "mentor_terms", force: :cascade do |t|
     t.integer  "mentor_id"
@@ -541,9 +524,8 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.boolean  "driver"
     t.text     "notes"
     t.integer  "customer_id"
+    t.index ["customer_id"], name: "index_mentor_terms_on_customer_id"
   end
-
-  add_index "mentor_terms", ["customer_id"], name: "index_mentor_terms_on_customer_id"
 
   create_table "notes", force: :cascade do |t|
     t.text     "note"
@@ -565,9 +547,8 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.string   "title",                 limit: 255
     t.boolean  "needs_followup"
     t.string   "contact_type",          limit: 255
+    t.index ["customer_id"], name: "index_notes_on_customer_id"
   end
-
-  add_index "notes", ["customer_id"], name: "index_notes_on_customer_id"
 
   create_table "object_filters", force: :cascade do |t|
     t.string   "object_class",               limit: 255
@@ -587,9 +568,8 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.string   "category",                   limit: 255
     t.integer  "position"
     t.boolean  "warn_if_false"
+    t.index ["customer_id"], name: "index_object_filters_on_customer_id"
   end
-
-  add_index "object_filters", ["customer_id"], name: "index_object_filters_on_customer_id"
 
   create_table "participant_groups", force: :cascade do |t|
     t.string   "title",              limit: 255
@@ -808,19 +788,18 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.boolean  "is_emergency_contact"
     t.boolean  "on_track_to_graduate",                              default: true
     t.string   "slug",                                  limit: 255
+    t.index ["college_attending_id"], name: "index_people_on_college_attending_id"
+    t.index ["customer_id"], name: "index_people_on_customer_id"
+    t.index ["display_name"], name: "index_people_on_display_name"
+    t.index ["firstname"], name: "index_people_on_firstname"
+    t.index ["grad_year"], name: "index_people_on_grad_year"
+    t.index ["lastname"], name: "index_people_on_lastname"
+    t.index ["middlename"], name: "index_people_on_middlename"
+    t.index ["nickname"], name: "index_people_on_nickname"
+    t.index ["slug"], name: "index_people_on_slug", unique: true
+    t.index ["type"], name: "index_people_on_type"
+    t.index ["uw_net_id"], name: "index_people_on_uw_net_id"
   end
-
-  add_index "people", ["college_attending_id"], name: "index_people_on_college_attending_id"
-  add_index "people", ["customer_id"], name: "index_people_on_customer_id"
-  add_index "people", ["display_name"], name: "index_people_on_display_name"
-  add_index "people", ["firstname"], name: "index_people_on_firstname"
-  add_index "people", ["grad_year"], name: "index_people_on_grad_year"
-  add_index "people", ["lastname"], name: "index_people_on_lastname"
-  add_index "people", ["middlename"], name: "index_people_on_middlename"
-  add_index "people", ["nickname"], name: "index_people_on_nickname"
-  add_index "people", ["slug"], name: "index_people_on_slug", unique: true
-  add_index "people", ["type"], name: "index_people_on_type"
-  add_index "people", ["uw_net_id"], name: "index_people_on_uw_net_id"
 
   create_table "people_fafsas", force: :cascade do |t|
     t.integer  "person_id"
@@ -830,18 +809,16 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.boolean  "not_applicable"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["person_id", "year"], name: "index_people_fafsas_on_person_id_and_year"
   end
-
-  add_index "people_fafsas", ["person_id", "year"], name: "index_people_fafsas_on_person_id_and_year"
 
   create_table "people_programs", id: false, force: :cascade do |t|
     t.integer  "person_id"
     t.integer  "program_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["person_id", "program_id"], name: "index_people_programs_on_person_id_and_program_id"
   end
-
-  add_index "people_programs", ["person_id", "program_id"], name: "index_people_programs_on_person_id_and_program_id"
 
   create_table "programs", force: :cascade do |t|
     t.string   "title",        limit: 255
@@ -885,19 +862,17 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.boolean  "default_gap_funding"
     t.boolean  "default_living_stipend"
     t.boolean  "default_renewable"
+    t.index ["customer_id"], name: "index_scholarships_on_customer_id"
   end
-
-  add_index "scholarships", ["customer_id"], name: "index_scholarships_on_customer_id"
 
   create_table "sessions", force: :cascade do |t|
     t.string   "session_id", limit: 255, null: false
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["session_id"], name: "index_sessions_on_session_id"
+    t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
-
-  add_index "sessions", ["session_id"], name: "index_sessions_on_session_id"
-  add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at"
 
   create_table "taggings", force: :cascade do |t|
     t.integer  "tag_id"
@@ -907,17 +882,15 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.string   "tagger_type",   limit: 255
     t.string   "context",       limit: 128
     t.datetime "created_at"
+    t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
+    t.index ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context"
   end
-
-  add_index "taggings", ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
-  add_index "taggings", ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context"
 
   create_table "tags", force: :cascade do |t|
     t.string  "name",           limit: 255
     t.integer "taggings_count",             default: 0
+    t.index ["name"], name: "index_tags_on_name", unique: true
   end
-
-  add_index "tags", ["name"], name: "index_tags_on_name", unique: true
 
   create_table "terms", force: :cascade do |t|
     t.integer  "year"
@@ -933,9 +906,8 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.integer  "customer_id"
     t.text     "course_dependencies"
     t.text     "signup_description"
+    t.index ["customer_id"], name: "index_terms_on_customer_id"
   end
-
-  add_index "terms", ["customer_id"], name: "index_terms_on_customer_id"
 
   create_table "test_scores", force: :cascade do |t|
     t.integer  "participant_id"
@@ -948,9 +920,8 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.datetime "updated_at"
     t.integer  "customer_id"
     t.boolean  "passed"
+    t.index ["customer_id"], name: "index_test_scores_on_customer_id"
   end
-
-  add_index "test_scores", ["customer_id"], name: "index_test_scores_on_customer_id"
 
   create_table "test_types", force: :cascade do |t|
     t.string   "name",                     limit: 255
@@ -961,9 +932,8 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.integer  "customer_id"
     t.string   "score_calculation_method", limit: 255
     t.boolean  "passable"
+    t.index ["customer_id"], name: "index_test_types_on_customer_id"
   end
-
-  add_index "test_types", ["customer_id"], name: "index_test_types_on_customer_id"
 
   create_table "training_completions", force: :cascade do |t|
     t.integer  "training_id"
@@ -972,9 +942,8 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "customer_id"
+    t.index ["customer_id"], name: "index_training_completions_on_customer_id"
   end
-
-  add_index "training_completions", ["customer_id"], name: "index_training_completions_on_customer_id"
 
   create_table "trainings", force: :cascade do |t|
     t.string   "title",          limit: 255
@@ -985,9 +954,8 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.string   "chapters_url",   limit: 255
     t.string   "stylesheet_url", limit: 255
     t.integer  "customer_id"
+    t.index ["customer_id"], name: "index_trainings_on_customer_id"
   end
-
-  add_index "trainings", ["customer_id"], name: "index_trainings_on_customer_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "login",                     limit: 255
@@ -1004,8 +972,7 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.string   "provider",                  limit: 255
     t.string   "uid",                       limit: 255
     t.integer  "customer_id"
+    t.index ["customer_id"], name: "index_users_on_customer_id"
   end
-
-  add_index "users", ["customer_id"], name: "index_users_on_customer_id"
 
 end

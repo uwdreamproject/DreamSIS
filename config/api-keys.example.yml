@@ -1,60 +1,54 @@
 omniauth:
   facebook:
-      key: 
-      secret: 
+      key:
+      secret:
   twitter:
-      key: 
-      secret: 
+      key:
+      secret:
   google:
-      key: 
-      secret: 
+      key:
+      secret:
   windowslive:
-      key: 
-      secret: 
+      key:
+      secret:
   linkedin:
-      key: 
-      secret: 
+      key:
+      secret:
 
 collegemapper:
   development:
-    host: 
-    api_key: 
+    host:
+    api_key:
   production:
-    host: 
-    api_key: 
+    host:
+    api_key:
   
 exceptional:
-  api_key: 
+  api_key:
   
 google_analytics:
-  account_id: 
+  account_id:
   
 sharethis:
-  publisher_id: 
+  publisher_id:
 
 s3:
   development:
-    access_key_id: 
-    secret_access_key: 
-    bucket: 
+    access_key_id:
+    secret_access_key:
+    bucket:
   production:
-    access_key_id: 
-    secret_access_key: 
-    bucket: 
+    access_key_id:
+    secret_access_key:
+    bucket:
 
 rollbar:
-  server_side_access_token: 
+  server_side_access_token:
 
 redis:
   development:
-    endpoint: 
-    password: 
+    endpoint:
+    password:
   production:
-    endpoint: 
-    password: 
-
-mandrill:
-  development:
-    key:
-  production:
-    key:
+    endpoint:
+    password:

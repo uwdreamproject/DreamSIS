@@ -5,9 +5,9 @@
 // the compiled file.
 //
 //= require jquery2
+//= require turbolinks
 //= require jquery_ujs
 //= require jquery-ui
-//= require turbolinks
 //= require bootstrap-sprockets
 //= require select2-full
 //= require autonumeric
@@ -16,4 +16,3 @@
 //= require livestamp.min
 //= require dreamsis.js
 //= require_tree .
-//= require_tree ./channels
