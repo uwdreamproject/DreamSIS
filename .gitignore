@@ -49,3 +49,5 @@ test/reports
 dump.rdb
 
 heroku.md
+
+public/assets
