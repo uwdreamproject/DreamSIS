@@ -225,7 +225,7 @@
       objectIds: [],
 
       // Add a row to the "selected" set. You can provide an ID, an array of ID's, or an HTML element.
-      add: function(element_or_id_or_ids, updateDisplay = true) {
+      add: function(element_or_id_or_ids, updateDisplay) {
         if ($.isNumeric(element_or_id_or_ids)) {
           selections.addId(element_or_id_or_ids)
         } else if ($.isArray(element_or_id_or_ids)) {
@@ -234,12 +234,12 @@
           selections.add($(element_or_id_or_ids).data('participant-id'))
         }
         
-        if (updateDisplay) display.update.selections();
+        if (updateDisplay != false) display.update.selections();
         return selections.objectIds;
       },
       
       // Remove a row from the "selected" set. Similar to `select` method above.
-      remove: function(element_or_id_or_ids, updateDisplay = true) {
+      remove: function(element_or_id_or_ids, updateDisplay) {
         if ($.isNumeric(element_or_id_or_ids)) {
           selections.removeId(element_or_id_or_ids)
         } else if ($.isArray(element_or_id_or_ids)) {
@@ -250,7 +250,7 @@
           selections.remove($(element_or_id_or_ids).data('participant-id'))
         }
 
-        if (updateDisplay) display.update.selections();
+        if (updateDisplay != false) display.update.selections();
         return selections.objectIds;
       },
       
