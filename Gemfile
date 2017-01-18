@@ -72,7 +72,6 @@ gem 'searchkick'
 gem 'twitter-typeahead-rails'
 gem 'momentjs-rails'
 # gem 'actioncable', github: 'rails/actioncable', branch: 'archive'
-gem "sqlite3"
 
 
 group :production do
@@ -84,7 +83,7 @@ group :staging do
 end
 
 group :development do
-  # gem "sqlite3"
+  gem "sqlite3"
   # gem 'web-console', '~> 2.0'
   gem "dotrun"
 end
