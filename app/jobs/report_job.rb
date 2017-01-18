@@ -1,4 +1,4 @@
-class ReportJob < ActiveJob::Base
+class ReportJob < ApplicationJob
   queue_as :default
 
   def perform(report_type, params, tenant)

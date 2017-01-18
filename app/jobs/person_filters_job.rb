@@ -1,4 +1,4 @@
-class PersonFiltersJob < ActiveJob::Base
+class PersonFiltersJob < ApplicationJob
   queue_as :default
 
   # Refresh the filter cache for this person (or people, if multiple ID's are passed).

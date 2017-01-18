@@ -21,50 +21,20 @@ class Change < ApplicationRecord
     name.to_s == 'changes' ? false : super(name)
   end
 
-  # Gets called after_create
-  def self.log_create(obj)
-    return false if obj.is_a?(Change)
-    return false if obj.is_a?(ActiveRecord::SessionStore::Session)
-    return false if obj.is_a?(Customer)
+  # Logs a change to a record. Specify the type of action being done, the object, and
+  # the ID of the user making the change.
+  def self.log_change(action_type, obj_class, obj_id, my_changes, user_id)
+    return false if obj_class.constantize == Change
+    my_changes = cleanup_changes(YAML::load(my_changes))
     Change.create(
-      change_loggable_id: obj.id,
-      change_loggable_type: obj.class.to_s,
-      action_type: 'create',
-      user_id: Thread.current['user'].try(:id),
-      changes: cleanup_changes(obj.changes)
-    )
-  end
-  
-  # Gets called after_update
-  def self.log_update(obj)
-    return false if obj.is_a?(Change)
-    return false if obj.is_a?(ActiveRecord::SessionStore::Session)
-    my_changes = cleanup_changes(obj.changes)
-    Change.create(
-      change_loggable_id: obj.id,
-      change_loggable_type: obj.class.to_s,
-      action_type: 'update',
-      user_id: Thread.current['user'].try(:id),
+      change_loggable_id: obj_id,
+      change_loggable_type: obj_class.to_s,
+      action_type: action_type,
+      user_id: user_id,
       changes: my_changes
     ) unless my_changes.empty?
   end
-  
-  # Gets called after_delete. Saves the final state of the object's attributes in the +changes+ attribute for easy restoration.
-  def self.log_delete(obj)
-    return false if obj.is_a?(Change)
-    return false if obj.is_a?(ActiveRecord::SessionStore::Session)
-    # if obj.class.respond_to?(:deleted_class)
-    c = Change.create(
-      change_loggable_id: obj.id,
-      change_loggable_type: obj.class.to_s,
-      action_type: 'delete',
-      user_id: Thread.current['user'].try(:id),
-      changes: obj.attributes
-    )
-      # c.update_attribute(:change_loggable_type, obj.class.deleted_class.to_s)
-    # end
-  end
-  
+    
   # Restores this object by creating a new matching object with the same attributes.
   def undelete!
     new_type = changes.delete("type")

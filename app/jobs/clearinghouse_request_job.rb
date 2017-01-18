@@ -1,4 +1,4 @@
-class ClearinghouseRequestJob < ActiveJob::Base
+class ClearinghouseRequestJob < ApplicationJob
   queue_as :default
 
   def perform(clearinghouse_request_id, file_path)
