@@ -130,6 +130,10 @@ header.sub {
 					background-color: inherit;
 					color: $primary-dark;
 				}
+				
+				> .btn-group {
+					margin-top: 7.5px;
+				}
 			}
 		}
 	}

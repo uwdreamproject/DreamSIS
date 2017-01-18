@@ -6,6 +6,9 @@
 	</button>
 	<ul class="dropdown-menu">
 		
+		<li class="select-all"><%= link_to "Select all", "#", glyph: "check-square-o"  %></li>
+		<li role="separator" class="divider"></li>
+		
 		<li><%= link_to_participant_bulk_action "Send e-mail", :send_email, glyph: "send"  %></li>
 
 		<%- if @current_user.admin? || @current_user.person.current_lead? -%>

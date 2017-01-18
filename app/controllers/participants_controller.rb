@@ -16,9 +16,22 @@ class ParticipantsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.xml  { render xml: @participants.unpaginate }
+      format.xml  { render xml: @participants }
       format.js
-      # format.xlsx { respond_to_xlsx }
+      format.json {
+        render json: {
+          currentRequest: params[:currentRequest],
+          navigation: {
+            current_page: @participants.current_page,
+            total_pages: @participants.total_pages,
+            per_page: @participants.per_page
+          },
+          html: {
+            header: render_to_string(partial: 'participants/reports/table_header', formats: [:html]),
+            records: render_to_string(partial: 'participant', collection: @participants, locals: { report: @report }, format: :html)
+          }
+        }
+      }
     end
   end
 

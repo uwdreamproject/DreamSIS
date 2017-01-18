@@ -7,8 +7,14 @@ reports.delete(:college_stages) unless @stages
 	<ul class="nav nav-tabs report-select" role="tablist">
 		<% for key, title in reports %>
 			<%= content_tag :li, class: "#{'active' if @report.to_s == key.to_s}", role: 'presentation' do %>
-				<%= link_to title, url_for(report: key), role: "tab", remote: true, data: { report: key } %>
+				<%= link_to title, url_for(report: key), role: "tab", data: { report: key } %>
 			<% end %>
 		<% end %>
+		
+		<li class="pull-right" role="presentation">
+			<%= render partial: "shared/navigation_controls" %>
+		</li>
+		
 	</ul>
+	
 <% end %>

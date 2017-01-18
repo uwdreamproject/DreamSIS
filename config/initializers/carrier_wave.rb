@@ -12,4 +12,6 @@ CarrierWave.configure do |config|
   config.fog_attributes = {'Cache-Control'=>'max-age=315576000'}
   config.fog_use_ssl_for_aws = true
   config.enable_processing = true
+  config.cache_dir = Rails.root.join('tmp')
+  config.delete_tmp_file_after_storage = false
 end

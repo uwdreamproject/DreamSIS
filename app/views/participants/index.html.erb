@@ -21,17 +21,13 @@
 
 <table class="participants multirow active-report table" id="participants_table">
 	<thead></thead>
-	
+	<tbody></tbody>
 	<tfoot id="empty_placeholder" class="hidden">
 		<tr class="empty">
 			<td colspan="20">No <%= Customer.participants_label %> match your selection.</td>
 		</tr>
 	</tfoot>
 </table>
-
-<center>
-	<%= indicator :table, hidden: false %>
-</center>
 
 <%= render partial: "sidebar" %>
 

@@ -1,6 +1,6 @@
-require 'sidekiq/api'
+require 'sidekiq/web'
 
-Dreamsis::Application.routes.draw do
+Rails.application.routes.draw do
   
   mount ActionCable.server => '/cable'
 
@@ -169,12 +169,12 @@ Dreamsis::Application.routes.draw do
   get 'participants/all' => 'participants#index', as: :all_participants
   get '/participants/mentor/:mentor_id' => 'participants#mentor', as: :mentor_participants
   get '/participants/college/:college_id/cohort/:year' => 'participants#college_cohort', as: :college_participants_cohort
-  get '/participants/college/:college_id' => 'participants#college', as: :college_participants
-  get '/participants/program/:program_id' => 'participants#program', as: :program_participants
-  get '/participants/high_school/:high_school_id/cohort/:year' => 'participants#high_school_cohort', as: :high_school_cohort
-  get '/participants/high_school/:high_school_id' => 'participants#high_school', as: :high_school_participants
-  get '/participants/cohort/:id' => 'participants#cohort', as: :cohort
-  get '/participants/groups/:id' => 'participants#group', as: :participant_group_participants
+  get '/participants/college/:college_id' => 'participants#index', as: :college_participants
+  get '/participants/program/:program_id' => 'participants#index', as: :program_participants
+  get '/participants/high_school/:high_school_id/cohort/:year' => 'participants#index', as: :high_school_cohort
+  get '/participants/high_school/:high_school_id' => 'participants#index', as: :high_school_participants
+  get '/participants/cohort/:id' => 'participants#index', as: :cohort
+  get '/participants/groups/:id' => 'participants#index', as: :participant_group_participants
   post '/participants/bulk_actions/:action' => 'participant_bulk_actions#:action', as: :participant_bulk_action
 
 
@@ -261,7 +261,7 @@ Dreamsis::Application.routes.draw do
 
   # Other
   # ---------------------------------------
-  # mount Sidekiq::Web, at: "/sidekiq"
+  # mount Sidekiq::Web => '/sidekiq'
   get 'sidekiq/status' => 'application#sidekiq_status'
   get 'search' => 'application#search'
   get '/' => 'welcome#index'
