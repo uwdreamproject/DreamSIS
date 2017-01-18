@@ -409,25 +409,26 @@ class Participant < Person
   end
 
   def send_login_link(login_link)
-    mandrill = Mandrill::API.new(MANDRILL_API_KEY)
-
-    template_content = [
-      {name: 'title', content: "An account has been created for you by #{Customer.name_label}."},
-      {name: 'main_message', content: "#{Customer.name_label} is using DreamSIS.com to manage its program and keep track of student information. You can use the link below to login and setup your account. If you have any questions, please contact your #{Customer.mentor_label} or #{Customer.lead_label}."}
-    ]
-    message = {
-      to: [{name: fullname, email: email }],
-      global_merge_vars: [
-        {name: "login_link", content: login_link}
-      ],
-      subject: "Your #{Customer.name_label} account on DreamSIS.com"
-    }
-
-    return mandrill.messages.send_template 'Account E-mail', template_content, message
-
-  rescue Mandrill::Error => e
-      puts "A mandrill error occurred: #{e.class} - #{e.message}"
-      raise
+  #   mandrill = Mandrill::API.new(MANDRILL_API_KEY)
+  #
+  #   template_content = [
+  #     {name: 'title', content: "An account has been created for you by #{Customer.name_label}."},
+  #     {name: 'main_message', content: "#{Customer.name_label} is using DreamSIS.com to manage its program and keep track of student information. You can use the link below to login and setup your account. If you have any questions, please contact your #{Customer.mentor_label} or #{Customer.lead_label}."}
+  #   ]
+  #   message = {
+  #     to: [{name: fullname, email: email }],
+  #     global_merge_vars: [
+  #       {name: "login_link", content: login_link}
+  #     ],
+  #     subject: "Your #{Customer.name_label} account on DreamSIS.com"
+  #   }
+  #
+  #   return mandrill.messages.send_template 'Account E-mail', template_content, message
+  #
+  # rescue Mandrill::Error => e
+  #     puts "A mandrill error occurred: #{e.class} - #{e.message}"
+  #     raise
+    raise NotImplementedError.new("send_login_link")
   end
 
 end
