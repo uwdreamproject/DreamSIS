@@ -1,4 +1,4 @@
-class EventType < ActiveRecord::Base
+class EventType < ApplicationRecord
   has_many :events do
     def future
       find :all, conditions: ["date >= ?", Time.now.midnight]

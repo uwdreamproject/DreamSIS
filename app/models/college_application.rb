@@ -1,4 +1,4 @@
-class CollegeApplication < ActiveRecord::Base
+class CollegeApplication < ApplicationRecord
   
   # belongs_to :institution
   belongs_to :participant, touch: true

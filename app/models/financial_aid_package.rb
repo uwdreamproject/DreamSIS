@@ -1,4 +1,4 @@
-class FinancialAidPackage < ActiveRecord::Base
+class FinancialAidPackage < ApplicationRecord
   attr_accessible :academic_year, :cost_of_attendance, :cost_of_attendance_source, :expected_family_contribution, :college_application_id, :participant_id
   
   validates_presence_of :academic_year, :participant_id, :college_application_id

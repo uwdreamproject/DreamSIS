@@ -1,5 +1,5 @@
 # Keeps track of changes made to associated models.
-class Change < ActiveRecord::Base
+class Change < ApplicationRecord
   belongs_to :change_loggable, polymorphic: true
   serialize :changes
   

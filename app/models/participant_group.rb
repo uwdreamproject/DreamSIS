@@ -1,4 +1,4 @@
-class ParticipantGroup < ActiveRecord::Base
+class ParticipantGroup < ApplicationRecord
   has_many :participants
   belongs_to :location
   

@@ -1,5 +1,5 @@
 # An ActivityLog is used by a mentor to track his or her activity over the course of a week.
-class ActivityLog < ActiveRecord::Base
+class ActivityLog < ApplicationRecord
   belongs_to :mentor
   
 	validates_presence_of :mentor_id, :start_date, :end_date

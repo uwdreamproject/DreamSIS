@@ -1,4 +1,4 @@
-class PersonFafsa < ActiveRecord::Base
+class PersonFafsa < ApplicationRecord
   self.table_name = "people_fafsas"
   belongs_to :person, touch: true
   validates_presence_of :person_id, :year

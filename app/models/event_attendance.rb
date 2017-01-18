@@ -1,4 +1,4 @@
-class EventAttendance < ActiveRecord::Base
+class EventAttendance < ApplicationRecord
   belongs_to :event, inverse_of: :attendees
   belongs_to :person, touch: true
   belongs_to :event_shift

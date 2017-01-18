@@ -1,4 +1,4 @@
-class HowDidYouHearOption < ActiveRecord::Base
+class HowDidYouHearOption < ApplicationRecord
   # has_many :how_did_you_hear_people
   # has_many :people, through: :how_did_you_hear_people
   has_and_belongs_to_many :people

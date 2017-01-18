@@ -1,4 +1,4 @@
-class ObjectFilter < ActiveRecord::Base
+class ObjectFilter < ApplicationRecord
   validates_presence_of :object_class, :title, :criteria
   validate :validate_criteria
   validates_format_of :title, with: /\A[^.]+\Z/, message: "cannot include a period"

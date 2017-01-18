@@ -1,4 +1,4 @@
-class MentorTerm < ActiveRecord::Base
+class MentorTerm < ApplicationRecord
   belongs_to :mentor_term_group, counter_cache: true
   belongs_to :mentor
   

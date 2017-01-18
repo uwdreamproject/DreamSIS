@@ -13,7 +13,7 @@ Relevant attributes on Customer:
 2. Encrypt the customer ID and password using private key stored outside of version control. Do not store in ChangeLog.
 3. Track the number of submissions per year allowed, as well as the annual start date for the contract.
 =end
-class ClearinghouseRequest < ActiveRecord::Base
+class ClearinghouseRequest < ApplicationRecord
   validates_presence_of :customer_id, :participant_ids
   validate :overlimit_protection
   
@@ -27,7 +27,8 @@ class ClearinghouseRequest < ActiveRecord::Base
   
   attr_accessor :plain_ftp_password, :exclude_inactive, :exclude_not_target
   
-  attr_protected :customer_id, :ftp_password
+  # attr_protected :customer_id, :ftp_password
+  # TODO add to controller
   
   InquiryTypes = {
     "SE" => "SE - Current or Previously Enrolled Students/Transfers Out",

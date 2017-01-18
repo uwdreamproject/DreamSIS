@@ -1,7 +1,7 @@
 # Models a specific period of time, usually aligning to an academic calendar. This used to be called "Quarter" to model the academic quarters of the UW, but was renamed to Term to handle other types of calendars, such as semesters. The change also allows customers to use completely arbitrary calendar terms, like a full year or more.
 #
 # Quarter is now available as a subclass of this model so that quarter-specific funcationality can be retained.
-class Term < ActiveRecord::Base
+class Term < ApplicationRecord
   has_many :mentor_term_groups
 
   validates_presence_of :start_date

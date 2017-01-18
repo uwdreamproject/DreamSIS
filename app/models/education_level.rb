@@ -1,4 +1,4 @@
-class EducationLevel < ActiveRecord::Base
+class EducationLevel < ApplicationRecord
 
   default_scope { order("sequence") }
   

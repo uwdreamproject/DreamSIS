@@ -1,4 +1,4 @@
-class TrainingCompletion < ActiveRecord::Base
+class TrainingCompletion < ApplicationRecord
   validates_presence_of :training_id, :person_id
   validates_uniqueness_of :person_id, scope: :training_id
   

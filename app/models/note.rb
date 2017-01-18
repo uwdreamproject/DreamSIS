@@ -1,5 +1,5 @@
 # Any object within DreamSIS can be notated with a Note. Note accepts a polymorphic association called +notable+ that can be used to add notes to another model. Notes can also have arbitrary documents attached to them, which are stored on S3 using CarrierWave. If you want to validate that a Note has a valid document, use the +validate_document+ method (say, if you have a form that you want to collect a document with).
-class Note < ActiveRecord::Base
+class Note < ApplicationRecord
   belongs_to :notable, polymorphic: true, touch: true
   belongs_to :user, class_name: "User", foreign_key: "creator_id"
   validates_presence_of :notable_type, :notable_id

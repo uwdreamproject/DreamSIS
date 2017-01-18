@@ -1,7 +1,7 @@
 require 'uri'
 
 # Defines a program with which a person can be affiliated.
-class Program < ActiveRecord::Base
+class Program < ApplicationRecord
   validates_presence_of :title, :abbreviation
   has_and_belongs_to_many :people
   has_and_belongs_to_many :participants, class_name: "Person", conditions: { type: "Participant" }

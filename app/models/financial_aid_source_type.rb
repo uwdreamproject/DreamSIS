@@ -1,4 +1,4 @@
-class FinancialAidSourceType < ActiveRecord::Base
+class FinancialAidSourceType < ApplicationRecord
   attr_accessible :category, :name
   
   has_many :sources, class_name: FinancialAidSource

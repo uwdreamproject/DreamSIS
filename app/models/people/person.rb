@@ -1,4 +1,4 @@
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   include SchemaSearchable
   searchkick index_name: tenant_index_name, callbacks: :async
 

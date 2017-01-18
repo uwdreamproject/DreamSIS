@@ -1,7 +1,7 @@
 require 'open-uri'
 
 # Models an Institution record, pulled from the Department of Education's list. You must load the institutions list from a CSV file by calling +Institution#load_from_csv!+.
-class Institution < ActiveRecord::Base
+class Institution < ApplicationRecord
   include SchemaSearchable
   searchkick index_name: tenant_index_name, callbacks: :async
 

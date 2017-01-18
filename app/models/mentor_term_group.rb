@@ -1,4 +1,4 @@
-class MentorTermGroup < ActiveRecord::Base
+class MentorTermGroup < ApplicationRecord
   belongs_to :term
   belongs_to :location
   

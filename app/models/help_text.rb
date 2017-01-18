@@ -1,4 +1,4 @@
-class HelpText < ActiveRecord::Base
+class HelpText < ApplicationRecord
   attr_accessible :attribute_name, :instructions, :object_class, :title, :hint, :audience
   validates_uniqueness_of :attribute_name, scope: [:object_class, :audience]
   

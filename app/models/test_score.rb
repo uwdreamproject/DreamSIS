@@ -1,5 +1,5 @@
 # Models an instance of a participant taking a test represented by TestType. For example, the SAT or ACT tests.
-class TestScore < ActiveRecord::Base
+class TestScore < ApplicationRecord
   belongs_to :participant, touch: true
   belongs_to :test_type
   

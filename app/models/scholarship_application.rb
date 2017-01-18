@@ -1,4 +1,4 @@
-class ScholarshipApplication < ActiveRecord::Base
+class ScholarshipApplication < ApplicationRecord
   belongs_to :scholarship
   belongs_to :participant, touch: true
   

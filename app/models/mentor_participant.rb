@@ -1,4 +1,4 @@
-class MentorParticipant < ActiveRecord::Base
+class MentorParticipant < ApplicationRecord
 
   belongs_to :mentor, touch: true
   belongs_to :participant, touch: true

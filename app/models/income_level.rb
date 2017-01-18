@@ -1,4 +1,4 @@
-class IncomeLevel < ActiveRecord::Base
+class IncomeLevel < ApplicationRecord
   include ActionView::Helpers::NumberHelper
   
   # Calculate the title for this IncomeLevel. In most cases, this is just ":min_level to :max_level." But if min_level is 0, we
