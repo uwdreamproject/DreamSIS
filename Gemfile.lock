@@ -573,7 +573,7 @@ DEPENDENCIES
   awesome_print
   aws-sdk
   axlsx
-  bcrypt-ruby
+  bcrypt
   bootstrap-sass
   brakeman
   bundler-audit
