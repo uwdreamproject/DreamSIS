@@ -1,5 +1,5 @@
 class FinancialAidSource < ApplicationRecord
-  attr_accessible :amount, :package_id, :scholarship_application_id, :source_type_id
+  # TODO attr_accessible :amount, :package_id, :scholarship_application_id, :source_type_id
   belongs_to :package, class_name: FinancialAidPackage
   belongs_to :source_type, class_name: FinancialAidSourceType
   belongs_to :scholarship_application

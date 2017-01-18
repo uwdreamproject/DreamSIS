@@ -1,5 +1,5 @@
 class FinancialAidPackage < ApplicationRecord
-  attr_accessible :academic_year, :cost_of_attendance, :cost_of_attendance_source, :expected_family_contribution, :college_application_id, :participant_id
+  # TODO attr_accessible :academic_year, :cost_of_attendance, :cost_of_attendance_source, :expected_family_contribution, :college_application_id, :participant_id
   
   validates_presence_of :academic_year, :participant_id, :college_application_id
   validates_uniqueness_of :participant_id, scope: [:academic_year, :college_application_id]
