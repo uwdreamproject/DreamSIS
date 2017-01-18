@@ -132,6 +132,7 @@ class Report
     expire_in VALIDITY_PERIOD
   rescue => e
     Rollbar.warning e
+    raise if Rails.env.development?
     set 'status', "error: #{e.message}"
   end
 
@@ -147,6 +148,7 @@ class Report
       end
       set 'percent', 100
     end
+    Rails.logger.info { "Completed composing Report package" }
   end
   
   def update_progress(current)
@@ -159,12 +161,16 @@ class Report
   end
   
   def store_package
-    file = Tempfile.new(['report', '.xlsx'])
+    file = Tempfile.new(["report", '.xlsx'])
     file.binmode
     file.write(xlsx_package.to_stream.read)
-    @uploader.store!(file)
+    file.close
+    Rails.logger.info { "Stored Report package in tempfile: " + file.path }
+    @uploader.cache_dir = File.dirname(file.path)
+    @uploader.store!(File.open(file.path, 'rb'))
     set 'download_url', @uploader.url
     set 'filename', @uploader.filename
+    Rails.logger.info { "Uploaded Report package as " + @uploader.filename }
   end
 
 end
