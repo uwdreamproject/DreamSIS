@@ -1,4 +1,14 @@
 GIT
+  remote: git://github.com/rails/activeresource.git
+  revision: 55a2643398762fae10acf6bb8cb21ae354a8eba1
+  branch: master
+  specs:
+    activeresource (5.0.0)
+      activemodel (> 4.2, < 6)
+      activemodel-serializers-xml (~> 1.0)
+      activesupport (> 4.2, < 6)
+
+GIT
   remote: https://github.com/circleci/minitest-ci.git
   revision: ca90e645696df77de310dc8adf53e7379d1e6fbe
   specs:
@@ -38,6 +48,11 @@ GEM
       globalid (>= 0.3.6)
     activemodel (5.0.1)
       activesupport (= 5.0.1)
+    activemodel-serializers-xml (1.0.1)
+      activemodel (> 5.x)
+      activerecord (> 5.x)
+      activesupport (> 5.x)
+      builder (~> 3.1)
     activerecord (5.0.1)
       activemodel (= 5.0.1)
       activesupport (= 5.0.1)
@@ -563,6 +578,7 @@ PLATFORMS
 DEPENDENCIES
   RedCloth
   activerecord-postgresql-adapter
+  activeresource!
   acts-as-taggable-on
   acts_as_list
   addressable
