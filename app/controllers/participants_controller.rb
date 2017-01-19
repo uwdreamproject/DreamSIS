@@ -1,7 +1,5 @@
 class ParticipantsController < ApplicationController
   protect_from_forgery only: [:create, :update, :destroy, :bulk]
-  skip_before_filter :login_required, only: [:college_mapper_callback]
-  skip_before_filter :check_if_enrolled, only: [:college_mapper_callback]
   skip_before_filter :check_authorization, except: [:index, :cohort, :destroy]
   
 	before_filter :set_title_prefix

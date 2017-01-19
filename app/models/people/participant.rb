@@ -19,7 +19,7 @@ class Participant < Person
 
   validates_presence_of :birthdate, :high_school_id, if: :validate_ready_to_rsvp?
 
-  attr_accessor :override_binder_date, :override_fafsa_date, :override_wasfa_date, :create_college_mapper_student_after_save, :link_to_current_user_after_save
+  # TODO attr_accessor :override_binder_date, :override_fafsa_date, :override_wasfa_date, :link_to_current_user_after_save
   
   scope :in_cohort, ->(grad_year) { where(grad_year: grad_year) }
   scope :in_high_school, ->(high_school_id) { where(high_school_id: high_school_id) }
@@ -28,7 +28,6 @@ class Participant < Person
   scope :attending_college, ->(college_id) { where(college_attending_id: college_id) }
   scope :assigned_to_mentor, ->(mentor_id) { joins(:mentor_participants).where(mentor_participants: { mentor_id: mentor_id }) }
 
-  # after_save :college_mapper_student, if: :create_college_mapper_student_after_save?
   after_create :link_to_current_user, if: :link_to_current_user_after_save?
   before_save :adjust_postsecondary_plan_to_match_college_attending
 
@@ -298,7 +297,7 @@ class Participant < Person
                 "fafsa_#{Time.now.year}_not_applicable"]
 		columns << Participant.object_filters.collect { |f| "Filter: #{f.title}" }
 		remove_columns = [:filter_cache, :login_token, :login_token_expires_at, :customer_id,
-								:avatar, :college_mapper_id, :avatar_image_url, :college_mapper_id, :husky_card_rfid,
+								:avatar, :avatar_image_url, :husky_card_rfid,
 								:survey_id, :relationship_to_child, :occupation,	:annual_income,	:needs_interpreter,
 								:meeting_availability, :child_id, :fafsa_submitted_date, :fafsa_not_applicable]
 		columns = columns.flatten - remove_columns

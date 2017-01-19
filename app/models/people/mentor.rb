@@ -388,35 +388,6 @@ Documentation for each filter:
     Digest::SHA1.hexdigest("--UW--#{netid}--")
   end
 
-  # Returns the CollegeMapperCounselor record for this individual if we have a college_mapper_id stored.
-  # By default, if the record doesn't exist, we create it. You can override that by passing +false+ for
-  # +create_if_nil+.
-  def college_mapper_counselor(create_if_nil = true)
-    if !self.college_mapper_id
-      return create_college_mapper_counselor if create_if_nil
-      return nil
-    end
-    @college_mapper_counselor ||= CollegeMapperCounselor.find(self.college_mapper_id)
-  end
-
-  # Creates a CollegeMapperCounselor record for this mentor and stores the CollegeMapper user ID in the
-  # +college_mapper_id+ attribute. Returns +false+ if the account couldn't be created.
-  def create_college_mapper_counselor
-    @college_mapper_counselor = CollegeMapperCounselor.create({
-      firstName: firstname.to_s.titlecase,
-      lastName: lastname.to_s.titlecase,
-      email: email,
-      zipCode: (zip || 98105),
-      allowVicariousLogin: true,
-      dream: true
-    })
-    self.update_attribute(:college_mapper_id, @college_mapper_counselor.id)
-    @college_mapper_counselor
-  rescue ActiveResource::BadRequest => e
-    logger.info { e.message }
-    false
-  end
-
   # Allows for dynamically created symbols to be sent to mentors,
   # specifically to generate excel columns for a given term
   def method_missing(method_name, *args)

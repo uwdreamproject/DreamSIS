@@ -15,14 +15,6 @@ omniauth:
       key:
       secret:
 
-collegemapper:
-  development:
-    host:
-    api_key:
-  production:
-    host:
-    api_key:
-  
 exceptional:
   api_key:
   

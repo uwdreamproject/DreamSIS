@@ -12,9 +12,6 @@ class CollegeApplication < ApplicationRecord
   delegate :name, :iclevel_description, :control_description, :sector_description, to: :institution, allow_nil: true
   delegate :firstname, :lastname, :formal_firstname, :grad_year, to: :participant
   
-  before_destroy :destroy_college_mapper_college, if: :do_college_mapper_functions?
-  after_create :create_college_mapper_college, if: :do_college_mapper_functions?
-  
   Stages = %w[interested applied planning enrolled current graduated]
   
   attr_accessor :institution_name
@@ -38,11 +35,6 @@ class CollegeApplication < ApplicationRecord
     !date_applied.nil?
   end
   
-  def do_college_mapper_functions?
-    # !participant.college_mapper_id.nil? rescue false
-    false
-  end
-  
   # Returns an array of the most commonly selected institution codes. Specify a number to limit.
   # Default is 10.
   def self.top_institutions(limit = 10)
@@ -61,33 +53,6 @@ class CollegeApplication < ApplicationRecord
 			@top_institutions[limit] << i
 		end
 		@top_institutions[limit].compact
-  end
-
-  # Fetches the CollegeMapperCollege resource associated with this object.
-  def college_mapper_college
-    return nil unless participant.college_mapper_id
-    @college_mapper_college ||= CollegeMapperCollege.find(institution_id, params: { user_id: participant.college_mapper_id })
-  end
-
-  # Creates a new CollegeMapperCollege resource for this record. If the instition_id is less than 0
-  # (meaning this is a DreamSIS-only institution record) or nil, then return false.
-  def create_college_mapper_college
-    return false unless participant.college_mapper_id
-    return false if institution_id.nil? || institution_id <= 0
-    @college_mapper_college = CollegeMapperCollege.create({
-      user_id: participant.college_mapper_id,
-      collegeId: institution_id
-    })
-    @college_mapper_college
-  rescue ActiveResource::BadRequest => e
-    logger.info { e.message }
-    false
-  end
-
-  # Destroys the CollegeMapperCollege resource for this record if it exists.
-  def destroy_college_mapper_college
-    return false unless participant.college_mapper_id
-    college_mapper_college.destroy if college_mapper_college
   end
 
 	# Determines the columns that are exported into xlsx pacakages. Includes most model columns

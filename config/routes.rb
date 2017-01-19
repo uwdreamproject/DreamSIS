@@ -119,7 +119,6 @@ Rails.application.routes.draw do
     end
     member do
       get :fetch_participant_group_options
-      post :college_mapper_login
       post :refresh_filter_cache
       get :event_attendances
       get :filters
