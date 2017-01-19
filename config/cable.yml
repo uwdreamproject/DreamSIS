@@ -7,4 +7,4 @@ test:
 
 production:
   adapter: redis
-  url: ENV['REDIS_URL']
+  url: <%= ENV['REDIS_URL'] %>
