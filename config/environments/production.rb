@@ -13,6 +13,9 @@ Rails.application.configure do
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
+  
+  # Log unpermitted params that are sent
+  config.action_controller.action_on_unpermitted_parameters = :log
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
