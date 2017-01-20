@@ -1,34 +1,36 @@
-<div class="welcome-card">
+<div class="container-fluid">
+	<%= image_tag "dreamsis-logo-600", class: 'logo' %>
 		
-	<h1>Welcome</h1>
+	<div class="welcome-card">
+		<h1>Welcome</h1>
 
-	<%- if Customer.allowable_login_method?(:shibboleth) -%>
-		<p>UW students, staff, faculty and alumni:</p>
+		<%- if Customer.allowable_login_method?(:shibboleth) -%>
+			<p>UW students, staff, faculty and alumni:</p>
+			<div class="login-links">
+				<%= link_to "Login with your UW NetID", "auth/shibboleth", class: "btn btn-block btn-uw", glyph: "university" %>
+			</div>
+		<% end %>
+  
+		<p><%= Customer.allowable_login_method?(:shibboleth) ? "All other users, log in" : "Please log in" %> using one of the following services:</p>
 		<div class="login-links">
-			<p>If you are having trouble logging in, please visit <%= link_to "this page", "https://uwnetid.washington.edu/manage/?google", target: "_blank" %> <span class="red">and turn on Google Apps for your NetID</span>, and make sure you <span class="red">change your email forwarding to your original email address.</span></p>
-			<p>Contact <%= link_to "mwh12@uw.edu", "mailto:mwh12@uw.edu" %> with questions.</p>
-			<%= link_to "Login with your UW NetID", "auth/shibboleth", class: "btn btn-default", glyph: "university" %>
+			<%= link_to "Sign in with Google", "auth/google_oauth2", class: "btn btn-block btn-google", glyph: "google-plus-square" if Customer.allowable_login_method?(:google_oauth2) %>
+			<%= link_to "Sign in with Facebook", "auth/facebook", class: "btn btn-block btn-facebook", glyph: "facebook-square" if Customer.allowable_login_method?(:facebook) %>
+			<%= link_to "Sign in with Twitter", "auth/twitter", class: "btn btn-block btn-twitter", glyph: "twitter-square" if Customer.allowable_login_method?(:twitter) %>
+			<%= link_to "Sign in with LinkedIn", "auth/linkedin", class: "btn btn-block btn-linkedin", glyph: "linkedin-square" if Customer.allowable_login_method?(:linkedin) %>
+			<%= link_to "Use a different method", "auth/identity", class: "btn btn-block", glyph: "sign-in" if Customer.allowable_login_method?(:identity) %>
 		</div>
-	<% end %>
 
-	<p><%= Customer.allowable_login_method?(:shibboleth) ? "All other users, log in" : "Please log in" %> using one of the following services:</p>
-	<div class="login-links">
-		<%= link_to "Google", "auth/google_oauth2", class: "btn btn-default", glyph: "google-plus-square" if Customer.allowable_login_method?(:google_oauth2) %>
-		<%= link_to "Facebook", "auth/facebook", class: "btn btn-default", glyph: "facebook-square" if Customer.allowable_login_method?(:facebook) %>
-		<%= link_to "Twitter", "auth/twitter", class: "btn btn-default", glyph: "twitter-square" if Customer.allowable_login_method?(:twitter) %>
-		<%= link_to "LinkedIn", "auth/linkedin", class: "btn btn-default", glyph: "linkedin-square" if Customer.allowable_login_method?(:linkedin) %>
-		<%= link_to "Other", "auth/identity", class: "btn btn-default", glyph: "sign-in" if Customer.allowable_login_method?(:identity) %>
+		<%- if session[:external_login_context] == :rsvp -%>
+			<p>I don't have one of these accounts.</p>
+			<div class="anonymous login-links">
+				<%= link_to "Continue without logging in", anonymous_login_callback_path, class: 'btn btn-default btn-block' %>
+			</div>
+		<% end -%>
+
+		<%- if Customer.allowable_login_methods_list.empty? -%>
+			<p class="warning">This account does not have any login providers configured.</p>
+		<% end %>
+
 	</div>
-
-	<%- if session[:external_login_context] == :rsvp -%>
-		<p>I don't have one of these accounts.</p>
-		<div class="anonymous login-links">
-			<%= link_to "Continue without logging in", anonymous_login_callback_path, class: 'anonymous button' %>
-		</div>
-	<% end -%>
-
-	<%- if Customer.allowable_login_methods_list.empty? -%>
-		<p class="warning">This account does not have any login providers configured.</p>
-	<% end %>
 
 </div>

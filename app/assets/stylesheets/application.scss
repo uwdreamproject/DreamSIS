@@ -6,6 +6,8 @@
 */
 
 $primary-gradient: 				linear-gradient(to bottom right, rgb(95, 92, 154), rgb(67, 47, 115));
+$transparent-gradient:    linear-gradient(rgb(95, 92, 154), transparent);
+$light-gradient:          linear-gradient(rgb(6, 132, 216), transparent);
 $font-stack: 							"Benton Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 $font-size-base: 					13px;
 $font-size-h1:            floor(($font-size-base * 2));
@@ -27,6 +29,7 @@ $primary-gold:            rgb(233, 187, 34);
 @import "typeaheadjs-bootstrap";
 @import "jquery-ui";
 @import "jquery-tablesorter/theme.dreamsis";
+@import "bootstrap-social";
 @import "select2";
 @import "dreamsis";
 @import "login";

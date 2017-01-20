@@ -58,10 +58,10 @@
           return $("<span>")
             .text("Generated ")
             .append($("<time>")
-            .addClass("livestamp")
-            .text("at" + data.generated_at)
-            .attr("datetime", data.generated_at)
-            .livestamp());
+              .addClass("livestamp")
+              .text("at " + data.generated_at)
+              .attr("data-livestamp", data.generated_at)
+            );
         case 'error':
           return $("<p class='text-danger'>There was an error generating the file. Please try again.</p>");
         case 'expired':
