@@ -62,6 +62,11 @@
           records.fetchFromServer()
         })
 
+      },
+      
+      stickyHeaders: function() {
+        $('table').stickyTableHeaders('destroy')
+        return $('table').stickyTableHeaders({ fixedOffset: $('header.sub') })
       }
       
     }
@@ -217,6 +222,7 @@
             display.update.navigation(data.navigation)
             display.update.selections()
             display.indicator('hide')
+            init.stickyHeaders()
           })
       }
     }
@@ -488,6 +494,7 @@
         selector = _selector;
         init.bindEvents();
       },
+      init: init,
       filters: filters,
       display: display,
       records: records,

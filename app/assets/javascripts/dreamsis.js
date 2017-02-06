@@ -214,3 +214,4 @@ $(document).on('inserted.bs.popover', function(event) {
       })
   }
 })
+  $('table').stickyTableHeaders({ fixedOffset: $("header.sub") })

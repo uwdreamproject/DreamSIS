@@ -14,5 +14,6 @@
 //= require twitter/typeahead.min
 //= require moment
 //= require livestamp.min
+//= require plugins/jquery.stickytableheaders.min
 //= require dreamsis.js
 //= require_tree .
