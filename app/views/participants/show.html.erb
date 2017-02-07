@@ -11,7 +11,8 @@
 			<ul class="nav nav-tabs" role="tablist">
 				<%= link_to_section_li @participant, glyph(:dashboard), :dashboard, 'dashboard', true %>
 				<%= link_to_section_li @participant, "Stats", :filter_results, 'filter_results' %>
-				<%= link_to_section_li @participant, "Contact", :contact, 'contact' %>
+				<%= link_to_section_li @participant, "About", :about, 'about' %>
+				<%= link_to_section_li @participant, "Contacts", :parents, 'contacts' %>
 				<%= link_to_section_li @participant, "Colleges", :college_applications, 'college_applications' %>
 				<%= link_to_section_li @participant, "Financial", :scholarship_applications, 'scholarship_applications' %>
 				<%= link_to_section_li @participant, "Tests", :test_scores, 'test_scores' %>
@@ -36,103 +37,91 @@
 			</pre>
 		</div>
 
-		<%- cache [@participant.cache_key, "filter_results"].join("/") do -%>
-			<div role="tabpanel" class="tab-pane fade" id="filter_results">
-				<%= link_to "Recalculate stats", refresh_filter_cache_participant_path(@participant), remote: true, method: :post, class: "pull-right" %>
-				<h2>Current Stats</h2>
-				<%#= render partial: 'filter_results' %>
-			</div>
-		<% end %>
-	
-		<div role="tabpanel" class="tab-pane fade" id="contact">
-			<h2>Contact Information &amp; Attributes</h2>
-			<div><%#= render partial: 'contact' %></div>
-			
-			<%- if @participant.respond_to?(:parents) -%>
-				<h2>Parents/Guardians &amp; Contacts</h2>
-				<%#= render partial: 'parents' %>
-				<br>
-				<%= link_to 'Add parent/guardian or contact',
-							new_participant_parent_path(@participant),
-							class: "add button" %>
-			<% end -%>
+		<div role="tabpanel" class="tab-pane fade" id="filter_results">
+			<%= link_to "Recalculate stats", refresh_filter_cache_participant_path(@participant), remote: true, method: :post, class: "pull-right" %>
+			<h2>Current Stats</h2>
+			<%#= render partial: 'filter_results' %>
 		</div>
 	
+		<div role="tabpanel" class="tab-pane fade" id="about">
+			<%= render partial: 'about' %>
+		</div>
+		
+		<%- if @participant.respond_to?(:parents) -%>
+			<div role="tabpanel" class="tab-pane fade" id="contacts">
+				<div role="placeholder" data-delayed-content-path="parents">
+					<%= indicator "center-block", hidden: false %>
+				</div>
+				<br>
+				<%= link_to 'Add contact', new_participant_parent_path(@participant), class: "btn btn-default" %>
+			</div>
+			<% end -%>
+	
 		<%- if @participant.respond_to?(:college_applications) -%>
-				<div role="tabpanel" class="tab-pane fade" id="college_applications">
-					<h2>Colleges &amp; Postsecondary Plans</h2>
-					<%#= render partial: 'college_applications' %>
-					<%#= render partial: 'college_application_controls' %>
+			<div role="tabpanel" class="tab-pane fade" id="college_applications">
+				<div role="placeholder" data-delayed-content-path="college_applications">
+					<%= indicator "center-block", hidden: false %>
 				</div>
+			</div>
 		<% end %>
-	
-		<%- cache [@participant.cache_key, "column2-a"].join("/") do -%>
-	
-			<%- if @participant.respond_to?(:scholarship_applications) -%>
-				<div role="tabpanel" class="tab-pane fade" id="scholarship_applications">
-					<h2>Financial Aid &amp; Scholarships</h2>
-					<%#= render partial: "fafsas" if @participant.respond_to?(:fafsas) %>
-					<br />
-					
-					<%#= render partial: 'scholarship_applications' %>
-					<p><%= link_to 'Add scholarship',
-													new_participant_scholarship_application_path(@participant),
-													class: "add button" %></p>
-					
-					<%#= render partial: "financial_aid_packages" if @participant.respond_to?(:financial_aid_packages) %>
-					<p><%= link_to 'Add financial aid package',
-													new_participant_financial_aid_package_path(@participant),
-													class: "add button" %></p>
+		
+		<%- if @participant.respond_to?(:scholarship_applications) -%>
+			<div role="tabpanel" class="tab-pane fade" id="scholarship_applications">
+				<div role="placeholder" data-delayed-content-path="scholarship_applications">
+					<%= indicator "center-block", hidden: false %>
 				</div>
-			<% end -%>
 
-			<%- if @participant.respond_to?(:test_scores) -%>
-				<div role="tabpanel" class="tab-pane fade" id="test_scores">
-					<h2>Tests</h2>
-					<%#= render partial: 'test_scores' %>
-					<br>
-					<%= link_to 'Add test',
-								new_participant_test_score_path(@participant),
-								class: "add button" %>
+				TODO: Add FAFSAs
+				<%#= render partial: "fafsas" if @participant.respond_to?(:fafsas) %>
+
+				<div role="placeholder" data-delayed-content-path="financial_aid_packages">
+					<%= indicator "center-block", hidden: false %>
 				</div>
-			<% end -%>
 
-			<%- if @participant.respond_to?(:college_enrollments) -%>
-				<div role="tabpanel" class="tab-pane fade" id="college_enrollments">
-					<h2>College Enrollment</h2>
-					<%#= render partial: 'college_enrollments' %>
-					
-					<h2>College Degrees</h2>
-					<%#= render partial: 'college_degrees' %>
+			</div>
+		<% end -%>
 
+		<%- if @participant.respond_to?(:test_scores) -%>
+			<div role="tabpanel" class="tab-pane fade" id="test_scores">
+				<div role="placeholder" data-delayed-content-path="test_scores">
+					<%= indicator "center-block", hidden: false %>
 				</div>
-			<% end -%>
+			</div>
+		<% end -%>
 
-		<% end %>
+		<%- if @participant.respond_to?(:college_enrollments) -%>
+			<div role="tabpanel" class="tab-pane fade" id="college_enrollments">
+				<div role="placeholder" data-delayed-content-path="college_enrollments">
+					<%= indicator "center-block", hidden: false %>
+				</div>
+				<div role="placeholder" data-delayed-content-path="college_degrees">
+					<%= indicator "center-block", hidden: false %>
+				</div>
+			</div>
+		<% end -%>
 
 		<%- if @participant.respond_to?(:mentors) -%>
 			<div role="tabpanel" class="tab-pane fade" id="mentors">
-				<%- cache [@participant.cache_key, "mentors"].join("/") do -%>
-					<h2><%= Customer.mentors_Label %></h2>
-					<%#= render partial: 'mentors' %>
-				<% end %>
-				<br>
-				<%#= render partial: 'add_mentor_form' %>
-
-				<%- cache [@participant.cache_key, "former-mentors"].join("/") do -%>
-					<%- unless @participant.former_mentor_participants.empty? -%>
-						<br>
-						<h3>Former <%= Customer.mentors_Label %></h3>
-						<%#= render partial: 'former_mentors' %>
-					<% end %>
-				<% end %>
+				<div role="placeholder" data-delayed-content-path="mentors">
+					<%= indicator "center-block", hidden: false %>
+				</div>
+				
+				<div role="placeholder" data-delayed-content-path="mentors/new">
+					<%= indicator "center-block", hidden: false %>
+				</div>
+				
+				<div role="placeholder" data-delayed-content-path="mentors/former">
+					<%= indicator "center-block", hidden: false %>
+				</div>
+				
 			</div>
 		<% end %>
 
 		<%- if @participant.respond_to?(:event_attendances) -%>
 			<div role="tabpanel" class="tab-pane fade" id="events">
-				<h2>Events &amp; Activities</h2>
-				<%#= render partial: 'events' %>
+				<div role="placeholder" data-delayed-content-path="events">
+					<%= indicator "center-block", hidden: false %>
+				</div>
 			</div>
 		<% end -%>
 
@@ -142,7 +131,9 @@
 		</div>
 
 		<div role="tabpanel" class="tab-pane fade" id="notes">
-			<%#= render partial: "notes" %>
+			<div role="placeholder" data-delayed-content-path="notes">
+				<%= indicator "center-block", hidden: false %>
+			</div>
 		</div>
 
 	</div>
@@ -151,8 +142,7 @@
 
 <%= operations wrap: false do %>
 
-	<%= link_to(glyph(:flag, "Needs Followup"), "", class: "needs-followup") if @participant.needs_followup? %>
-	<%= link_to(glyph(:star, "My Students"), "", class: "my-mentee") if @current_user.participants.include?(@participant) %>
+	<%= render "badge_controls" %>
 	
 	<div class="btn-group" role="group" aria-label="Operations Links">
 		<%= link_to 'Edit', edit_participant_path(@participant), class: 'btn btn-default', glyph: 'pencil' %>
@@ -163,8 +153,8 @@
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu">
-				<li class="disabled">
-					<%= link_to "DreamSIS ID: ##{@participant.id}", "#", glyph: "info-circle" %>
+				<li>
+					<a><%= glyph("info-circle") %> <b>DreamSIS ID: #<%= @participant.id %></b></a>
 				</li>
 				<%- if (is_admin = @current_user.admin?) -%>
 			      <li><%= link_to "Record History", changes_for_object_path("participant", @participant), glyph: "history" %></li>

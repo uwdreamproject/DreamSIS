@@ -1,28 +1,40 @@
-<h3 class="pre-title"><%= @participant.fullname %></h3>
-<h1>Financial Aid Packages</h1>
-
-<table>
-  <tr>
-    <th>Year</th>
-    <th>College</th>
-    <th colspan="3">Functions</th>
-  </tr>
-
-<% @financial_aid_packages.each do |financial_aid_package| %>
-  <tr>
-    <td>
-      <%= financial_aid_package.academic_year %>
-    </td>
-    <td>
-      <%= financial_aid_package.try(:college_application).try(:name) %>
-    </td>
-    <td><%= link_to 'Show', [@participant, financial_aid_package] %></td>
-    <td><%= link_to 'Edit', [:edit, @participant, financial_aid_package] %></td>
-    <td><%= link_to 'Destroy', [@participant, financial_aid_package], method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
+<%= subheader do %>
+  <h3 class="pre-title"><%= @participant.fullname %></h3>
+  <h1>Financial Aid Packages</h1>
 <% end %>
+
+<table id="financial_aid_packages">
+	<thead>
+    <tr>
+      <th colspan=10>Financial Aid Packages</th>
+    </tr>
+  </thead>
+  
+  <tbody>
+    <% @participant.financial_aid_packages.each do |financial_aid_package| %>
+    <tr>
+      <td class="name">
+        <%= link_to financial_aid_package.try(:college_application).try(:name), [@participant, financial_aid_package] %>
+				<br />
+				<%= financial_aid_package.academic_year %>
+      </td>
+      <td width="60%">
+        <%= render "financial_aid_packages/cost_breakdown", object: financial_aid_package %>
+        <div style="clear:both; height: 50px">&nbsp;</div>
+      </td>
+      <td class="functions"><%= link_to 'Show', [@participant, financial_aid_package] %></td>
+      <td class="functions"><%= link_to 'Edit', [:edit, @participant, financial_aid_package] %></td>
+      <td class="functions"><%= link_to 'Destroy', [@participant, financial_aid_package], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+    <% end %>
+
+		<%- if @participant.financial_aid_packages.empty? -%>
+		<tr class="empty">
+			<td colspan="10">No financial aid packages yet.</td>
+		</tr>
+		<% end %>
+	</tbody>
+
 </table>
 
-<br />
-
-<%= link_to 'New Financial aid package', [:new, @participant, :financial_aid_package] %>
+<%= link_to 'New financial aid package', [:new, @participant, :financial_aid_package], class: 'btn btn-default' %>

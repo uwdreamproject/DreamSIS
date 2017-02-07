@@ -134,6 +134,9 @@ Rails.application.routes.draw do
     resources :financial_aid_packages do
       resources :financial_aid_sources, as: :sources
     end
+    resources :mentors do
+      get :former
+    end
     resources :parents
     resources :test_scores do
       collection do
@@ -144,6 +147,7 @@ Rails.application.routes.draw do
       end
     end
   end
+  
   resources :students, only: [:show]
   resources :participant_groups do
     collection do

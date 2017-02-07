@@ -1,4 +1,4 @@
-<table id="mentors">
+<table class="mentors">
 	<thead>
 		<tr>
 			<th>Name</th>
@@ -9,7 +9,7 @@
 	</thead>
 	
 	<tbody>
-		<%= render partial: "mentors/mentor_participant", collection: @participant.mentor_participants %>
+		<%= render @participant.mentor_participants %>
 				
 		<%- if @participant.mentors.empty? -%>
 		<tr class="empty">
@@ -18,4 +18,4 @@
 		<% end %>
 	</tbody>
 
-</table>	
+</table>

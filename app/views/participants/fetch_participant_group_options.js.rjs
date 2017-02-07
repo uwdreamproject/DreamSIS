@@ -1,1 +1,0 @@
-page.replace :participant_participant_group_id, :partial => 'participant_group_select'

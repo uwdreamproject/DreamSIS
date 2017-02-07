@@ -17,13 +17,11 @@
 			<td colspan="10">No college degrees yet.</td>
 		</tr>
 	<% else %>
-		<%= render partial: "college_degree", collection: @college_degrees %>
+		<%= render @college_degrees %>
 	<% end %>
 	</tbody>
 
 </table>
 
 
-<%= content_for(:sidebar) do %>
-	<%= link_to 'Add college degree', new_participant_college_degrees_path, class: 'add button' %>
-<%- end -%>
+<%= link_to 'Add college degree', new_participant_college_degrees_path, class: 'btn btn-default' %>

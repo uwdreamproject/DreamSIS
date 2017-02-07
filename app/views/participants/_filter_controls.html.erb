@@ -1,6 +1,6 @@
 <div class="filters">
 	<%= link_to "Clear", "#", class: "pull-right small hidden clear-filters" %>
-	<h3><%= glyph('filter fa-fw') %> Filters</h3>
+	<h3>Filters</h3>
 
 	<%- for category, object_filters in Participant.object_filters.group_by(&:category) -%>
 	
@@ -15,7 +15,7 @@
 			<%- for object_filter in object_filters -%>
 			<li>
 				<%= link_to "#", class: "filter", data: { filter_id: "ObjectFilter:#{object_filter.id}" } do %>
-					<%= glyph("") %><%= content_tag :span, object_filter.opposite_title, class: "filter-title" %>
+					<%= glyph("", nil, exclude_space: true) %><%= content_tag :span, object_filter.opposite_title, class: "filter-title" %>
 					<%= content_tag :span, "", class: "badge pull-right record-count" %>
 				<% end %>
 			</li>

@@ -6,7 +6,7 @@
 	
 	<li>
 		<%= f.label :participant_group_id %>
-		<%= render partial: 'participant_group_select' %>
+		<%= collection_select :participant, :participant_group_id, (@participant_groups || []), :id, :title, include_blank: true %>
 	</li>
 	
 	<%= f.inputs name: "Status", class: "inline" do -%>

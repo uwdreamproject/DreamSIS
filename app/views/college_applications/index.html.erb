@@ -1,7 +1,32 @@
-<h3 class="pre-title"><%= link_to h(@participant.fullname), @participant %></h3>
-<h1>Colleges</h1>
+<%= content_for :subheader do %>
+  <h3 class="pre-title"><%= link_to h(@participant.fullname), @participant %></h3>
+  <h1>Colleges &amp; Postsecondary Plans</h1>
+<% end %>
 
-<%= render partial: "participants/college_applications" %>
-<br />
+<table id="college_applications_table">
+	<thead>
+		<tr>
+			<th class="sorter-false"></th>
+			<th>Institution</th>
+			<th>Choice</th>
+			<th>Applied?</th>
+			<th>Decision</th>
+			<th class="functions">Functions</th>
+		</tr>
+	</thead>
 
-<%= link_to 'Add college', new_participant_college_application_path, class: 'add button' %>
+	<tbody>
+		<%= render @participant.college_applications %>
+			
+		<%- if @participant.college_applications.empty? -%>
+		<tr class="empty">
+			<td colspan="10">No colleges/plans yet.</td>
+		</tr>
+		<% end %>
+	</tbody>
+	
+	<%= render partial: "postsecondary_plan_row", locals: { participant: @participant } %>
+
+</table>
+
+<%= link_to 'Add college', new_participant_college_application_path, class: 'btn btn-default' %>

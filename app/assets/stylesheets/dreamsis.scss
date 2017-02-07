@@ -16,6 +16,10 @@ body {
 
 #main-content {
 	padding-top: 20px;
+	
+	table:first-of-type {
+		// margin-top: -30px;
+	}
 }
 
 footer {
@@ -53,7 +57,8 @@ table {
 
 	th {
 		border-bottom: 1px solid rgb(176, 183, 226) !important;
-		background-color: rgb(246, 248, 252);
+		// background-color: rgb(246, 248, 252);
+		background-color: white;
 	}
 
 	td.functions {

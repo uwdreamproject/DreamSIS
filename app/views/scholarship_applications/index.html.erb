@@ -1,7 +1,29 @@
-<h3 class="pre-title"><%= link_to h(@participant.fullname), @participant %></h3>
-<h1>Scholarships</h1>
+<%= subheader do %>
+	<h3 class="pre-title"><%= link_to h(@participant.fullname), @participant %></h3>
+	<h1>Scholarships</h1>
+<% end %>
 
-<%= render partial: "participants/scholarship_applications" %>
-<br />
+<table id="scholarship_applications">
+	<thead>
+		<tr>
+			<th>Scholarship</th>
+			<th class="align-right">Amount</th>
+			<th>Awarded?</th>
+			<th class="functions">Functions</th>
+		</tr>
+	</thead>
 
-<%= link_to 'Add scholarship', new_participant_scholarship_application_path, class: 'add button' %>
+	<tbody>
+		<%= render partial: "scholarship_applications/scholarship_application",
+					collection: @participant.scholarship_applications %>
+				
+		<%- if @participant.scholarship_applications.empty? -%>
+		<tr class="empty">
+			<td colspan="10">No scholarships yet.</td>
+		</tr>
+		<% end %>
+	</tbody>
+
+</table>
+
+<%= link_to 'Add scholarship', new_participant_scholarship_application_path, class: 'btn btn-default' %>

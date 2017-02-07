@@ -1,90 +1,161 @@
-$(function() {
-  if($('ul.tabs').length > 0) {
-    bindKeyboardShortcutsForTabs();
-    switchToHashTab();
-  }
-});
+(function() {
+  this.App || (this.App = {});
 
-// Binds the event handlers for the up and down keys to switch betwen tabs.
-function bindKeyboardShortcutsForTabs() {
-  $( document ).keydown(function (event) {
-    if($(document.activeElement).is('textarea,input,select')) { return; }
-    switch (event.which) {
-    case $.ui.keyCode.DOWN:
-      event.preventDefault();
-      nextTab();
-      break;
-    case $.ui.keyCode.UP:
-      event.preventDefault();
-      previousTab();
-      break;
-    default: return;
+  App.tabs = (function(_selector) {
+    var selector = _selector;
+    
+    var init = {
+      
+      // Run just once (global handlers)
+      globals: function() {
+        init.bind.keyboardControls()
+      },
+      
+      // Run every time the page is loaded.
+      always: function() {
+        init.bind.tabEvents()
+        navigation.url.load();
+      },
+      
+      bind: {
+        
+        // Binds the event handlers for the left and right keys to switch betwen tabs.
+        keyboardControls: function() {
+          $( document ).keydown(function (event) {
+            if($(document.activeElement).is('textarea,input,select')) { return; }
+            switch (event.which) {
+            case $.ui.keyCode.LEFT:
+              event.preventDefault();
+              navigation.prev();
+              break;
+            case $.ui.keyCode.RIGHT:
+              event.preventDefault();
+              navigation.next();
+              break;
+            default: return;
+            }
+          })
+        },
+        
+        // Bind when the tab is shown so that we can fetch delayed content, etc.
+        tabEvents: function() {
+          $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var elem = $(e.target)
+            navigation.url.update()
+            $(elem.attr('href')).find("[data-delayed-content-path]").each(function() {
+              content.fetch($( this ))
+            })
+          })
+        }
+        
+      }
     }
-  });
-}
-
-// Moves to a particular tab
-function switchToTab(tab_id, object_id, extra_params) {
-  if($('.info-section#' + tab_id).size() < 1) {
-      return switchToTab('filter_results') // someone's requested a non-existent tab
-  }
-  $('.info-section-container .active').removeClass('active')
-  $('.info-section#' + tab_id).addClass('active');
-  $('#' + tab_id + '_tab_link').addClass('active');
-  var new_hash = "!/section/" + tab_id
-
-  // Handle extra params
-  if(extra_params) {
-    if(extra_params == "show=needs_followup") {
-      toggleFollowupNotes()
-      new_hash += "&" + extra_params
+    
+    var content = {
+      
+      // Fetch delayed content for the specified element, based on the path in the
+      // +data-delayed-content-path+ attribute.
+      fetch: function(element) {
+        var path = element.data('delayed-content-path')
+        var url = window.location.pathname + "/" + path
+        if (element.data('fetched-at') !== undefined) return false;
+        console.log("Fetching tab content from " + url)
+        $.ajax({
+          url: url,
+          context: element,
+          headers: { "X-DreamSIS-Render-Intent": "no-layout" }
+        })
+          .done(function( html ) {
+            $(this)
+              .attr('data-fetched-at', (new Date).toISOString())
+              .attr('role', 'content')
+              .html( html )
+          })
+          .fail(function() {
+            $("<div>")
+              .addClass("alert alert-danger")
+              .attr('role', 'alert')
+              .html('Sorry, the content could not be loaded.')
+              .prepend("<i class='fa fa-exclamation-triangle' aria-hidden='true'></i> ")
+              .replaceAll($(this))
+          })
+      },
+      
+      reset: function() {
+        $('[data-delayed-content-path]').attr('data-fetched-at', null).attr('role', 'placeholder')
+      }
+      
     }
-  }
-
-  // Scroll to the selected element, if provided
-  if(object_id) {
-    var obj = $(".info-section#" + tab_id + " [id*=" + object_id + "]")
-    scrollToObject(obj)
-  } else {
-    $("html, body").animate({ scrollTop: 0 }, "slow");    
-  }
+    
+    var navigation = {
+      
+      // Gets the index ID of the currently active tab.
+      _currentIndex: function() {
+        return $(selector).find('.active').index()
+      },
+      
+      // Returns the ID of the currently selected tab
+      _currentId: function() {
+        return $(selector).find('.active a').attr('href').substr(1)
+      },
+      
+      // Switch to the "next" tab
+      next: function() {
+        nextIndex = navigation._currentIndex() + 1
+        return $(selector).find('li:eq(' + nextIndex + ') a').tab('show')
+      },
+      
+      // Switch to the "previous" tab
+      prev: function() {
+        prevIndex = navigation._currentIndex() - 1
+        return $(selector).find('li:eq(' + prevIndex + ') a').tab('show')
+      },
+      
+      // Switch to the tab with the specified ID
+      goTo: function(tab_id) {
+        $(selector).find('a[href="#' + tab_id + '"]').tab('show')
+      },
+      
+      // Functions pertaining to the URL hash.
+      url: {
+        
+        // Update the URL with the currently selected tab
+        update: function() {
+          var new_hash = "!/section/" + navigation._currentId()
+          window.location.hash = new_hash
+        },
+        
+        // Switches to the tab specified in the URL hash
+        load: function() {
+          var regex = /#!\/section\/(\w+)\/?(\d+)?&?(\w+=\w+)*/
+          var tabHashMatch = decodeURIComponent(window.location.hash).match(regex)
+          if(tabHashMatch && tabHashMatch[1]) {
+          	navigation.goTo(tabHashMatch[1]) //, tabHashMatch[2], tabHashMatch[3]);
+          }
+        }
+        
+      }
+      
+    }
+    
+    return {
+      initialize: function(_selector) {
+        selector = _selector;
+        init.always();
+      },
+      init: init,
+      content: content,
+      navigation: navigation
+    }
   
-  // Update the url hash
-  window.location.hash = new_hash
-}
+  })();
 
-// Switches to the tab specified in the URL hash
-function switchToHashTab() {
-  var tabHashMatch = decodeURIComponent(window.location.hash).match(/#!\/section\/(\w+)\/?(\d+)?&?(\w+=\w+)*/)
-  if(tabHashMatch && tabHashMatch[1]) {
-  	switchToTab(tabHashMatch[1], tabHashMatch[2], tabHashMatch[3]);
-  }
-}
+}).call(this);
 
-// Switch to the "next" tab
-function nextTab() {
-  var next_li = $('ul.tabs .active').first().parent('li').next()
-  if(next_li.length === 0) {
-    return false
-  } else {
-    var next_tab = next_li.children('a').first()
-    switchToTab(next_tab.attr('id').replace("_tab_link", ""))
-  }
-}
+$(function() {
+  App.tabs.init.globals()
+})
 
-// Switch to the "previous" tab
-function previousTab() {
-  var previous_li = $('ul.tabs .active').first().parent('li').prev()
-  if(previous_li.length === 0) {
-    return false
-  } else {
-    var previous_tab = previous_li.children('a').first()
-    switchToTab(previous_tab.attr('id').replace("_tab_link", ""))
-  }
-}
-
-function toggleFollowupNotes() {
-    $(".notes blockquote:not(.needs-followup)").toggleClass("hidden")
-    $(".notes .date-interval").toggleClass("hidden")
-    $(".show_all_notes").toggle()
-}
+$(document).on('turbolinks:load', function(event) {
+  App.tabs.initialize(".nav-tabs")
+})

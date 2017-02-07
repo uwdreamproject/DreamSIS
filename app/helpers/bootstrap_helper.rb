@@ -3,10 +3,12 @@ module BootstrapHelper
 
   # Simple wrapper for inserting a glyphicon
   def glyph(key, text = "", options = {})
-    content_tag(:i, "", {
+    output = content_tag(:i, "", {
       class: "fa fa-#{h(key.to_s)} #{h(options[:class])}",
       aria: { hidden: true, label: h(text) }
-    } ) + " "
+    } )
+    output += " " unless options[:exclude_space]
+    return output
   end
 
   def nav_dropdown(title, &block)

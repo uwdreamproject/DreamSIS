@@ -1,7 +1,28 @@
-<h3 class="pre-title"><%= link_to h(@participant.fullname), @participant %></h3>
-<h1>Tests</h1>
+<%= subheader do %>
+	<h3 class="pre-title"><%= link_to h(@participant.fullname), @participant %></h3>
+	<h1>Tests</h1>
+<% end %>
 
-<%= render partial: "participants/test_scores" %>
-<br />
+<table id="test_scores">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Test Date</th>
+			<th>Total Score</th>
+			<th class="functions">Functions</th>
+		</tr>
+	</thead>
 
-<%= link_to 'Add test', new_participant_test_score_path, class: 'add button' %>
+	<tbody>
+		<%= render @participant.test_scores %>
+				
+		<%- if @participant.test_scores.empty? -%>
+		<tr class="empty">
+			<td colspan="10">No tests yet.</td>
+		</tr>
+		<% end %>
+	</tbody>
+
+</table>
+
+<%= link_to 'Add test', new_participant_test_score_path, class: 'btn btn-default' %>

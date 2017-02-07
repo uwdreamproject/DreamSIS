@@ -18,6 +18,8 @@ class ApplicationController < ActionController::Base
   after_filter :flash_to_headers, except: %w[ ping ]
   
   helper_method :current_user
+
+  layout :handle_global_render_intent
   
   def current_user
     @current_user
@@ -165,6 +167,19 @@ class ApplicationController < ActionController::Base
   
   def apply_customer_styles
     @customer_stylesheet = Customer.stylesheet_url if Customer.stylesheet_url
+  end
+  
+  # Allows the client to send a "X-DreamSIS-Render-Intent" header to specify how the reponse
+  # is going to be used. Currently this only accepts a single value of "no-layout". In this
+  # case, this method will not render the layout for the current request, suitable for use in
+  # AJAX requests that are populating a portion of a page, for example.
+  def handle_global_render_intent
+    if request.headers['X-DreamSIS-Render-Intent'] == 'no-layout'
+      @render_intent = 'no-layout'
+      return false
+    else
+      'application'
+    end
   end
     
 end

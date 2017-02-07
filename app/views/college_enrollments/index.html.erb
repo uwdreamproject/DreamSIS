@@ -22,12 +22,10 @@
 			</tr>
 		<% end %>
 
-		<%= render partial: "college_enrollments/college_enrollment", collection: enrollments %>
+		<%= render enrollments %>
 	</tbody>
 
 </table>
 
 
-<%= content_for(:sidebar) do %>
-	<%= link_to 'Add college enrollment', new_participant_college_enrollment_path, class: 'add button' %>
-<%- end -%>
+<%= link_to 'Add college enrollment', new_participant_college_enrollment_path, class: 'btn btn-default' %>

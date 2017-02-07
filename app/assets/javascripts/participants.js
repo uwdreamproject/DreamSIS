@@ -1,10 +1,5 @@
 $(function () {
   
-  $('select#report').change(function() {
-    $('#participants_table tbody').remove();
-    stopLoading = false;
-  })
-  
   $('.section_score').change(function() {
     updateTotalScore('test_score_total_score', $(this).data("score-calculation-method"))
   })

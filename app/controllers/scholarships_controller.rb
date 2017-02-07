@@ -13,7 +13,7 @@ class ScholarshipsController < ResourceController
     respond_to do |format|
       format.html # index.html.erb
       format.xml { render xml: @scholarships }
-			format.xls { render layout: 'basic' }
+			# format.xls { render layout: 'basic' }
     end
   end
   
@@ -37,7 +37,7 @@ class ScholarshipsController < ResourceController
 
     respond_to do |format|
       format.html
-      format.xls { render layout: 'basic' }
+      # format.xls { render layout: 'basic' }
     end
   end
 

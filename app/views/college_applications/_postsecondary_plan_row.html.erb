@@ -1,6 +1,6 @@
 <tr id="postsecondary_plan_tr" class="<%= "current" if participant.college_attending_id.nil? %>" style="<%= "display:none" if participant.postsecondary_plan.blank? %>">
 	<td colspan="5">
-		Postsecondary plan: 
+		Postsecondary plan:
 			<strong id="postsecondary_plan_display"><%=h participant.postsecondary_plan %></strong>
 			<span id="postsecondary_plan_form" style="display:none">
 				<%= form_for participant, remote: true, method: :put, html: { style: "display: inline;" } do |f| -%>
@@ -15,14 +15,14 @@
 			</span>
 		</td>
 	<td class="functions">
-		<%= link_to "Change", "javascript:;", id: "postsecondary_plan_change_button" %>		
+		<%= link_to "Change", "javascript:;", id: "postsecondary_plan_change_button" %>
 	</td>
 </tr>
 
-<%= javascript_tag "
+<%#= javascript_tag "
 	$('#postsecondary_plan_change_button').click( function() {
-		$(this).hide(); 
-		$('#postsecondary_plan_display').hide(); 
+		$(this).hide();
+		$('#postsecondary_plan_display').hide();
 		$('#postsecondary_plan_form').show()
 	})
 	
@@ -31,5 +31,23 @@
 		$('#postsecondary_plan_form').hide();
 		$('#postsecondary_plan_change_button').show()
 	})
-	" 
+	"
 %>
+
+
+<div>
+
+	<span id="postsecondary_plan_add_link" <%= "style='display:none'" unless @participant.postsecondary_plan.blank? %>>
+		<%#= separator %>
+		<%#= link_to "Add a different postsecondary plan", "javascript:;", class: "add button", id: "add_postsecondary_plan" %>
+	
+		<%#= javascript_tag "
+				$('#add_postsecondary_plan').click(function() {
+					$('#postsecondary_plan_tr').show();
+					$('#postsecondary_plan_display').hide();
+					$('#postsecondary_plan_form').show();
+					$('#postsecondary_plan_change_button').hide();
+				})
+		" %>
+	</span>
+</div>

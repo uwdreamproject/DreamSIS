@@ -189,28 +189,29 @@ class ParticipantsController < ApplicationController
   #   end
   # end
   
-  def add_to_group
-    @participant_group = ParticipantGroup.find(params[:participant_group_id])
-    @participant = Participant.find(params[:id].split("_")[1])
-    @participant_groups = ParticipantGroup.where(location_id: @participant_group.location_id, grad_year: @participant_group.grad_year)
-    @participant.update_attribute(:participant_group_id, @participant_group.id)
-    ParticipantGroup.update_counters @participant_group.id, participants_count: @participant_group.participants.length
-    
-    respond_to do |format|
-      format.js
-    end
-  end
+  # def add_to_group
+  #   @participant_group = ParticipantGroup.find(params[:participant_group_id])
+  #   @participant = Participant.find(params[:id].split("_")[1])
+  #   @participant_groups = ParticipantGroup.where(location_id: @participant_group.location_id, grad_year: @participant_group.grad_year)
+  #   @participant.update_attribute(:participant_group_id, @participant_group.id)
+  #   ParticipantGroup.update_counters @participant_group.id, participants_count: @participant_group.participants.length
+  #
+  #   respond_to do |format|
+  #     format.js
+  #   end
+  # end
 
   # GET /participants/1
   # GET /participants/1.xml
   def show
     @participant = Participant.find(params[:id]) rescue Student.find(params[:id])
     @high_school = @participant.high_school
-    @event_attendances = @participant.respond_to?(:relevant_event_attendances) ? @participant.relevant_event_attendances : @participant.event_attendances.non_visits
+    # @event_attendances = @participant.respond_to?(:relevant_event_attendances) ? @participant.relevant_event_attendances : @participant.event_attendances.non_visits
     @grad_year = @participant.grad_year
 		@term = Term.current_term
     @title = @participant.try(:fullname, middlename: false)
-    @visits = @high_school.events(@term, nil, true, 100) if @high_school
+    # @visits = @high_school.events(@term, nil, true, 100) if @high_school
+    @mentor_participant = @current_user.mentor_participants.where(participant_id: @participant.id).last
 		
     unless @current_user && @current_user.can_view?(@participant)
       return render_error("You are not allowed to view that participant.")
@@ -385,18 +386,18 @@ class ParticipantsController < ApplicationController
     end
   end
   
-  def fetch_participant_group_options
-    # @participant = Participant.find(params[:id])
-    @participant_groups = ParticipantGroup.where({
-        location_id: params[:participant][:high_school_id],
-        grad_year: params[:participant][:grad_year]
-      })
-      
-    respond_to do |format|
-      format.js
-    end
-  end
-	
+  # def fetch_participant_group_options
+  #   # @participant = Participant.find(params[:id])
+  #   @participant_groups = ParticipantGroup.where({
+  #       location_id: params[:participant][:high_school_id],
+  #       grad_year: params[:participant][:grad_year]
+  #     })
+  #
+  #   respond_to do |format|
+  #     format.js
+  #   end
+  # end
+	#
   # def auto_complete_for_participant_fullname
   #   if params[:term].to_i != 0
   #     @participants = [ Participant.find(params[:term].to_i) ]
@@ -460,46 +461,6 @@ class ParticipantsController < ApplicationController
     @filter_warning_counts = Customer.redis.hgetall("filters:counts:Participant:warn")
   end
 
-	# def respond_to_xlsx
-	# 	@export = report_type.find_or_initialize_by_key(@cache_key)
-	# 	if @export.generated? && params[:generate].nil?
-	# 		if request.xhr?
-	# 			headers["Content-Type"] = "text/javascript"
-	# 			render js: "window.location = '#{url_for(format: 'xlsx', report: @report)}'"
-	# 		else
-  #       begin
-  #         filename = @filename || "participants.xlsx"
-  #         send_data @export.file.read, filename: filename, disposition: 'inline', type: @export.mime_type.to_s
-  #       rescue
-  #         flash[:error] = "The file could not be read from the server. Please try regenerating the export."
-  #         redirect_to :back
-  #       end
-	# 		end
-	# 	else
-	# 		respond_to_generate_xlsx
-	# 	end
-	# end
-  #
-	# def respond_to_generate_xlsx
-	# 	@export = report_type.find_or_initialize_by_key(@cache_key)
-	# 	@export.format = "xlsx"
-	# 	@export.object_ids = report_object_ids
-	# 	@export.reset_to_ungenerated
-	# 	@export.status = "initializing"
-	# 	@export.save
-  #   logger.debug { @export.to_yaml }
-  #   logger.debug { @export.errors.to_yaml }
-	# 	@export.generate_in_background!
-	# 	flash[:notice] = "We are generating your Excel file for you. Please wait."
-	#
-	# 	if request.xhr?
-	# 		headers["Content-Type"] = "text/javascript"
-	# 		return render(template: "participants/check_export_status.js.erb", format: 'js')
-	# 	else
-	# 		return redirect_to(:back, format: 'html')
-	# 	end
-	# end
-
   def report_type
     case params[:report]
     when "test_score_summaries" then TestScoresReport
@@ -511,22 +472,10 @@ class ParticipantsController < ApplicationController
     end
   end
   
-  # def report_object_ids
-  #   @participants = Participant.all
-  #   case params[:report]
-  #   when "test_score_summaries" then @participants.collect(&:test_scores).flatten.collect(&:id)
-  #   when "college_applications" then @participants.collect(&:college_applications).flatten.collect(&:id)
-  #   when "attendance_summaries" then @participants.collect(&:event_attendances).flatten.collect(&:id)
-  #   when "financial_aid_packages" then @participants.collect(&:financial_aid_packages).flatten.collect(&:id)
-  #   when "parents" then @participants.collect(&:parents).flatten.collect(&:id)
-  #   else @participants.collect(&:id)
-  #   end
-  # end
-
   private
 
   def participant_params
-    params.require(:participant).permit(%w[lastname firstname middlename suffix nickname birthdate sex shirt_size avatar bad_address phone_home phone_mobile preferred_phone bad_phone email email2 check_email_regularly bad_email facebook_id computer_at_home preferred_contact_method grad_year high_school_id gpa gpa_date student_id_number on_track_to_graduate dietary_restrictions program_ids[] college_bound_scholarship after_school_activities postsecondary_goal african african_heritage african_american african_american_heritage american_indian american_indian_heritage asian asian_heritage asian_american asian_american_heritage caucasian caucasian_heritage hispanic hispanic_heritage latino latino_heritage middle_eastern middle_eastern_heritage pacific_islander pacific_islander_heritage other_ethnicity other_heritage birthplace immigrant first_generation family_members_who_went_to_college family_members_graduated attended_school_outside_usa countries_attended_school_outside_usa attended_grade_1_outside_usa attended_grade_2_outside_usa attended_grade_3_outside_usa attended_grade_4_outside_usa attended_grade_5_outside_usa attended_grade_6_outside_usa attended_grade_7_outside_usa attended_grade_8_outside_usa attended_grade_9_outside_usa attended_grade_10_outside_usa attended_grade_11_outside_usa attended_grade_12_outside_usa married aliases number_of_children subsidized_housing homeless free_reduced_lunch free_reduced_lunch_signed_up household_size english_not_primary_at_home parent_only_speaks_language other_languages single_parent_household foster_youth binder_date intake_survey_date photo_release_date survey_id participant_group_id inactive inactive_explanation not_target_participant])
+    params.require(:participant).permit(%w[lastname firstname middlename suffix nickname birthdate sex shirt_size avatar bad_address phone_home phone_mobile preferred_phone bad_phone email email2 check_email_regularly bad_email facebook_id computer_at_home preferred_contact_method grad_year high_school_id gpa gpa_date student_id_number on_track_to_graduate dietary_restrictions program_ids[] college_bound_scholarship after_school_activities postsecondary_goal african african_heritage african_american african_american_heritage american_indian american_indian_heritage asian asian_heritage asian_american asian_american_heritage caucasian caucasian_heritage hispanic hispanic_heritage latino latino_heritage middle_eastern middle_eastern_heritage pacific_islander pacific_islander_heritage other_ethnicity other_heritage birthplace immigrant first_generation family_members_who_went_to_college family_members_graduated attended_school_outside_usa countries_attended_school_outside_usa attended_grade_1_outside_usa attended_grade_2_outside_usa attended_grade_3_outside_usa attended_grade_4_outside_usa attended_grade_5_outside_usa attended_grade_6_outside_usa attended_grade_7_outside_usa attended_grade_8_outside_usa attended_grade_9_outside_usa attended_grade_10_outside_usa attended_grade_11_outside_usa attended_grade_12_outside_usa married aliases number_of_children subsidized_housing homeless free_reduced_lunch free_reduced_lunch_signed_up household_size english_not_primary_at_home parent_only_speaks_language other_languages single_parent_household foster_youth binder_date intake_survey_date photo_release_date survey_id participant_group_id inactive inactive_explanation not_target_participant tag_list])
   end
     
 end

@@ -27,6 +27,14 @@
 
 		<div class="row">
 			
+			<%- if content_for?(:sidebar) %>
+			<div class="col-md-2" role="complementary" class="sidebar-container">
+				<section id="sidebar" data-spy="affix" data-offset-top="50" data-offset-bottom="0">
+					<%= yield :sidebar %>
+				</section>
+			</div>
+			<% end %>
+			
 			<div class="<%= content_for?(:sidebar) ? "col-md-10" : "col-md-12" %>" role="main">
 				
 				<div class="alerts-container" data-spy="affix" data-offset-top="50">
@@ -61,14 +69,6 @@
 
 			</div>
 			
-			<%- if content_for?(:sidebar) %>
-			<div class="col-md-2" role="complementary" class="sidebar-container">
-				<section id="sidebar" data-spy="affix" data-offset-top="50" data-offset-bottom="0">
-					<%= yield :sidebar %>
-				</section>
-			</div>
-			<% end %>
-
 			<%= indicator(:global) %>
 		
 		</div>

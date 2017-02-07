@@ -6,8 +6,8 @@
 	</h1>
 	<%- if @participant.inactive? || @participant.not_target_participant? -%>
 		<div class="note-band">
-			<%= content_tag :span, "Inactive", class: "inactive tag" if @participant.inactive? %>
-			<%= content_tag :span, "#{Customer.not_target_Label}", class: "not-target tag" if @participant.not_target_participant? %>
+			<%= content_tag :span, "Inactive", class: "inactive label" if @participant.inactive? %>
+			<%= content_tag :span, "#{Customer.not_target_Label}", class: "not-target label" if @participant.not_target_participant? %>
 		</div>
 	<% end %>
 </div>
@@ -45,14 +45,19 @@
 		<dd>
 				<%= link_to enrollment.institution.try(:name),
 						college_participants_path(enrollment.institution, report: "college_stages"),
-						class: 'redirect-link' %>
-						
-				<div class="small light">
-					<%= "#{enrollment.enrollment_status_name}, " unless enrollment.enrollment_status_name.blank? %>
-					<%= safe_join([enrollment.began_on.try(:to_s, :month_year), enrollment.ended_on.try(:to_s, :month_year)].compact, '&ndash;'.html_safe) %>
-					<%= "<br>".html_safe + content_tag(:b, "Major".pluralize(enrollment.majors_count)) +
-								": ".html_safe + enrollment.majors_list unless enrollment.majors_list.blank? %>
-				</div>
+						data: {
+							toggle: 'popover',
+							container: 'body',
+							placement: 'bottom',
+							trigger: 'hover',
+							html: true,
+							content: safe_join([
+								content_tag(:b, enrollment.enrollment_status_name),
+								safe_join([enrollment.began_on.try(:to_s, :month_year), enrollment.ended_on.try(:to_s, :month_year)].compact, '&ndash;'.html_safe),
+								content_tag(:span, "Major".pluralize(enrollment.majors_count)) + ": ".html_safe + enrollment.majors_list
+							], "<br />".html_safe)
+						}
+					%>
 		</dd>
 	<% end %>
 

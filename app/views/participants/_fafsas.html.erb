@@ -14,9 +14,9 @@
 			<td class="inline-when-small">
 				<%= form_for @participant, remote: true do |f| %>
 					<%= hidden_field_tag "participant[fafsa_#{year}_#{attribute.downcase}]", false, id: nil %>
-					<%= check_box_tag "participant[fafsa_#{year}_#{attribute.downcase}]", 
-										true, 
-										@participant.fafsa(year).try("#{attribute.downcase}?"), 
+					<%= check_box_tag "participant[fafsa_#{year}_#{attribute.downcase}]",
+										true,
+										@participant.fafsa(year).try("#{attribute.downcase}?"),
 										class: "submit-on-change",
 										id: "fafsa_#{year}_#{attribute.downcase}" %>
 					<%= label_tag "fafsa_#{year}_#{attribute.downcase}", attribute.gsub("_", " ") %>
