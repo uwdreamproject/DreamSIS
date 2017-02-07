@@ -1,23 +1,48 @@
-<h1>About You</h1>
-<p class="intro">Tell us about yourself so that we can communicate with you effectively. We promise we won't sell your information or send you spam.</p>
+<%= subheader do %>
+	<div class="row">
+		<div class="col-md-1">
+			<%= image_tag(@person.avatar_image_url, class: "img-circle img-responsive") if @person.avatar_image_url %>
+		</div>
+		<div class="col-md-9">
+			<h1>Your Profile</h1>
+			<dl class="dl-inline">
+				<dt><%= glyph('id-card-o') %> Name:</dt>
+				<dd><%= @person.fullname %></dd>
+				
+				<dt><%= glyph('clock-o') %> Member Since:</dt>
+				<dd><%= @person.created_at.to_s(:month_year) %></dd>
+				
+				<dt><%= glyph('shield') %> Login Method:</dt>
+				<dd><%= @person.users.collect(&:provider_type).join(", ") %></dd>
+			</dl>
+		</div>
+	</div>
+<% end %>
+
+<%= operations do %>
+	<%= link_to "Save", "", class: "btn btn-default", data: { submit: 'main' }, glyph: 'check' %>
+<% end %>
 
 <%= semantic_form_for @person, as: :person, url: update_profile_path, method: :post, label_customizations: false do |f| %>
 
 	<%= default_form_errors(f) %>
 
-	<%= f.inputs do -%>
-        <%= f.inputs(name: "First Name", class: "inline") do -%>
-    		<%= f.input :firstname, label: "Legal/Given Name", input_html: { disabled: !@current_user.can_edit?(@person, :firstname) } %>
-    		<%= f.input :nickname, label: "Preferred/Nickname", input_html: { size: 10 } %>
-        <% end %>
+	<%= f.inputs(name: "Your Contact Information", hint: "We only use this information to facilitate your participation in the program. We never send spam or share your information with others without your consent.") do -%>
+    <%= f.inputs(name: "First Name", class: "inline") do -%>
+  		<%= f.input :firstname, label: "Legal/Given Name", input_html: { disabled: !@current_user.can_edit?(@person, :firstname) } %>
+  		<%= f.input :nickname, label: "Preferred/Nickname", input_html: { size: 10 } %>
+    <% end %>
 
 		<%= f.input :lastname, label: "Last Name", input_html: { disabled: !@current_user.can_edit?(@person, :lastname) } %>
 
 		<%= f.input :email, label: "E-mail Address", input_html: { disabled: !@current_user.can_edit?(@person, :email) }, hint: "We've pulled your email address from the login service that you used (if it was provided). You can change the email address here if you'd like to use a different address instead." %>
-		<%= f.input :sex, label: "Gender", as: :select, collection: {"Male" => "M", "Female" => "F", "No Response" => "NR"} %>
 		<%= f.input :phone_mobile, label: "Phone", input_html: { value: number_to_phone(f.object.phone_mobile) }, hint: "We only use your phone number to get ahold of you about events and activities that you've signed up for on this site." %>
+	<% end %>
+	
+	<%= f.inputs(name: "About You", hint: "Providing this information is optional.") do %>
+		<%= f.input :sex, label: "Gender", as: :select, collection: {"Male" => "M", "Female" => "F", "No Response" => "NR"} %>
 		<%= f.input :birthdate, label: "Birth Date", start_year: Time.now.year-13, end_year: 1930 %>
-        <%= f.input :other_languages, label: "Other languages you speak", hint: "If you speak any languages other than English, enter them here to help coordinate event planning and project assignment." %>
+    <%= f.input :other_languages, label: "Other languages you speak", hint: "If you speak any languages other than English, enter them here to help coordinate event planning and project assignment." %>
 
 		<%- if @current_user.can_edit?(@person, :high_school_id) && @person.respond_to?(:high_school) -%>
 			<li class="select optional <%= "error" if @person.errors.include?(:high_school_id) %>" id="person_high_school_id_input">
@@ -47,8 +72,7 @@
 		<% end -%>
 	<% end -%>
 
-  <%= f.inputs("Emergency Contact Information") do -%>
-		<p>Who can we contact in case of emergency? We will only use this information for contact during emergencies and for no other purpose.</p>
+  <%= f.inputs(name: "Emergency Contact Information", hint: "Who can we contact in case of emergency? We will only use this information for contact during emergencies and for no other purpose.") do -%>
 		<%= f.fields_for :emergency_contact, (@person.emergency_contact || Parent.new) do |contact| %>
 	    <%= contact.inputs("Name", class: "inline") do %>
 	      <%= contact.input :firstname, label: "First" %>
@@ -62,8 +86,7 @@
   <% end -%>
 
 	<%- unless Program.count.zero? -%>
-		<%= f.inputs("Program Affiliations") do -%>
-			<p>Which of the following programs are you affiliated with or do you participate in?</p>
+		<%= f.inputs(name: "Program Affiliations", hint: "Which of the following programs are you affiliated with or do you participate in?") do -%>
 			<%= f.input :programs, as: :check_boxes %>
 		<% end -%>
 	<% end %>
@@ -83,9 +106,9 @@
 		<% end -%>
 
 	<% end -%>
-
+	
 	<%= f.actions do %>
-		<%= f.action :submit, label: "Update" %>
+		<%= f.action :submit, label: "Save", glyph: "check" %>
 	<% end %>
 	
 <% end -%>
