@@ -3,13 +3,35 @@
 
   App.filterable = (function() {
     var filterStatus    = {},
-        selector        = "",
         currentRequest  = 0;
+      
+    // Contains DOM ID's for various elements referenced in this class.
+    var dom = {
+      selector: "",
+      target_table: "#participants_table",
+      filter_controls: "a.filter",
+      clear_filters: "a.clear-filters",
+      filter_count: '.filtered_record_count',
+      header_filter_icon: 'header.sub .fa-filter',
+      bulk_select_all: '.bulk_actions li.select-all > a',
+      bulk_action_control: ".bulk_actions > button",
+      bulk_action_count: "#bulk_actions_count",
+      pagination: ".pagination",
+      filter_bucket: ".filter-bucket",
+      filter_groupings: ".filter-groupings",
+      primary_indicator: ".indicator.participants",
+      active_report_type: ".report-select .active [data-report]"
+    }
+    
+    var urls = {
+      filters: "/participants/filter_results.json",
+      records: "participants"
+    }
           
     var init = {
       
       bindEvents: function() {
-        $(document).on('click', "a.filter", function(event) {
+        $(document).on('click', dom.filter_controls, function(event) {
           event.preventDefault();
           if ($(this).parents('[data-value]').length > 0) {
             var filter_id = $(this).parents('[data-filter-id]').data('filter-id')
@@ -20,7 +42,7 @@
           }
         })
         
-        $(document).on('click', '.clear-filters', function(event) {
+        $(document).on('click', dom.clear_filters, function(event) {
           event.preventDefault();
           filters.clear();
         })
@@ -29,7 +51,7 @@
           event.stopPropagation();
         });
         
-        $(document).on('click', '.bulk_actions li.select-all > a', function(event) {
+        $(document).on('click', dom.bulk_select_all, function(event) {
           event.preventDefault();
           records.selectAll()
         })
@@ -48,17 +70,19 @@
             selections.remove( $(this).parents('.filterable') )
         })
         
-        $(document).on('click', ".navigation-controls a, .navigation-controls button:not(.dropdown-toggle)", function(event) {
+        $(document).on('click', dom.pagination + " a:not(.dropdown-toggle)", function(event) {
           event.preventDefault()
+          if ($(this).hasClass('disabled')) return false
           if ($(this).hasClass('next')) display.navigation.nextPage()
           if ($(this).hasClass('prev')) display.navigation.prevPage()
           if ($(this).data('page')) display.navigation.goToPage($(this).data('page'))
         })
         
-        $(document).on('click', ".report-select > li > a", function(event) {
+        $(document).on('click', ".report-select a:not(.dropdown-toggle)", function(event) {
           event.preventDefault()
           $(".report-select .active").removeClass('active')
           $(this).parent().addClass('active')
+          $(this).parents(".report-select").find(".title").text($(this).text())
           records.fetchFromServer()
         })
 
@@ -146,10 +170,6 @@
       
       // Go check with the server to get the most up to date filter intersection.
       updateFromServer: function() {
-        $.getJSON( "/participants/filter_results.json", {
-          filter_selections: filters.get(),
-          currentRequest: ++currentRequest
-        } )
         $.ajax({
           url: urls.filters,
           dataType: "json",
@@ -182,11 +202,11 @@
       objectIds: [],
       
       visible: function() {
-        return $(selector + ":visible");
+        return $(dom.selector + ":visible");
       },
       
       showAll: function() {
-        $(selector).removeClass("hidden");
+        $(dom.selector).removeClass("hidden");
       },
       
       selectAll: function() {
@@ -213,12 +233,8 @@
       },
       
       fetchFromServer: function() {
+        if (records.count <= 0) return display.update.emptyPlaceholder();
         display.indicator('show')
-        $.getJSON( "participants", {
-          report: display.reportType(),
-          ids: records.objectIds,
-          page: display.currentPage,
-          currentRequest: ++currentRequest
         $.ajax({
           url: urls.records,
           dataType: "json",
@@ -236,7 +252,7 @@
               console.log("Ignoring out of date response")
               return false; // we're out of date with the current filters.
             }
-            $("#participants_table")
+            $(dom.target_table)
               .html(data.html.header)
               .append(data.html.records)
 
@@ -323,7 +339,7 @@
       
         // Updates the display of the controls (the links that turn filters on and off).
         controls: function() {
-          $("a.filter").each(function() {
+          $(dom.filter_controls).each(function() {
             var id = $( this ).data("filter-id");
             var value = filters.get(id);
             $( this ).removeClass("text-success text-danger").find(".fa").removeClass("fa-check fa-ban")
@@ -339,19 +355,21 @@
         
         // Hides or shows the "clear" link based on if there are any filters applied.
         clearLink: function() {
-          $("a.clear-filters").toggleClass("hidden", filters.isEmpty());
+          $(dom.clear_filters).toggleClass("hidden", filters.isEmpty());
         },
         
         // Hides or shows the "sorry, no matches" row in the table.
         emptyPlaceholder: function() {
-          $('#empty_placeholder').toggleClass("hidden", records.visible().length > 0);
+          var emptyRow = $("<tr class='empty'></tr>")
+            .append($("<td colspan='20'><h4>Nothing to see here.</h4><p>Nothing matches your selection.</p></td>"))
+          $(dom.target_table).html(emptyRow)
+
         },
         
         // Updates the record counts
         count: function() {
-          $('.filtered_record_count').html(records.count + " of");
-          $('header.sub .fa-filter').toggleClass("hidden", filters.isEmpty());
-          display.update.emptyPlaceholder();
+          $(dom.filter_count).html(records.count + " of");
+          $(dom.header_filter_icon).toggleClass("hidden", filters.isEmpty());
         },
         
         // Update everything related to selected objects
@@ -363,15 +381,15 @@
         // Updates the badge in the "Actions" menu and updates the "select all" link in that menu.
         hiddenSelectLink: function() {
           var hiddenNote = records.hiddenCount() > 0 ? ("(including " + records.hiddenCount() + " not visible)") : ""
-          $('.bulk_actions li.select-all > a')
+          $(dom.bulk_select_all)
             .html("Select all " + records.objectIds.length + " records " + hiddenNote)
           
           if(selections.count() > 0) {
-            $(".bulk_actions > button").attr("disabled", false)
-            $("#bulk_actions_count").show().text(selections.count())
+            $(dom.bulk_action_control).attr("disabled", false)
+            $(dom.bulk_action_count).show().text(selections.count())
           } else {
-            $(".bulk_actions > button").attr("disabled", true)
-            $("#bulk_actions_count").hide()
+            $(dom.bulk_action_control).attr("disabled", true)
+            $(dom.bulk_action_count).hide()
           }
         },
         
@@ -386,16 +404,14 @@
         
         // Updates the pagination controls based on the server's response.
         navigation: function(data) {
-          $(".navigation-controls").toggleClass('hidden', data.total_pages <= 1)
-          $(".navigation-controls .prev").toggleClass('hidden', data.current_page < 1)
-          $(".navigation-controls .next").toggleClass('hidden', data.current_page >= data.total_pages)
-          $(".navigation-controls .page-number").text(data.current_page)
           console.log(data)
           display.currentPage = data.current_page
           display.totalPages = data.total_pages
+          $(dom.pagination + " .prev").parent().toggleClass('disabled', data.current_page <= 1)
+          $(dom.pagination + " .pagination .next").parent().toggleClass('disabled', data.current_page >= data.total_pages)
+          $(dom.pagination + " .page-number").text(data.current_page)
           
-          var elem = $(".navigation-controls ul.page-select").html("")
-          for(var i = 1; i < data.total_pages; i++) {
+          var elem = $(dom.pagination + " ul.page-select").html("")
           for(var i = 1; i <= data.total_pages; i++) {
             var li = $("<li>").html($("<a href='#'>").data('page', i).text(i))
             if (i == display.currentPage) li.addClass('active')
@@ -405,7 +421,7 @@
         
         // Shows little tags for each set filter into the "filter bucket" at the top of the page.
         bucket: function() {
-          $(".filter-bucket > li:not(.summary)").remove();
+          $(dom.filter_bucket + " > li:not(.summary)").remove();
           $.each(filters.get(), function (key, value) {
             var newTag = $("<li />");
             if (value == "fail") {
@@ -424,13 +440,13 @@
                 .text($('[data-filter-id=\'' + key + '\'] .selected-value').text())
                 .prepend($("<i class='fa fa-group fa-fw'></i>"))
             }
-            $(".filter-bucket").append(newTag);
+            $(dom.filter_bucket).append(newTag);
           });
         },
         
         // Update the grouping dropdowns to show the current selections.
         dropdowns: function() {
-          $(".filter-groupings > li[data-filter-id]").each(function(elem) {
+          $(dom.filter_groupings + " > li[data-filter-id]").each(function(elem) {
             var value = filters.get($(this).data('filter-id'))
             $(this).find(".active").removeClass("active")
             var val_elem = $(this).find("[data-value='" + value + "']")
@@ -442,7 +458,7 @@
         
         // Update the current display of the grouping dropdowns
         groupings: function(data) {
-          $(".filter-groupings > .dropdown").each(function() {
+          $(dom.filter_groupings + " > .dropdown").each(function() {
             var grouping = $(this).data('grouping')
             if (grouping && data[grouping].length > 0) {
               display.groupings.populate($(this), grouping, data)
@@ -453,7 +469,6 @@
             display.groupings.toggleResetLinks($(this))
           })
         }
-        
       },
       
       groupings: {
@@ -486,12 +501,12 @@
       
       // Shows or hides the loading indicator.
       indicator: function(command) {
-        $(".indicator.participants").toggleClass("hidden", command == 'hide')
+        $(dom.primary_indicator).toggleClass("hidden", command == 'hide')
       },
       
       // Returns the currently selected report type.
       reportType: function() {
-        return $(".report-select .active [data-report]").data('report')
+        return $(dom.active_report_type).data('report')
       },
       
       navigation: {
@@ -518,7 +533,7 @@
     
     return {
       initialize: function(_selector) {
-        selector = _selector;
+        dom.selector = _selector;
         init.bindEvents();
       },
       init: init,
