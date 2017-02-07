@@ -19,6 +19,8 @@ class Participant < Person
 
   validates_presence_of :birthdate, :high_school_id, if: :validate_ready_to_rsvp?
 
+  acts_as_taggable
+
   # TODO attr_accessor :override_binder_date, :override_fafsa_date, :override_wasfa_date, :link_to_current_user_after_save
   
   scope :in_cohort, ->(grad_year) { where(grad_year: grad_year) }

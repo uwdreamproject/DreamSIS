@@ -5,7 +5,7 @@ class User < ApplicationRecord
   validates_uniqueness_of :uid, scope: [:provider], allow_nil: true
   default_scope { order('login') }
   alias_attribute :username, :login
-  delegate :email, :participants, :current_locations, to: :person
+  delegate :email, :participants, :current_locations, :mentor_participants, to: :person
   
   acts_as_tagger
   
