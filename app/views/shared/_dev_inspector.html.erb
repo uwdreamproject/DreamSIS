@@ -1,8 +1,8 @@
 <ul id="dev-inspector" class="list-inline">
-  <li>Env <strong><%= Rails.env %></strong></li>
-  <li>Branch <strong><%= `git rev-parse --symbolic-full-name --abbrev-ref HEAD` %></strong></li>
-  <li>Rails <strong><%= Rails.version %></strong></li>
-  <li>User <strong><%= current_user.try{ |u| "#{u.fullname} (##{u.id})" } || "nil" %></strong></li>
-  <li>Customer <strong><%= Customer.name_label rescue nil %></strong></li>
-  <li>Tenant <strong><%= Apartment::Tenant.current rescue nil %></strong></li>
+  <li><%= glyph 'cube' %> <%= Rails.env %></li>
+  <li><%= glyph 'code-fork' %> <%= `git rev-parse --symbolic-full-name --abbrev-ref HEAD` %></li>
+  <li><%= glyph 'code' %> Rails <%= Rails.version %></li>
+  <li><%= glyph 'user' %> <%= current_user.try{ |u| "#{u.fullname} (##{u.id})" } || "nil" %></li>
+  <li><%= glyph 'building-o' %> <%= Customer.name_label rescue nil %> [<%= Apartment::Tenant.current rescue nil %>]</li>
+  <li><%= link_to "Reload (via Turbolinks)", "javascript:Turbolinks.visit(window.location);", glyph: "refresh" %></li>
 </ul>
