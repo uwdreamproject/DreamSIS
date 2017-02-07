@@ -2,8 +2,7 @@
   this.App || (this.App = {});
 
   App.filterable = (function() {
-    var filterStatus    = {},
-        currentRequest  = 0;
+    var filterStatus    = {};
       
     // Contains DOM ID's for various elements referenced in this class.
     var dom = {
@@ -96,6 +95,7 @@
     }
     
     var filters = {
+      currentRequest: "",
       
       rotate: {
       
@@ -177,11 +177,11 @@
             filter_selections: filters.get()
           },
           headers: {
-            "X-Request-ID": ++currentRequest
+            "X-Request-ID": (filters.currentRequest = App.uuid.v4())
           }
         })
           .done(function( data ) {
-            if (data.currentRequest !== String(currentRequest)) {
+            if (data.currentRequest !== filters.currentRequest) {
               console.log("Ignoring out of date response")
               return false; // we're out of date with the current filters.
             }
@@ -200,6 +200,7 @@
     var records = {
       count: 0,
       objectIds: [],
+      currentRequest: "",
       
       visible: function() {
         return $(dom.selector + ":visible");
@@ -244,11 +245,11 @@
             page: display.currentPage
           },
           headers: {
-            "X-Request-ID": ++currentRequest
+            "X-Request-ID": (records.currentRequest = App.uuid.v4())
           }
         })
           .done(function( data ) {
-            if (data.currentRequest !== String(currentRequest)) {
+            if (data.currentRequest !== records.currentRequest) {
               console.log("Ignoring out of date response")
               return false; // we're out of date with the current filters.
             }
