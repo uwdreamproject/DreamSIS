@@ -150,6 +150,16 @@
           filter_selections: filters.get(),
           currentRequest: ++currentRequest
         } )
+        $.ajax({
+          url: urls.filters,
+          dataType: "json",
+          data: {
+            filter_selections: filters.get()
+          },
+          headers: {
+            "X-Request-ID": ++currentRequest
+          }
+        })
           .done(function( data ) {
             if (data.currentRequest !== String(currentRequest)) {
               console.log("Ignoring out of date response")
@@ -209,6 +219,17 @@
           ids: records.objectIds,
           page: display.currentPage,
           currentRequest: ++currentRequest
+        $.ajax({
+          url: urls.records,
+          dataType: "json",
+          data: {
+            report: display.reportType(),
+            ids: records.objectIds,
+            page: display.currentPage
+          },
+          headers: {
+            "X-Request-ID": ++currentRequest
+          }
         })
           .done(function( data ) {
             if (data.currentRequest !== String(currentRequest)) {
@@ -369,9 +390,13 @@
           $(".navigation-controls .prev").toggleClass('hidden', data.current_page < 1)
           $(".navigation-controls .next").toggleClass('hidden', data.current_page >= data.total_pages)
           $(".navigation-controls .page-number").text(data.current_page)
+          console.log(data)
+          display.currentPage = data.current_page
+          display.totalPages = data.total_pages
           
           var elem = $(".navigation-controls ul.page-select").html("")
           for(var i = 1; i < data.total_pages; i++) {
+          for(var i = 1; i <= data.total_pages; i++) {
             var li = $("<li>").html($("<a href='#'>").data('page', i).text(i))
             if (i == display.currentPage) li.addClass('active')
             elem.append(li)
@@ -472,10 +497,12 @@
       navigation: {
         
         nextPage: function() {
+          if(display.currentPage >= display.totalPages) { return false; }
           display.navigation.goToPage(display.currentPage + 1)
         },
         
         prevPage: function() {
+          if(display.currentPage <= 1) { return false; }
           display.navigation.goToPage(display.currentPage - 1)
         },
         

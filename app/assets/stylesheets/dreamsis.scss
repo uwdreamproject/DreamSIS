@@ -144,6 +144,31 @@ dl {
 }
 
 #sidebar {
+	max-width: 175px;
+	max-height: 90%;
+	overflow: scroll;
+	padding-top: 20px;
+	
+	.pagination {
+		margin: 10px 0;
+		
+		> .dropdown > .dropdown-toggle {
+			width: 105px;
+			text-align: center;
+		}
+	}
+	
+	.report-select > button {
+		width: 175px;
+		text-align: left;
+		color: #337ab7;
+		border: 1px solid #ddd;
+	}
+	
+	&.affix {
+		top: 120px;
+	}
+	
 }
 
 #dev-inspector {

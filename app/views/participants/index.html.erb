@@ -1,5 +1,3 @@
-<%= render partial: "report_select" %>
-
 <%= content_for(:subheader) do %>
 	<%= render partial: "cohort_select" %>
 	<ul class="list-inline filter-bucket">
@@ -17,8 +15,6 @@
 	<%= render "participants/bulk_actions" %>
 <% end %>
 
-<div id="stages_selector"></div>
-
 <table class="participants multirow active-report table" id="participants_table">
 	<thead></thead>
 	<tbody></tbody>
@@ -29,9 +25,10 @@
 	</tfoot>
 </table>
 
-<%= render partial: "sidebar" %>
+<%= content_for :sidebar do %>
+	<%= render "report_select" %>
+	<%= render "shared/navigation_controls" %>
+	<%= render "filter_controls" %>
+<% end %>
 
-<%= javascript_tag "$( function() {
-	 //$.ajax({ url: '#{url_for(report: @report, page: 1)}', dataType: 'script' });
-	 // App.filterable.filters.execute()
-})" %>
+<%= javascript_tag "$( function() { App.filterable.filters.execute() })" %>

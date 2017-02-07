@@ -3,18 +3,17 @@ reports = Participant::ReportTypes.dup
 reports.delete(:college_stages) unless @stages
 -%>
 
-<%= content_for(:tabs) do %>
-	<ul class="nav nav-tabs report-select" role="tablist">
+<div class="dropdown btn-group report-select">
+	<button class="dropdown-toggle btn-default btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		Display:
+		<span class="title">Basics</span>
+		<span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu">
 		<% for key, title in reports %>
 			<%= content_tag :li, class: "#{'active' if @report.to_s == key.to_s}", role: 'presentation' do %>
-				<%= link_to title, url_for(report: key), role: "tab", data: { report: key } %>
+				<%= link_to title, url_for(report: key), data: { report: key } %>
 			<% end %>
 		<% end %>
-		
-		<li class="pull-right" role="presentation">
-			<%= render partial: "shared/navigation_controls" %>
-		</li>
-		
 	</ul>
-	
-<% end %>
+</div>

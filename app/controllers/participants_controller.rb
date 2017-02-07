@@ -9,7 +9,7 @@ class ParticipantsController < ApplicationController
   # GET /participants
   # GET /participants.xml
   def index
-    return redirect_to Participant.find(params[:id]) if params[:id]
+    # return redirect_to Participant.find(params[:id]) if params[:id]
     @participants = (params[:ids] ? Participant.where(id: params[:ids]) : Participant.all).page(params[:page])
 
     respond_to do |format|
@@ -18,7 +18,7 @@ class ParticipantsController < ApplicationController
       format.js
       format.json {
         render json: {
-          currentRequest: params[:currentRequest],
+          currentRequest: request.headers["X-Request-ID"],
           navigation: {
             current_page: @participants.current_page,
             total_pages: @participants.total_pages,
@@ -362,7 +362,7 @@ class ParticipantsController < ApplicationController
       format.json { render(json: {
         object_ids: @participants.pluck(:id),
         filter_selections: (params[:filter_selections] || {}),
-        currentRequest: params[:currentRequest],
+        currentRequest: request.headers["X-Request-ID"],
         filter_counts: {},
         groupings: {
           cohort: Participant.cohorts.map{|c| { value: c, title: c }},

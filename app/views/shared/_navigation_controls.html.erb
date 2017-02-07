@@ -1,24 +1,32 @@
-<div class="btn-group navigation-controls hidden" role="group">
-  
-  <!-- Previous Page -->
-  <button type="button" class="btn btn-default prev" title="Previous Page">
-    <%= glyph('chevron-left') %>
-  </button>
-
-  <!-- Page Select -->
-  <div class="btn-group" role="group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Jump to a specific page">
-      Page
-      <span class="page-number">1</span>
-    </button>
-    <ul class="dropdown-menu page-select">
-      <li><a href="#">1</a></li>
-    </ul>
-  </div>
-  
-  <!-- Next Page -->
-  <button type="button" class="btn btn-default next" title="Next Page">
-    <%= glyph('chevron-right') %>
-  </button>
-
+<div>
+  <ul class="pagination">
+    
+    <!-- Previous Page -->
+    <li>
+      <a href="#" aria-label="Previous" class="prev">
+        <%= glyph('chevron-left') %>
+      </a>
+    </li>
+    
+    <!-- Page Select -->
+    <li class="dropdown btn-group">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Jump to a specific page">
+        Page
+        <span class="page-number">1</span>
+      </a>
+      
+      <ul class="dropdown-menu page-select">
+        <li><a href="#">1</a></li>
+      </ul>
+      
+    </li>
+    
+    <!-- Next Page -->
+    <li>
+      <a href="#" aria-label="Next" class="next">
+        <%= glyph('chevron-right') %>
+      </a>
+    </li>
+    
+  </ul>
 </div>
