@@ -22,6 +22,8 @@
         // Binds the event handlers for the left and right keys to switch betwen tabs.
         keyboardControls: function() {
           $( document ).keydown(function (event) {
+            if(event.shiftKey || event.ctrlKey || event.altKey || event.metaKey) { return; }
+            if($('.tabs').length == 0) { return; }
             if($(document.activeElement).is('textarea,input,select')) { return; }
             switch (event.which) {
             case $.ui.keyCode.LEFT:
