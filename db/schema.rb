@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160902215448) do
+ActiveRecord::Schema.define(version: 20170203155633) do
 
   create_table "activity_logs", force: :cascade do |t|
     t.date     "start_date"
@@ -739,7 +739,7 @@ ActiveRecord::Schema.define(version: 20160902215448) do
     t.string   "preferred_phone",                       limit: 255
     t.string   "facebook_id",                           limit: 255
     t.boolean  "check_email_regularly"
-    t.integer  "student_id_number"
+    t.string   "student_id_number"
     t.string   "birthplace",                            limit: 255
     t.boolean  "married"
     t.integer  "number_of_children"
