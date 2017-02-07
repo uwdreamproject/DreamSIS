@@ -5,4 +5,3 @@ $ ->
   $("a#sidebar_expander_link").click ->
     $('body').toggleClass('sidebar_view')
   
-  $('[data-toggle="tooltip"]').tooltip()

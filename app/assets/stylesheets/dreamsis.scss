@@ -31,6 +31,24 @@ footer {
 	padding-bottom: 15px;
 }
 
+.popover, .tooltip {
+	font-family: $font-stack;
+	color: $primary-grey;
+	
+	.popover-content {
+		font-size: 13px;
+		font-weight: 600;
+	}
+	
+	.popover-title {
+		font-weight: 700;
+	}
+	
+	.tooltip-inner {
+		font-weight: 600;
+	}
+}
+
 h1, .h1 {
 	margin-bottom: 20px;
 }
@@ -1182,6 +1200,11 @@ ul.mini.photo-list {
   width: 50px;
   text-align: center;
 	display: inline-block;
+	
+	&.center-block {
+		display: block;
+		margin: 50px auto;
+	}
 }
 
 .spinner > div {

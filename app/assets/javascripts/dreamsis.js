@@ -214,4 +214,19 @@ $(document).on('inserted.bs.popover', function(event) {
       })
   }
 })
+
+$(document).on('turbolinks:load', function(event) {
+  $("[data-spy=affix]").each(function() {
+    $(this).affix({
+      offset: {
+        top: $(this).data('offset-top'),
+        bottom: $(this).data('offset-bottom')
+      }
+    })
+  })
+  
   $('table').stickyTableHeaders({ fixedOffset: $("header.sub") })
+  $('[data-toggle="tooltip"]').tooltip()
+  $('[data-toggle="popover"]').popover()
+  
+})
