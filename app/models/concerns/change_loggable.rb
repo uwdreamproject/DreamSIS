@@ -4,9 +4,9 @@ module ChangeLoggable
   included do
     has_many :changelogs, as: :change_loggable, class_name: 'Change', foreign_key: "change_loggable_id"
     
-    after_create :log_create
-    after_update :log_update
-    after_destroy :log_destroy
+    after_create_commit :log_create
+    after_update_commit :log_update
+    after_destroy_commit :log_destroy
   end
 
   def log_create
