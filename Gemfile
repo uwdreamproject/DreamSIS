@@ -48,7 +48,6 @@ gem 'faker'
 gem 'acts-as-taggable-on'
 gem 'select2-rails'
 gem 'rails_12factor', group: :production
-gem "rack-timeout"
 gem 'aws-sdk'
 # gem 'rack-mini-profiler'
 # gem 'flamegraph'
@@ -77,6 +76,7 @@ gem 'momentjs-rails'
 group :production do
   gem "pg" #, "0.18.4"
   gem "activerecord-postgresql-adapter"
+  gem "rack-timeout"
 end
 
 group :staging do
