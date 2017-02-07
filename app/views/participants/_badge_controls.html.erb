@@ -1,0 +1,18 @@
+<div class="btn-group badge-controls">
+  
+  <% if @mentor_participant %>
+    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Remove from my students">
+      <%= glyph("star fa-fw") %>
+    </button>
+  <% else %>
+    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Add to my students">
+      <%= glyph("star-o fa-fw") %>
+    </button>
+  <% end %>
+
+
+  <%= link_to glyph("#{@participant.needs_followup? ? "flag" : "flag-o"} fa-fw"), nil, class: "btn btn-default needs-followup", role: 'button', title: "Flag for Follow-Up", tabindex: 0, data: { toggle: 'popover', container: 'body', trigger: 'focus', placement: 'bottom', url: participant_path(@participant), function: 'followup_notes' } %>
+
+  <%= link_to content_tag(:span, @filter_warning_counts[@participant.id.to_s], class: 'badge'), nil, tabindex: 0, class: "btn btn-default", role: "button", title: "Alerts", data: { toggle: 'popover', container: 'body', trigger: 'focus', placement: 'bottom', url: filters_participant_path(@participant, format: :json), function: 'filters' } %>
+  
+</div>
