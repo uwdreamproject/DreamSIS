@@ -62,8 +62,8 @@ namespace :cron do
           Person.find_in_batches do |group|
             group.each do |person|
               before = person.filter_cache
-              person.update_filter_cache!
-              person.save && i = i+1 if before != person.filter_cache
+              new = person.update_filter_cache!
+              person.update_column(:filter_cache, new.to_yaml) && i = i+1 if before.diff(new) == {}
             end
           end
           puts "updated #{i} records."
