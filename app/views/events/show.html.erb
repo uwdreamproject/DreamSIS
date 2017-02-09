@@ -1,5 +1,5 @@
-<h3 class="pre-title"><%= @event.visit? ? Customer.visit_Label : @event.type %></h3>
-<h1><%=h @event.name %></h1>
+<%= breadcrumbs "Events", (@event.visit? ? Customer.visit_Label : @event.type).to_s.pluralize, @event.name %>
+
 
 <dl class="inline-definitions">
 
@@ -36,10 +36,24 @@
 		<% end -%>
 	</tbody>
 </table>
-	
-<%= content_for(:sidebar) do %>
-	<p><%= link_to "Edit this event", edit_event_path(@event), class: 'edit button' %></p>
-	<p><%= link_to "Back to events", events_path, class: 'back button' %></p>
-	<p><%= link_to "Check-in Attendance", checkin_event_event_attendances_path(@event), class: 'edit button' %>
-	<p><%= link_to 'Add a shift', new_event_event_shift_path(@event), class: 'add button' %></p>
+
+<%= operations wrap: false do %>
+	<div class="btn-group" role="group" aria-label="Operations Links">
+		<%= link_to "Edit", edit_event_path(@event), class: 'btn btn-default', glyph: 'pencil' %>
+		
+		<div class="btn-group" role="group">
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				More
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li>
+					<%= link_to "Check-in Attendance", checkin_event_event_attendances_path(@event), glyph: 'pencil' %>
+				</li>
+				<li>
+					<%= link_to 'Add a shift', new_event_event_shift_path(@event), glyph: 'plus' %>
+				</li>
+			</ul>
+		</div>
+	</div>
 <%- end -%>
