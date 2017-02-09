@@ -2,10 +2,6 @@
 <h3 class="pre-title">RSVP for</h3>
 <h1><%=h @event.name %></h1>
 
-<%- for proxy in @event.proxies.slave -%>
-	<h3 class="proxyable">Coordinated by <%= proxy.other_customer.name %></h3>
-<% end %>
-
 <h2 class="date"><%= @event.time_detail(audience: event_audience) %></h2>
 
 
@@ -27,7 +23,7 @@
 
 		<dt>Date &amp; Time</dt>
 		<dd class="date">
-			<%= @event.time_detail(audience: event_audience) %> 
+			<%= @event.time_detail(audience: event_audience) %>
 			<%= content_tag(:span, "Time TBA", class: 'outline tag') if @event.time_tba? %>
 			
 			<%- if @event.time_is_audience_specific?(event_audience) -%>

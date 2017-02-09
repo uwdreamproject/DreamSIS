@@ -14,7 +14,6 @@
   <tr>
     <td class="name">
 		<%= link_to h(event_group.name), event_group %>
-		<%= content_tag :span, "shared", class: "shared tag" if event_group.proxies? %>
 	</td>
 	<td><ul><%= raw event_group.events.collect{|e| content_tag(:li, link_to(h(e.name), event_path(e)))}.join %></ul></td>
     <td class="functions"><%= link_to 'Show', event_group_path(event_group) %></td>

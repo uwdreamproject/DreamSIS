@@ -1,11 +1,6 @@
 <h1>
 	<%=h @event_group.name %>
-	<%= content_tag :span, "shared", class: "shared tag" if @event_group.proxies? %>
 </h1>
-
-<%- for proxy in @event_group.proxies.slave -%>
-	<h3 class="proxyable">Coordinated by <%= proxy.other_customer.name %></h3>
-<% end %>
 
 <dl class="inline-definitions">
 
@@ -43,17 +38,6 @@
 		<dt>Stylesheet</dt>
 		<dd><%= auto_link h(@event_group.stylesheet_url) %></dd>
 	<% end -%>
-	
-	<%- unless @event_group.proxies.master.empty? -%>
-		<dt>Sharing</dt>
-		<dd>
-			<%- for proxy in @event_group.proxies.master -%>
-				<p>Shared with <%= proxy.other_customer.name %>
-					<span class="light">(Event Group #<%= proxy.other_id %>)</span>
-				</p>
-			<% end %>
-		</dd>
-	<% end %>
 
 </dl>
 

@@ -21,13 +21,13 @@
 <dd>
 	<%- if details.capacity && details.capacity > 0 -%>
 		<div class="signup-meter <%= "full" if details.full? %>">
-			<div class="capacity" 
+			<div class="capacity"
 				 style="width: 30%;"
 				 title="<%= number_to_percentage details.percent_full, precision: 0 %> full">
 
 				<div class="size" style="width: <%= details.percent_full %>%">
 					<%= details.full? ? content_tag(:span, "full", class: "full_label") : "&nbsp;".html_safe %>
-				</div>					
+				</div>
 			</div>
 		</div>
 		<div class="signup-numbers">
@@ -64,15 +64,4 @@
 <%- if !details.grade_levels_list_string.blank? -%>
 	<dt>Grade Levels</dt>
 	<dd><%= details.grade_levels_list_string %></dd>
-<% end %>
-
-<%- unless details.proxies.master.empty? -%>
-	<dt>Sharing</dt>
-	<dd>
-		<%- for proxy in details.proxies.master -%>
-			<p>Shared with <%= proxy.other_customer.name %> 
-				<span class="light">(Event #<%= proxy.other_id %>)</span>
-			</p>
-		<% end %>
-	</dd>
 <% end %>
