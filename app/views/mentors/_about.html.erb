@@ -1,0 +1,73 @@
+<div class="list-group list-group-lg">
+  <div class="list-group-item">
+    
+    <div class="row">
+      <div class="col-md-3">
+        <h3 class="panel-title">Info</h3>
+      </div>
+      <div class="col-md-9">
+        <dl class="dl-horizontal">
+
+          <dt>User Accounts</dt>
+          <dd><% if @mentor.users.empty? -%>
+              <em class="light">None</em>
+            <% else %>
+                <%= raw @mentor.users.collect{|u| link_to h(u.login), user_path(u) }.join(", ") %>
+            <% end -%>
+            </dd>
+
+          <dt>Email</dt>
+          <dd><%= @mentor.email.blank? ? content_tag(:strong, "No email address", class: "error-message") : auto_link(h(@mentor.email)) %></dd>
+
+          <dt>Aliases</dt>
+          <dd><%= @mentor.has_aliases? ? h(@mentor.aliases) : content_tag(:em, "None", class: 'light') %></dd>
+
+          <dt>Gender</dt>
+          <dd><%= @mentor.sex %></dd>
+
+          <dt>Phone</dt>
+          <dd><%= number_to_phone @mentor.phone_mobile %></dd>
+
+          <dt>Date of Birth</dt>
+          <dd><%= @mentor.birthdate.to_s %>
+            <span class="text-muted">(Age <%= @mentor.age %>)</span>
+          </dd>
+
+          <%- if @mentor.emergency_contact %>
+            <dt>Emergency Contact</dt>
+            <dd>
+              <%= @mentor.emergency_contact.fullname %><br>
+              <small>
+                <%= [
+                      @mentor.emergency_contact.relationship_to_child,
+                      number_to_phone(@mentor.emergency_contact.phone_mobile),
+                      @mentor.emergency_contact.email
+                    ].reject(&:blank?).join(", ") %>
+              </small>
+            </dd>
+          <% end %>
+        </dl>
+      </div>
+    </div>
+    
+  </div>
+    
+  <% if @mentor.is_a?(Mentor) %>
+  <div class="list-group-item">
+    <div class="row">
+      <div class="col-md-3">
+        <h3 class="panel-title">Readiness Status</h3>
+        <p>
+          Each <%= Customer.mentor_label %> must pass certain criteria before they can use DreamSIS. You can control which steps are required in <%= link_to "your settings", [:edit, Customer.current_customer] %>.
+        </p>
+      </div>
+      <div class="col-md-9">
+        <div class="list-group" role="placeholder" data-delayed-content-path="readiness_status">
+          <%= indicator "center-block", hidden: false %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% end %>
+
+</div>

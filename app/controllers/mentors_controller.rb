@@ -1,6 +1,8 @@
 class MentorsController < ApplicationController
   protect_from_forgery except: [:auto_complete_for_mentor_fullname]
   skip_before_filter :login_required, :check_authorization, :save_user_in_current_thread, :check_if_enrolled, only: [:check_if_valid_van_driver]
+  
+  before_action :fetch_mentor, except: [:index]
 
   def index
     return redirect_to Mentor.find(params[:id]) if params[:id]
@@ -9,34 +11,20 @@ class MentorsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render xml: @mentors }
-      format.xls {
-        @mentors = Mentor.all
-        render action: 'index', layout: 'basic'
-      }
+      # format.xls {
+      #   @mentors = Mentor.all
+      #   render action: 'index', layout: 'basic'
+      # }
     end
   end
 
   def show
-    @mentor = Mentor.find(params[:id]) rescue Volunteer.find(params[:id])
-    @participants = @mentor.try(:participants) if @mentor.respond_to?(:participants)
-    @event_attendances = @mentor.event_attendances.includes(:event).joins(:event).where(["(rsvp = ? OR attended = ?)", true, true])
-                          
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render xml: @mentor }
     end
   end
-
-  def background_check_form_responses
-    @mentor = Mentor.find(params[:id]) rescue Volunteer.find(params[:id])
-
-    respond_to do |format|
-      format.html
-      format.xml  { render xml: @mentor }
-    end
-  end
-
-
+  
   def new
     @mentor = Mentor.new
 
@@ -219,7 +207,24 @@ class MentorsController < ApplicationController
       return render text: "Action not defined for current customer", status: 400
     end
   end
+  
+  def participants
+    @participants = @mentor.try(:participants) if @mentor.respond_to?(:participants)
+    @filter_warning_counts = Customer.redis.hgetall("filters:counts:Participant:warn")
+    @report = params[:report] || "basics"
+  end
 
+  def background_check_form_responses
+  end
+  
+  def events
+    @event_attendances = @mentor.event_attendances.includes(:event).joins(:event).where(["(rsvp = ? OR attended = ?)", true, true])
+  end
+
+  def readiness_status
+    @mentor = Mentor.find(params[:id])
+  end
+  
   def event_status
     @term = Term.find(params[:term_id])
     @mentors = @term.mentors
@@ -259,6 +264,10 @@ class MentorsController < ApplicationController
   end
   
   protected
+  
+  def fetch_mentor
+    @mentor = Mentor.find(params[:id]) rescue Volunteer.find(params[:id])
+  end
   
   def send_default_photo(size)
 		filename = size == "thumb" ? "blank_avatar_thumb.png" : "blank_avatar.png"

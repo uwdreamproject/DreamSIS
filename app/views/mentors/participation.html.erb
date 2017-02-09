@@ -1,0 +1,29 @@
+<div class="list-group">
+	<%
+		conditions_query = "allow_signups = ? "
+		qstr = @mentor.mentor_terms.collect{|mq| mq.term_id rescue nil}.compact.join(',')
+		conditions_query += "OR `id` IN (#{qstr})" unless qstr.blank?
+		%>
+		
+	<%- for term in Term.where([conditions_query, true]).reverse -%>
+	
+		<% mentor_terms = @mentor.mentor_terms.for_term(term.id) %>
+		<div class="list-group-item">
+			<div class="row">
+				<div class="col-md-3">
+					<h3 class="panel-title"><%= term.title %></h3>
+				</div>
+				<div class="col-md-9">
+					<%- if mentor_terms.empty? -%>
+						<span class="text-muted">Not Signed Up.</span>
+						<%= link_to "Sign up now", mentor_signup_term_path(term), class: 'btn btn-default' if term.allow_signups? %>
+					<%- else -%>
+						<%= render partial: 'mentor_signup/mentor_term', collection: mentor_terms %>
+						<%= link_to "Change my high-school group(s)", mentor_signup_term_path(term), class: "btn btn-default" if term.allow_signups? %>
+					<% end -%>
+				</div>
+			</div>
+		</div>
+
+	<% end -%>
+</div>

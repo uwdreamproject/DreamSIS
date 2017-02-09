@@ -39,41 +39,63 @@ class Mentor < Person
   # Returns true if +passed_background_check?+ and +signed_risk_form?+ and +currently_enrolled?+ all return true, and
   # if has attended mentor workshop (if necessary)
   def passed_basics?
-    (!Customer.require_background_checks? || (passed_background_check? && passed_sex_offender_check?)) && (!Customer.require_risk_form? || signed_risk_form?) && (!Customer.require_conduct_form? || signed_conduct_form?)&& currently_enrolled? && (!Customer.mentor_workshop_event_type || attended_mentor_workshop?) && (!Customer.require_parental_consent_for_minors? || (is_18? || parental_consent_on_file?))
+    readiness_summary.collect{ |k,v| v[:passed] === false }.empty?
   end
 
-  # Returns a string detailing the steps needed for this mentor
-  # to be ready to mentor
+  # Returns a report of the steps needed for this mentor
+  # to be ready to mentor, based on Customer settings.
   def readiness_summary
-    return "Ready to mentor" if passed_basics?
-    summary = ""
+    summary = {}
+    summary[:currently_enrolled] = {
+      passed: currently_enrolled?,
+      message: currently_enrolled? ? "Enrolled" : "Not currently enrolled"
+    }
     if Customer.require_risk_form?
-      if !signed_risk_form?
-        summary << "* Must sign risk form  "
-      end
+      summary[:risk_form] = {
+        passed: signed_risk_form?,
+        message: signed_risk_form? ? "Signed risk form on #{risk_form_signed_at.to_s(:short)}" : "Must sign risk form"
+      }
     end
     if Customer.require_parental_consent_for_minors?
-      if !is_18?
-        if !parental_consent_on_file?
-          summary << "* Must require parental consent "
-        end
+      if is_18?
+        summary[:parent_consent] = {
+          passed: "Not Applicable",
+          message: "Person is over 18 (parental consent not required)"
+        }
+      else
+        summary[:parent_consent] = {
+          passed: parental_consent_on_file?,
+          message: parental_consent_on_file? ? "Parent consent form on file" : "Must submit parent consent"
+        }
       end
     end
-        if Customer.require_conduct_form?
-      if !signed_conduct_form?
-        summary << "* Must sign conduct agreement  "
-      end
+    if Customer.require_conduct_form?
+      summary[:conduct_agreement] = {
+        passed: signed_conduct_form?,
+        message: signed_conduct_form? ? "Signed conduct agreement on #{conduct_form_signed_at.to_s(:short)}" : "Must sign conduct agreement"
+      }
     end
     if Customer.require_background_checks?
-      if !passed_background_check?
-        summary << "* Hasn't passed BG Check  "
-      end
-      if !passed_sex_offender_check?
-        summary << "* Hasn't passed SO Check  "
-      end
+      summary[:background_check] = {
+        passed: passed_background_check?,
+        message: passed_background_check? ? "Passed background check on #{background_check_run_at.to_s(:short)}" : "Must pass background check"
+      }
+      summary[:sex_offender_check] = {
+        passed: passed_sex_offender_check?,
+        message: passed_sex_offender_check? ? "Passed sex offender check on #{sex_offender_check_run_at.to_s(:short)}" : "Must pass sex offender check"
+      }
     end
-    if !attended_mentor_workshop?
-      summary << "* Must attend mentor workshop"
+    if Customer.mentor_workshop_event_type
+      summary[:mentor_workshop] = {
+        passed: attended_mentor_workshop?,
+        message: attended_mentor_workshop? ? "Attended mentor workshop" : "Must attend mentor workshop"
+      }
+    end
+    if !Customer.driver_form_content.blank?
+      summary[:driver] = {
+        passed: valid_van_driver?,
+        message: valid_van_driver? ? "Completed training on #{van_driver_training_completed_at.to_s(:short_date)}" : "Must complete driver training"
+      }
     end
     return summary
   end

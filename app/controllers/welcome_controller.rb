@@ -44,6 +44,7 @@ class WelcomeController < ApplicationController
   end
 
   def participation
+    @mentor = @current_user.person
     respond_to do |format|
       format.html
     end

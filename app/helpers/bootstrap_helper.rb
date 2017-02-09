@@ -44,6 +44,8 @@ module BootstrapHelper
           elsif arg.is_a?(Array)
             title = arg.last.is_a?(Symbol) ? arg.last.to_s.titleize : guess_label_text(arg.last)
             concat content_tag(:li, link_to(title, arg))
+          elsif arg.is_a?(Hash)
+            concat content_tag(:li, link_to(arg[:title], arg[:url]))
           elsif arg.is_a?(ActiveRecord::Relation)
             concat(content_tag(:li, class: "dropdown") do
               concat(content_tag(:a, :class => "dropdown-toggle", "data-toggle" => "dropdown") do

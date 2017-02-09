@@ -1,153 +1,50 @@
-<% if @mentor.is_a?(Mentor) && !@mentor.passed_basics? %>
-  <div class="bright-red-background content-block">
-    <%= @mentor.readiness_summary %>
+<%= breadcrumbs Customer.current_customer.customer_label((@mentor.class.to_s.underscore || @mentor.class.to_s).pluralize, titleize: true), @mentor %>
+
+<%= operations do %>
+  <%= link_to "Edit", [:edit, @mentor], glyph: 'pencil', class: 'btn btn-default' %>
+
+  <%- if !Customer.link_to_uw? && @current_user.admin? && !@mentor.email.blank? -%>
+    <%= link_to "Send login link", send_login_link_mentor_path(@mentor),
+          method: :put,
+          confirm: "Are you sure you want to send a login link email to this user?",
+          class: "btn btn-default",
+          glyph: 'key'
+      %>
+  <% end %>
+<% end %>
+
+
+<%= content_for(:tabs) do %>
+	<ul class="nav nav-tabs" role="tablist">
+		<%= link_to_section_li @mentor, "About", :about, 'about' %>
+    <%= link_to_section_li @mentor, "Students", :participants, 'participants' %>
+    <%= link_to_section_li @mentor, "Events", :events, 'events' %>
+    <%= link_to_section_li @mentor, "Participation History", :mentor_terms, 'mentor_terms' %>
+	</ul>
+<% end %>
+
+<div class="tab-content">
+	
+  <div role="tabpanel" class="tab-pane fade active" id="about">
+    <%= render "about" %>
   </div>
-<% end %>
-
-<div class="content-block">
-
-	<div align="right" style="float:right; background-image: url(<%= photo_mentor_path(@mentor, size: :medium) %>);" class="photo"></div>
-
-	<h3 class="pre-title"><%= Customer.current_customer.customer_label(@mentor.class.to_s.underscore) || @mentor.class.to_s %></h3>
-	<h1><%= @mentor.fullname %></h1>
-
-	<dl class="inline-definitions">
-
-		<dt>User Accounts</dt>
-		<dd><% if @mentor.users.empty? -%>
-				<em class="light">None</em>
-			<% else %>
-			  	<%= raw @mentor.users.collect{|u| link_to h(u.login), user_path(u) }.join(", ") %>
-			<% end -%>
-			</dd>
-
-		<dt>Email</dt>
-		<dd><%= @mentor.email.blank? ? content_tag(:strong, "No email address", class: "error-message") : auto_link(h(@mentor.email)) %></dd>
-
-		<dt>Aliases</dt>
-		<dd><%= @mentor.has_aliases? ? h(@mentor.aliases) : content_tag(:em, "None", class: 'light') %></dd>
-
-		<dt>Gender</dt>
-		<dd><%= @mentor.sex %></dd>
-
-		<dt>Phone</dt>
-		<dd><%= number_to_phone @mentor.phone_mobile %></dd>
-
-		<dt>Date of Birth</dt>
-		<dd><%= @mentor.birthdate.to_s %></dd>
-
-    <%- if @mentor.emergency_contact %>
-      <dt>Emergency Contact</dt>
-      <dd>
-        <%= @mentor.emergency_contact.fullname %><br>
-        <small>
-          <%= [
-                @mentor.emergency_contact.relationship_to_child,
-                number_to_phone(@mentor.emergency_contact.phone_mobile),
-                @mentor.emergency_contact.email
-              ].reject(&:blank?).join(", ") %>
-        </small>
-      </dd>
-    <% end %>
-
-		<%- if @mentor.respond_to?(:valid_van_driver?) -%>
-			<dt>Driver Trained?</dt>
-			<dd><%- if @mentor.valid_van_driver? -%>
-					<span class="success-message">Yes</span> - on <%= @mentor.van_driver_training_completed_at.to_s(:short_date) %>
-				<% else %>
-				  	<em class="light">No</em>
-				<% end -%>
-			</dd>
-		<% end -%>
-
-	</dl>
-	<br class="clear">
+  
+  <div role="tabpanel" class="tab-pane fade" id="participants">
+    <div role="placeholder" data-delayed-content-path="participants">
+      <%= indicator "center-block", hidden: false %>
+    </div>
+  </div>
+  
+  <div role="tabpanel" class="tab-pane fade" id="events">
+    <div role="placeholder" data-delayed-content-path="events">
+      <%= indicator "center-block", hidden: false %>
+    </div>
+  </div>
+  
+  <div role="tabpanel" class="tab-pane fade" id="mentor_terms">
+    <div role="placeholder" data-delayed-content-path="participation">
+      <%= indicator "center-block", hidden: false %>
+    </div>
+  </div>
+  
 </div>
-
-<%- if @participants -%>
-	<div class="content-block">
-		<%= link_to "See all #{Customer.mentees_label}", mentor_participants_path(@mentor), class: "right list button" %>
-		<h1 class="mentees"><%= Customer.mentees_Label %>
-			<small class="light" id="total_record_count"></small>
-		</h1>
-		<%= render partial: 'mentors/mentees' %>
-	</div>
-<% end -%>
-
-<div class="content-block">
-	<h1 class="events">Events</h1>
-	<%= render partial: 'mentors/events' %>
-</div>
-
-<%- if @mentor.respond_to?(:mentor_terms) -%>
-	<div class="content-block">
-		<h1 class="participation">Participation</h1>
-		<%= render partial: 'mentors/participation' %>
-	</div>
-<% end -%>
-
-<%= content_for(:sidebar) do %>
-
-	<p><%= link_to "Back to #{Customer.mentors_label}", mentors_path, class: "back button" %></p>
-	<p><%= link_to "Edit this #{Customer.try(@mentor.class.to_s + "_label") || @mentor.class.to_s}", [:edit, @mentor], class: 'edit button' %></p>
-
-	<%- if !Customer.link_to_uw? && @current_user.admin? && !@mentor.email.blank? -%>
-	<p class="login_link">
-		<%= link_to "Send login link", send_login_link_mentor_path(@mentor),
-					method: :put,
-					confirm: "Are you sure you want to send a login link email to this user?",
-					class: "email button" %>
-	</p>
-	<% end %>
-
-	<div class="auto_complete">
-		<input type="input" class="search autocomplete-search" placeholder="Search <%= Customer.mentors_Label %>" data-source="<%= auto_complete_for_mentor_fullname_mentors_url %>" data-target="<%= mentor_url("id") %>" />
-	</div>
-
-	<h3>Contact Info</h3>
-
-	<dl class="sidebar">
-		<dt>Email</dt>
-		<dd><%= auto_link h(@mentor.email) %></dd>
-	</dl>
-
-	<h3>Administrative</h3>
-
-	<dl class="sidebar">
-
-		<%- if Customer.require_background_checks? -%>
-			<dt>Background Check</dt>
-			<dd>
-				<% if @mentor.passed_criminal_checks? %>
-					Passed on <%= @mentor.criminal_checks_run_at.to_s(:short_date) %>
-				<%- else -%>
-					<span class="error-message">Not passed</span>
-				<% end -%>
-				<br /><%= link_to "View responses", background_check_form_responses_mentor_path(@mentor), class: 'small' %>
-			</dd>
-		<% end %>
-
-		<%- if Customer.require_risk_form? && @mentor.respond_to?(:signed_risk_form?) -%>
-			<dt>Acknowledgment of Risk Form</dt>
-			<dd>
-				<% if @mentor.signed_risk_form? %>
-					Signed on <%= @mentor.risk_form_signed_at.to_s(:short_date) %>
-				<%- else -%>
-					<span class="error-message">Not signed</span>
-				<% end -%>
-			</dd>
-		<% end -%>
-		<%- if Customer.require_conduct_form? && @mentor.respond_to?(:signed_conduct_form?) -%>
-			<dt>Conduct Agreement</dt>
-			<dd>
-				<% if @mentor.signed_conduct_form? %>
-					Signed on <%= @mentor.conduct_form_signed_at.to_s(:short_date) %>
-				<%- else -%>
-					<span class="error-message">Not signed</span>
-				<% end -%>
-			</dd>
-		<% end -%>
-
-	</dl>
-
-<% end %>

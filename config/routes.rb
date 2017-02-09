@@ -203,6 +203,10 @@ Rails.application.routes.draw do
       get :driver_edit_form
       post :driver_update, action: "sidebar_form_update", row_partial: "mentor_driver"
       post :driver_training_status
+      get :readiness_status
+      get :participants
+      get :events
+      get :participation
     end
   end
   resources :mentor_term_groups do

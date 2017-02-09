@@ -1,0 +1,12 @@
+<table class="participants multirow active-report table" id="participants_table">
+	<%= render "participants/reports/table_header" %>
+	<%= render partial: "participants/participant", collection: @participants, locals: { report: @report } %>
+	
+	<% if @participants.empty? %>
+	<tfoot id="empty_placeholder">
+		<tr class="empty">
+			<td colspan="20">No <%= Customer.participants_label %> match your selection.</td>
+		</tr>
+	</tfoot>
+	<% end %>
+</table>

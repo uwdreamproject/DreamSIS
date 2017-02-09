@@ -4,7 +4,7 @@
 
 <%- cache [participant.cache_key, "participant-row", report.to_s].join("/") do -%>
 
-	<% 
+	<%
 	if @stages
 		stages = []
 		@stages.each do |stage, participant_ids|
@@ -15,18 +15,18 @@
 
 	<tbody id="<%= dom_id %>" class="filterable" data-stages="<%= stages.join(" ") if stages %>" data-participant-id="<%= participant.id.to_s %>">
 	
-		<%- 
-		collection ||= (participant.instance_eval(report.pluralize) rescue []) 
+		<%-
+		collection ||= (participant.instance_eval(report.pluralize) rescue [])
 		row_index = 0
 		%>
 	
 		<%- (collection.empty? ? 1 : collection.size).times do -%>
 			<%- row_index += 1 -%>
-			<%= render partial: "participants/reports/wrapper", 
-						locals: { 
-							collection: collection, 
-							participant: participant, 
-							report: report, 
+			<%= render partial: "participants/reports/wrapper",
+						locals: {
+							collection: collection,
+							participant: participant,
+							report: report,
 							row_count: (collection.empty? ? 1 : collection.size),
 							row_index: row_index
 						} %>

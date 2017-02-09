@@ -6,8 +6,8 @@
 	</h1>
 	<%- if @participant.inactive? || @participant.not_target_participant? -%>
 		<div class="note-band">
-			<%= content_tag :span, "Inactive", class: "inactive label" if @participant.inactive? %>
-			<%= content_tag :span, "#{Customer.not_target_Label}", class: "not-target label" if @participant.not_target_participant? %>
+			<%= content_tag :span, "Inactive", class: "label label-danger" if @participant.inactive? %>
+			<%= content_tag :span, "#{Customer.not_target_Label}", class: "label label-outline" if @participant.not_target_participant? %>
 		</div>
 	<% end %>
 </div>

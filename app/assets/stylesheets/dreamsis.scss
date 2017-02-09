@@ -128,8 +128,16 @@ table.participants {
 
 }
 
-dl {
+dl, dl.dl-horizontal {
 	@extend .dl-horizontal;
+
+	dt {
+		text-align: left;
+	}
+
+	dd {
+		margin-bottom: 10px;
+	}
 	
 	&.dl-inline {
 		
@@ -206,6 +214,13 @@ dl {
 }
 
 .empty {
+	padding: 50px;
+	color: #b2b2b2;
+	text-align: center;
+	font-size: 110%;
+}
+
+tr.empty {
 	
 	td {
 		padding: 50px !important;
@@ -213,7 +228,6 @@ dl {
 		text-align: center;
 		font-size: 110%;
 	}
-
 }
 
 p#separator, .separator {
@@ -1162,9 +1176,35 @@ ul.mini.photo-list {
 	
 }
 
-.list-group-item .progress {
-	margin-top: 12px;
-	margin-bottom: 6px;
+.list-group-lg {
+	
+	> .list-group-item {
+		padding: 30px 0;
+		
+		&:first-child {
+			border-top: none;
+		}
+	}
+	
+}
+
+.list-group > .list-group-item {
+	border-left: none;
+	border-right: none;
+	border-radius: 0;
+	padding-left: 0;
+	padding-right: 0;
+	border-color: #eef1f6;
+	
+	> .media-fixed-width {
+		min-width: 15%;
+		width: 15%;
+	}
+	
+	.progress {
+		margin-top: 12px;
+		margin-bottom: 6px;
+	}
 }
 
 .btn {

@@ -1,0 +1,27 @@
+<%= breadcrumbs "Mentors", @mentor, "Readiness Summary" %>
+
+<div class="list-group">
+  <% for requirement, status in @mentor.readiness_summary %>
+    <div class="list-group-item">
+      <div class="media-left media-fixed-width">
+        <% if status[:passed] === true %>
+          <span class="label label-success">Complete</span>
+        <% elsif status[:passed] === false %>
+          <span class="label label-danger">Incomplete</span>
+        <% else %>
+          <span class="label label-default"><%= status[:passed] %></span>
+        <% end %>
+      </div>
+      <div class="media-body">
+        <%= content_tag :h4, requirement.to_s.titleize, class: "#{status[:passed] ? "text-success" : "text-danger"} list-group-item-heading" %>
+        <p class="list-group-item-text">
+          <%= status[:message] %>
+        
+          <% if requirement == :background_check %>
+              &ndash; <%= link_to "View responses", background_check_form_responses_mentor_path(@mentor), class: 'text-muted' %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+  <% end %>
+</div>
