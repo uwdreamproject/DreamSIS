@@ -365,14 +365,21 @@ class ParticipantsController < ApplicationController
   def auto_complete_for_participant_fullname
     if params[:term].to_i != 0
       @participants = [ Participant.find(params[:term].to_i) ]
-    else      
-      conditions = ["(firstname LIKE :fullname OR lastname LIKE :fullname)"]
+    else
+      generated_conditions = Participant.find_by_name(params[:term]) 
+      conditions = generated_conditions[0]
+      first = generated_conditions[1]
+      middle = generated_conditions[2]
+      last = generated_conditions[3]
+
       conditions << "high_school_id = :high_school_id" if params[:high_school_id]
       conditions << "grad_year = :grad_year" if params[:grad_year]
     
       @participants = Participant.find(:all, 
-                                        :conditions => [conditions.join(" AND "), 
-                                                        {:fullname => "%#{params[:term].downcase}%",
+                                        :conditions => [conditions, 
+                                                        {:firstname => "%#{first}",
+                                                        :lastname => "%#{last}",
+                                                        :middlename => "%#{middle}",
                                                         :grad_year => params[:grad_year],
                                                         :high_school_id => params[:high_school_id]
                                                         }])
