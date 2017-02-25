@@ -136,7 +136,7 @@
 			<div class="git branch">Customer <strong><%= Customer.name_label rescue nil %></strong></div>
 			<div class="git branch">Tenant <strong><%= Apartment::Tenant.current_tenant rescue nil %></strong></div>
 			<div id="dev-inspector" style="display:none">
-				<div class="session-info"><pre><%= session.to_yaml %></pre></div>
+				<div class="session-info"><pre><%#= session.to_yaml %></pre></div>
 				<div class="session-info"><pre><%#= request.env.to_yaml %></pre></div>
 			</div>
 		</div>
