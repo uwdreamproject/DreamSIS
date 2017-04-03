@@ -56,9 +56,7 @@
 				</div>
 		<% end %>
 	
-		<%- cache [@participant.cache_key, "column2-a"].join("/") do -%>
-	
-			<%- if @participant.respond_to?(:scholarship_applications) -%>
+		<%- if @participant.respond_to?(:scholarship_applications) -%>
 				<div class="info-section" id="scholarship_applications">
 					<h2>Financial Aid &amp; Scholarships</h2>
 					<%= render :partial => "fafsas" if @participant.respond_to?(:fafsas) %>
@@ -74,8 +72,10 @@
 													new_participant_financial_aid_package_path(@participant),
 													:class => "add button" %></p>
 				</div>
-			<% end -%>
+		<% end -%>
 
+		<%- cache [@participant.cache_key, "column2-a"].join("/") do -%>
+	
 			<%- if @participant.respond_to?(:parents) -%>
 				<div class="info-section" id="parents">
 					<h2>Parents/Guardians &amp; Contacts</h2>
