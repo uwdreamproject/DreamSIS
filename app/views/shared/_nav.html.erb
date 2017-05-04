@@ -39,8 +39,16 @@
 		<li class="trigger-autocomplete admin"><%= link_to Customer.mentors_Label, "#" %>
 			<div>
 				<ul>
+<!-- 					<li class="search auto_complete">
+	<input type="input" class="search autocomplete-search" placeholder="Search <%= Customer.mentors_label %>" data-source="<%= auto_complete_for_mentor_fullname_mentors_url %>" data-target="<%= mentor_url("id") %>" />
+</li> -->
 					<li class="search auto_complete">
-						<input type="input" class="search autocomplete-search" placeholder="Search <%= Customer.mentors_label %>" data-source="<%= auto_complete_for_mentor_fullname_mentors_url %>" data-target="<%= mentor_url("id") %>" />
+						<%= form_tag search_mentors_path, method: :get, class: "search auto_complete", role: "search" do %>
+							<p>
+								<%= text_field_tag :search, params[:search], class: "form-control" %>
+								<%= submit_tag "Search", name: nil %>
+							</p>
+						<% end -%>
 					</li>
 					<li class="primary list"><%= link_to "All #{Customer.mentors_Label}", mentors_url %></li>
 					<li class="add"><%= link_to "Add new #{Customer.mentor_label}", new_mentor_url %></li>

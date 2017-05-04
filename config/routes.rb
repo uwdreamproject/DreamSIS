@@ -189,6 +189,7 @@ Dreamsis::Application.routes.draw do
       match :leads
       match :van_drivers
       get :check_if_valid_van_driver
+      get 'search'
     end
     member do
       match :photo

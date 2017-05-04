@@ -2,6 +2,14 @@ class MentorsController < ApplicationController
   protect_from_forgery :except => [:auto_complete_for_mentor_fullname] 
   skip_before_filter :login_required, :check_authorization, :save_user_in_current_thread, :check_if_enrolled, :only => [:check_if_valid_van_driver]
 
+  def search
+    if params[:search].present?
+      @mentors = Mentor.search(params[:search])
+    else
+      @mentors = Mentor.all
+    end
+  end
+
   def index
     return redirect_to Mentor.find(params[:id]) if params[:id]
     @mentors = Mentor.page(params[:page])
