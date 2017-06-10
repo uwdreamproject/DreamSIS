@@ -1,4 +1,5 @@
 environments:
   production:
     precompile_assets: true
-    
+  production_cloud:
+    precompile_assets: true
