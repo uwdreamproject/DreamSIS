@@ -87,7 +87,7 @@ class FinancialAidPackage < ActiveRecord::Base
     elsif m = method_name.to_s.end_with?("_USD")
       category = method_name.to_s.split("_USD").first rescue nil
       return super unless %w[expected_family_contribution grants_total loans_total work_study_total gap_total cost_of_attendance].include?(category)
-      total.to_i
+      try(category).to_i
     else
       super(method_name, *args)
     end
