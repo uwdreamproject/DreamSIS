@@ -1,0 +1,25 @@
+<ss:Row ss:StyleID="1">
+	<ss:Cell><ss:Data ss:Type="String">person_id</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">event_id</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">rsvp</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">attended</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">created_at</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">updated_at</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">event_shift_id</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">attendance_option</ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String">audience</ss:Data></ss:Cell>
+</ss:Row>
+
+<% @attendees.each do |attendee| %>
+<ss:Row>
+	<ss:Cell><ss:Data ss:Type="String"><%=h attendee.person_id %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h attendee.event_id %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h attendee.rsvp %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h attendee.attended %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h attendee.created_at %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h attendee.updated_at %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h attendee.event_shift_id %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h attendee.attendance_option %></ss:Data></ss:Cell>
+	<ss:Cell><ss:Data ss:Type="String"><%=h attendee.audience %></ss:Data></ss:Cell>
+</ss:Row>
+<% end -%>
