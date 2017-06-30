@@ -131,6 +131,51 @@ class Person < ActiveRecord::Base
     []
   end
 
+  def self.find_by_name(name) 
+    name = name.downcase
+    args = name.split(" ")
+    conditions = generate_conditions(args, name)
+    return conditions
+  end
+
+  def self.generate_conditions(args, name) 
+    len = args.length
+    first = ""
+    middle = ""
+    last = ""
+    args = args.each { |s|  s.strip! }
+    conditions = ""
+
+    if (len == 1) 
+      first = middle = last = name
+      conditions = ["(LOWER(firstname) LIKE :firstname OR LOWER(lastname) LIKE :lastname)", first, middle, last]
+    elsif (len == 2)
+      if(args[0].end_with? ",")
+        # Results for  L, F ordering
+        last = args[0][0..args[0].length - 2]
+        first = args[1]
+      else 
+        # Results for F M or F L
+        first = args[0]
+        last = args[1]
+        middle = args[1]
+      end
+      conditions = ["(LOWER(firstname) LIKE :firstname AND(LOWER(lastname) LIKE :lastname OR LOWER(middlename) LIKE :middlename))", first, middle, last]
+    else
+      if(args[0].end_with? ",")
+        last = args[0][0..args[0].length - 2]
+        first = args[1]
+        middle = args[2]
+      else 
+        last = args[2]
+        first = args[0]
+        middle = args[1]
+      end
+      conditions = ["(LOWER(firstname) LIKE :firstname AND LOWER(lastname) LIKE :lastname AND LOWER(middlename) LIKE :middlename)", first, middle, last]
+    end
+    return conditions
+  end
+
   # Updates the filter cache by checking each ObjectFilter, and then saves the current record
   # by calling +update_attribute+ so that +updated_at+ is not modified.
   def update_filter_cache_and_save!

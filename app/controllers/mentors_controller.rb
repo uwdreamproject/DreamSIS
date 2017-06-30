@@ -145,12 +145,19 @@ class MentorsController < ApplicationController
   end
   
   def auto_complete_for_mentor_fullname
-    @mentors = Mentor.find(:all,
-                          :conditions => ["firstname LIKE :fullname
-                                            OR lastname LIKE :fullname
-                                            OR display_name LIKE :fullname
-                                            OR uw_net_id LIKE :fullname",
-                                          {:fullname => "%#{params[:term].downcase}%"}])
+    generated_conditions = Mentor.find_by_name(params[:term])
+    conditions = generated_conditions[0]
+    first = generated_conditions[1]
+    middle = generated_conditions[2]
+    last = generated_conditions[3]
+
+    @mentors = Mentor.find(:all, 
+                           :conditions => [conditions,
+                                          {
+                                            :firstname => "%#{first}",
+                                            :lastname => "%#{last}",
+                                            :middlename => "%#{middle}"
+                                          }])
 
     render :json => @mentors.map { |mentor| 
       {
