@@ -27,7 +27,7 @@
 				</div>
 			</div>
 			<div class="signup-numbers">
-				<%= content_tag :span, event.attendees.rsvpd(event_audience).size %>
+				<%= content_tag :span, event.attendees.audience(event_audience).rsvpd.size %>
 				of
 				<%= content_tag :span, event.capacity(event_audience) %>
 			</div>

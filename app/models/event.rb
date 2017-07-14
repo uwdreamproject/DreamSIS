@@ -46,8 +46,12 @@ class Event < ActiveRecord::Base
   end
   
   # Returns the number of RSVP'd (for the given audience, if provided)
-  def rsvpd_count(audience)
-    attendees.rsvpd(audience).size
+  def rsvpd_count(audience = nil)
+    if audience.nil?
+      attendees.rsvpd.size
+    else
+      attendees.audience(audience).rsvpd.size
+    end
   end
   
   # For now, only Visit type events can have attendance options.
@@ -72,13 +76,13 @@ class Event < ActiveRecord::Base
   # If capacity is 0 or nil, this method always returns false.
   def full?(person_or_type = nil)
     return false if capacity(person_or_type).nil? || capacity(person_or_type) <= 0
-    attendees.rsvpd(person_or_type).size >= capacity(person_or_type)
+    attendees.audience(person_or_type).rsvpd.size >= capacity(person_or_type)
   end
   
   # How full is this event in percentage.
   def percent_full(person_or_type = nil)
     return false if capacity(person_or_type).nil? || capacity(person_or_type) <= 0
-    attendees.rsvpd(person_or_type).size.to_f / capacity(person_or_type).to_f * 100
+    attendees.audience(person_or_type).rsvpd.size.to_f / capacity(person_or_type).to_f * 100
   end
   
   def <=>(o)
